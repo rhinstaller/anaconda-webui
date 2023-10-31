@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# This is the expected entry point for Cockpit CI;
+
+set -eu
+
+# linters are off by default for production builds, but we want to run them in CI
+export LINT=1
+
+make integration-test
