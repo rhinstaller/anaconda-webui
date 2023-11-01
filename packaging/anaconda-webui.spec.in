@@ -1,0 +1,79 @@
+#
+# Copyright (C) 2021 Red Hat, Inc.
+#
+# Cockpit is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# Cockpit is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
+#
+
+Name:           anaconda-webui
+Version:        %{VERSION}
+Release:        1%{?dist}
+Summary:        Anaconda installer Web interface
+License:        LGPL-2.1-or-later AND MIT
+URL:            https://github.com/rhinstaller/%{name}
+
+Source0:        https://github.com/rhinstaller/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+BuildArch:      noarch
+BuildRequires:  libappstream-glib
+BuildRequires:  make
+BuildRequires: gettext
+
+%define anacondacorever 40.9
+
+Requires: cockpit-bridge >= 275
+Requires: anaconda-core  >= %{anacondacorever}
+
+%{NPM_PROVIDES}
+
+%description
+Anaconda installer Web interface
+
+%prep
+%setup -q -n %{name}
+
+%build
+# Nothing to build
+
+%install
+%make_install PREFIX=/usr
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
+
+%files
+%dir %{_datadir}/cockpit/anaconda-webui
+%doc README.rst
+%license LICENSE dist/index.js.LEGAL.txt dist/index.css.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/logo.svg
+%{_datadir}/cockpit/anaconda-webui/index.js.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/index.css.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/index.html
+%{_datadir}/cockpit/anaconda-webui/index.js.gz
+%{_datadir}/cockpit/anaconda-webui/index.js.map
+%{_datadir}/cockpit/anaconda-webui/index.css.gz
+%{_datadir}/cockpit/anaconda-webui/index.css.map
+%{_datadir}/cockpit/anaconda-webui/manifest.json
+%{_datadir}/metainfo/org.cockpit-project.anaconda-webui.metainfo.xml
+%{_datadir}/cockpit/anaconda-webui/po.*.js.gz
+%dir %{_datadir}/anaconda/firefox-theme
+%dir %{_datadir}/anaconda/firefox-theme/default
+%dir %{_datadir}/anaconda/firefox-theme/default/chrome
+%{_datadir}/anaconda/firefox-theme/default/user.js
+%{_datadir}/anaconda/firefox-theme/default/chrome/userChrome.css
+%dir %{_datadir}/anaconda/firefox-theme/live
+%dir %{_datadir}/anaconda/firefox-theme/live/chrome
+%{_datadir}/anaconda/firefox-theme/live/user.js
+%{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
+%{_libexecdir}/webui-desktop
+
+
+# The changelog is automatically generated and merged
+%changelog
