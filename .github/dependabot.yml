@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Set update schedule for npm packages.
+  # FIXME: Update our npm development dependencies monthly.
+  # See: https://github.com/dependabot/dependabot-core/issues/2390
+  - package-ecosystem: "npm"
+    directory: "/ui/webui"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "infra"
+    labels:
+      - "sanity check required"
