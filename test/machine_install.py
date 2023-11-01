@@ -22,10 +22,9 @@ import sys
 import time
 import tempfile
 
-ANACONDA_ROOT_DIR = os.path.normpath(os.path.dirname(__file__)+'/../../..')
-WEBUI_DIR = f'{ANACONDA_ROOT_DIR}/ui/webui'
-WEBUI_TEST_DIR = f'{WEBUI_DIR}/test'
-BOTS_DIR = f'{WEBUI_DIR}/bots'
+WEBUI_TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(WEBUI_TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
 
 # pylint: disable=environment-modify
 sys.path.append(BOTS_DIR)
@@ -74,7 +73,7 @@ class VirtInstallMachine(VirtMachine):
 
     def _serve_updates_img(self):
         http_updates_img_port = self._get_free_port()
-        self.http_updates_img_server = subprocess.Popen(["python3", "-m", "http.server", "-d", ANACONDA_ROOT_DIR, str(http_updates_img_port)])
+        self.http_updates_img_server = subprocess.Popen(["python3", "-m", "http.server", "-d", ROOT_DIR, str(http_updates_img_port)])
         self._wait_http_server_running(http_updates_img_port)
 
         return http_updates_img_port
@@ -94,7 +93,7 @@ class VirtInstallMachine(VirtMachine):
         payload_ks_fd, payload_ks_path = tempfile.mkstemp(
             suffix='.cfg',
             prefix=f"ks-{self.label}",
-            dir=os.path.join(ANACONDA_ROOT_DIR, "./ui/webui/test")
+            dir=WEBUI_TEST_DIR
         )
         with os.fdopen(payload_ks_fd, 'w') as f:
             f.write(f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"')
@@ -102,7 +101,7 @@ class VirtInstallMachine(VirtMachine):
         return payload_ks_path
 
     def start(self):
-        update_img_file = os.path.join(ANACONDA_ROOT_DIR, "updates.img")
+        update_img_file = os.path.join(ROOT_DIR, "updates.img")
         if not os.path.exists(update_img_file):
             raise FileNotFoundError("Missing updates.img file")
 
