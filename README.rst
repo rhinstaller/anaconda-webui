@@ -6,8 +6,8 @@ Getting the source
 
 Here's where to get the code::
 
-    git clone https://github.com/rhinstaller/anaconda.git
-    cd anaconda
+    git clone https://github.com/rhinstaller/anaconda-webui.git
+    cd anaconda-webui
 
 Running eslint
 --------------
