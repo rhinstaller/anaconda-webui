@@ -46,6 +46,7 @@ Anaconda installer Web interface
 %make_install PREFIX=/usr
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
+# ADDBACK %{_datadir}/cockpit/anaconda-webui/po.*.js.gz
 %files
 %dir %{_datadir}/cockpit/anaconda-webui
 %doc README.rst
@@ -60,7 +61,6 @@ appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 %{_datadir}/cockpit/anaconda-webui/index.css.map
 %{_datadir}/cockpit/anaconda-webui/manifest.json
 %{_datadir}/metainfo/org.cockpit-project.anaconda-webui.metainfo.xml
-%{_datadir}/cockpit/anaconda-webui/po.*.js.gz
 %dir %{_datadir}/anaconda/firefox-theme
 %dir %{_datadir}/anaconda/firefox-theme/default
 %dir %{_datadir}/anaconda/firefox-theme/default/chrome
