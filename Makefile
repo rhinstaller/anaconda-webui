@@ -18,11 +18,19 @@
 # one example file in dist/ to check if that already ran
 DIST_TEST=dist/manifest.json
 PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' package.json)
+RPM_NAME := $(PACKAGE_NAME)
+VERSION := $(shell T=$$(git describe 2>/dev/null) || T=1; echo $$T | tr '-' '.')
+TARFILE=$(RPM_NAME)-$(VERSION).tar.xz
+SPEC=$(RPM_NAME).spec
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 # stamp file to check if/when npm install ran
 NODE_MODULES_TEST=package-lock.json
 TEST_OS=fedora-rawhide-boot
+# common arguments for tar, mostly to make the generated tarballs reproducible
+TAR_ARGS = --sort=name --mtime "@$(shell git show --no-patch --format='%at')" --mode=go=rX,u+rw,a-s --numeric-owner --owner=0 --group=0
+
+# Anaconda specific variables
 PAYLOAD=fedora-rawhide-anaconda-payload
 GITHUB_BASE=rhinstaller/anaconda-webui
 UPDATES_IMG=updates.img
@@ -30,6 +38,11 @@ TEST_LIVE_OS=fedora-rawhide-live-boot
 
 export GITHUB_BASE
 export TEST_OS
+
+#
+# Build/Install/dist
+#
+all: $(DIST_TEST)
 
 dist_libexec_SCRIPTS = webui-desktop
 # makes sure it gets built as part of `make` and `make dist`
@@ -41,6 +54,10 @@ dist_noinst_DATA = \
 	package.json \
 	build.js
 
+$(SPEC): packaging/$(SPEC).in $(NODE_MODULES_TEST)
+	provides=$$(npm ls --omit dev --package-lock-only --depth=Infinity | grep -Eo '[^[:space:]]+@[^[:space:]]+' | sort -u | sed 's/^/Provides: bundled(npm(/; s/\(.*\)@/\1)) = /'); \
+	awk -v p="$$provides" '{gsub(/%{VERSION}/, "$(VERSION)"); gsub(/%{NPM_PROVIDES}/, p)}1' $< > $@
+
 $(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) $(NODE_MODULES_TEST) package.json build.js
 	NODE_ENV=production ./build.js
 
@@ -51,7 +68,7 @@ watch:
 rsync:
 	RSYNC=$${RSYNC:-test-updates} make watch
 
-install-data-hook: $(DIST_TEST)
+install: $(DIST_TEST)
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
@@ -60,6 +77,35 @@ install-data-hook: $(DIST_TEST)
 	cp org.cockpit-project.$(PACKAGE_NAME).metainfo.xml $(DESTDIR)/usr/share/metainfo/
 	cp webui-desktop $(DESTDIR)/usr/libexec/
 	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
+
+# required for running integration tests; commander and ws are deps of chrome-remote-interface
+TEST_NPMS = \
+	node_modules/chrome-remote-interface \
+	node_modules/commander \
+	node_modules/sizzle \
+	node_modules/ws \
+	$(NULL)
+
+dist: $(TARFILE)
+	@ls -1 $(TARFILE)
+
+# when building a distribution tarball, call bundler with a 'production' environment
+# we don't ship most node_modules for license and compactness reasons, only the ones necessary for running tests
+# we ship a pre-built dist/ (so it's not necessary) and ship package-lock.json (so that node_modules/ can be reconstructed if necessary)
+$(TARFILE): export NODE_ENV ?= production
+$(TARFILE): $(DIST_TEST) $(SPEC)
+	if type appstream-util >/dev/null 2>&1; then appstream-util validate-relax --nonet *.metainfo.xml; fi
+	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
+		--exclude '*.in' --exclude test/reference \
+		$$(git ls-files | grep -v node_modules) \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) $(TEST_NPMS) \
+		dist/
+
+srpm: $(TARFILE) $(SPEC)
+	rpmbuild -bs \
+	  --define "_sourcedir `pwd`" \
+	  --define "_srcrpmdir `pwd`" \
+	  $(SPEC)
 
 EXTRA_DIST = dist src firefox-theme
 
