@@ -18,7 +18,7 @@
 # one example file in dist/ to check if that already ran
 DIST_TEST=dist/manifest.json
 DIST_TEST_PRODUCTION=dist/index.css.gz
-PACKAGE_NAME=anaconda-webui
+PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' package.json)
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 # stamp file to check if/when npm install ran
