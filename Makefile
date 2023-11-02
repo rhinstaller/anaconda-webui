@@ -24,8 +24,8 @@ COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 NODE_MODULES_TEST=package-lock.json
 TEST_OS=fedora-rawhide-boot
 PAYLOAD=fedora-rawhide-anaconda-payload
-GITHUB_BASE=rhinstaller/anaconda
-UPDATES_IMG=../../updates.img
+GITHUB_BASE=rhinstaller/anaconda-webui
+UPDATES_IMG=updates.img
 TEST_LIVE_OS=fedora-rawhide-live-boot
 
 export GITHUB_BASE
@@ -79,7 +79,7 @@ COCKPIT_REPO_TREE = '$(strip $(COCKPIT_REPO_COMMIT))^{tree}'
 $(COCKPIT_REPO_STAMP): Makefile
 	@git rev-list --quiet --objects $(COCKPIT_REPO_TREE) -- 2>/dev/null || \
 	     git fetch --no-tags --no-write-fetch-head --depth=1 $(COCKPIT_REPO_URL) $(COCKPIT_REPO_COMMIT)
-	git -C ../../ archive $(COCKPIT_REPO_TREE) -- $(COCKPIT_REPO_FILES) | tar x
+	git archive $(COCKPIT_REPO_TREE) -- $(COCKPIT_REPO_FILES) | tar x
 
 # checkout Cockpit's bots for standard test VM images and API to launch them
 # must be from main, as only that has current and existing images; but testvm.py API is stable
