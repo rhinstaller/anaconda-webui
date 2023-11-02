@@ -40,6 +40,36 @@ export GITHUB_BASE
 export TEST_OS
 
 #
+# i18n
+#
+
+LINGUAS=$(basename $(notdir $(wildcard po/*.po)))
+
+po/$(PACKAGE_NAME).js.pot:
+	xgettext --default-domain=$(PACKAGE_NAME) --output=$@ --language=C --keyword= \
+		--keyword=_:1,1t --keyword=_:1c,2,2t --keyword=C_:1c,2 \
+		--keyword=N_ --keyword=NC_:1c,2 \
+		--keyword=gettext:1,1t --keyword=gettext:1c,2,2t \
+		--keyword=ngettext:1,2,3t --keyword=ngettext:1c,2,3,4t \
+		--keyword=gettextCatalog.getString:1,3c --keyword=gettextCatalog.getPlural:2,3,4c \
+		--from-code=UTF-8 $$(find src/ -name '*.js' -o -name '*.jsx')
+
+po/$(PACKAGE_NAME).html.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
+	pkg/lib/html2po.js -o $@ $$(find src -name '*.html')
+
+po/$(PACKAGE_NAME).manifest.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
+	pkg/lib/manifest2po.js src/manifest.json -o $@
+
+po/$(PACKAGE_NAME).metainfo.pot: $(APPSTREAMFILE)
+	xgettext --default-domain=$(PACKAGE_NAME) --output=$@ $<
+
+po/$(PACKAGE_NAME).pot: po/$(PACKAGE_NAME).html.pot po/$(PACKAGE_NAME).js.pot po/$(PACKAGE_NAME).manifest.pot po/$(PACKAGE_NAME).metainfo.pot
+	msgcat --sort-output --output-file=$@ $^
+
+po/LINGUAS:
+	echo $(LINGUAS) | tr ' ' '\n' > $@
+
+#
 # Build/Install/dist
 #
 all: $(DIST_TEST)
@@ -68,7 +98,7 @@ watch:
 rsync:
 	RSYNC=$${RSYNC:-test-updates} make watch
 
-install: $(DIST_TEST)
+install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
