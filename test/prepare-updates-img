@@ -8,4 +8,8 @@ test/build-rpms -v anaconda-webui*.src.rpm
 
 # makeupdates must be run from the top level of the anaconda source tree
 # shellcheck disable=SC2086,SC2046
-scripts/makeupdates --add tmp/rpms/*.rpm
+MYPARAMS=()
+for p in tmp/rpms/*.rpm; do
+  MYPARAMS+=("--add" "$p")
+done
+scripts/makeupdates "${MYPARAMS[@]}"
