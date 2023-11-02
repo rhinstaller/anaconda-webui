@@ -14,9 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-SUBDIRS =
-MAINTAINERCLEANFILES = Makefile.in
-
 # stamp file to check if/when npm install ran
 # one example file in dist/ to check if that already ran
 WEBPACK_TEST=dist/manifest.json
@@ -80,7 +77,7 @@ COCKPIT_REPO_COMMIT = 7baca286c10dc50884fcda02c45f338dd18f5e24 # 303 + inherit_m
 
 $(COCKPIT_REPO_FILES): $(COCKPIT_REPO_STAMP)
 COCKPIT_REPO_TREE = '$(strip $(COCKPIT_REPO_COMMIT))^{tree}'
-$(COCKPIT_REPO_STAMP): Makefile.am
+$(COCKPIT_REPO_STAMP): Makefile
 	@git rev-list --quiet --objects $(COCKPIT_REPO_TREE) -- 2>/dev/null || \
 	     git fetch --no-tags --no-write-fetch-head --depth=1 $(COCKPIT_REPO_URL) $(COCKPIT_REPO_COMMIT)
 	git -C ../../ archive $(COCKPIT_REPO_TREE) -- $(COCKPIT_REPO_FILES) | tar x
