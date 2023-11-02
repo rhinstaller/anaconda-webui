@@ -16,8 +16,8 @@
 
 # stamp file to check if/when npm install ran
 # one example file in dist/ to check if that already ran
-WEBPACK_TEST=dist/manifest.json
-WEBPACK_TEST_PRODUCTION=dist/index.css.gz
+DIST_TEST=dist/manifest.json
+DIST_TEST_PRODUCTION=dist/index.css.gz
 PACKAGE_NAME=anaconda-webui
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
@@ -35,14 +35,14 @@ export TEST_OS
 dist_libexec_SCRIPTS = webui-desktop
 # makes sure it gets built as part of `make` and `make dist`
 dist_noinst_DATA = \
-	$(WEBPACK_TEST) \
+	$(DIST_TEST) \
 	$(COCKPIT_REPO_STAMP) \
 	org.cockpit-project.anaconda-webui.metainfo.xml \
 	package-lock.json \
 	package.json \
 	build.js
 
-$(WEBPACK_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) $(NODE_MODULES_TEST) package.json build.js
+$(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) $(NODE_MODULES_TEST) package.json build.js
 	NODE_ENV=production ./build.js
 
 watch:
@@ -52,7 +52,7 @@ watch:
 rsync:
 	RSYNC=$${RSYNC:-test-updates} make watch
 
-install-data-hook: $(WEBPACK_TEST)
+install-data-hook: $(DIST_TEST)
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
