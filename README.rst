@@ -9,34 +9,38 @@ Here's where to get the code::
     git clone https://github.com/rhinstaller/anaconda-webui.git
     cd anaconda-webui
 
-Running eslint
---------------
+Development instructions
+------------------------
 
-Anaconda Web UI uses `ESLint <https://eslint.org/>`_ to automatically check
-JavaScript code style in `.js` and `.jsx` files.
+See `<HACKING.rst>`_ and `<test/README.rst>`_ for details about how to efficiently change the code,
+run, and test it.
 
-The linter is executed within every build as a plugin of esbuild.
+Automated release
+-----------------
 
-For developer convenience, the ESLint can be started explicitly by::
+The intention is that the only manual step for releasing a project is to create
+a signed tag for the version number, which includes a summary of the noteworthy
+changes::
 
-    npm run eslint
+    123
 
-Violations of some rules can be fixed automatically by::
+    - this new feature
+    - fix bug #123
 
-    npm run eslint:fix
+Pushing the release tag triggers the `release.yml <github/workflows/release.yml>`_
+`GitHub action <https://github.com/features/actions>`_ workflow. This creates the
+official release tarball and publishes as upstream release to GitHub.
 
-Rules configuration can be found in the `.eslintrc.json` file.
+The Fedora and COPR releases are done with `Packit <https://packit.dev/>`_.
+see the `packit.yaml <./packit.yaml>`_ control file.
 
-Development with rsync mode
----------------------------
+Automated maintenance
+---------------------
 
-When developing the Web UI, after every change to your sources we need to re-build
-and the contents of dist directory need to be copied to the SSH target's
-/usr/share/cockpit/anaconda-webui directory.
-
-For automating this, you need to set up the SSH `test-updates` alias,
-as described in `<test/README.rst>`_.
-
-Then you can run::
-
-    make rsync
+It is important to keep your `NPM modules <./package.json>`_ up to date, to keep
+up with security updates and bug fixes. This is done with dependabot, see the
+`dependabot.yml <./.github/dependabot.yml>`_ control file.
+Similarly, translations are refreshed every Tuesday evening (or manually) through the
+`weblate-sync-po.yml <.github/workflows/weblate-sync-po.yml>`_ action.
+Conversely, the PO template is uploaded to weblate every day through the
+`weblate-sync-pot.yml <.github/workflows/weblate-sync-pot.yml>`_ action.
