@@ -19,10 +19,13 @@ import cockpit from "cockpit";
 import React, { useState, useEffect } from "react";
 import * as python from "python.js";
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
+import { debounce } from "throttle-debounce";
 
 import {
     Form,
     FormGroup,
+    FormHelperText,
+    HelperText,
     TextInput,
     Title,
 } from "@patternfly/react-core";
@@ -62,6 +65,33 @@ export const accountsToDbusUsers = (accounts) => {
     }];
 };
 
+const reservedNames = [
+    "root",
+    "bin",
+    "daemon",
+    "adm",
+    "lp",
+    "sync",
+    "shutdown",
+    "halt",
+    "mail",
+    "operator",
+    "games",
+    "ftp",
+    "nobody",
+    "home",
+    "system",
+];
+
+const isUserAccountWithInvalidCharacters = (userAccount) => {
+    return (
+        userAccount === "." ||
+        userAccount === ".." ||
+        userAccount.match(/^[0-9]+$/) ||
+        !userAccount.match(/^[A-Za-z0-9._][A-Za-z0-9._-]{0,30}([A-Za-z0-9._-]|\$)?$/)
+    );
+};
+
 const CreateAccount = ({
     idPrefix,
     passwordPolicy,
@@ -70,14 +100,39 @@ const CreateAccount = ({
     setAccounts,
 }) => {
     const [fullName, setFullName] = useState(accounts.fullName);
+    const [_userAccount, _setUserAccount] = useState(accounts.userAccount);
     const [userAccount, setUserAccount] = useState(accounts.userAccount);
+    const [userAccountInvalidHint, setUserAccountInvalidHint] = useState("");
+    const [isUserAccountValid, setIsUserAccountValid] = useState(null);
     const [password, setPassword] = useState(accounts.password);
     const [confirmPassword, setConfirmPassword] = useState(accounts.confirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     useEffect(() => {
-        setIsUserValid(isPasswordValid && userAccount.length > 0);
-    }, [setIsUserValid, isPasswordValid, userAccount]);
+        debounce(300, () => setUserAccount(_userAccount))();
+    }, [_userAccount, setUserAccount]);
+
+    useEffect(() => {
+        setIsUserValid(isPasswordValid && isUserAccountValid);
+    }, [setIsUserValid, isPasswordValid, isUserAccountValid]);
+
+    useEffect(() => {
+        let valid = true;
+        setUserAccountInvalidHint("");
+        if (userAccount.length === 0) {
+            valid = null;
+        } else if (userAccount.length > 32) {
+            valid = false;
+            setUserAccountInvalidHint(_("User names must be shorter than 33 characters"));
+        } else if (reservedNames.includes(userAccount)) {
+            valid = false;
+            setUserAccountInvalidHint(_("User name must not be a reserved word"));
+        } else if (isUserAccountWithInvalidCharacters(userAccount)) {
+            valid = false;
+            setUserAccountInvalidHint(cockpit.format(_("User name may only contain: letters from a-z, digits 0-9, dash $0, period $1, underscore $2"), "-", ".", "_"));
+        }
+        setIsUserAccountValid(valid);
+    }, [userAccount]);
 
     const passphraseForm = (
         <PasswordFormFields
@@ -126,9 +181,15 @@ const CreateAccount = ({
             >
                 <TextInput
                   id={idPrefix + "-user-account"}
-                  value={userAccount}
-                  onChange={(_event, val) => setUserAccount(val)}
+                  value={_userAccount}
+                  onChange={(_event, val) => _setUserAccount(val)}
+                  validated={isUserAccountValid === null ? "default" : isUserAccountValid ? "success" : "error"}
                 />
+                <FormHelperText>
+                    <HelperText component="ul" aria-live="polite" id={idPrefix + "-full-name-helper"}>
+                        {userAccountInvalidHint}
+                    </HelperText>
+                </FormHelperText>
             </FormGroup>
             {passphraseForm}
         </Form>
