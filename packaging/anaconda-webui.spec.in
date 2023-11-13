@@ -37,6 +37,11 @@ Anaconda installer Web interface
 %make_install PREFIX=/usr
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
+%check
+exit 0
+# We have some integration tests, but those require running a VM, so that would
+# be an overkill for RPM check script.
+
 %files
 %dir %{_datadir}/cockpit/anaconda-webui
 %doc README.rst
