@@ -33,3 +33,8 @@ jobs:
       create-archive:
         - sh -exc "curl -L -O https://github.com/rhinstaller/anaconda-webui/releases/download/${PACKIT_PROJECT_VERSION}/${PACKIT_PROJECT_NAME_VERSION}.tar.xz"
         - sh -exc "ls ${PACKIT_PROJECT_NAME_VERSION}.tar.xz"
+
+  - job: propose_downstream
+    trigger: release
+    dist_git_branches:
+      - fedora-development
