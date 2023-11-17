@@ -61,6 +61,9 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         dev = dev.split("/")[-1]
         s.rescan_disks()
 
+        # Check the newly added disk generated a notification
+        s.wait_disk_added(dev)
+
         # Check that the disk selection persists when moving next and back
         s.check_disk_selected("vda", True)
         i.next()
