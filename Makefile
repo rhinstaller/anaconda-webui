@@ -26,6 +26,7 @@ SPEC=$(RPM_NAME).spec
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 # stamp file to check if/when npm install ran
 NODE_MODULES_TEST=package-lock.json
+APPSTREAMFILE=org.cockpit-project.$(PACKAGE_NAME).metainfo.xml
 TEST_OS=fedora-rawhide-boot
 # common arguments for tar, mostly to make the generated tarballs reproducible
 TAR_ARGS = --sort=name --mtime "@$(shell git show --no-patch --format='%at')" --mode=go=rX,u+rw,a-s --numeric-owner --owner=0 --group=0

@@ -10,9 +10,6 @@ BuildArch:      noarch
 BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
-%if 0%{?fedora}
-BuildRequires: fedora-logos
-%endif
 
 %global anacondacorever 40.9
 %global cockpitver 275
@@ -24,6 +21,9 @@ Requires: anaconda-core  >= %{anacondacorever}
 # it can often fall back to a diferent browser. This does not work in the limited installer
 # environment, so we need to make sure Firefox is available.
 Requires: firefox
+%if 0%{?fedora}
+Requires: fedora-logos
+%endif
 
 %{NPM_PROVIDES}
 
@@ -50,6 +50,7 @@ exit 0
 %doc README.rst
 %license LICENSE dist/index.js.LEGAL.txt
 %{_datadir}/cockpit/anaconda-webui/logo.svg
+%{_datadir}/cockpit/anaconda-webui/index.js.LEGAL.txt
 %{_datadir}/cockpit/anaconda-webui/index.html
 %{_datadir}/cockpit/anaconda-webui/index.js.gz
 %{_datadir}/cockpit/anaconda-webui/index.js.map
