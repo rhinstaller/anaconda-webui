@@ -2,9 +2,17 @@
 
 set -eu
 
+TEST_RPMS="${TEST_RPMS:-""}"
+
 # build the anaconda-webui rpm && download anaconda-webui missing dependencies
 make srpm
 test/build-rpms -v anaconda-webui*.src.rpm
+
+# Copy the extra RPMs to the /tmp/rpms directory
+for i in ${TEST_RPMS//,/ }; do
+    echo "Copying $i to tmp/rpms"
+    cp $i tmp/rpms
+done
 
 # makeupdates must be run from the top level of the anaconda source tree
 # shellcheck disable=SC2086,SC2046
