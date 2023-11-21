@@ -94,6 +94,11 @@ then
     WEBUI_ADDRESS="0.0.0.0"
 fi
 
+mkdir -p /etc/systemd/system/cockpit.service.d
+sh -c 'printf "[Service]\nEnvironment=G_MESSAGES_DEBUG=cockpit-ws,cockpit-bridge\nUser=root\nGroup=\n" > /etc/systemd/system/cockpit.service.d/debug.conf'
+systemctl daemon-reload
+systemctl restart cockpit
+
 # forward parent stdin and stdout (from bridge) to cockpit-ws
 # it pretty well does not matter which port we use in our own namespace, so use standard http
 # disable /etc/cockpit/
