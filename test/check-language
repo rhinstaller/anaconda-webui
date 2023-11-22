@@ -17,6 +17,7 @@
 
 import anacondalib
 
+from storage import Storage
 from installer import Installer
 from language import Language
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -47,6 +48,33 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         # Expect the backend set language to be preselected and the WebUI translated
         l.check_selected_locale("de_DE")
         b.wait_in_text("h2 + h3", "Wählen Sie eine Sprache aus")
+
+    def testBackendTranslations(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        l = Language(b, m)
+        s = Storage(b, m)
+
+        # BIOS boot /boot on ext4 / on xfs /home on btrfs
+        disk = "/dev/vda"
+        dev = "vda"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
+
+        # Two partitions on the same disk with the same UUID raise exception in
+        # Blivet
+        s.set_partition_uuid(disk, 3, "66f47a35-b00e-4341-8f31-f4855fac24a2")
+        s.set_partition_uuid(disk, 4, "66f47a35-b00e-4341-8f31-f4855fac24a2")
+
+        s.udevadm_settle()
+
+        i.open()
+        l.select_locale("de_DE")
+        l.check_selected_locale("de_DE")
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        b.wait_in_text("#critical-error-bz-report-modal.pf-v5-c-modal-box", "In diesem Fall können Sie entweder eines der Geräte trennen oder es neu formatieren.")
 
     def testLanguageSwitching(self):
         b = self.browser
