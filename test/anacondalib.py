@@ -29,6 +29,8 @@ from testlib import MachineCase  # pylint: disable=import-error
 
 from storage import Storage
 
+pixel_tests_ignore = [".logo", "#betanag-icon"]
+
 
 class VirtInstallMachineCase(MachineCase):
     efi = False
