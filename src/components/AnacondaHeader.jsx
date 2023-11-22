@@ -82,10 +82,7 @@ const Beta = () => {
               </TextContent>
           }
         >
-            {/* HACK Patternfly currently doesn't implement clickable labels so the styling had to be done manually. */}
-            <div style={{ cursor: "pointer", userSelect: "none" }}>
-                <Label color="orange" icon={<InfoCircleIcon />} id="betanag-icon"> {prerelease} </Label>
-            </div>
+            <Label color="orange" icon={<InfoCircleIcon />} id="betanag-icon" onClick={() => {}}> {prerelease} </Label>
         </Popover>
     );
 };
