@@ -28,6 +28,7 @@ from machine_install import VirtInstallMachine
 from testlib import MachineCase  # pylint: disable=import-error
 
 from storage import Storage
+from language import Language
 
 pixel_tests_ignore = [".logo", "#betanag-icon"]
 
@@ -44,10 +45,18 @@ class VirtInstallMachineCase(MachineCase):
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
             self.addCleanup(self.resetStorage)
+            self.addCleanup(self.resetLanguage)
 
         super().setUp()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
+
+    def resetLanguage(self):
+        m = self.machine
+        b = self.browser
+        l = Language(b, m)
+
+        l.dbus_set_language("en_US.UTF-8")
 
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data

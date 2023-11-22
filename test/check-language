@@ -42,8 +42,6 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         l.dbus_set_language("de_DE.UTF-8")
 
         i.open()
-        self.addCleanup(l.dbus_set_language, "en_US.UTF-8")
-        self.addCleanup(l.select_locale, "en_US")
 
         # Expect the backend set language to be preselected and the WebUI translated
         l.check_selected_locale("de_DE")
@@ -81,8 +79,6 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         l = Language(b, m)
-
-        self.addCleanup(l.select_locale, "en_US")
 
         i.open()
 
