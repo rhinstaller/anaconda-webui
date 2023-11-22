@@ -21,9 +21,14 @@ Then download test dependencies::
     cd ui/webui
     make prepare-test-deps
 
-Prepare an updates.img containing the anaconda RPMs and the cockpit dependencies::
+Prepare an updates.img containing the anaconda-webui RPM and its dependencies::
 
     make create-updates.img
+
+You can optionally add extra RPMs to the updates.img by setting the ``TEST_RPMS`` variable,
+with a comma-seperated list of RPMs to add. For example::
+
+    make TEST_RPMS="/tmp/anaconda-core-123.rpm, /tmp/anaconda-core-debuginfo-123.rpm" create-updates.img
 
 Then download the ISO file that the test VMs will use::
 
