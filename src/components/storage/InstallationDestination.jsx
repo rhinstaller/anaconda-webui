@@ -20,6 +20,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Alert,
     AlertActionCloseButton,
+    AlertGroup,
     Button,
     Chip,
     ChipGroup,
@@ -31,9 +32,12 @@ import {
     SelectList,
     SelectOption,
     Spinner,
+    Text,
+    TextContent,
     TextInputGroup,
     TextInputGroupMain,
     TextInputGroupUtilities,
+    TextVariants,
     Title,
 } from "@patternfly/react-core";
 import { SyncAltIcon, TimesIcon } from "@patternfly/react-icons";
@@ -393,20 +397,19 @@ export const InstallationDestination = ({
         />
     );
 
-    const equalDisks = refUsableDisks.current && checkIfArraysAreEqual(refUsableDisks.current, diskSelection.usableDisks);
     const headingLevel = isBootIso ? "h2" : "h3";
 
     return (
         <>
             <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
-            {equalDisksNotify && equalDisks &&
-                <Alert
-                  id="no-disks-detected-alert"
-                  isInline
-                  title={_("No additional disks detected")}
-                  variant="info"
-                  actionClose={<AlertActionCloseButton onClose={() => { setEqualDisksNotify(false) }} />}
-                />}
+            {!isRescanningDisks && diskSelection.usableDisks !== undefined && refUsableDisks.current !== undefined &&
+            <DisksChangedAlert
+              deviceData={deviceData}
+              equalDisksNotify={equalDisksNotify}
+              refUsableDisks={refUsableDisks}
+              setEqualDisksNotify={setEqualDisksNotify}
+              usableDisks={diskSelection.usableDisks}
+            />}
             <FormGroup>
                 <Flex spaceItems={{ default: "spaceItemsMd" }} alignItems={{ default: "alignItemsCenter" }}>
                     {(diskSelection.usableDisks.length > 1 || (diskSelection.usableDisks.length === 1 && diskSelection.selectedDisks.length === 0))
@@ -434,5 +437,76 @@ export const InstallationDestination = ({
                 </Flex>
             </FormGroup>
         </>
+    );
+};
+
+const DisksChangedAlert = ({
+    deviceData,
+    equalDisksNotify,
+    refUsableDisks,
+    setEqualDisksNotify,
+    usableDisks,
+}) => {
+    const [showChangedNotification, setShowChangedNotification] = useState(true);
+    const equalDisks = checkIfArraysAreEqual(refUsableDisks.current, usableDisks);
+    const disksAdded = usableDisks.filter(disk => !refUsableDisks.current.includes(disk));
+    const disksRemoved = (
+        refUsableDisks.current &&
+        refUsableDisks.current.filter(disk => !usableDisks.includes(disk))
+    );
+
+    return (
+        <AlertGroup isToast isLiveRegion>
+            {equalDisksNotify && equalDisks &&
+                <Alert
+                  id="no-disks-detected-alert"
+                  title={_("No additional disks detected")}
+                  variant="info"
+                  actionClose={<AlertActionCloseButton onClose={() => { setEqualDisksNotify(false) }} />}
+                />}
+            {showChangedNotification && !equalDisks &&
+                <Alert
+                  id="disks-changed-alert"
+                  title={_("The usable disks have changed")}
+                  variant="info"
+                  actionClose={<AlertActionCloseButton onClose={() => { setShowChangedNotification(false) }} />}>
+                    <TextContent>
+                        {disksAdded?.length > 0 &&
+                        <Text component={TextVariants.p}>
+                            {cockpit.format(
+                                cockpit.ngettext(
+                                    "The following disk was detected: $0",
+                                    "The following disks were detected: $0",
+                                    disksAdded.length
+                                ),
+                                disksAdded.map(disk => (
+                                    cockpit.format(
+                                        "$0 ($1)",
+                                        deviceData[disk].name.v,
+                                        deviceData[disk].description.v
+                                    ))
+                                ).join(", ")
+                            )}
+                        </Text>}
+                        {disksRemoved?.length > 0 &&
+                        <Text component={TextVariants.p}>
+                            {cockpit.format(
+                                cockpit.ngettext(
+                                    "The following disk is no longer available: $0",
+                                    "The following disks are no longer available: $0",
+                                    disksRemoved.length
+                                ),
+                                disksRemoved.map(disk => (
+                                    cockpit.format(
+                                        "$0 ($1)",
+                                        deviceData[disk].name.v,
+                                        deviceData[disk].description.v
+                                    ))
+                                ).join(", ")
+                            )}
+                        </Text>}
+                    </TextContent>
+                </Alert>}
+        </AlertGroup>
     );
 };

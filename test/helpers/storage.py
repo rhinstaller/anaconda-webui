@@ -94,6 +94,9 @@ class StorageDestination():
     def wait_no_disks_detected_not_present(self):
         self.browser.wait_not_present("#no-disks-detected-alert")
 
+    def wait_disk_added(self, disk):
+        self.browser.wait_in_text("#disks-changed-alert", f"The following disk was detected: {disk}")
+
     @log_step(snapshots=True)
     def rescan_disks(self):
         self.browser.click(f"#{self._step}-rescan-disks")
