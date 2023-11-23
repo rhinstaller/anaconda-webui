@@ -51,7 +51,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         self.assertIn('"is-crypted" b true', users)
 
     @staticmethod
-    def _test_user_account(user, installer, valid, invalid):
+    def _test_user_name(user, installer, valid, invalid):
         installer.check_next_disabled(disabled=False)
 
         n_valid = len(valid) - 1
@@ -61,9 +61,9 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         for i in range(max(n_valid, n_invalid)):
             i_valid = min(i, n_valid)
             i_invalid = min(i, n_invalid)
-            user.set_user_account(invalid[i_invalid])
+            user.set_user_name(invalid[i_invalid])
             installer.check_next_disabled()
-            user.set_user_account(valid[i_valid])
+            user.set_user_name(valid[i_valid])
             installer.check_next_disabled(disabled=False)
 
     def testAccessAndValidation(self):
@@ -81,17 +81,17 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         # Fill in valid values
         password = "password"
         full_name = "Full Tester"
-        user_account = "tester"
+        user_name = "tester"
 
         p.set_password(password)
         p.set_password_confirm(password)
         u.set_full_name(full_name)
-        u.set_user_account(user_account)
+        u.set_user_name(user_name)
 
         p.check_password(password)
         p.check_password_confirm(password)
         u.check_full_name(full_name)
-        u.check_user_account(user_account)
+        u.check_user_name(user_name)
         i.check_next_disabled(disabled=False)
 
         # Test that you can move forward and going back keeps values
@@ -100,7 +100,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         p.check_password(password)
         p.check_password_confirm(password)
         u.check_full_name(full_name)
-        u.check_user_account(user_account)
+        u.check_user_name(user_name)
 
         # Test that moving back and forward keeps values
         i.back()
@@ -108,7 +108,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         p.check_password(password)
         p.check_password_confirm(password)
         u.check_full_name(full_name)
-        u.check_user_account(user_account)
+        u.check_user_name(user_name)
 
         # Test full name validation
         u.set_full_name("")
@@ -117,7 +117,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
 
         # Test account validation
         # FIXME this should be tested by unit tests?
-        invalid_user_accounts = [
+        invalid_user_names = [
             "",
             # reserved
             "root", "system", "daemon", "home",
@@ -131,7 +131,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
             "tester?",
             "longer_than_32_characteeeeeeeeeeeeeeeeeeers",
         ]
-        valid_user_accounts = [
+        valid_user_names = [
             "tester-",
             "...",
             "12.3",
@@ -144,8 +144,8 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
             ".tester",
             "_",
         ]
-        self._test_user_account(u, i, valid_user_accounts, invalid_user_accounts)
-        u.set_user_account(user_account)
+        self._test_user_name(u, i, valid_user_names, invalid_user_names)
+        u.set_user_name(user_name)
 
         # Test password validation
         # No password set
@@ -184,10 +184,10 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         p.set_password(password)
         p.set_password_confirm(password)
         u.set_full_name(full_name)
-        u.set_user_account(user_account)
+        u.set_user_name(user_name)
         r = Review(b)
         i.reach(i.steps.REVIEW)
-        r.check_account(f"{full_name} ({user_account})")
+        r.check_account(f"{full_name} ({user_name})")
 
 
 if __name__ == '__main__':

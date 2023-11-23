@@ -40,13 +40,13 @@ const _ = cockpit.gettext;
 
 export function getAccountsState (
     fullName = "",
-    userAccount = "",
+    userName = "",
     password = "",
     confirmPassword = "",
 ) {
     return {
         fullName,
-        userAccount,
+        userName,
         password,
         confirmPassword,
     };
@@ -59,7 +59,7 @@ export const cryptUserPassword = async (password) => {
 
 export const accountsToDbusUsers = (accounts) => {
     return [{
-        name: cockpit.variant("s", accounts.userAccount || ""),
+        name: cockpit.variant("s", accounts.userName || ""),
         gecos: cockpit.variant("s", accounts.fullName || ""),
         password: cockpit.variant("s", accounts.password || ""),
         "is-crypted": cockpit.variant("b", true),
@@ -85,12 +85,12 @@ const reservedNames = [
     "system",
 ];
 
-const isUserAccountWithInvalidCharacters = (userAccount) => {
+const isUserNameWithInvalidCharacters = (userName) => {
     return (
-        userAccount === "." ||
-        userAccount === ".." ||
-        userAccount.match(/^[0-9]+$/) ||
-        !userAccount.match(/^[A-Za-z0-9._][A-Za-z0-9._-]{0,30}([A-Za-z0-9._-]|\$)?$/)
+        userName === "." ||
+        userName === ".." ||
+        userName.match(/^[0-9]+$/) ||
+        !userName.match(/^[A-Za-z0-9._][A-Za-z0-9._-]{0,30}([A-Za-z0-9._-]|\$)?$/)
     );
 };
 
@@ -102,39 +102,39 @@ const CreateAccount = ({
     setAccounts,
 }) => {
     const [fullName, setFullName] = useState(accounts.fullName);
-    const [_userAccount, _setUserAccount] = useState(accounts.userAccount);
-    const [userAccount, setUserAccount] = useState(accounts.userAccount);
-    const [userAccountInvalidHint, setUserAccountInvalidHint] = useState("");
-    const [isUserAccountValid, setIsUserAccountValid] = useState(null);
+    const [_userName, _setUserName] = useState(accounts.userName);
+    const [userName, setUserName] = useState(accounts.userName);
+    const [userNameInvalidHint, setUserNameInvalidHint] = useState("");
+    const [isUserNameValid, setIsUserNameValid] = useState(null);
     const [password, setPassword] = useState(accounts.password);
     const [confirmPassword, setConfirmPassword] = useState(accounts.confirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     useEffect(() => {
-        debounce(300, () => setUserAccount(_userAccount))();
-    }, [_userAccount, setUserAccount]);
+        debounce(300, () => setUserName(_userName))();
+    }, [_userName, setUserName]);
 
     useEffect(() => {
-        setIsUserValid(isPasswordValid && isUserAccountValid);
-    }, [setIsUserValid, isPasswordValid, isUserAccountValid]);
+        setIsUserValid(isPasswordValid && isUserNameValid);
+    }, [setIsUserValid, isPasswordValid, isUserNameValid]);
 
     useEffect(() => {
         let valid = true;
-        setUserAccountInvalidHint("");
-        if (userAccount.length === 0) {
+        setUserNameInvalidHint("");
+        if (userName.length === 0) {
             valid = null;
-        } else if (userAccount.length > 32) {
+        } else if (userName.length > 32) {
             valid = false;
-            setUserAccountInvalidHint(_("User names must be shorter than 33 characters"));
-        } else if (reservedNames.includes(userAccount)) {
+            setUserNameInvalidHint(_("User names must be shorter than 33 characters"));
+        } else if (reservedNames.includes(userName)) {
             valid = false;
-            setUserAccountInvalidHint(_("User name must not be a reserved word"));
-        } else if (isUserAccountWithInvalidCharacters(userAccount)) {
+            setUserNameInvalidHint(_("User name must not be a reserved word"));
+        } else if (isUserNameWithInvalidCharacters(userName)) {
             valid = false;
-            setUserAccountInvalidHint(cockpit.format(_("User name may only contain: letters from a-z, digits 0-9, dash $0, period $1, underscore $2"), "-", ".", "_"));
+            setUserNameInvalidHint(cockpit.format(_("User name may only contain: letters from a-z, digits 0-9, dash $0, period $1, underscore $2"), "-", ".", "_"));
         }
-        setIsUserAccountValid(valid);
-    }, [userAccount]);
+        setIsUserNameValid(valid);
+    }, [userName]);
 
     const passphraseForm = (
         <PasswordFormFields
@@ -152,10 +152,10 @@ const CreateAccount = ({
     );
 
     useEffect(() => {
-        setAccounts(ac => ({ ...ac, fullName, userAccount, password, confirmPassword }));
-    }, [setAccounts, fullName, userAccount, password, confirmPassword]);
+        setAccounts(ac => ({ ...ac, fullName, userName, password, confirmPassword }));
+    }, [setAccounts, fullName, userName, password, confirmPassword]);
 
-    const userAccountValidated = isUserAccountValid === null ? "default" : isUserAccountValid ? "success" : "error";
+    const userNameValidated = isUserNameValid === null ? "default" : isUserNameValid ? "success" : "error";
 
     return (
         <Form
@@ -180,22 +180,22 @@ const CreateAccount = ({
                 />
             </FormGroup>
             <FormGroup
-              label={_("User account")}
-              fieldId={idPrefix + "-user-account"}
+              label={_("User name")}
+              fieldId={idPrefix + "-user-name"}
             >
-                <InputGroup id={idPrefix + "-user-account-input-group"}>
+                <InputGroup id={idPrefix + "-user-name-input-group"}>
                     <TextInput
-                      id={idPrefix + "-user-account"}
-                      value={_userAccount}
-                      onChange={(_event, val) => _setUserAccount(val)}
-                      validated={userAccountValidated}
+                      id={idPrefix + "-user-name"}
+                      value={_userName}
+                      onChange={(_event, val) => _setUserName(val)}
+                      validated={userNameValidated}
                     />
                 </InputGroup>
-                {userAccountValidated === "error" &&
+                {userNameValidated === "error" &&
                 <FormHelperText>
                     <HelperText>
-                        <HelperTextItem variant={userAccountValidated}>
-                            {userAccountInvalidHint}
+                        <HelperTextItem variant={userNameValidated}>
+                            {userNameInvalidHint}
                         </HelperTextItem>
                     </HelperText>
                 </FormHelperText>}
