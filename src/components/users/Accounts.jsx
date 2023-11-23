@@ -17,6 +17,8 @@
 
 import cockpit from "cockpit";
 import React, { useState, useEffect } from "react";
+import * as python from "python.js";
+import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 
 import {
     Form,
@@ -45,12 +47,17 @@ export function getAccountsState (
     };
 }
 
+export const cryptUserPassword = async (password) => {
+    const crypted = await python.spawn(encryptUserPw, password, { err: "message", environ: ["LC_ALL=C.UTF-8"] });
+    return crypted;
+};
+
 export const accountsToDbusUsers = (accounts) => {
     return [{
         name: cockpit.variant("s", accounts.userAccount || ""),
         gecos: cockpit.variant("s", accounts.fullName || ""),
         password: cockpit.variant("s", accounts.password || ""),
-        "is-crypted": cockpit.variant("b", false),
+        "is-crypted": cockpit.variant("b", true),
         groups: cockpit.variant("as", ["wheel"]),
     }];
 };
