@@ -26,6 +26,8 @@ import {
     FormGroup,
     FormHelperText,
     HelperText,
+    HelperTextItem,
+    InputGroup,
     TextInput,
     Title,
 } from "@patternfly/react-core";
@@ -153,6 +155,8 @@ const CreateAccount = ({
         setAccounts(ac => ({ ...ac, fullName, userAccount, password, confirmPassword }));
     }, [setAccounts, fullName, userAccount, password, confirmPassword]);
 
+    const userAccountValidated = isUserAccountValid === null ? "default" : isUserAccountValid ? "success" : "error";
+
     return (
         <Form
           isHorizontal
@@ -179,17 +183,22 @@ const CreateAccount = ({
               label={_("User account")}
               fieldId={idPrefix + "-user-account"}
             >
-                <TextInput
-                  id={idPrefix + "-user-account"}
-                  value={_userAccount}
-                  onChange={(_event, val) => _setUserAccount(val)}
-                  validated={isUserAccountValid === null ? "default" : isUserAccountValid ? "success" : "error"}
-                />
+                <InputGroup id={idPrefix + "-user-account-input-group"}>
+                    <TextInput
+                      id={idPrefix + "-user-account"}
+                      value={_userAccount}
+                      onChange={(_event, val) => _setUserAccount(val)}
+                      validated={userAccountValidated}
+                    />
+                </InputGroup>
+                {userAccountValidated === "error" &&
                 <FormHelperText>
-                    <HelperText component="ul" aria-live="polite" id={idPrefix + "-full-name-helper"}>
-                        {userAccountInvalidHint}
+                    <HelperText>
+                        <HelperTextItem variant={userAccountValidated}>
+                            {userAccountInvalidHint}
+                        </HelperTextItem>
                     </HelperText>
-                </FormHelperText>
+                </FormHelperText>}
             </FormGroup>
             {passphraseForm}
         </Form>
