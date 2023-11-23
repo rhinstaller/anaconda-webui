@@ -70,7 +70,7 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         s = Storage(b, m)
 
-        m.execute("wipefs --all /dev/vda")
+        m.execute("find /dev -regex '/dev/[v|s]d.' -exec wipefs --all {} \;")
         s.dbus_reset_partitioning()
         s.dbus_reset_selected_disks()
         # CLEAR_PARTITIONS_DEFAULT = -1
