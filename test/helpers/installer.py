@@ -119,6 +119,15 @@ class Installer():
         value = "false" if disabled else "true"
         self.browser.wait_visible(f"#installation-next-btn:not([aria-disabled={value}]")
 
+    def check_sidebar_step_disabled(self, step, disabled=True):
+        """Check if a sidebar step is disabled.
+
+        :param disabled: True if the sidebar step should be disabled, False if not
+        :type disabled: bool, optional
+        """
+        value = "true" if disabled else "false"
+        self.browser.wait_visible(f"#{step}[aria-disabled={value}]")
+
     @log_step(snapshot_before=True)
     def back(self, should_fail=False, previous_page=""):
         current_page = self.get_current_page()

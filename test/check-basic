@@ -83,6 +83,16 @@ class TestBasic(anacondalib.VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
 
+        # Check disabling of later steps when going back
+        i.reach_on_sidebar(i.steps.WELCOME)
+        for step in [
+            i.steps.ACCOUNTS,
+            i.steps.DISK_CONFIGURATION,
+            i.steps.INSTALLATION_METHOD,
+            i.steps.REVIEW,
+        ]:
+            i.check_sidebar_step_disabled(step)
+
     def testLanguageScreenHiddenLive(self):
         b = self.browser
         m = self.machine
