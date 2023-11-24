@@ -61,9 +61,24 @@ class Users(UsersDBus):
         UsersDBus.__init__(self, machine)
 
     @log_step(snapshot_before=True)
-    def set_user_account(self, user_account, append=False, value_check=True):
-        sel = "#accounts-create-account-user-account"
-        self.browser.set_input_text(sel, user_account, append=append, value_check=value_check)
+    def set_user_name(self, user_name, append=False, value_check=True):
+        sel = "#accounts-create-account-user-name"
+        self.browser.set_input_text(sel, user_name, append=append, value_check=value_check)
+
+    @log_step(snapshot_before=True)
+    def check_user_name(self, user_name):
+        sel = "#accounts-create-account-user-name"
+        self.browser.wait_val(sel, user_name)
+
+    @log_step(snapshot_before=True)
+    def set_full_name(self, full_name, append=False, value_check=True):
+        sel = "#accounts-create-account-full-name"
+        self.browser.set_input_text(sel, full_name, append=append, value_check=value_check)
+
+    @log_step(snapshot_before=True)
+    def check_full_name(self, full_name):
+        sel = "#accounts-create-account-full-name"
+        self.browser.wait_val(sel, full_name)
 
 
 def create_user(browser, machine):
@@ -73,7 +88,7 @@ def create_user(browser, machine):
     password = "password"
     p.set_password(password)
     p.set_password_confirm(password)
-    u.set_user_account("tester")
+    u.set_user_name("tester")
 
 
 def dbus_reset_users(machine):

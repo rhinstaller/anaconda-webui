@@ -144,7 +144,7 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
                         {_("Account")}
                     </DescriptionListTerm>
                     <DescriptionListDescription id={idPrefix + "-target-system-account"}>
-                        {accounts.fullName ? `${accounts.fullName} (${accounts.userAccount})` : accounts.userAccount}
+                        {accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
                     </DescriptionListDescription>
                 </DescriptionListGroup>
             </ReviewDescriptionList>
