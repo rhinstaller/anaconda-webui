@@ -101,7 +101,10 @@ const CreateAccount = ({
     accounts,
     setAccounts,
 }) => {
+    const [_fullName, _setFullName] = useState(accounts.fullName);
     const [fullName, setFullName] = useState(accounts.fullName);
+    const [fullNameInvalidHint, setFullNameInvalidHint] = useState("");
+    const [isFullNameValid, setIsFullNameValid] = useState(null);
     const [_userName, _setUserName] = useState(accounts.userName);
     const [userName, setUserName] = useState(accounts.userName);
     const [userNameInvalidHint, setUserNameInvalidHint] = useState("");
@@ -115,8 +118,12 @@ const CreateAccount = ({
     }, [_userName, setUserName]);
 
     useEffect(() => {
-        setIsUserValid(isPasswordValid && isUserNameValid);
-    }, [setIsUserValid, isPasswordValid, isUserNameValid]);
+        debounce(300, () => setFullName(_fullName))();
+    }, [_fullName, setFullName]);
+
+    useEffect(() => {
+        setIsUserValid(isPasswordValid && isUserNameValid && isFullNameValid !== false);
+    }, [setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
 
     useEffect(() => {
         let valid = true;
@@ -135,6 +142,18 @@ const CreateAccount = ({
         }
         setIsUserNameValid(valid);
     }, [userName]);
+
+    useEffect(() => {
+        let valid = true;
+        setFullNameInvalidHint("");
+        if (fullName.length === 0) {
+            valid = null;
+        } else if (!fullName.match(/^[^:]*$/)) {
+            valid = false;
+            setFullNameInvalidHint(_("Full name cannot contain colon characters"));
+        }
+        setIsFullNameValid(valid);
+    }, [fullName]);
 
     const passphraseForm = (
         <PasswordFormFields
@@ -155,7 +174,9 @@ const CreateAccount = ({
         setAccounts(ac => ({ ...ac, fullName, userName, password, confirmPassword }));
     }, [setAccounts, fullName, userName, password, confirmPassword]);
 
-    const userNameValidated = isUserNameValid === null ? "default" : isUserNameValid ? "success" : "error";
+    const getValidatedVariant = (valid) => valid === null ? "default" : valid ? "success" : "error";
+    const userNameValidated = getValidatedVariant(isUserNameValid);
+    const fullNameValidated = getValidatedVariant(isFullNameValid);
 
     return (
         <Form
@@ -175,9 +196,18 @@ const CreateAccount = ({
             >
                 <TextInput
                   id={idPrefix + "-full-name"}
-                  value={fullName}
-                  onChange={(_event, val) => setFullName(val)}
+                  value={_fullName}
+                  onChange={(_event, val) => _setFullName(val)}
+                  validated={fullNameValidated}
                 />
+                {fullNameValidated === "error" &&
+                <FormHelperText>
+                    <HelperText>
+                        <HelperTextItem variant={fullNameValidated}>
+                            {fullNameInvalidHint}
+                        </HelperTextItem>
+                    </HelperText>
+                </FormHelperText>}
             </FormGroup>
             <FormGroup
               label={_("User name")}

@@ -21,7 +21,7 @@ from installer import Installer
 from password import Password
 from review import Review
 from users import Users, CREATE_ACCOUNT_ID_PREFIX, create_user, dbus_reset_users
-from testlib import nondestructive, test_main, sit  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 @nondestructive
 class TestUsers(anacondalib.VirtInstallMachineCase):
@@ -113,9 +113,12 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         # Test full name validation
         u.set_full_name("")
         i.check_next_disabled(disabled=False)
+        u.set_full_name("colon:isforbidden")
+        i.check_next_disabled()
         u.set_full_name(full_name)
+        i.check_next_disabled(disabled=False)
 
-        # Test account validation
+        # Test user name validation
         # FIXME this should be tested by unit tests?
         invalid_user_names = [
             "",
