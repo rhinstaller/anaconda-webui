@@ -104,11 +104,6 @@ class Installer():
         if current_page == self.steps.INSTALLATION_METHOD:
             sleep(2)
 
-        # Wait for debounce on values checking to update the values that will
-        # be stored
-        if current_page == self.steps.ACCOUNTS:
-            sleep(0.5)
-
         self.browser.click("button:contains(Next)")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
