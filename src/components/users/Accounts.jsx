@@ -101,12 +101,12 @@ const CreateAccount = ({
     accounts,
     setAccounts,
 }) => {
-    const [_fullName, _setFullName] = useState(accounts.fullName);
     const [fullName, setFullName] = useState(accounts.fullName);
+    const [checkFullName, setCheckFullName] = useState(accounts.fullName);
     const [fullNameInvalidHint, setFullNameInvalidHint] = useState("");
     const [isFullNameValid, setIsFullNameValid] = useState(null);
-    const [_userName, _setUserName] = useState(accounts.userName);
     const [userName, setUserName] = useState(accounts.userName);
+    const [checkUserName, setCheckUserName] = useState(accounts.userName);
     const [userNameInvalidHint, setUserNameInvalidHint] = useState("");
     const [isUserNameValid, setIsUserNameValid] = useState(null);
     const [password, setPassword] = useState(accounts.password);
@@ -114,12 +114,12 @@ const CreateAccount = ({
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
     useEffect(() => {
-        debounce(300, () => setUserName(_userName))();
-    }, [_userName, setUserName]);
+        debounce(300, () => setCheckUserName(userName))();
+    }, [userName, setCheckUserName]);
 
     useEffect(() => {
-        debounce(300, () => setFullName(_fullName))();
-    }, [_fullName, setFullName]);
+        debounce(300, () => setCheckFullName(fullName))();
+    }, [fullName, setCheckFullName]);
 
     useEffect(() => {
         setIsUserValid(isPasswordValid && isUserNameValid && isFullNameValid !== false);
@@ -128,44 +128,44 @@ const CreateAccount = ({
     useEffect(() => {
         let valid = true;
         setUserNameInvalidHint("");
-        if (userName.length === 0) {
+        if (checkUserName.length === 0) {
             valid = null;
-        } else if (userName.length > 32) {
+        } else if (checkUserName.length > 32) {
             valid = false;
             setUserNameInvalidHint(_("User names must be shorter than 33 characters"));
-        } else if (reservedNames.includes(userName)) {
+        } else if (reservedNames.includes(checkUserName)) {
             valid = false;
             setUserNameInvalidHint(_("User name must not be a reserved word"));
-        } else if (isUserNameWithInvalidCharacters(userName)) {
+        } else if (isUserNameWithInvalidCharacters(checkUserName)) {
             valid = false;
             setUserNameInvalidHint(cockpit.format(_("User name may only contain: letters from a-z, digits 0-9, dash $0, period $1, underscore $2"), "-", ".", "_"));
         }
         setIsUserNameValid(valid);
-    }, [userName]);
+    }, [checkUserName]);
 
     useEffect(() => {
         let valid = true;
         setFullNameInvalidHint("");
-        if (fullName.length === 0) {
+        if (checkFullName.length === 0) {
             valid = null;
-        } else if (!fullName.match(/^[^:]*$/)) {
+        } else if (!checkFullName.match(/^[^:]*$/)) {
             valid = false;
             setFullNameInvalidHint(_("Full name cannot contain colon characters"));
         }
         setIsFullNameValid(valid);
-    }, [fullName]);
+    }, [checkFullName]);
 
     const passphraseForm = (
         <PasswordFormFields
           idPrefix={idPrefix}
           policy={passwordPolicy}
-          initialPassword={password}
+          password={password}
+          setPassword={setPassword}
           passwordLabel={_("Passphrase")}
-          initialConfirmPassword={confirmPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
           confirmPasswordLabel={_("Confirm passphrase")}
           rules={[ruleLength]}
-          onChange={setPassword}
-          onConfirmChange={setConfirmPassword}
           setIsValid={setIsPasswordValid}
         />
     );
@@ -196,8 +196,8 @@ const CreateAccount = ({
             >
                 <TextInput
                   id={idPrefix + "-full-name"}
-                  value={_fullName}
-                  onChange={(_event, val) => _setFullName(val)}
+                  value={fullName}
+                  onChange={(_event, val) => setFullName(val)}
                   validated={fullNameValidated}
                 />
                 {fullNameValidated === "error" &&
@@ -216,8 +216,8 @@ const CreateAccount = ({
                 <InputGroup id={idPrefix + "-user-name-input-group"}>
                     <TextInput
                       id={idPrefix + "-user-name"}
-                      value={_userName}
-                      onChange={(_event, val) => _setUserName(val)}
+                      value={userName}
+                      onChange={(_event, val) => setUserName(val)}
                       validated={userNameValidated}
                     />
                 </InputGroup>
