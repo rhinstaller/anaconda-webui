@@ -88,13 +88,13 @@ export const DiskEncryption = ({
         <PasswordFormFields
           idPrefix={idPrefix}
           policy={luksPolicy}
-          initialPassword={password}
+          password={password}
+          setPassword={setPassword}
           passwordLabel={_("Passphrase")}
-          initialConfirmPassword={confirmPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
           confirmPasswordLabel={_("Confirm passphrase")}
           rules={[ruleLength, ruleAscii]}
-          onChange={setPassword}
-          onConfirmChange={setConfirmPassword}
           setIsValid={setIsFormValid}
         />
     );

@@ -120,38 +120,36 @@ const passwordStrengthLabel = (idPrefix, strength, strengthLevels) => {
 export const PasswordFormFields = ({
     idPrefix,
     policy,
-    initialPassword,
+    password,
+    setPassword,
     passwordLabel,
-    onChange,
-    initialConfirmPassword,
+    confirmPassword,
+    setConfirmPassword,
     confirmPasswordLabel,
-    onConfirmChange,
     rules,
     setIsValid,
 }) => {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [confirmHidden, setConfirmHidden] = useState(true);
-    const [_password, _setPassword] = useState(initialPassword);
-    const [_confirmPassword, _setConfirmPassword] = useState(initialConfirmPassword);
-    const [password, setPassword] = useState(initialPassword);
-    const [confirmPassword, setConfirmPassword] = useState(initialConfirmPassword);
+    const [checkPassword, setCheckPassword] = useState(password);
+    const [checkConfirmPassword, setCheckConfirmPassword] = useState(confirmPassword);
     const [passwordStrength, setPasswordStrength] = useState("");
 
     useEffect(() => {
-        debounce(300, () => { setPassword(_password); onChange(_password) })();
-    }, [_password, onChange]);
+        debounce(300, () => setCheckPassword(password))();
+    }, [password, setCheckPassword]);
 
     useEffect(() => {
-        debounce(300, () => { setConfirmPassword(_confirmPassword); onConfirmChange(_confirmPassword) })();
-    }, [_confirmPassword, onConfirmChange]);
+        debounce(300, () => setCheckConfirmPassword(confirmPassword))();
+    }, [confirmPassword, setCheckConfirmPassword]);
 
     const ruleResults = useMemo(() => {
-        return getRuleResults(rules, policy, password);
-    }, [policy, password, rules]);
+        return getRuleResults(rules, policy, checkPassword);
+    }, [policy, checkPassword, rules]);
 
     const ruleConfirmMatches = useMemo(() => {
-        return password.length > 0 ? password === confirmPassword : null;
-    }, [password, confirmPassword]);
+        return checkPassword.length > 0 ? checkPassword === checkConfirmPassword : null;
+    }, [checkPassword, checkConfirmPassword]);
 
     const ruleHelperItems = ruleResults.map(rule => {
         let variant = rule.isSatisfied === null ? "indeterminate" : rule.isSatisfied ? "success" : "error";
@@ -182,11 +180,11 @@ export const PasswordFormFields = ({
 
     useEffect(() => {
         const updatePasswordStrength = async () => {
-            const _passwordStrength = await getPasswordStrength(password, strengthLevels);
+            const _passwordStrength = await getPasswordStrength(checkPassword, strengthLevels);
             setPasswordStrength(_passwordStrength);
         };
         updatePasswordStrength();
-    }, [password, strengthLevels]);
+    }, [checkPassword, strengthLevels]);
 
     useEffect(() => {
         setIsValid(
@@ -206,8 +204,8 @@ export const PasswordFormFields = ({
                     <InputGroupItem isFill>
                         <TextInput
                           type={passwordHidden ? "password" : "text"}
-                          value={_password}
-                          onChange={(_event, val) => _setPassword(val)}
+                          value={password}
+                          onChange={(_event, val) => setPassword(val)}
                           id={idPrefix + "-password-field"}
                         />
                     </InputGroupItem>
@@ -233,8 +231,8 @@ export const PasswordFormFields = ({
                 <InputGroup>
                     <InputGroupItem isFill><TextInput
                       type={confirmHidden ? "password" : "text"}
-                      value={_confirmPassword}
-                      onChange={(_event, val) => _setConfirmPassword(val)}
+                      value={confirmPassword}
+                      onChange={(_event, val) => setConfirmPassword(val)}
                       id={idPrefix + "-password-confirm-field"}
                     />
                     </InputGroupItem>
