@@ -43,10 +43,9 @@ class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         i.begin_installation()
 
-        # the warning can take longer to show up than the regular wait_in_text() timeout
-        with b.wait_timeout(600):
-            b.wait_in_text("h2", "Successfully installed")
-            b.wait_in_text(".pf-v5-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
+        p.wait_done()
+        b.wait_in_text("h2", "Successfully installed")
+        b.wait_in_text(".pf-v5-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
 
         # Pixel test the complete progress step
         b.assert_pixels(
@@ -55,10 +54,7 @@ class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
             ignore=["#betanag-icon"],
         )
 
-        p.wait_done()
-        add_public_key(self.machine)
-        p.reboot()
-        m.wait_reboot()
+        self.handleReboot()
 
 if __name__ == '__main__':
     test_main()
