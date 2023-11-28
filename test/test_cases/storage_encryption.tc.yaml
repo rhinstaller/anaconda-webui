@@ -1,0 +1,36 @@
+name: Storage encryption
+description: |
+  Checks disk encryption can be selected, password checks work and encryption is
+  then enabled in installed system.
+author: zveleba@redhat.com
+tags:
+  - anaconda
+priority: 5
+execution:
+  type: anaconda-webui
+  automation_data:
+    script_file: ./test/check-storage
+    test_case: TestStorage.testAutopartitioningEncrypted
+instructions:
+  setup:
+    - Start installation in VM
+  steps:
+    - step: On installation method select erase all and proceed to disk encryption
+      result: Disk encryption is disabled
+    - step: Enable disk encryption, don't enter passowd
+      result: Disk encryption is enabled, Next button is disabled
+    - step: Set password which is too short (4 characters)
+      result: Appropriate message is displayed and Next button is disabled
+    - step: Set weak password (abcdefgh)
+      result: Appropriate message is displayed
+    - step: Set Non-ASCII password (šššššššš)
+      result: Appropriate message is displayed
+    - step: Set weak valid ASCII password in both fields (abcdefgh)
+      result: Appropriate message is displayed but Next button is enabled
+    - step: Set strong password in both fields
+      result: No warning message
+    - step: Finish installation
+    - step: Start installed system, enter luks passphrase when asked.
+    - step: Check that encryption is used
+  teardown:
+    - step: Remove VM
