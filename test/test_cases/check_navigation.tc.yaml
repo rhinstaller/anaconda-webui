@@ -1,0 +1,23 @@
+name: Check navigation
+description: Tries various navigation methods in the installation wizard 
+author: zveleba@redhat.com
+tags:
+  - anaconda
+priority: 9
+execution:
+  type: anaconda-webui
+  automation_data:
+    script_file: ./test/check-basic
+    test_case: TestBasic.testSidebarNavigation
+instructions:
+  setup:
+    - Start installation in VM
+  steps:
+    - step: Test that clicking on current step does not break navigation
+    - step: Go through all the required steps and stop at the review screen.
+    - step: Use the back button until you get to the start
+    - step: Click on all visible links in sidebar
+    - step: Use to Next button to reach the review screen again.
+  teardown:
+    - step: Remove VM
+
