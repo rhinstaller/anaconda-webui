@@ -23,7 +23,7 @@ from machine.machine_core import machine_virtual  # NOQA: imported through paren
 def build_rpms(srpm, image, verbose, quick):
     subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), image])
     machine = machine_virtual.VirtMachine(image=image)
-    packages_to_download = missing_packages
+    packages_to_download = missing_packages + " anaconda-core";
     try:
         machine.start()
         machine.wait_boot()
@@ -41,10 +41,11 @@ def build_rpms(srpm, image, verbose, quick):
             if scenario.startswith("cockpit-pr-"):
                 cockpit_pr = scenario.split("-")[-1]
                 machine.execute(f"dnf copr enable -y packit/cockpit-project-cockpit-{cockpit_pr}", stdout=sys.stdout)
-            elif scenario.startswith("anaconda-pr-"):
+            if scenario.startswith("anaconda-pr-"):
                 anaconda_pr = scenario.split("-")[-1]
                 machine.execute(f"dnf copr enable -y packit/rhinstaller-anaconda-{anaconda_pr}", stdout=sys.stdout)
-                packages_to_download += " anaconda-core"
+            else:
+                machine.execute(f"dnf copr enable @rhinstaller/Anaconda ", stdout=sys.stdout)
 
         # download cockpit rpms
         # FIXME boot.iso on rawhide does not currently contain the new cockpit dependencies
