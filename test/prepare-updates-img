@@ -4,9 +4,8 @@ set -eu
 
 TEST_RPMS="${TEST_RPMS:-""}"
 
-# build the anaconda-webui rpm && download anaconda-webui missing dependencies
-make srpm
-test/build-rpms -v anaconda-webui*.src.rpm
+# Prepare tmp/rpms folder with anaconda-webui missing dependencies
+test/vm.install -v
 
 # Copy the extra RPMs to the /tmp/rpms directory
 for i in ${TEST_RPMS//,/ }; do
