@@ -11,11 +11,11 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-# libvpx is a firefox dependency, but it is not available in the boot.iso
-# https://bugzilla.redhat.com/show_bug.cgi?id=2242446
+missing_packages = "cockpit-ws cockpit-bridge cockpit-storaged fedora-logos"
+# Install missing firefox dependencies.
 # Resolving all dependencies with dnf download is possible,
 # but it packs to many packages to updates.img
-missing_packages = "cockpit-ws cockpit-bridge cockpit-storaged firefox dbus-glib libvpx fedora-logos"
+missing_packages_incl_deps = "firefox"
 
 from machine.machine_core import machine_virtual  # NOQA: imported through parent.py
 
@@ -52,6 +52,7 @@ def build_rpms(srpm, image, verbose, quick):
         # This will change once we include this changes upstream and start building boot.iso with the new dependencies
         # Then we can move this to the /cockpit-pr scenario above
         machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
+        machine.execute(f"dnf download --resolve --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
 
         # download rpms
         vm_rpms = machine.execute("find /var/tmp/build -name '*.rpm' -not -name '*.src.rpm'").strip().split()
