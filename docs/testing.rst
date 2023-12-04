@@ -11,7 +11,7 @@ The purpose of using these ISOs for the tests instead of downloading from the of
 The default refresh period of the test images is one week, but they can also be `refreshed manually <https://github.com/cockpit-project/bots#refreshing-a-test-image>`_.
 
 Image refreshes happen with `Pull Requests which update the current image SHA <https://github.com/cockpit-project/bots/pull/2981>`_.
-The tests defined in `ui/webui/tests/` will run on the Pull request gating the `relevant to anaconda image refreshes <https://github.com/cockpit-project/bots/blob/main/lib/testmap.py>`_.
+The tests defined in `tests/` will run on the Pull request gating the `relevant to anaconda image refreshes <https://github.com/cockpit-project/bots/blob/main/lib/testmap.py>`_.
 
 Image refreshes with successfull CI will be merged automagically from Cockpit team.
 
@@ -20,8 +20,8 @@ member is in charge of debugging the failure.
 
 For this take the following steps:
 
-    * Locally checkout the bots repository branch used in the failing refresh PR. The path to the local bots checkout should be the `ui/webui/bots`.
-    * Create the test VM with the new image and debug by following the `WebUI test instructions <https://github.com/rhinstaller/anaconda/tree/master/ui/webui/test#readme>`_
+    * Locally checkout the bots repository branch used in the failing refresh PR. The path to the local bots checkout should be the `bots`.
+    * Create the test VM with the new image and debug by following the `WebUI test instructions <https://github.com/rhinstaller/anaconda-webui/tree/main/test#readme>`_
 
 When the reason for the breackage is identified there are two options to go forward:
 
