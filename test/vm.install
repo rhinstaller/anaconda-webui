@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+
+# derived from test/image-prepare in cockpit-project/cockpit
+
+import argparse
+import glob
+import os
+import shutil
+import subprocess
+import sys
+
+BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
+sys.path.append(BOTS_DIR)
+
+missing_packages = "cockpit-ws cockpit-bridge cockpit-storaged fedora-logos"
+# Install missing firefox dependencies.
+# Resolving all dependencies with dnf download is possible,
+# but it packs to many packages to updates.img
+missing_packages_incl_deps = "firefox"
+
+from machine.machine_core import machine_virtual  # NOQA: imported through parent.py
+
+
+def vm_install(image, verbose, quick):
+    subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), image])
+    machine = machine_virtual.VirtMachine(image=image)
+    packages_to_download = missing_packages + " anaconda-core";
+    try:
+        machine.start()
+        machine.wait_boot()
+
+        scenario = os.environ.get("TEST_SCENARIO")
+        # Pull cockpit dependencies from the image default compose
+        # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
+        if scenario and scenario.startswith("cockpit-pr-"):
+            cockpit_pr = scenario.split("-")[-1]
+            machine.execute(f"dnf copr enable -y packit/cockpit-project-cockpit-{cockpit_pr}", stdout=sys.stdout)
+
+        # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
+        # from a different repo, then pull it from the anaconda-webui PR COPR repo
+        if not scenario or not scenario.startswith("anaconda-webui-pr-"):
+            subprocess.run(["rm", "anaconda-webui-*.rpm anaconda-webui-*.tar.xz"])
+            subprocess.run(["make", "srpm"])
+            srpm = glob.glob("anaconda-webui*.src.rpm")[0]
+            machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
+            vm_srpm = os.path.join("/var/tmp/build/SRPMS", os.path.basename(srpm))
+            machine.upload([os.path.realpath(srpm)], vm_srpm)
+
+            # build rpms
+            mock_opts = ("--verbose" if verbose else "") + (" --nocheck" if quick else "")
+            machine.execute("su builder -c 'mock --no-clean --disablerepo=* --offline --resultdir /var/tmp/build "
+                            f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
+        else:
+            anaconda_webui_pr = scenario.split("-")[-1]
+            machine.execute(f"dnf copr enable -y packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", stdout=sys.stdout)
+            packages_to_download += f" anaconda-webui"
+
+        # Pull anaconda-core from the COPR repo packit builds from master branch
+        # unless we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
+        if not scenario or not scenario.startswith("anaconda-pr-"):
+            machine.execute(f"dnf copr enable -y @rhinstaller/Anaconda ", stdout=sys.stdout)
+        else:
+            anaconda_pr = scenario.split("-")[-1]
+            machine.execute(f"dnf copr enable -y packit/rhinstaller-anaconda-{anaconda_pr}", stdout=sys.stdout)
+
+        # Download missing dependencies rpms
+        # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
+        # This will change once we include this changes upstream and start building boot.iso with the new dependencies
+        # Then we can enable this only for the various scenarios above
+        machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
+        machine.execute(f"dnf download --resolve --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
+
+        # download rpms
+        vm_rpms = machine.execute("find /var/tmp/build -name '*.rpm' -not -name '*.src.rpm'").strip().split()
+
+        destdir = os.path.abspath("tmp/rpms")
+        if os.path.exists(destdir):
+            shutil.rmtree(destdir)
+        os.makedirs(destdir)
+
+        rpms = []
+        for rpm in vm_rpms:
+            machine.download(rpm, destdir)
+            rpms.append(os.path.join(destdir, os.path.basename(rpm)))
+        return rpms
+    finally:
+        machine.stop()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--quick', '-q', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true')
+    parser.add_argument('--image', default='fedora-rawhide')
+    args = parser.parse_args()
+
+    vm_install(args.image, args.verbose, args.quick)
+
+main()
