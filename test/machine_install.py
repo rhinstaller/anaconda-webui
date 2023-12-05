@@ -169,7 +169,7 @@ class VirtInstallMachine(VirtMachine):
             # Live install ISO does not have sshd service enabled by default
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
-                Machine.wait_boot(self)
+                Machine.wait_boot(self, timeout_sec=300)
 
                 for _ in range(30):
                     try:
