@@ -18,7 +18,6 @@ See `<../../../CONTRIBUTING.rst#setting-up-development-container>`_.
 
 Then download test dependencies::
 
-    cd ui/webui
     make prepare-test-deps
 
 Prepare an updates.img containing the anaconda-webui RPM and its dependencies::
