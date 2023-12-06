@@ -22,7 +22,7 @@ from storage import Storage
 from users import dbus_reset_users
 from review import Review
 from password import Password
-from testlib import nondestructive, test_main  # pylint: disable=import-error
+from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from storagelib import StorageHelpers  # pylint: disable=import-error
 from utils import pretend_live_iso
 
@@ -81,6 +81,7 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         s.select_disk("vda", True)
         s.select_none_disks_and_check([dev, "vda"])
 
+    @skipImage("blivet-gui missing on fedora-eln image", "fedora-eln-boot")
     def testModifyStorage(self):
         b = self.browser
         m = self.machine
@@ -370,6 +371,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
     efi = False
 
     @nondestructive
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -738,6 +740,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         r.check_in_disk_row(dev, 2, "luks-")
 
     @nondestructive
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBtrfsSubvolumes(self):
         b = self.browser
         m = self.machine
@@ -861,6 +864,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
 
         i.check_next_disabled(False)
 
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testUnsupportedStorageConfiguration(self):
         # Prevent the user from performing an installation if multiple devices exist with the same name
         # https://bugzilla.redhat.com/show_bug.cgi?id=2237878

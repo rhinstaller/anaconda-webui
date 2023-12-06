@@ -68,7 +68,7 @@ def vm_install(image, verbose, quick):
         # This will change once we include this changes upstream and start building boot.iso with the new dependencies
         # Then we can enable this only for the various scenarios above
         machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
-        machine.execute(f"dnf download --resolve --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
+        machine.execute(f"dnf download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
 
         # download rpms
         vm_rpms = machine.execute("find /var/tmp/build -name '*.rpm' -not -name '*.src.rpm'").strip().split()

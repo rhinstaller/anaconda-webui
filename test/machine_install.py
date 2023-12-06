@@ -126,6 +126,11 @@ class VirtInstallMachine(VirtMachine):
             # kernel arguments to load the LiveOS/squashfs.img file as that's where everything is stored.
             volume_id = self.get_volume_id(iso_path)
             extra_args = f"root=live:CDLABEL={volume_id} rd.live.image quiet rhgb"
+        elif self.is_eln():
+            # FIXME: Remove this once https://gitlab.com/libosinfo/osinfo-db/-/merge_requests/674 is released
+            # and version is present in the task container
+            location = f"{iso_path},kernel=images/pxeboot/vmlinuz,initrd=images/pxeboot/initrd.img"
+            extra_args = f"inst.ks=file:/{os.path.basename(self.payload_ks_path)}"
         else:
             location = f"{iso_path}"
             extra_args = f"inst.ks=file:/{os.path.basename(self.payload_ks_path)}"
@@ -164,7 +169,7 @@ class VirtInstallMachine(VirtMachine):
             # Live install ISO does not have sshd service enabled by default
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
-                Machine.wait_boot(self)
+                Machine.wait_boot(self, timeout_sec=300)
 
                 for _ in range(30):
                     try:
@@ -212,6 +217,9 @@ class VirtInstallMachine(VirtMachine):
 
     def is_live(self):
         return "live" in self.image
+
+    def is_eln(self):
+        return "eln" in self.image
 
     def get_volume_id(self, iso_path):
         return subprocess.check_output(fr"isoinfo -d -i {iso_path} |  grep -oP 'Volume id: \K.*'", shell=True).decode(sys.stdout.encoding).strip()
