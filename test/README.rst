@@ -16,10 +16,6 @@ To run the WebUI integration tests run the following from the root of the anacon
 OSTree based systems (SilverBlue etc.) can use toolbx.
 See `<../../../CONTRIBUTING.rst#setting-up-development-container>`_.
 
-Then download test dependencies::
-
-    make prepare-test-deps
-
 Prepare an updates.img containing the anaconda-webui RPM and its dependencies::
 
     make create-updates.img

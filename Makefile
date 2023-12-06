@@ -184,13 +184,13 @@ payload: bots
 $(UPDATES_IMG): bots
 	test/prepare-updates-img
 
-create-updates.img: bots
+create-updates.img: prepare-test-deps
 	-rm $(UPDATES_IMG)
 	make $(UPDATES_IMG)
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
-integration-test: prepare-test-deps test/reference $(UPDATES_IMG)
+integration-test: $(UPDATES_IMG) test/reference
 	TEST_AUDIT_NO_SELINUX=1 test/common/run-tests
 
 test/reference: test/common
