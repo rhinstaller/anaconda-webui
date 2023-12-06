@@ -178,7 +178,6 @@ live-vm: bots $(UPDATES_IMG)
 
 prepare-test-deps: bots test/common payload
 
-.PHONY: payload
 payload: bots
 	bots/image-download $(PAYLOAD)
 
@@ -204,3 +203,5 @@ $(NODE_MODULES_TEST): package.json
 	rm -f package-lock.json #  if it exists already, npm install won't update it; force that so that we always get up-to-date packages
 	env -u NODE_ENV npm install #  unset NODE_ENV, skips devDependencies otherwise
 	env -u NODE_ENV npm prune
+
+.PHONY: all create-updates.img dist install integration-test live-vm payload prepare-test-deps srpm update-reference-images
