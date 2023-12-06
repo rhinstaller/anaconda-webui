@@ -44,6 +44,7 @@ import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as g
 import { exitGui } from "../helpers/exit.js";
 import {
     getRequiredMountPoints,
+    getRecommendedMountPoints,
 } from "../apis/storage_devicetree.js";
 import {
     applyStorage,
@@ -58,6 +59,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [requiredMountPoints, setRequiredMountPoints] = useState();
+    const [recommendedMountPoints, setRecommendedMountPoints] = useState();
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
@@ -73,12 +75,13 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     }, [storageData.devices]);
 
     useEffect(() => {
-        const updateRequiredMountPoints = async () => {
+        const updateMountPointConstraints = async () => {
             const requiredMountPoints = await getRequiredMountPoints().catch(console.error);
-
             setRequiredMountPoints(requiredMountPoints);
+            const recommendedMountPoints = await getRecommendedMountPoints().catch(console.error);
+            setRecommendedMountPoints(recommendedMountPoints);
         };
-        updateRequiredMountPoints();
+        updateMountPointConstraints();
     }, []);
 
     useEffect(() => {
@@ -137,6 +140,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                     dispatch,
                     partitioningData: storageData.partitioning,
                     requiredMountPoints,
+                    recommendedMountPoints,
                     reusePartitioning,
                     setReusePartitioning,
                 },

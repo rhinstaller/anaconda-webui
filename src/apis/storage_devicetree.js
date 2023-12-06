@@ -82,6 +82,13 @@ export const getRequiredMountPoints = () => {
 };
 
 /**
+ * @returns {Promise}           List of all recommended mount points on the platform
+ */
+export const getRecommendedMountPoints = () => {
+    return callViewer("GetRecommendedMountPoints", []);
+};
+
+/**
  * @param {Array[string]} diskNames A list of disk names
  *
  * @returns {Promise}           Resolves the total space on the given disks
