@@ -648,7 +648,7 @@ export const MountPointMapping = ({
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || !requiredMountPoints || !partitioningData?.requests)
+                (isLoadingNewPartitioning || requiredMountPoints === null || !partitioningData?.requests)
                     ? (
                         <EmptyStatePanel loading />
                     )
