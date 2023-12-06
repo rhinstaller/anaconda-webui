@@ -28,7 +28,7 @@ import { WithDialogs } from "dialogs.jsx";
 import { AddressContext, LanguageContext, SystemTypeContext, OsReleaseContext } from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { CriticalError, errorHandlerWithContext, bugzillaPrefiledReportURL } from "./Error.jsx";
+import { CriticalError, errorHandlerWithContext, bugzillaPrefiledReportURL, jiraPrefilledReportURL } from "./Error.jsx";
 
 import { BossClient } from "../apis/boss.js";
 import { LocalizationClient, initDataLocalization, startEventMonitorLocalization } from "../apis/localization.js";
@@ -118,10 +118,15 @@ export const Application = () => {
     const systemType = conf?.["Installation System"].type;
     const title = cockpit.format(_("$0 installation"), osRelease.PRETTY_NAME);
 
-    const bzReportURL = bugzillaPrefiledReportURL({
-        product: osRelease.REDHAT_BUGZILLA_PRODUCT,
-        version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
-    });
+    const bzReportURL = osRelease.ID === "fedora"
+        ? bugzillaPrefiledReportURL({
+            product: osRelease.REDHAT_BUGZILLA_PRODUCT,
+            version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
+        })
+        : jiraPrefilledReportURL({
+            product: osRelease.REDHAT_JIRA_PRODUCT,
+            version: osRelease.REDHAT_JIRA_PRODUCT_VERSION,
+        });
 
     const page = (
         <OsReleaseContext.Provider value={osRelease}>
