@@ -411,13 +411,13 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
 
         # verify gathered requests
         # root partition is not auto-mapped
-        s.check_mountpoint_row(1, "/boot", "Select a device", False)
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.check_mountpoint_row_format_type(1, "ext4")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.select_mountpoint_row_device(1, f"btrfstest")
+        s.check_mountpoint_row_format_type(1, "btrfs")
 
-        s.check_mountpoint_row(2, "/", "Select a device", True)
-        s.select_mountpoint_row_device(2, f"btrfstest")
-        s.check_mountpoint_row_format_type(2, "btrfs")
+        s.check_mountpoint_row(2, "/boot", "Select a device", False)
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.check_mountpoint_row_format_type(2, "ext4")
 
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, f"{dev}4")
@@ -426,8 +426,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.check_mountpoint_row_format_type(3, "xfs")
 
         # Toggle reformat option
-        s.select_mountpoint_row_reformat(1)
-        s.check_mountpoint_row_reformat(1, True)
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
 
         b.assert_pixels(
             "#app",
@@ -497,9 +497,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.select_mountpoint([(dev, True)])
 
         # verify gathered requests
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.check_mountpoint_row(1, "/boot", f"{dev}2", False, "ext4")
-        s.check_mountpoint_row(2, "/", "Select a device", True)
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.check_mountpoint_row(2, "/boot", f"{dev}2", False, "ext4")
 
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, f"{dev}4")
@@ -549,11 +549,11 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.check_mountpoint_row_device_available(1, "vda2", True)
         s.check_mountpoint_row_device_available(1, "vdb1")
 
-        s.select_mountpoint_row_device(1, f"{dev1}2")
-        s.check_mountpoint_row(1, "/boot", f"{dev1}2", False, "xfs")
+        s.select_mountpoint_row_device(1, f"{dev1}3")
+        s.check_mountpoint_row(1, "/", f"{dev1}3", True, "xfs")
 
-        s.select_mountpoint_row_device(2, f"{dev1}3")
-        s.check_mountpoint_row(2, "/", f"{dev1}3", True, "xfs")
+        s.select_mountpoint_row_device(2, f"{dev1}2")
+        s.check_mountpoint_row(2, "/boot", f"{dev1}2", False, "xfs")
 
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, f"{dev2}1")
@@ -587,7 +587,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s = Storage(b, m)
         r = Review(b)
 
-        # BIOS boot partition, /boot partition, /
         disk1 = "/dev/vda"
         dev1 = "vda"
         s.partition_disk(
@@ -637,16 +636,16 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.unlock_device("einszweidreivier", ["vda4"], ["vda4"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.check_mountpoint_row_mountpoint(1, "/boot")
-        s.select_mountpoint_row_device(1, "vda5")
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, "vda5")
 
-        s.check_mountpoint_row_mountpoint(2, "/")
-        selector = "#mount-point-mapping-table-row-2 .pf-v5-c-select__toggle"
+        s.check_mountpoint_row_mountpoint(1, "/")
+        selector = "#mount-point-mapping-table-row-1 .pf-v5-c-select__toggle"
         b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
         select_entry = f"{selector} + ul li:nth-of-type(3) button"
         b.click(select_entry)
         b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
-        s.check_mountpoint_row_format_type(2, "xfs")
+        s.check_mountpoint_row_format_type(1, "xfs")
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
@@ -686,14 +685,14 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.check_mountpoint_row_mountpoint(1, "/boot")
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.select_mountpoint_row_reformat(1)
-        s.check_mountpoint_row_reformat(1, True)
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.select_mountpoint_row_device(1, "encryptedraid")
+        s.check_mountpoint_row_format_type(1, "xfs")
 
-        s.check_mountpoint_row(2, "/", "Select a device", True)
-        s.select_mountpoint_row_device(2, "encryptedraid")
-        s.check_mountpoint_row_format_type(2, "xfs")
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
@@ -735,18 +734,18 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.check_mountpoint_row_mountpoint(1, "/boot")
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.select_mountpoint_row_reformat(1)
-        s.check_mountpoint_row_reformat(1, True)
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
 
-        s.check_mountpoint_row_mountpoint(2, "/")
-        selector = "#mount-point-mapping-table-row-2 .pf-v5-c-select__toggle"
+        s.check_mountpoint_row_mountpoint(1, "/")
+        selector = "#mount-point-mapping-table-row-1 .pf-v5-c-select__toggle"
         b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
         select_entry = f"{selector} + ul li:nth-of-type(2) button"
         b.click(select_entry)
         b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
-        s.check_mountpoint_row_format_type(2, "xfs")
+        s.check_mountpoint_row_format_type(1, "xfs")
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
@@ -792,13 +791,13 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
 
         # verify gathered requests
         # root partition is not auto-mapped
-        s.check_mountpoint_row(1, "/boot", "Select a device", False)
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.check_mountpoint_row_format_type(1, "ext4")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.select_mountpoint_row_device(1, "root")
+        s.check_mountpoint_row_format_type(1, "btrfs")
 
-        s.check_mountpoint_row(2, "/", "Select a device", True)
-        s.select_mountpoint_row_device(2, "root")
-        s.check_mountpoint_row_format_type(2, "btrfs")
+        s.check_mountpoint_row(2, "/boot", "Select a device", False)
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.check_mountpoint_row_format_type(2, "ext4")
 
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, "home")
@@ -807,8 +806,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.check_mountpoint_row_format_type(3, "btrfs")
 
         # Toggle reformat option
-        s.select_mountpoint_row_reformat(1)
-        s.check_mountpoint_row_reformat(1, True)
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
@@ -837,8 +836,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.rescan_disks()
         s.select_mountpoint([(dev, True)])
 
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.select_mountpoint_row_device(2, "root")
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, f"{dev}2")
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, "home")
         s.select_mountpoint_row_mountpoint(3, "/home")
@@ -950,14 +949,14 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
 
         # verify gathered requests
         # root partition is not auto-mapped
-        s.check_mountpoint_row(1, "/boot", "Select a device", False)
-        s.check_mountpoint_row(2, "/", "Select a device", True)
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.check_mountpoint_row(2, "/boot", "Select a device", False)
 
-        s.select_mountpoint_row_device(1, f"{dev}2")
-        s.check_mountpoint_row(1, "/boot", f"{dev}2", False, "ext4")
+        s.select_mountpoint_row_device(1, f"{vgname}-root")
+        s.check_mountpoint_row(1, "/", f"{vgname}-root", True, "ext4")
 
-        s.select_mountpoint_row_device(2, f"{vgname}-root")
-        s.check_mountpoint_row(2, "/", f"{vgname}-root", True, "ext4")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.check_mountpoint_row(2, "/boot", f"{dev}2", False, "ext4")
 
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, f"{vgname}-home")
@@ -969,8 +968,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.check_mountpoint_row(4, "swap", f"{vgname}-swap", False, "swap")
 
         # Toggle reformat option
-        s.select_mountpoint_row_reformat(1)
-        s.check_mountpoint_row_reformat(1, True)
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
@@ -1049,17 +1048,17 @@ class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
 
         # verify gathered requests
         # root partition is not auto-mapped
-        s.check_mountpoint_row(1, "/boot/efi", "Select a device", False)
-        s.select_mountpoint_row_device(1, f"{dev}1")
-        s.check_mountpoint_row_format_type(1, "EFI System Partition")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.select_mountpoint_row_device(1, f"{dev}3")
+        s.check_mountpoint_row_format_type(1, "xfs")
 
-        s.check_mountpoint_row(2, "/boot", "Select a device", False)
-        s.select_mountpoint_row_device(2, f"{dev}2")
-        s.check_mountpoint_row_format_type(2, "ext4")
+        s.check_mountpoint_row(2, "/boot/efi", "Select a device", False)
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.check_mountpoint_row_format_type(2, "EFI System Partition")
 
-        s.check_mountpoint_row(3, "/", "Select a device", True)
-        s.select_mountpoint_row_device(3, f"{dev}3")
-        s.check_mountpoint_row_format_type(3, "xfs")
+        s.check_mountpoint_row(3, "/boot", "Select a device", False)
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.check_mountpoint_row_format_type(3, "ext4")
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
