@@ -12,7 +12,7 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-missing_packages = "cockpit-ws cockpit-bridge cockpit-storaged fedora-logos"
+missing_packages = "cockpit-ws cockpit-bridge fedora-logos"
 # Install missing firefox dependencies.
 # Resolving all dependencies with dnf download is possible,
 # but it packs to many packages to updates.img
@@ -21,10 +21,18 @@ missing_packages_incl_deps = "firefox"
 from machine.machine_core import machine_virtual  # NOQA: imported through parent.py
 
 
+def download_from_copr(copr_repo, packages, machine):
+    machine.execute(f"dnf -y copr enable {copr_repo}")
+    copr_repo_id = f"copr:copr.fedorainfracloud.org:{copr_repo.replace('/', ':').replace('@', 'group_')}"
+    machine.execute(
+        f"dnf download --destdir /var/tmp/build/ {packages} --repo {copr_repo_id}",
+        stdout=sys.stdout, timeout=300
+    )
+
+
 def vm_install(image, verbose, quick):
     subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), image])
     machine = machine_virtual.VirtMachine(image=image)
-    packages_to_download = missing_packages + " anaconda-core";
     try:
         machine.start()
         machine.wait_boot()
@@ -34,7 +42,11 @@ def vm_install(image, verbose, quick):
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
         if scenario and scenario.startswith("cockpit-pr-"):
             cockpit_pr = scenario.split("-")[-1]
-            machine.execute(f"dnf copr enable -y packit/cockpit-project-cockpit-{cockpit_pr}", stdout=sys.stdout)
+            # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
+        else:
+          packages_to_download = missing_packages + " cockpit-storaged"
+
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
         # from a different repo, then pull it from the anaconda-webui PR COPR repo
@@ -52,16 +64,18 @@ def vm_install(image, verbose, quick):
                             f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
         else:
             anaconda_webui_pr = scenario.split("-")[-1]
-            machine.execute(f"dnf copr enable -y packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", stdout=sys.stdout)
-            packages_to_download += f" anaconda-webui"
+            # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui", machine)
 
         # Pull anaconda-core from the COPR repo packit builds from master branch
         # unless we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
         if not scenario or not scenario.startswith("anaconda-pr-"):
-            machine.execute(f"dnf copr enable -y @rhinstaller/Anaconda ", stdout=sys.stdout)
+            # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr("@rhinstaller/Anaconda", "anaconda-core", machine)
         else:
             anaconda_pr = scenario.split("-")[-1]
-            machine.execute(f"dnf copr enable -y packit/rhinstaller-anaconda-{anaconda_pr}", stdout=sys.stdout)
+            # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr(f"packit/rhinstaller-anaconda-{anaconda_pr}", "anaconda-core", machine)
 
         # Download missing dependencies rpms
         # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
