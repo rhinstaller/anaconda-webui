@@ -25,13 +25,12 @@ import {
     PageSection,
     PageSectionTypes,
     PageSectionVariants,
-    Stack
-} from "@patternfly/react-core";
-import {
+    Stack,
+    useWizardContext,
     Wizard,
-    WizardFooter,
-    WizardContextConsumer
-} from "@patternfly/react-core/deprecated";
+    WizardFooterWrapper,
+    WizardStep
+} from "@patternfly/react-core";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
@@ -43,7 +42,6 @@ import { Accounts, getPageProps as getAccountsProps, getAccountsState, accountsT
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
-import { usePageLocation } from "hooks";
 import {
     getRequiredMountPoints,
 } from "../apis/storage_devicetree.js";
@@ -69,6 +67,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const [storageScenarioId, setStorageScenarioId] = useState(window.sessionStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
+    const [currentStepId, setCurrentStepId] = useState();
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
@@ -84,6 +83,13 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         };
         updateRequiredMountPoints();
     }, []);
+
+    useEffect(() => {
+        if (!currentStepId) {
+            return;
+        }
+        cockpit.location.go([currentStepId]);
+    }, [currentStepId]);
 
     useEffect(() => {
         /*
@@ -172,26 +178,29 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         },
     ];
 
+    const componentProps = {
+        isFormDisabled,
+        onCritFail,
+        setIsFormDisabled,
+        setIsFormValid,
+    };
+
     const getFlattenedStepsIds = (steps) => {
         const stepIds = [];
         for (const step of steps) {
+            stepIds.push(step.id);
             if (step.steps) {
                 for (const childStep of step.steps) {
                     if (childStep?.isHidden !== true) {
                         stepIds.push(childStep.id);
                     }
                 }
-            } else {
-                stepIds.push(step.id);
             }
         }
         return stepIds;
     };
     const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
-
-    const { path } = usePageLocation();
     const firstStepId = stepsOrder.filter(step => !step.isHidden)[0].id;
-    const currentStepId = path[0] || firstStepId;
 
     const isStepFollowedBy = (earlierStepId, laterStepId) => {
         const earlierStepIdx = flattenedStepsIds.findIndex(s => s === earlierStepId);
@@ -199,63 +208,64 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         return earlierStepIdx < laterStepIdx;
     };
 
-    const canJumpToStep = (stepId, currentStepId) => {
-        return stepId === currentStepId || isStepFollowedBy(stepId, currentStepId);
-    };
-
-    const createSteps = (stepsOrder) => {
-        const steps = stepsOrder.filter(s => !s.isHidden).map(s => {
-            let step = ({
+    const createSteps = (stepsOrder, componentProps) => {
+        return stepsOrder.map(s => {
+            const isVisited = firstStepId === s.id || currentStepId === s.id;
+            let stepProps = {
                 id: s.id,
+                isHidden: s.isHidden,
+                isVisited,
                 name: s.label,
                 stepNavItemProps: { id: s.id },
-                canJumpTo: canJumpToStep(s.id, currentStepId),
-            });
+                ...(s.steps?.length && { isExpandable: true }),
+            };
             if (s.component) {
-                step = ({
-                    ...step,
-                    component: (
+                stepProps = {
+                    children: (
                         <AnacondaPage step={s.id} title={s.title} stepNotification={stepNotification}>
                             <s.component
                               idPrefix={s.id}
-                              setIsFormValid={setIsFormValid}
-                              onCritFail={onCritFail}
                               setStepNotification={ex => setStepNotification({ step: s.id, ...ex })}
-                              isFormDisabled={isFormDisabled}
-                              setIsFormDisabled={setIsFormDisabled}
+                              {...componentProps}
                               {...s.data}
                             />
                         </AnacondaPage>
                     ),
-                });
+                    ...stepProps
+                };
             } else if (s.steps) {
-                step.steps = createSteps(s.steps);
+                const subSteps = createSteps(s.steps, componentProps);
+                stepProps = {
+                    ...stepProps,
+                    steps: [...subSteps]
+                };
             }
-            return step;
+            return (
+                <WizardStep key={s.id + s.isVisited} {...stepProps} />
+            );
         });
-        return steps;
     };
-    const steps = createSteps(stepsOrder);
+    const steps = createSteps(stepsOrder, componentProps);
 
     const goToStep = (newStep, prevStep) => {
-        if (prevStep.prevId !== newStep.id) {
+        if (prevStep.id !== newStep.id) {
             // first reset validation state to default
             setIsFormValid(false);
         }
 
         // Reset the applied partitioning when going back from a step after creating partitioning to a step
         // before creating partitioning.
-        if ((prevStep.prevId === "accounts" || isStepFollowedBy("accounts", prevStep.prevId)) &&
+        if ((prevStep.id === "accounts" || isStepFollowedBy("accounts", prevStep.id)) &&
             isStepFollowedBy(newStep.id, "accounts")) {
             setIsFormDisabled(true);
             resetPartitioning()
                     .then(
-                        () => cockpit.location.go([newStep.id]),
+                        () => setCurrentStepId(newStep.id),
                         () => onCritFail({ context: cockpit.format(N_("Error was hit when going back from $0."), prevStep.prevName) })
                     )
                     .always(() => setIsFormDisabled(false));
         } else {
-            cockpit.location.go([newStep.id]);
+            setCurrentStepId(newStep.id);
         }
     };
 
@@ -267,10 +277,14 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         );
     }
 
+    const firstVisibleStepIndex = steps.findIndex(step => !step.props.isHidden) + 1;
+
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
             <Wizard
               id="installation-wizard"
+              isVisitRequired
+              startIndex={firstVisibleStepIndex}
               footer={<Footer
                 onCritFail={onCritFail}
                 isFormValid={isFormValid}
@@ -285,15 +299,10 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 storageScenarioId={storageScenarioId}
                 accounts={accounts}
               />}
-              hideClose
-              mainAriaLabel={`${title} content`}
-              navAriaLabel={`${title} steps`}
-              onBack={goToStep}
-              onGoToStep={goToStep}
-              onNext={goToStep}
-              steps={steps}
-              isNavExpandable
-            />
+              onStepChange={((event, currentStep, prevStep) => goToStep(currentStep, prevStep))}
+            >
+                {steps}
+            </Wizard>
         </PageSection>
     );
 };
@@ -314,9 +323,10 @@ const Footer = ({
 }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
+    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
-    const goToNextStep = (activeStep, onNext) => {
+    const onNext = (activeStep, goToNextStep) => {
         // first reset validation state to default
         setIsFormValid(true);
 
@@ -330,7 +340,7 @@ const Footer = ({
                     setStepNotification({ step: activeStep.id, ...ex });
                 },
                 onSuccess: () => {
-                    onNext();
+                    goToNextStep();
 
                     // Reset the state after the onNext call. Otherwise,
                     // React will try to render the current step again.
@@ -353,7 +363,7 @@ const Footer = ({
                     setStepNotification({ step: activeStep.id, ...ex });
                 },
                 onSuccess: () => {
-                    onNext();
+                    goToNextStep();
 
                     // Reset the state after the onNext call. Otherwise,
                     // React will try to render the current step again.
@@ -366,85 +376,75 @@ const Footer = ({
                     .then(cryptedPassword => {
                         const users = accountsToDbusUsers({ ...accounts, password: cryptedPassword });
                         setUsers(users);
-                        onNext();
+                        goToNextStep();
                     }, onCritFail({ context: N_("Password ecryption failed.") }));
         } else {
-            onNext();
+            goToNextStep();
         }
     };
 
-    const goToPreviousStep = (activeStep, onBack, errorHandler) => {
+    const onBack = () => {
         // first reset validation state to default
         setIsFormValid(true);
-        onBack();
+        goToPrevStep();
     };
 
-    return (
-        <WizardFooter>
-            <WizardContextConsumer>
-                {({ activeStep, onNext, onBack }) => {
-                    const currentStep = stepsOrder.find(s => s.id === activeStep.id);
-                    const footerHelperText = currentStep?.footerHelperText;
-                    const isFirstScreen = stepsOrder.filter(step => !step.isHidden)[0].id === activeStep.id;
-                    const nextButtonText = currentStep?.nextButtonText || _("Next");
-                    const nextButtonVariant = currentStep?.nextButtonVariant || "primary";
+    const currentStep = stepsOrder.find(s => s.id === activeStep.id);
+    const footerHelperText = currentStep?.footerHelperText;
+    const isFirstScreen = stepsOrder.filter(step => !step.isHidden)[0].id === activeStep.id;
+    const nextButtonText = currentStep?.nextButtonText || _("Next");
+    const nextButtonVariant = currentStep?.nextButtonVariant || "primary";
 
-                    return (
-                        <Stack hasGutter>
-                            {activeStep.id === "installation-review" &&
-                            nextWaitsConfirmation &&
-                            <ReviewConfigurationConfirmModal
-                              idPrefix={activeStep.id}
-                              onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
-                              setNextWaitsConfirmation={setNextWaitsConfirmation}
-                              storageScenarioId={storageScenarioId}
-                            />}
-                            {quitWaitsConfirmation &&
-                            <QuitInstallationConfirmModal
-                              exitGui={exitGui}
-                              setQuitWaitsConfirmation={setQuitWaitsConfirmation}
-                            />}
-                            {footerHelperText}
-                            <ActionList>
-                                <Button
-                                  id="installation-back-btn"
-                                  variant="secondary"
-                                  isDisabled={isFirstScreen || isFormDisabled}
-                                  onClick={() => goToPreviousStep(
-                                      activeStep,
-                                      onBack,
-                                      onCritFail({ context: cockpit.format(N_("Error was hit when going back from $0."), activeStep.name) })
-                                  )}>
-                                    {_("Back")}
-                                </Button>
-                                <Button
-                                  id="installation-next-btn"
-                                  variant={nextButtonVariant}
-                                  isDisabled={
-                                      !isFormValid ||
-                                      isFormDisabled ||
-                                      nextWaitsConfirmation
-                                  }
-                                  onClick={() => goToNextStep(activeStep, onNext)}>
-                                    {nextButtonText}
-                                </Button>
-                                <Button
-                                  id="installation-quit-btn"
-                                  isDisabled={isFormDisabled}
-                                  style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
-                                  variant="link"
-                                  onClick={() => {
-                                      setQuitWaitsConfirmation(true);
-                                  }}
-                                >
-                                    {isBootIso ? _("Reboot") : _("Quit")}
-                                </Button>
-                            </ActionList>
-                        </Stack>
-                    );
-                }}
-            </WizardContextConsumer>
-        </WizardFooter>
+    return (
+        <WizardFooterWrapper>
+            <Stack hasGutter>
+                {activeStep.id === "installation-review" &&
+                    nextWaitsConfirmation &&
+                    <ReviewConfigurationConfirmModal
+                      idPrefix={activeStep.id}
+                      onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
+                      setNextWaitsConfirmation={setNextWaitsConfirmation}
+                      storageScenarioId={storageScenarioId}
+                    />}
+                {quitWaitsConfirmation &&
+                    <QuitInstallationConfirmModal
+                      exitGui={exitGui}
+                      setQuitWaitsConfirmation={setQuitWaitsConfirmation}
+                    />}
+                {footerHelperText}
+                <ActionList>
+                    <Button
+                      id="installation-back-btn"
+                      variant="secondary"
+                      isDisabled={isFirstScreen || isFormDisabled}
+                      onClick={() => onBack()}>
+                        {_("Back")}
+                    </Button>
+                    <Button
+                      id="installation-next-btn"
+                      variant={nextButtonVariant}
+                      isDisabled={
+                          !isFormValid ||
+                            isFormDisabled ||
+                            nextWaitsConfirmation
+                      }
+                      onClick={() => onNext(activeStep, goToNextStep)}>
+                        {nextButtonText}
+                    </Button>
+                    <Button
+                      id="installation-quit-btn"
+                      isDisabled={isFormDisabled}
+                      style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
+                      variant="link"
+                      onClick={() => {
+                          setQuitWaitsConfirmation(true);
+                      }}
+                    >
+                        {isBootIso ? _("Reboot") : _("Quit")}
+                    </Button>
+                </ActionList>
+            </Stack>
+        </WizardFooterWrapper>
     );
 };
 
