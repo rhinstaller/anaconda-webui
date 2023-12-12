@@ -139,6 +139,12 @@ class StorageEncryption():
         sel = f"#{self.encryption_id_prefix}-encrypt-devices"
         self.browser.set_checked(sel, selected)
 
+    @log_step(docstring=True)
+    def check_post_install_encryption_enabled(self):
+        """ Post-install check, encryption is enabled """
+        print(self.machine.execute('lsblk'))
+        assert 'is active and is in use' in self.machine.execute('cryptsetup status /dev/mapper/luks*')
+
 
 class StorageUtils(StorageDestination):
     def __init__(self, browser, machine):

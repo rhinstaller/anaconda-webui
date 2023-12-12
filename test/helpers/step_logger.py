@@ -35,14 +35,14 @@ def log_step(snapshots=False, snapshot_before=False, snapshot_after=False, docst
             if docstring:
                 print(f'[DOC] {function.__doc__}')
 
-            end2end = bool(int(os.environ.get('END2END', '0')))
+            ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
-            if end2end and (snapshots or snapshot_before):
+            if ext_logging and (snapshots or snapshot_before):
                 BrowserSnapshot.new(args[0].browser)
 
             result = function(*args, **kwargs)
 
-            if end2end and (snapshots or snapshot_after):
+            if ext_logging and (snapshots or snapshot_after):
                 BrowserSnapshot.new(args[0].browser)
 
             return result
