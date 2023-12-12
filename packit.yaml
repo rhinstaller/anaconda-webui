@@ -19,7 +19,7 @@ jobs:
   - job: copr_build
     trigger: pull_request
     targets:
-    - fedora-development
+    - fedora-rawhide
 
   # for cross-project testing
   - job: copr_build
@@ -31,12 +31,12 @@ jobs:
   - job: propose_downstream
     trigger: release
     dist_git_branches:
-      - fedora-development
+      - fedora-rawhide
 
   - job: koji_build
     trigger: commit
     dist_git_branches:
-      - fedora-development
+      - fedora-rawhide
 
 #  - job: bodhi_update
 #    trigger: commit
