@@ -323,10 +323,10 @@ const Footer = ({
 }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
-    const { activeStep, goToNextStep: onNext, goToPrevStep: onBack } = useWizardContext();
+    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
-    const goToNextStep = (activeStep, onNext) => {
+    const onNext = (activeStep, goToNextStep) => {
         // first reset validation state to default
         setIsFormValid(true);
 
@@ -340,7 +340,7 @@ const Footer = ({
                     setStepNotification({ step: activeStep.id, ...ex });
                 },
                 onSuccess: () => {
-                    onNext();
+                    goToNextStep();
 
                     // Reset the state after the onNext call. Otherwise,
                     // React will try to render the current step again.
@@ -363,7 +363,7 @@ const Footer = ({
                     setStepNotification({ step: activeStep.id, ...ex });
                 },
                 onSuccess: () => {
-                    onNext();
+                    goToNextStep();
 
                     // Reset the state after the onNext call. Otherwise,
                     // React will try to render the current step again.
@@ -376,17 +376,17 @@ const Footer = ({
                     .then(cryptedPassword => {
                         const users = accountsToDbusUsers({ ...accounts, password: cryptedPassword });
                         setUsers(users);
-                        onNext();
+                        goToNextStep();
                     }, onCritFail({ context: N_("Password ecryption failed.") }));
         } else {
-            onNext();
+            goToNextStep();
         }
     };
 
-    const goToPreviousStep = () => {
+    const onBack = () => {
         // first reset validation state to default
         setIsFormValid(true);
-        onBack();
+        goToPrevStep();
     };
 
     const currentStep = stepsOrder.find(s => s.id === activeStep.id);
@@ -417,7 +417,7 @@ const Footer = ({
                       id="installation-back-btn"
                       variant="secondary"
                       isDisabled={isFirstScreen || isFormDisabled}
-                      onClick={() => goToPreviousStep()}>
+                      onClick={() => onBack()}>
                         {_("Back")}
                     </Button>
                     <Button
@@ -428,7 +428,7 @@ const Footer = ({
                             isFormDisabled ||
                             nextWaitsConfirmation
                       }
-                      onClick={() => goToNextStep(activeStep, onNext)}>
+                      onClick={() => onNext(activeStep, goToNextStep)}>
                         {nextButtonText}
                     </Button>
                     <Button
