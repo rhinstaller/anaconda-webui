@@ -57,11 +57,16 @@ const context = await esbuild.context({
     sourcemap: "linked",
     bundle: true,
     entryPoints: ["./src/index.js"],
-    external: ['*.woff', '*.woff2', '*.jpg', '*.svg', '../../assets*'], // Allow external font files which live in ../../static/fonts
+    external: [
+        '*.woff', '*.woff2', '*.jpg',
+        '@patternfly/react-core/src/components/assets/*.svg',
+        '@patternfly/react-core/src/demos/assets/*svg'
+    ], // Allow external font files which live in ../../static/fonts
     legalComments: 'external', // Move all legal comments to a .LEGAL.txt file
     loader: {
         ".js": "jsx",
         ".py": "text",
+        ".svg": "dataurl",
     },
     minify: production,
     nodePaths,
@@ -79,6 +84,7 @@ const context = await esbuild.context({
         // in the code. This is a problem for index.html and manifest.json which are not imported
         copy({
             assets: [
+                { from: ['./images/qr-code-feedback.svg'], to: ['./qr-code-feedback.svg'] },
                 { from: ['./src/manifest.json'], to: ['./manifest.json'] },
                 { from: ['./src/index.html'], to: ['./index.html'] },
             ]

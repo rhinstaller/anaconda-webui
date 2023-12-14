@@ -22,7 +22,6 @@ import {
     FlexItem,
     ProgressStep,
     ProgressStepper,
-    Stack,
     Text,
 } from "@patternfly/react-core";
 import {
@@ -33,6 +32,7 @@ import {
 } from "@patternfly/react-icons";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
+import { Feedback } from "./Feedback.jsx";
 import { SystemTypeContext, OsReleaseContext } from "../Common.jsx";
 
 import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
@@ -152,7 +152,7 @@ export const InstallationProgress = ({ onCritFail }) => {
     }
 
     return (
-        <Stack hasGutter className={idPrefix + "-status-" + status}>
+        <Flex direction={{ default: "column" }} className={idPrefix + "-status " + idPrefix + "-status-" + status}>
             <EmptyStatePanel
               icon={icon}
               loading={!icon}
@@ -224,6 +224,7 @@ export const InstallationProgress = ({ onCritFail }) => {
               title={title}
               headingLevel="h2"
             />
-        </Stack>
+            {(status === "success" || status === "danger") && <Feedback />}
+        </Flex>
     );
 };
