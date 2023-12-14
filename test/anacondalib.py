@@ -47,19 +47,20 @@ class VirtInstallMachineCase(MachineCase):
         cls.ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
     def setUp(self):
-        super().setUp()
-
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
-        else:
-            # Assume destructive tests may reboot the machine and ignore errors related to that
-            self.allow_browser_errors(".*client closed.*")
-            self.allow_browser_errors(".*Server has closed the connection.*")
+
+        super().setUp()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
         self.installation_finished = False
+
+        if not self.is_nondestructive():
+            # Assume destructive tests may reboot the machine and ignore errors related to that
+            self.allow_browser_errors(".*client closed.*")
+            self.allow_browser_errors(".*Server has closed the connection.*")
 
     def resetLanguage(self):
         m = self.machine
