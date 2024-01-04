@@ -99,8 +99,12 @@ class StorageDestination():
 
     @log_step(snapshots=True)
     def rescan_disks(self):
-        self.browser.click(f"#{self._step}-rescan-disks")
-        self.browser.wait_not_present(f"#{self._step}-rescan-disks.pf-m-disabled")
+        b = self.browser
+        b.click(f"#{self._step}-rescan-disks")
+        b.wait_visible(f"#{self._step}-rescan-disks.pf-m-disabled")
+        # Default 15 seconds is not always enough for re-scanning disks
+        with b.wait_timeout(30):
+            b.wait_not_present(f"#{self._step}-rescan-disks.pf-m-disabled")
 
     def modify_storage(self):
         self.browser.click(f"#{self._step}-modify-storage")
