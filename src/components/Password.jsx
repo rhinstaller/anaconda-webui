@@ -147,9 +147,7 @@ export const PasswordFormFields = ({
         return getRuleResults(rules, policy, checkPassword);
     }, [policy, checkPassword, rules]);
 
-    const ruleConfirmMatches = useMemo(() => {
-        return checkPassword.length > 0 ? checkPassword === checkConfirmPassword : null;
-    }, [checkPassword, checkConfirmPassword]);
+    const ruleConfirmMatches = checkPassword.length > 0 ? checkPassword === checkConfirmPassword : null;
 
     const ruleHelperItems = ruleResults.map(rule => {
         let variant = rule.isSatisfied === null ? "indeterminate" : rule.isSatisfied ? "success" : "error";
