@@ -20,16 +20,23 @@ import React, { useState, useEffect } from "react";
 import * as python from "python.js";
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { debounce } from "throttle-debounce";
+import {
+    setUsers,
+    setIsRootAccountLocked,
+    setCryptedRootPassword,
+    clearRootPassword,
+} from "../../apis/users.js";
 
 import {
+    Checkbox,
     Form,
     FormGroup,
     FormHelperText,
+    FormSection,
     HelperText,
     HelperTextItem,
     InputGroup,
     TextInput,
-    Title,
 } from "@patternfly/react-core";
 
 import "./Accounts.scss";
@@ -43,18 +50,38 @@ export function getAccountsState (
     userName = "",
     password = "",
     confirmPassword = "",
+    rootPassword = "",
+    rootConfirmPassword = "",
+    isRootEnabled = false,
 ) {
     return {
         fullName,
         userName,
         password,
         confirmPassword,
+        rootPassword,
+        rootConfirmPassword,
+        isRootEnabled,
     };
 }
 
 export const cryptUserPassword = async (password) => {
     const crypted = await python.spawn(encryptUserPw, password, { err: "message", environ: ["LC_ALL=C.UTF-8"] });
     return crypted;
+};
+
+export const applyAccounts = async (accounts, errorHandler) => {
+    const cryptedUserPw = await cryptUserPassword(accounts.password);
+    const users = accountsToDbusUsers({ ...accounts, password: cryptedUserPw });
+    await setUsers(users);
+
+    await setIsRootAccountLocked(!accounts.isRootEnabled);
+    if (accounts.isRootEnabled) {
+        const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
+        await setCryptedRootPassword({ password: cryptedRootPw });
+    } else {
+        await clearRootPassword();
+    }
 };
 
 export const accountsToDbusUsers = (accounts) => {
@@ -179,16 +206,9 @@ const CreateAccount = ({
     const fullNameValidated = getValidatedVariant(isFullNameValid);
 
     return (
-        <Form
-          isHorizontal
-          id={idPrefix}
+        <FormSection
+          title={_("Create account")}
         >
-            <Title
-              headingLevel="h2"
-              id={idPrefix + "-title"}
-            >
-                {_("Create account")}
-            </Title>
             {_("This account will have administration priviledge with sudo.")}
             <FormGroup
               label={_("Full name")}
@@ -231,7 +251,61 @@ const CreateAccount = ({
                 </FormHelperText>}
             </FormGroup>
             {passphraseForm}
-        </Form>
+        </FormSection>
+    );
+};
+
+const RootAccount = ({
+    idPrefix,
+    passwordPolicy,
+    setIsRootValid,
+    accounts,
+    setAccounts,
+}) => {
+    const [password, setPassword] = useState(accounts.rootPassword);
+    const [confirmPassword, setConfirmPassword] = useState(accounts.rootConfirmPassword);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const isRootAccountEnabled = accounts.isRootEnabled;
+
+    useEffect(() => {
+        setIsRootValid(isPasswordValid || !isRootAccountEnabled);
+    }, [setIsRootValid, isPasswordValid, isRootAccountEnabled]);
+
+    const rootAccountCheckbox = content => (
+        <Checkbox
+          id={idPrefix + "-enable-root-account"}
+          label={_("Enable root account")}
+          isChecked={isRootAccountEnabled}
+          onChange={(_event, enable) => setAccounts(ac => ({ ...ac, isRootEnabled: enable }))}
+          body={content}
+        />
+    );
+
+    const passphraseForm = (
+        <PasswordFormFields
+          idPrefix={idPrefix}
+          policy={passwordPolicy}
+          password={password}
+          setPassword={setPassword}
+          passwordLabel={_("Passphrase")}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+          confirmPasswordLabel={_("Confirm passphrase")}
+          rules={[ruleLength]}
+          setIsValid={setIsPasswordValid}
+        />
+    );
+
+    useEffect(() => {
+        setAccounts(ac => ({ ...ac, rootPassword: password, rootConfirmPassword: confirmPassword }));
+    }, [setAccounts, password, confirmPassword]);
+
+    return (
+        <FormSection
+          title={_("System")}
+        >
+            {rootAccountCheckbox(isRootAccountEnabled ? passphraseForm : null)}
+        </FormSection>
     );
 };
 
@@ -243,12 +317,16 @@ export const Accounts = ({
     setAccounts,
 }) => {
     const [isUserValid, setIsUserValid] = useState();
+    const [isRootValid, setIsRootValid] = useState();
     useEffect(() => {
-        setIsFormValid(isUserValid);
-    }, [setIsFormValid, isUserValid]);
+        setIsFormValid(isUserValid && isRootValid);
+    }, [setIsFormValid, isUserValid, isRootValid]);
 
     return (
-        <>
+        <Form
+          isHorizontal
+          id={idPrefix}
+        >
             <CreateAccount
               idPrefix={idPrefix + "-create-account"}
               passwordPolicy={passwordPolicies.user}
@@ -256,7 +334,14 @@ export const Accounts = ({
               accounts={accounts}
               setAccounts={setAccounts}
             />
-        </>
+            <RootAccount
+              idPrefix={idPrefix + "-root-account"}
+              passwordPolicy={passwordPolicies.root}
+              setIsRootValid={setIsRootValid}
+              accounts={accounts}
+              setAccounts={setAccounts}
+            />
+        </Form>
     );
 };
 
