@@ -17,13 +17,13 @@
 
 import os
 import sys
-import time
 
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from installer import InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
+from testlib import wait
 
 
 class Progress():
@@ -34,15 +34,11 @@ class Progress():
 
     @log_step(snapshot_after=True)
     def wait_done(self, timeout=1200):
-        timeout += time.time()
-        while timeout > time.time():
-            if self.browser.is_present(self._reboot_selector):
-                break
-            if self.browser.is_present('.pf-v5-c-alert.pf-m-danger'):
-                raise AssertionError('Error during installation')
-            time.sleep(30)
-        else:
-            self.browser.wait_visible(self._reboot_selector)
+        delay = 30
+        wait(lambda: self.browser.is_present(self._reboot_selector), delay=delay, tries=timeout / delay)
+        self.browser.wait_visible(self._reboot_selector)
+        if self.browser.is_present('.pf-v5-c-alert.pf-m-danger'):
+            raise AssertionError('Error during installation')
 
     @log_step()
     def reboot(self):
