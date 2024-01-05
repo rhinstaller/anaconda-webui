@@ -49,6 +49,23 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         users = u.dbus_get_users()
         self.assertIn('"groups" as 1 "wheel"', users)
         self.assertIn('"is-crypted" b true', users)
+        assert u.dbus_get_root_locked()
+        assert not u.dbus_get_is_root_password_set()
+
+        # Check root password enablement
+
+        i.reach_on_sidebar(i.steps.ACCOUNTS)
+        u.enable_root_account(True)
+        u.set_valid_root_password()
+        i.reach(i.steps.REVIEW)
+        assert not u.dbus_get_root_locked()
+        assert u.dbus_get_is_root_password_set()
+
+        i.reach_on_sidebar(i.steps.ACCOUNTS)
+        u.enable_root_account(False)
+        i.reach(i.steps.REVIEW)
+        assert u.dbus_get_root_locked()
+        assert not u.dbus_get_is_root_password_set()
 
     @staticmethod
     def _test_user_name(user, installer, valid, invalid):
@@ -116,6 +133,16 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         u.set_full_name("colon:isforbidden")
         i.check_next_disabled()
         u.set_full_name(full_name)
+        i.check_next_disabled(disabled=False)
+
+        # Test root password validation
+        u.enable_root_account(True)
+        i.check_next_disabled()
+        u.set_valid_root_password()
+        i.check_next_disabled(disabled=False)
+        u.set_valid_root_password(valid=False)
+        i.check_next_disabled()
+        u.enable_root_account(False)
         i.check_next_disabled(disabled=False)
 
         # Test user name validation

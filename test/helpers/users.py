@@ -30,6 +30,7 @@ USERS_INTERFACE = USERS_SERVICE
 USERS_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users"
 
 CREATE_ACCOUNT_ID_PREFIX = "accounts-create-account"
+ROOT_ACCOUNT_ID_PREFIX = "accounts-root-account"
 
 
 class UsersDBus():
@@ -53,6 +54,23 @@ class UsersDBus():
             {USERS_OBJECT_PATH} \
             {USERS_INTERFACE} Users aa{{sv}} 0')
 
+    def dbus_get_root_locked(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property  \
+            {USERS_SERVICE} \
+            {USERS_OBJECT_PATH} \
+            {USERS_INTERFACE} IsRootAccountLocked')
+
+        return ret.split()[1].strip() == "true"
+
+    def dbus_get_is_root_password_set(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property  \
+            {USERS_SERVICE} \
+            {USERS_OBJECT_PATH} \
+            {USERS_INTERFACE} IsRootPasswordSet')
+
+        return ret.split()[1].strip() == "true"
 
 class Users(UsersDBus):
     def __init__(self, browser, machine):
@@ -80,6 +98,16 @@ class Users(UsersDBus):
         sel = "#accounts-create-account-full-name"
         self.browser.wait_val(sel, full_name)
 
+    @log_step(snapshot_before=True)
+    def enable_root_account(self, enable):
+        sel = "#accounts-root-account-enable-root-account"
+        self.browser.set_checked(sel, enable)
+
+    def set_valid_root_password(self, valid=True):
+        p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
+        password = "password"
+        p.set_password(password)
+        p.set_password_confirm(password + "" if valid else "X")
 
 def create_user(browser, machine):
     p = Password(browser, CREATE_ACCOUNT_ID_PREFIX)
