@@ -38,14 +38,18 @@ def vm_install(image, verbose, quick):
         machine.wait_boot()
 
         scenario = os.environ.get("TEST_SCENARIO")
+        # Make sure builder can build packages if required, /var/tmp/build needs to be owned by builder
+        machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
+
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
+        packages_to_download = None
         if scenario and scenario.startswith("cockpit-pr-"):
             cockpit_pr = scenario.split("-")[-1]
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
-          packages_to_download = missing_packages + " cockpit-storaged"
+            packages_to_download = missing_packages + " cockpit-storaged"
 
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
@@ -54,7 +58,6 @@ def vm_install(image, verbose, quick):
             subprocess.run(["rm", "anaconda-webui-*.rpm anaconda-webui-*.tar.xz"])
             subprocess.run(["make", "srpm"])
             srpm = glob.glob("anaconda-webui*.src.rpm")[0]
-            machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
             vm_srpm = os.path.join("/var/tmp/build/SRPMS", os.path.basename(srpm))
             machine.upload([os.path.realpath(srpm)], vm_srpm)
 
@@ -81,7 +84,8 @@ def vm_install(image, verbose, quick):
         # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
         # This will change once we include this changes upstream and start building boot.iso with the new dependencies
         # Then we can enable this only for the various scenarios above
-        machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
+        if packages_to_download is not None:
+            machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
         machine.execute(f"dnf download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
 
         # download rpms
