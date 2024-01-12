@@ -38,6 +38,9 @@ def vm_install(image, verbose, quick):
         machine.wait_boot()
 
         scenario = os.environ.get("TEST_SCENARIO")
+        # Make sure builder can build packages if required, /var/tmp/build needs to be owned by builder
+        machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
+
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
         packages_to_download = None
@@ -55,7 +58,6 @@ def vm_install(image, verbose, quick):
             subprocess.run(["rm", "anaconda-webui-*.rpm anaconda-webui-*.tar.xz"])
             subprocess.run(["make", "srpm"])
             srpm = glob.glob("anaconda-webui*.src.rpm")[0]
-            machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
             vm_srpm = os.path.join("/var/tmp/build/SRPMS", os.path.basename(srpm))
             machine.upload([os.path.realpath(srpm)], vm_srpm)
 
