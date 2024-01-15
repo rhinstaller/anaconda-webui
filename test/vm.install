@@ -43,13 +43,13 @@ def vm_install(image, verbose, quick):
 
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
-        packages_to_download = None
+        packages_to_download = missing_packages
         if scenario and scenario.startswith("cockpit-pr-"):
             cockpit_pr = scenario.split("-")[-1]
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
-            packages_to_download = missing_packages + " cockpit-storaged"
+            packages_to_download += " cockpit-storaged"
 
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
