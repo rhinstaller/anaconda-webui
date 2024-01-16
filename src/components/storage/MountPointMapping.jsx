@@ -635,6 +635,14 @@ export const MountPointMapping = ({
     const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioningData.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
+    console.info(JSON.stringify({
+        isLoadingNewPartitioning,
+        reusePartitioning,
+        usedPartitioning,
+        partitioningData,
+        requiredMountPoints,
+    }));
+
     return (
         <>
             {showLuksUnlock &&
