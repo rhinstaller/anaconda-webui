@@ -60,7 +60,10 @@ export const getDevicesAction = () => {
 
             return dispatch({
                 type: "GET_DEVICES_DATA",
-                payload: { devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}) }
+                payload: {
+                    deviceNames: devices,
+                    devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+                }
             });
         } catch (error) {
             return dispatch(setCriticalErrorAction(error));

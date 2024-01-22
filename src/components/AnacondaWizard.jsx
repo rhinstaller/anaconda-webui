@@ -43,9 +43,6 @@ import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
 import {
-    getMountPointConstraints,
-} from "../apis/storage_devicetree.js";
-import {
     applyStorage,
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
@@ -57,7 +54,6 @@ const N_ = cockpit.noop;
 export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, title, conf }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [mountPointConstraints, setMountPointConstraints] = useState();
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
@@ -71,14 +67,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const availableDevices = useMemo(() => {
         return Object.keys(storageData.devices);
     }, [storageData.devices]);
-
-    useEffect(() => {
-        const updateMountPointConstraints = async () => {
-            const mountPointConstraints = await getMountPointConstraints().catch(console.error);
-            setMountPointConstraints(mountPointConstraints);
-        };
-        updateMountPointConstraints();
-    }, []);
 
     useEffect(() => {
         if (!currentStepId) {
@@ -115,6 +103,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
             component: InstallationMethod,
             data: {
                 deviceData: storageData.devices,
+                deviceNames: storageData.deviceNames,
                 diskSelection: storageData.diskSelection,
                 dispatch,
                 storageScenarioId,
@@ -135,7 +124,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                     diskSelection: storageData.diskSelection,
                     dispatch,
                     partitioningData: storageData.partitioning,
-                    mountPointConstraints,
                     reusePartitioning,
                     setReusePartitioning,
                 },

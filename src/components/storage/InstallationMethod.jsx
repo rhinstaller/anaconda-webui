@@ -30,6 +30,7 @@ const _ = cockpit.gettext;
 
 export const InstallationMethod = ({
     deviceData,
+    deviceNames,
     diskSelection,
     dispatch,
     idPrefix,
@@ -58,6 +59,7 @@ export const InstallationMethod = ({
             />
             <InstallationScenario
               deviceData={deviceData}
+              deviceNames={deviceNames}
               diskSelection={diskSelection}
               dispatch={dispatch}
               idPrefix={idPrefix}
