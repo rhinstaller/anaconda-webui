@@ -151,7 +151,17 @@ export const getDefaultScenario = () => {
     return scenarios.filter(s => s.default)[0];
 };
 
-const InstallationScenarioSelector = ({ deviceData, deviceNames, selectedDisks, idPrefix, isFormDisabled, onCritFail, storageScenarioId, setStorageScenarioId, setIsFormValid }) => {
+const InstallationScenarioSelector = ({
+    deviceData,
+    deviceNames,
+    idPrefix,
+    isFormDisabled,
+    onCritFail,
+    selectedDisks,
+    setIsFormValid,
+    setStorageScenarioId,
+    storageScenarioId,
+}) => {
     const [selectedScenario, setSelectedScenario] = useState();
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
