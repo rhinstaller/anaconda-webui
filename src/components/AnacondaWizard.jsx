@@ -273,14 +273,18 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         );
     }
 
-    const firstVisibleStepIndex = steps.findIndex(step => !step.props.isHidden) + 1;
+    const startIndex = steps.findIndex(step => {
+        // Find the first step that is not hidden if the Wizard is opening for the first time.
+        // Otherwise, find the first step that was last visited.
+        return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
+    }) + 1;
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
             <Wizard
               id="installation-wizard"
               isVisitRequired
-              startIndex={firstVisibleStepIndex}
+              startIndex={startIndex}
               footer={<Footer
                 onCritFail={onCritFail}
                 isFormValid={isFormValid}
