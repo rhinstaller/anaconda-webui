@@ -113,6 +113,10 @@ class StorageDestination():
     def return_to_installation(self):
         self.browser.click("#cockpit-storage-integration-return-to-installation-button")
 
+    def return_to_installation_confirm(self):
+        with self.browser.wait_timeout(30):
+            self.browser.click("#cockpit-storage-integration-check-storage-dialog-continue")
+
     def modify_storage(self):
         self.browser.click(f"#{self._step}-modify-storage")
 

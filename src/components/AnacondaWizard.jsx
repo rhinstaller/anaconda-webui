@@ -65,6 +65,13 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const selectedDisks = storageData.diskSelection.selectedDisks;
+    const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
+
+    useEffect(() => {
+        if (storageScenarioId && storageData.partitioning.path) {
+            setScenarioPartitioningMapping({ [storageScenarioId]: storageData.partitioning.path });
+        }
+    }, [storageData.partitioning.path, storageScenarioId]);
 
     const availableDevices = useMemo(() => {
         return Object.keys(storageData.devices);
@@ -108,6 +115,8 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 deviceNames: storageData.deviceNames,
                 diskSelection: storageData.diskSelection,
                 dispatch,
+                partitioning: storageData.partitioning.path,
+                scenarioPartitioningMapping,
                 storageScenarioId,
                 setStorageScenarioId: (scenarioId) => {
                     window.sessionStorage.setItem("storage-scenario-id", scenarioId);
@@ -275,6 +284,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
               deviceData={storageData.devices}
               dispatch={dispatch}
               onCritFail={onCritFail}
+              scenarioPartitioningMapping={scenarioPartitioningMapping}
               selectedDisks={selectedDisks}
               setShowStorage={setShowStorage}
               setStorageScenarioId={setStorageScenarioId}

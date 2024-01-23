@@ -16,17 +16,21 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import {
+    ActionList,
     Alert,
     Button,
     Card,
     CardBody,
     Flex,
     FlexItem,
+    HelperText,
+    HelperTextItem,
     List,
     ListItem,
+    Modal,
     PageSection,
     PageSectionVariants,
     Text,
@@ -35,61 +39,65 @@ import {
 } from "@patternfly/react-core";
 import { ArrowLeftIcon } from "@patternfly/react-icons";
 
-import { useRequiredSize, useMountPointConstraints } from "./Common.jsx";
+import { EmptyStatePanel } from "cockpit-components-empty-state";
+import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
+import { useDiskTotalSpace, useDiskFreeSpace, useRequiredSize, useMountPointConstraints } from "./Common.jsx";
 
 import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 
+import {
+    setBootloaderDrive,
+} from "../../apis/storage_bootloader.js";
+import {
+    setInitializationMode,
+} from "../../apis/storage_disk_initialization.js";
+import {
+    applyStorage,
+    createPartitioning,
+    gatherRequests,
+    resetPartitioning,
+    setManualPartitioningRequests
+} from "../../apis/storage_partitioning.js";
+
 import { getDevicesAction } from "../../actions/storage-actions.js";
+import { getDeviceNameByPath } from "../../helpers/storage.js";
 
 import "./CockpitStorageIntegration.scss";
 
 const _ = cockpit.gettext;
 const idPrefix = "cockpit-storage-integration";
 
-const ReturnToInstallationButton = ({ dispatch, setShowStorage, onCritFail }) => {
-    const [isInProgress, setIsInProgress] = useState(false);
-
-    const rescanStorage = () => {
-        setIsInProgress(true);
-
-        return scanDevicesWithTask()
-                .then(task => {
-                    return runStorageTask({
-                        task,
-                        onSuccess: () => dispatch(getDevicesAction())
-                                .then(() => {
-                                    setIsInProgress(false);
-                                    setShowStorage(false);
-                                }),
-                        onFail: exc => {
-                            setIsInProgress(false);
-                            onCritFail()(exc);
-                        }
-                    });
-                });
-    };
-
-    return (
-        <Button
-          icon={<ArrowLeftIcon />}
-          id={idPrefix + "-return-to-installation-button"}
-          isLoading={isInProgress}
-          isDisabled={isInProgress}
-          variant="secondary"
-          onClick={rescanStorage}>
-            {_("Return to installation")}
-        </Button>
-    );
-};
+const ReturnToInstallationButton = ({ isDisabled, onAction }) => (
+    <Button
+      icon={<ArrowLeftIcon />}
+      id={idPrefix + "-return-to-installation-button"}
+      isDisabled={isDisabled}
+      variant="secondary"
+      onClick={onAction}>
+        {_("Return to installation")}
+    </Button>
+);
 
 export const CockpitStorageIntegration = ({
+    scenarioAvailability,
+    scenarioPartitioningMapping,
+    selectedDisks,
+    setStorageScenarioId,
+    deviceData,
     dispatch,
     onCritFail,
     setShowStorage,
 }) => {
+    const [showDialog, setShowDialog] = useState(false);
+    const [needsResetPartitioning, setNeedsResetPartitioning] = useState(true);
+
+    useEffect(() => {
+        resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
+    }, [onCritFail]);
+
     return (
         <>
             <PageSection
@@ -121,12 +129,271 @@ export const CockpitStorageIntegration = ({
               variant={PageSectionVariants.light}
             >
                 <ReturnToInstallationButton
-                  dispatch={dispatch}
-                  onCritFail={onCritFail}
-                  setShowStorage={setShowStorage}
-                />
+                  isDisabled={needsResetPartitioning}
+                  onAction={() => setShowDialog(true)} />
             </PageSection>
+            {showDialog &&
+            <CheckStorageDialog
+              deviceData={deviceData}
+              dispatch={dispatch}
+              onCritFail={onCritFail}
+              scenarioAvailability={scenarioAvailability}
+              scenarioPartitioningMapping={scenarioPartitioningMapping}
+              selectedDisks={selectedDisks}
+              setShowDialog={setShowDialog}
+              setShowStorage={setShowStorage}
+              setStorageScenarioId={setStorageScenarioId}
+            />}
         </>
+    );
+};
+
+export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
+    try {
+        await setBootloaderDrive({ drive: "" });
+
+        const partitioning = await createPartitioning({ method: "MANUAL" });
+        const requests = await gatherRequests({ partitioning });
+
+        const addRequest = (devicePath, object, isSubVolume = false) => {
+            const { dir, type, subvolumes, content } = object;
+            let deviceSpec;
+            if (!isSubVolume) {
+                deviceSpec = getDeviceNameByPath(deviceData, devicePath);
+            } else if (deviceData[devicePath]) {
+                deviceSpec = devicePath;
+            } else {
+                return;
+            }
+
+            if (deviceSpec && (dir || type === "swap")) {
+                const existingRequestIndex = (
+                    requests.findIndex(request => request["device-spec"].v === deviceSpec)
+                );
+
+                if (existingRequestIndex !== -1) {
+                    requests[existingRequestIndex] = {
+                        "mount-point": cockpit.variant("s", dir || type),
+                        "device-spec": cockpit.variant("s", deviceSpec),
+                    };
+                } else {
+                    requests.push({
+                        "mount-point": cockpit.variant("s", dir || type),
+                        "device-spec": cockpit.variant("s", deviceSpec),
+                    });
+                }
+            } else if (subvolumes) {
+                Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true));
+            } else if (type === "crypto") {
+                const clearTextDevice = deviceData[deviceSpec].children.v[0];
+                const clearTextDevicePath = deviceData[clearTextDevice].path.v;
+
+                addRequest(clearTextDevicePath, content);
+            }
+        };
+
+        Object.keys(newMountPoints).forEach(usedDevice => {
+            addRequest(usedDevice, newMountPoints[usedDevice]);
+        });
+
+        await setManualPartitioningRequests({ partitioning, requests });
+        return partitioning;
+    } catch (error) {
+        console.error("Failed to prepare partitioning", error);
+    }
+};
+
+const CheckStorageDialog = ({
+    deviceData,
+    dispatch,
+    onCritFail,
+    scenarioPartitioningMapping,
+    selectedDisks,
+    setShowDialog,
+    setShowStorage,
+    setStorageScenarioId,
+}) => {
+    const [error, setError] = useState();
+    const [checkStep, setCheckStep] = useState("rescan");
+    const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
+    const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
+    const mountPointConstraints = useMountPointConstraints();
+    const requiredSize = useRequiredSize();
+
+    const newMountPoints = useMemo(() => JSON.parse(window.localStorage.getItem("cockpit_mount_points") || "{}"), []);
+
+    const useConfiguredStorage = useMemo(() => {
+        const availability = checkConfiguredStorage({
+            mountPointConstraints,
+            scenarioPartitioningMapping,
+            newMountPoints,
+        });
+
+        return availability.available;
+    }, [mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
+
+    const useFreeSpace = useMemo(() => {
+        const availability = checkUseFreeSpace({ diskFreeSpace, diskTotalSpace, requiredSize });
+
+        return availability.available && !availability.hidden;
+    }, [diskFreeSpace, diskTotalSpace, requiredSize]);
+
+    const loading = !error && checkStep !== undefined;
+    const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace));
+
+    useEffect(() => {
+        if (!useConfiguredStorage && checkStep === "prepare-partitioning") {
+            setCheckStep();
+        }
+    }, [useConfiguredStorage, checkStep]);
+
+    useEffect(() => {
+        // If the required devices needed for manual partitioning are set up,
+        // and prepare the partitioning
+        if (checkStep !== "prepare-partitioning") {
+            return;
+        }
+
+        const applyNewPartitioning = async () => {
+            // CLEAR_PARTITIONS_NONE = 0
+            try {
+                await setInitializationMode({ mode: 0 });
+                const partitioning = await preparePartitioning({ deviceData, newMountPoints });
+
+                applyStorage({
+                    partitioning,
+                    onFail: exc => {
+                        setCheckStep();
+                        setError(exc);
+                    },
+                    onSuccess: () => setCheckStep(),
+                });
+            } catch (exc) {
+                setCheckStep();
+                setError(exc);
+            }
+        };
+
+        applyNewPartitioning();
+    }, [deviceData, checkStep, newMountPoints, useConfiguredStorage]);
+
+    useEffect(() => {
+        if (checkStep !== "rescan" || useConfiguredStorage === undefined) {
+            return;
+        }
+
+        // When the dialog is shown rescan to get latest configured storage
+        // and check if we need to prepare manual partitioning
+        scanDevicesWithTask()
+                .then(task => {
+                    return runStorageTask({
+                        task,
+                        onSuccess: () => dispatch(getDevicesAction())
+                                .then(() => {
+                                    if (useConfiguredStorage) {
+                                        setCheckStep("prepare-partitioning");
+                                    } else {
+                                        setCheckStep();
+                                    }
+                                })
+                                .catch(exc => {
+                                    setCheckStep();
+                                    setError(exc);
+                                }),
+                        onFail: exc => {
+                            setCheckStep();
+                            setError(exc);
+                        }
+                    });
+                });
+    }, [useConfiguredStorage, checkStep, dispatch, setError]);
+
+    const goBackToInstallation = () => {
+        const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
+
+        setStorageScenarioId(mode);
+        setShowStorage(false);
+    };
+
+    const loadingDescription = (
+        <EmptyStatePanel
+          loading
+          title={_("Checking storage configuration")}
+          paragraph={_("This will take a few moments")} />
+    );
+
+    const modalProps = {};
+    if (!loading) {
+        if (storageRequirementsNotMet) {
+            modalProps.title = _("Storage requirements not met");
+        } else {
+            modalProps.title = _("Continue with installation");
+        }
+    } else {
+        modalProps["aria-label"] = _("Checking storage configuration");
+    }
+
+    return (
+        <Modal
+          className={idPrefix + "-check-storage-dialog" + (loading ? "--loading" : "")}
+          id={idPrefix + "-check-storage-dialog"}
+          onClose={() => setShowDialog(false)}
+          titleIconVariant={!loading && storageRequirementsNotMet && "warning"}
+          position="top" variant="small" isOpen
+          {...modalProps}
+          footer={
+              !loading &&
+              <>
+                  <ActionList>
+                      {!storageRequirementsNotMet &&
+                          <>
+                              <Button
+                                id={idPrefix + "-check-storage-dialog-continue"}
+                                variant="primary"
+                                onClick={goBackToInstallation}>
+                                  {_("Continue")}
+                              </Button>
+                              <Button
+                                id={idPrefix + "-check-storage-dialog-return"}
+                                variant="link"
+                                onClick={() => setShowDialog(false)}>
+                                  {_("Return to storage editor")}
+                              </Button>
+                          </>}
+                      {storageRequirementsNotMet &&
+                          <>
+                              <Button
+                                variant="warning"
+                                id={idPrefix + "-check-storage-dialog-return"}
+                                onClick={() => setShowDialog(false)}>
+                                  {_("Configure storage again")}
+                              </Button>
+                              <Button
+                                id={idPrefix + "-check-storage-dialog-continue"}
+                                variant="secondary"
+                                onClick={() => setShowStorage(false)}>
+                                  {_("Proceed with installation")}
+                              </Button>
+                          </>}
+                  </ActionList>
+              </>
+          }
+        >
+            <>
+                {loading && loadingDescription}
+                {!loading &&
+                <>
+                    {storageRequirementsNotMet ? error?.message : null}
+                    <HelperText>
+                        {!storageRequirementsNotMet &&
+                        <HelperTextItem variant="success" hasIcon>
+                            {_("Current configuration can be used for installation.")}
+                        </HelperTextItem>}
+                    </HelperText>
+                </>}
+            </>
+        </Modal>
+
     );
 };
 

@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+.cockpit-storage-integration-page-section-storage-alert {
+    padding-bottom: 0;
+}
+
 .cockpit-storage-integration-iframe-cockpit-storage {
     height: 100%;
 }
@@ -31,4 +35,14 @@ ul.cockpit-storage-integration-requirements-hint-list {
 
 .cockpit-storage-integration-requirements-hint-detail {
     font-size: small;
+}
+
+// Hide the [x] button in the loading mode
+.cockpit-storage-integration-check-storage-dialog--loading .pf-v5-c-modal-box__close {
+    display: none;
+}
+
+// Make Spinner smaller - default EmptyStatePanel svg size is too big
+.cockpit-storage-integration-check-storage-dialog--loading svg.pf-v5-c-spinner {
+    --pf-v5-c-spinner--diameter: var(--pf-v5-c-spinner--m-lg--diameter);
 }

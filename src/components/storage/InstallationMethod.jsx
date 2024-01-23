@@ -37,6 +37,8 @@ export const InstallationMethod = ({
     isEfi,
     isFormDisabled,
     onCritFail,
+    partitioning,
+    scenarioPartitioningMapping,
     setIsFormDisabled,
     setIsFormValid,
     setShowStorage,
@@ -64,11 +66,13 @@ export const InstallationMethod = ({
             <InstallationScenario
               deviceData={deviceData}
               deviceNames={deviceNames}
-              diskSelection={diskSelection}
+              selectedDisks={diskSelection.selectedDisks}
               dispatch={dispatch}
               idPrefix={idPrefix}
-              onCritFail={onCritFail}
               isFormDisabled={isFormDisabled}
+              onCritFail={onCritFail}
+              scenarioPartitioningMapping={scenarioPartitioningMapping}
+              partitioning={partitioning}
               setIsFormValid={setIsFormValid}
               setStorageScenarioId={setStorageScenarioId}
               storageScenarioId={storageScenarioId}
