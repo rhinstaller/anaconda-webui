@@ -34,10 +34,12 @@ export const InstallationMethod = ({
     diskSelection,
     dispatch,
     idPrefix,
+    isEfi,
     isFormDisabled,
     onCritFail,
-    setIsFormValid,
     setIsFormDisabled,
+    setIsFormValid,
+    setShowStorage,
     setStorageScenarioId,
     storageScenarioId,
 }) => {
@@ -50,10 +52,12 @@ export const InstallationMethod = ({
             <InstallationDestination
               deviceData={deviceData}
               diskSelection={diskSelection}
+              isEfi={isEfi}
               dispatch={dispatch}
               idPrefix={idPrefix}
               isFormDisabled={isFormDisabled}
               setIsFormValid={setIsFormValid}
+              setShowStorage={setShowStorage}
               setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />

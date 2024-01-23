@@ -106,6 +106,15 @@ class StorageDestination():
         with b.wait_timeout(30):
             b.wait_not_present(f"#{self._step}-rescan-disks.pf-m-disabled")
 
+    def check_constraint(self, constraint, required=True):
+        if required:
+            self.browser.wait_visible(f"ul.cockpit-storage-integration-requirements-hint-list:first-of-type li:contains('{constraint}')")
+        else:
+            self.browser.wait_visible(f"ul.cockpit-storage-integration-requirements-hint-list:nth-of-type(2) li:contains('{constraint}')")
+
+    def return_to_installation(self):
+        self.browser.click("#cockpit-storage-integration-return-to-installation-button")
+
     def modify_storage(self):
         self.browser.click(f"#{self._step}-modify-storage")
 

@@ -26,7 +26,7 @@ import {
 import { read_os_release as readOsRelease } from "os-release.js";
 
 import { WithDialogs } from "dialogs.jsx";
-import { AddressContext, LanguageContext, SystemTypeContext, OsReleaseContext } from "./Common.jsx";
+import { AddressContext, LanguageContext, SystemTypeContext, TargetSystemRootContext, OsReleaseContext } from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import { CriticalError, errorHandlerWithContext, bugzillaPrefiledReportURL } from "./Error.jsx";
@@ -59,6 +59,7 @@ export const Application = () => {
     const [storeInitilized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
     const [jsError, setJsEroor] = useState();
+    const [showStorage, setShowStorage] = useState(false);
 
     const onCritFail = useCallback((contextData) => {
         return errorHandlerWithContext(contextData, exc => dispatch(setCriticalErrorAction(exc)));
@@ -155,6 +156,7 @@ export const Application = () => {
                       reportLinkURL={bzReportURL} />}
                     {!jsError &&
                     <>
+                        {!showStorage &&
                         <PageGroup stickyOnBreakpoint={{ default: "top" }}>
                             <AnacondaHeader
                               title={title}
@@ -162,20 +164,24 @@ export const Application = () => {
                               isConnected={state.network.connected}
                               onCritFail={onCritFail}
                             />
-                        </PageGroup>
+                        </PageGroup>}
                         <AddressContext.Provider value={address}>
-                            <WithDialogs>
-                                <AnacondaWizard
-                                  onCritFail={onCritFail}
-                                  title={title}
-                                  storageData={state.storage}
-                                  localizationData={state.localization}
-                                  runtimeData={state.runtime}
-                                  dispatch={dispatch}
-                                  conf={conf}
-                                  osRelease={osRelease}
-                                />
-                            </WithDialogs>
+                            <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
+                                <WithDialogs>
+                                    <AnacondaWizard
+                                      onCritFail={onCritFail}
+                                      title={title}
+                                      storageData={state.storage}
+                                      localizationData={state.localization}
+                                      runtimeData={state.runtime}
+                                      dispatch={dispatch}
+                                      conf={conf}
+                                      osRelease={osRelease}
+                                      setShowStorage={setShowStorage}
+                                      showStorage={showStorage}
+                                    />
+                                </WithDialogs>
+                            </TargetSystemRootContext.Provider>
                         </AddressContext.Provider>
                     </>}
                 </Page>
