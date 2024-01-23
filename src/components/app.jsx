@@ -19,6 +19,7 @@ import cockpit from "cockpit";
 import React, { useCallback, useEffect, useState } from "react";
 
 import {
+    Bullseye,
     Page, PageGroup,
 } from "@patternfly/react-core";
 
@@ -37,6 +38,7 @@ import { PayloadsClient } from "../apis/payloads";
 import { RuntimeClient, initDataRuntime, startEventMonitorRuntime } from "../apis/runtime";
 import { NetworkClient, initDataNetwork, startEventMonitorNetwork } from "../apis/network.js";
 import { UsersClient } from "../apis/users";
+import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 
@@ -48,6 +50,7 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const Application = () => {
+    const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
     const [conf, setConf] = useState();
     const [language, setLanguage] = useState();
@@ -62,6 +65,16 @@ export const Application = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        cockpit.file("/run/anaconda/backend_ready").watch(
+            res => setBackendReady(res !== null)
+        );
+    }, []);
+
+    useEffect(() => {
+        if (!backendReady) {
+            return;
+        }
+
         // Before unload ask the user for verification
         window.onbeforeunload = e => "";
 
@@ -106,12 +119,18 @@ export const Application = () => {
         );
 
         readOsRelease().then(osRelease => setOsRelease(osRelease));
-    }, [dispatch, onCritFail]);
+    }, [dispatch, onCritFail, backendReady]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!criticalError && (!address || !conf || !osRelease || !storeInitilized)) {
         debug("Loading initial data...");
-        return null;
+        return (
+            <Page>
+                <Bullseye>
+                    <EmptyStatePanel loading title={_("Initializing...")} />
+                </Bullseye>
+            </Page>
+        );
     }
 
     // On live media rebooting the system will actually shut it off
