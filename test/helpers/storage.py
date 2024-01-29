@@ -363,8 +363,8 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def check_mountpoint_row(self, row, mountpoint=None, device=None, reformat=None, format_type=None):
         if mountpoint:
-            required = ["/", "/boot", "/boot/efi", "swap"].count(mountpoint)
-            self.check_mountpoint_row_mountpoint(row, mountpoint, required)
+            constrained = ["/", "/boot", "/boot/efi", "swap"].count(mountpoint)
+            self.check_mountpoint_row_mountpoint(row, mountpoint, constrained)
         if device:
             self.check_mountpoint_row_device(row, device)
         if reformat:
@@ -402,8 +402,8 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def check_mountpoint_row_device(self, row,  device):
         self.browser.wait_text(f"{self.table_row(row)} .pf-v5-c-select__toggle-text", device)
 
-    def check_mountpoint_row_mountpoint(self, row,  mountpoint, isRequired=True):
-        if isRequired:
+    def check_mountpoint_row_mountpoint(self, row,  mountpoint, constrained=True):
+        if constrained:
             self.browser.wait_text(f"{self.table_row(row)}-mountpoint", mountpoint)
         else:
             self.browser.wait_val(f"{self.table_row(row)}-mountpoint", mountpoint)

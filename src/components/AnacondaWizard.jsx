@@ -43,7 +43,7 @@ import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
 import {
-    getRequiredMountPoints,
+    getMountPointConstraints,
 } from "../apis/storage_devicetree.js";
 import {
     applyStorage,
@@ -57,7 +57,7 @@ const N_ = cockpit.noop;
 export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, title, conf }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [requiredMountPoints, setRequiredMountPoints] = useState();
+    const [mountPointConstraints, setMountPointConstraints] = useState();
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
@@ -73,12 +73,11 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     }, [storageData.devices]);
 
     useEffect(() => {
-        const updateRequiredMountPoints = async () => {
-            const requiredMountPoints = await getRequiredMountPoints().catch(console.error);
-
-            setRequiredMountPoints(requiredMountPoints);
+        const updateMountPointConstraints = async () => {
+            const mountPointConstraints = await getMountPointConstraints().catch(console.error);
+            setMountPointConstraints(mountPointConstraints);
         };
-        updateRequiredMountPoints();
+        updateMountPointConstraints();
     }, []);
 
     useEffect(() => {
@@ -136,7 +135,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                     diskSelection: storageData.diskSelection,
                     dispatch,
                     partitioningData: storageData.partitioning,
-                    requiredMountPoints,
+                    mountPointConstraints,
                     reusePartitioning,
                     setReusePartitioning,
                 },
