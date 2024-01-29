@@ -67,9 +67,10 @@ const _ = cockpit.gettext;
  * @returns {Array} filtered requests
  */
 const getInitialRequests = (requests, mountPointConstraints) => {
-    const constrainedRequests = mountPointConstraints.map((mountPoint, idx) => {
-        const originalRequest = requests.find(request => request["mount-point"] === mountPoint["mount-point"].v);
-        const request = ({ "mount-point": mountPoint["mount-point"].v, reformat: mountPoint["mount-point"].v === "/" });
+    const constrainedRequests = mountPointConstraints.filter(constraint =>
+        !!constraint["mount-point"].v).map((constraint, idx) => {
+        const originalRequest = requests.find(request => request["mount-point"] === constraint["mount-point"].v);
+        const request = ({ "mount-point": constraint["mount-point"].v, reformat: constraint["mount-point"].v === "/" });
 
         if (originalRequest) {
             return { ...originalRequest, ...request };
