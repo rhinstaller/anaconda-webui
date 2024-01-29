@@ -90,6 +90,20 @@ export const useHasFilesystems = ({ selectedDisks, devices }) => {
     return hasFilesystems;
 };
 
+export const useBootloaderPartitions = ({ selectedDisks, devices }) => {
+    const [bootloaderPartitions, setBootloaderPartitions] = useState();
+
+    useEffect(() => {
+        const _bootloaderPartitions = Object.values(devices).filter(device =>
+            device.formatData?.type.v === "biosboot" &&
+            selectedDisks.includes(device.parents?.v[0]));
+
+        setBootloaderPartitions(_bootloaderPartitions);
+    }, [selectedDisks, devices]);
+
+    return bootloaderPartitions;
+};
+
 export const useRequiredSize = () => {
     const [requiredSize, setRequiredSize] = useState();
 
