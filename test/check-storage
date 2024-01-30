@@ -501,6 +501,12 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.check_mountpoint_row(1, "/", "Select a device", True)
         s.check_mountpoint_row(2, "/boot", f"{dev}2", False, "ext4")
 
+        # Test moving back and forth between screens.
+        i.back()
+        i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.check_mountpoint_row(2, "/boot", f"{dev}2", False, "ext4")
+
         s.add_mountpoint_row()
         s.select_mountpoint_row_device(3, f"{dev}4")
         s.check_mountpoint_row_format_type(3, "ext4")
