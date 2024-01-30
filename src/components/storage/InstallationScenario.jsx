@@ -26,26 +26,15 @@ import {
 
 import { SystemTypeContext } from "../Common.jsx";
 import { helpEraseAll, helpUseFreeSpace, helpMountPointMapping } from "./HelpAutopartOptions.jsx";
-import { findDuplicatesInArray } from "../../helpers/utils.js";
 
-import {
-    getDevices,
-    getRequiredDeviceSize,
-    getDiskTotalSpace,
-    getDiskFreeSpace,
-} from "../../apis/storage_devicetree.js";
+import { useDiskTotalSpace, useDiskFreeSpace, useDuplicateDeviceNames, useHasFilesystems, useRequiredSize } from "./Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
 
-import {
-    getRequiredSpace,
-} from "../../apis/payloads";
-
 import "./InstallationScenario.scss";
 
 const _ = cockpit.gettext;
-const N_ = cockpit.noop;
 
 function AvailabilityState (available = false, hidden = false, reason = null, hint = null) {
     this.available = available;
@@ -162,54 +151,26 @@ export const getDefaultScenario = () => {
     return scenarios.filter(s => s.default)[0];
 };
 
-const InstallationScenarioSelector = ({ deviceData, selectedDisks, idPrefix, isFormDisabled, onCritFail, storageScenarioId, setStorageScenarioId, setIsFormValid }) => {
+const InstallationScenarioSelector = ({
+    deviceData,
+    deviceNames,
+    idPrefix,
+    isFormDisabled,
+    onCritFail,
+    selectedDisks,
+    setIsFormValid,
+    setStorageScenarioId,
+    storageScenarioId,
+}) => {
     const [selectedScenario, setSelectedScenario] = useState();
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
     ));
-    const [requiredSize, setRequiredSize] = useState();
-    const [diskTotalSpace, setDiskTotalSpace] = useState();
-    const [diskFreeSpace, setDiskFreeSpace] = useState();
-    const [hasFilesystems, setHasFilesystems] = useState();
-    const [duplicateDeviceNames, setDuplicateDeviceNames] = useState([]);
-
-    useEffect(() => {
-        getDevices().then(res => {
-            const _duplicateDeviceNames = findDuplicatesInArray(res);
-            setDuplicateDeviceNames(_duplicateDeviceNames);
-            setIsFormValid(_duplicateDeviceNames.length === 0);
-        }, onCritFail({ context: N_("Failed to get device names.") }));
-    }, [deviceData, onCritFail, setIsFormValid]);
-
-    useEffect(() => {
-        const updateSizes = async () => {
-            const diskTotalSpace = await getDiskTotalSpace({ diskNames: selectedDisks }).catch(console.error);
-            const diskFreeSpace = await getDiskFreeSpace({ diskNames: selectedDisks }).catch(console.error);
-            const devices = await getDevices().catch(console.error);
-            const _duplicateDeviceNames = findDuplicatesInArray(devices);
-
-            setDuplicateDeviceNames(_duplicateDeviceNames);
-            setDiskTotalSpace(diskTotalSpace);
-            setDiskFreeSpace(diskFreeSpace);
-        };
-        updateSizes();
-    }, [selectedDisks]);
-
-    useEffect(() => {
-        const updateRequiredSize = async () => {
-            const requiredSpace = await getRequiredSpace().catch(console.error);
-            const requiredSize = await getRequiredDeviceSize({ requiredSpace }).catch(console.error);
-
-            setRequiredSize(requiredSize);
-        };
-        updateRequiredSize();
-    }, []);
-
-    useEffect(() => {
-        const hasFilesystems = selectedDisks.some(device => deviceData[device]?.children.v.some(child => deviceData[child]?.formatData.mountable.v || deviceData[child]?.formatData.type.v === "luks"));
-
-        setHasFilesystems(hasFilesystems);
-    }, [selectedDisks, deviceData]);
+    const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
+    const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
+    const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
+    const hasFilesystems = useHasFilesystems({ selectedDisks, devices: deviceData });
+    const requiredSize = useRequiredSize();
 
     useEffect(() => {
         let selectedScenarioId = "";
@@ -283,7 +244,7 @@ const InstallationScenarioSelector = ({ deviceData, selectedDisks, idPrefix, isF
     return scenarioItems;
 };
 
-export const InstallationScenario = ({ deviceData, diskSelection, idPrefix, isFormDisabled, onCritFail, setIsFormValid, storageScenarioId, setStorageScenarioId }) => {
+export const InstallationScenario = ({ deviceData, deviceNames, diskSelection, idPrefix, isFormDisabled, onCritFail, setIsFormValid, storageScenarioId, setStorageScenarioId }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const headingLevel = isBootIso ? "h2" : "h3";
 
@@ -293,6 +254,7 @@ export const InstallationScenario = ({ deviceData, diskSelection, idPrefix, isFo
             <FormGroup isStack hasNoPaddingTop>
                 <InstallationScenarioSelector
                   deviceData={deviceData}
+                  deviceNames={deviceNames}
                   selectedDisks={diskSelection.selectedDisks}
                   idPrefix={idPrefix}
                   onCritFail={onCritFail}

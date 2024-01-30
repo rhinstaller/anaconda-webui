@@ -43,9 +43,6 @@ import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
 import {
-    getMountPointConstraints,
-} from "../apis/storage_devicetree.js";
-import {
     applyStorage,
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
@@ -57,7 +54,6 @@ const N_ = cockpit.noop;
 export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, title, conf }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [mountPointConstraints, setMountPointConstraints] = useState();
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
@@ -67,18 +63,11 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const [currentStepId, setCurrentStepId] = useState();
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const selectedDisks = storageData.diskSelection.selectedDisks;
 
     const availableDevices = useMemo(() => {
         return Object.keys(storageData.devices);
     }, [storageData.devices]);
-
-    useEffect(() => {
-        const updateMountPointConstraints = async () => {
-            const mountPointConstraints = await getMountPointConstraints().catch(console.error);
-            setMountPointConstraints(mountPointConstraints);
-        };
-        updateMountPointConstraints();
-    }, []);
 
     useEffect(() => {
         if (!currentStepId) {
@@ -94,7 +83,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
          * but for custom mount assignment we try to reuse the partitioning when possible.
          */
         setReusePartitioning(false);
-    }, [availableDevices, storageData.diskSelection.selectedDisks]);
+    }, [availableDevices, selectedDisks]);
 
     const language = useMemo(() => {
         for (const l of Object.keys(localizationData.languages)) {
@@ -115,6 +104,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
             component: InstallationMethod,
             data: {
                 deviceData: storageData.devices,
+                deviceNames: storageData.deviceNames,
                 diskSelection: storageData.diskSelection,
                 dispatch,
                 storageScenarioId,
@@ -135,7 +125,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                     diskSelection: storageData.diskSelection,
                     dispatch,
                     partitioningData: storageData.partitioning,
-                    mountPointConstraints,
                     reusePartitioning,
                     setReusePartitioning,
                 },
@@ -273,14 +262,18 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         );
     }
 
-    const firstVisibleStepIndex = steps.findIndex(step => !step.props.isHidden) + 1;
+    const startIndex = steps.findIndex(step => {
+        // Find the first step that is not hidden if the Wizard is opening for the first time.
+        // Otherwise, find the first step that was last visited.
+        return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
+    }) + 1;
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
             <Wizard
               id="installation-wizard"
               isVisitRequired
-              startIndex={firstVisibleStepIndex}
+              startIndex={startIndex}
               footer={<Footer
                 onCritFail={onCritFail}
                 isFormValid={isFormValid}

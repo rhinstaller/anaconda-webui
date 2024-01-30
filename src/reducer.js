@@ -20,6 +20,7 @@ import { useReducer, useCallback } from "react";
 /* Initial state for the storeage store substate */
 export const storageInitialState = {
     devices: {},
+    deviceNames: [],
     diskSelection: {
         usableDisks: [],
         selectedDisks: [],
@@ -90,7 +91,7 @@ export const reducer = (state, action) => {
 
 export const storageReducer = (state = storageInitialState, action) => {
     if (action.type === "GET_DEVICES_DATA") {
-        return { ...state, devices: action.payload.devices };
+        return { ...state, devices: action.payload.devices, deviceNames: action.payload.deviceNames };
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
