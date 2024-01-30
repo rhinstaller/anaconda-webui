@@ -26,7 +26,7 @@ import {
 
 import { SystemTypeContext } from "../Common.jsx";
 import { helpEraseAll, helpUseFreeSpace, helpMountPointMapping, helpConfiguredStorage } from "./HelpAutopartOptions.jsx";
-import { useDiskTotalSpace, useDiskFreeSpace, useDuplicateDeviceNames, useHasFilesystems, useRequiredSize, useMountPointConstraints, useBootloaderPartitions } from "./Common.jsx";
+import { useDiskTotalSpace, useDiskFreeSpace, useDuplicateDeviceNames, useRequiredSize, useUsablePartitions, useMountPointConstraints } from "./Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
@@ -83,10 +83,15 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize 
     return availability;
 };
 
-const getMissingBootloaderPartitions = (bootloaderPartitions, mountPointConstraints) => {
-    const bootloaderPartTypeNames = { biosboot: "BIOS Boot", appleboot: "Apple Bootstrap", prepboot: "PPC PReP Boot" };
+const getMissingBootloaderPartitions = (usablePartitions, mountPointConstraints) => {
+    const bootloaderPartTypeNames = {
+        biosboot: "BIOS Boot",
+        appleboot: "Apple Bootstrap",
+        prepboot: "PPC PReP Boot",
+    };
 
-    const existingBootloaderPartitions = bootloaderPartitions
+    const existingBootloaderPartitions = usablePartitions
+            .filter(device => Object.keys(bootloaderPartTypeNames).includes(device.formatData?.type.v))
             .map(device => device.formatData.type.v);
 
     const missingBootloaderPartitions = mountPointConstraints.filter(constraint =>
@@ -98,12 +103,14 @@ const getMissingBootloaderPartitions = (bootloaderPartitions, mountPointConstrai
     return missingBootloaderPartitions;
 };
 
-const checkMountPointMapping = ({ hasFilesystems, duplicateDeviceNames, bootloaderPartitions, mountPointConstraints }) => {
+const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountPointConstraints }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
 
-    const missingBLParts = getMissingBootloaderPartitions(bootloaderPartitions, mountPointConstraints);
+    const missingBLParts = getMissingBootloaderPartitions(usablePartitions, mountPointConstraints);
+    const hasFilesystems = usablePartitions
+            .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
 
     if (missingBLParts.length) {
         availability.available = false;
@@ -283,13 +290,12 @@ const InstallationScenarioSelector = ({
     const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
     const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
     const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
-    const hasFilesystems = useHasFilesystems({ selectedDisks, devices: deviceData });
     const mountPointConstraints = useMountPointConstraints();
-    const bootloaderPartitions = useBootloaderPartitions({ selectedDisks, devices: deviceData });
+    const usablePartitions = useUsablePartitions({ selectedDisks, devices: deviceData });
     const requiredSize = useRequiredSize();
 
     useEffect(() => {
-        if ([diskTotalSpace, diskFreeSpace, hasFilesystems, mountPointConstraints, requiredSize, bootloaderPartitions].some(itm => itm === undefined)) {
+        if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
             return;
         }
 
@@ -298,12 +304,10 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
-                    bootloaderPartitions,
                     deviceData,
                     diskFreeSpace,
                     diskTotalSpace,
                     duplicateDeviceNames,
-                    hasFilesystems,
                     mountPointConstraints,
                     partitioning,
                     requests,
@@ -311,18 +315,17 @@ const InstallationScenarioSelector = ({
                     scenarioPartitioningMapping,
                     selectedDisks,
                     storageScenarioId,
+                    usablePartitions,
                 });
                 newAvailability[scenario.id] = availability;
             }
             return newAvailability;
         });
     }, [
-        bootloaderPartitions,
         deviceData,
         diskFreeSpace,
         diskTotalSpace,
         duplicateDeviceNames,
-        hasFilesystems,
         mountPointConstraints,
         partitioning,
         requests,
@@ -330,6 +333,7 @@ const InstallationScenarioSelector = ({
         scenarioPartitioningMapping,
         selectedDisks,
         storageScenarioId,
+        usablePartitions,
     ]);
 
     useEffect(() => {

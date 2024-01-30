@@ -72,36 +72,20 @@ export const useDuplicateDeviceNames = ({ deviceNames }) => {
     return duplicateDeviceNames;
 };
 
-export const useHasFilesystems = ({ selectedDisks, devices }) => {
-    const [hasFilesystems, setHasFilesystems] = useState();
+export const useUsablePartitions = ({ selectedDisks, devices }) => {
+    const [usablePartitions, setUsablePartitions] = useState();
 
     useEffect(() => {
-        const _hasFilesystems = (
-            selectedDisks.some(device => (
-                devices[device]?.children.v.some(child => (
-                    devices[child]?.formatData.mountable.v || devices[child]?.formatData.type.v === "luks")
-                )
-            ))
-        );
-
-        setHasFilesystems(_hasFilesystems);
-    }, [selectedDisks, devices]);
-
-    return hasFilesystems;
-};
-
-export const useBootloaderPartitions = ({ selectedDisks, devices }) => {
-    const [bootloaderPartitions, setBootloaderPartitions] = useState();
-
-    useEffect(() => {
-        const _bootloaderPartitions = Object.values(devices).filter(device =>
-            device.formatData?.type.v === "biosboot" &&
+        const _usablePartitions = Object.values(devices).filter(device =>
+            (device.formatData?.type.v === "biosboot" ||
+             device.formatData?.mountable.v ||
+             device.formatData?.type.v === "luks") &&
             selectedDisks.includes(device.parents?.v[0]));
 
-        setBootloaderPartitions(_bootloaderPartitions);
+        setUsablePartitions(_usablePartitions);
     }, [selectedDisks, devices]);
 
-    return bootloaderPartitions;
+    return usablePartitions;
 };
 
 export const useRequiredSize = () => {
