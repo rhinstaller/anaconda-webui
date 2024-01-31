@@ -112,12 +112,12 @@ const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountP
     const hasFilesystems = usablePartitions
             .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
 
-    if (missingBLParts.length) {
-        availability.available = false;
-        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingBLParts.join(", "));
-    } else if (!hasFilesystems) {
+    if (!hasFilesystems) {
         availability.available = false;
         availability.reason = _("No usable devices on the selected disks.");
+    } else if (missingBLParts.length) {
+        availability.available = false;
+        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingBLParts.join(", "));
     } else if (duplicateDeviceNames.length) {
         availability.available = false;
         availability.reason = cockpit.format(_("Some devices use the same name: $0."), duplicateDeviceNames.join(", "));
