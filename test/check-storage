@@ -1016,7 +1016,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
 
         disk = "/dev/vda"
         dev = "vda"
-        s.partition_disk(disk, [("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
         s.udevadm_settle()
 
         i.open()
@@ -1026,8 +1026,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageHelpers)
         s.select_mountpoint([(dev, True)])
 
         # unformatted and unmountable devices should not be available
-        s.check_mountpoint_row_device_available(1, f"{dev}2", False)
         s.check_mountpoint_row_device_available(1, f"{dev}3", False)
+        s.check_mountpoint_row_device_available(1, f"{dev}4", False)
 
 
 class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
