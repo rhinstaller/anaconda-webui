@@ -507,21 +507,28 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.partition_disk(disk2, [("", "xfs")])
         s.udevadm_settle()
 
-        # Select first only vdb disk and verify that the partitioning request is correct
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.rescan_disks()
 
-        s.select_mountpoint([(dev1, False), (dev2, True)])
+        # Select only vdb disk and verify that mount point assignment is
+        # not available (missing biosboot)
+        s.select_none_disks_and_check([dev1, dev2])
+        s.select_disks([(dev1, False), (dev2, True)])
+        s.wait_scenario_available("mount-point-mapping", False)
 
-        s.check_mountpoint_row_device_available(1, "vda2", False)
-        s.check_mountpoint_row_device_available(1, "vdb1")
+        # Select only vda disk and verify that the partitioning request is correct
+        s.select_none_disks_and_check([dev1, dev2])
+        s.select_mountpoint([(dev1, True), (dev2, False)])
+
+        s.check_mountpoint_row_device_available(1, "vdb1", False)
+        s.check_mountpoint_row_device_available(1, "vda2")
 
         # Go back and change the disk selection. The partitioning should be re-created
         i.back()
 
-        b.click("#installation-method-disk-selector-clear")
+        s.select_none_disks_and_check([dev1, dev2])
         s.select_mountpoint([(dev1, True), (dev2, True)])
 
         s.check_mountpoint_row_device_available(1, "vda2", True)
@@ -1063,7 +1070,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         disk = "/dev/vda"
         dev = "vda"
-        s.partition_disk(disk, [("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
         s.udevadm_settle()
 
         i.open()
@@ -1073,8 +1080,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint([(dev, True)])
 
         # unformatted and unmountable devices should not be available
-        s.check_mountpoint_row_device_available(1, f"{dev}2", False)
         s.check_mountpoint_row_device_available(1, f"{dev}3", False)
+        s.check_mountpoint_row_device_available(1, f"{dev}4", False)
 
 
 class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageCase):

@@ -383,13 +383,16 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         if format_type:
             self.check_mountpoint_row_format_type(row, format_type)
 
-    def select_mountpoint(self, disks, encrypted=False):
+    def select_disks(self, disks):
         self.browser.wait(lambda: self.disks_loaded(disks))
 
         for disk in disks:
             current_selection = self.get_disk_selected(disk[0])
             if current_selection != disk[1]:
                 self.select_disk(disk[0], disk[1], len(disks) == 1)
+
+    def select_mountpoint(self, disks, encrypted=False):
+        self.select_disks(disks)
 
         self.set_partitioning("mount-point-mapping")
 
