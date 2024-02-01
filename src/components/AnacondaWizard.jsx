@@ -122,7 +122,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 component: MountPointMapping,
                 data: {
                     deviceData: storageData.devices,
-                    diskSelection: storageData.diskSelection,
                     dispatch,
                     partitioningData: storageData.partitioning,
                     reusePartitioning,

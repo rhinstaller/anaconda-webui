@@ -608,7 +608,6 @@ const isUsableDevice = (devSpec, deviceData) => {
 
 export const MountPointMapping = ({
     deviceData,
-    diskSelection,
     dispatch,
     idPrefix,
     partitioningData,
