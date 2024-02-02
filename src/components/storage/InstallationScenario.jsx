@@ -83,24 +83,18 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize 
     return availability;
 };
 
-const getMissingBootloaderPartitions = (usablePartitions, mountPointConstraints) => {
-    const bootloaderPartTypeNames = {
-        biosboot: "BIOS Boot",
-        appleboot: "Apple Bootstrap",
-        prepboot: "PPC PReP Boot",
-    };
-
-    const existingBootloaderPartitions = usablePartitions
-            .filter(device => Object.keys(bootloaderPartTypeNames).includes(device.formatData?.type.v))
+const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraints) => {
+    const existingNonmountablePartitions = usablePartitions
+            .filter(device => !device.formatData.mountable.v)
             .map(device => device.formatData.type.v);
 
-    const missingBootloaderPartitions = mountPointConstraints.filter(constraint =>
+    const missingNonmountablePartitions = mountPointConstraints.filter(constraint =>
         constraint.required.v &&
-        Object.keys(bootloaderPartTypeNames).includes(constraint["required-filesystem-type"].v) &&
-        !existingBootloaderPartitions.includes(constraint["required-filesystem-type"].v))
-            .map(constraint => bootloaderPartTypeNames[constraint["required-filesystem-type"].v]);
+        !constraint["mount-point"].v &&
+        !existingNonmountablePartitions.includes(constraint["required-filesystem-type"].v))
+            .map(constraint => constraint.description);
 
-    return missingBootloaderPartitions;
+    return missingNonmountablePartitions;
 };
 
 const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountPointConstraints }) => {
@@ -108,16 +102,16 @@ const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountP
 
     availability.hidden = false;
 
-    const missingBLParts = getMissingBootloaderPartitions(usablePartitions, mountPointConstraints);
+    const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
     const hasFilesystems = usablePartitions
             .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
 
     if (!hasFilesystems) {
         availability.available = false;
         availability.reason = _("No usable devices on the selected disks.");
-    } else if (missingBLParts.length) {
+    } else if (missingNMParts.length) {
         availability.available = false;
-        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingBLParts.join(", "));
+        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
     } else if (duplicateDeviceNames.length) {
         availability.available = false;
         availability.reason = cockpit.format(_("Some devices use the same name: $0."), duplicateDeviceNames.join(", "));

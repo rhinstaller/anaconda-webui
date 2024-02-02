@@ -21,6 +21,7 @@ import {
     getDiskTotalSpace,
     getMountPointConstraints,
     getRequiredDeviceSize,
+    getFormatTypeData,
 } from "../../apis/storage_devicetree.js";
 import {
     getRequiredSpace
@@ -109,8 +110,17 @@ export const useMountPointConstraints = () => {
 
     useEffect(() => {
         const update = async () => {
-            const mountPointConstraints = await getMountPointConstraints().catch(console.error);
-            setMountPointConstraints(mountPointConstraints);
+            let _mountPointConstraints = await getMountPointConstraints().catch(console.error);
+            _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
+                let description = "";
+                const formatType = c["required-filesystem-type"].v;
+                if (formatType) {
+                    const formatData = await getFormatTypeData({ formatType });
+                    description = formatData.description.v;
+                }
+                return { ...c, description };
+            }));
+            setMountPointConstraints(_mountPointConstraints);
         };
         update();
     }, []);
