@@ -21,7 +21,7 @@ export const exitGui = () => {
     let pid;
     pidFile.read()
             .then(content => {
-                pid = content;
+                pid = content.trim();
                 console.log("Killing WebUI process, PID: ", pid);
                 return cockpit.spawn(["kill", pid]);
             })
