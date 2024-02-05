@@ -577,7 +577,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b)
 
-        s.select_mountpoint([(dev1, True)])
+        s.select_mountpoint([(dev1, True)], encrypted=True)
 
         s.unlock_all_encrypted()
         s.unlock_device("1234", ["vda2", "vda3", "vda4"], [])
@@ -711,7 +711,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint([(dev, True)], encrypted=True)
 
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
@@ -760,7 +760,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint([(dev, True)], encrypted=True)
 
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])

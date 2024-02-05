@@ -381,7 +381,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         if format_type:
             self.check_mountpoint_row_format_type(row, format_type)
 
-    def select_mountpoint(self, disks):
+    def select_mountpoint(self, disks, encrypted=False):
         self.browser.wait(lambda : self.disks_loaded(disks))
 
         for disk in disks:
@@ -393,6 +393,12 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
         i = Installer(self.browser, self.machine)
         i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
+
+        with self.browser.wait_timeout(30):
+            if not encrypted:
+                self.browser.wait_visible("#mount-point-mapping-table")
+            else:
+                self.browser.wait_not_present("#unlock-device-dialog")
 
     def select_mountpoint_row_mountpoint(self, row,  mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
