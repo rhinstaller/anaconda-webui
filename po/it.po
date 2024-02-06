@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 09:36+0000\n"
+"POT-Creation-Date: 2024-02-06 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:19+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/"
@@ -59,7 +59,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:138
 msgid "$0 installation"
 msgstr "Installazione $0"
 
@@ -67,7 +67,13 @@ msgstr "Installazione $0"
 msgid "$0 installer"
 msgstr "$0 installer"
 
-#: src/components/storage/MountPointMapping.jsx:194
+#: src/components/storage/MountPointMapping.jsx:202
+#, fuzzy
+#| msgid "%s cannot be on an encrypted block device."
+msgid "'$0' filesystem cannot be on an ecnrypted block device"
+msgstr "%s non può trovarsi su un dispositivo a blocchi cifrato."
+
+#: src/components/storage/MountPointMapping.jsx:196
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' dev'essere su un dispositivo formattato '$1'"
 
@@ -75,7 +81,20 @@ msgstr "'$0' dev'essere su un dispositivo formattato '$1'"
 msgid "About"
 msgstr "Informazioni"
 
-#: src/components/storage/MountPointMapping.jsx:573
+#: src/components/review/ReviewConfiguration.jsx:144
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Account"
+msgstr "_Account"
+
+#: src/components/AnacondaWizard.jsx:366
+#, fuzzy
+#| msgid "Connection failed"
+msgid "Account setting failed."
+msgstr "Connessione fallita"
+
+#: src/components/storage/MountPointMapping.jsx:583
 msgid "Add mount"
 msgstr "Aggiungi punto di mount"
 
@@ -107,17 +126,17 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Pagina web del progetto Anaconda"
 
-#: src/components/storage/InstallationScenario.jsx:142
+#: src/components/storage/InstallationScenario.jsx:131
 msgid "Apply mount point assignment and install"
 msgstr ""
 "Applicare l'assegnazione del punto di mount e procedi con l'installazione"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Applying new disk selection..."
 msgstr "Applicazione della selezione del nuovo disco..."
 
-#: src/components/review/ReviewConfiguration.jsx:200
-#: src/components/AnacondaWizard.jsx:388
+#: src/components/AnacondaWizard.jsx:407
+#: src/components/review/ReviewConfiguration.jsx:210
 msgid "Back"
 msgstr "Indietro"
 
@@ -149,7 +168,7 @@ msgstr "Annulla"
 msgid "Changes made in Blivet-gui will directly affect your storage."
 msgstr "Le modifiche fatte con Blivet-gui verranno applicate immediatamente."
 
-#: src/components/storage/DiskEncryption.jsx:253
+#: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
 msgstr "Controllo della configurazione dello storage"
 
@@ -161,7 +180,7 @@ msgstr "Scegli una lingua"
 msgid "Chosen language: "
 msgstr "Scegli una lingua "
 
-#: src/components/storage/InstallationDestination.jsx:234
+#: src/components/storage/InstallationDestination.jsx:238
 msgid "Clear input value"
 msgstr "Cancella il valore inserito"
 
@@ -177,31 +196,46 @@ msgstr "Lingue comuni"
 msgid "Completed"
 msgstr "Completato"
 
-#: src/components/storage/DiskEncryption.jsx:312
+#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
 msgid "Confirm passphrase"
 msgstr "Conferma la password"
 
-#: src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:459
 msgid "Continue installation"
 msgstr "Continua l'installazione"
+
+#: src/components/users/Accounts.jsx:351
+#, fuzzy
+#| msgctxt "GUI|Spoke"
+#| msgid "_Root Account"
+msgid "Create Account"
+msgstr "_Root Account"
+
+#: src/components/users/Accounts.jsx:210
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Create account"
+msgstr "_Abilita l'account di root"
 
 #: src/components/Error.jsx:234
 msgid "Critical error"
 msgstr "Errore critico"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:221
 msgid "Current selections"
 msgstr "Selezioni correnti"
 
-#: src/components/storage/MountPointMapping.jsx:234
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Custom"
 msgstr "Personalizzata"
 
-#: src/components/storage/InstallationDestination.jsx:401
+#: src/components/storage/InstallationDestination.jsx:404
 msgid "Destination"
 msgstr "Destinazione"
 
-#: src/components/storage/MountPointMapping.jsx:549
+#: src/components/storage/MountPointMapping.jsx:559
 msgid "Device"
 msgstr "Dispositivo"
 
@@ -210,36 +244,43 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "I dispositivi devono essere sbloccati prima di assegnare i punti di mount."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Disabled"
 msgstr "Disabilitato"
 
-#: src/components/AnacondaWizard.jsx:123
+#: src/components/AnacondaWizard.jsx:120
 msgid "Disk configuration"
 msgstr "Configurazione del disco"
 
-#: src/components/storage/DiskEncryption.jsx:379
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/storage/DiskEncryption.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Cifratura del disco"
 
-#: src/components/storage/MountPointMapping.jsx:317
+#: src/components/storage/MountPointMapping.jsx:326
 msgid "Duplicate device."
 msgstr "Dispositivo duplicato."
 
-#: src/components/storage/MountPointMapping.jsx:240
+#: src/components/storage/MountPointMapping.jsx:249
 msgid "Duplicate mount point."
 msgstr "Punto di mount duplicato."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/users/Accounts.jsx:277
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Enable root account"
+msgstr "_Abilita l'account di root"
+
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Enabled"
 msgstr "Attivo"
 
-#: src/components/storage/DiskEncryption.jsx:297
+#: src/components/storage/DiskEncryption.jsx:80
 msgid "Encrypt my data"
 msgstr "Cifra i miei dati"
 
-#: src/components/storage/DiskEncryption.jsx:381
+#: src/components/storage/DiskEncryption.jsx:140
 msgid "Encrypt the selected devices?"
 msgstr "Crittografare i dispositivi selezionati?"
 
@@ -247,22 +288,22 @@ msgstr "Crittografare i dispositivi selezionati?"
 msgid "Encrypted devices are locked"
 msgstr "I dispositivi crittografati sono bloccati"
 
-#: src/components/storage/DiskEncryption.jsx:363
+#: src/components/storage/DiskEncryption.jsx:122
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "La crittografia aiuta a proteggere i tuoi dati, impedendo ad altri di "
 "accedervi."
 
-#: src/components/storage/InstallationScenario.jsx:108
-#: src/components/storage/InstallationScenario.jsx:114
+#: src/components/storage/InstallationScenario.jsx:97
+#: src/components/storage/InstallationScenario.jsx:103
 msgid "Erase data and install"
 msgstr "Cancella i dati e installa"
 
-#: src/components/storage/InstallationScenario.jsx:118
+#: src/components/storage/InstallationScenario.jsx:107
 msgid "Erase data and install?"
 msgstr "Cancellare i dati e installare?"
 
-#: src/components/storage/InstallationScenario.jsx:116
+#: src/components/storage/InstallationScenario.jsx:105
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "La cancellazione dei dati non può essere annullata. Assicurati di avere un "
@@ -272,13 +313,9 @@ msgstr ""
 msgid "Error details"
 msgstr "Dettagli dell'errore"
 
-#: src/components/AnacondaWizard.jsx:233 src/components/AnacondaWizard.jsx:386
+#: src/components/AnacondaWizard.jsx:249
 msgid "Error was hit when going back from $0."
 msgstr "Si è verificato un errore quando si è tornati indietro da $0."
-
-#: src/components/storage/InstallationScenario.jsx:181
-msgid "Failed to get device names."
-msgstr "Impossibile ottenere i nomi dei dispositivi."
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -296,7 +333,15 @@ msgstr ""
 msgid "Find a language"
 msgstr "Seleziona una lingua"
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/users/Accounts.jsx:214
+msgid "Full name"
+msgstr "Nome completo"
+
+#: src/components/users/Accounts.jsx:180
+msgid "Full name cannot contain colon characters"
+msgstr "Il nome completo non può contenere il carattere due punti"
+
+#: src/components/Password.jsx:241
 msgid "Hide confirmed password"
 msgstr "Nascondi la password confermata"
 
@@ -304,11 +349,11 @@ msgstr "Nascondi la password confermata"
 msgid "Hide passphrase"
 msgstr "Nascondi la password"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Hide password"
 msgstr "Nascondi la password"
 
-#: src/components/storage/InstallationScenario.jsx:292
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "How would you like to install?"
 msgstr "Come vuoi effettuare l'installazione?"
 
@@ -331,15 +376,21 @@ msgstr "Ignora"
 msgid "In progress"
 msgstr "Avanzamento"
 
-#: src/components/storage/InstallationScenario.jsx:128
+#: src/components/app.jsx:130
+#, fuzzy
+#| msgid "Installing."
+msgid "Initializing..."
+msgstr "Installazione in corso."
+
+#: src/components/storage/InstallationScenario.jsx:117
 msgid "Install"
 msgstr "Installa"
 
-#: src/components/storage/InstallationScenario.jsx:146
+#: src/components/storage/InstallationScenario.jsx:135
 msgid "Install on the custom mount points?"
 msgstr "Installare nei punti di mount definiti manualmente?"
 
-#: src/components/storage/InstallationScenario.jsx:132
+#: src/components/storage/InstallationScenario.jsx:121
 msgid "Install on the free space?"
 msgstr "Installazione nello spazio libero?"
 
@@ -347,7 +398,7 @@ msgstr "Installazione nello spazio libero?"
 msgid "Installation failed"
 msgstr "Installazione fallita"
 
-#: src/components/storage/InstallationMethod.jsx:86
+#: src/components/storage/InstallationMethod.jsx:88
 msgid "Installation method"
 msgstr "Metodo di installazione"
 
@@ -355,7 +406,7 @@ msgstr "Metodo di installazione"
 msgid "Installation of the system failed: $0"
 msgstr "Installazione del sistema fallita: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:154
 msgid "Installation type"
 msgstr "Tipo di installazione"
 
@@ -363,7 +414,7 @@ msgstr "Tipo di installazione"
 msgid "Installing"
 msgstr "Installazione in corso"
 
-#: src/components/storage/InstallationDestination.jsx:420
+#: src/components/storage/InstallationDestination.jsx:423
 msgid "Installing to $0 ($1)"
 msgstr "Installazione su $0 ($1)"
 
@@ -387,11 +438,11 @@ msgstr "Dispositivi bloccati"
 msgid "Log"
 msgstr "Log"
 
-#: src/components/storage/MountPointMapping.jsx:674
+#: src/components/storage/MountPointMapping.jsx:684
 msgid "Manual disk configuration"
 msgstr "Configurazione manuale del disco"
 
-#: src/components/storage/MountPointMapping.jsx:676
+#: src/components/storage/MountPointMapping.jsx:686
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Configurazione manuale del disco: definizione del punto di mount"
 
@@ -400,11 +451,11 @@ msgid "Manually select storage locations for installation."
 msgstr ""
 "Selezionare manualmente le posizioni di archiviazione per l'installazione."
 
-#: src/components/storage/DiskEncryption.jsx:72
+#: src/components/Password.jsx:72
 msgid "Medium"
 msgstr "Media"
 
-#: src/components/storage/MountPointMapping.jsx:138
+#: src/components/storage/MountPointMapping.jsx:140
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Mancata corrispondenza tra la riformattazione del dispositivo padre e del "
@@ -423,16 +474,16 @@ msgstr "Modifica lo storage"
 msgid "Modifying the storage failed."
 msgstr "Modifica dello storage fallita."
 
-#: src/components/storage/MountPointMapping.jsx:548
+#: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "Punto di mount"
 
-#: src/components/storage/InstallationScenario.jsx:136
-#: src/components/storage/MountPointMapping.jsx:546
+#: src/components/storage/MountPointMapping.jsx:556
+#: src/components/storage/InstallationScenario.jsx:125
 msgid "Mount point assignment"
 msgstr "Assegnazione del punto di mount"
 
-#: src/components/storage/DiskEncryption.jsx:173
+#: src/components/Password.jsx:47
 msgid "Must be at least $0 characters"
 msgstr "Deve essere di almeno $0 caratteri"
 
@@ -451,36 +502,36 @@ msgstr ""
 "Rete non disponibile. Configura la rete dal menu nella barra superiore per "
 "segnalare il problema."
 
-#: src/components/AnacondaWizard.jsx:359
+#: src/components/AnacondaWizard.jsx:381
 msgid "Next"
 msgstr "Avanti"
 
-#: src/components/storage/InstallationDestination.jsx:406
+#: src/components/storage/InstallationDestination.jsx:463
 msgid "No additional disks detected"
 msgstr "Non sono stati rilevati dischi aggiuntivi"
 
-#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/MountPointMapping.jsx:563
 msgid "No devices"
 msgstr "Nessun dispositivo"
 
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:115
+#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "nessun risultato trovato"
 
-#: src/components/storage/InstallationScenario.jsx:95
+#: src/components/storage/InstallationScenario.jsx:84
 msgid "No usable devices on the selected disks."
 msgstr "Nessun dispositivo utilizzabile sui dischi selezionati."
 
-#: src/components/storage/InstallationDestination.jsx:430
+#: src/components/storage/InstallationDestination.jsx:433
 msgid "No usable disks detected"
 msgstr "Non sono stati rilevati dischi utilizzabili"
 
-#: src/components/storage/InstallationScenario.jsx:79
+#: src/components/storage/InstallationScenario.jsx:68
 msgid "Not enough free space on the selected disks."
 msgstr "Spazio insufficiente sui dischi selezionati."
 
-#: src/components/storage/InstallationScenario.jsx:61
+#: src/components/storage/InstallationScenario.jsx:50
 msgid "Not enough space on selected disks."
 msgstr "Spazio insufficiente sui dischi selezionati."
 
@@ -494,7 +545,7 @@ msgstr ""
 "sviluppo e test. NON utilizzare questo software per qualsiasi lavoro critico "
 "o per ambienti di produzione."
 
-#: src/components/storage/DiskEncryption.jsx:366
+#: src/components/storage/DiskEncryption.jsx:125
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -506,9 +557,10 @@ msgstr ""
 msgid "Operating system"
 msgstr "Sistema Operativo"
 
-#: src/components/storage/DiskEncryption.jsx:309
+#: src/components/storage/DiskEncryption.jsx:93
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 msgid "Passphrase"
 msgstr "Password"
 
@@ -516,7 +568,7 @@ msgstr "Password"
 msgid "Passphrase did not match any locked device"
 msgstr "La passphrase non corrisponde a nessun dispositivo bloccato"
 
-#: src/components/storage/DiskEncryption.jsx:216
+#: src/components/Password.jsx:255
 msgid "Passphrases must match"
 msgstr "Le password devono corrispondere"
 
@@ -540,25 +592,25 @@ msgstr "pre-rilascio"
 msgid "Preparing report"
 msgstr "Preparazione del rapporto"
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "Abbandona"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Quit installer?"
 msgstr "Abbandona il programma di installazione?"
 
-#: src/components/storage/InstallationDestination.jsx:373
+#: src/components/storage/InstallationDestination.jsx:377
 msgid "Re-scan"
 msgstr "Ripeti la scansione"
 
-#: src/components/app.jsx:98
+#: src/components/app.jsx:113
 msgid "Reading information about the computer failed."
 msgstr "La lettura delle informazioni sul computer non è riuscita."
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "Lettura della configurazione del programma di installazione fallita."
 
@@ -568,22 +620,26 @@ msgstr ""
 "Lettura delle informazioni sulla versione del programma di installazione "
 "fallita."
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "Riavvio"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Reboot system?"
 msgstr "Riavvia il sistema?"
 
-#: src/components/storage/MountPointMapping.jsx:340
-#: src/components/storage/MountPointMapping.jsx:550
+#: src/components/storage/MountPointMapping.jsx:242
+msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:349
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "Reformat"
 msgstr "Riformattare"
 
-#: src/components/storage/MountPointMapping.jsx:373
+#: src/components/storage/MountPointMapping.jsx:382
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -613,11 +669,11 @@ msgstr ""
 "la rete. Rivedi e modifica il log allegato per rimuovere eventuali "
 "informazioni sensibili."
 
-#: src/components/storage/MountPointMapping.jsx:233
+#: src/components/storage/MountPointMapping.jsx:241
 msgid "Required"
 msgstr "Richiesto"
 
-#: src/components/storage/InstallationDestination.jsx:382
+#: src/components/storage/InstallationDestination.jsx:386
 msgid "Rescan"
 msgstr "Effettua una nuova scansione"
 
@@ -625,28 +681,38 @@ msgstr "Effettua una nuova scansione"
 msgid "Rescan storage"
 msgstr "Scansiona nuovamente lo storage"
 
-#: src/components/storage/InstallationDestination.jsx:361
+#: src/components/storage/InstallationDestination.jsx:365
 msgid "Rescanning of the disks failed."
 msgstr "Nuova scansione dei dischi fallita."
 
-#: src/components/review/ReviewConfiguration.jsx:231
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:242
 msgid "Review and install"
 msgstr "Verifica e installa"
 
-#: src/components/storage/MountPointMapping.jsx:278
+#: src/components/installation/Feedback.jsx:37
+msgid "Scan the QR code with your phone or visit:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:287
 msgid "Select a device"
 msgstr "Seleziona un dispositivo"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Select a disk"
 msgstr "Seleziona un disco"
 
-#: src/components/storage/MountPointMapping.jsx:121
+#: src/components/storage/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/installation/Feedback.jsx:36
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Send us feedback on your installation"
+msgstr "Utilizza lo spazio libero per l'installazione"
+
+#: src/components/Password.jsx:241
 msgid "Show confirmed password"
 msgstr "Mostra la password di conferma"
 
@@ -654,7 +720,7 @@ msgstr "Mostra la password di conferma"
 msgid "Show passphrase"
 msgstr "Vedi la password"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Show password"
 msgstr "Mostra la password"
 
@@ -674,11 +740,11 @@ msgstr ""
 "Installazione del software: Configurazione dello storage completata. Il "
 "software viene ora installato sul dispositivo."
 
-#: src/components/storage/InstallationScenario.jsx:98
+#: src/components/storage/InstallationScenario.jsx:87
 msgid "Some devices use the same name: $0."
 msgstr "Alcuni dispositivi utilizzano lo stesso nome: $0."
 
-#: src/components/review/ReviewConfiguration.jsx:165
+#: src/components/review/ReviewConfiguration.jsx:175
 msgid "Storage"
 msgstr "Storage"
 
@@ -690,7 +756,7 @@ msgstr "Configurazione dello Storage"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Configurazione dello storage: Lo storage è in corso di configurazione."
 
-#: src/components/storage/DiskEncryption.jsx:83
+#: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Forte"
 
@@ -701,6 +767,12 @@ msgstr "Installazione riuscita"
 #: src/components/storage/EncryptedDevices.jsx:131
 msgid "Successfully unlocked $0."
 msgstr "Sblocco riuscito $0."
+
+#: src/components/users/Accounts.jsx:305
+#, fuzzy
+#| msgid "File System"
+msgid "System"
+msgstr "File system"
 
 #: src/components/installation/InstallationProgress.jsx:127
 msgid "System configuration"
@@ -722,6 +794,20 @@ msgstr ""
 "La lingua selezionata verrà utilizzata per l'installazione e nel software "
 "installato. "
 
+#: src/components/storage/InstallationDestination.jsx:495
+msgid "The following disk is no longer available: $0"
+msgid_plural "The following disks are no longer available: $0"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/storage/InstallationDestination.jsx:478
+#, fuzzy
+#| msgid "The following mandatory spokes are not completed:"
+msgid "The following disk was detected: $0"
+msgid_plural "The following disks were detected: $0"
+msgstr[0] "Le seguenti sezioni obbligatorie non sono complete:"
+msgstr[1] "Le seguenti sezioni obbligatorie non sono complete:"
+
 #: src/components/Error.jsx:257
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
@@ -730,11 +816,11 @@ msgstr ""
 "Il seguente log verrà inviato al sistema di gestione dei problemi, dove "
 "potrai fornire ulteriori dettagli."
 
-#: src/components/storage/InstallationScenario.jsx:63
+#: src/components/storage/InstallationScenario.jsx:52
 msgid "The installation needs $1 of disk space; "
 msgstr "L'installazione richiede $1 di spazio libero su disco "
 
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:122
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -742,7 +828,7 @@ msgstr ""
 "L'installazione utilizzerà lo spazio libero sui dispositivi e non cancellerà "
 "nessun dato."
 
-#: src/components/storage/InstallationScenario.jsx:147
+#: src/components/storage/InstallationScenario.jsx:136
 msgid "The installation will use your configured partitioning layout."
 msgstr ""
 "L'installazione utilizzerà il layout di partizionamento che hai configurato."
@@ -755,7 +841,7 @@ msgstr "L'installazione non può continuare a causa di un errore critico."
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "L'installazione non può continuare a causa di un errore critico: $0"
 
-#: src/components/storage/DiskEncryption.jsx:182
+#: src/components/storage/DiskEncryption.jsx:42
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
@@ -764,12 +850,12 @@ msgstr ""
 "essere in grado di passare da un layout di tastiera all'altro quando lo "
 "digiti."
 
-#: src/components/storage/MountPointMapping.jsx:352
+#: src/components/storage/MountPointMapping.jsx:361
 msgid "The root partition is always re-formatted by the installer."
 msgstr ""
 "La partizione root viene sempre riformattata dal programma di installazione."
 
-#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:108
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -777,11 +863,21 @@ msgstr ""
 "I dischi selezionati saranno cancellati, questo non può essere annullato. "
 "Sei sicuro di voler continuare l'installazione?"
 
+#: src/components/storage/InstallationDestination.jsx:470
+#, fuzzy
+#| msgid "No usable disks detected"
+msgid "The usable disks have changed"
+msgstr "Non sono stati rilevati dischi utilizzabili"
+
+#: src/components/users/Accounts.jsx:212
+msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:68
 msgid "This is unstable, pre-release software"
 msgstr "Questo software è una pre-rilascio instabile"
 
-#: src/components/storage/DiskEncryption.jsx:257
+#: src/components/storage/DiskEncryption.jsx:57
 msgid "This may take a moment"
 msgstr "Attendere prego"
 
@@ -789,23 +885,23 @@ msgstr "Attendere prego"
 msgid "To begin using $0, reboot your system."
 msgstr "Per iniziare a usare $0, riavvia il sistema."
 
-#: src/components/storage/InstallationMethod.jsx:78
+#: src/components/storage/InstallationMethod.jsx:80
 msgid "To continue, select the devices to install to."
 msgstr ""
 "Per continuare, selezionare i dispositivi su cui effettuare l'installazione."
 
-#: src/components/storage/InstallationScenario.jsx:130
-#: src/components/storage/InstallationScenario.jsx:144
+#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:133
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Per evitare perdite, eseguire il backup dei dati."
 
-#: src/components/storage/InstallationScenario.jsx:99
+#: src/components/storage/InstallationScenario.jsx:88
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 "Per utilizzare questa opzione, rinominare i dispositivi in modo che abbiano "
 "nomi univoci."
 
-#: src/components/storage/InstallationScenario.jsx:81
+#: src/components/storage/InstallationScenario.jsx:70
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -825,11 +921,33 @@ msgstr "Sblocca i dispositivi"
 msgid "Unlock encrypted devices"
 msgstr "Sblocca i dispositivi cifrati"
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:111
 msgid "Use free space for the installation"
 msgstr "Utilizza lo spazio libero per l'installazione"
 
-#: src/components/storage/DiskEncryption.jsx:61
+#: src/components/users/Accounts.jsx:233
+msgid "User name"
+msgstr "Nome utente"
+
+#: src/components/users/Accounts.jsx:168
+msgid ""
+"User name may only contain: letters from a-z, digits 0-9, dash $0, period "
+"$1, underscore $2"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:165
+#, fuzzy
+#| msgid "User name is reserved for system: %s"
+msgid "User name must not be a reserved word"
+msgstr "Il nome utente è riservato al sistema: %s"
+
+#: src/components/users/Accounts.jsx:162
+#, fuzzy
+#| msgid "Name must be shorter than 33 characters."
+msgid "User names must be shorter than 33 characters"
+msgstr "Il nome deve essere inferiore a 33 caratteri."
+
+#: src/components/Password.jsx:61
 msgid "Weak"
 msgstr "Debole"
 
@@ -841,11 +959,11 @@ msgstr "Benvenuto"
 msgid "Welcome to $0"
 msgstr "Benvenut@ su $0"
 
-#: src/components/storage/InstallationMethod.jsx:87
+#: src/components/storage/InstallationMethod.jsx:89
 msgid "Welcome. Let's install $0 now."
 msgstr "Benvenut@. Installiamo $0."
 
-#: src/components/AnacondaWizard.jsx:452
+#: src/components/AnacondaWizard.jsx:468
 msgid "Your progress will not be saved."
 msgstr "I progressi non verranno salvati."
 
@@ -868,6 +986,9 @@ msgstr "monta"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "step mancanti"
+
+#~ msgid "Failed to get device names."
+#~ msgstr "Impossibile ottenere i nomi dei dispositivi."
 
 #~ msgid ""
 #~ "\n"
@@ -1145,10 +1266,6 @@ msgstr "step mancanti"
 #~ "%s The disks you've selected have the following amounts of free space:"
 #~ msgstr ""
 #~ "%s i dischi selezionati hanno la seguente quantità di spazio libero:"
-
-#, python-format
-#~ msgid "%s cannot be on an encrypted block device."
-#~ msgstr "%s non può trovarsi su un dispositivo a blocchi cifrato."
 
 #, python-format
 #~ msgid ""
@@ -1882,9 +1999,6 @@ msgstr "step mancanti"
 #~ msgid "Connecting..."
 #~ msgstr "Connessione..."
 
-#~ msgid "Connection failed"
-#~ msgstr "Connessione fallita"
-
 #~ msgid "Continue"
 #~ msgstr "Continua"
 
@@ -2378,9 +2492,6 @@ msgstr "step mancanti"
 #~ msgid "File S_ystem:"
 #~ msgstr "File s_ystem:"
 
-#~ msgid "File System"
-#~ msgstr "File system"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr ""
 #~ "Il tipo di file system \"{}\" dato nel comando autopart non è valido."
@@ -2468,14 +2579,8 @@ msgstr "step mancanti"
 #~ msgid "Full Name"
 #~ msgstr "Nome completo"
 
-#~ msgid "Full name"
-#~ msgstr "Nome completo"
-
 #~ msgid "Full name can't contain the ':' character"
 #~ msgstr "Il nome completo non può contenere il carattere ':'"
-
-#~ msgid "Full name cannot contain colon characters"
-#~ msgstr "Il nome completo non può contenere il carattere due punti"
 
 #~ msgid "Fully numeric name is not allowed."
 #~ msgstr "Il nome completamente numerico non è consentito."
@@ -3090,9 +3195,6 @@ msgstr "step mancanti"
 
 #~ msgid "Name is already in use."
 #~ msgstr "Il nome è già in uso."
-
-#~ msgid "Name must be shorter than 33 characters."
-#~ msgstr "Il nome deve essere inferiore a 33 caratteri."
 
 #~ msgid "Name of the repository"
 #~ msgstr "Nome del repository"
@@ -4615,9 +4717,6 @@ msgstr "step mancanti"
 #~ msgid "The following installations were discovered on your system."
 #~ msgstr "Nel sistema sono state rilevate le seguenti installazioni."
 
-#~ msgid "The following mandatory spokes are not completed:"
-#~ msgstr "Le seguenti sezioni obbligatorie non sono complete:"
-
 #, python-format
 #~ msgid ""
 #~ "The following nodes were discovered using the iSCSI initiator "
@@ -5191,13 +5290,6 @@ msgstr "step mancanti"
 
 #~ msgid "User creation"
 #~ msgstr "Creazione utente"
-
-#~ msgid "User name"
-#~ msgstr "Nome utente"
-
-#, python-format
-#~ msgid "User name is reserved for system: %s"
-#~ msgstr "Il nome utente è riservato al sistema: %s"
 
 #~ msgid "User name: "
 #~ msgstr "Nome utente: "
@@ -5781,10 +5873,6 @@ msgstr "step mancanti"
 #~ msgid "_Accept Changes"
 #~ msgstr "Accetta m_odifiche"
 
-#~ msgctxt "GUI|Subscription|Authentication|Account"
-#~ msgid "_Account"
-#~ msgstr "_Account"
-
 #~ msgctxt "GUI|Keyboard Layout|Add Layout"
 #~ msgid "_Add"
 #~ msgstr "Agg_iungi"
@@ -6046,10 +6134,6 @@ msgstr "step mancanti"
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Enable HTTP Proxy"
 #~ msgstr "Abilita Proxy _HTTP"
-
-#~ msgctxt "GUI|Password"
-#~ msgid "_Enable root account"
-#~ msgstr "_Abilita l'account di root"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Encrypt"
@@ -6407,10 +6491,6 @@ msgstr "step mancanti"
 #~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Reverse CHAP"
 #~ msgid "_Reverse CHAP User name:"
 #~ msgstr "Nome utente CHAP _inverso:"
-
-#~ msgctxt "GUI|Spoke"
-#~ msgid "_Root Account"
-#~ msgstr "_Root Account"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
@@ -7043,9 +7123,6 @@ msgstr "step mancanti"
 #~ "inclusi quelli nuovi, saranno mostrati nella sezione Dischi Standard "
 #~ "Locali."
 
-#~ msgid "Installing."
-#~ msgstr "Installazione in corso."
-
 #~ msgid "Failed to set up installation source; check the repo url"
 #~ msgstr ""
 #~ "Impostazione della sorgente di installazione fallita; controllare l'url "
@@ -7275,12 +7352,6 @@ msgstr "step mancanti"
 #~| msgid "_Confirm password"
 #~ msgid "Confirm root password"
 #~ msgstr "_Conferma password"
-
-#, fuzzy
-#~| msgctxt "GUI|Password"
-#~| msgid "_Enable root account"
-#~ msgid "Lock root account"
-#~ msgstr "_Abilita l'account di root"
 
 #, fuzzy
 #~| msgctxt "GUI|Spoke"

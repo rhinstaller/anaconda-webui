@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 09:36+0000\n"
+"POT-Creation-Date: 2024-02-06 02:48+0000\n"
 "PO-Revision-Date: 2024-01-29 02:42+0000\n"
 "Last-Translator: Aleksey Fedorov <aleksejfedorov963@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/"
@@ -65,7 +65,7 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.3.1\n"
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:138
 msgid "$0 installation"
 msgstr "Установка $0"
 
@@ -73,7 +73,13 @@ msgstr "Установка $0"
 msgid "$0 installer"
 msgstr "Программа установки $0"
 
-#: src/components/storage/MountPointMapping.jsx:194
+#: src/components/storage/MountPointMapping.jsx:202
+#, fuzzy
+#| msgid "%s cannot be on an encrypted block device."
+msgid "'$0' filesystem cannot be on an ecnrypted block device"
+msgstr "%s не может быть на зашифрованном блочном устройстве."
+
+#: src/components/storage/MountPointMapping.jsx:196
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' должно находиться на устройстве, отформатированном под '$1'"
 
@@ -81,7 +87,20 @@ msgstr "'$0' должно находиться на устройстве, отф
 msgid "About"
 msgstr "О программе"
 
-#: src/components/storage/MountPointMapping.jsx:573
+#: src/components/review/ReviewConfiguration.jsx:144
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Account"
+msgstr "_Учетная запись"
+
+#: src/components/AnacondaWizard.jsx:366
+#, fuzzy
+#| msgid "Connection failed"
+msgid "Account setting failed."
+msgstr "Ошибка подключения"
+
+#: src/components/storage/MountPointMapping.jsx:583
 msgid "Add mount"
 msgstr "Добавить точку монтирования"
 
@@ -113,16 +132,16 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Страница проекта Anaconda"
 
-#: src/components/storage/InstallationScenario.jsx:142
+#: src/components/storage/InstallationScenario.jsx:131
 msgid "Apply mount point assignment and install"
 msgstr "Применить назначение точки монтирования и установить"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Applying new disk selection..."
 msgstr "Применение нового выбора диска..."
 
-#: src/components/review/ReviewConfiguration.jsx:200
-#: src/components/AnacondaWizard.jsx:388
+#: src/components/AnacondaWizard.jsx:407
+#: src/components/review/ReviewConfiguration.jsx:210
 msgid "Back"
 msgstr "Назад"
 
@@ -156,7 +175,7 @@ msgstr ""
 "Изменения, сделанные с помощью Blivet-gui, напрямую повлияют на ваше "
 "хранилище."
 
-#: src/components/storage/DiskEncryption.jsx:253
+#: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
 msgstr "Проверка настроек устройств хранения"
 
@@ -168,7 +187,7 @@ msgstr "Выбрать язык"
 msgid "Chosen language: "
 msgstr "Выбранный язык: "
 
-#: src/components/storage/InstallationDestination.jsx:234
+#: src/components/storage/InstallationDestination.jsx:238
 msgid "Clear input value"
 msgstr "Очистить входное значение"
 
@@ -184,31 +203,46 @@ msgstr "Распространенные языки"
 msgid "Completed"
 msgstr "Завершено"
 
-#: src/components/storage/DiskEncryption.jsx:312
+#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
 msgid "Confirm passphrase"
 msgstr "Подтвердите парольную фразу"
 
-#: src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:459
 msgid "Continue installation"
 msgstr "Продолжить установку"
+
+#: src/components/users/Accounts.jsx:351
+#, fuzzy
+#| msgctxt "GUI|Spoke"
+#| msgid "_Root Account"
+msgid "Create Account"
+msgstr "_Учетная запись root"
+
+#: src/components/users/Accounts.jsx:210
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Create account"
+msgstr "Включить учётную запись root"
 
 #: src/components/Error.jsx:234
 msgid "Critical error"
 msgstr "Критическая ошибка"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:221
 msgid "Current selections"
 msgstr "Текущий выбор"
 
-#: src/components/storage/MountPointMapping.jsx:234
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Custom"
 msgstr "По-своему"
 
-#: src/components/storage/InstallationDestination.jsx:401
+#: src/components/storage/InstallationDestination.jsx:404
 msgid "Destination"
 msgstr "Назначение"
 
-#: src/components/storage/MountPointMapping.jsx:549
+#: src/components/storage/MountPointMapping.jsx:559
 msgid "Device"
 msgstr "Устройство"
 
@@ -217,36 +251,43 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "Перед назначением точек монтирования устройства следует разблокировать."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Disabled"
 msgstr "Выключено"
 
-#: src/components/AnacondaWizard.jsx:123
+#: src/components/AnacondaWizard.jsx:120
 msgid "Disk configuration"
 msgstr "Конфигурация диска"
 
-#: src/components/storage/DiskEncryption.jsx:379
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/storage/DiskEncryption.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Шифрование диска"
 
-#: src/components/storage/MountPointMapping.jsx:317
+#: src/components/storage/MountPointMapping.jsx:326
 msgid "Duplicate device."
 msgstr "Дублирование устройства."
 
-#: src/components/storage/MountPointMapping.jsx:240
+#: src/components/storage/MountPointMapping.jsx:249
 msgid "Duplicate mount point."
 msgstr "Дублирование точки монтирования."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/users/Accounts.jsx:277
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Enable root account"
+msgstr "Включить учётную запись root"
+
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Enabled"
 msgstr "Включено"
 
-#: src/components/storage/DiskEncryption.jsx:297
+#: src/components/storage/DiskEncryption.jsx:80
 msgid "Encrypt my data"
 msgstr "Зашифровать данные"
 
-#: src/components/storage/DiskEncryption.jsx:381
+#: src/components/storage/DiskEncryption.jsx:140
 msgid "Encrypt the selected devices?"
 msgstr "Зашифровать выбранные устройства?"
 
@@ -254,22 +295,22 @@ msgstr "Зашифровать выбранные устройства?"
 msgid "Encrypted devices are locked"
 msgstr "Зашифрованные устройства заблокированы"
 
-#: src/components/storage/DiskEncryption.jsx:363
+#: src/components/storage/DiskEncryption.jsx:122
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Шифрование помогает защитить ваши данные и предотвратить доступ к ним других "
 "лиц."
 
-#: src/components/storage/InstallationScenario.jsx:108
-#: src/components/storage/InstallationScenario.jsx:114
+#: src/components/storage/InstallationScenario.jsx:97
+#: src/components/storage/InstallationScenario.jsx:103
 msgid "Erase data and install"
 msgstr "Стереть данные и установить"
 
-#: src/components/storage/InstallationScenario.jsx:118
+#: src/components/storage/InstallationScenario.jsx:107
 msgid "Erase data and install?"
 msgstr "Стереть данные и установить?"
 
-#: src/components/storage/InstallationScenario.jsx:116
+#: src/components/storage/InstallationScenario.jsx:105
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Удаление данных невозможно отменить. Убедитесь, что есть резервные копии."
@@ -278,13 +319,9 @@ msgstr ""
 msgid "Error details"
 msgstr "Сведения об ошибке"
 
-#: src/components/AnacondaWizard.jsx:233 src/components/AnacondaWizard.jsx:386
+#: src/components/AnacondaWizard.jsx:249
 msgid "Error was hit when going back from $0."
 msgstr "Произошла ошибка при возврате из $0."
-
-#: src/components/storage/InstallationScenario.jsx:181
-msgid "Failed to get device names."
-msgstr "Не удалось получить имена устройств."
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -302,7 +339,15 @@ msgstr ""
 msgid "Find a language"
 msgstr "Найти язык"
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/users/Accounts.jsx:214
+msgid "Full name"
+msgstr "Полное имя"
+
+#: src/components/users/Accounts.jsx:180
+msgid "Full name cannot contain colon characters"
+msgstr "Полное имя не может содержать двоеточий"
+
+#: src/components/Password.jsx:241
 msgid "Hide confirmed password"
 msgstr "Скрыть подтвержденный пароль"
 
@@ -310,11 +355,11 @@ msgstr "Скрыть подтвержденный пароль"
 msgid "Hide passphrase"
 msgstr "Скрыть парольную фразу"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Hide password"
 msgstr "Скрыть пароль"
 
-#: src/components/storage/InstallationScenario.jsx:292
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "How would you like to install?"
 msgstr "Как бы вы хотели установить?"
 
@@ -339,15 +384,21 @@ msgstr "Игнорировать"
 msgid "In progress"
 msgstr "В ходе выполнения"
 
-#: src/components/storage/InstallationScenario.jsx:128
+#: src/components/app.jsx:130
+#, fuzzy
+#| msgid "Installing."
+msgid "Initializing..."
+msgstr "Установка."
+
+#: src/components/storage/InstallationScenario.jsx:117
 msgid "Install"
 msgstr "Установить"
 
-#: src/components/storage/InstallationScenario.jsx:146
+#: src/components/storage/InstallationScenario.jsx:135
 msgid "Install on the custom mount points?"
 msgstr "Установить на вручную заданные точки монтирования?"
 
-#: src/components/storage/InstallationScenario.jsx:132
+#: src/components/storage/InstallationScenario.jsx:121
 msgid "Install on the free space?"
 msgstr "Установить на свободное место?"
 
@@ -355,7 +406,7 @@ msgstr "Установить на свободное место?"
 msgid "Installation failed"
 msgstr "Установка не удалась"
 
-#: src/components/storage/InstallationMethod.jsx:86
+#: src/components/storage/InstallationMethod.jsx:88
 msgid "Installation method"
 msgstr "Метод установки"
 
@@ -363,7 +414,7 @@ msgstr "Метод установки"
 msgid "Installation of the system failed: $0"
 msgstr "Установка системы не удалась: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:154
 msgid "Installation type"
 msgstr "Тип установки"
 
@@ -371,7 +422,7 @@ msgstr "Тип установки"
 msgid "Installing"
 msgstr "Выполняется установка"
 
-#: src/components/storage/InstallationDestination.jsx:420
+#: src/components/storage/InstallationDestination.jsx:423
 msgid "Installing to $0 ($1)"
 msgstr "Установка на $0 ($1)"
 
@@ -396,11 +447,11 @@ msgstr "Заблокированные устройства"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/components/storage/MountPointMapping.jsx:674
+#: src/components/storage/MountPointMapping.jsx:684
 msgid "Manual disk configuration"
 msgstr "Настройка диска вручную"
 
-#: src/components/storage/MountPointMapping.jsx:676
+#: src/components/storage/MountPointMapping.jsx:686
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Настройка диска вручную: распределение точек монтирования"
 
@@ -408,11 +459,11 @@ msgstr "Настройка диска вручную: распределение
 msgid "Manually select storage locations for installation."
 msgstr "Вручную выбрать места хранения для установки."
 
-#: src/components/storage/DiskEncryption.jsx:72
+#: src/components/Password.jsx:72
 msgid "Medium"
 msgstr "Носитель"
 
-#: src/components/storage/MountPointMapping.jsx:138
+#: src/components/storage/MountPointMapping.jsx:140
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Несоответствие между выбором форматирования родительского и дочернего "
@@ -431,16 +482,16 @@ msgstr "Изменить устройства хранения"
 msgid "Modifying the storage failed."
 msgstr "Изменение хранилища не удалось."
 
-#: src/components/storage/MountPointMapping.jsx:548
+#: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "Точка монтирования"
 
-#: src/components/storage/InstallationScenario.jsx:136
-#: src/components/storage/MountPointMapping.jsx:546
+#: src/components/storage/MountPointMapping.jsx:556
+#: src/components/storage/InstallationScenario.jsx:125
 msgid "Mount point assignment"
 msgstr "Назначение точки монтирования"
 
-#: src/components/storage/DiskEncryption.jsx:173
+#: src/components/Password.jsx:47
 msgid "Must be at least $0 characters"
 msgstr "Должно быть не менее $0 символов"
 
@@ -456,36 +507,36 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Сеть недоступна. Настройте сеть, чтобы сообщить о проблеме."
 
-#: src/components/AnacondaWizard.jsx:359
+#: src/components/AnacondaWizard.jsx:381
 msgid "Next"
 msgstr "Далее"
 
-#: src/components/storage/InstallationDestination.jsx:406
+#: src/components/storage/InstallationDestination.jsx:463
 msgid "No additional disks detected"
 msgstr "Дополнительные диски не обнаружены"
 
-#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/MountPointMapping.jsx:563
 msgid "No devices"
 msgstr "Нет устройств"
 
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:115
+#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Нет результатов"
 
-#: src/components/storage/InstallationScenario.jsx:95
+#: src/components/storage/InstallationScenario.jsx:84
 msgid "No usable devices on the selected disks."
 msgstr "На выбранных дисках нет пригодных для использования устройств."
 
-#: src/components/storage/InstallationDestination.jsx:430
+#: src/components/storage/InstallationDestination.jsx:433
 msgid "No usable disks detected"
 msgstr "Не обнаружено пригодных для использования дисков"
 
-#: src/components/storage/InstallationScenario.jsx:79
+#: src/components/storage/InstallationScenario.jsx:68
 msgid "Not enough free space on the selected disks."
 msgstr "Недостаточно свободного места на выбранных дисках."
 
-#: src/components/storage/InstallationScenario.jsx:61
+#: src/components/storage/InstallationScenario.jsx:50
 msgid "Not enough space on selected disks."
 msgstr "Недостаточно места на выбранных дисках."
 
@@ -500,7 +551,7 @@ msgstr ""
 "это программное обеспечение для какой-либо важной работы или в условиях "
 "производства."
 
-#: src/components/storage/DiskEncryption.jsx:366
+#: src/components/storage/DiskEncryption.jsx:125
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -512,9 +563,10 @@ msgstr ""
 msgid "Operating system"
 msgstr "Операционная система"
 
-#: src/components/storage/DiskEncryption.jsx:309
+#: src/components/storage/DiskEncryption.jsx:93
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 msgid "Passphrase"
 msgstr "Парольная фраза"
 
@@ -522,7 +574,7 @@ msgstr "Парольная фраза"
 msgid "Passphrase did not match any locked device"
 msgstr "Парольная фраза не совпала ни с одним заблокированным устройством"
 
-#: src/components/storage/DiskEncryption.jsx:216
+#: src/components/Password.jsx:255
 msgid "Passphrases must match"
 msgstr "Парольные фразы должны совпадать"
 
@@ -546,25 +598,25 @@ msgstr "Предварительный выпуск"
 msgid "Preparing report"
 msgstr "Подготовка отччета"
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "Выход"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Quit installer?"
 msgstr "Выйти из установки?"
 
-#: src/components/storage/InstallationDestination.jsx:373
+#: src/components/storage/InstallationDestination.jsx:377
 msgid "Re-scan"
 msgstr "Повторное сканирование"
 
-#: src/components/app.jsx:98
+#: src/components/app.jsx:113
 msgid "Reading information about the computer failed."
 msgstr "Не удалось прочитать информацию о компьютере."
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "Не удалось прочитать конфигурацию программы установки."
 
@@ -572,22 +624,26 @@ msgstr "Не удалось прочитать конфигурацию прог
 msgid "Reading installer version information failed."
 msgstr "Не удалось прочитать информацию о версии программы установки."
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "Перезагрузка"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Reboot system?"
 msgstr "Перезагрузить систему?"
 
-#: src/components/storage/MountPointMapping.jsx:340
-#: src/components/storage/MountPointMapping.jsx:550
+#: src/components/storage/MountPointMapping.jsx:242
+msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:349
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "Reformat"
 msgstr "Переформатирование"
 
-#: src/components/storage/MountPointMapping.jsx:373
+#: src/components/storage/MountPointMapping.jsx:382
 msgid "Remove"
 msgstr "Удалить"
 
@@ -616,11 +672,11 @@ msgstr ""
 "отредактируйте прикрепленный журнал, чтобы удалить любую конфиденциальную "
 "информацию."
 
-#: src/components/storage/MountPointMapping.jsx:233
+#: src/components/storage/MountPointMapping.jsx:241
 msgid "Required"
 msgstr "Обязательно"
 
-#: src/components/storage/InstallationDestination.jsx:382
+#: src/components/storage/InstallationDestination.jsx:386
 msgid "Rescan"
 msgstr "Повторное сканирование"
 
@@ -628,28 +684,38 @@ msgstr "Повторное сканирование"
 msgid "Rescan storage"
 msgstr "Повторное сканирование устройств хранения"
 
-#: src/components/storage/InstallationDestination.jsx:361
+#: src/components/storage/InstallationDestination.jsx:365
 msgid "Rescanning of the disks failed."
 msgstr "Повторное сканирование дисков не удалось."
 
-#: src/components/review/ReviewConfiguration.jsx:231
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:242
 msgid "Review and install"
 msgstr "Просмотреть и установить"
 
-#: src/components/storage/MountPointMapping.jsx:278
+#: src/components/installation/Feedback.jsx:37
+msgid "Scan the QR code with your phone or visit:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:287
 msgid "Select a device"
 msgstr "Выбрать устройство"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Select a disk"
 msgstr "Выбрать диск"
 
-#: src/components/storage/MountPointMapping.jsx:121
+#: src/components/storage/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Формат выбранного устройства '$0' не может быть переформатирован."
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/installation/Feedback.jsx:36
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Send us feedback on your installation"
+msgstr "Использовать свободное место для установки"
+
+#: src/components/Password.jsx:241
 msgid "Show confirmed password"
 msgstr "Показать подтвержденный пароль"
 
@@ -657,7 +723,7 @@ msgstr "Показать подтвержденный пароль"
 msgid "Show passphrase"
 msgstr "Показать парольную фразу"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Show password"
 msgstr "Показать пароль"
 
@@ -677,11 +743,11 @@ msgstr ""
 "Установка программного обеспечения: настройка хранилища данных завершена. "
 "Теперь программное обеспечение устанавливается на ваше устройство."
 
-#: src/components/storage/InstallationScenario.jsx:98
+#: src/components/storage/InstallationScenario.jsx:87
 msgid "Some devices use the same name: $0."
 msgstr "Некоторые устройства используют одно и то же имя: $0."
 
-#: src/components/review/ReviewConfiguration.jsx:165
+#: src/components/review/ReviewConfiguration.jsx:175
 msgid "Storage"
 msgstr "Хранилище"
 
@@ -693,7 +759,7 @@ msgstr "Конфигурация устройств хранения"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Конфигурация хранилища: в настоящее время хранилище настраивается."
 
-#: src/components/storage/DiskEncryption.jsx:83
+#: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Сложный"
 
@@ -704,6 +770,12 @@ msgstr "Установка завершена успешно"
 #: src/components/storage/EncryptedDevices.jsx:131
 msgid "Successfully unlocked $0."
 msgstr "Успешно разблокировано $0."
+
+#: src/components/users/Accounts.jsx:305
+#, fuzzy
+#| msgid "File System"
+msgid "System"
+msgstr "Файловая система"
 
 #: src/components/installation/InstallationProgress.jsx:127
 msgid "System configuration"
@@ -725,6 +797,22 @@ msgstr ""
 "Выбранный язык будет использоваться при установке и в установленном "
 "программном обеспечении. "
 
+#: src/components/storage/InstallationDestination.jsx:495
+msgid "The following disk is no longer available: $0"
+msgid_plural "The following disks are no longer available: $0"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/components/storage/InstallationDestination.jsx:478
+#, fuzzy
+#| msgid "The following mandatory spokes are not completed:"
+msgid "The following disk was detected: $0"
+msgid_plural "The following disks were detected: $0"
+msgstr[0] "Не завершены обязательные шаги:"
+msgstr[1] "Не завершены обязательные шаги:"
+msgstr[2] "Не завершены обязательные шаги:"
+
 #: src/components/Error.jsx:257
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
@@ -733,11 +821,11 @@ msgstr ""
 "Следующий журнал будет отправлен в систему отслеживания проблем, где вы "
 "сможете предоставить дополнительную информацию."
 
-#: src/components/storage/InstallationScenario.jsx:63
+#: src/components/storage/InstallationScenario.jsx:52
 msgid "The installation needs $1 of disk space; "
 msgstr "Для установки требуется $1 дискового пространства; "
 
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:122
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -745,7 +833,7 @@ msgstr ""
 "При установке будет использовано все доступное пространство на ваших "
 "устройствах, но данные устройства не будут удалены."
 
-#: src/components/storage/InstallationScenario.jsx:147
+#: src/components/storage/InstallationScenario.jsx:136
 msgid "The installation will use your configured partitioning layout."
 msgstr "При установке будет использоваться настроенная вами схема разделов."
 
@@ -757,7 +845,7 @@ msgstr "Установка не может быть продолжена из-з
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Установка не может быть продолжена из-за критической ошибки: $0"
 
-#: src/components/storage/DiskEncryption.jsx:182
+#: src/components/storage/DiskEncryption.jsx:42
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
@@ -765,11 +853,11 @@ msgstr ""
 "Парольная фраза содержит символы, не входящие в набор ASCII. Функции "
 "переключения раскладки клавиатуры могут быть недоступны при её вводе."
 
-#: src/components/storage/MountPointMapping.jsx:352
+#: src/components/storage/MountPointMapping.jsx:361
 msgid "The root partition is always re-formatted by the installer."
 msgstr "Корневой раздел всегда переформатируется программой установки."
 
-#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:108
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -777,11 +865,21 @@ msgstr ""
 "Выбранные диски будут стерты, это нельзя отменить. Вы уверены, что хотите "
 "продолжить установку?"
 
+#: src/components/storage/InstallationDestination.jsx:470
+#, fuzzy
+#| msgid "No usable disks detected"
+msgid "The usable disks have changed"
+msgstr "Не обнаружено пригодных для использования дисков"
+
+#: src/components/users/Accounts.jsx:212
+msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:68
 msgid "This is unstable, pre-release software"
 msgstr "Стабильность предварительной версии дистрибутива не гарантируется"
 
-#: src/components/storage/DiskEncryption.jsx:257
+#: src/components/storage/DiskEncryption.jsx:57
 msgid "This may take a moment"
 msgstr "Это может занять некоторое время"
 
@@ -789,22 +887,22 @@ msgstr "Это может занять некоторое время"
 msgid "To begin using $0, reboot your system."
 msgstr "Чтобы начать использовать $0, перезагрузите систему."
 
-#: src/components/storage/InstallationMethod.jsx:78
+#: src/components/storage/InstallationMethod.jsx:80
 msgid "To continue, select the devices to install to."
 msgstr "Чтобы продолжить, выберите устройства для установки."
 
-#: src/components/storage/InstallationScenario.jsx:130
-#: src/components/storage/InstallationScenario.jsx:144
+#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:133
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Во избежание потери данных, обязательно сделайте их резервную копию."
 
-#: src/components/storage/InstallationScenario.jsx:99
+#: src/components/storage/InstallationScenario.jsx:88
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 "Чтобы использовать эту опцию, переименуйте устройства, чтобы они имели "
 "уникальные имена."
 
-#: src/components/storage/InstallationScenario.jsx:81
+#: src/components/storage/InstallationScenario.jsx:70
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -824,11 +922,33 @@ msgstr "Разблокировать устройства"
 msgid "Unlock encrypted devices"
 msgstr "Разблокировать зашифрованые устройства"
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:111
 msgid "Use free space for the installation"
 msgstr "Использовать свободное место для установки"
 
-#: src/components/storage/DiskEncryption.jsx:61
+#: src/components/users/Accounts.jsx:233
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: src/components/users/Accounts.jsx:168
+msgid ""
+"User name may only contain: letters from a-z, digits 0-9, dash $0, period "
+"$1, underscore $2"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:165
+#, fuzzy
+#| msgid "User name is reserved for system: %s"
+msgid "User name must not be a reserved word"
+msgstr "Имя пользователя зарезервировано для системы: %s"
+
+#: src/components/users/Accounts.jsx:162
+#, fuzzy
+#| msgid "Name must be shorter than 33 characters."
+msgid "User names must be shorter than 33 characters"
+msgstr "Длина имени должна быть меньше 33 символов."
+
+#: src/components/Password.jsx:61
 msgid "Weak"
 msgstr "Простой"
 
@@ -840,11 +960,11 @@ msgstr "Добро пожаловать"
 msgid "Welcome to $0"
 msgstr "Добро пожаловать в $0"
 
-#: src/components/storage/InstallationMethod.jsx:87
+#: src/components/storage/InstallationMethod.jsx:89
 msgid "Welcome. Let's install $0 now."
 msgstr "Добро пожаловать. Давайте установим $0."
 
-#: src/components/AnacondaWizard.jsx:452
+#: src/components/AnacondaWizard.jsx:468
 msgid "Your progress will not be saved."
 msgstr "Ваш прогресс не будет сохранен."
 
@@ -867,6 +987,9 @@ msgstr "монтировать"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "предстоящий шаг"
+
+#~ msgid "Failed to get device names."
+#~ msgstr "Не удалось получить имена устройств."
 
 #~ msgid ""
 #~ "\n"
@@ -1138,10 +1261,6 @@ msgstr "предстоящий шаг"
 #~ msgid ""
 #~ "%s The disks you've selected have the following amounts of free space:"
 #~ msgstr "%s На выбранных дисках доступно:"
-
-#, python-format
-#~ msgid "%s cannot be on an encrypted block device."
-#~ msgstr "%s не может быть на зашифрованном блочном устройстве."
 
 #, python-format
 #~ msgid ""
@@ -1878,9 +1997,6 @@ msgstr "предстоящий шаг"
 #~ msgid "Connecting..."
 #~ msgstr "Подключение..."
 
-#~ msgid "Connection failed"
-#~ msgstr "Ошибка подключения"
-
 #~ msgid "Continue"
 #~ msgstr "Продолжить"
 
@@ -2356,9 +2472,6 @@ msgstr "предстоящий шаг"
 #~ msgid "File S_ystem:"
 #~ msgstr "_Файловая система:"
 
-#~ msgid "File System"
-#~ msgstr "Файловая система"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr "Тип «{}», приведенный в команде autopart, неправильный."
 
@@ -2445,14 +2558,8 @@ msgstr "предстоящий шаг"
 #~ msgid "Full Name"
 #~ msgstr "Полное имя"
 
-#~ msgid "Full name"
-#~ msgstr "Полное имя"
-
 #~ msgid "Full name can't contain the ':' character"
 #~ msgstr "Полное имя не может содержать символ «:»"
-
-#~ msgid "Full name cannot contain colon characters"
-#~ msgstr "Полное имя не может содержать двоеточий"
 
 #~ msgid "Fully numeric name is not allowed."
 #~ msgstr "Имя из одних цифр не допускается."
@@ -3071,9 +3178,6 @@ msgstr "предстоящий шаг"
 
 #~ msgid "Name is already in use."
 #~ msgstr "Имя уже используется."
-
-#~ msgid "Name must be shorter than 33 characters."
-#~ msgstr "Длина имени должна быть меньше 33 символов."
 
 #~ msgid "Name of the repository"
 #~ msgstr "Имя репозитория"
@@ -4569,9 +4673,6 @@ msgstr "предстоящий шаг"
 #~ msgid "The following installations were discovered on your system."
 #~ msgstr "В вашей системе обнаружены следующие установки."
 
-#~ msgid "The following mandatory spokes are not completed:"
-#~ msgstr "Не завершены обязательные шаги:"
-
 #, python-format
 #~ msgid ""
 #~ "The following nodes were discovered using the iSCSI initiator "
@@ -5131,13 +5232,6 @@ msgstr "предстоящий шаг"
 
 #~ msgid "User creation"
 #~ msgstr "Создание пользователя"
-
-#~ msgid "User name"
-#~ msgstr "Имя пользователя"
-
-#, python-format
-#~ msgid "User name is reserved for system: %s"
-#~ msgstr "Имя пользователя зарезервировано для системы: %s"
 
 #~ msgid "User name: "
 #~ msgstr "Имя пользователя: "
@@ -5702,10 +5796,6 @@ msgstr "предстоящий шаг"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Принять изменения"
 
-#~ msgctxt "GUI|Subscription|Authentication|Account"
-#~ msgid "_Account"
-#~ msgstr "_Учетная запись"
-
 #~ msgctxt "GUI|Keyboard Layout|Add Layout"
 #~ msgid "_Add"
 #~ msgstr "_Добавить"
@@ -5966,10 +6056,6 @@ msgstr "предстоящий шаг"
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Enable HTTP Proxy"
 #~ msgstr "_Включить HTTP-прокси"
-
-#~ msgctxt "GUI|Password"
-#~ msgid "_Enable root account"
-#~ msgstr "Включить учётную запись root"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Encrypt"
@@ -6326,10 +6412,6 @@ msgstr "предстоящий шаг"
 #~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Reverse CHAP"
 #~ msgid "_Reverse CHAP User name:"
 #~ msgstr "По_льзователь обратного CHAP:"
-
-#~ msgctxt "GUI|Spoke"
-#~ msgid "_Root Account"
-#~ msgstr "_Учетная запись root"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
@@ -6969,9 +7051,6 @@ msgstr "предстоящий шаг"
 #~ "обновите страницу с помощью значка обновления. Все обнаруженные диски, "
 #~ "включая новые, будут отображаться в разделе «Локальные стандартные диски»."
 
-#~ msgid "Installing."
-#~ msgstr "Установка."
-
 #~ msgid "Failed to set up installation source; check the repo url"
 #~ msgstr "Не удалось настроить источник установки; проверьте URL репозитория"
 
@@ -7196,12 +7275,6 @@ msgstr "предстоящий шаг"
 #~| msgid "_Confirm password"
 #~ msgid "Confirm root password"
 #~ msgstr "_Подтвердите пароль"
-
-#, fuzzy
-#~| msgctxt "GUI|Password"
-#~| msgid "_Enable root account"
-#~ msgid "Lock root account"
-#~ msgstr "Включить учётную запись root"
 
 #, fuzzy
 #~| msgctxt "GUI|Spoke"

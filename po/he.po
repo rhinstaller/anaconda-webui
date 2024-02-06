@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 09:36+0000\n"
+"POT-Creation-Date: 2024-02-06 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -31,7 +31,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:138
 msgid "$0 installation"
 msgstr "התקנת $0"
 
@@ -39,7 +39,13 @@ msgstr "התקנת $0"
 msgid "$0 installer"
 msgstr "תוכנית ההתקנה של $0"
 
-#: src/components/storage/MountPointMapping.jsx:194
+#: src/components/storage/MountPointMapping.jsx:202
+#, fuzzy
+#| msgid "%s cannot be on an encrypted block device."
+msgid "'$0' filesystem cannot be on an ecnrypted block device"
+msgstr "%s אינו יכול להיות על התקן בלוקים מוצפן."
+
+#: src/components/storage/MountPointMapping.jsx:196
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} חייב להיות על התקן מסוג {type}"
@@ -48,7 +54,20 @@ msgstr "{fs} חייב להיות על התקן מסוג {type}"
 msgid "About"
 msgstr "על אודות"
 
-#: src/components/storage/MountPointMapping.jsx:573
+#: src/components/review/ReviewConfiguration.jsx:144
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Account"
+msgstr "_חשבון"
+
+#: src/components/AnacondaWizard.jsx:366
+#, fuzzy
+#| msgid "Connection failed"
+msgid "Account setting failed."
+msgstr "החיבור נכשל"
+
+#: src/components/storage/MountPointMapping.jsx:583
 msgid "Add mount"
 msgstr "הוספת עיגון"
 
@@ -80,16 +99,16 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "דף מיזם Anaconda"
 
-#: src/components/storage/InstallationScenario.jsx:142
+#: src/components/storage/InstallationScenario.jsx:131
 msgid "Apply mount point assignment and install"
 msgstr "החלת הקצאת נקודת עיגון והתקנה"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Applying new disk selection..."
 msgstr "בחירת הכונן החדשה חלה…"
 
-#: src/components/review/ReviewConfiguration.jsx:200
-#: src/components/AnacondaWizard.jsx:388
+#: src/components/AnacondaWizard.jsx:407
+#: src/components/review/ReviewConfiguration.jsx:210
 msgid "Back"
 msgstr "חזרה"
 
@@ -120,7 +139,7 @@ msgstr "ביטול"
 msgid "Changes made in Blivet-gui will directly affect your storage."
 msgstr "שינויים שבוצעו ב־Blivet-gui ישפיעו ישירות על האחסון שלך."
 
-#: src/components/storage/DiskEncryption.jsx:253
+#: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
 msgstr "הגדרות האחסון נבדקות"
 
@@ -132,7 +151,7 @@ msgstr "נא לבחור שפה"
 msgid "Chosen language: "
 msgstr "שפה נבחרת: "
 
-#: src/components/storage/InstallationDestination.jsx:234
+#: src/components/storage/InstallationDestination.jsx:238
 msgid "Clear input value"
 msgstr "מחיקת ערך קלט"
 
@@ -148,31 +167,45 @@ msgstr "שפות נפוצות"
 msgid "Completed"
 msgstr "הושלם"
 
-#: src/components/storage/DiskEncryption.jsx:312
+#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
 msgid "Confirm passphrase"
 msgstr "אישור מילת צופן"
 
-#: src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:459
 msgid "Continue installation"
 msgstr "להמשיך בהתקנה"
+
+#: src/components/users/Accounts.jsx:351
+#, fuzzy
+#| msgctxt "GUI|Spoke"
+#| msgid "_Root Account"
+msgid "Create Account"
+msgstr "_חשבון על (Root)"
+
+#: src/components/users/Accounts.jsx:210
+#, fuzzy
+#| msgid "Lock root account"
+msgid "Create account"
+msgstr "נעילת חשבון root"
 
 #: src/components/Error.jsx:234
 msgid "Critical error"
 msgstr "שגיאה משמעותית"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:221
 msgid "Current selections"
 msgstr "בחירות נוכחיות"
 
-#: src/components/storage/MountPointMapping.jsx:234
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Custom"
 msgstr "מותאם אישית"
 
-#: src/components/storage/InstallationDestination.jsx:401
+#: src/components/storage/InstallationDestination.jsx:404
 msgid "Destination"
 msgstr "יעד"
 
-#: src/components/storage/MountPointMapping.jsx:549
+#: src/components/storage/MountPointMapping.jsx:559
 msgid "Device"
 msgstr "התקן"
 
@@ -180,36 +213,43 @@ msgstr "התקן"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "יש לשחרר התקנים בטרם הקצאת נקודות עיגון."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Disabled"
 msgstr "מושבת"
 
-#: src/components/AnacondaWizard.jsx:123
+#: src/components/AnacondaWizard.jsx:120
 msgid "Disk configuration"
 msgstr "הגדרת כונן"
 
-#: src/components/storage/DiskEncryption.jsx:379
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/storage/DiskEncryption.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "הצפנת כונן"
 
-#: src/components/storage/MountPointMapping.jsx:317
+#: src/components/storage/MountPointMapping.jsx:326
 msgid "Duplicate device."
 msgstr "התקן כפול."
 
-#: src/components/storage/MountPointMapping.jsx:240
+#: src/components/storage/MountPointMapping.jsx:249
 msgid "Duplicate mount point."
 msgstr "נקודת עגינה כפולה."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/users/Accounts.jsx:277
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Enable root account"
+msgstr "ה_פעלת חשבון root"
+
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Enabled"
 msgstr "מאופשר"
 
-#: src/components/storage/DiskEncryption.jsx:297
+#: src/components/storage/DiskEncryption.jsx:80
 msgid "Encrypt my data"
 msgstr "הצפנת הנתונים שלי"
 
-#: src/components/storage/DiskEncryption.jsx:381
+#: src/components/storage/DiskEncryption.jsx:140
 msgid "Encrypt the selected devices?"
 msgstr "להצפין את ההתקנים הנבחרים?"
 
@@ -217,20 +257,20 @@ msgstr "להצפין את ההתקנים הנבחרים?"
 msgid "Encrypted devices are locked"
 msgstr "ההתקנים המוצפנים נעולים"
 
-#: src/components/storage/DiskEncryption.jsx:363
+#: src/components/storage/DiskEncryption.jsx:122
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr "הצפנה מסייעת בשמירת בטחון הנתונים שלך, כדי למנוע מאחרים לגשת אליו."
 
-#: src/components/storage/InstallationScenario.jsx:108
-#: src/components/storage/InstallationScenario.jsx:114
+#: src/components/storage/InstallationScenario.jsx:97
+#: src/components/storage/InstallationScenario.jsx:103
 msgid "Erase data and install"
 msgstr "מחיקת הנתונים והתקנה"
 
-#: src/components/storage/InstallationScenario.jsx:118
+#: src/components/storage/InstallationScenario.jsx:107
 msgid "Erase data and install?"
 msgstr "למחוק את הנתונים ולהתקין?"
 
-#: src/components/storage/InstallationScenario.jsx:116
+#: src/components/storage/InstallationScenario.jsx:105
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr "מחיקת הנתונים היא צעד בלתי הפיך. נא לוודא שיש לך גיבוי."
 
@@ -238,14 +278,9 @@ msgstr "מחיקת הנתונים היא צעד בלתי הפיך. נא לווד
 msgid "Error details"
 msgstr "פרטי השגיאה"
 
-#: src/components/AnacondaWizard.jsx:233 src/components/AnacondaWizard.jsx:386
+#: src/components/AnacondaWizard.jsx:249
 msgid "Error was hit when going back from $0."
 msgstr "התעוררה שגיאה בעת הניסיון לחזור מתוך $0."
-
-#: src/components/storage/InstallationScenario.jsx:181
-#, fuzzy
-msgid "Failed to get device names."
-msgstr "החלפת התקן נכשלה."
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -261,7 +296,15 @@ msgstr "סיום: הגדרת המערכת הושלמה. סיום ההתקנה ע
 msgid "Find a language"
 msgstr "איתור שפה"
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/users/Accounts.jsx:214
+msgid "Full name"
+msgstr "שם מלא"
+
+#: src/components/users/Accounts.jsx:180
+msgid "Full name cannot contain colon characters"
+msgstr "השם המלא לא יכול להכיל את התו נקודתיים"
+
+#: src/components/Password.jsx:241
 msgid "Hide confirmed password"
 msgstr "הסתרת סיסמה שאושרה"
 
@@ -270,11 +313,11 @@ msgstr "הסתרת סיסמה שאושרה"
 msgid "Hide passphrase"
 msgstr "אישור מילת צופן"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Hide password"
 msgstr "הסתרת הסיסמה"
 
-#: src/components/storage/InstallationScenario.jsx:292
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "How would you like to install?"
 msgstr "איך להתקין?"
 
@@ -295,15 +338,21 @@ msgstr "התעלמות"
 msgid "In progress"
 msgstr "בתהליך"
 
-#: src/components/storage/InstallationScenario.jsx:128
+#: src/components/app.jsx:130
+#, fuzzy
+#| msgid "Installing."
+msgid "Initializing..."
+msgstr "ההתקנה מתבצעת."
+
+#: src/components/storage/InstallationScenario.jsx:117
 msgid "Install"
 msgstr "התקנה"
 
-#: src/components/storage/InstallationScenario.jsx:146
+#: src/components/storage/InstallationScenario.jsx:135
 msgid "Install on the custom mount points?"
 msgstr "להתקין על נקודות העגינה שהותאמו אישית?"
 
-#: src/components/storage/InstallationScenario.jsx:132
+#: src/components/storage/InstallationScenario.jsx:121
 msgid "Install on the free space?"
 msgstr "להתקין במקום הפנוי?"
 
@@ -311,7 +360,7 @@ msgstr "להתקין במקום הפנוי?"
 msgid "Installation failed"
 msgstr "ההתקנה נכשלה"
 
-#: src/components/storage/InstallationMethod.jsx:86
+#: src/components/storage/InstallationMethod.jsx:88
 msgid "Installation method"
 msgstr "שיטת התקנה"
 
@@ -319,7 +368,7 @@ msgstr "שיטת התקנה"
 msgid "Installation of the system failed: $0"
 msgstr "התקנת המערכת נכשלה: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:154
 msgid "Installation type"
 msgstr "סוג התקנה"
 
@@ -327,7 +376,7 @@ msgstr "סוג התקנה"
 msgid "Installing"
 msgstr "התקנה מתבצעת"
 
-#: src/components/storage/InstallationDestination.jsx:420
+#: src/components/storage/InstallationDestination.jsx:423
 msgid "Installing to $0 ($1)"
 msgstr "מתבצעת התקנה אל $0 ($1)"
 
@@ -353,11 +402,11 @@ msgstr "שחרור התקנים"
 msgid "Log"
 msgstr "יומן"
 
-#: src/components/storage/MountPointMapping.jsx:674
+#: src/components/storage/MountPointMapping.jsx:684
 msgid "Manual disk configuration"
 msgstr "הגדרות כונן ידניות"
 
-#: src/components/storage/MountPointMapping.jsx:676
+#: src/components/storage/MountPointMapping.jsx:686
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "הגדרות כונן ידניות: מיפוי נקודות עיגון"
 
@@ -365,11 +414,11 @@ msgstr "הגדרות כונן ידניות: מיפוי נקודות עיגון"
 msgid "Manually select storage locations for installation."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:72
+#: src/components/Password.jsx:72
 msgid "Medium"
 msgstr "בינונית"
 
-#: src/components/storage/MountPointMapping.jsx:138
+#: src/components/storage/MountPointMapping.jsx:140
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "חוסר התאמה בין בחירת הפרמוט המחודש של התקן ההורה והתקן הצאצא."
 
@@ -386,16 +435,16 @@ msgstr "שינוי אחסון"
 msgid "Modifying the storage failed."
 msgstr "שינוי האחסון נכשל."
 
-#: src/components/storage/MountPointMapping.jsx:548
+#: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "נקודת עיגון"
 
-#: src/components/storage/InstallationScenario.jsx:136
-#: src/components/storage/MountPointMapping.jsx:546
+#: src/components/storage/MountPointMapping.jsx:556
+#: src/components/storage/InstallationScenario.jsx:125
 msgid "Mount point assignment"
 msgstr "הקצאה של נקודות עיגון"
 
-#: src/components/storage/DiskEncryption.jsx:173
+#: src/components/Password.jsx:47
 #, fuzzy
 msgid "Must be at least $0 characters"
 msgstr "חייב להיות לפחות 8 תווים"
@@ -415,37 +464,37 @@ msgstr ""
 "הרשת לא זמינה. יש להגדיר את הרשת מהתפריט בסרגל העליון כדי לדווח על התקלה "
 "הזאת."
 
-#: src/components/AnacondaWizard.jsx:359
+#: src/components/AnacondaWizard.jsx:381
 msgid "Next"
 msgstr "הבא"
 
-#: src/components/storage/InstallationDestination.jsx:406
+#: src/components/storage/InstallationDestination.jsx:463
 msgid "No additional disks detected"
 msgstr "לא זוהו כוננים נוספים"
 
-#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/MountPointMapping.jsx:563
 msgid "No devices"
 msgstr "אין התקנים"
 
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:115
+#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "אין תוצאות"
 
-#: src/components/storage/InstallationScenario.jsx:95
+#: src/components/storage/InstallationScenario.jsx:84
 msgid "No usable devices on the selected disks."
 msgstr "אין התקנים שימושיים בכוננים הנבחרים."
 
-#: src/components/storage/InstallationDestination.jsx:430
+#: src/components/storage/InstallationDestination.jsx:433
 msgid "No usable disks detected"
 msgstr "לא זוהו כוננים שמישים"
 
-#: src/components/storage/InstallationScenario.jsx:79
+#: src/components/storage/InstallationScenario.jsx:68
 #, fuzzy
 msgid "Not enough free space on the selected disks."
 msgstr "אין די מקום פנוי בכוננים שנבחרו."
 
-#: src/components/storage/InstallationScenario.jsx:61
+#: src/components/storage/InstallationScenario.jsx:50
 msgid "Not enough space on selected disks."
 msgstr "אין די מקום בכוננים שנבחרו."
 
@@ -458,7 +507,7 @@ msgstr ""
 "לתשומת ליבך: זוהי תוכנה שטרם שוחררה ומיועדת למטרות פיתוח ובדיקה בלבד. אין "
 "להשתמש בתוכנה זו לעבודות חשובות או בסביבות ייצור."
 
-#: src/components/storage/DiskEncryption.jsx:366
+#: src/components/storage/DiskEncryption.jsx:125
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -468,9 +517,10 @@ msgstr "רק מחיצות חדשות תוצפנה. מחיצות קיימות ת�
 msgid "Operating system"
 msgstr "מערכת הפעלה"
 
-#: src/components/storage/DiskEncryption.jsx:309
+#: src/components/storage/DiskEncryption.jsx:93
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 msgid "Passphrase"
 msgstr "מילת צופן"
 
@@ -478,7 +528,7 @@ msgstr "מילת צופן"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:216
+#: src/components/Password.jsx:255
 msgid "Passphrases must match"
 msgstr "מילות הצופן חייבות להיות תואמות"
 
@@ -502,25 +552,25 @@ msgstr "קדם־שחרור"
 msgid "Preparing report"
 msgstr "הדוח בהפקה"
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "י_ציאה"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Quit installer?"
 msgstr "לצאת מתוכנית ההתקנה?"
 
-#: src/components/storage/InstallationDestination.jsx:373
+#: src/components/storage/InstallationDestination.jsx:377
 msgid "Re-scan"
 msgstr "סריקה מחדש"
 
-#: src/components/app.jsx:98
+#: src/components/app.jsx:113
 msgid "Reading information about the computer failed."
 msgstr "קריאת המידע על המחשב נכשלה."
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 
@@ -528,22 +578,26 @@ msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 msgid "Reading installer version information failed."
 msgstr "קריאת פרטי גרסה תוכנית ההתקנה נכשלה."
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "הפעלה מחדש"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Reboot system?"
 msgstr "להפעיל את המערכת מחדש?"
 
-#: src/components/storage/MountPointMapping.jsx:340
-#: src/components/storage/MountPointMapping.jsx:550
+#: src/components/storage/MountPointMapping.jsx:242
+msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:349
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "Reformat"
 msgstr "פרמוט מחדש"
 
-#: src/components/storage/MountPointMapping.jsx:373
+#: src/components/storage/MountPointMapping.jsx:382
 msgid "Remove"
 msgstr "הסרה"
 
@@ -571,11 +625,11 @@ msgstr ""
 "דיווח על תקלה ישלח מידע דרך הרשת. נא לעיין ולערוך את היומן המצורף כדי להסיר "
 "מידע רגיש אם יש כזה."
 
-#: src/components/storage/MountPointMapping.jsx:233
+#: src/components/storage/MountPointMapping.jsx:241
 msgid "Required"
 msgstr "חובה"
 
-#: src/components/storage/InstallationDestination.jsx:382
+#: src/components/storage/InstallationDestination.jsx:386
 msgid "Rescan"
 msgstr "סריקה מחדש"
 
@@ -583,28 +637,38 @@ msgstr "סריקה מחדש"
 msgid "Rescan storage"
 msgstr "סריקת האחסון מחדש"
 
-#: src/components/storage/InstallationDestination.jsx:361
+#: src/components/storage/InstallationDestination.jsx:365
 msgid "Rescanning of the disks failed."
 msgstr "סריקת הכוננים מחדש נכשלה."
 
-#: src/components/review/ReviewConfiguration.jsx:231
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:242
 msgid "Review and install"
 msgstr "סקירה והתקנה"
 
-#: src/components/storage/MountPointMapping.jsx:278
+#: src/components/installation/Feedback.jsx:37
+msgid "Scan the QR code with your phone or visit:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:287
 msgid "Select a device"
 msgstr "נא לבחור התקן"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Select a disk"
 msgstr "בחירת כונן"
 
-#: src/components/storage/MountPointMapping.jsx:121
+#: src/components/storage/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "לא ניתן לפרמט מחדש את תצורת הכונן הנבחרת ‚$0’."
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/installation/Feedback.jsx:36
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Send us feedback on your installation"
+msgstr "להשתמש במקום הפנוי להתקנה"
+
+#: src/components/Password.jsx:241
 msgid "Show confirmed password"
 msgstr "הצגת סיסמה שאושרה"
 
@@ -613,7 +677,7 @@ msgstr "הצגת סיסמה שאושרה"
 msgid "Show passphrase"
 msgstr "אישור מילת צופן"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Show password"
 msgstr "הצגת הסיסמה"
 
@@ -631,11 +695,11 @@ msgid ""
 "being installed onto your device."
 msgstr "התקנת תוכנות: הגדרת האחסון הושלמה. התוכנות מותקנות כעת במכשיר שלך."
 
-#: src/components/storage/InstallationScenario.jsx:98
+#: src/components/storage/InstallationScenario.jsx:87
 msgid "Some devices use the same name: $0."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:165
+#: src/components/review/ReviewConfiguration.jsx:175
 msgid "Storage"
 msgstr "אחסון"
 
@@ -647,7 +711,7 @@ msgstr "הגדרות אחסון"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "הגדרות אחסון: האחסון מוגדר כרגע."
 
-#: src/components/storage/DiskEncryption.jsx:83
+#: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "חזק"
 
@@ -659,6 +723,12 @@ msgstr "ההתקנה הצליחה"
 #, fuzzy
 msgid "Successfully unlocked $0."
 msgstr "ההתקנה הצליחה"
+
+#: src/components/users/Accounts.jsx:305
+#, fuzzy
+#| msgid "File System"
+msgid "System"
+msgstr "מערכת קבצים"
 
 #: src/components/installation/InstallationProgress.jsx:127
 msgid "System configuration"
@@ -676,23 +746,37 @@ msgid ""
 "software. "
 msgstr "השפה הנבחרת תשמש להתקנה ולתוכנות שיותקנו באמצעותה. "
 
+#: src/components/storage/InstallationDestination.jsx:495
+msgid "The following disk is no longer available: $0"
+msgid_plural "The following disks are no longer available: $0"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/storage/InstallationDestination.jsx:478
+#, fuzzy
+#| msgid "The following mandatory spokes are not completed:"
+msgid "The following disk was detected: $0"
+msgid_plural "The following disks were detected: $0"
+msgstr[0] "הצלעות המחייבות הבאות לא הושלמו:"
+msgstr[1] "הצלעות המחייבות הבאות לא הושלמו:"
+
 #: src/components/Error.jsx:257
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
 msgstr "היומן הבא יישלח למערכת מעקב התקלות בה ניתן לספק פרטים נוספים."
 
-#: src/components/storage/InstallationScenario.jsx:63
+#: src/components/storage/InstallationScenario.jsx:52
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:122
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr "ההתקנה תשתמש בנפח הזמין בהתקנים שלך ולא תמחק נתונים בהתקן."
 
-#: src/components/storage/InstallationScenario.jsx:147
+#: src/components/storage/InstallationScenario.jsx:136
 msgid "The installation will use your configured partitioning layout."
 msgstr "ההתקנה תשתמש בפריסת המחיצות המוגדרת שלך."
 
@@ -704,7 +788,7 @@ msgstr "תוכנית ההתקנה לא תוכל להמשיך עקב תקלה מ�
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "תוכנית ההתקנה לא תוכל להמשיך עקב שגיאה משמעותית: $0"
 
-#: src/components/storage/DiskEncryption.jsx:182
+#: src/components/storage/DiskEncryption.jsx:42
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
@@ -712,21 +796,31 @@ msgstr ""
 "מילת הצופן שסיפקת מכילה תווים מחוץ לטווח ה־ASCII. יתכן שלא תהיה לך אפשרות "
 "להחליף בין פריסות מקלדת בזמן ההקלדה."
 
-#: src/components/storage/MountPointMapping.jsx:352
+#: src/components/storage/MountPointMapping.jsx:361
 msgid "The root partition is always re-formatted by the installer."
 msgstr "מחיצת העל תמיד מפורמטת מחדש על ידי תוכנית ההתקנה."
 
-#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:108
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
 msgstr "הכוננים הנבחרים יימחקו, לא ניתן לבטל פעולה זו. להמשיך בהתקנה?"
 
+#: src/components/storage/InstallationDestination.jsx:470
+#, fuzzy
+#| msgid "No usable disks detected"
+msgid "The usable disks have changed"
+msgstr "לא זוהו כוננים שמישים"
+
+#: src/components/users/Accounts.jsx:212
+msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:68
 msgid "This is unstable, pre-release software"
 msgstr "זו תוכנה בלתי יציבה, לפני יציאה לאור"
 
-#: src/components/storage/DiskEncryption.jsx:257
+#: src/components/storage/DiskEncryption.jsx:57
 msgid "This may take a moment"
 msgstr "פעולה זו עלולה לארוך זמן מה"
 
@@ -734,20 +828,20 @@ msgstr "פעולה זו עלולה לארוך זמן מה"
 msgid "To begin using $0, reboot your system."
 msgstr "כדי להתחיל להשתמש ב־$0, יש להפעיל את המערכת מחדש."
 
-#: src/components/storage/InstallationMethod.jsx:78
+#: src/components/storage/InstallationMethod.jsx:80
 msgid "To continue, select the devices to install to."
 msgstr "כדי להמשיך, נא לבחור את ההתקן להתקנה אליו."
 
-#: src/components/storage/InstallationScenario.jsx:130
-#: src/components/storage/InstallationScenario.jsx:144
+#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:133
 msgid "To prevent loss, make sure to backup your data."
 msgstr "כדי למנוע אובדן נתונים, יש לוודא שהנתונים שלך מגובים."
 
-#: src/components/storage/InstallationScenario.jsx:99
+#: src/components/storage/InstallationScenario.jsx:88
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:81
+#: src/components/storage/InstallationScenario.jsx:70
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -765,11 +859,33 @@ msgstr "שחרור התקנים"
 msgid "Unlock encrypted devices"
 msgstr "שחרור התקנים מוצפנים"
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:111
 msgid "Use free space for the installation"
 msgstr "להשתמש במקום הפנוי להתקנה"
 
-#: src/components/storage/DiskEncryption.jsx:61
+#: src/components/users/Accounts.jsx:233
+msgid "User name"
+msgstr "שם משתמש"
+
+#: src/components/users/Accounts.jsx:168
+msgid ""
+"User name may only contain: letters from a-z, digits 0-9, dash $0, period "
+"$1, underscore $2"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:165
+#, fuzzy
+#| msgid "User name is reserved for system: %s"
+msgid "User name must not be a reserved word"
+msgstr "שם המשתמש שמור עבור המערכת: %s"
+
+#: src/components/users/Accounts.jsx:162
+#, fuzzy
+#| msgid "Name must be shorter than 33 characters."
+msgid "User names must be shorter than 33 characters"
+msgstr "על השם להיות באורך של פחות מ־33 תווים."
+
+#: src/components/Password.jsx:61
 msgid "Weak"
 msgstr "חלש"
 
@@ -781,11 +897,11 @@ msgstr "ברוך בואך"
 msgid "Welcome to $0"
 msgstr "ברוך בואך אל $0"
 
-#: src/components/storage/InstallationMethod.jsx:87
+#: src/components/storage/InstallationMethod.jsx:89
 msgid "Welcome. Let's install $0 now."
 msgstr "ברוך בואך. עכשיו נתקין את $0."
 
-#: src/components/AnacondaWizard.jsx:452
+#: src/components/AnacondaWizard.jsx:468
 msgid "Your progress will not be saved."
 msgstr "התהליך שעברת לא יישמר."
 
@@ -808,6 +924,10 @@ msgstr "עיגון"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "שלב בהמתנה"
+
+#, fuzzy
+#~ msgid "Failed to get device names."
+#~ msgstr "החלפת התקן נכשלה."
 
 #~ msgid ""
 #~ "\n"
@@ -1075,10 +1195,6 @@ msgstr "שלב בהמתנה"
 #~ msgid ""
 #~ "%s The disks you've selected have the following amounts of free space:"
 #~ msgstr "%s לכוננים שנבחרו ישנה הכמות הבאה של מקום זמין:"
-
-#, python-format
-#~ msgid "%s cannot be on an encrypted block device."
-#~ msgstr "%s אינו יכול להיות על התקן בלוקים מוצפן."
 
 #, python-format
 #~ msgid ""
@@ -1785,9 +1901,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "Connecting..."
 #~ msgstr "כעת בהתחברות..."
 
-#~ msgid "Connection failed"
-#~ msgstr "החיבור נכשל"
-
 #~ msgid "Continue"
 #~ msgstr "המשך"
 
@@ -2248,9 +2361,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "File S_ystem:"
 #~ msgstr "מ_ערכת קבצים:"
 
-#~ msgid "File System"
-#~ msgstr "מערכת קבצים"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr "סוג מערכת הקבצים „{}” שסופק לפקודת ה־autopart שגוי."
 
@@ -2335,14 +2445,8 @@ msgstr "שלב בהמתנה"
 #~ msgid "Full Name"
 #~ msgstr "שם מלא"
 
-#~ msgid "Full name"
-#~ msgstr "שם מלא"
-
 #~ msgid "Full name can't contain the ':' character"
 #~ msgstr "השם המלא לא יכול להכיל את התו ‚:’"
-
-#~ msgid "Full name cannot contain colon characters"
-#~ msgstr "השם המלא לא יכול להכיל את התו נקודתיים"
 
 #~ msgid "Fully numeric name is not allowed."
 #~ msgstr "אסור להשתמש בשם שמורכב רק מספרות."
@@ -2950,9 +3054,6 @@ msgstr "שלב בהמתנה"
 
 #~ msgid "Name is already in use."
 #~ msgstr "השם כבר בשימוש."
-
-#~ msgid "Name must be shorter than 33 characters."
-#~ msgstr "על השם להיות באורך של פחות מ־33 תווים."
 
 #~ msgid "Name of the repository"
 #~ msgstr "שם המאגר"
@@ -4405,9 +4506,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "The following installations were discovered on your system."
 #~ msgstr "ההתקנות הבאות התגלו במערכת שלך."
 
-#~ msgid "The following mandatory spokes are not completed:"
-#~ msgstr "הצלעות המחייבות הבאות לא הושלמו:"
-
 #, python-format
 #~ msgid ""
 #~ "The following nodes were discovered using the iSCSI initiator "
@@ -4936,13 +5034,6 @@ msgstr "שלב בהמתנה"
 
 #~ msgid "User creation"
 #~ msgstr "יצירה של משתמשים"
-
-#~ msgid "User name"
-#~ msgstr "שם משתמש"
-
-#, python-format
-#~ msgid "User name is reserved for system: %s"
-#~ msgstr "שם המשתמש שמור עבור המערכת: %s"
 
 #~ msgid "User name: "
 #~ msgstr "שם משתמש: "
@@ -5477,10 +5568,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "_Accept Changes"
 #~ msgstr "_קבלת השינויים"
 
-#~ msgctxt "GUI|Subscription|Authentication|Account"
-#~ msgid "_Account"
-#~ msgstr "_חשבון"
-
 #~ msgctxt "GUI|Keyboard Layout|Add Layout"
 #~ msgid "_Add"
 #~ msgstr "_הוספה"
@@ -5740,10 +5827,6 @@ msgstr "שלב בהמתנה"
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Enable HTTP Proxy"
 #~ msgstr "ה_פעלת מתווך HTTP"
-
-#~ msgctxt "GUI|Password"
-#~ msgid "_Enable root account"
-#~ msgstr "ה_פעלת חשבון root"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Encrypt"
@@ -6100,10 +6183,6 @@ msgstr "שלב בהמתנה"
 #~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Reverse CHAP"
 #~ msgid "_Reverse CHAP User name:"
 #~ msgstr "שם משתמש _Reverse CHAP:"
-
-#~ msgctxt "GUI|Spoke"
-#~ msgid "_Root Account"
-#~ msgstr "_חשבון על (Root)"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
@@ -6698,9 +6777,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "_ISO file:"
 #~ msgstr "קו_בץ ISO:"
 
-#~ msgid "Installing."
-#~ msgstr "ההתקנה מתבצעת."
-
 #~ msgid "Failed to set up installation source; check the repo url"
 #~ msgstr "הכנת מקור ההתקנה נכשלה; יש לבדוק את כתובת המאגר"
 
@@ -6911,11 +6987,6 @@ msgstr "שלב בהמתנה"
 #~| msgid "_Confirm password"
 #~ msgid "Confirm root password"
 #~ msgstr "_אישור סיסמה"
-
-#, fuzzy
-#~| msgid "Lock root account"
-#~ msgid "Lock root account"
-#~ msgstr "נעילת חשבון root"
 
 #, fuzzy
 #~| msgctxt "GUI|Spoke"

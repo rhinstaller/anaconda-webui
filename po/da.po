@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 09:36+0000\n"
+"POT-Creation-Date: 2024-02-06 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Danish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -33,7 +33,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:138
 #, fuzzy
 msgid "$0 installation"
 msgstr "Installation"
@@ -43,7 +43,13 @@ msgstr "Installation"
 msgid "$0 installer"
 msgstr "_Afslut installationsprogram"
 
-#: src/components/storage/MountPointMapping.jsx:194
+#: src/components/storage/MountPointMapping.jsx:202
+#, fuzzy
+#| msgid "%s cannot be on an encrypted block device."
+msgid "'$0' filesystem cannot be on an ecnrypted block device"
+msgstr "%s kan ikke være på en krypteret blokenhed."
+
+#: src/components/storage/MountPointMapping.jsx:196
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} skal være en enhed af typen {type}"
@@ -52,7 +58,20 @@ msgstr "{fs} skal være en enhed af typen {type}"
 msgid "About"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:573
+#: src/components/review/ReviewConfiguration.jsx:144
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Account"
+msgstr "_Konto"
+
+#: src/components/AnacondaWizard.jsx:366
+#, fuzzy
+#| msgid "Connection failed"
+msgid "Account setting failed."
+msgstr "Forbindelse mislykkedes"
+
+#: src/components/storage/MountPointMapping.jsx:583
 #, fuzzy
 msgid "Add mount"
 msgstr "Tilføj layout"
@@ -87,17 +106,17 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda-installationsprogram"
 
-#: src/components/storage/InstallationScenario.jsx:142
+#: src/components/storage/InstallationScenario.jsx:131
 #, fuzzy
 msgid "Apply mount point assignment and install"
 msgstr "Anvend konfiguration i installationsprogrammet"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:200
-#: src/components/AnacondaWizard.jsx:388
+#: src/components/AnacondaWizard.jsx:407
+#: src/components/review/ReviewConfiguration.jsx:210
 msgid "Back"
 msgstr "Tilbage"
 
@@ -137,7 +156,7 @@ msgstr "_Annuller"
 msgid "Changes made in Blivet-gui will directly affect your storage."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:253
+#: src/components/storage/DiskEncryption.jsx:53
 #, fuzzy
 msgid "Checking storage configuration"
 msgstr "Kontrollerer lagerkonfiguration..."
@@ -152,7 +171,7 @@ msgstr "Sprog"
 msgid "Chosen language: "
 msgstr "Sprog"
 
-#: src/components/storage/InstallationDestination.jsx:234
+#: src/components/storage/InstallationDestination.jsx:238
 msgid "Clear input value"
 msgstr ""
 
@@ -170,36 +189,50 @@ msgstr "Sprog"
 msgid "Completed"
 msgstr "Færdig!"
 
-#: src/components/storage/DiskEncryption.jsx:312
+#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:459
 #, fuzzy
 msgid "Continue installation"
 msgstr "Kører præinstallationsopgaver"
+
+#: src/components/users/Accounts.jsx:351
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Create Account"
+msgstr "_Konto"
+
+#: src/components/users/Accounts.jsx:210
+#, fuzzy
+#| msgid "Lock root account"
+msgid "Create account"
+msgstr "Lås root-konto"
 
 #: src/components/Error.jsx:234
 msgid "Critical error"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:221
 #, fuzzy
 msgid "Current selections"
 msgstr "_Nulstil valg"
 
-#: src/components/storage/MountPointMapping.jsx:234
+#: src/components/storage/MountPointMapping.jsx:243
 #, fuzzy
 msgid "Custom"
 msgstr "_Tilpasset"
 
-#: src/components/storage/InstallationDestination.jsx:401
+#: src/components/storage/InstallationDestination.jsx:404
 #, fuzzy
 msgid "Destination"
 msgstr "Beskrivelse"
 
-#: src/components/storage/MountPointMapping.jsx:549
+#: src/components/storage/MountPointMapping.jsx:559
 msgid "Device"
 msgstr "Enhed"
 
@@ -207,41 +240,47 @@ msgstr "Enhed"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Disabled"
 msgstr "Deaktiveret"
 
-#: src/components/AnacondaWizard.jsx:123
+#: src/components/AnacondaWizard.jsx:120
 #, fuzzy
 msgid "Disk configuration"
 msgstr "Enhedskonfiguration"
 
-#: src/components/storage/DiskEncryption.jsx:379
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/storage/DiskEncryption.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:165
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Kryptering"
 
-#: src/components/storage/MountPointMapping.jsx:317
+#: src/components/storage/MountPointMapping.jsx:326
 #, fuzzy
 msgid "Duplicate device."
 msgstr "_Flerstis-enheder"
 
-#: src/components/storage/MountPointMapping.jsx:240
+#: src/components/storage/MountPointMapping.jsx:249
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "Indtast venligst et monteringspunkt."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/users/Accounts.jsx:277
+#, fuzzy
+#| msgid "Lock root account"
+msgid "Enable root account"
+msgstr "Lås root-konto"
+
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Enabled"
 msgstr "Aktiveret"
 
-#: src/components/storage/DiskEncryption.jsx:297
+#: src/components/storage/DiskEncryption.jsx:80
 #, fuzzy
 msgid "Encrypt my data"
 msgstr "_Kryptér mine data."
 
-#: src/components/storage/DiskEncryption.jsx:381
+#: src/components/storage/DiskEncryption.jsx:140
 msgid "Encrypt the selected devices?"
 msgstr ""
 
@@ -249,22 +288,22 @@ msgstr ""
 msgid "Encrypted devices are locked"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:363
+#: src/components/storage/DiskEncryption.jsx:122
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:108
-#: src/components/storage/InstallationScenario.jsx:114
+#: src/components/storage/InstallationScenario.jsx:97
+#: src/components/storage/InstallationScenario.jsx:103
 #, fuzzy
 msgid "Erase data and install"
 msgstr "_Begynd installation"
 
-#: src/components/storage/InstallationScenario.jsx:118
+#: src/components/storage/InstallationScenario.jsx:107
 #, fuzzy
 msgid "Erase data and install?"
 msgstr "_Begynd installation"
 
-#: src/components/storage/InstallationScenario.jsx:116
+#: src/components/storage/InstallationScenario.jsx:105
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 
@@ -272,14 +311,9 @@ msgstr ""
 msgid "Error details"
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:233 src/components/AnacondaWizard.jsx:386
+#: src/components/AnacondaWizard.jsx:249
 msgid "Error was hit when going back from $0."
 msgstr ""
-
-#: src/components/storage/InstallationScenario.jsx:181
-#, fuzzy
-msgid "Failed to get device names."
-msgstr "Kunne ikke tilføje ny enhed."
 
 #: src/components/installation/InstallationProgress.jsx:132
 #, fuzzy
@@ -297,7 +331,15 @@ msgstr ""
 msgid "Find a language"
 msgstr "Vælg et netværk"
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/users/Accounts.jsx:214
+msgid "Full name"
+msgstr "Fulde navn"
+
+#: src/components/users/Accounts.jsx:180
+msgid "Full name cannot contain colon characters"
+msgstr "Det fulde navn må ikke indeholde kolon"
+
+#: src/components/Password.jsx:241
 #, fuzzy
 msgid "Hide confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -307,12 +349,12 @@ msgstr "_Bekræft adgangskode"
 msgid "Hide passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 #, fuzzy
 msgid "Hide password"
 msgstr "Skjul adgangskode."
 
-#: src/components/storage/InstallationScenario.jsx:292
+#: src/components/storage/InstallationScenario.jsx:253
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
@@ -337,16 +379,22 @@ msgstr ""
 msgid "In progress"
 msgstr "Fremgang"
 
-#: src/components/storage/InstallationScenario.jsx:128
+#: src/components/app.jsx:130
+#, fuzzy
+#| msgid "Installing."
+msgid "Initializing..."
+msgstr "Installerer."
+
+#: src/components/storage/InstallationScenario.jsx:117
 msgid "Install"
 msgstr "Installér"
 
-#: src/components/storage/InstallationScenario.jsx:146
+#: src/components/storage/InstallationScenario.jsx:135
 #, fuzzy
 msgid "Install on the custom mount points?"
 msgstr "Tildel monteringspunkter manuelt"
 
-#: src/components/storage/InstallationScenario.jsx:132
+#: src/components/storage/InstallationScenario.jsx:121
 #, fuzzy
 msgid "Install on the free space?"
 msgstr "Installerer software"
@@ -356,7 +404,7 @@ msgstr "Installerer software"
 msgid "Installation failed"
 msgstr "Installation"
 
-#: src/components/storage/InstallationMethod.jsx:86
+#: src/components/storage/InstallationMethod.jsx:88
 #, fuzzy
 msgid "Installation method"
 msgstr "Installation fuldført"
@@ -366,7 +414,7 @@ msgstr "Installation fuldført"
 msgid "Installation of the system failed: $0"
 msgstr "Installation"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:154
 #, fuzzy
 msgid "Installation type"
 msgstr "Installation"
@@ -376,7 +424,7 @@ msgstr "Installation"
 msgid "Installing"
 msgstr "Installerer."
 
-#: src/components/storage/InstallationDestination.jsx:420
+#: src/components/storage/InstallationDestination.jsx:423
 #, fuzzy
 msgid "Installing to $0 ($1)"
 msgstr "Installerer {}"
@@ -403,12 +451,12 @@ msgstr "for at skanne enheder igen"
 msgid "Log"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:674
+#: src/components/storage/MountPointMapping.jsx:684
 #, fuzzy
 msgid "Manual disk configuration"
 msgstr "Enhedskonfiguration"
 
-#: src/components/storage/MountPointMapping.jsx:676
+#: src/components/storage/MountPointMapping.jsx:686
 #, fuzzy
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Enhedskonfiguration"
@@ -417,11 +465,11 @@ msgstr "Enhedskonfiguration"
 msgid "Manually select storage locations for installation."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:72
+#: src/components/Password.jsx:72
 msgid "Medium"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:138
+#: src/components/storage/MountPointMapping.jsx:140
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
@@ -441,17 +489,17 @@ msgstr "_Rediger lagerlayout"
 msgid "Modifying the storage failed."
 msgstr "_Rediger lagerlayout"
 
-#: src/components/storage/MountPointMapping.jsx:548
+#: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "Monteringspunkt"
 
-#: src/components/storage/InstallationScenario.jsx:136
-#: src/components/storage/MountPointMapping.jsx:546
+#: src/components/storage/MountPointMapping.jsx:556
+#: src/components/storage/InstallationScenario.jsx:125
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "Monteringspunkt"
 
-#: src/components/storage/DiskEncryption.jsx:173
+#: src/components/Password.jsx:47
 #, fuzzy
 msgid "Must be at least $0 characters"
 msgstr "Adgangskoden skal være på mindst seks tegn."
@@ -466,41 +514,41 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:359
+#: src/components/AnacondaWizard.jsx:381
 msgid "Next"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:406
+#: src/components/storage/InstallationDestination.jsx:463
 #, fuzzy
 msgid "No additional disks detected"
 msgstr "Ingen anvendelige diske valgt."
 
-#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/MountPointMapping.jsx:563
 #, fuzzy
 msgid "No devices"
 msgstr "Tilføj enhed"
 
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:115
+#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:95
+#: src/components/storage/InstallationScenario.jsx:84
 #, fuzzy
 msgid "No usable devices on the selected disks."
 msgstr "Ikke nok ledig plads på de valgte diske."
 
-#: src/components/storage/InstallationDestination.jsx:430
+#: src/components/storage/InstallationDestination.jsx:433
 #, fuzzy
 msgid "No usable disks detected"
 msgstr "Ingen anvendelige diske valgt."
 
-#: src/components/storage/InstallationScenario.jsx:79
+#: src/components/storage/InstallationScenario.jsx:68
 #, fuzzy
 msgid "Not enough free space on the selected disks."
 msgstr "Ikke nok ledig plads på de valgte diske."
 
-#: src/components/storage/InstallationScenario.jsx:61
+#: src/components/storage/InstallationScenario.jsx:50
 #, fuzzy
 msgid "Not enough space on selected disks."
 msgstr "Ikke nok ledig plads på de valgte diske."
@@ -512,7 +560,7 @@ msgid ""
 "production environments."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:366
+#: src/components/storage/DiskEncryption.jsx:125
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -523,9 +571,10 @@ msgstr ""
 msgid "Operating system"
 msgstr "Oprettelse af brugere"
 
-#: src/components/storage/DiskEncryption.jsx:309
+#: src/components/storage/DiskEncryption.jsx:93
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 msgid "Passphrase"
 msgstr "Adgangssætning"
 
@@ -533,7 +582,7 @@ msgstr "Adgangssætning"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:216
+#: src/components/Password.jsx:255
 #, fuzzy
 msgid "Passphrases must match"
 msgstr "Adgangskoderne er ikke ens."
@@ -559,26 +608,26 @@ msgstr ""
 msgid "Preparing report"
 msgstr "Forbereder udrulning af {}"
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "Afslut"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 #, fuzzy
 msgid "Quit installer?"
 msgstr "_Afslut installationsprogram"
 
-#: src/components/storage/InstallationDestination.jsx:373
+#: src/components/storage/InstallationDestination.jsx:377
 msgid "Re-scan"
 msgstr ""
 
-#: src/components/app.jsx:98
+#: src/components/app.jsx:113
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:118
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "Enhedskonfiguration mislykkedes."
@@ -588,24 +637,28 @@ msgstr "Enhedskonfiguration mislykkedes."
 msgid "Reading installer version information failed."
 msgstr "Registrering mislykkedes."
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 #, fuzzy
 msgid "Reboot"
 msgstr "Genstarter."
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 #, fuzzy
 msgid "Reboot system?"
 msgstr "_Genstart system"
 
-#: src/components/storage/MountPointMapping.jsx:340
-#: src/components/storage/MountPointMapping.jsx:550
+#: src/components/storage/MountPointMapping.jsx:242
+msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:349
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "Reformat"
 msgstr "Genformatér"
 
-#: src/components/storage/MountPointMapping.jsx:373
+#: src/components/storage/MountPointMapping.jsx:382
 #, fuzzy
 msgid "Remove"
 msgstr "Fjern"
@@ -630,12 +683,12 @@ msgid ""
 "edit the attached log to remove any sensitive information."
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:233
+#: src/components/storage/MountPointMapping.jsx:241
 #, fuzzy
 msgid "Required"
 msgstr "Ikke registreret."
 
-#: src/components/storage/InstallationDestination.jsx:382
+#: src/components/storage/InstallationDestination.jsx:386
 #, fuzzy
 msgid "Rescan"
 msgstr "Red"
@@ -645,32 +698,41 @@ msgstr "Red"
 msgid "Rescan storage"
 msgstr "Afprøver lager"
 
-#: src/components/storage/InstallationDestination.jsx:361
+#: src/components/storage/InstallationDestination.jsx:365
 #, fuzzy
 msgid "Rescanning of the disks failed."
 msgstr "Genskanning af diske er færdig."
 
-#: src/components/review/ReviewConfiguration.jsx:231
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:242
 #, fuzzy
 msgid "Review and install"
 msgstr "_Begynd installation"
 
-#: src/components/storage/MountPointMapping.jsx:278
+#: src/components/installation/Feedback.jsx:37
+msgid "Scan the QR code with your phone or visit:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:287
 #, fuzzy
 msgid "Select a device"
 msgstr "Valgte enhed"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 #, fuzzy
 msgid "Select a disk"
 msgstr "Valgte diske"
 
-#: src/components/storage/MountPointMapping.jsx:121
+#: src/components/storage/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/installation/Feedback.jsx:36
+#, fuzzy
+msgid "Send us feedback on your installation"
+msgstr "Kunne ikke indstille installationskilde"
+
+#: src/components/Password.jsx:241
 #, fuzzy
 msgid "Show confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -680,7 +742,7 @@ msgstr "_Bekræft adgangskode"
 msgid "Show passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 #, fuzzy
 msgid "Show password"
 msgstr "Vis adgangskode."
@@ -700,11 +762,11 @@ msgid ""
 "being installed onto your device."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:98
+#: src/components/storage/InstallationScenario.jsx:87
 msgid "Some devices use the same name: $0."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:165
+#: src/components/review/ReviewConfiguration.jsx:175
 #, fuzzy
 msgid "Storage"
 msgstr "Valgmuligheder for lager"
@@ -718,7 +780,7 @@ msgstr "Lagerkonfiguration"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:83
+#: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Stærk"
 
@@ -729,6 +791,12 @@ msgstr ""
 #: src/components/storage/EncryptedDevices.jsx:131
 msgid "Successfully unlocked $0."
 msgstr ""
+
+#: src/components/users/Accounts.jsx:305
+#, fuzzy
+#| msgid "File System"
+msgid "System"
+msgstr "Filsystem"
 
 #: src/components/installation/InstallationProgress.jsx:127
 #, fuzzy
@@ -747,23 +815,37 @@ msgid ""
 "software. "
 msgstr ""
 
+#: src/components/storage/InstallationDestination.jsx:495
+msgid "The following disk is no longer available: $0"
+msgid_plural "The following disks are no longer available: $0"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/storage/InstallationDestination.jsx:478
+#, fuzzy
+#| msgid "The following mandatory spokes are not completed:"
+msgid "The following disk was detected: $0"
+msgid_plural "The following disks were detected: $0"
+msgstr[0] "Følgende obligatoriske eger er ikke fuldført:"
+msgstr[1] "Følgende obligatoriske eger er ikke fuldført:"
+
 #: src/components/Error.jsx:257
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:63
+#: src/components/storage/InstallationScenario.jsx:52
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:122
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:147
+#: src/components/storage/InstallationScenario.jsx:136
 msgid "The installation will use your configured partitioning layout."
 msgstr ""
 
@@ -777,7 +859,7 @@ msgstr "Installationen kan ikke fortsætte og systemet genstartes"
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Installationen kan ikke fortsætte og systemet genstartes"
 
-#: src/components/storage/DiskEncryption.jsx:182
+#: src/components/storage/DiskEncryption.jsx:42
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
@@ -785,14 +867,23 @@ msgstr ""
 "Adgangskoden som du har angivet indeholder ikke-ASCII-tegn. Du vil måske "
 "ikke være i stand til at skifte mellem tastaturlayouts når den skrives."
 
-#: src/components/storage/MountPointMapping.jsx:352
+#: src/components/storage/MountPointMapping.jsx:361
 msgid "The root partition is always re-formatted by the installer."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:108
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
+msgstr ""
+
+#: src/components/storage/InstallationDestination.jsx:470
+#, fuzzy
+msgid "The usable disks have changed"
+msgstr "Ingen anvendelige diske valgt."
+
+#: src/components/users/Accounts.jsx:212
+msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:68
@@ -800,7 +891,7 @@ msgstr ""
 msgid "This is unstable, pre-release software"
 msgstr "Dette er ustabilt, præudgivelsessoftware."
 
-#: src/components/storage/DiskEncryption.jsx:257
+#: src/components/storage/DiskEncryption.jsx:57
 #, fuzzy
 msgid "This may take a moment"
 msgstr "Det kan tage noget tid."
@@ -812,21 +903,21 @@ msgstr ""
 "\n"
 "Tryk på [Enter] for at genstarte dit system.\n"
 
-#: src/components/storage/InstallationMethod.jsx:78
+#: src/components/storage/InstallationMethod.jsx:80
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr "Ingen diske valgt; vælg mindst én disk som der skal installeres på."
 
-#: src/components/storage/InstallationScenario.jsx:130
-#: src/components/storage/InstallationScenario.jsx:144
+#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:133
 msgid "To prevent loss, make sure to backup your data."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:99
+#: src/components/storage/InstallationScenario.jsx:88
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:81
+#: src/components/storage/InstallationScenario.jsx:70
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -847,12 +938,34 @@ msgstr "for at skanne enheder igen"
 msgid "Unlock encrypted devices"
 msgstr "Kunne ikke låse krypteret blokenhed op."
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:111
 #, fuzzy
 msgid "Use free space for the installation"
 msgstr "Kunne ikke indstille installationskilde"
 
-#: src/components/storage/DiskEncryption.jsx:61
+#: src/components/users/Accounts.jsx:233
+msgid "User name"
+msgstr "Brugernavn"
+
+#: src/components/users/Accounts.jsx:168
+msgid ""
+"User name may only contain: letters from a-z, digits 0-9, dash $0, period "
+"$1, underscore $2"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:165
+#, fuzzy
+#| msgid "User name is reserved for system: %s"
+msgid "User name must not be a reserved word"
+msgstr "Brugernavn er reserveret til system: %s"
+
+#: src/components/users/Accounts.jsx:162
+#, fuzzy
+#| msgid "Name must be shorter than 33 characters."
+msgid "User names must be shorter than 33 characters"
+msgstr "Navnet skal være kortere end 33 tegn."
+
+#: src/components/Password.jsx:61
 msgid "Weak"
 msgstr "Svag"
 
@@ -865,11 +978,11 @@ msgstr ""
 msgid "Welcome to $0"
 msgstr "Velkommen til $0"
 
-#: src/components/storage/InstallationMethod.jsx:87
+#: src/components/storage/InstallationMethod.jsx:89
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:452
+#: src/components/AnacondaWizard.jsx:468
 msgid "Your progress will not be saved."
 msgstr ""
 
@@ -896,6 +1009,10 @@ msgstr "Tilføj layout"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Failed to get device names."
+#~ msgstr "Kunne ikke tilføje ny enhed."
 
 #~ msgid ""
 #~ "\n"
@@ -1174,10 +1291,6 @@ msgstr ""
 #~ msgid ""
 #~ "%s The disks you've selected have the following amounts of free space:"
 #~ msgstr "%s De diske du har valgt har følgende mængder af ledig plads:"
-
-#, python-format
-#~ msgid "%s cannot be on an encrypted block device."
-#~ msgstr "%s kan ikke være på en krypteret blokenhed."
 
 #, python-format
 #~ msgid ""
@@ -1880,9 +1993,6 @@ msgstr ""
 #~ msgid "Connecting..."
 #~ msgstr "Forbinder..."
 
-#~ msgid "Connection failed"
-#~ msgstr "Forbindelse mislykkedes"
-
 #~ msgid "Continue"
 #~ msgstr "Fortsæt"
 
@@ -2345,9 +2455,6 @@ msgstr ""
 #~ msgid "File S_ystem:"
 #~ msgstr "Fils_ystem:"
 
-#~ msgid "File System"
-#~ msgstr "Filsystem"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr ""
 #~ "Filsystemtypen \"{}\" der blev givet i autopart-kommando er ugyldig."
@@ -2438,14 +2545,8 @@ msgstr ""
 #~ msgid "Full Name"
 #~ msgstr "Fulde navn"
 
-#~ msgid "Full name"
-#~ msgstr "Fulde navn"
-
 #~ msgid "Full name can't contain the ':' character"
 #~ msgstr "Det fulde navn må ikke indeholde tegnet ':'"
-
-#~ msgid "Full name cannot contain colon characters"
-#~ msgstr "Det fulde navn må ikke indeholde kolon"
 
 #~ msgid "Fully numeric name is not allowed."
 #~ msgstr "Navne kun med tal er ikke tilladt."
@@ -3087,9 +3188,6 @@ msgstr ""
 
 #~ msgid "Name is already in use."
 #~ msgstr "Navnet er allerede i brug."
-
-#~ msgid "Name must be shorter than 33 characters."
-#~ msgstr "Navnet skal være kortere end 33 tegn."
 
 #~ msgid "Name of the repository"
 #~ msgstr "Pakkearkivets navn"
@@ -4588,9 +4686,6 @@ msgstr ""
 #~ msgid "The following installations were discovered on your system."
 #~ msgstr "Følgende installationer blev fundet på dit system."
 
-#~ msgid "The following mandatory spokes are not completed:"
-#~ msgstr "Følgende obligatoriske eger er ikke fuldført:"
-
 #, python-format
 #~ msgid ""
 #~ "The following nodes were discovered using the iSCSI initiator "
@@ -5139,13 +5234,6 @@ msgstr ""
 
 #~ msgid "User creation"
 #~ msgstr "Brugeroprettelse"
-
-#~ msgid "User name"
-#~ msgstr "Brugernavn"
-
-#, python-format
-#~ msgid "User name is reserved for system: %s"
-#~ msgstr "Brugernavn er reserveret til system: %s"
 
 #~ msgid "User name: "
 #~ msgstr "Brugernavn: "
@@ -5697,10 +5785,6 @@ msgstr ""
 #~ msgid "_Accept Changes"
 #~ msgstr "_Acceptér ændringer"
 
-#~ msgctxt "GUI|Subscription|Authentication|Account"
-#~ msgid "_Account"
-#~ msgstr "_Konto"
-
 #~ msgctxt "GUI|Keyboard Layout|Add Layout"
 #~ msgid "_Add"
 #~ msgstr "_Tilføj"
@@ -5960,12 +6044,6 @@ msgstr ""
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Enable HTTP Proxy"
 #~ msgstr "_Aktivér HTTP-proxy"
-
-#, fuzzy
-#~| msgid "Lock root account"
-#~ msgctxt "GUI|Password"
-#~ msgid "_Enable root account"
-#~ msgstr "Lås root-konto"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Encrypt"
@@ -6329,13 +6407,6 @@ msgstr ""
 #~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Reverse CHAP"
 #~ msgid "_Reverse CHAP User name:"
 #~ msgstr "_Omvendt CHAP-brugernavn:"
-
-#, fuzzy
-#~| msgctxt "GUI|Subscription|Authentication|Account"
-#~| msgid "_Account"
-#~ msgctxt "GUI|Spoke"
-#~ msgid "_Root Account"
-#~ msgstr "_Konto"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
@@ -6866,9 +6937,6 @@ msgstr ""
 #~ msgid "_ISO file:"
 #~ msgstr "_ISO-fil:"
 
-#~ msgid "Installing."
-#~ msgstr "Installerer."
-
 #~ msgid "Failed to set up installation source; check the repo url"
 #~ msgstr ""
 #~ "Kunne ikke indstille installationskilde, kontrollér pakkearkiv-URL'en"
@@ -7069,11 +7137,6 @@ msgstr ""
 #~| msgid "_Confirm password"
 #~ msgid "Confirm root password"
 #~ msgstr "_Bekræft adgangskode"
-
-#, fuzzy
-#~| msgid "Lock root account"
-#~ msgid "Lock root account"
-#~ msgstr "Lås root-konto"
 
 #, fuzzy
 #~| msgctxt "GUI|Spoke"
