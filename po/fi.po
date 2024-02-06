@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 09:36+0000\n"
+"POT-Creation-Date: 2024-02-06 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:17+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Finnish <https://translate.fedoraproject.org/projects/"
@@ -40,7 +40,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:138
 msgid "$0 installation"
 msgstr "$0 -asennus"
 
@@ -48,7 +48,13 @@ msgstr "$0 -asennus"
 msgid "$0 installer"
 msgstr "$0 -asennusohjelmas"
 
-#: src/components/storage/MountPointMapping.jsx:194
+#: src/components/storage/MountPointMapping.jsx:202
+#, fuzzy
+#| msgid "%s cannot be on an encrypted block device."
+msgid "'$0' filesystem cannot be on an ecnrypted block device"
+msgstr "%s ei voi olla salatulla lohkolaitteella."
+
+#: src/components/storage/MountPointMapping.jsx:196
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs}:n on oltava laitteella tyyppiä {type}"
@@ -57,7 +63,20 @@ msgstr "{fs}:n on oltava laitteella tyyppiä {type}"
 msgid "About"
 msgstr "Aiheesta"
 
-#: src/components/storage/MountPointMapping.jsx:573
+#: src/components/review/ReviewConfiguration.jsx:144
+#, fuzzy
+#| msgctxt "GUI|Subscription|Authentication|Account"
+#| msgid "_Account"
+msgid "Account"
+msgstr "_Tili"
+
+#: src/components/AnacondaWizard.jsx:366
+#, fuzzy
+#| msgid "Connection failed"
+msgid "Account setting failed."
+msgstr "Yhteys epäonnistui"
+
+#: src/components/storage/MountPointMapping.jsx:583
 msgid "Add mount"
 msgstr "Lisää liitos"
 
@@ -89,16 +108,16 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda-projektin sivu"
 
-#: src/components/storage/InstallationScenario.jsx:142
+#: src/components/storage/InstallationScenario.jsx:131
 msgid "Apply mount point assignment and install"
 msgstr "Käytä kiinnityspisteiden määritystä ja asenna"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Applying new disk selection..."
 msgstr "Otetaan uutta levyvalintaa käyttöön..."
 
-#: src/components/review/ReviewConfiguration.jsx:200
-#: src/components/AnacondaWizard.jsx:388
+#: src/components/AnacondaWizard.jsx:407
+#: src/components/review/ReviewConfiguration.jsx:210
 msgid "Back"
 msgstr "Takaisin"
 
@@ -130,7 +149,7 @@ msgstr "Peru"
 msgid "Changes made in Blivet-gui will directly affect your storage."
 msgstr "Blivet-guissa tehdyt muutokset vaikuttavat suoraan tallennustilaasi."
 
-#: src/components/storage/DiskEncryption.jsx:253
+#: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
 msgstr "Tarkistetaan tallennustilan asetuksia"
 
@@ -142,7 +161,7 @@ msgstr "Valitse kieli"
 msgid "Chosen language: "
 msgstr "Valittu kieli: "
 
-#: src/components/storage/InstallationDestination.jsx:234
+#: src/components/storage/InstallationDestination.jsx:238
 msgid "Clear input value"
 msgstr "Tyhjennä syöttöarvo"
 
@@ -158,31 +177,45 @@ msgstr "Yleiset kielet"
 msgid "Completed"
 msgstr "Valmis"
 
-#: src/components/storage/DiskEncryption.jsx:312
+#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
 msgid "Confirm passphrase"
 msgstr "Vahvista salalause"
 
-#: src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:459
 msgid "Continue installation"
 msgstr "Jatka asennusta"
+
+#: src/components/users/Accounts.jsx:351
+#, fuzzy
+#| msgctxt "GUI|Spoke"
+#| msgid "_Root Account"
+msgid "Create Account"
+msgstr "_Root-tili"
+
+#: src/components/users/Accounts.jsx:210
+#, fuzzy
+#| msgid "Lock root account"
+msgid "Create account"
+msgstr "Lukitse root-tili"
 
 #: src/components/Error.jsx:234
 msgid "Critical error"
 msgstr "Kriittinen virhe"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:221
 msgid "Current selections"
 msgstr "Nykyiset valinnat"
 
-#: src/components/storage/MountPointMapping.jsx:234
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Custom"
 msgstr "Mukautettu"
 
-#: src/components/storage/InstallationDestination.jsx:401
+#: src/components/storage/InstallationDestination.jsx:404
 msgid "Destination"
 msgstr "Kohde"
 
-#: src/components/storage/MountPointMapping.jsx:549
+#: src/components/storage/MountPointMapping.jsx:559
 msgid "Device"
 msgstr "Laite"
 
@@ -190,36 +223,43 @@ msgstr "Laite"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Laitteiden lukitus tulee avata ennen liitospisteiden määrittämistä."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Disabled"
 msgstr "Ei käytössä"
 
-#: src/components/AnacondaWizard.jsx:123
+#: src/components/AnacondaWizard.jsx:120
 msgid "Disk configuration"
 msgstr "Laitteen asetukset"
 
-#: src/components/storage/DiskEncryption.jsx:379
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/storage/DiskEncryption.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Levyn salaus"
 
-#: src/components/storage/MountPointMapping.jsx:317
+#: src/components/storage/MountPointMapping.jsx:326
 msgid "Duplicate device."
 msgstr "Laitteen kaksoiskappale."
 
-#: src/components/storage/MountPointMapping.jsx:240
+#: src/components/storage/MountPointMapping.jsx:249
 msgid "Duplicate mount point."
 msgstr "Liitospisteen kaksoiskappale."
 
-#: src/components/review/ReviewConfiguration.jsx:158
+#: src/components/users/Accounts.jsx:277
+#, fuzzy
+#| msgctxt "GUI|Password"
+#| msgid "_Enable root account"
+msgid "Enable root account"
+msgstr "Ota root-tili käyttöön"
+
+#: src/components/review/ReviewConfiguration.jsx:168
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: src/components/storage/DiskEncryption.jsx:297
+#: src/components/storage/DiskEncryption.jsx:80
 msgid "Encrypt my data"
 msgstr "Salaa tietoni"
 
-#: src/components/storage/DiskEncryption.jsx:381
+#: src/components/storage/DiskEncryption.jsx:140
 msgid "Encrypt the selected devices?"
 msgstr "Salataanko valitut laitteet?"
 
@@ -227,21 +267,21 @@ msgstr "Salataanko valitut laitteet?"
 msgid "Encrypted devices are locked"
 msgstr "Salatut laitteet on lukittu"
 
-#: src/components/storage/DiskEncryption.jsx:363
+#: src/components/storage/DiskEncryption.jsx:122
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Salaus auttaa suojaamaan tietosi, jotta muut eivät pääse niihin käsiksi."
 
-#: src/components/storage/InstallationScenario.jsx:108
-#: src/components/storage/InstallationScenario.jsx:114
+#: src/components/storage/InstallationScenario.jsx:97
+#: src/components/storage/InstallationScenario.jsx:103
 msgid "Erase data and install"
 msgstr "Tyhjennä levyt ja asenna"
 
-#: src/components/storage/InstallationScenario.jsx:118
+#: src/components/storage/InstallationScenario.jsx:107
 msgid "Erase data and install?"
 msgstr "Tyhjennetäänkö levyt ja asennetaanko?"
 
-#: src/components/storage/InstallationScenario.jsx:116
+#: src/components/storage/InstallationScenario.jsx:105
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Tietojen tyhjentämistä ei voi kumota. Varmistu, että sinulla on "
@@ -251,14 +291,9 @@ msgstr ""
 msgid "Error details"
 msgstr "Virheen tiedot"
 
-#: src/components/AnacondaWizard.jsx:233 src/components/AnacondaWizard.jsx:386
+#: src/components/AnacondaWizard.jsx:249
 msgid "Error was hit when going back from $0."
 msgstr "Virhe palatessa takaisin kohteesta $0."
-
-#: src/components/storage/InstallationScenario.jsx:181
-#, fuzzy
-msgid "Failed to get device names."
-msgstr "Laitteen vaihtaminen epäonnistui."
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -276,7 +311,15 @@ msgstr ""
 msgid "Find a language"
 msgstr "Etsi kieli"
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/users/Accounts.jsx:214
+msgid "Full name"
+msgstr "Koko nimi"
+
+#: src/components/users/Accounts.jsx:180
+msgid "Full name cannot contain colon characters"
+msgstr "Koko nimi ei saa sisältää kaksoispisteitä"
+
+#: src/components/Password.jsx:241
 msgid "Hide confirmed password"
 msgstr "Piilota vahvistettu salasana"
 
@@ -285,11 +328,11 @@ msgstr "Piilota vahvistettu salasana"
 msgid "Hide passphrase"
 msgstr "Vahvista salalause"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Hide password"
 msgstr "Piilota salasana"
 
-#: src/components/storage/InstallationScenario.jsx:292
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "How would you like to install?"
 msgstr "Miten haluaisit asentaa?"
 
@@ -312,15 +355,21 @@ msgstr "Ohita"
 msgid "In progress"
 msgstr "Meneillään"
 
-#: src/components/storage/InstallationScenario.jsx:128
+#: src/components/app.jsx:130
+#, fuzzy
+#| msgid "Installing."
+msgid "Initializing..."
+msgstr "Asennetaan."
+
+#: src/components/storage/InstallationScenario.jsx:117
 msgid "Install"
 msgstr "Asenna"
 
-#: src/components/storage/InstallationScenario.jsx:146
+#: src/components/storage/InstallationScenario.jsx:135
 msgid "Install on the custom mount points?"
 msgstr "Asennetaanko mukautettuihin liitospisteisiin?"
 
-#: src/components/storage/InstallationScenario.jsx:132
+#: src/components/storage/InstallationScenario.jsx:121
 msgid "Install on the free space?"
 msgstr "Asennetaanko vapaaseen tilaan?"
 
@@ -328,7 +377,7 @@ msgstr "Asennetaanko vapaaseen tilaan?"
 msgid "Installation failed"
 msgstr "Asennus epäonnistui"
 
-#: src/components/storage/InstallationMethod.jsx:86
+#: src/components/storage/InstallationMethod.jsx:88
 msgid "Installation method"
 msgstr "Asennustapa"
 
@@ -336,7 +385,7 @@ msgstr "Asennustapa"
 msgid "Installation of the system failed: $0"
 msgstr "Järjestelmän asennus epäonnistui: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:154
 msgid "Installation type"
 msgstr "Asennustyyppi"
 
@@ -344,7 +393,7 @@ msgstr "Asennustyyppi"
 msgid "Installing"
 msgstr "Asennetaan"
 
-#: src/components/storage/InstallationDestination.jsx:420
+#: src/components/storage/InstallationDestination.jsx:423
 msgid "Installing to $0 ($1)"
 msgstr "Asennetaan kohteeseen $0 ($1)"
 
@@ -370,11 +419,11 @@ msgstr "Avaa laite"
 msgid "Log"
 msgstr "Loki"
 
-#: src/components/storage/MountPointMapping.jsx:674
+#: src/components/storage/MountPointMapping.jsx:684
 msgid "Manual disk configuration"
 msgstr "Manuaalinen levyn konfigurointi"
 
-#: src/components/storage/MountPointMapping.jsx:676
+#: src/components/storage/MountPointMapping.jsx:686
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Manuaalinen levykonfigurointi: Liitospisteiden kartoitus"
 
@@ -382,11 +431,11 @@ msgstr "Manuaalinen levykonfigurointi: Liitospisteiden kartoitus"
 msgid "Manually select storage locations for installation."
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:72
+#: src/components/Password.jsx:72
 msgid "Medium"
 msgstr "Väline"
 
-#: src/components/storage/MountPointMapping.jsx:138
+#: src/components/storage/MountPointMapping.jsx:140
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Isäntälaitteen ja alalaitteen uudelleenmuotoilun valinta ei vastaa toisiaan."
@@ -404,16 +453,16 @@ msgstr "Muokkaa tallennustilaa"
 msgid "Modifying the storage failed."
 msgstr "Tallennustilan muutokset epäonnistuivat."
 
-#: src/components/storage/MountPointMapping.jsx:548
+#: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "Liitospiste"
 
-#: src/components/storage/InstallationScenario.jsx:136
-#: src/components/storage/MountPointMapping.jsx:546
+#: src/components/storage/MountPointMapping.jsx:556
+#: src/components/storage/InstallationScenario.jsx:125
 msgid "Mount point assignment"
 msgstr "Liitospisteen määrittely"
 
-#: src/components/storage/DiskEncryption.jsx:173
+#: src/components/Password.jsx:47
 #, fuzzy
 msgid "Must be at least $0 characters"
 msgstr "Salasanan on oltava vähintään kahdeksan merkkiä pitkä"
@@ -433,37 +482,37 @@ msgstr ""
 "Verkko ei ole käytettävissä. Määritä verkko yläpalkin valikossa "
 "ilmoittaaksesi ongelmasta."
 
-#: src/components/AnacondaWizard.jsx:359
+#: src/components/AnacondaWizard.jsx:381
 msgid "Next"
 msgstr "Seuraava"
 
-#: src/components/storage/InstallationDestination.jsx:406
+#: src/components/storage/InstallationDestination.jsx:463
 msgid "No additional disks detected"
 msgstr "Ylimääräisiä levyjä ei havaittu"
 
-#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/MountPointMapping.jsx:563
 msgid "No devices"
 msgstr "Ei laiteita"
 
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:115
+#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Tuloksia ei löytynyt"
 
-#: src/components/storage/InstallationScenario.jsx:95
+#: src/components/storage/InstallationScenario.jsx:84
 msgid "No usable devices on the selected disks."
 msgstr "Valituilla levyillä ei ole käyttökelpoisia laitteita."
 
-#: src/components/storage/InstallationDestination.jsx:430
+#: src/components/storage/InstallationDestination.jsx:433
 msgid "No usable disks detected"
 msgstr "Yhtään käyttökelpoista levyä ei löytynyt"
 
-#: src/components/storage/InstallationScenario.jsx:79
+#: src/components/storage/InstallationScenario.jsx:68
 #, fuzzy
 msgid "Not enough free space on the selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
-#: src/components/storage/InstallationScenario.jsx:61
+#: src/components/storage/InstallationScenario.jsx:50
 msgid "Not enough space on selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
@@ -477,7 +526,7 @@ msgstr ""
 "kehitys- ja testaustarkoituksiin. ÄLÄ käytä tätä ohjelmistoa kriittisissä "
 "töissä tai tuotantoympäristöissä."
 
-#: src/components/storage/DiskEncryption.jsx:366
+#: src/components/storage/DiskEncryption.jsx:125
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -487,9 +536,10 @@ msgstr "Vain uudet osiot salataan. Olemassa olevat osiot säilyvät ennallaan."
 msgid "Operating system"
 msgstr "Käyttöjärjestelmä"
 
-#: src/components/storage/DiskEncryption.jsx:309
+#: src/components/storage/DiskEncryption.jsx:93
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 msgid "Passphrase"
 msgstr "Tunnuslause"
 
@@ -497,7 +547,7 @@ msgstr "Tunnuslause"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:216
+#: src/components/Password.jsx:255
 msgid "Passphrases must match"
 msgstr "Tunnuslauseiden on oltava samat"
 
@@ -521,25 +571,25 @@ msgstr "Esijulkaisu"
 msgid "Preparing report"
 msgstr "Raporttia valmistellaan"
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "Lopeta"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Quit installer?"
 msgstr "_Poistu asennusohjelmasta?"
 
-#: src/components/storage/InstallationDestination.jsx:373
+#: src/components/storage/InstallationDestination.jsx:377
 msgid "Re-scan"
 msgstr "Skannaa uudelleen"
 
-#: src/components/app.jsx:98
+#: src/components/app.jsx:113
 msgid "Reading information about the computer failed."
 msgstr "Tietokoneen tietojen lukeminen epäonnistui."
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "Asennusohjelman asetusten lukeminen epäonnistui."
 
@@ -547,22 +597,26 @@ msgstr "Asennusohjelman asetusten lukeminen epäonnistui."
 msgid "Reading installer version information failed."
 msgstr "Asennusohjelman versiotietojen lukeminen epäonnistui."
 
-#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:410
-#: src/components/AnacondaWizard.jsx:436
+#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
+#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "Käynnistä uudelleen"
 
-#: src/components/AnacondaWizard.jsx:448
+#: src/components/AnacondaWizard.jsx:464
 msgid "Reboot system?"
 msgstr "Käynnistä järjestelmä uudelleen?"
 
-#: src/components/storage/MountPointMapping.jsx:340
-#: src/components/storage/MountPointMapping.jsx:550
+#: src/components/storage/MountPointMapping.jsx:242
+msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:349
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "Reformat"
 msgstr "Alusta uudelleen"
 
-#: src/components/storage/MountPointMapping.jsx:373
+#: src/components/storage/MountPointMapping.jsx:382
 msgid "Remove"
 msgstr "Poista"
 
@@ -590,11 +644,11 @@ msgstr ""
 "Ongelmasta ilmoittaminen lähettää tiedot verkon kautta. Tarkista ja muokkaa "
 "liitteenä olevaa lokia poistaaksesi kaikki arkaluontoiset tiedot."
 
-#: src/components/storage/MountPointMapping.jsx:233
+#: src/components/storage/MountPointMapping.jsx:241
 msgid "Required"
 msgstr "Vaaditaan"
 
-#: src/components/storage/InstallationDestination.jsx:382
+#: src/components/storage/InstallationDestination.jsx:386
 msgid "Rescan"
 msgstr "Päivitä"
 
@@ -602,28 +656,38 @@ msgstr "Päivitä"
 msgid "Rescan storage"
 msgstr "Tarkista tallennustila uudelleen"
 
-#: src/components/storage/InstallationDestination.jsx:361
+#: src/components/storage/InstallationDestination.jsx:365
 msgid "Rescanning of the disks failed."
 msgstr "Levyjen uudelleenskannaus epäonnistui."
 
-#: src/components/review/ReviewConfiguration.jsx:231
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:242
 msgid "Review and install"
 msgstr "Arvioi ja asenna"
 
-#: src/components/storage/MountPointMapping.jsx:278
+#: src/components/installation/Feedback.jsx:37
+msgid "Scan the QR code with your phone or visit:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:287
 msgid "Select a device"
 msgstr "Valitse laite"
 
-#: src/components/storage/InstallationDestination.jsx:213
+#: src/components/storage/InstallationDestination.jsx:217
 msgid "Select a disk"
 msgstr "Valitse levy"
 
-#: src/components/storage/MountPointMapping.jsx:121
+#: src/components/storage/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Valitun laitteen muotoa '$0' ei voi alustaa uudelleen."
 
-#: src/components/storage/DiskEncryption.jsx:202
+#: src/components/installation/Feedback.jsx:36
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Send us feedback on your installation"
+msgstr "Käytä vapaata tilaa asennukseen"
+
+#: src/components/Password.jsx:241
 msgid "Show confirmed password"
 msgstr "Näytä vahvistettu salasana"
 
@@ -632,7 +696,7 @@ msgstr "Näytä vahvistettu salasana"
 msgid "Show passphrase"
 msgstr "Vahvista salalause"
 
-#: src/components/storage/DiskEncryption.jsx:159
+#: src/components/Password.jsx:214
 msgid "Show password"
 msgstr "Näytä salasana"
 
@@ -652,11 +716,11 @@ msgstr ""
 "Ohjelmiston asennus: Tallennuskokoonpano on valmis. Ohjelmistoa asennetaan "
 "nyt laitteellesi."
 
-#: src/components/storage/InstallationScenario.jsx:98
+#: src/components/storage/InstallationScenario.jsx:87
 msgid "Some devices use the same name: $0."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:165
+#: src/components/review/ReviewConfiguration.jsx:175
 msgid "Storage"
 msgstr "Tallennustila"
 
@@ -668,7 +732,7 @@ msgstr "Tallennustilan määritykset"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Tallennustilan määritys: Tallennustilaa konfiguroidaan parhaillaan."
 
-#: src/components/storage/DiskEncryption.jsx:83
+#: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Vahva"
 
@@ -680,6 +744,12 @@ msgstr "Asennus onnistui"
 #, fuzzy
 msgid "Successfully unlocked $0."
 msgstr "Asennus onnistui"
+
+#: src/components/users/Accounts.jsx:305
+#, fuzzy
+#| msgid "File System"
+msgid "System"
+msgstr "Tiedostojärjestelmä"
 
 #: src/components/installation/InstallationProgress.jsx:127
 msgid "System configuration"
@@ -699,6 +769,20 @@ msgid ""
 "software. "
 msgstr "Valittua kieltä käytetään asennuksessa ja asennetussa ohjelmistossa. "
 
+#: src/components/storage/InstallationDestination.jsx:495
+msgid "The following disk is no longer available: $0"
+msgid_plural "The following disks are no longer available: $0"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/storage/InstallationDestination.jsx:478
+#, fuzzy
+#| msgid "The following mandatory spokes are not completed:"
+msgid "The following disk was detected: $0"
+msgid_plural "The following disks were detected: $0"
+msgstr[0] "Seuraavat pakolliset vaiheet ovat kesken:"
+msgstr[1] "Seuraavat pakolliset vaiheet ovat kesken:"
+
 #: src/components/Error.jsx:257
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
@@ -707,18 +791,18 @@ msgstr ""
 "Seuraava loki lähetetään ongelmanseurantajärjestelmään, jossa voit antaa "
 "lisätietoja."
 
-#: src/components/storage/InstallationScenario.jsx:63
+#: src/components/storage/InstallationScenario.jsx:52
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:122
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr ""
 "Asennus käyttää laitteidesi vapaata tilaa eikä poista laitteen tietoja."
 
-#: src/components/storage/InstallationScenario.jsx:147
+#: src/components/storage/InstallationScenario.jsx:136
 msgid "The installation will use your configured partitioning layout."
 msgstr "Asennus käyttää määritettyä osiointiasettelua."
 
@@ -730,7 +814,7 @@ msgstr "Asennuksen jatkaminen ei onnistu kriittisen virheen vuoksi."
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Asennuksen jatkaminen ei onnistu kriittisen virheen vuoksi: $0"
 
-#: src/components/storage/DiskEncryption.jsx:182
+#: src/components/storage/DiskEncryption.jsx:42
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
@@ -738,11 +822,11 @@ msgstr ""
 "Antamasi salalause sisältää merkkejä, jotka eivät ole ASCII:ta. Jos "
 "näppäimistöasettelua vaihdetaan, kirjautuminen ei ehkä onnistu."
 
-#: src/components/storage/MountPointMapping.jsx:352
+#: src/components/storage/MountPointMapping.jsx:361
 msgid "The root partition is always re-formatted by the installer."
 msgstr "Asennusohjelma alustaa aina root-osion uudelleen."
 
-#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:108
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -750,11 +834,21 @@ msgstr ""
 "Valitut levyt tyhjennetään, tätä ei voi kumota. Haluatko varmasti jatkaa "
 "asennusta?"
 
+#: src/components/storage/InstallationDestination.jsx:470
+#, fuzzy
+#| msgid "No usable disks detected"
+msgid "The usable disks have changed"
+msgstr "Yhtään käyttökelpoista levyä ei löytynyt"
+
+#: src/components/users/Accounts.jsx:212
+msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:68
 msgid "This is unstable, pre-release software"
 msgstr "Tämä on epävakaa esijulkaisuversio ohjelmistosta"
 
-#: src/components/storage/DiskEncryption.jsx:257
+#: src/components/storage/DiskEncryption.jsx:57
 msgid "This may take a moment"
 msgstr "Tämä saattaa kestää hetken"
 
@@ -762,20 +856,20 @@ msgstr "Tämä saattaa kestää hetken"
 msgid "To begin using $0, reboot your system."
 msgstr "Aloita $0 käyttö käynnistämällä järjestelmä uudelleen."
 
-#: src/components/storage/InstallationMethod.jsx:78
+#: src/components/storage/InstallationMethod.jsx:80
 msgid "To continue, select the devices to install to."
 msgstr "Jatka valitsemalla laitteet, joihin haluat asentaa."
 
-#: src/components/storage/InstallationScenario.jsx:130
-#: src/components/storage/InstallationScenario.jsx:144
+#: src/components/storage/InstallationScenario.jsx:119
+#: src/components/storage/InstallationScenario.jsx:133
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Muista varmuuskopioida tiedot, jotta ne eivät katoa."
 
-#: src/components/storage/InstallationScenario.jsx:99
+#: src/components/storage/InstallationScenario.jsx:88
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:81
+#: src/components/storage/InstallationScenario.jsx:70
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -793,11 +887,33 @@ msgstr "Avaa laite"
 msgid "Unlock encrypted devices"
 msgstr "Avaa salatut laitteet"
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:111
 msgid "Use free space for the installation"
 msgstr "Käytä vapaata tilaa asennukseen"
 
-#: src/components/storage/DiskEncryption.jsx:61
+#: src/components/users/Accounts.jsx:233
+msgid "User name"
+msgstr "Käyttäjätunnus"
+
+#: src/components/users/Accounts.jsx:168
+msgid ""
+"User name may only contain: letters from a-z, digits 0-9, dash $0, period "
+"$1, underscore $2"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:165
+#, fuzzy
+#| msgid "User name is reserved for system: %s"
+msgid "User name must not be a reserved word"
+msgstr "Käyttäjätunnus on varattu järjestelmälle: %s"
+
+#: src/components/users/Accounts.jsx:162
+#, fuzzy
+#| msgid "Name must be shorter than 33 characters."
+msgid "User names must be shorter than 33 characters"
+msgstr "Nimi voi sisältää korkeintaan 33 merkkiä."
+
+#: src/components/Password.jsx:61
 msgid "Weak"
 msgstr "Heikko"
 
@@ -809,11 +925,11 @@ msgstr "Tervetuloa"
 msgid "Welcome to $0"
 msgstr "Tervetuloa $0an"
 
-#: src/components/storage/InstallationMethod.jsx:87
+#: src/components/storage/InstallationMethod.jsx:89
 msgid "Welcome. Let's install $0 now."
 msgstr "Tervetuloa. Asennataan nyt $0."
 
-#: src/components/AnacondaWizard.jsx:452
+#: src/components/AnacondaWizard.jsx:468
 msgid "Your progress will not be saved."
 msgstr "Edistymistäsi ei tallenneta."
 
@@ -836,6 +952,10 @@ msgstr "liitä"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "käsittelyä odottava vaihe"
+
+#, fuzzy
+#~ msgid "Failed to get device names."
+#~ msgstr "Laitteen vaihtaminen epäonnistui."
 
 #~ msgid ""
 #~ "\n"
@@ -1110,10 +1230,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid ""
 #~ "%s The disks you've selected have the following amounts of free space:"
 #~ msgstr "%s Valitsemillasi levyillä on seuraavan verran vapaata tilaa:"
-
-#, python-format
-#~ msgid "%s cannot be on an encrypted block device."
-#~ msgstr "%s ei voi olla salatulla lohkolaitteella."
 
 #, python-format
 #~ msgid ""
@@ -1840,9 +1956,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "Connecting..."
 #~ msgstr "Yhdistetään..."
 
-#~ msgid "Connection failed"
-#~ msgstr "Yhteys epäonnistui"
-
 #~ msgid "Continue"
 #~ msgstr "Jatka"
 
@@ -2320,9 +2433,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "File S_ystem:"
 #~ msgstr "Tiedosto_järjestelmä:"
 
-#~ msgid "File System"
-#~ msgstr "Tiedostojärjestelmä"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr ""
 #~ "Komennossa 'autopart' annettu tiedostojärjestelmätyyppi \"{}\" ei ole "
@@ -2412,14 +2522,8 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "Full Name"
 #~ msgstr "Koko nimi"
 
-#~ msgid "Full name"
-#~ msgstr "Koko nimi"
-
 #~ msgid "Full name can't contain the ':' character"
 #~ msgstr "Koko nimi ei voi sisältää ':'-merkkiä"
-
-#~ msgid "Full name cannot contain colon characters"
-#~ msgstr "Koko nimi ei saa sisältää kaksoispisteitä"
 
 #~ msgid "Fully numeric name is not allowed."
 #~ msgstr "Täysin numeerinen nimi ei ole sallittu."
@@ -3035,9 +3139,6 @@ msgstr "käsittelyä odottava vaihe"
 
 #~ msgid "Name is already in use."
 #~ msgstr "Nimi on jo käytössä."
-
-#~ msgid "Name must be shorter than 33 characters."
-#~ msgstr "Nimi voi sisältää korkeintaan 33 merkkiä."
 
 #~ msgid "Name of the repository"
 #~ msgstr "Ohjelmistolähteen nimi"
@@ -4542,9 +4643,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "The following installations were discovered on your system."
 #~ msgstr "Seuraavat asennukset löydettiin järjestelmästäsi."
 
-#~ msgid "The following mandatory spokes are not completed:"
-#~ msgstr "Seuraavat pakolliset vaiheet ovat kesken:"
-
 #, python-format
 #~ msgid ""
 #~ "The following nodes were discovered using the iSCSI initiator "
@@ -5101,13 +5199,6 @@ msgstr "käsittelyä odottava vaihe"
 
 #~ msgid "User creation"
 #~ msgstr "Käyttäjän luominen"
-
-#~ msgid "User name"
-#~ msgstr "Käyttäjätunnus"
-
-#, python-format
-#~ msgid "User name is reserved for system: %s"
-#~ msgstr "Käyttäjätunnus on varattu järjestelmälle: %s"
 
 #~ msgid "User name: "
 #~ msgstr "Käyttäjänimi "
@@ -5682,10 +5773,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Hyväksy muutokset"
 
-#~ msgctxt "GUI|Subscription|Authentication|Account"
-#~ msgid "_Account"
-#~ msgstr "_Tili"
-
 #~ msgctxt "GUI|Keyboard Layout|Add Layout"
 #~ msgid "_Add"
 #~ msgstr "_Lisää"
@@ -5945,10 +6032,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Enable HTTP Proxy"
 #~ msgstr "_Salli HTTP-välityspalvelin"
-
-#~ msgctxt "GUI|Password"
-#~ msgid "_Enable root account"
-#~ msgstr "Ota root-tili käyttöön"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Encrypt"
@@ -6305,10 +6388,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Reverse CHAP"
 #~ msgid "_Reverse CHAP User name:"
 #~ msgstr "_Käänteinen CHAP-käyttäjänimi:"
-
-#~ msgctxt "GUI|Spoke"
-#~ msgid "_Root Account"
-#~ msgstr "_Root-tili"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
@@ -6923,9 +7002,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ "laitelista käyttämällä etsi levyjä kuvaketta. Kaikki havaitut levyt, "
 #~ "mukaan lukien kaikki uudet, näkyvät paikalliset vakiolevyt -osiossa."
 
-#~ msgid "Installing."
-#~ msgstr "Asennetaan."
-
 #~ msgid "Failed to set up installation source; check the repo url"
 #~ msgstr "Asennuslähteen asetus epäonnistui. Tarkista osoite"
 
@@ -7113,9 +7189,6 @@ msgstr "käsittelyä odottava vaihe"
 
 #~ msgid "Confirm root password"
 #~ msgstr "Vahvista rootin salasana"
-
-#~ msgid "Lock root account"
-#~ msgstr "Lukitse root-tili"
 
 #~ msgid "Network & Host Name"
 #~ msgstr "Verkko ja konenimi"
