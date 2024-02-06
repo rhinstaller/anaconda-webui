@@ -7,3 +7,5 @@ export const helpEraseAll = _("Remove all partitions on the selected devices, in
 export const helpUseFreeSpace = _("Keep current disk layout and only install into available space.");
 
 export const helpMountPointMapping = _("Manually select storage locations for installation.");
+
+export const helpConfiguredStorage = _("Storage is based on the configuration from 'Modify storage'.");

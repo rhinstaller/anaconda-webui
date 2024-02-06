@@ -35,6 +35,7 @@ import {
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
+import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
 import { DiskEncryption, getStorageEncryptionState, getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
 import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
@@ -51,13 +52,13 @@ import { SystemTypeContext, OsReleaseContext } from "./Common.jsx";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, title, conf }) => {
+export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, showStorage, setShowStorage, title, conf }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
-    const [storageScenarioId, setStorageScenarioId] = useState(window.sessionStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
+    const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
@@ -111,7 +112,8 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 setStorageScenarioId: (scenarioId) => {
                     window.sessionStorage.setItem("storage-scenario-id", scenarioId);
                     setStorageScenarioId(scenarioId);
-                }
+                },
+                setShowStorage,
             },
             ...getInstallationMethodProps({ isBootIso, osRelease, isFormValid })
         },
@@ -122,7 +124,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 component: MountPointMapping,
                 data: {
                     deviceData: storageData.devices,
-                    diskSelection: storageData.diskSelection,
                     dispatch,
                     partitioningData: storageData.partitioning,
                     reusePartitioning,
@@ -267,6 +268,19 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         // Otherwise, find the first step that was last visited.
         return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
     }) + 1;
+
+    if (showStorage) {
+        return (
+            <CockpitStorageIntegration
+              deviceData={storageData.devices}
+              dispatch={dispatch}
+              onCritFail={onCritFail}
+              selectedDisks={selectedDisks}
+              setShowStorage={setShowStorage}
+              setStorageScenarioId={setStorageScenarioId}
+            />
+        );
+    }
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>

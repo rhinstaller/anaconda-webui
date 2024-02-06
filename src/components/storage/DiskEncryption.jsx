@@ -136,7 +136,7 @@ export const getPageProps = ({ storageScenarioId }) => {
     return ({
         id: "disk-encryption",
         label: _("Disk encryption"),
-        isHidden: storageScenarioId === "mount-point-mapping",
+        isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
         title: _("Encrypt the selected devices?")
     });
 };

@@ -116,3 +116,7 @@ export const hasDuplicateFields = (requests, fieldName) => {
 export const isDuplicateRequestField = (requests, fieldName, fieldValue) => {
     return requests.filter((request) => request[fieldName] === fieldValue).length > 1;
 };
+
+export const getDeviceNameByPath = (deviceData, path) => {
+    return Object.keys(deviceData).find(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+};
