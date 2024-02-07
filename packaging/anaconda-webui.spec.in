@@ -15,12 +15,9 @@ BuildRequires:  gettext
 %global cockpitver 275
 %global cockpitstorver 310
 
-# LVM and BTRFS are only recommended by cockpit-storaged
 Requires: cockpit-storaged >= %{cockpitstorver}
-
 Requires: cockpit-bridge >= %{cockpitver}
 Requires: cockpit-ws >= %{cockpitver}
-Requires: cockpit-storage
 Requires: anaconda-core  >= %{anacondacorever}
 # Firefox dependency needs to be specified there as cockpit web-view does not have a hard dependency on Firefox as
 # it can often fall back to a diferent browser. This does not work in the limited installer
