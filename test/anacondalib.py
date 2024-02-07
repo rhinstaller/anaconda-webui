@@ -65,9 +65,8 @@ class VirtInstallMachineCase(MachineCase):
     def resetLanguage(self):
         m = self.machine
         b = self.browser
-        l = Language(b, m)
-
-        l.dbus_set_language("en_US.UTF-8")
+        lang = Language(b, m)
+        lang.dbus_set_language("en_US.UTF-8")
 
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data

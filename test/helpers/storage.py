@@ -34,6 +34,7 @@ DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/D
 
 id_prefix = "installation-method"
 
+
 class StorageDestination():
     def __init__(self, browser, machine):
         self._step = InstallerSteps.INSTALLATION_METHOD
@@ -309,7 +310,7 @@ class StorageDBus():
             {STORAGE_OBJECT_PATH} \
             {STORAGE_INTERFACE} CreatedPartitioning')
 
-        res = ret[ret.find("[")+1:ret.rfind("]")].split()
+        res = ret[ret.find("[") + 1:ret.rfind("]")].split()
         return [item.strip('"') for item in res]
 
     def dbus_set_initialization_mode(self, value):
@@ -382,7 +383,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.check_mountpoint_row_format_type(row, format_type)
 
     def select_mountpoint(self, disks, encrypted=False):
-        self.browser.wait(lambda : self.disks_loaded(disks))
+        self.browser.wait(lambda: self.disks_loaded(disks))
 
         for disk in disks:
             current_selection = self.get_disk_selected(disk[0])
@@ -400,10 +401,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             else:
                 self.browser.wait_not_present("#unlock-device-dialog")
 
-    def select_mountpoint_row_mountpoint(self, row,  mountpoint):
+    def select_mountpoint_row_mountpoint(self, row, mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
-    def select_mountpoint_row_device(self, row,  device):
+    def select_mountpoint_row_device(self, row, device):
         selector = f"{self.table_row(row)} .pf-v5-c-select__toggle"
 
         self.browser.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
@@ -414,10 +415,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def toggle_mountpoint_row_device(self, row):
         self.browser.click(f"{self.table_row(row)}-device-select-toggle")
 
-    def check_mountpoint_row_device(self, row,  device):
+    def check_mountpoint_row_device(self, row, device):
         self.browser.wait_text(f"{self.table_row(row)} .pf-v5-c-select__toggle-text", device)
 
-    def check_mountpoint_row_mountpoint(self, row,  mountpoint, constrained=True):
+    def check_mountpoint_row_mountpoint(self, row, mountpoint, constrained=True):
         if constrained:
             self.browser.wait_text(f"{self.table_row(row)}-mountpoint", mountpoint)
         else:

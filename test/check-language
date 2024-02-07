@@ -36,27 +36,26 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
-        l = Language(b, m)
+        lang = Language(b, m)
 
         # Set the language in the localization module to German before opening the page
-        l.dbus_set_language("de_DE.UTF-8")
+        lang.dbus_set_language("de_DE.UTF-8")
 
         i.open()
 
         # Expect the backend set language to be preselected and the WebUI translated
-        l.check_selected_locale("de_DE")
+        lang.check_selected_locale("de_DE")
         b.wait_in_text("h2 + h3", "Wählen Sie eine Sprache aus")
 
     def testBackendTranslations(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
-        l = Language(b, m)
+        lang = Language(b, m)
         s = Storage(b, m)
 
         # BIOS boot /boot on ext4 / on xfs /home on btrfs
         disk = "/dev/vda"
-        dev = "vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
         # Two partitions on the same disk with the same UUID raise exception in
@@ -67,12 +66,14 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         s.udevadm_settle()
 
         i.open()
-        l.select_locale("de_DE")
-        l.check_selected_locale("de_DE")
+        lang.select_locale("de_DE")
+        lang.check_selected_locale("de_DE")
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
 
-        b.wait_in_text("#critical-error-bz-report-modal.pf-v5-c-modal-box", "In diesem Fall können Sie entweder eines der Geräte trennen oder es neu formatieren.")
+        b.wait_in_text(
+            "#critical-error-bz-report-modal.pf-v5-c-modal-box",
+            "In diesem Fall können Sie entweder eines der Geräte trennen oder es neu formatieren.")
 
     def testLanguageSwitching(self):
         b = self.browser
@@ -89,7 +90,7 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
 
         # Assert that search bar starts empty.
         assert l.get_locale_search() == ""
-        #b.wait_visible(f".{i.steps.WELCOME}-menu.pf-m-invalid")
+        # b.wait_visible(f".{i.steps.WELCOME}-menu.pf-m-invalid")
 
         # Check that the language menu shows all menu entries when clicking the toggle button
         l.locale_option_visible('en_US')
@@ -138,6 +139,7 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
         b.wait_attr("html", "dir", "ltr")
+
 
 if __name__ == '__main__':
     test_main()

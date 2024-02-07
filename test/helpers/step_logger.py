@@ -1,5 +1,6 @@
 import os
 
+
 class BrowserSnapshot():
     SNAPSHOT_NUMBER = 0
 
@@ -48,4 +49,3 @@ def log_step(snapshots=False, snapshot_before=False, snapshot_after=False, docst
             return result
         return wrapper
     return decorator
-

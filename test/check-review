@@ -21,9 +21,7 @@ from installer import Installer
 from storage import Storage  # pylint: disable=import-error
 from review import Review
 from language import Language
-from progress import Progress
 from users import dbus_reset_users
-from utils import add_public_key
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
@@ -97,6 +95,7 @@ class TestReview(anacondalib.VirtInstallMachineCase):
 
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
+
 
 if __name__ == '__main__':
     test_main()

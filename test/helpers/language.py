@@ -28,6 +28,7 @@ from step_logger import log_step
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization"
 
+
 class Language():
     def __init__(self, browser, machine):
         self.browser = browser

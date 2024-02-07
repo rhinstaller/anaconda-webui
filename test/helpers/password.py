@@ -23,6 +23,7 @@ sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
 
+
 class Password():
     def __init__(self, browser, id_prefix):
         self.browser = browser

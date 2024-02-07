@@ -43,4 +43,3 @@ class Progress():
     @log_step()
     def reboot(self):
         self.browser.click(self._reboot_selector)
-

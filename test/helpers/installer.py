@@ -47,6 +47,7 @@ class InstallerSteps(UserDict):
     _steps_callbacks = {}
     _steps_callbacks[ACCOUNTS] = create_user
 
+
 class Installer():
     def __init__(self, browser, machine, hidden_steps=None):
         self.browser = browser

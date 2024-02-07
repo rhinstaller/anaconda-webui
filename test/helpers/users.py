@@ -72,6 +72,7 @@ class UsersDBus():
 
         return ret.split()[1].strip() == "true"
 
+
 class Users(UsersDBus):
     def __init__(self, browser, machine):
         self.browser = browser
@@ -108,6 +109,7 @@ class Users(UsersDBus):
         password = "password"
         p.set_password(password)
         p.set_password_confirm(password + "" if valid else "X")
+
 
 def create_user(browser, machine):
     p = Password(browser, CREATE_ACCOUNT_ID_PREFIX)

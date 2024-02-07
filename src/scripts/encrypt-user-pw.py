@@ -2,8 +2,8 @@ import crypt
 from random import SystemRandom as sr
 import sys
 
-# Using the function from pyanaconda/core/users.py
 
+# Using the function from pyanaconda/core/users.py
 def crypt_password(password):
     """Crypt a password.
 
