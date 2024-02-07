@@ -1,6 +1,6 @@
 import crypt
-from random import SystemRandom as sr
 import sys
+from random import SystemRandom as sr
 
 
 # Using the function from pyanaconda/core/users.py
@@ -29,7 +29,7 @@ def crypt_password(password):
             cryptpw = crypt.crypt(password, crypt.METHOD_SHA512)
         except OSError as exc:
             raise RuntimeError(
-                "Unable to encrypt password: unsupported algorithm {}".format(crypt.METHOD_SHA512)
+                f"Unable to encrypt password: unsupported algorithm {crypt.METHOD_SHA512}"
             ) from exc
 
     return cryptpw

@@ -16,15 +16,14 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import anacondalib
-
 from installer import Installer
-from storage import Storage
-from users import dbus_reset_users
-from review import Review
 from password import Password
-from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from progress import Progress
+from review import Review
+from storage import Storage
 from storagelib import StorageCase, StorageHelpers  # pylint: disable=import-error
+from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
+from users import dbus_reset_users
 
 
 class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):

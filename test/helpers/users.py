@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -23,7 +21,6 @@ sys.path.append(HELPERS_DIR)
 
 from password import Password
 from step_logger import log_step
-
 
 USERS_SERVICE = "org.fedoraproject.Anaconda.Modules.Users"
 USERS_INTERFACE = USERS_SERVICE

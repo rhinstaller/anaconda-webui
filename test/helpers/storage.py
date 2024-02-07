@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -16,15 +14,14 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import re
+import sys
 
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from installer import Installer, InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
-
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
