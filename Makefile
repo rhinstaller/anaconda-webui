@@ -151,6 +151,7 @@ EXTRA_DIST = dist src firefox-theme
 COCKPIT_REPO_FILES = \
 	pkg/lib \
 	test/common \
+	test/static-code \
 	$(NULL)
 
 COCKPIT_REPO_URL = https://github.com/cockpit-project/cockpit.git
@@ -162,6 +163,10 @@ $(COCKPIT_REPO_STAMP): Makefile
 	@git rev-list --quiet --objects $(COCKPIT_REPO_TREE) -- 2>/dev/null || \
 	     git fetch --no-tags --no-write-fetch-head --depth=1 $(COCKPIT_REPO_URL) $(COCKPIT_REPO_COMMIT)
 	git archive $(COCKPIT_REPO_TREE) -- $(COCKPIT_REPO_FILES) | tar x
+
+.PHONY: codecheck
+codecheck: test/static-code $(NODE_MODULES_TEST)
+	test/static-code
 
 # checkout Cockpit's bots for standard test VM images and API to launch them
 # must be from main, as only that has current and existing images; but testvm.py API is stable
