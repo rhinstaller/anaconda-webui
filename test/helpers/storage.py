@@ -440,7 +440,11 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"{main_selector}:contains({device})")
         self.toggle_mountpoint_row_device(row)
 
-    def unlock_device(self, passphrase, encrypted_devices=[], successfully_unlocked_devices=[]):
+    def unlock_device(self, passphrase, encrypted_devices=None, successfully_unlocked_devices=None):
+        if encrypted_devices is None:
+            encrypted_devices = []
+        if successfully_unlocked_devices is None:
+            successfully_unlocked_devices = []
         # FIXME: https://github.com/patternfly/patternfly-react/issues/9512
         b = self.browser
         for device in encrypted_devices:
