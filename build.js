@@ -9,14 +9,10 @@ import { cockpitCompressPlugin } from "./pkg/lib/esbuild-compress-plugin.js";
 import { cleanPlugin } from "./pkg/lib/esbuild-cleanup-plugin.js";
 import { cockpitPoEsbuildPlugin } from "./pkg/lib/cockpit-po-plugin.js";
 import { cockpitRsyncEsbuildPlugin } from "./pkg/lib/cockpit-rsync-plugin.js";
-import { eslintPlugin } from "./pkg/lib/esbuild-eslint-plugin.js";
-import { stylelintPlugin } from "./pkg/lib/esbuild-stylelint-plugin.js";
 import { sassPlugin } from "esbuild-sass-plugin";
 
 const production = process.env.NODE_ENV === "production";
 const watchMode = process.env.ESBUILD_WATCH === "true" || false;
-// linters dominate the build time, so disable them for production builds by default, but enable in watch mode
-const lint = process.env.LINT ? (process.env.LINT !== "0") : (watchMode || !production);
 /* List of directories to use when resolving import statements */
 const nodePaths = ["pkg/lib"];
 const outdir = "dist";
@@ -26,8 +22,6 @@ const packageJson = JSON.parse(fs.readFileSync("package.json"));
 
 const getTime = () => new Date().toTimeString()
         .split(" ")[0];
-
-const cwd = process.cwd();
 
 // similar to fs.watch(), but recursively watches all subdirectories
 function watchDirs (dir, onChange) {
@@ -75,12 +69,6 @@ const context = await esbuild.context({
     target: ["es2020"],
     plugins: [
         cleanPlugin(),
-        ...lint
-            ? [
-                stylelintPlugin({ filter: new RegExp(cwd + "/src/.*\\.(css?|scss?)$") }),
-                eslintPlugin({ filter: new RegExp(cwd + "/src/.*\\.(jsx?|js?)$") })
-            ]
-            : [],
         // Esbuild will only copy assets that are explicitly imported and used
         // in the code. This is a problem for index.html and manifest.json which are not imported
         copy({
