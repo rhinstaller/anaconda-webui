@@ -16,16 +16,14 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import anacondalib
-
 from installer import Installer
-from storage import Storage
-from users import dbus_reset_users
-from review import Review
 from password import Password
-from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from progress import Progress
+from review import Review
+from storage import Storage
 from storagelib import StorageCase, StorageHelpers  # pylint: disable=import-error
-from utils import pretend_live_iso
+from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
+from users import dbus_reset_users
 
 
 class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
@@ -345,7 +343,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b)
 
-
         disk = "/dev/vda"
         dev = "vda"
         btrfsname = "btrfstest"
@@ -362,7 +359,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify gathered requests
         # root partition is not auto-mapped
         s.check_mountpoint_row(1, "/", "Select a device", True)
-        s.select_mountpoint_row_device(1, f"btrfstest")
+        s.select_mountpoint_row_device(1, "btrfstest")
         s.check_mountpoint_row_format_type(1, "btrfs")
 
         s.check_mountpoint_row(2, "/boot", "Select a device", False)
@@ -388,7 +385,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
-
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
@@ -407,7 +403,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row_device(1, "Select a device")
         s.check_mountpoint_row_device(2, "Select a device")
         s.select_mountpoint_row_device(1, f"{dev}2")
-        s.select_mountpoint_row_device(2, f"btrfstest")
+        s.select_mountpoint_row_device(2, "btrfstest")
 
         i.next()
         new_applied_partitioning = s.dbus_get_applied_partitioning()
@@ -567,8 +563,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
 
-        self._testEncryptedUnlock(b, m);
-
+        self._testEncryptedUnlock(b, m)
 
     def _testEncryptedUnlock(self, b, m):
         dev1 = "vda"
@@ -621,10 +616,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
-
-        disk = "/dev/vda"
-        dev = "vda"
+        _r = Review(b)  # noqa: F841
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -645,7 +637,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         self.confirm()
 
         self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({ "size": 1, "type": "biosboot" })
+        self.dialog({"size": 1, "type": "biosboot"})
 
         self.click_dropdown(self.card_row("Storage", 3), "Create partition")
         self.dialog({
@@ -675,7 +667,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         })
 
         self.click_dropdown(self.card_row("Storage", 6), "Create partition")
-        self.dialog({"size": 1000, "type": "ext4" })
+        self.dialog({"size": 1000, "type": "ext4"})
 
         # Exit the cockpit-storage iframe
         b.switch_to_top()
@@ -850,7 +842,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, 1, "vda2, 1.07 GB: format as ext4, /boot")
         r.check_disk_row(dev, 2, "root, 15.0 GB: format as btrfs, /")
         r.check_disk_row(dev, 3, "home, 15.0 GB: mount, /home")
-        r.check_disk_row_not_present(dev, f"unused")
+        r.check_disk_row_not_present(dev, "unused")
 
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
 
@@ -920,10 +912,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        _r = Review(b)  # noqa: F841
 
         disk = "/dev/vda"
-        dev = "vda"
         tmp_mount = "/tmp/btrfs-mount-test"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "btrfs"), ("", "btrfs")])
         m.execute(f"""
@@ -1054,6 +1045,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # unformatted and unmountable devices should not be available
         s.check_mountpoint_row_device_available(1, f"{dev}2", False)
         s.check_mountpoint_row_device_available(1, f"{dev}3", False)
+
 
 class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
     efi = True

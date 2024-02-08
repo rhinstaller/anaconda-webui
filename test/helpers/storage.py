@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -16,15 +14,14 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import re
+import sys
 
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from installer import Installer, InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
-
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -33,6 +30,7 @@ STORAGE_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage"
 DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DiskInitialization"
 
 id_prefix = "installation-method"
+
 
 class StorageDestination():
     def __init__(self, browser, machine):
@@ -309,7 +307,7 @@ class StorageDBus():
             {STORAGE_OBJECT_PATH} \
             {STORAGE_INTERFACE} CreatedPartitioning')
 
-        res = ret[ret.find("[")+1:ret.rfind("]")].split()
+        res = ret[ret.find("[") + 1:ret.rfind("]")].split()
         return [item.strip('"') for item in res]
 
     def dbus_set_initialization_mode(self, value):
@@ -382,7 +380,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.check_mountpoint_row_format_type(row, format_type)
 
     def select_mountpoint(self, disks, encrypted=False):
-        self.browser.wait(lambda : self.disks_loaded(disks))
+        self.browser.wait(lambda: self.disks_loaded(disks))
 
         for disk in disks:
             current_selection = self.get_disk_selected(disk[0])
@@ -400,10 +398,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             else:
                 self.browser.wait_not_present("#unlock-device-dialog")
 
-    def select_mountpoint_row_mountpoint(self, row,  mountpoint):
+    def select_mountpoint_row_mountpoint(self, row, mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
-    def select_mountpoint_row_device(self, row,  device):
+    def select_mountpoint_row_device(self, row, device):
         selector = f"{self.table_row(row)} .pf-v5-c-select__toggle"
 
         self.browser.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
@@ -414,10 +412,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def toggle_mountpoint_row_device(self, row):
         self.browser.click(f"{self.table_row(row)}-device-select-toggle")
 
-    def check_mountpoint_row_device(self, row,  device):
+    def check_mountpoint_row_device(self, row, device):
         self.browser.wait_text(f"{self.table_row(row)} .pf-v5-c-select__toggle-text", device)
 
-    def check_mountpoint_row_mountpoint(self, row,  mountpoint, constrained=True):
+    def check_mountpoint_row_mountpoint(self, row, mountpoint, constrained=True):
         if constrained:
             self.browser.wait_text(f"{self.table_row(row)}-mountpoint", mountpoint)
         else:
@@ -439,7 +437,11 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"{main_selector}:contains({device})")
         self.toggle_mountpoint_row_device(row)
 
-    def unlock_device(self, passphrase, encrypted_devices=[], successfully_unlocked_devices=[]):
+    def unlock_device(self, passphrase, encrypted_devices=None, successfully_unlocked_devices=None):
+        if encrypted_devices is None:
+            encrypted_devices = []
+        if successfully_unlocked_devices is None:
+            successfully_unlocked_devices = []
         # FIXME: https://github.com/patternfly/patternfly-react/issues/9512
         b = self.browser
         for device in encrypted_devices:

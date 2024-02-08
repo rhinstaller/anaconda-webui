@@ -15,15 +15,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+import time
 
+import anacondalib
 from installer import Installer
 from language import Language
 from review import Review
 from storage import Storage
+from testlib import nondestructive, test_main, wait  # pylint: disable=import-error
 from users import dbus_reset_users
-from testlib import nondestructive, test_main, wait, Error  # pylint: disable=import-error
-from utils import pretend_live_iso, get_pretty_name
+from utils import get_pretty_name, pretend_live_iso
 
 
 @nondestructive
@@ -148,7 +149,7 @@ class TestBasic(anacondalib.VirtInstallMachineCase):
             ignore=["#about-modal-versions dd"],
         )
 
-        #Close about modal
+        # Close about modal
         b.click(".pf-v5-c-button[aria-label='Close Dialog']")
         b.wait_not_present("#about-modal")
 
@@ -200,12 +201,11 @@ class TestBasic(anacondalib.VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
-        l = Language(b, m)
+        _l = Language(b, m)  # noqa: F841
         s = Storage(b, m)
 
         # BIOS boot /boot on ext4 / on xfs /home on btrfs
         disk = "/dev/vda"
-        dev = "vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
         # Two partitions on the same disk with the same UUID raise exception in

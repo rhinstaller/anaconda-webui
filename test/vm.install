@@ -19,7 +19,7 @@ missing_packages = "cockpit-ws cockpit-bridge fedora-logos python3-kickstart pyk
 # but it packs to many packages to updates.img
 missing_packages_incl_deps = "firefox"
 
-from machine.machine_core import machine_virtual  # NOQA: imported through parent.py
+from machine.machine_core import machine_virtual
 
 
 def download_from_copr(copr_repo, packages, machine):
@@ -51,7 +51,6 @@ def vm_install(image, verbose, quick):
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
             packages_to_download += " cockpit-storaged"
-
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
         # from a different repo, then pull it from the anaconda-webui PR COPR repo
@@ -87,7 +86,9 @@ def vm_install(image, verbose, quick):
         # Then we can enable this only for the various scenarios above
         if packages_to_download is not None:
             machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
-        machine.execute(f"dnf download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}", stdout=sys.stdout, timeout=300)
+        machine.execute(
+            f"dnf download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}",
+            stdout=sys.stdout, timeout=300)
 
         # download rpms
         vm_rpms = machine.execute("find /var/tmp/build -name '*.rpm' -not -name '*.src.rpm'").strip().split()
@@ -114,5 +115,6 @@ def main():
     args = parser.parse_args()
 
     vm_install(args.image, args.verbose, args.quick)
+
 
 main()

@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -43,4 +41,3 @@ class Progress():
     @log_step()
     def reboot(self):
         self.browser.click(self._reboot_selector)
-

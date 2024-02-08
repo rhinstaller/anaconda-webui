@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -22,6 +20,7 @@ HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
+
 
 class Password():
     def __init__(self, browser, id_prefix):

@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2023 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -25,14 +23,12 @@ sys.path.append(os.path.join(TEST_DIR, "common"))
 sys.path.insert(0, os.path.join(TEST_DIR, "helpers"))
 sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
 
+from language import Language
 from machine_install import VirtInstallMachine
+from progress import Progress
+from storage import Storage
 from testlib import MachineCase  # pylint: disable=import-error
 from utils import add_public_key
-
-from storage import Storage
-from language import Language
-from progress import Progress
-
 
 pixel_tests_ignore = [".logo", "#betanag-icon"]
 
@@ -65,9 +61,8 @@ class VirtInstallMachineCase(MachineCase):
     def resetLanguage(self):
         m = self.machine
         b = self.browser
-        l = Language(b, m)
-
-        l.dbus_set_language("en_US.UTF-8")
+        lang = Language(b, m)
+        lang.dbus_set_language("en_US.UTF-8")
 
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data

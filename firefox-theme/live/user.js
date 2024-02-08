@@ -1,3 +1,4 @@
+/* global user_pref */
 // Let us use userChrome.css
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
@@ -41,4 +42,3 @@ user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("toolkit.telemetry.unified", false);
 user_pref("trailhead.firstrun.didSeeAboutWelcome", true);
-

@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -16,8 +14,8 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 from collections import UserDict
 from time import sleep
-from step_logger import log_step
 
+from step_logger import log_step
 from users import create_user
 
 
@@ -46,6 +44,7 @@ class InstallerSteps(UserDict):
 
     _steps_callbacks = {}
     _steps_callbacks[ACCOUNTS] = create_user
+
 
 class Installer():
     def __init__(self, browser, machine, hidden_steps=None):

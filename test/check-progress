@@ -16,12 +16,11 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import anacondalib
-
 from installer import Installer
 from progress import Progress
 from storage import Storage
-from utils import add_public_key, get_pretty_name
 from testlib import test_main  # pylint: disable=import-error
+from utils import get_pretty_name
 
 
 class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
@@ -34,7 +33,7 @@ class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, self.machine)
         p = Progress(b)
-        s = Storage(b, self.machine)
+        _s = Storage(b, self.machine)  # noqa: F841
 
         i.open()
 
@@ -53,6 +52,7 @@ class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
         )
 
         self.handleReboot()
+
 
 if __name__ == '__main__':
     test_main()

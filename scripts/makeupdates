@@ -24,26 +24,28 @@
 import getopt
 import os
 import shutil
-import six
-import subprocess
 import sys
+
 
 def addRpms(updates, add_rpms):
     for rpm in add_rpms:
         cmd = "cd %s && rpm2cpio %s | cpio -dium" % (updates, rpm)
-        sys.stdout.write(cmd+"\n")
+        sys.stdout.write(cmd + "\n")
         os.system(cmd)
+
 
 def createUpdatesImage(cwd, updates):
     os.chdir(updates)
     os.system("find . | cpio -c -o | gzip -9cv > %s/updates.img" % (cwd,))
     sys.stdout.write("updates.img ready\n")
 
+
 def usage(cmd):
     sys.stdout.write("Usage: %s [OPTION]...\n" % (cmd,))
     sys.stdout.write("Options:\n")
     sys.stdout.write("    -h, --help       Display this help and exit.\n")
     sys.stdout.write("    -a, --add        Add contents of rpm to the update\n")
+
 
 def main(argv):
     prog = os.path.basename(argv[0])
@@ -55,9 +57,7 @@ def main(argv):
     add_rpms = []
 
     try:
-        opts, _args = getopt.getopt(argv[1:], 'a',
-                                   ['add=',
-                                    'help'])
+        opts, _args = getopt.getopt(argv[1:], 'a', ['add=', 'help'])
     except getopt.GetoptError:
         show_help = True
 
@@ -90,6 +90,7 @@ def main(argv):
     createUpdatesImage(cwd, updates)
 
     shutil.rmtree(updates)
+
 
 if __name__ == "__main__":
     main(sys.argv)

@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2022 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -23,7 +21,6 @@ sys.path.append(HELPERS_DIR)
 
 from password import Password
 from step_logger import log_step
-
 
 USERS_SERVICE = "org.fedoraproject.Anaconda.Modules.Users"
 USERS_INTERFACE = USERS_SERVICE
@@ -72,6 +69,7 @@ class UsersDBus():
 
         return ret.split()[1].strip() == "true"
 
+
 class Users(UsersDBus):
     def __init__(self, browser, machine):
         self.browser = browser
@@ -108,6 +106,7 @@ class Users(UsersDBus):
         password = "password"
         p.set_password(password)
         p.set_password_confirm(password + "" if valid else "X")
+
 
 def create_user(browser, machine):
     p = Password(browser, CREATE_ACCOUNT_ID_PREFIX)

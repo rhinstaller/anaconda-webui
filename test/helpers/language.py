@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-#
 # Copyright (C) 2021 Red Hat, Inc.
 #
 # This program is free software; you can redistribute it and/or modify it
@@ -24,9 +22,9 @@ sys.path.append(HELPERS_DIR)
 from installer import InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
 
-
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization"
+
 
 class Language():
     def __init__(self, browser, machine):
