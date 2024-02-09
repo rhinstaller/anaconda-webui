@@ -49,6 +49,9 @@ import {
 } from "../../apis/storage.js";
 
 import {
+    unlockDevice,
+} from "../../apis/storage_devicetree.js";
+import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";
 import {
@@ -221,6 +224,7 @@ const CheckStorageDialog = ({
     const requiredSize = useRequiredSize();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
+    const cockpitPassphrases = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}"), []);
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({
@@ -246,6 +250,52 @@ const CheckStorageDialog = ({
             setCheckStep();
         }
     }, [useConfiguredStorage, checkStep]);
+
+    useEffect(() => {
+        if (checkStep !== "luks") {
+            return;
+        }
+
+        const cockpitDevices = (
+            Object.keys(newMountPoints)
+                    .map(devicePath => ({
+                        devicePath,
+                        deviceName: getDeviceNameByPath(deviceData, devicePath),
+                    }))
+        );
+
+        const devicesToUnlock = (
+            cockpitDevices
+                    .filter(({ devicePath, deviceName }) => {
+                        return (
+                            newMountPoints[devicePath].type === "crypto" &&
+                            deviceData[deviceName].formatData.attrs.v.has_key !== "True"
+                        );
+                    })
+                    .map(({ devicePath, deviceName }) => ({
+                        deviceName,
+                        passphrase: cockpitPassphrases[devicePath],
+                    }))
+        );
+
+        if (devicesToUnlock.some(dev => !dev.passphrase)) {
+            onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
+        }
+
+        if (devicesToUnlock.length === 0) {
+            setCheckStep("prepare-partitioning");
+            return;
+        }
+
+        Promise.all(devicesToUnlock.map(unlockDevice))
+                .catch(exc => {
+                    setCheckStep();
+                    setError(exc);
+                })
+                .then(() => {
+                    dispatch(getDevicesAction());
+                });
+    }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, deviceData, onCritFail, setError]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
@@ -291,7 +341,7 @@ const CheckStorageDialog = ({
                         onSuccess: () => dispatch(getDevicesAction())
                                 .then(() => {
                                     if (useConfiguredStorage) {
-                                        setCheckStep("prepare-partitioning");
+                                        setCheckStep("luks");
                                     } else {
                                         setCheckStep();
                                     }

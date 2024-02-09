@@ -539,6 +539,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
 
         disk1 = "/dev/vda"
+        dev1 = "vda"
         s.partition_disk(
             disk1,
             [("1MiB", "biosboot"), ("1GB", "xfs"), ("1GB", "xfs"), ("1GB", "xfs"), ("", "xfs")]
@@ -563,15 +564,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
 
-        self._testEncryptedUnlock(b, m)
-
-    def _testEncryptedUnlock(self, b, m):
-        dev1 = "vda"
-
-        i = Installer(b, m)
-        s = Storage(b, m)
-        r = Review(b)
-
         s.select_mountpoint([(dev1, True)], encrypted=True)
 
         s.unlock_all_encrypted()
@@ -594,6 +586,15 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # The 'Unlock' dialog closes when all LUKS devices are unlocked
         s.unlock_device("einszweidreivier", ["vda4"], ["vda4"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+
+        self._testEncryptedUnlock(b, m)
+
+    def _testEncryptedUnlock(self, b, m):
+        dev1 = "vda"
+
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b)
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, "vda5")
@@ -674,6 +675,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.return_to_installation()
         s.return_to_installation_confirm()
         i.wait_current_page(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([("vda", True)])
 
         self._testEncryptedUnlock(b, m)
 
