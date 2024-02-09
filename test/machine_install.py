@@ -43,6 +43,7 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
 class VirtInstallMachine(VirtMachine):
     efi = False
+    http_payload_server = None
 
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
@@ -78,8 +79,8 @@ class VirtInstallMachine(VirtMachine):
 
         return http_updates_img_port
 
-    def _serve_payload(self, payload_path):
-        payload_cached_path = os.path.realpath(payload_path)
+    def _serve_payload(self):
+        payload_cached_path = os.path.realpath(self.payload_path)
         payload_cached_dir = os.path.dirname(payload_cached_path)
         payload_cached_name = os.path.basename(payload_cached_path)
 
@@ -89,16 +90,10 @@ class VirtInstallMachine(VirtMachine):
 
         return payload_cached_name, http_payload_port
 
-    def _get_payload_ks_path(self, payload_cached_name, http_payload_port):
-        payload_ks_fd, payload_ks_path = tempfile.mkstemp(
-            suffix='.cfg',
-            prefix=f"ks-{self.label}",
-            dir=WEBUI_TEST_DIR
-        )
-        with os.fdopen(payload_ks_fd, 'w') as f:
-            f.write(f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"')
-
-        return payload_ks_path
+    def _write_interactive_defaults_ks(self):
+        payload_cached_name, http_payload_port = self._serve_payload()
+        content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
+        Machine.execute(self, f'echo \'{content}\' > /usr/share/anaconda/interactive-defaults.ks')
 
     def start(self):
         update_img_file = os.path.join(ROOT_DIR, "updates.img")
@@ -107,16 +102,14 @@ class VirtInstallMachine(VirtMachine):
 
         self.http_updates_img_port = self._serve_updates_img()
 
-        payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
-        if not os.path.exists(payload_path):
-            raise FileNotFoundError(f"Missing payload file {payload_path}; use 'make payload'.")
-
-        payload_cached_name, http_payload_port = self._serve_payload(payload_path)
-        self.payload_ks_path = self._get_payload_ks_path(payload_cached_name, http_payload_port)
+        self.payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
+        if not os.path.exists(self.payload_path):
+            raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
         disk_image = self._create_disk_image(15, quiet=True)
 
         iso_path = f"{os.getcwd()}/bots/images/{self.image}"
+        extra_args = ""
         if self.is_live():
             # Live install ISO has different directory structure inside
             # that doesn't follow the standard distribution tree directory structure.
@@ -130,10 +123,8 @@ class VirtInstallMachine(VirtMachine):
             # FIXME: Remove this once https://gitlab.com/libosinfo/osinfo-db/-/merge_requests/674 is released
             # and version is present in the task container
             location = f"{iso_path},kernel=images/pxeboot/vmlinuz,initrd=images/pxeboot/initrd.img"
-            extra_args = f"inst.ks=file:/{os.path.basename(self.payload_ks_path)}"
         else:
             location = f"{iso_path}"
-            extra_args = f"inst.ks=file:/{os.path.basename(self.payload_ks_path)}"
 
         if self.efi:
             boot_arg = "--boot uefi "
@@ -160,7 +151,6 @@ class VirtInstallMachine(VirtMachine):
                 f"hostfwd=tcp:{self.ssh_address}:{self.ssh_port}-:22,"
                 f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80 "
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
-                f"--initrd-inject {self.payload_ks_path} "
                 f"--extra-args '{extra_args}' "
                 f"--disk path={disk_image},bus=virtio,cache=unsafe "
                 f"--location {location} &"
@@ -170,6 +160,9 @@ class VirtInstallMachine(VirtMachine):
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
                 Machine.wait_boot(self, timeout_sec=300)
+
+                # Configure the payload in interactive-defaults.ks
+                self._write_interactive_defaults_ks()
 
                 for _ in range(30):
                     try:
@@ -192,7 +185,6 @@ class VirtInstallMachine(VirtMachine):
             f"virsh -q -c qemu:///session undefine --nvram "  # tell undefine to also delete the EFI NVRAM device
             f"--remove-all-storage {self.label} || true"
         )
-        os.remove(self.payload_ks_path)
         if self.http_updates_img_server:
             self.http_updates_img_server.kill()
         if self.http_payload_server:
