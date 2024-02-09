@@ -41,7 +41,7 @@ Running eslint
 Anaconda Web UI uses `ESLint <https://eslint.org/>`_ to automatically check
 JavaScript code style in `.js` and `.jsx` files.
 
-The linter is executed within every build as a plugin of esbuild.
+ESLint is executed as part of `test/static-code`, aka. `make codecheck`.
 
 For developer convenience, the ESLint can be started explicitly by::
 
@@ -52,6 +52,24 @@ Violations of some rules can be fixed automatically by::
     npm run eslint:fix
 
 Rules configuration can be found in the `.eslintrc.json` file.
+
+Running stylelint
+------------------
+
+Cockpit uses `Stylelint <https://stylelint.io/>`_ to automatically check CSS code
+style in `.css` and `scss` files.
+
+Styleint is executed as part of `test/static-code`, aka. `make codecheck`.
+
+For developer convenience, the Stylelint can be started explicitly by::
+
+    npm run stylelint
+
+Violations of some rules can be fixed automatically by::
+
+    npm run stylelint:fix
+
+Rules configuration can be found in the `.stylelintrc.json` file.
 
 Development with rsync mode
 ---------------------------

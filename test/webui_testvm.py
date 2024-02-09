@@ -52,7 +52,7 @@ def cmd_cli():
             # rsync development files over so /usr/local/share/cockpit is created with a development version
             if args.rsync:
                 # Rather annoying the node_modules path needs to be explicitly added for webpack
-                subprocess.check_call(["npm", "run", "build"], env={'RSYNC': args.host, "PATH": "/usr/bin/:node_modules/.bin", "LINT": "0"})
+                subprocess.check_call(["npm", "run", "build"], env={'RSYNC': args.host, "PATH": "/usr/bin/:node_modules/.bin"})
         else:
             print("You can start the installer by running the following command on the terminal in the test VM:")
             print("liveinst --graphical --updates=http://10.0.2.2:%s/updates.img" % (machine.http_updates_img_port))
