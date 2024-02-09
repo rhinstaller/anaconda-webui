@@ -220,7 +220,7 @@ const CheckStorageDialog = ({
     const mountPointConstraints = useMountPointConstraints();
     const requiredSize = useRequiredSize();
 
-    const newMountPoints = useMemo(() => JSON.parse(window.localStorage.getItem("cockpit_mount_points") || "{}"), []);
+    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({

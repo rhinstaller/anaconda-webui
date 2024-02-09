@@ -47,8 +47,6 @@ export const ModifyStorage = ({ idPrefix, onCritFail, onRescan, setShowStorage, 
               icon={<WrenchIcon />}
               onClick={() => {
                   window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
-                  // FIXME: Remove when cockpit-storaged 311 is available in Rawhide
-                  window.localStorage.setItem("cockpit_anaconda", cockpitAnaconda);
                   setShowStorage(true);
               }}
             >
