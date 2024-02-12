@@ -12,8 +12,7 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-# FIXME: Remove 'pykickstart' this as soon as https://github.com/cockpit-project/bots/pull/5860 is merged
-missing_packages = "cockpit-ws cockpit-bridge fedora-logos python3-kickstart pykickstart"
+missing_packages = "cockpit-ws cockpit-bridge fedora-logos"
 # Install missing firefox dependencies.
 # Resolving all dependencies with dnf download is possible,
 # but it packs to many packages to updates.img
