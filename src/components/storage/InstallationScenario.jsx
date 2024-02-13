@@ -99,7 +99,7 @@ const checkMountPointMapping = ({ hasFilesystems, duplicateDeviceNames }) => {
     return availability;
 };
 
-export const checkConfiguredStorage = ({ mountPointConstraints, partitioning, newMountPoints, scenarioPartitioningMapping }) => {
+export const checkConfiguredStorage = ({ deviceData, mountPointConstraints, partitioning, newMountPoints, scenarioPartitioningMapping }) => {
     const availability = new AvailabilityState();
 
     const currentPartitioningMatches = partitioning !== undefined && scenarioPartitioningMapping["use-configured-storage"] === partitioning;
@@ -135,9 +135,10 @@ export const checkConfiguredStorage = ({ mountPointConstraints, partitioning, ne
                             return allDirs.includes(m["mount-point"].v);
                         }
 
-                        // FIXME: cockpit does not return the biosboot partitions in the cockpit_mount_points
                         if (m["required-filesystem-type"].v === "biosboot") {
-                            return true;
+                            const biosboot = Object.keys(deviceData).find(d => deviceData[d].formatData.type.v === "biosboot");
+
+                            return biosboot !== undefined;
                         }
 
                         return false;

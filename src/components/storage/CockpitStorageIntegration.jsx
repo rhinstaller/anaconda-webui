@@ -228,13 +228,14 @@ const CheckStorageDialog = ({
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({
+            deviceData,
             mountPointConstraints,
             scenarioPartitioningMapping,
             newMountPoints,
         });
 
         return availability.available;
-    }, [mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
+    }, [deviceData, mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
 
     const useFreeSpace = useMemo(() => {
         const availability = checkUseFreeSpace({ diskFreeSpace, diskTotalSpace, requiredSize });
