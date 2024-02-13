@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-13 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:21+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Polish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -44,7 +44,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:139
 msgid "$0 installation"
 msgstr "Instalacja systemu $0"
 
@@ -73,7 +73,7 @@ msgstr "Informacje"
 msgid "Account"
 msgstr "_Konto"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:380
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
@@ -115,23 +115,14 @@ msgstr "Strona projektu Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "Zastosuj przydział punktów montowania i zainstaluj"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "Zastosowywanie nowego wyboru dysków…"
 
-#: src/components/AnacondaWizard.jsx:407
 #: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/AnacondaWizard.jsx:421
 msgid "Back"
 msgstr "Wstecz"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-GUI to zaawansowany edytor urządzeń do przechowywania danych "
-"umożliwiający zmianę rozmiaru, usuwanie i tworzenie partycji. Za jego pomocą "
-"można skonfigurować LVM i wiele więcej."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -145,15 +136,14 @@ msgstr ""
 "wyłącznie do testowania i rozwijania, a także chce zgłaszać błędy lub "
 "problemy w celu jego ulepszenia."
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:249
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
+#: src/components/storage/CockpitStorageIntegration.jsx:104
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
-"Zmiany wprowadzone w narzędziu Blivet-GUI zostają bezpośrednio zastosowane "
-"do urządzeń do przechowywania danych."
 
 #: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
@@ -167,7 +157,7 @@ msgstr "Wybór języka"
 msgid "Chosen language: "
 msgstr "Wybrany język: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "Usuń wpisaną wartość"
 
@@ -183,12 +173,18 @@ msgstr "Często używane języki"
 msgid "Completed"
 msgstr "Ukończono"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:100
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "Konfigurowanie urządzeń do przechowywania danych"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Potwierdzenie hasła"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/AnacondaWizard.jsx:473
 msgid "Continue installation"
 msgstr "Kontynuuj instalację"
 
@@ -209,7 +205,7 @@ msgstr "Zablokowanie konta roota"
 msgid "Critical error"
 msgstr "Błąd krytyczny"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "Obecnie wybrane"
 
@@ -217,7 +213,7 @@ msgstr "Obecnie wybrane"
 msgid "Custom"
 msgstr "Niestandardowy"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "Miejsce docelowe"
 
@@ -234,7 +230,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "Wyłączone"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:122
 msgid "Disk configuration"
 msgstr "Konfiguracja dysku"
 
@@ -299,9 +295,13 @@ msgstr ""
 msgid "Error details"
 msgstr "Informacje o błędzie"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:250
 msgid "Error was hit when going back from $0."
 msgstr "Wystąpił błąd podczas wracania z „$0”."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:190
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -343,6 +343,10 @@ msgstr "Ukryj hasło"
 msgid "How would you like to install?"
 msgstr "W jaki sposób zainstalować?"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:166
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -350,21 +354,11 @@ msgstr ""
 "Jeśli użytkownik nie rozumie lub nie akceptuje ryzyka, to proszę zakończyć "
 "ten program."
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-"Jeśli wprowadzono zmiany w partycjach lub dyskach, proszę ponownie "
-"przeskanować urządzenia do przechowywania danych."
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "Zignoruj"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "W trakcie"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:131
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
@@ -386,7 +380,7 @@ msgstr "Zainstalować w wolnym miejscu?"
 msgid "Installation failed"
 msgstr "Instalacja się nie powiodła"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:92
 msgid "Installation method"
 msgstr "Metoda instalacji"
 
@@ -402,7 +396,7 @@ msgstr "Typ instalacji"
 msgid "Installing"
 msgstr "Instalowanie"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "Instalowanie na $0 ($1)"
 
@@ -414,10 +408,6 @@ msgstr "Zachowuje obecny układ dysku i instaluje tylko w wolnym miejscu."
 msgid "Language"
 msgstr "Język"
 
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "Uruchom edytor dysków Blivet-GUI"
-
 #: src/components/storage/EncryptedDevices.jsx:175
 msgid "Locked devices"
 msgstr "Zablokowane urządzenia"
@@ -426,11 +416,11 @@ msgstr "Zablokowane urządzenia"
 msgid "Log"
 msgstr "Dziennik"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:683
 msgid "Manual disk configuration"
 msgstr "Ręczna konfiguracja dysku"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:685
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Ręczna konfiguracja dysku: mapowanie punktów montowania"
 
@@ -449,25 +439,16 @@ msgstr ""
 "Rozbieżność między wyborem ponownego formatowania urządzenia nadrzędnego "
 "i urządzenia potomnego."
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "Zmodyfikowano urządzenia do przechowywania danych"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:54
 msgid "Modify storage"
 msgstr "Modyfikuj urządzenia do przechowywania danych"
-
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "Zmodyfikowanie urządzeń do przechowywania danych się nie powiodło."
 
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "Punkt montowania"
 
-#: src/components/storage/MountPointMapping.jsx:556
 #: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Mount point assignment"
 msgstr "Przydzielenie punktów montowania"
 
@@ -490,11 +471,11 @@ msgstr ""
 "Sieć jest niedostępna. Proszę skonfigurować sieć w menu na górnym pasku, aby "
 "zgłosić problem."
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:395
 msgid "Next"
 msgstr "Dalej"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "Nie wykryto dodatkowych dysków"
 
@@ -502,8 +483,8 @@ msgstr "Nie wykryto dodatkowych dysków"
 msgid "No devices"
 msgstr "Brak urządzeń"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Brak wyników"
 
@@ -511,7 +492,7 @@ msgstr "Brak wyników"
 msgid "No usable devices on the selected disks."
 msgstr "Brak używalnych urządzeń na wybranych dyskach."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "Nie wykryto żadnych używalnych dysków"
 
@@ -545,10 +526,14 @@ msgstr ""
 msgid "Operating system"
 msgstr "System operacyjny"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:198
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Hasło"
 
@@ -580,25 +565,25 @@ msgstr "Wydanie testowe"
 msgid "Preparing report"
 msgstr "Przygotowywanie zgłoszenia"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "Zakończ"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Quit installer?"
 msgstr "Zakończyć instalatora?"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "Skanuj ponownie"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:114
 msgid "Reading information about the computer failed."
 msgstr "Odczytanie informacji o komputerze się nie powiodło."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:119
 msgid "Reading installer configuration failed."
 msgstr "Odczytanie konfiguracji instalatora się nie powiodło."
 
@@ -606,18 +591,22 @@ msgstr "Odczytanie konfiguracji instalatora się nie powiodło."
 msgid "Reading installer version information failed."
 msgstr "Odczytanie informacji o wersji instalatora się nie powiodło."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "Uruchom ponownie"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Reboot system?"
 msgstr "Uruchomić komputer ponownie?"
 
 #: src/components/storage/MountPointMapping.jsx:242
 msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:175
+msgid "Recommended partitions:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:349
@@ -658,17 +647,25 @@ msgstr ""
 msgid "Required"
 msgstr "Wymagany"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:187
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Wymagany"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "Skanuj ponownie"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "Przeskanuj urządzenia do przechowywania danych ponownie"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "Ponowne skanowanie dysków się nie powiodło."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:83
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "Instalacja systemu $0"
 
 #: src/components/review/ReviewConfiguration.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:242
@@ -683,7 +680,7 @@ msgstr ""
 msgid "Select a device"
 msgstr "Wybierz urządzenie"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "Wybierz dysk"
 
@@ -741,6 +738,13 @@ msgstr "Konfiguracja urządzeń do przechowywania danych"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Konfiguracja urządzeń do przechowywania danych: w trakcie."
 
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr ""
+"Wczytaj ponownie konfigurację urządzeń do przechowywania danych z dysku."
+
 #: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Silne"
@@ -779,14 +783,14 @@ msgstr ""
 "Wybrany język będzie używany w trakcie instalacji i w zainstalowanym "
 "oprogramowaniu. "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -847,7 +851,7 @@ msgstr ""
 "Zawartość wybranych dysków zostanie usunięta, czego nie można cofnąć. Na "
 "pewno kontynuować instalację?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -869,7 +873,7 @@ msgstr "Może to chwilę zająć"
 msgid "To begin using $0, reboot your system."
 msgstr "Uruchom komputer ponownie, aby zacząć korzystać z systemu $0."
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:84
 msgid "To continue, select the devices to install to."
 msgstr "Aby kontynuować, proszę wybrać urządzenia, na których zainstalować."
 
@@ -940,11 +944,17 @@ msgstr "Witaj"
 msgid "Welcome to $0"
 msgstr "Witaj w systemie $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:93
 msgid "Welcome. Let's install $0 now."
 msgstr "Witaj w instalacji systemu $0."
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:193
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:482
 msgid "Your progress will not be saved."
 msgstr "Postęp nie zostanie zapisany."
 
@@ -967,6 +977,40 @@ msgstr "punkt montowania"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "nieukończony krok"
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-GUI to zaawansowany edytor urządzeń do przechowywania danych "
+#~ "umożliwiający zmianę rozmiaru, usuwanie i tworzenie partycji. Za jego "
+#~ "pomocą można skonfigurować LVM i wiele więcej."
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr ""
+#~ "Zmiany wprowadzone w narzędziu Blivet-GUI zostają bezpośrednio "
+#~ "zastosowane do urządzeń do przechowywania danych."
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr ""
+#~ "Jeśli wprowadzono zmiany w partycjach lub dyskach, proszę ponownie "
+#~ "przeskanować urządzenia do przechowywania danych."
+
+#~ msgid "Ignore"
+#~ msgstr "Zignoruj"
+
+#~ msgid "Launch Blivet-gui storage editor"
+#~ msgstr "Uruchom edytor dysków Blivet-GUI"
+
+#~ msgid "Modified storage"
+#~ msgstr "Zmodyfikowano urządzenia do przechowywania danych"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "Zmodyfikowanie urządzeń do przechowywania danych się nie powiodło."
+
+#~ msgid "Rescan storage"
+#~ msgstr "Przeskanuj urządzenia do przechowywania danych ponownie"
 
 #~ msgid "Failed to get device names."
 #~ msgstr "Uzyskanie nazw urządzeń się nie powiodło."
@@ -1948,9 +1992,6 @@ msgstr "nieukończony krok"
 
 #~ msgid "Configuring installed system"
 #~ msgstr "Konfigurowanie zainstalowanego systemu"
-
-#~ msgid "Configuring storage"
-#~ msgstr "Konfigurowanie urządzeń do przechowywania danych"
 
 #~ msgid "Configuring {}"
 #~ msgstr "Konfigurowanie {}"
@@ -3911,10 +3952,6 @@ msgstr "nieukończony krok"
 
 #~ msgid "Registration failed."
 #~ msgstr "Rejestracja się nie powiodła."
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr ""
-#~ "Wczytaj ponownie konfigurację urządzeń do przechowywania danych z dysku."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "Wymagany jest zdalny katalog"

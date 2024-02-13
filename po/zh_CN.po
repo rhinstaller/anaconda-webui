@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-13 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:23+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -58,7 +58,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:139
 msgid "$0 installation"
 msgstr "$0 安装"
 
@@ -87,7 +87,7 @@ msgstr "关于"
 msgid "Account"
 msgstr "帐户(_A)"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:380
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
@@ -129,22 +129,14 @@ msgstr "Anaconda 项目页面"
 msgid "Apply mount point assignment and install"
 msgstr "应用挂载点分配并安装"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "正在应用新的磁盘选择..."
 
-#: src/components/AnacondaWizard.jsx:407
 #: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/AnacondaWizard.jsx:421
 msgid "Back"
 msgstr "返回"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-gui 是一个高级存储编辑器，可让您调整大小、删除和创建分区。 它可以设置 "
-"LVM 等等。"
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -156,13 +148,14 @@ msgstr ""
 "点击 \"继续\" ，则说明您了解并接受预发行版的风险，只将该软件用于测试和开发，"
 "并且愿意报告所有程序错误或问题，以便改进本软件。"
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:249
 msgid "Cancel"
 msgstr "取消"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
-msgstr "Blivet-gui 中所做的更改将直接影响您的存储。"
+#: src/components/storage/CockpitStorageIntegration.jsx:104
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
+msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
@@ -176,7 +169,7 @@ msgstr "选择语言"
 msgid "Chosen language: "
 msgstr "所选语言: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "清空输入值"
 
@@ -192,12 +185,18 @@ msgstr "通用语言"
 msgid "Completed"
 msgstr "完全的"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:100
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "设置存储设备"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "确认密码"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/AnacondaWizard.jsx:473
 msgid "Continue installation"
 msgstr "继续安装"
 
@@ -218,7 +217,7 @@ msgstr "锁定 root 账户"
 msgid "Critical error"
 msgstr "关键错误"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "当前选择"
 
@@ -226,7 +225,7 @@ msgstr "当前选择"
 msgid "Custom"
 msgstr "自定义"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "目标位置"
 
@@ -242,7 +241,7 @@ msgstr "在分配挂载点之前应解锁设备。"
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:122
 msgid "Disk configuration"
 msgstr "磁盘配置"
 
@@ -303,9 +302,13 @@ msgstr "擦除数据是不能撤销的。请务必有备份。"
 msgid "Error details"
 msgstr "错误详情"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:250
 msgid "Error was hit when going back from $0."
 msgstr "从 $0 返回时出错。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:190
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -345,24 +348,20 @@ msgstr "隐藏密码"
 msgid "How would you like to install?"
 msgstr "您想如何安装？"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:166
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "如果您不了解或不接受此风险，请点击 \"退出\" 按钮退出程序。"
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr "如果您对分区或磁盘进行了更改，请重新扫描存储。"
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "忽略"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "进行中"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:131
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
@@ -384,7 +383,7 @@ msgstr "安装在可用空间上？"
 msgid "Installation failed"
 msgstr "安装失败"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:92
 msgid "Installation method"
 msgstr "安装方案"
 
@@ -400,7 +399,7 @@ msgstr "安装类型"
 msgid "Installing"
 msgstr "正在安装"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "安装到 $0 ($1)"
 
@@ -412,10 +411,6 @@ msgstr "保持当前磁盘布局并仅安装到剩余空间中。"
 msgid "Language"
 msgstr "语言"
 
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "启动 Blivet-gui 存储编辑器"
-
 #: src/components/storage/EncryptedDevices.jsx:175
 msgid "Locked devices"
 msgstr "锁定的设备"
@@ -424,11 +419,11 @@ msgstr "锁定的设备"
 msgid "Log"
 msgstr "日志"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:683
 msgid "Manual disk configuration"
 msgstr "手动配置磁盘"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:685
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "手动磁盘配置：挂载点映射"
 
@@ -444,25 +439,16 @@ msgstr "媒介"
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "父设备和子设备重新格式化选择不匹配。"
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "已修改的存储"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:54
 msgid "Modify storage"
 msgstr "修改存储"
-
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "修改存储失败。"
 
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "挂载点"
 
-#: src/components/storage/MountPointMapping.jsx:556
 #: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Mount point assignment"
 msgstr "挂载点配置"
 
@@ -481,11 +467,11 @@ msgstr "网络不可用。在顶部栏菜单中配置网络以报告问题。"
 msgid "Network not available. Configure the network to report the issue."
 msgstr "网络不可用。在顶部栏菜单中配置网络以报告问题。"
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:395
 msgid "Next"
 msgstr "下一个"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "没有检测到额外的磁盘"
 
@@ -493,8 +479,8 @@ msgstr "没有检测到额外的磁盘"
 msgid "No devices"
 msgstr "无设备"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "未找到结果"
 
@@ -502,7 +488,7 @@ msgstr "未找到结果"
 msgid "No usable devices on the selected disks."
 msgstr "所选磁盘上没有可用的设备。"
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "未检测到可用磁盘"
 
@@ -533,10 +519,14 @@ msgstr "仅新分区才会被加密。 现有分区将保持原样。"
 msgid "Operating system"
 msgstr "操作系统"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:198
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "密码"
 
@@ -568,25 +558,25 @@ msgstr "预发布"
 msgid "Preparing report"
 msgstr "准备报告"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "退出"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Quit installer?"
 msgstr "退出安装程序？"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "重新扫描"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:114
 msgid "Reading information about the computer failed."
 msgstr "读取计算机信息失败。"
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:119
 msgid "Reading installer configuration failed."
 msgstr "读取安装程序配置失败。"
 
@@ -594,18 +584,22 @@ msgstr "读取安装程序配置失败。"
 msgid "Reading installer version information failed."
 msgstr "读取安装程序版本信息失败。"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "重启"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Reboot system?"
 msgstr "重启系统？"
 
 #: src/components/storage/MountPointMapping.jsx:242
 msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:175
+msgid "Recommended partitions:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:349
@@ -642,17 +636,25 @@ msgstr ""
 msgid "Required"
 msgstr "必需的"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:187
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "必需的"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "重新扫描"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "重新扫描存储"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "重新扫描磁盘失败。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:83
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "$0 安装"
 
 #: src/components/review/ReviewConfiguration.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:242
@@ -667,7 +669,7 @@ msgstr ""
 msgid "Select a device"
 msgstr "所选一个设备"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "选择磁盘"
 
@@ -723,6 +725,12 @@ msgstr "存储配置"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "存储配置：当前正在配置存储。"
 
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "从硬盘重新载入存储配置。"
+
 #: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "强"
@@ -757,12 +765,12 @@ msgid ""
 "software. "
 msgstr "所选语言将用于安装进程和已安装的软件。 "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -813,7 +821,7 @@ msgid ""
 "want to continue with the installation?"
 msgstr "所选磁盘的内容将被清除，且无法取消。您确定要继续进行安装吗？"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -835,7 +843,7 @@ msgstr "这可能需要些时间"
 msgid "To begin using $0, reboot your system."
 msgstr "要使用 $0，请重新启动系统。"
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:84
 msgid "To continue, select the devices to install to."
 msgstr "要想继续，请选择要安装的设备。"
 
@@ -904,11 +912,17 @@ msgstr "欢迎"
 msgid "Welcome to $0"
 msgstr "欢迎使用 $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:93
 msgid "Welcome. Let's install $0 now."
 msgstr "欢迎。现在就来安装 $0 吧。"
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:193
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:482
 msgid "Your progress will not be saved."
 msgstr "您的进度将不会被保存。"
 
@@ -931,6 +945,35 @@ msgstr "挂载"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "待执行操作"
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-gui 是一个高级存储编辑器，可让您调整大小、删除和创建分区。 它可以设"
+#~ "置 LVM 等等。"
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr "Blivet-gui 中所做的更改将直接影响您的存储。"
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr "如果您对分区或磁盘进行了更改，请重新扫描存储。"
+
+#~ msgid "Ignore"
+#~ msgstr "忽略"
+
+#~ msgid "Launch Blivet-gui storage editor"
+#~ msgstr "启动 Blivet-gui 存储编辑器"
+
+#~ msgid "Modified storage"
+#~ msgstr "已修改的存储"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "修改存储失败。"
+
+#~ msgid "Rescan storage"
+#~ msgstr "重新扫描存储"
 
 #~ msgid "Failed to get device names."
 #~ msgstr "获取设备名称失败。"
@@ -1852,9 +1895,6 @@ msgstr "待执行操作"
 
 #~ msgid "Configuring installed system"
 #~ msgstr "正在配置已安装系统"
-
-#~ msgid "Configuring storage"
-#~ msgstr "设置存储设备"
 
 #~ msgid "Configuring {}"
 #~ msgstr "正在配置 {}"
@@ -3697,9 +3737,6 @@ msgstr "待执行操作"
 
 #~ msgid "Registration failed."
 #~ msgstr "注册失败。"
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "从硬盘重新载入存储配置。"
 
 #~ msgid "Remote directory is required"
 #~ msgstr "必须要有远程目录"

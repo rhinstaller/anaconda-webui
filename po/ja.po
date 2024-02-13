@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-13 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:19+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
@@ -75,7 +75,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:139
 msgid "$0 installation"
 msgstr "$0 のインストール"
 
@@ -105,7 +105,7 @@ msgstr "About"
 msgid "Account"
 msgstr "アカウント (_A)"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:380
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
@@ -147,22 +147,14 @@ msgstr "Anacondaプロジェクトページ"
 msgid "Apply mount point assignment and install"
 msgstr "マウントポイントの割り当てを適用してインストールする"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "新しいディスク選択を適用しています..."
 
-#: src/components/AnacondaWizard.jsx:407
 #: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/AnacondaWizard.jsx:421
 msgid "Back"
 msgstr "戻る"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-guiはパーティションのサイズ変更、削除、作成を行うことができる高度なス"
-"トレージ エディターです。LVMなどをセットアップできます。"
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -176,13 +168,14 @@ msgstr ""
 "用して、このソフトウェアを強化するためにバグや問題を率先して報告するものとし"
 "ます。"
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:249
 msgid "Cancel"
 msgstr "取り消し"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
-msgstr "Blivet-guiで行われた変更はストレージに直接影響します。"
+#: src/components/storage/CockpitStorageIntegration.jsx:104
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
+msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
@@ -196,7 +189,7 @@ msgstr "言語の選択"
 msgid "Chosen language: "
 msgstr "選択された言語: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "入力した値をクリアします"
 
@@ -212,12 +205,18 @@ msgstr "共通言語"
 msgid "Completed"
 msgstr "完了しました"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:100
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "ストレージの設定中"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "パスフレーズの確認"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/AnacondaWizard.jsx:473
 msgid "Continue installation"
 msgstr "インストールを続行する"
 
@@ -239,7 +238,7 @@ msgstr "rootアカウントを有効化(_E)"
 msgid "Critical error"
 msgstr "重大なエラー"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "現在の選択内容"
 
@@ -247,7 +246,7 @@ msgstr "現在の選択内容"
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "インストール先"
 
@@ -264,7 +263,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "無効"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:122
 msgid "Disk configuration"
 msgstr "ディスクの設定"
 
@@ -327,9 +326,13 @@ msgstr ""
 msgid "Error details"
 msgstr "エラーの詳細"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:250
 msgid "Error was hit when going back from $0."
 msgstr "$0 から戻るときにエラーが発生しました。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:190
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -372,26 +375,20 @@ msgstr "パスワードを非表示にする"
 msgid "How would you like to install?"
 msgstr "どのようにインストールしますか？"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:166
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "リスクを理解または承諾しない場合は、このプログラムを終了してください。"
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-"パーティションまたはディスクに変更を加えた場合は、ストレージを再スキャンして"
-"ください。"
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "無視する"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "進行中"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:131
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
@@ -413,7 +410,7 @@ msgstr "空き領域にインストールしますか？"
 msgid "Installation failed"
 msgstr "インストールに失敗しました"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:92
 msgid "Installation method"
 msgstr "インストール方法"
 
@@ -429,7 +426,7 @@ msgstr "インストールタイプ"
 msgid "Installing"
 msgstr "インストール中"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "$0 へインストール中 ($1)"
 
@@ -442,10 +439,6 @@ msgstr "現在のディスクレイアウトを維持し、利用可能なスペ
 msgid "Language"
 msgstr "言語"
 
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "Blivet-guiストレージエディターを起動します"
-
 #: src/components/storage/EncryptedDevices.jsx:175
 #, fuzzy
 msgid "Locked devices"
@@ -455,11 +448,11 @@ msgstr "デバイスをロック解除する"
 msgid "Log"
 msgstr "ログ"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:683
 msgid "Manual disk configuration"
 msgstr "手動のディスク構成"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:685
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "手動のディスク構成: マウントポイントの割り当て"
 
@@ -475,25 +468,16 @@ msgstr "Medium"
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "親デバイスと子デバイスの再フォーマットの選択が一致していません。"
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "変更されたストレージ"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:54
 msgid "Modify storage"
 msgstr "ストレージの変更"
-
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "ストレージの変更中に失敗しました。"
 
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "マウントポイント"
 
-#: src/components/storage/MountPointMapping.jsx:556
 #: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Mount point assignment"
 msgstr "マウントポイントの割り当て"
 
@@ -516,11 +500,11 @@ msgstr ""
 "ネットワークが利用できません。 問題を報告するには、上のバーのメニューでネット"
 "ワークを構成します。"
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:395
 msgid "Next"
 msgstr "次へ"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "検出された追加のディスクがありません"
 
@@ -528,8 +512,8 @@ msgstr "検出された追加のディスクがありません"
 msgid "No devices"
 msgstr "デバイスがありません"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "結果が見つかりません"
 
@@ -537,7 +521,7 @@ msgstr "結果が見つかりません"
 msgid "No usable devices on the selected disks."
 msgstr "選択したディスクには使用可能なデバイスがありません。"
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "使用可能なディスクが検出されていません。"
 
@@ -571,10 +555,14 @@ msgstr ""
 msgid "Operating system"
 msgstr "オペレーティングシステム"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:198
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "パスフレーズ"
 
@@ -606,25 +594,25 @@ msgstr "プレリリース"
 msgid "Preparing report"
 msgstr "報告の準備中..."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "終了"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Quit installer?"
 msgstr "インストーラーを終了しますか？"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "再スキャン"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:114
 msgid "Reading information about the computer failed."
 msgstr "コンピュータに関する情報の読み取りに失敗しました。"
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:119
 msgid "Reading installer configuration failed."
 msgstr "インストーラーの設定の読み込みに失敗しました。"
 
@@ -632,18 +620,22 @@ msgstr "インストーラーの設定の読み込みに失敗しました。"
 msgid "Reading installer version information failed."
 msgstr "インストーラーのバージョン情報の読み取りに失敗しました。"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "再起動"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Reboot system?"
 msgstr "システムを再起動しますか？"
 
 #: src/components/storage/MountPointMapping.jsx:242
 msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:175
+msgid "Recommended partitions:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:349
@@ -683,17 +675,25 @@ msgstr ""
 msgid "Required"
 msgstr "必要です"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:187
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "必要です"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "再スキャン"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "ストレージの再スキャン"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "ディスクの再スキャンに失敗しました。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:83
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "$0 のインストール"
 
 #: src/components/review/ReviewConfiguration.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:242
@@ -708,7 +708,7 @@ msgstr ""
 msgid "Select a device"
 msgstr "デバイスを選択する"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "ディスクを選択する"
 
@@ -767,6 +767,12 @@ msgstr "ストレージの設定"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "ストレージの構成: ストレージは現在構成中です。"
 
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "ディスクからストレージ設定を再読み込みします。"
+
 #: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "Strong"
@@ -806,12 +812,12 @@ msgstr ""
 "選択した言語は、インストールおよびインストールされるソフトウェアで使用されま"
 "す。 "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -869,7 +875,7 @@ msgstr ""
 "選択したディスクは消去され、元に戻すことはできません。インストールを続行して"
 "もよろしいですか?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -891,7 +897,7 @@ msgstr "これには少し時間がかかる場合があります"
 msgid "To begin using $0, reboot your system."
 msgstr "$0の使用を開始するには、システムを再起動します。"
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:84
 msgid "To continue, select the devices to install to."
 msgstr "続行するには、インストール先のデバイスを選択します。"
 
@@ -960,11 +966,17 @@ msgstr "ようこそ"
 msgid "Welcome to $0"
 msgstr "$0 へようこそ"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:93
 msgid "Welcome. Let's install $0 now."
 msgstr "ようこそ。今すぐ $0 をインストールしましょう。"
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:193
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:482
 msgid "Your progress will not be saved."
 msgstr "進行状況は保存されません。"
 
@@ -987,6 +999,37 @@ msgstr "マウント"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "保留中の手順"
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-guiはパーティションのサイズ変更、削除、作成を行うことができる高度な"
+#~ "ストレージ エディターです。LVMなどをセットアップできます。"
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr "Blivet-guiで行われた変更はストレージに直接影響します。"
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr ""
+#~ "パーティションまたはディスクに変更を加えた場合は、ストレージを再スキャンし"
+#~ "てください。"
+
+#~ msgid "Ignore"
+#~ msgstr "無視する"
+
+#~ msgid "Launch Blivet-gui storage editor"
+#~ msgstr "Blivet-guiストレージエディターを起動します"
+
+#~ msgid "Modified storage"
+#~ msgstr "変更されたストレージ"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "ストレージの変更中に失敗しました。"
+
+#~ msgid "Rescan storage"
+#~ msgstr "ストレージの再スキャン"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -1953,9 +1996,6 @@ msgstr "保留中の手順"
 
 #~ msgid "Configuring installed system"
 #~ msgstr "インストール済みシステムを設定中"
-
-#~ msgid "Configuring storage"
-#~ msgstr "ストレージの設定中"
 
 #~ msgid "Configuring {}"
 #~ msgstr "{} の設定中"
@@ -3899,9 +3939,6 @@ msgstr "保留中の手順"
 
 #~ msgid "Registration failed."
 #~ msgstr "登録に失敗しました。"
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "ディスクからストレージ設定を再読み込みします。"
 
 #~ msgid "Remote directory is required"
 #~ msgstr "リモートディレクトリーは必須です"

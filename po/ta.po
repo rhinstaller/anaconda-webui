@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-13 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:22+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Tamil <https://translate.fedoraproject.org/projects/anaconda-"
@@ -31,7 +31,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:139
 #, fuzzy
 msgid "$0 installation"
 msgstr "நிறுவல்"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Account"
 msgstr "லேயவுட்டைச் சேர்"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:380
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
@@ -105,19 +105,13 @@ msgstr "நிறுவலைத் தொடங்கு (_B)"
 msgid "Apply mount point assignment and install"
 msgstr "நிறுவியில் உள்ள அமைவாக்கத்தைப் பயன்படுத்து"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:407
 #: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/AnacondaWizard.jsx:421
 msgid "Back"
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:77
@@ -128,13 +122,14 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:249
 #, fuzzy
 msgid "Cancel"
 msgstr "ரத்து (_C)"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
+#: src/components/storage/CockpitStorageIntegration.jsx:104
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
@@ -152,7 +147,7 @@ msgstr "மொழிகள்"
 msgid "Chosen language: "
 msgstr "மொழிகள்"
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr ""
 
@@ -170,13 +165,18 @@ msgstr "மொழிகள்"
 msgid "Completed"
 msgstr "முடிந்தது!"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:100
+#, fuzzy
+msgid "Configure storage"
+msgstr "சேமிப்பக லேயவுட்டை மாற்றியமை (_M)"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "கடவுச்சொல்லை உறுதிபடுத்துக (_C)"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/AnacondaWizard.jsx:473
 #, fuzzy
 msgid "Continue installation"
 msgstr "நிறுவலைத் தொடங்கு (_B)"
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Critical error"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 #, fuzzy
 msgid "Current selections"
 msgstr "மென்பொருள் தேர்வு"
@@ -202,7 +202,7 @@ msgstr "மென்பொருள் தேர்வு"
 msgid "Custom"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 #, fuzzy
 msgid "Destination"
 msgstr "விளக்கம்"
@@ -220,7 +220,7 @@ msgstr ""
 msgid "Disabled"
 msgstr "செயல்படுத்தப்பட்டது"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:122
 #, fuzzy
 msgid "Disk configuration"
 msgstr "சாதன அமைவாக்கம்"
@@ -285,8 +285,12 @@ msgstr ""
 msgid "Error details"
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:250
 msgid "Error was hit when going back from $0."
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:190
+msgid "Fedora linux requires at least $0 of disk space."
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
@@ -335,17 +339,13 @@ msgstr "வெற்று கடவுச்சொல்"
 msgid "How would you like to install?"
 msgstr ""
 
+#: src/components/storage/CockpitStorageIntegration.jsx:166
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:184
@@ -353,7 +353,7 @@ msgstr ""
 msgid "In progress"
 msgstr "முன்னேற்றம்"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:131
 msgid "Initializing..."
 msgstr ""
 
@@ -376,7 +376,7 @@ msgstr "மென்பொருளை நிறுவுகிறது"
 msgid "Installation failed"
 msgstr "நிறுவல்"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:92
 #, fuzzy
 msgid "Installation method"
 msgstr "நிறுவல்"
@@ -396,7 +396,7 @@ msgstr "நிறுவல்"
 msgid "Installing"
 msgstr "%s ஐ நிறுவுகிறது"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 #, fuzzy
 msgid "Installing to $0 ($1)"
 msgstr "%s ஐ நிறுவுகிறது"
@@ -410,10 +410,6 @@ msgstr ""
 msgid "Language"
 msgstr "மொழிகள்"
 
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr ""
-
 #: src/components/storage/EncryptedDevices.jsx:175
 #, fuzzy
 msgid "Locked devices"
@@ -423,12 +419,12 @@ msgstr "சாதனம் %s ஐ அமைவாக்கம் செய்ய
 msgid "Log"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:683
 #, fuzzy
 msgid "Manual disk configuration"
 msgstr "சாதன அமைவாக்கம்"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:685
 #, fuzzy
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "சாதன அமைவாக்கம்"
@@ -445,28 +441,17 @@ msgstr ""
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/ModifyStorage.jsx:51
-#, fuzzy
-msgid "Modified storage"
-msgstr "சேமிப்பக லேயவுட்டை மாற்றியமை (_M)"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:54
 #, fuzzy
 msgid "Modify storage"
-msgstr "சேமிப்பக லேயவுட்டை மாற்றியமை (_M)"
-
-#: src/components/storage/ModifyStorage.jsx:147
-#, fuzzy
-msgid "Modifying the storage failed."
 msgstr "சேமிப்பக லேயவுட்டை மாற்றியமை (_M)"
 
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "மவுன்ட் புள்ளி"
 
-#: src/components/storage/MountPointMapping.jsx:556
 #: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:556
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "மவுன்ட் புள்ளி"
@@ -486,11 +471,11 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:395
 msgid "Next"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 #, fuzzy
 msgid "No additional disks detected"
 msgstr "வட்டுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
@@ -500,8 +485,8 @@ msgstr "வட்டுகள் எதுவும் தேர்ந்தெ�
 msgid "No devices"
 msgstr "சாதனத்தைச் சேர் "
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr ""
 
@@ -510,7 +495,7 @@ msgstr ""
 msgid "No usable devices on the selected disks."
 msgstr "தேர்ந்தெடுத்த வட்டுகளில் போதிய காலி இடம் இல்லை."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 #, fuzzy
 msgid "No usable disks detected"
 msgstr "வட்டுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
@@ -543,10 +528,14 @@ msgstr ""
 msgid "Operating system"
 msgstr "பயனர்களை உருவாக்குகிறது"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:198
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "கடவுவாக்கியம்"
 
@@ -580,26 +569,26 @@ msgstr ""
 msgid "Preparing report"
 msgstr "%s இன் தயாரமைப்புக்குத் தயாராகிறது"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "வெளியேறு"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 #, fuzzy
 msgid "Quit installer?"
 msgstr "நிறுவியிலிருந்து வெளியேறு (_Q)"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr ""
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:114
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:119
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "சேமிப்பக அமைவாக்கம் தோல்வியுற்றது: %s"
@@ -609,19 +598,23 @@ msgstr "சேமிப்பக அமைவாக்கம் தோல்வ�
 msgid "Reading installer version information failed."
 msgstr "இணைப்பு தோல்வியுற்றது"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 #, fuzzy
 msgid "Reboot system?"
 msgstr "/boot கோப்பு முறைமை"
 
 #: src/components/storage/MountPointMapping.jsx:242
 msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:175
+msgid "Recommended partitions:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:349
@@ -659,19 +652,24 @@ msgstr ""
 msgid "Required"
 msgstr "மறுஅளவு செய்யக்கூடியதல்ல"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:187
+#, fuzzy
+msgid "Requirements"
+msgstr "மறுஅளவு செய்யக்கூடியதல்ல"
+
+#: src/components/storage/InstallationDestination.jsx:389
 #, fuzzy
 msgid "Rescan"
 msgstr "மீட்பு"
 
-#: src/components/storage/ModifyStorage.jsx:63
-#, fuzzy
-msgid "Rescan storage"
-msgstr "மீட்பு"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:83
+#, fuzzy
+msgid "Return to installation"
+msgstr "நிறுவல்"
 
 #: src/components/review/ReviewConfiguration.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:242
@@ -688,7 +686,7 @@ msgstr ""
 msgid "Select a device"
 msgstr "தேர்ந்தெடுத்த சாதனம்"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 #, fuzzy
 msgid "Select a disk"
 msgstr "தேர்ந்தெடுத்த சாதனம்"
@@ -750,6 +748,12 @@ msgstr "பிணைய அமைவாக்கம்"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr ""
 
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "வட்டிலிருந்து சேமிப்பக அமைவாக்கத்தை மீளேற்று."
+
 #: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "வலிமையானது"
@@ -785,13 +789,13 @@ msgid ""
 "software. "
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -843,7 +847,7 @@ msgid ""
 "want to continue with the installation?"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 msgid "The usable disks have changed"
 msgstr "வட்டுகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
@@ -866,7 +870,7 @@ msgstr "வட்டுகளை வருடுகிறது. சிறித
 msgid "To begin using $0, reboot your system."
 msgstr ""
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:84
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr ""
@@ -944,11 +948,17 @@ msgstr ""
 msgid "Welcome to $0"
 msgstr "$0 க்கு வரவேற்கிறோம்"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:93
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:193
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:482
 msgid "Your progress will not be saved."
 msgstr ""
 
@@ -973,6 +983,14 @@ msgstr "லேயவுட்டைச் சேர்"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Modifying the storage failed."
+#~ msgstr "சேமிப்பக லேயவுட்டை மாற்றியமை (_M)"
+
+#, fuzzy
+#~ msgid "Rescan storage"
+#~ msgstr "மீட்பு"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -2948,9 +2966,6 @@ msgstr ""
 #~| msgid "Connection failed"
 #~ msgid "Registration failed."
 #~ msgstr "இணைப்பு தோல்வியுற்றது"
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "வட்டிலிருந்து சேமிப்பக அமைவாக்கத்தை மீளேற்று."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "தொலைநிலைக் கோப்பகம் தேவை"

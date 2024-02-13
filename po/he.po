@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-13 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -31,7 +31,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:139
 msgid "$0 installation"
 msgstr "התקנת $0"
 
@@ -61,7 +61,7 @@ msgstr "על אודות"
 msgid "Account"
 msgstr "_חשבון"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:380
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
@@ -103,22 +103,14 @@ msgstr "דף מיזם Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "החלת הקצאת נקודת עיגון והתקנה"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "בחירת הכונן החדשה חלה…"
 
-#: src/components/AnacondaWizard.jsx:407
 #: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/AnacondaWizard.jsx:421
 msgid "Back"
 msgstr "חזרה"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-gui הוא עורך מחיצות מתקדם שמאפשר לך לשנות גודל, למחוק וליצור מחיצות. "
-"אפשר להקים באמצעותו LVM ועוד מגוון משימות."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -131,13 +123,14 @@ msgstr ""
 "בתוכנה שטרם יצאה לאור, אותה ייעדת לשימוש למטרות בדיקות ופיתוח ולקחת על עצמך "
 "אחריות לדווח על תקלות או בעיות שצצות כדי לשפר את המערכת הזאת."
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:249
 msgid "Cancel"
 msgstr "ביטול"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
-msgstr "שינויים שבוצעו ב־Blivet-gui ישפיעו ישירות על האחסון שלך."
+#: src/components/storage/CockpitStorageIntegration.jsx:104
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
+msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
 msgid "Checking storage configuration"
@@ -151,7 +144,7 @@ msgstr "נא לבחור שפה"
 msgid "Chosen language: "
 msgstr "שפה נבחרת: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "מחיקת ערך קלט"
 
@@ -167,12 +160,18 @@ msgstr "שפות נפוצות"
 msgid "Completed"
 msgstr "הושלם"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:100
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "מוגדר אחסון"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "אישור מילת צופן"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/AnacondaWizard.jsx:473
 msgid "Continue installation"
 msgstr "להמשיך בהתקנה"
 
@@ -193,7 +192,7 @@ msgstr "נעילת חשבון root"
 msgid "Critical error"
 msgstr "שגיאה משמעותית"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "בחירות נוכחיות"
 
@@ -201,7 +200,7 @@ msgstr "בחירות נוכחיות"
 msgid "Custom"
 msgstr "מותאם אישית"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "יעד"
 
@@ -217,7 +216,7 @@ msgstr "יש לשחרר התקנים בטרם הקצאת נקודות עיגון
 msgid "Disabled"
 msgstr "מושבת"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:122
 msgid "Disk configuration"
 msgstr "הגדרת כונן"
 
@@ -278,9 +277,13 @@ msgstr "מחיקת הנתונים היא צעד בלתי הפיך. נא לווד
 msgid "Error details"
 msgstr "פרטי השגיאה"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:250
 msgid "Error was hit when going back from $0."
 msgstr "התעוררה שגיאה בעת הניסיון לחזור מתוך $0."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:190
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -321,24 +324,20 @@ msgstr "הסתרת הסיסמה"
 msgid "How would you like to install?"
 msgstr "איך להתקין?"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:166
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "נא לצאת מהתוכנית אם לא הבנת או קיבלת את הסיכונים."
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr "אם ערכת שינויים בכונני המחיצות, נא לסרוק את האחסון מחדש."
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "התעלמות"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "בתהליך"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:131
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
@@ -360,7 +359,7 @@ msgstr "להתקין במקום הפנוי?"
 msgid "Installation failed"
 msgstr "ההתקנה נכשלה"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:92
 msgid "Installation method"
 msgstr "שיטת התקנה"
 
@@ -376,7 +375,7 @@ msgstr "סוג התקנה"
 msgid "Installing"
 msgstr "התקנה מתבצעת"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "מתבצעת התקנה אל $0 ($1)"
 
@@ -389,10 +388,6 @@ msgstr "שומר על פריסת הכונן הנוכחית ומשתמש רק ב�
 msgid "Language"
 msgstr "שפה"
 
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "הפעלת עורך אמצעי האחסון Blivet-gui"
-
 #: src/components/storage/EncryptedDevices.jsx:175
 #, fuzzy
 msgid "Locked devices"
@@ -402,11 +397,11 @@ msgstr "שחרור התקנים"
 msgid "Log"
 msgstr "יומן"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:683
 msgid "Manual disk configuration"
 msgstr "הגדרות כונן ידניות"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:685
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "הגדרות כונן ידניות: מיפוי נקודות עיגון"
 
@@ -422,25 +417,16 @@ msgstr "בינונית"
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "חוסר התאמה בין בחירת הפרמוט המחודש של התקן ההורה והתקן הצאצא."
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "אחסון שהשתנה"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:54
 msgid "Modify storage"
 msgstr "שינוי אחסון"
-
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "שינוי האחסון נכשל."
 
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point"
 msgstr "נקודת עיגון"
 
-#: src/components/storage/MountPointMapping.jsx:556
 #: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Mount point assignment"
 msgstr "הקצאה של נקודות עיגון"
 
@@ -464,11 +450,11 @@ msgstr ""
 "הרשת לא זמינה. יש להגדיר את הרשת מהתפריט בסרגל העליון כדי לדווח על התקלה "
 "הזאת."
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:395
 msgid "Next"
 msgstr "הבא"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "לא זוהו כוננים נוספים"
 
@@ -476,8 +462,8 @@ msgstr "לא זוהו כוננים נוספים"
 msgid "No devices"
 msgstr "אין התקנים"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "אין תוצאות"
 
@@ -485,7 +471,7 @@ msgstr "אין תוצאות"
 msgid "No usable devices on the selected disks."
 msgstr "אין התקנים שימושיים בכוננים הנבחרים."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "לא זוהו כוננים שמישים"
 
@@ -517,10 +503,14 @@ msgstr "רק מחיצות חדשות תוצפנה. מחיצות קיימות ת�
 msgid "Operating system"
 msgstr "מערכת הפעלה"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:198
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "מילת צופן"
 
@@ -552,25 +542,25 @@ msgstr "קדם־שחרור"
 msgid "Preparing report"
 msgstr "הדוח בהפקה"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Quit"
 msgstr "י_ציאה"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Quit installer?"
 msgstr "לצאת מתוכנית ההתקנה?"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "סריקה מחדש"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:114
 msgid "Reading information about the computer failed."
 msgstr "קריאת המידע על המחשב נכשלה."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:119
 msgid "Reading installer configuration failed."
 msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 
@@ -578,18 +568,22 @@ msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 msgid "Reading installer version information failed."
 msgstr "קריאת פרטי גרסה תוכנית ההתקנה נכשלה."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/Error.jsx:216 src/components/AnacondaWizard.jsx:443
+#: src/components/AnacondaWizard.jsx:466
 #: src/components/installation/InstallationProgress.jsx:222
 msgid "Reboot"
 msgstr "הפעלה מחדש"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:478
 msgid "Reboot system?"
 msgstr "להפעיל את המערכת מחדש?"
 
 #: src/components/storage/MountPointMapping.jsx:242
 msgid "Recommended"
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:175
+msgid "Recommended partitions:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:349
@@ -629,17 +623,25 @@ msgstr ""
 msgid "Required"
 msgstr "חובה"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:187
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "חובה"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "סריקה מחדש"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "סריקת האחסון מחדש"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "סריקת הכוננים מחדש נכשלה."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:83
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "התקנת $0"
 
 #: src/components/review/ReviewConfiguration.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:242
@@ -654,7 +656,7 @@ msgstr ""
 msgid "Select a device"
 msgstr "נא לבחור התקן"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "בחירת כונן"
 
@@ -711,6 +713,12 @@ msgstr "הגדרות אחסון"
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "הגדרות אחסון: האחסון מוגדר כרגע."
 
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "טעינה מחדש של הגדרות תצורת האחסון מהכונן."
+
 #: src/components/Password.jsx:83
 msgid "Strong"
 msgstr "חזק"
@@ -746,13 +754,13 @@ msgid ""
 "software. "
 msgstr "השפה הנבחרת תשמש להתקנה ולתוכנות שיותקנו באמצעותה. "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -806,7 +814,7 @@ msgid ""
 "want to continue with the installation?"
 msgstr "הכוננים הנבחרים יימחקו, לא ניתן לבטל פעולה זו. להמשיך בהתקנה?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -828,7 +836,7 @@ msgstr "פעולה זו עלולה לארוך זמן מה"
 msgid "To begin using $0, reboot your system."
 msgstr "כדי להתחיל להשתמש ב־$0, יש להפעיל את המערכת מחדש."
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:84
 msgid "To continue, select the devices to install to."
 msgstr "כדי להמשיך, נא לבחור את ההתקן להתקנה אליו."
 
@@ -897,11 +905,17 @@ msgstr "ברוך בואך"
 msgid "Welcome to $0"
 msgstr "ברוך בואך אל $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:93
 msgid "Welcome. Let's install $0 now."
 msgstr "ברוך בואך. עכשיו נתקין את $0."
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:193
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:482
 msgid "Your progress will not be saved."
 msgstr "התהליך שעברת לא יישמר."
 
@@ -924,6 +938,35 @@ msgstr "עיגון"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "שלב בהמתנה"
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-gui הוא עורך מחיצות מתקדם שמאפשר לך לשנות גודל, למחוק וליצור "
+#~ "מחיצות. אפשר להקים באמצעותו LVM ועוד מגוון משימות."
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr "שינויים שבוצעו ב־Blivet-gui ישפיעו ישירות על האחסון שלך."
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr "אם ערכת שינויים בכונני המחיצות, נא לסרוק את האחסון מחדש."
+
+#~ msgid "Ignore"
+#~ msgstr "התעלמות"
+
+#~ msgid "Launch Blivet-gui storage editor"
+#~ msgstr "הפעלת עורך אמצעי האחסון Blivet-gui"
+
+#~ msgid "Modified storage"
+#~ msgstr "אחסון שהשתנה"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "שינוי האחסון נכשל."
+
+#~ msgid "Rescan storage"
+#~ msgstr "סריקת האחסון מחדש"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -1865,9 +1908,6 @@ msgstr "שלב בהמתנה"
 
 #~ msgid "Configuring installed system"
 #~ msgstr "כעת בהגדרת המערכת שהותקנה"
-
-#~ msgid "Configuring storage"
-#~ msgstr "מוגדר אחסון"
 
 #~ msgid "Configuring {}"
 #~ msgstr "{} מוגדר"
@@ -3746,9 +3786,6 @@ msgstr "שלב בהמתנה"
 
 #~ msgid "Registration failed."
 #~ msgstr "הרישום נכשל."
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "טעינה מחדש של הגדרות תצורת האחסון מהכונן."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "דרושה תיקייה מרוחקת"
