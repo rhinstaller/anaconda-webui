@@ -257,27 +257,18 @@ const CheckStorageDialog = ({
             return;
         }
 
-        const cockpitDevices = (
-            Object.keys(newMountPoints)
-                    .map(devicePath => ({
-                        devicePath,
-                        deviceName: getDeviceNameByPath(deviceData, devicePath),
-                    }))
-        );
-
         const devicesToUnlock = (
-            cockpitDevices
-                    .filter(({ devicePath, deviceName }) => {
-                        return (
-                            newMountPoints[devicePath].type === "crypto" &&
+            Object.keys(cockpitPassphrases)
+                    .map(dev => ({
+                        deviceName: deviceData[dev] ? dev : getDeviceNameByPath(deviceData, dev),
+                        passphrase: cockpitPassphrases[dev]
+                    })))
+                .filter(({ devicePath, deviceName }) => {
+                    return (
+                        deviceData[deviceName].formatData.type.v === "luks" &&
                             deviceData[deviceName].formatData.attrs.v.has_key !== "True"
-                        );
-                    })
-                    .map(({ devicePath, deviceName }) => ({
-                        deviceName,
-                        passphrase: cockpitPassphrases[devicePath],
-                    }))
-        );
+                    );
+                });
 
         if (devicesToUnlock.some(dev => !dev.passphrase)) {
             onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
@@ -341,11 +332,7 @@ const CheckStorageDialog = ({
                         task,
                         onSuccess: () => dispatch(getDevicesAction())
                                 .then(() => {
-                                    if (useConfiguredStorage) {
-                                        setCheckStep("luks");
-                                    } else {
-                                        setCheckStep();
-                                    }
+                                    setCheckStep("luks");
                                 })
                                 .catch(exc => {
                                     setCheckStep();
