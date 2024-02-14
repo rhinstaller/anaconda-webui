@@ -38,7 +38,7 @@ import {
 import { ExternalLinkAltIcon, DisconnectedIcon } from "@patternfly/react-icons";
 
 import { exitGui } from "../helpers/exit.js";
-import { SystemTypeContext } from "./Common.jsx";
+import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 
 import "./Error.scss";
 
@@ -53,6 +53,20 @@ export const bugzillaPrefiledReportURL = (productQueryData) => {
 
     const reportURL = new URL(baseURL);
     reportURL.pathname = "enter_bug.cgi";
+    Object.keys(queryData).map(query => reportURL.searchParams.append(query, queryData[query]));
+    return reportURL.href;
+};
+export const jiraPrefilledReportURL = (productQueryData) => {
+    const baseURL = "https://issues.redhat.com/secure/";
+    const queryData = {
+        pid: productQueryData.product ? productQueryData.product : "12332745",
+        issuetype: "1",
+        components: "12377160",
+        version: productQueryData.version ? productQueryData.version : "",
+    };
+
+    const reportURL = new URL(baseURL);
+    reportURL.pathname = "CreateIssueDetails!init.jspa";
     Object.keys(queryData).map(query => reportURL.searchParams.append(query, queryData[query]));
     return reportURL.href;
 };
@@ -76,12 +90,19 @@ const ensureMaximumReportURLLength = (reportURL) => {
     return newUrl.href;
 };
 
-const addLogAttachmentCommentToReportURL = (reportURL, logFile) => {
+const addLogAttachmentCommentToReportURL = (reportURL, logFile, product) => {
     const newUrl = new URL(reportURL);
-    const comment = newUrl.searchParams.get("comment") || "";
-    newUrl.searchParams.set("comment", comment +
-        "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
-    return newUrl.href;
+    if (product === "rhel") {
+        const comment = newUrl.searchParams.get("description") || "";
+        newUrl.searchParams.set("description", comment +
+            "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
+        return newUrl.href;
+    } else {
+        const comment = newUrl.searchParams.get("comment") || "";
+        newUrl.searchParams.set("comment", comment +
+            "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
+        return newUrl.href;
+    }
 };
 
 export const BZReportModal = ({
@@ -94,10 +115,11 @@ export const BZReportModal = ({
     detailsLabel,
     detailsContent,
     buttons,
-    isConnected
+    isConnected,
 }) => {
     const [logContent, setLogContent] = useState();
     const [preparingReport, setPreparingReport] = useState(false);
+    const osRelease = useContext(OsReleaseContext);
 
     useEffect(() => {
         cockpit.spawn(["journalctl", "-a"])
@@ -106,7 +128,7 @@ export const BZReportModal = ({
 
     const openBZIssue = (reportURL, logFile, logContent) => {
         reportURL = ensureMaximumReportURLLength(reportURL);
-        reportURL = addLogAttachmentCommentToReportURL(reportURL, logFile);
+        reportURL = addLogAttachmentCommentToReportURL(reportURL, logFile, osRelease.ID);
         setPreparingReport(true);
         cockpit
                 .file(logFile)
@@ -180,7 +202,7 @@ export const BZReportModal = ({
     );
 };
 
-const addExceptionDataToReportURL = (url, exception) => {
+const addExceptionDataToReportURL = (url, exception, product) => {
     const newUrl = new URL(url);
     const backendMessage = exception.backendMessage ? exception.backendMessage + (exception.jsMessage ? " " : "") : "";
     const bothSeparator = exception.backendMessage && exception.jsMessage ? "\n" : "";
@@ -188,14 +210,25 @@ const addExceptionDataToReportURL = (url, exception) => {
     const jsMessage = exception.jsMessage ? exception.jsMessage : "";
     const name = exception.name ? exception.name + ": " : "";
     const stackTrace = exception.stack ? "\n\nStackTrace: " + exception.stack : "";
-    newUrl.searchParams.append(
-        "short_desc",
-        "WebUI: " + context + name + backendMessage + jsMessage
-    );
-    newUrl.searchParams.append(
-        "comment",
-        "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + jsMessage + stackTrace
-    );
+    if (product === "rhel") {
+        newUrl.searchParams.append(
+            "summary",
+            "WebUI: " + context + name + backendMessage + jsMessage
+        );
+        newUrl.searchParams.append(
+            "description",
+            "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + jsMessage + stackTrace
+        );
+    } else {
+        newUrl.searchParams.append(
+            "short_desc",
+            "WebUI: " + context + name + backendMessage + jsMessage
+        );
+        newUrl.searchParams.append(
+            "comment",
+            "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + jsMessage + stackTrace
+        );
+    }
     return newUrl.href;
 };
 
@@ -219,6 +252,7 @@ const quitButton = (isBootIso) => {
 };
 
 export const CriticalError = ({ exception, isConnected, reportLinkURL }) => {
+    const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const context = exception.contextData?.context;
     const description = context
@@ -229,7 +263,7 @@ export const CriticalError = ({ exception, isConnected, reportLinkURL }) => {
     return (
         <BZReportModal
           description={description}
-          reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception)}
+          reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception, osRelease.ID)}
           idPrefix={idPrefix}
           title={_("Critical error")}
           titleIconVariant="danger"
