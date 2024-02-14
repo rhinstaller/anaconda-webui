@@ -241,6 +241,14 @@ class StorageUtils(StorageDestination):
     def set_partition_uuid(self, disk, partition, uuid):
         self.machine.execute(f"sfdisk --part-uuid {disk} {partition} {uuid}")
 
+    def get_btrfs_volume_ids(self, volume_name):
+        """Get device ids of all volumes with volume_name found."""
+        # The tool shows unspecified name as "none"
+        volume_name = volume_name or "none"
+        volume_ids = [f"BTRFS-{uuid.strip()}" for uuid in
+                      self.machine.execute(f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3").split('\n')[:-1]]
+        return volume_ids
+
 
 class StorageDBus():
     def __init__(self, machine):
