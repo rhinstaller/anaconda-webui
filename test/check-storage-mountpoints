@@ -42,6 +42,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         s.udevadm_settle()
 
+        btrfs_volume_id = s.get_btrfs_volume_ids(btrfsname)[0]
+
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
@@ -51,7 +53,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # verify gathered requests
         # root partition is not auto-mapped
         s.check_mountpoint_row(1, "/", "Select a device", True)
-        s.select_mountpoint_row_device(1, "btrfstest")
+        s.select_mountpoint_row_device(1, btrfs_volume_id)
         s.check_mountpoint_row_format_type(1, "btrfs")
 
         s.check_mountpoint_row(2, "/boot", "Select a device", False)
@@ -94,7 +96,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row_device(1, "Select a device")
         s.check_mountpoint_row_device(2, "Select a device")
         s.select_mountpoint_row_device(1, f"{dev}2")
-        s.select_mountpoint_row_device(2, "btrfstest")
+        s.select_mountpoint_row_device(2, btrfs_volume_id)
 
         i.next()
         new_applied_partitioning = s.dbus_get_applied_partitioning()
@@ -495,6 +497,12 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         rmdir {tmp_mount}
         """)
 
+        volume_id = s.get_btrfs_volume_ids("")[0]
+        root_id = f"{volume_id}-root"
+        home_id = f"{volume_id}-home"
+        unused_id = f"{volume_id}-unused"
+        snapshot_id = f"{volume_id}-snapshot1"
+
         s.udevadm_settle()
 
         i.open()
@@ -504,12 +512,12 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint([(dev, True)])
 
         # btrfs snapshots should not be available
-        s.check_mountpoint_row_device_available(1, "snapshot1", False)
+        s.check_mountpoint_row_device_available(1, snapshot_id, False)
 
         # verify gathered requests
         # root partition is not auto-mapped
         s.check_mountpoint_row(1, "/", "Select a device", True)
-        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(1, root_id)
         s.check_mountpoint_row_format_type(1, "btrfs")
 
         s.check_mountpoint_row(2, "/boot", "Select a device", False)
@@ -517,7 +525,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row_format_type(2, "ext4")
 
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(3, "home")
+        s.select_mountpoint_row_device(3, home_id)
         s.check_mountpoint_row_reformat(3, False)
         s.select_mountpoint_row_mountpoint(3, "/home")
         s.check_mountpoint_row_format_type(3, "btrfs")
@@ -534,7 +542,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/boot", "vda2",  "1.07 GB", True, "ext4")
         r.check_disk_row(dev, "/", "vda3", "15.0 GB", True, "btrfs")
         r.check_disk_row(dev, "/home", "vda3", "15.0 GB",  False)
-        r.check_disk_row_not_present(dev, "unused")
+        r.check_disk_row_not_present(dev, unused_id)
 
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
 
@@ -552,19 +560,23 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
         s.select_mountpoint([(dev, True)])
 
-        s.select_mountpoint_row_device(1, "root")
+        movies_id = f"{volume_id}-home/Movies"
+        good_movies_id = f"{movies_id}/Good_Movies"
+        bad_movies_id = f"{movies_id}/Bad_Movies"
+
+        s.select_mountpoint_row_device(1, root_id)
         s.select_mountpoint_row_device(2, f"{dev}2")
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(3, "home")
+        s.select_mountpoint_row_device(3, home_id)
         s.select_mountpoint_row_mountpoint(3, "/home")
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(4, "home/Movies")
+        s.select_mountpoint_row_device(4, movies_id)
         s.select_mountpoint_row_mountpoint(4, "/home/Movies")
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(5, "home/Movies/Good_Movies")
+        s.select_mountpoint_row_device(5, good_movies_id)
         s.select_mountpoint_row_mountpoint(5, "/home/Movies/Good_Movies")
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(6, "home/Movies/Bad_Movies")
+        s.select_mountpoint_row_device(6, bad_movies_id)
         s.select_mountpoint_row_mountpoint(6, "/home/Movies/Bad_Movies")
 
         # No error when no devices are reformatted
@@ -572,7 +584,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             s.wait_mountpoint_table_column_helper(row, "format", present=False)
 
         # When parent is re-formatted all child devices must be reformatted
-        s.select_mountpoint_row_device(4, "home/Movies")
+        s.select_mountpoint_row_device(4, movies_id)
         s.select_mountpoint_row_reformat(4)
         s.wait_mountpoint_table_column_helper(4, "format", text="Mismatch")
         s.select_mountpoint_row_reformat(5)
@@ -661,25 +673,29 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         s.select_mountpoint([(dev, True)])
 
+        root_id = f"LVM-{vgname}-root"
+        home_id = f"LVM-{vgname}-home"
+        swap_id = f"LVM-{vgname}-swap"
+
         # verify gathered requests
         # root partition is not auto-mapped
         s.check_mountpoint_row(1, "/", "Select a device", True)
         s.check_mountpoint_row(2, "/boot", "Select a device", False)
 
-        s.select_mountpoint_row_device(1, f"{vgname}-root")
-        s.check_mountpoint_row(1, "/", f"{vgname}-root", True, "ext4")
+        s.select_mountpoint_row_device(1, root_id)
+        s.check_mountpoint_row(1, "/", root_id, True, "ext4")
 
         s.select_mountpoint_row_device(2, f"{dev}2")
         s.check_mountpoint_row(2, "/boot", f"{dev}2", False, "ext4")
 
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(3, f"{vgname}-home")
+        s.select_mountpoint_row_device(3, home_id)
         s.select_mountpoint_row_mountpoint(3, "/home")
-        s.check_mountpoint_row(3, "/home", f"{vgname}-home", False, "ext4")
+        s.check_mountpoint_row(3, "/home", home_id, False, "ext4")
 
         s.add_mountpoint_row()
-        s.select_mountpoint_row_device(4, f"{vgname}-swap")
-        s.check_mountpoint_row(4, "swap", f"{vgname}-swap", False, "swap")
+        s.select_mountpoint_row_device(4, swap_id)
+        s.check_mountpoint_row(4, "swap", swap_id, False, "swap")
 
         # Toggle reformat option
         s.select_mountpoint_row_reformat(2)
@@ -692,9 +708,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", True, "ext4")
-        r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False)
-        r.check_disk_row(disk, "swap", "vda3, LVM", "902 MB", False)
+        r.check_disk_row(disk, "/", f"{root_id}, LVM", "6.01 GB", True, "ext4")
+        r.check_disk_row(disk, "/home", f"{home_id}, LVM", "8.12 GB", False)
+        r.check_disk_row(disk, "swap", f"{swap_id}, LVM", "902 MB", False)
 
         i.reach_on_sidebar(i.steps.CUSTOM_MOUNT_POINT)
 
@@ -702,7 +718,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.remove_mountpoint_row(3, 4)
 
         s.check_mountpoint_row_mountpoint(3, "swap")
-        s.check_mountpoint_row_device(3, f"{vgname}-swap")
+        s.check_mountpoint_row_device(3, swap_id)
 
         i.reach(i.steps.REVIEW)
 
@@ -711,8 +727,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", True, "ext4")
-        r.check_disk_row(disk, "swap", "vda3, LVM", "902 MB", False)
+        r.check_disk_row(disk, "/", f"{root_id}, LVM", "6.01 GB", True, "ext4")
+        r.check_disk_row(disk, "swap", f"{swap_id}, LVM", "902 MB", False)
 
     def testUnusableFormats(self):
         b = self.browser
