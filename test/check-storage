@@ -1201,7 +1201,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         r = Review(b)
 
         tmp_mount = "/btrfs-mount-test"
-        tmp_name = "btrfs-mount-test"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -1225,10 +1224,9 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
-        self.dialog({"type": "btrfs", "name": tmp_name})
+        self.dialog({"type": "btrfs"})
 
-        self.click_card_row("Storage", name=tmp_name)
-        self.click_card_row("btrfs subvolumes", 1)
+        self.click_card_row("Storage", name="/")
 
         b.click(self.card_button("btrfs subvolume", "Mount"))
         self.dialog({"mount_point": tmp_mount})
