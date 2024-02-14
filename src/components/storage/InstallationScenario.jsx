@@ -199,7 +199,7 @@ export const scenarios = [{
     check: checkConfiguredStorage,
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    buttonLabel: _("Apply storage configuration and install"),
+    buttonLabel: _("Install"),
     buttonVariant: "danger",
     screenWarning: _("To prevent loss, make sure to backup your data."),
     dialogTitleIconVariant: "",
