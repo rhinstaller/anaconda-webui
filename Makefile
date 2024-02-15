@@ -196,8 +196,9 @@ create-updates.img: bots
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
+# we create huge VMs, so we need to reduce parallelism on CI
 integration-test: prepare-test-deps test/reference $(UPDATES_IMG)
-	TEST_AUDIT_NO_SELINUX=1 test/common/run-tests
+	J=$$((TEST_JOBS/4)); [ $$J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --jobs $$J
 
 test/reference: test/common
 	test/common/pixel-tests pull
