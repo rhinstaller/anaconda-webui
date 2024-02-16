@@ -170,6 +170,7 @@ export const Application = () => {
                                 <WithDialogs>
                                     <AnacondaWizard
                                       onCritFail={onCritFail}
+                                      onJsError={setJsError}
                                       title={title}
                                       storageData={state.storage}
                                       localizationData={state.localization}
