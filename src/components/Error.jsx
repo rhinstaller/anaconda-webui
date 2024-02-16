@@ -182,30 +182,38 @@ export const BZReportModal = ({
 
 const addExceptionDataToReportURL = (url, exception) => {
     const newUrl = new URL(url);
-    const backendMessage = exception.backendMessage ? exception.backendMessage + (exception.jsMessage ? " " : "") : "";
-    const bothSeparator = exception.backendMessage && exception.jsMessage ? "\n" : "";
-    const context = exception.contextData?.context ? exception.contextData?.context + " " : "";
-    const jsMessage = exception.jsMessage ? exception.jsMessage : "";
-    const name = exception.name ? exception.name + ": " : "";
-    const stackTrace = exception.stack ? "\n\nStackTrace: " + exception.stack : "";
+    const backendMessage = exception.backendException?.message || "";
+    const frontendMessage = exception.frontendException?.message || "";
+    const bothSeparator = exception.backendException?.message && exception.frontendException?.message ? "\n" : "";
+    const context = exception.contextData?.context ? exception.contextData.context + " " : "";
+    const name = exception.backendException?.name ? exception.backendException.name + ": " : "";
+    const stackTrace = exception.frontendException?.stack ? "\n\nStackTrace: " + exception.frontendException.stack : "";
     newUrl.searchParams.append(
         "short_desc",
-        "WebUI: " + context + name + backendMessage + jsMessage
+        "WebUI: " + context + name + backendMessage + frontendMessage
     );
     newUrl.searchParams.append(
         "comment",
-        "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + jsMessage + stackTrace
+        "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + frontendMessage + stackTrace
     );
     return newUrl.href;
 };
 
 const exceptionInfo = (exception, idPrefix) => {
-    const exceptionNamePrefix = exception.name ? exception.name + ": " : "";
+    const exceptionNamePrefix = exception.backendException?.name ? exception.backendMessage?.name + ": " : "";
+    const backendMessage = exception.backendException?.message ? exception.backendException.message : "";
+    const frontendMessage = exception.frontendException?.message ? exception.frontendException.message : "";
+
     return (
         <TextContent id={idPrefix + "-bz-report-modal-details"}>
+            {backendMessage &&
             <Text component={TextVariants.p}>
-                {exceptionNamePrefix + exception.message}
-            </Text>
+                {exceptionNamePrefix + backendMessage}
+            </Text>}
+            {frontendMessage &&
+            <Text component={TextVariants.p}>
+                {exceptionNamePrefix + frontendMessage}
+            </Text>}
         </TextContent>
     );
 };

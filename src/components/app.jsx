@@ -151,7 +151,7 @@ export const Application = () => {
                 >
                     {(criticalError || jsError) &&
                     <CriticalError
-                      exception={{ ...criticalError, jsMessage: jsError?.message, backendMessage: criticalError?.message, stack: jsError?.stack }}
+                      exception={{ backendException: criticalError, frontendException: jsError }}
                       isConnected={state.network.connected}
                       reportLinkURL={bzReportURL} />}
                     {!jsError &&
