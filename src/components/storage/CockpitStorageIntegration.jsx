@@ -100,7 +100,9 @@ export const CockpitStorageIntegration = ({
 
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
-        iframe.contentWindow.addEventListener("error", err => onJsError({ ...err, jsContext: _("Storage plugin failed") }));
+        iframe.contentWindow.addEventListener("error", exception => {
+            onCritFail({ isFrontend: true, context: _("Storage plugin failed") })(exception.error);
+        });
 
         resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
     }, [onCritFail, onJsError]);

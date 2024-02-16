@@ -40,7 +40,7 @@ import { NetworkClient, initDataNetwork, startEventMonitorNetwork } from "../api
 import { UsersClient } from "../apis/users";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
+import { setCriticalErrorFrontendAction, setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 
 import { readConf } from "../helpers/conf.js";
 import { debug } from "../helpers/log.js";
@@ -58,11 +58,20 @@ export const Application = () => {
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitilized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
-    const [jsError, setJsError] = useState();
+    const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
     const [showStorage, setShowStorage] = useState(false);
 
     const onCritFail = useCallback((contextData) => {
-        return errorHandlerWithContext(contextData, exc => dispatch(setCriticalErrorAction(exc)));
+        return errorHandlerWithContext(
+            contextData,
+            exc => {
+                if (contextData.isFrontend) {
+                    dispatch(setCriticalErrorFrontendAction(exc));
+                } else {
+                    dispatch(setCriticalErrorAction(exc));
+                }
+            }
+        );
     }, [dispatch]);
 
     useEffect(() => {
@@ -81,11 +90,11 @@ export const Application = () => {
 
         // Listen on JS errors
         window.onerror = (message, url, line, col, errObj) => {
-            setJsError(errObj);
+            dispatch(setCriticalErrorFrontendAction(errObj));
         };
 
         cockpit.file("/run/anaconda/bus.address").watch(address => {
-            setCriticalErrorAction();
+            dispatch(setCriticalErrorAction());
             const clients = [
                 new LocalizationClient(address),
                 new StorageClient(address),
@@ -149,12 +158,12 @@ export const Application = () => {
                 <Page
                   data-debug={conf.Anaconda.debug}
                 >
-                    {(criticalError || jsError) &&
+                    {(criticalError || criticalErrorFrontend) &&
                     <CriticalError
-                      exception={{ backendException: criticalError, frontendException: jsError }}
+                      exception={{ backendException: criticalError, frontendException: criticalErrorFrontend }}
                       isConnected={state.network.connected}
                       reportLinkURL={bzReportURL} />}
-                    {!jsError &&
+                    {!criticalErrorFrontend &&
                     <>
                         {!showStorage &&
                         <PageGroup stickyOnBreakpoint={{ default: "top" }}>
@@ -170,7 +179,6 @@ export const Application = () => {
                                 <WithDialogs>
                                     <AnacondaWizard
                                       onCritFail={onCritFail}
-                                      onJsError={setJsError}
                                       title={title}
                                       storageData={state.storage}
                                       localizationData={state.localization}
