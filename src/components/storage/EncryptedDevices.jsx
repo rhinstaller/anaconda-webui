@@ -181,7 +181,7 @@ const UnlockDialog = ({ isLoadingNewPartitioning, lockedLUKSDevices, onClose, di
                             <TextInput
                               isRequired
                               id={idPrefix + "-luks-passphrase"}
-                              type={passphraseHidden ? "passphrase" : "text"}
+                              type={passphraseHidden ? "password" : "text"}
                               aria-label={_("Passphrase")}
                               value={passphrase}
                               onChange={(_event, val) => setPassphrase(val)}

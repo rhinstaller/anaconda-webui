@@ -449,7 +449,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
                 "#unlock-device-dialog-luks-devices",
                 device,
             )
-        b.set_input_text("#unlock-device-dialog-luks-passphrase", passphrase)
+        b.set_input_text("#unlock-device-dialog-luks-passphrase[type=password]", passphrase)
         b.click("#unlock-device-dialog-submit-btn")
         # Wait for the dialog to either close or stop being in progress
         with b.wait_timeout(30):
