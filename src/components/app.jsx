@@ -43,6 +43,28 @@ import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
+const MaybeBackdrop = ({ children }) => {
+    const [hasDialogOpen, setHasDialogOpen] = useState(false);
+
+    useEffect(() => {
+        const handleStorageEvent = (event) => {
+            if (event.key === "cockpit_has_modal") {
+                setHasDialogOpen(event.newValue === "true");
+            }
+        };
+
+        window.addEventListener("storage", handleStorageEvent);
+
+        return () => window.removeEventListener("storage", handleStorageEvent);
+    }, []);
+
+    return (
+        <div className={hasDialogOpen ? "cockpit-has-modal" : ""}>
+            {children}
+        </div>
+    );
+};
+
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
@@ -195,7 +217,9 @@ export const Application = () => {
     return (
         <WithDialogs>
             <LanguageContext.Provider value={{ language, setLanguage }}>
-                {page}
+                <MaybeBackdrop>
+                    {page}
+                </MaybeBackdrop>
             </LanguageContext.Provider>
         </WithDialogs>
     );

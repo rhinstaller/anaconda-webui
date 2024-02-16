@@ -1,4 +1,5 @@
 @import "global-variables";
+@import "@patternfly/patternfly/components/Backdrop/backdrop.scss";
 
 // Copied from cockpit/pkg/lib/page.scss instead of including it in its entirety:
 // Let PF4 handle the scrolling through page component otherwise we might get double scrollbar
@@ -38,4 +39,26 @@ html:not(.index-page) body {
 // Nested tables showing partitions in the local standards disks table don't need extra padding
 .ct-table .pf-v5-c-table__expandable-row-content {
   padding: 0;
+}
+
+// Simulate Backdrop behavior for modals in the iframe
+%iframe-zindex {
+  position: relative;
+  z-index: 10;
+}
+
+iframe {
+  @extend %iframe-zindex;
+}
+
+// Simulate a PF background scrim
+.cockpit-has-modal .pf-v5-c-page__main-section {
+  @extend %iframe-zindex;
+
+  &::after {
+    @extend .pf-v5-c-backdrop;
+    --pf-v5-c-backdrop--Position: absolute;
+    content: "";
+    z-index: 9;
+  }
 }
