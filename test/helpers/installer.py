@@ -31,7 +31,6 @@ class InstallerSteps(UserDict):
 
     _steps_jump = {}
     _steps_jump[WELCOME] = [INSTALLATION_METHOD]
-    _steps_jump[INSTALLATION_METHOD] = [DISK_ENCRYPTION, CUSTOM_MOUNT_POINT]
     _steps_jump[DISK_ENCRYPTION] = [ACCOUNTS]
     _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
     _steps_jump[ACCOUNTS] = [REVIEW]
@@ -47,11 +46,17 @@ class InstallerSteps(UserDict):
 
 
 class Installer():
-    def __init__(self, browser, machine, hidden_steps=None):
+    def __init__(self, browser, machine, hidden_steps=None, scenario=None):
         self.browser = browser
         self.machine = machine
         self.steps = InstallerSteps()
         self.hidden_steps = hidden_steps or []
+
+        if (scenario == 'use-configured-storage'):
+            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
+            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
+        else:
+            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
 
     @log_step(snapshot_before=True)
     def begin_installation(self, should_fail=False, confirm_erase=True):

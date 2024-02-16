@@ -177,7 +177,14 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
                     <DescriptionListDescription id={idPrefix + "-target-storage"}>
                         <Stack hasGutter>
                             {diskSelection.selectedDisks.map(disk => {
-                                return <DeviceRow key={disk} deviceData={deviceData} disk={disk} requests={storageScenarioId === "mount-point-mapping" ? requests : null} />;
+                                return (
+                                    <DeviceRow
+                                      key={disk}
+                                      deviceData={deviceData}
+                                      disk={disk}
+                                      requests={["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? requests : null}
+                                    />
+                                );
                             })}
                         </Stack>
                     </DescriptionListDescription>

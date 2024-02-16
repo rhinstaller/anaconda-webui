@@ -12,7 +12,7 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-missing_packages = "cockpit-ws cockpit-bridge fedora-logos"
+missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2-lvm2 udisks2-btrfs"
 # Install missing firefox dependencies.
 # Resolving all dependencies with dnf download is possible,
 # but it packs to many packages to updates.img
@@ -49,8 +49,7 @@ def vm_install(image, verbose, quick):
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
-            # FIXME: Download cockpit-storaged from custom COPR
-            # till https://github.com/cockpit-project/cockpit/pull/19924#event-11785480839 is released
+            # FIXME: Download cockpit-storaged from custom COPR till release 311 is available in rawhide
             download_from_copr("@cockpit/main-builds", "cockpit-storaged", machine)
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
