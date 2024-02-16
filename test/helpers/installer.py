@@ -59,10 +59,10 @@ class Installer():
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
 
     @log_step(snapshot_before=True)
-    def begin_installation(self, should_fail=False, confirm_erase=True):
+    def begin_installation(self, should_fail=False, confirm_erase=True, button_text='Erase data and install'):
         current_page = self.get_current_page()
 
-        self.browser.click("button:contains('Erase data and install')")
+        self.browser.click(f"button:contains('{button_text}')")
 
         if confirm_erase:
             self.browser.click(f"#{self.steps.REVIEW}-disk-erase-confirm")
