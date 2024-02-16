@@ -390,7 +390,10 @@ const getRequestRow = ({
     mountPointConstraints,
 }) => {
     const columnClassName = idPrefix + "__column";
-    const isRequiredMountPoint = mountPointConstraints.filter(val => val.required.v && val["mount-point"].v === request["mount-point"]).length > 0;
+    const isRequiredMountPoint = (
+        request["mount-point"] !== "" &&
+        mountPointConstraints.filter(val => val.required.v && val["mount-point"].v === request["mount-point"]).length > 0
+    );
     const isRecommendedMountPoint = mountPointConstraints.filter(val => val.recommended.v && val["mount-point"].v === request["mount-point"]).length > 0;
     const duplicatedMountPoint = isDuplicateRequestField(requests, "mount-point", request["mount-point"]);
     const rowId = idPrefix + "-row-" + (requestIndex + 1);
