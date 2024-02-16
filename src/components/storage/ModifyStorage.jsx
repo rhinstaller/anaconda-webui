@@ -33,6 +33,11 @@ export const ModifyStorage = ({ idPrefix, onCritFail, onRescan, setShowStorage, 
     const targetSystemRoot = useContext(TargetSystemRootContext);
     const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
+    const cockpitAnaconda = JSON.stringify({
+        mount_point_prefix: targetSystemRoot,
+        available_devices: selectedDevices,
+        efi: isEfi,
+    });
 
     return (
         <>
@@ -41,13 +46,9 @@ export const ModifyStorage = ({ idPrefix, onCritFail, onRescan, setShowStorage, 
               variant="link"
               icon={<WrenchIcon />}
               onClick={() => {
-                  window.localStorage.setItem("cockpit_anaconda",
-                                              JSON.stringify({
-                                                  mount_point_prefix: targetSystemRoot,
-                                                  available_devices: selectedDevices,
-                                                  efi: isEfi,
-                                              })
-                  );
+                  window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
+                  // FIXME: Remove when cockpit-storaged 311 is available in Rawhide
+                  window.localStorage.setItem("cockpit_anaconda", cockpitAnaconda);
                   setShowStorage(true);
               }}
             >
