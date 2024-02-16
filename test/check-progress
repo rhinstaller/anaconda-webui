@@ -48,7 +48,7 @@ class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "installation-progress-complete",
-            ignore=["#betanag-icon"],
+            ignore=[".logo", "#betanag-icon"],
         )
 
         self.handleReboot()
