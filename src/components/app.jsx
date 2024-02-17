@@ -58,7 +58,7 @@ export const Application = () => {
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitilized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
-    const [jsError, setJsEroor] = useState();
+    const [jsError, setJsError] = useState();
     const [showStorage, setShowStorage] = useState(false);
 
     const onCritFail = useCallback((contextData) => {
@@ -81,7 +81,7 @@ export const Application = () => {
 
         // Listen on JS errors
         window.onerror = (message, url, line, col, errObj) => {
-            setJsEroor(errObj);
+            setJsError(errObj);
         };
 
         cockpit.file("/run/anaconda/bus.address").watch(address => {
