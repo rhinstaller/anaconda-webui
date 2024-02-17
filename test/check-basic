@@ -234,6 +234,7 @@ class TestBasic(anacondalib.VirtInstallMachineCase):
         s.rescan_disks()
 
         b.wait_visible("#critical-error-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_in_text("#critical-error-bz-report-modal header", "Rescanning of the disks failed")
 
         self._testLogReview(b, m, "critical-error")
 
