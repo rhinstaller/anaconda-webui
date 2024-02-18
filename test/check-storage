@@ -1128,6 +1128,13 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         s.return_to_installation()
         s.return_to_installation_confirm()
 
+        s.check_partitioning_selected("use-configured-storage")
+
+        # Check that choosing another storage scenario without diving into that,
+        # preserves the visibility of "Use configured storage"
+        s.set_partitioning("erase-all")
+        s.wait_scenario_available("use-configured-storage")
+
         s.set_partitioning("use-configured-storage")
 
         self.addCleanup(lambda: dbus_reset_users(m))
