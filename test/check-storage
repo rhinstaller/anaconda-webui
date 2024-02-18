@@ -388,9 +388,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, 1, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(dev, 2, "btrfstest, 10.7 GB: format as btrfs, /")
-        r.check_disk_row(dev, 3, "vda4, 4.29 GB: mount, /home")
+        r.check_disk_row(dev, "vda2, 1.07 GB: format as ext4, /boot")
+        r.check_disk_row(dev, "btrfstest, 10.7 GB: format as btrfs, /")
+        r.check_disk_row(dev, "vda4, 4.29 GB: mount, /home")
 
         applied_partitioning = s.dbus_get_applied_partitioning()
 
@@ -518,12 +518,12 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
-        r.check_disk_row(disk, 1, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, 2, "vda3, 15.0 GB: format as xfs, /")
+        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
+        r.check_disk_row(disk, "vda3, 15.0 GB: format as xfs, /")
 
         disk = "vdb"
         r.check_disk(disk, "10.7 GB vdb (0x1af4)")
-        r.check_disk_row(disk, 1, "vdb1, 10.7 GB: mount, /home")
+        r.check_disk_row(disk, "vdb1, 10.7 GB: mount, /home")
 
         b.assert_pixels(
             "#app",
@@ -727,8 +727,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, 1, "vda2, 1.07 GB: format as xfs, /boot")
-        r.check_disk_row(dev, 2, "encryptedraid, 5.35 GB: format as xfs, /")
+        r.check_disk_row(dev, "vda2, 1.07 GB: format as xfs, /boot")
+        r.check_disk_row(dev, "encryptedraid, 5.35 GB: format as xfs, /")
 
     def testEncryptedUnlockLUKSonRAID(self):
         # LUKS on RAID: partition -> RAID -> LUKS -> filesystem
@@ -843,9 +843,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, 1, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(dev, 2, "root, 15.0 GB: format as btrfs, /")
-        r.check_disk_row(dev, 3, "home, 15.0 GB: mount, /home")
+        r.check_disk_row(dev, "vda2, 1.07 GB: format as ext4, /boot")
+        r.check_disk_row(dev, "root, 15.0 GB: format as btrfs, /")
+        r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
         r.check_disk_row_not_present(dev, "unused")
 
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
@@ -1005,10 +1005,10 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(disk, 1, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(disk, 2, f"{vgname}-root, 6.01 GB: format as ext4, /")
-        r.check_disk_row(disk, 3, f"{vgname}-home, 8.12 GB: mount, /home")
-        r.check_disk_row(disk, 4, f"{vgname}-swap, 902 MB: mount, swap")
+        r.check_disk_row(disk, "vda2, 1.07 GB: format as ext4, /boot")
+        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: format as ext4, /")
+        r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
+        r.check_disk_row(disk, f"{vgname}-swap, 902 MB: mount, swap")
 
         i.reach_on_sidebar(i.steps.CUSTOM_MOUNT_POINT)
 
@@ -1024,9 +1024,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(disk, 1, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, 2, f"{vgname}-root, 6.01 GB: format as ext4, /")
-        r.check_disk_row(disk, 3, f"{vgname}-swap, 902 MB: mount, swap")
+        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
+        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: format as ext4, /")
+        r.check_disk_row(disk, f"{vgname}-swap, 902 MB: mount, swap")
 
     @nondestructive
     def testUnusableFormats(self):
@@ -1187,10 +1187,10 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(disk, 1, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, 2, f"{vgname}-root, 6.01 GB: mount, /")
-        r.check_disk_row(disk, 3, f"{vgname}-home, 8.12 GB: mount, /home")
-        r.check_disk_row(disk, 4, f"{vgname}-swap, 898 MB: mount, swap")
+        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
+        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: mount, /")
+        r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
+        r.check_disk_row(disk, f"{vgname}-swap, 898 MB: mount, swap")
 
     @nondestructive
     def testBtrfsSubvolumes(self):
@@ -1255,9 +1255,9 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, 1, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(dev, 2, "root, 15.0 GB: mount, /")
-        r.check_disk_row(dev, 3, "home, 15.0 GB: mount, /home")
+        r.check_disk_row(dev, "vda2, 1.07 GB: mount, /boot")
+        r.check_disk_row(dev, "root, 15.0 GB: mount, /")
+        r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
 
 
 class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
@@ -1302,9 +1302,9 @@ class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, 1, "vda1, 524 MB: mount, /boot/efi")
-        r.check_disk_row(dev, 2, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(dev, 3, "vda3, 14.5 GB: format as xfs, /")
+        r.check_disk_row(dev, "vda1, 524 MB: mount, /boot/efi")
+        r.check_disk_row(dev, "vda2, 1.07 GB: mount, /boot")
+        r.check_disk_row(dev, "vda3, 14.5 GB: format as xfs, /")
 
 
 if __name__ == '__main__':

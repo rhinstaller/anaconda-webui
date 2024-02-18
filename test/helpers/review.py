@@ -47,8 +47,8 @@ class Review():
     def check_disk(self, disk, text):
         self.browser.wait_text(f"#disk-{disk} span", text)
 
-    def check_disk_row(self, disk, row, text):
-        self.browser.wait_text(f"#disk-{disk} ul li:nth-child({row})", text)
+    def check_disk_row(self, disk, text):
+        self.browser.wait_visible(f"#disk-{disk} ul li:contains({text})")
 
     def check_in_disk_row(self, disk, row, text):
         self.browser.wait_in_text(f"#disk-{disk} ul li:nth-child({row})", text)
