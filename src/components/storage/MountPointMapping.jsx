@@ -27,7 +27,6 @@ import {
     HelperTextItem,
     Label,
     TextInput,
-    Tooltip
 } from "@patternfly/react-core";
 import {
     Select,
@@ -337,15 +336,12 @@ const DeviceColumn = ({ deviceData, devices, mountPointConstraints, idPrefix, is
 };
 
 const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requests, requestIndex }) => {
-    const mountpoint = request["mount-point"];
-    const isRootMountPoint = mountpoint === "/";
     const [reformatInvalid, reformatErrorMsg] = isReformatInvalid(deviceData, request, requests);
     const FormatSwitch = () => {
         return (
             <Switch
               id={idPrefix + "-switch"}
               isChecked={!!request.reformat}
-              isDisabled={isRootMountPoint}
               aria-label={_("Reformat")}
               onChange={(_event, checked) => handleRequestChange({ mountPoint: request["mount-point"], deviceSpec: request["device-spec"], requestIndex, reformat: checked })}
             />
@@ -354,13 +350,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
 
     return (
         <Flex id={idPrefix}>
-            {!isRootMountPoint &&
-                <FormatSwitch />}
-            {isRootMountPoint &&
-                <Tooltip
-                  content={_("The root partition is always re-formatted by the installer.")}>
-                    <FormatSwitch />
-                </Tooltip>}
+            <FormatSwitch />
             {reformatInvalid &&
                 <HelperText>
                     <HelperTextItem variant="error" hasIcon>
