@@ -119,6 +119,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 diskSelection: storageData.diskSelection,
                 dispatch,
                 partitioning: storageData.partitioning.path,
+                requests: storageData.partitioning.requests,
                 scenarioPartitioningMapping,
                 storageScenarioId,
                 setStorageScenarioId: (scenarioId) => {
