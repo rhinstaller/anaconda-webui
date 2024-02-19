@@ -146,7 +146,9 @@ const requestsToDbus = (requests) => {
     return requests.map(row => {
         return {
             "device-spec": cockpit.variant("s", row["device-spec"] || ""),
+            "format-options": cockpit.variant("s", row["format-options"] || ""),
             "format-type": cockpit.variant("s", row["format-type"] || ""),
+            "mount-options": cockpit.variant("s", row["mount-options"] || ""),
             "mount-point": cockpit.variant("s", row["mount-point"] || ""),
             reformat: cockpit.variant("b", !!row.reformat),
         };
@@ -390,7 +392,10 @@ const getRequestRow = ({
     mountPointConstraints,
 }) => {
     const columnClassName = idPrefix + "__column";
-    const isRequiredMountPoint = mountPointConstraints.filter(val => val.required.v && val["mount-point"].v === request["mount-point"]).length > 0;
+    const isRequiredMountPoint = (
+        request["mount-point"] !== "" &&
+        mountPointConstraints.filter(val => val.required.v && val["mount-point"].v === request["mount-point"]).length > 0
+    );
     const isRecommendedMountPoint = mountPointConstraints.filter(val => val.recommended.v && val["mount-point"].v === request["mount-point"]).length > 0;
     const duplicatedMountPoint = isDuplicateRequestField(requests, "mount-point", request["mount-point"]);
     const rowId = idPrefix + "-row-" + (requestIndex + 1);
@@ -453,23 +458,20 @@ const getRequestRow = ({
 };
 
 const getNewRequestProps = ({ mountPoint, deviceSpec, reformat, requests }) => {
-    const formatType = requests.find(device => device["device-spec"] === deviceSpec)?.["format-type"];
-    const newProps = {};
+    const existingRequestForDev = requests.find(device => device["device-spec"] === deviceSpec);
+    const newProps = { ...existingRequestForDev };
 
     if (mountPoint !== undefined) {
         newProps["mount-point"] = mountPoint;
     }
     if (deviceSpec !== undefined) {
         newProps["device-spec"] = deviceSpec;
-        if (formatType === "swap") {
+        if (newProps["format-type"] === "swap") {
             newProps["mount-point"] = "swap";
         }
     }
     if (reformat !== undefined) {
         newProps.reformat = !!reformat;
-    }
-    if (formatType !== undefined) {
-        newProps["format-type"] = formatType;
     }
 
     return newProps;
@@ -511,10 +513,15 @@ const RequestsTable = ({
             // Remove a request from the specified index
             newRequests.splice(requestIndex, 1);
         } else {
-            const newRequest = {
-                ...(newRequests[requestIndex] || {}),
-                ...getNewRequestProps({ mountPoint, deviceSpec, reformat, requests })
-            };
+            const newRequestProps = newRequests[requestIndex] || {};
+            const newRequest = (
+                getNewRequestProps({
+                    mountPoint: mountPoint || newRequestProps.mountPoint,
+                    deviceSpec,
+                    reformat: reformat !== undefined ? reformat : newRequestProps.reformat,
+                    requests
+                })
+            );
 
             if (requestIndex === unappliedRequests.length) {
                 // Add new request in the end of the array
