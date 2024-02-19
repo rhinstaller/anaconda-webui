@@ -1219,6 +1219,11 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         # verify storage layout review in Cockpit storage exit dialog
         checkStorageReview()
+        b.assert_pixels(
+            "#cockpit-storage-integration-check-storage-dialog",
+            "cockpit-storage-integration-check-storage-dialog-LVM",
+            ignore=anacondalib.pixel_tests_ignore,
+        )
         s.return_to_installation_confirm()
 
         s.set_partitioning("use-configured-storage")
