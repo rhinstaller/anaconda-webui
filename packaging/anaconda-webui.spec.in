@@ -11,7 +11,16 @@ BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
 
-%global anacondacorever 40.20
+%global anacondacorever 0
+
+%if 0%{?fedora} >= 40
+%global anacondacorever 40.22.2
+%endif
+
+%if 0%{?fedora} >= 41
+%global anacondacorever 41.2
+%endif
+
 %global cockpitver 275
 %global cockpitstorver 311
 
