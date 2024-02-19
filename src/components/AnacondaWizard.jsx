@@ -69,7 +69,10 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
 
     useEffect(() => {
         if (storageScenarioId && storageData.partitioning.path) {
-            setScenarioPartitioningMapping({ [storageScenarioId]: storageData.partitioning.path });
+            setScenarioPartitioningMapping(_scenarioPartitioningMapping => ({
+                ..._scenarioPartitioningMapping,
+                [storageScenarioId]: storageData.partitioning.path
+            }));
         }
     }, [storageData.partitioning.path, storageScenarioId]);
 
