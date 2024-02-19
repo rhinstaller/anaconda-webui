@@ -92,14 +92,18 @@ export const CockpitStorageIntegration = ({
     deviceData,
     dispatch,
     onCritFail,
+    onJsError,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [needsResetPartitioning, setNeedsResetPartitioning] = useState(true);
 
     useEffect(() => {
+        const iframe = document.getElementById("cockpit-storage-frame");
+        iframe.contentWindow.addEventListener("error", err => onJsError({ ...err, jsContext: _("Storage plugin failed") }));
+
         resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
-    }, [onCritFail]);
+    }, [onCritFail, onJsError]);
 
     return (
         <>
@@ -122,6 +126,7 @@ export const CockpitStorageIntegration = ({
                     <iframe
                       src="/cockpit/@localhost/storage/index.html"
                       name="cockpit-storage"
+                      id="cockpit-storage-frame"
                       className={idPrefix + "-iframe-cockpit-storage"} />
                 </PageSection>
                 <ModifyStorageSideBar />
