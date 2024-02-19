@@ -92,7 +92,6 @@ export const CockpitStorageIntegration = ({
     deviceData,
     dispatch,
     onCritFail,
-    onJsError,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -105,7 +104,7 @@ export const CockpitStorageIntegration = ({
         });
 
         resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
-    }, [onCritFail, onJsError]);
+    }, [onCritFail]);
 
     return (
         <>
