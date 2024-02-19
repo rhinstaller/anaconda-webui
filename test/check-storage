@@ -1154,7 +1154,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         self.addCleanup(m.execute, f"vgremove -y -ff {vgname}")
 
-        disk = "/dev/vda"
         dev = "vda"
 
         i.open()
@@ -1208,7 +1207,18 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         # Exit the cockpit-storage iframe
         b.switch_to_top()
 
+        def checkStorageReview():
+            disk = "vda"
+            r.check_disk(disk, "16.1 GB vda (0x1af4)")
+            r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
+            r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: mount, /")
+            r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
+            r.check_disk_row(disk, f"{vgname}-swap, 898 MB: mount, swap")
+
         s.return_to_installation()
+
+        # verify storage layout review in Cockpit storage exit dialog
+        checkStorageReview()
         s.return_to_installation_confirm()
 
         s.set_partitioning("use-configured-storage")
@@ -1217,13 +1227,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (0x1af4)")
-
-        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: mount, /")
-        r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
-        r.check_disk_row(disk, f"{vgname}-swap, 898 MB: mount, swap")
+        checkStorageReview()
 
     @nondestructive
     def testBtrfsSubvolumes(self):

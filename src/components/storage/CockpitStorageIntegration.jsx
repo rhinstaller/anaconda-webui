@@ -33,6 +33,7 @@ import {
     Modal,
     PageSection,
     PageSectionVariants,
+    Stack,
     Text,
     TextContent,
     Title,
@@ -92,6 +93,7 @@ export const CockpitStorageIntegration = ({
     deviceData,
     dispatch,
     onCritFail,
+    requests,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -146,6 +148,7 @@ export const CockpitStorageIntegration = ({
               deviceData={deviceData}
               dispatch={dispatch}
               onCritFail={onCritFail}
+              requests={requests}
               scenarioAvailability={scenarioAvailability}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
               selectedDisks={selectedDisks}
@@ -216,6 +219,7 @@ const CheckStorageDialog = ({
     deviceData,
     dispatch,
     onCritFail,
+    requests,
     scenarioPartitioningMapping,
     selectedDisks,
     setShowDialog,
@@ -242,6 +246,27 @@ const CheckStorageDialog = ({
 
         return availability.available;
     }, [deviceData, mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
+
+    const useConfiguredStorageReview = useMemo(() => {
+        const availability = checkConfiguredStorage({
+            deviceData,
+            mountPointConstraints,
+            newMountPoints,
+            requests,
+            scenarioPartitioningMapping,
+            selectedDisks,
+            storageScenarioId: "use-configured-storage"
+        });
+
+        return availability.review;
+    }, [
+        deviceData,
+        mountPointConstraints,
+        newMountPoints,
+        requests,
+        scenarioPartitioningMapping,
+        selectedDisks,
+    ]);
 
     const useFreeSpace = useMemo(() => {
         const availability = checkUseFreeSpace({ diskFreeSpace, diskTotalSpace, requiredSize });
@@ -430,8 +455,15 @@ const CheckStorageDialog = ({
                     {storageRequirementsNotMet ? error?.message : null}
                     <HelperText>
                         {!storageRequirementsNotMet &&
-                        <HelperTextItem variant="success" hasIcon>
-                            {_("Current configuration can be used for installation.")}
+                        <HelperTextItem variant="success" isDynamic>
+                            {useConfiguredStorage
+                                ? (
+                                    <Stack hasGutter>
+                                        <span>{_("Detected valid storage layout:")}</span>
+                                        {useConfiguredStorageReview}
+                                    </Stack>
+                                )
+                                : _("Free space requirements met")}
                         </HelperTextItem>}
                     </HelperText>
                 </>}
