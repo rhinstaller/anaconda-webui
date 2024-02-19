@@ -43,7 +43,8 @@ export const networkInitialState = {
 
 /* Initial state for the error store substate */
 export const errorInitialState = {
-    criticalError: null
+    criticalErrorBackend: null,
+    criticalErrorFrontend: null
 };
 
 /* Intial state for the runtime store substate */
@@ -124,6 +125,8 @@ export const networkReducer = (state = networkInitialState, action) => {
 const errorReducer = (state = errorInitialState, action) => {
     if (action.type === "SET_CRITICAL_ERROR") {
         return { ...state, criticalError: action.payload.criticalError };
+    } else if (action.type === "SET_CRITICAL_ERROR_FRONTEND") {
+        return { ...state, criticalErrorFrontend: action.payload.criticalErrorFrontend };
     } else {
         return state;
     }
