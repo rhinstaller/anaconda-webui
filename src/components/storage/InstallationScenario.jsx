@@ -70,9 +70,9 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize 
     }
     if (diskFreeSpace < requiredSize) {
         availability.available = false;
-        availability.reason = _("Not enough free space on the selected disks.");
+        availability.reason = _("Not enough free space.");
         availability.hint = cockpit.format(
-            _("To use this option, resize or remove existing partitions to free up at least $0."),
+            _("At least $0 of space is required."),
             cockpit.format_bytes(requiredSize)
         );
     } else {
@@ -335,14 +335,14 @@ const InstallationScenarioSelector = ({
           isDisabled={!scenarioAvailability[scenario.id].available || isFormDisabled}
           isChecked={storageScenarioId === scenario.id}
           onChange={() => onScenarioToggled(scenario.id)}
-          description={scenario.detail}
-          body={
+          description={
               <>
+                  <p>{scenario.detail}</p>
                   {selectedDisks.length > 0 && scenarioAvailability[scenario.id].reason &&
-                  <span className={idPrefix + "-scenario-disabled-reason"}>
+                  <p className={idPrefix + "-scenario-disabled-reason"}>
                       {scenarioAvailability[scenario.id].reason}
-                  </span>}
-                  {selectedDisks.length > 0 && <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>}
+                  </p>}
+                  {selectedDisks.length > 0 && <p className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</p>}
               </>
           } />
     ));
