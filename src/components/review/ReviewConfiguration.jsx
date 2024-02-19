@@ -22,7 +22,6 @@ import {
     DescriptionList, DescriptionListGroup,
     DescriptionListTerm, DescriptionListDescription,
     HelperText, HelperTextItem,
-    List, ListItem,
     Modal, ModalVariant,
     Stack,
 } from "@patternfly/react-core";
@@ -32,10 +31,10 @@ import {
     getPartitioningRequest,
     getPartitioningMethod,
 } from "../../apis/storage_partitioning.js";
-import { checkDeviceInSubTree } from "../../helpers/storage.js";
 
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { OsReleaseContext } from "../Common.jsx";
+import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 
@@ -56,46 +55,6 @@ const ReviewDescriptionList = ({ children }) => {
         >
             {children}
         </DescriptionList>
-    );
-};
-
-const DeviceRow = ({ deviceData, disk, requests }) => {
-    const data = deviceData[disk];
-    const name = data.name.v;
-
-    const renderRow = row => {
-        const name = row["device-spec"];
-        const action = (
-            row.reformat
-                ? (row["format-type"] ? cockpit.format(_("format as $0"), row["format-type"]) : null)
-                : ((row["format-type"] === "biosboot") ? row["format-type"] : _("mount"))
-        );
-        const mount = row["mount-point"] || null;
-        const actions = [action, mount].filter(Boolean).join(", ");
-        const size = cockpit.format_bytes(deviceData[name].size.v);
-
-        return (
-            <ListItem className="pf-v5-u-font-size-s" key={name}>
-                {name}, {size}: {actions}
-            </ListItem>
-        );
-    };
-
-    const partitionRows = requests?.filter(req => {
-        if (!req.reformat && req["mount-point"] === "") {
-            return false;
-        }
-
-        return checkDeviceInSubTree({ device: req["device-spec"], rootDevice: name, deviceData });
-    }).map(renderRow) || [];
-
-    return (
-        <Stack id={`disk-${name}`} hasGutter>
-            <span>{cockpit.format_bytes(data.size.v)} {name} {"(" + data.description.v + ")"}</span>
-            <List>
-                {partitionRows}
-            </List>
-        </Stack>
     );
 };
 
@@ -176,16 +135,12 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
                     </DescriptionListTerm>
                     <DescriptionListDescription id={idPrefix + "-target-storage"}>
                         <Stack hasGutter>
-                            {diskSelection.selectedDisks.map(disk => {
-                                return (
-                                    <DeviceRow
-                                      key={disk}
-                                      deviceData={deviceData}
-                                      disk={disk}
-                                      requests={["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? requests : null}
-                                    />
-                                );
-                            })}
+                            <StorageReview
+                              deviceData={deviceData}
+                              requests={requests}
+                              selectedDisks={diskSelection.selectedDisks}
+                              storageScenarioId={storageScenarioId}
+                            />
                         </Stack>
                     </DescriptionListDescription>
                 </DescriptionListGroup>

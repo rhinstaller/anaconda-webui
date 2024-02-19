@@ -52,7 +52,7 @@ import { SystemTypeContext, OsReleaseContext } from "./Common.jsx";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, onJsError, showStorage, setShowStorage, title, conf }) => {
+export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, showStorage, setShowStorage, title, conf }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
@@ -119,6 +119,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 diskSelection: storageData.diskSelection,
                 dispatch,
                 partitioning: storageData.partitioning.path,
+                requests: storageData.partitioning.requests,
                 scenarioPartitioningMapping,
                 storageScenarioId,
                 setStorageScenarioId: (scenarioId) => {
@@ -287,7 +288,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
               deviceData={storageData.devices}
               dispatch={dispatch}
               onCritFail={onCritFail}
-              onJsError={onJsError}
+              requests={storageData.partitioning.requests}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
               selectedDisks={selectedDisks}
               setShowStorage={setShowStorage}

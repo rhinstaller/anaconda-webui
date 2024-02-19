@@ -38,6 +38,7 @@ export const InstallationMethod = ({
     isFormDisabled,
     onCritFail,
     partitioning,
+    requests,
     scenarioPartitioningMapping,
     setIsFormDisabled,
     setIsFormValid,
@@ -73,6 +74,7 @@ export const InstallationMethod = ({
               onCritFail={onCritFail}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
               partitioning={partitioning}
+              requests={requests}
               setIsFormValid={setIsFormValid}
               setStorageScenarioId={setStorageScenarioId}
               storageScenarioId={storageScenarioId}

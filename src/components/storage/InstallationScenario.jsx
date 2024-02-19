@@ -31,6 +31,8 @@ import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
 
+import { StorageReview } from "../review/StorageReview.jsx";
+
 import "./InstallationScenario.scss";
 
 const _ = cockpit.gettext;
@@ -99,7 +101,16 @@ const checkMountPointMapping = ({ hasFilesystems, duplicateDeviceNames }) => {
     return availability;
 };
 
-export const checkConfiguredStorage = ({ deviceData, mountPointConstraints, partitioning, newMountPoints, scenarioPartitioningMapping }) => {
+export const checkConfiguredStorage = ({
+    deviceData,
+    mountPointConstraints,
+    partitioning,
+    newMountPoints,
+    requests,
+    scenarioPartitioningMapping,
+    selectedDisks,
+    storageScenarioId,
+}) => {
     const availability = new AvailabilityState();
 
     const currentPartitioningMatches = partitioning !== undefined && scenarioPartitioningMapping["use-configured-storage"] === partitioning;
@@ -144,6 +155,15 @@ export const checkConfiguredStorage = ({ deviceData, mountPointConstraints, part
                         return false;
                     })
         )
+    );
+
+    availability.review = deviceData && requests && selectedDisks && storageScenarioId && (
+        <StorageReview
+          deviceData={deviceData}
+          requests={requests}
+          selectedDisks={selectedDisks}
+          storageScenarioId={storageScenarioId}
+        />
     );
 
     return availability;
@@ -230,6 +250,7 @@ const InstallationScenarioSelector = ({
     isFormDisabled,
     onCritFail,
     partitioning,
+    requests,
     scenarioPartitioningMapping,
     selectedDisks,
     setIsFormValid,
@@ -256,14 +277,17 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
+                    deviceData,
                     diskFreeSpace,
                     diskTotalSpace,
                     duplicateDeviceNames,
                     hasFilesystems,
                     mountPointConstraints,
                     partitioning,
+                    requests,
                     requiredSize,
                     scenarioPartitioningMapping,
+                    selectedDisks,
                     storageScenarioId,
                 });
                 newAvailability[scenario.id] = availability;
@@ -271,15 +295,18 @@ const InstallationScenarioSelector = ({
             return newAvailability;
         });
     }, [
+        deviceData,
         diskFreeSpace,
         diskTotalSpace,
         duplicateDeviceNames,
         hasFilesystems,
         mountPointConstraints,
         partitioning,
+        requests,
         requiredSize,
-        storageScenarioId,
         scenarioPartitioningMapping,
+        selectedDisks,
+        storageScenarioId,
     ]);
 
     useEffect(() => {
@@ -343,6 +370,7 @@ const InstallationScenarioSelector = ({
                       {scenarioAvailability[scenario.id].reason}
                   </span>}
                   {selectedDisks.length > 0 && <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>}
+                  {scenarioAvailability[scenario.id].review && <span className={idPrefix + "-scenario-review"}>{scenarioAvailability[scenario.id].review}</span>}
               </>
           } />
     ));
@@ -357,6 +385,7 @@ export const InstallationScenario = ({
     isFormDisabled,
     onCritFail,
     partitioning,
+    requests,
     scenarioPartitioningMapping,
     selectedDisks,
     setIsFormValid,
@@ -377,6 +406,7 @@ export const InstallationScenario = ({
                   isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
                   partitioning={partitioning}
+                  requests={requests}
                   scenarioPartitioningMapping={scenarioPartitioningMapping}
                   selectedDisks={selectedDisks}
                   setIsFormValid={setIsFormValid}
