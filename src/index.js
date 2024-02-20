@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
  */
-
+import "cockpit-dark-theme";
 import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
 
 import React from "react";
