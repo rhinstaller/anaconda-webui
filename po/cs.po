@@ -46,9 +46,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
-"PO-Revision-Date: 2024-01-27 02:43+0000\n"
-"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
+"POT-Creation-Date: 2024-02-20 02:48+0000\n"
+"PO-Revision-Date: 2024-02-19 02:41+0000\n"
+"Last-Translator: Josef Hruska <hrusjos@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/cs/>\n"
 "Language: cs\n"
@@ -56,9 +56,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:148
 msgid "$0 installation"
 msgstr "Instalace $0"
 
@@ -66,13 +66,11 @@ msgstr "Instalace $0"
 msgid "$0 installer"
 msgstr "Instalátor $0"
 
-#: src/components/storage/MountPointMapping.jsx:202
-#, fuzzy
-#| msgid "%s cannot be on an encrypted block device."
+#: src/components/storage/MountPointMapping.jsx:203
 msgid "'$0' filesystem cannot be on an ecnrypted block device"
-msgstr "%s nemůže být na šifrovaném blokovém zařízení."
+msgstr "'$0' nemůže být na šifrovaném blokovém zařízení"
 
-#: src/components/storage/MountPointMapping.jsx:196
+#: src/components/storage/MountPointMapping.jsx:197
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "Je třeba, aby „$0“ bylo na zařízení naformátované na „$1“"
 
@@ -80,20 +78,15 @@ msgstr "Je třeba, aby „$0“ bylo na zařízení naformátované na „$1“"
 msgid "About"
 msgstr "O aplikaci"
 
-#: src/components/review/ReviewConfiguration.jsx:144
-#, fuzzy
-#| msgctxt "GUI|Subscription|Authentication|Account"
-#| msgid "_Account"
+#: src/components/review/ReviewConfiguration.jsx:103
 msgid "Account"
-msgstr "_Účet"
+msgstr "Účet"
 
-#: src/components/AnacondaWizard.jsx:366
-#, fuzzy
-#| msgid "Connection failed"
+#: src/components/AnacondaWizard.jsx:395
 msgid "Account setting failed."
-msgstr "Připojení se nezdařilo"
+msgstr "Nastavení účtu se nezdařilo."
 
-#: src/components/storage/MountPointMapping.jsx:583
+#: src/components/storage/MountPointMapping.jsx:580
 msgid "Add mount"
 msgstr "Přidat přípojný"
 
@@ -107,9 +100,8 @@ msgid "Anaconda"
 msgstr "Instalátor Anaconda"
 
 #: src/index.html:20
-#, fuzzy
 msgid "Anaconda Web UI"
-msgstr "Stránka projektu Anaconda"
+msgstr "Anaconda Web UI"
 
 #: org.cockpit-project.anaconda-webui.metainfo.xml:6
 msgid "Anaconda installer"
@@ -127,27 +119,18 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Stránka projektu Anaconda"
 
-#: src/components/storage/InstallationScenario.jsx:131
+#: src/components/storage/InstallationScenario.jsx:208
 msgid "Apply mount point assignment and install"
 msgstr "Uplatnit přiřazení přípojného bodu a nainstalovat"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "Uplatňování výběru nového disku…"
 
-#: src/components/AnacondaWizard.jsx:407
-#: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/AnacondaWizard.jsx:436
 msgid "Back"
 msgstr "Zpět"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-gui je pokročilý editor úložiště který umožňuje změnu velikosti, "
-"smazání a vytváření oddílů. Dál podporuje nastavování LVM svazků a mnoho "
-"dalšího."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -161,15 +144,18 @@ msgstr ""
 "pouze pro testovací a vývojové účely a jste ochotni hlásit jakékoli chyby "
 "nebo problémy za účelem zlepšení tohoto díla."
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:257
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
-msgstr "Změny provedené v Blivet-gui se rovnou projeví na úložišti."
+#: src/components/storage/CockpitStorageIntegration.jsx:122
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
+msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
+#: src/components/storage/CockpitStorageIntegration.jsx:390
+#: src/components/storage/CockpitStorageIntegration.jsx:402
 msgid "Checking storage configuration"
 msgstr "Zjišťuje se uspořádání úložiště"
 
@@ -181,13 +167,20 @@ msgstr "Výběr jazyka"
 msgid "Chosen language: "
 msgstr "Zvolený jazyk: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "Vymazat vstupní hodnotu"
 
 #: src/components/storage/EncryptedDevices.jsx:165
 msgid "Close"
 msgstr "Zavřít"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:305
+msgid ""
+"Cockpit storage did not provide the passphrase to unlock encrypted device."
+msgstr ""
+"Úložiště Cockpitu neposkytlo heslovou frázi pro odemknutí zašifrovaného "
+"zařízení."
 
 #: src/components/localization/InstallationLanguage.jsx:149
 msgid "Common languages"
@@ -197,13 +190,35 @@ msgstr "Běžné jazyky"
 msgid "Completed"
 msgstr "Dokončeno"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:118
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "Nastavování úložiště"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:438
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage again"
+msgstr "Nastavování úložiště"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Zopakování heslové fráze"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/storage/CockpitStorageIntegration.jsx:423
+msgid "Continue"
+msgstr "Pokračovat"
+
+#: src/components/AnacondaWizard.jsx:488
 msgid "Continue installation"
+msgstr "Pokračovat v instalaci"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:399
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue with installation"
 msgstr "Pokračovat v instalaci"
 
 #: src/components/users/Accounts.jsx:351
@@ -219,23 +234,27 @@ msgstr "Účet sp_rávce"
 msgid "Create account"
 msgstr "Uzamknout účet uživatele root"
 
-#: src/components/Error.jsx:234
+#: src/components/Error.jsx:242
 msgid "Critical error"
 msgstr "Kritická chyba"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "Stávající výběr"
 
-#: src/components/storage/MountPointMapping.jsx:243
+#: src/components/storage/MountPointMapping.jsx:244
 msgid "Custom"
 msgstr "Uživatelsky určené"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "Cíl"
 
-#: src/components/storage/MountPointMapping.jsx:559
+#: src/components/storage/CockpitStorageIntegration.jsx:462
+msgid "Detected valid storage layout:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Device"
 msgstr "Zařízení"
 
@@ -244,24 +263,24 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "Zařízení by neměla být odemykána dříve, než budou přiřazeny přípojné body."
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Disabled"
 msgstr "Vypnuto"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:135
 msgid "Disk configuration"
 msgstr "Nastavení jednotky"
 
+#: src/components/review/ReviewConfiguration.jsx:124
 #: src/components/storage/DiskEncryption.jsx:138
-#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Šifrování disku"
 
-#: src/components/storage/MountPointMapping.jsx:326
+#: src/components/storage/MountPointMapping.jsx:327
 msgid "Duplicate device."
 msgstr "Zduplikovat zařízení."
 
-#: src/components/storage/MountPointMapping.jsx:249
+#: src/components/storage/MountPointMapping.jsx:250
 msgid "Duplicate mount point."
 msgstr "Zduplikovat přípojný bod."
 
@@ -272,7 +291,7 @@ msgstr "Zduplikovat přípojný bod."
 msgid "Enable root account"
 msgstr "Povolit úč_et správce"
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Enabled"
 msgstr "Zapnuto"
 
@@ -293,26 +312,30 @@ msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Šifrování pomáhá zabezpečit vaše data a zabránit ostatním v přístupu k nim."
 
-#: src/components/storage/InstallationScenario.jsx:97
-#: src/components/storage/InstallationScenario.jsx:103
+#: src/components/storage/InstallationScenario.jsx:174
+#: src/components/storage/InstallationScenario.jsx:180
 msgid "Erase data and install"
 msgstr "Vymazat data a nainstalovat"
 
-#: src/components/storage/InstallationScenario.jsx:107
+#: src/components/storage/InstallationScenario.jsx:184
 msgid "Erase data and install?"
 msgstr "Vymazat data a nainstalovat?"
 
-#: src/components/storage/InstallationScenario.jsx:105
+#: src/components/storage/InstallationScenario.jsx:182
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr "Vymazání dat nelze vrátit zpět. Ověřte, že máte zálohy."
 
-#: src/components/Error.jsx:237
+#: src/components/Error.jsx:245
 msgid "Error details"
 msgstr "Podrobnosti o chybě"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:263
 msgid "Error was hit when going back from $0."
 msgstr "Při přechodu zpět z $0 se narazilo na chybu."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:533
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -329,6 +352,10 @@ msgstr ""
 #: src/components/localization/InstallationLanguage.jsx:267
 msgid "Find a language"
 msgstr "Najít jazyk"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:466
+msgid "Free space requirements met"
+msgstr ""
 
 #: src/components/users/Accounts.jsx:214
 msgid "Full name"
@@ -350,9 +377,13 @@ msgstr "Skrýt heslovou frázi"
 msgid "Hide password"
 msgstr "Skrýt heslo"
 
-#: src/components/storage/InstallationScenario.jsx:253
+#: src/components/storage/InstallationScenario.jsx:400
 msgid "How would you like to install?"
 msgstr "Jak si přejete nainstalovat?"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:509
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
@@ -361,42 +392,40 @@ msgstr ""
 "Pokud těmto rizikům nerozumíte nebo jsou pro vás nepřijatelná, ukončete "
 "prosím tento program."
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-"Pokud jste provedli změny oddílů nebo disků, proveďte opětovný sken úložiště."
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "Ignorovat"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "Probíhá"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:140
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
 msgstr "Instalování."
 
-#: src/components/storage/InstallationScenario.jsx:117
+#: src/components/storage/InstallationScenario.jsx:194
+#: src/components/storage/InstallationScenario.jsx:222
 msgid "Install"
 msgstr "Nainstalovat"
 
-#: src/components/storage/InstallationScenario.jsx:135
+#: src/components/storage/InstallationScenario.jsx:212
 msgid "Install on the custom mount points?"
 msgstr "Nainstalovat na uživatelsky určené přípojné body?"
 
-#: src/components/storage/InstallationScenario.jsx:121
+#: src/components/storage/InstallationScenario.jsx:198
 msgid "Install on the free space?"
+msgstr "Nainstalovat do volného prostoru?"
+
+#: src/components/storage/InstallationScenario.jsx:226
+#, fuzzy
+#| msgid "Install on the free space?"
+msgid "Install using the configured storage?"
 msgstr "Nainstalovat do volného prostoru?"
 
 #: src/components/installation/InstallationProgress.jsx:149
 msgid "Installation failed"
 msgstr "Instalace se nezdařila"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:98
 msgid "Installation method"
 msgstr "Metoda instalace"
 
@@ -404,7 +433,7 @@ msgstr "Metoda instalace"
 msgid "Installation of the system failed: $0"
 msgstr "instalace systému se nezdařila: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:154
+#: src/components/review/ReviewConfiguration.jsx:113
 msgid "Installation type"
 msgstr "Typ instalace"
 
@@ -412,7 +441,7 @@ msgstr "Typ instalace"
 msgid "Installing"
 msgstr "Instaluje se"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "Instaluje se na $0 ($1)"
 
@@ -422,13 +451,9 @@ msgstr ""
 "Ponechat stávající rozvržení jednotky a nainstalovat pouze do dostupného "
 "prostoru."
 
-#: src/components/review/ReviewConfiguration.jsx:134
+#: src/components/review/ReviewConfiguration.jsx:93
 msgid "Language"
 msgstr "Jazyk"
-
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "Spustit editor úložiště Blivet-gui"
 
 #: src/components/storage/EncryptedDevices.jsx:175
 msgid "Locked devices"
@@ -438,11 +463,11 @@ msgstr "Uzamčená zařízení"
 msgid "Log"
 msgstr "Záznam událostí"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:680
 msgid "Manual disk configuration"
 msgstr "Ruční nastavení jednotky"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:682
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Ruční nastavení pro jednotku: mapování přípojného bodu"
 
@@ -454,30 +479,21 @@ msgstr "Vybrat umístění úložiště pro instalaci."
 msgid "Medium"
 msgstr "Střední"
 
-#: src/components/storage/MountPointMapping.jsx:140
+#: src/components/storage/MountPointMapping.jsx:139
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Neshoda mezi výběrem přeformátování u nadřazeného a podřízeného zařízení."
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "Úložiště pozměněno"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:53
 msgid "Modify storage"
 msgstr "Upravit úložiště"
 
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "Změny úložiště se nezdařily."
-
-#: src/components/storage/MountPointMapping.jsx:558
+#: src/components/storage/MountPointMapping.jsx:555
 msgid "Mount point"
 msgstr "Přípojný bod"
 
-#: src/components/storage/MountPointMapping.jsx:556
-#: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/InstallationScenario.jsx:202
 msgid "Mount point assignment"
 msgstr "Přiřazení přípojného bodu"
 
@@ -500,36 +516,36 @@ msgstr ""
 "Síť není k dispozici. Aby bylo možné chybu nahlásit, nastavte síť (v nabídce "
 "vpravo na horní liště)."
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:410
 msgid "Next"
 msgstr "Další"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "Nezjištěny žádné další jednotky"
 
-#: src/components/storage/MountPointMapping.jsx:563
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "No devices"
 msgstr "Žádná zařízení"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Nenalezeny žádné výsledky"
 
-#: src/components/storage/InstallationScenario.jsx:84
+#: src/components/storage/InstallationScenario.jsx:93
 msgid "No usable devices on the selected disks."
 msgstr "Na vybraných jednotkách nejsou žádná použitelná zařízení."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "Nevybrány žádné použitelné jednotky"
 
-#: src/components/storage/InstallationScenario.jsx:68
+#: src/components/storage/InstallationScenario.jsx:75
 msgid "Not enough free space on the selected disks."
 msgstr "Na vybraných jednotkách není dostatek volného místa."
 
-#: src/components/storage/InstallationScenario.jsx:50
+#: src/components/storage/InstallationScenario.jsx:54
 msgid "Not enough space on selected disks."
 msgstr "Na vybraných jednotkách není dostatek prostoru."
 
@@ -551,14 +567,18 @@ msgstr ""
 "Šifrovány budou pouze nově vytvořené oddíly. Ty stávající budou ponechány "
 "beze změn."
 
-#: src/components/review/ReviewConfiguration.jsx:124
+#: src/components/review/ReviewConfiguration.jsx:83
 msgid "Operating system"
 msgstr "Operační systém"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:541
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Heslová fráze"
 
@@ -590,25 +610,31 @@ msgstr "Předprodukční verze"
 msgid "Preparing report"
 msgstr "Připravuje se hlášení"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/storage/CockpitStorageIntegration.jsx:444
+#, fuzzy
+#| msgid "Failed to proceed with the installation."
+msgid "Proceed with installation"
+msgstr "Nepodařilo se pokračovat v instalaci."
+
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Quit"
 msgstr "Ukončit"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Quit installer?"
 msgstr "Ukončit instalátor?"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "Znovu prohledat"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:123
 msgid "Reading information about the computer failed."
 msgstr "Načítání informací o počítači se nezdařilo."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:128
 msgid "Reading installer configuration failed."
 msgstr "Nepodařilo se načíst nastavení instalátoru."
 
@@ -616,26 +642,30 @@ msgstr "Nepodařilo se načíst nastavení instalátoru."
 msgid "Reading installer version information failed."
 msgstr "Nepodařilo se načíst verzi instalátoru."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Reboot"
 msgstr "Restartovat"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Reboot system?"
 msgstr "Restartovat systém?"
 
-#: src/components/storage/MountPointMapping.jsx:242
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Recommended"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:349
-#: src/components/storage/MountPointMapping.jsx:560
+#: src/components/storage/CockpitStorageIntegration.jsx:518
+msgid "Recommended partitions:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:347
+#: src/components/storage/MountPointMapping.jsx:557
 msgid "Reformat"
 msgstr "Znovu vytvořit souborový systém"
 
-#: src/components/storage/MountPointMapping.jsx:382
+#: src/components/storage/MountPointMapping.jsx:374
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -651,7 +681,7 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Nahlásit problém"
 
-#: src/components/Error.jsx:150 src/components/Error.jsx:260
+#: src/components/Error.jsx:150 src/components/Error.jsx:268
 msgid "Report issue"
 msgstr "Nahlásit problém"
 
@@ -664,24 +694,38 @@ msgstr ""
 "připojený záznam událostí (log) a odeberte z něj jakékoli pro vás citlivé "
 "informace."
 
-#: src/components/storage/MountPointMapping.jsx:241
+#: src/components/storage/MountPointMapping.jsx:242
 msgid "Required"
 msgstr "Vyžadováno"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:530
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Vyžadováno"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "Znovu prohledat"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "Znovu naskenovat úložiště"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "Opětovné naskenování jednotek datového úložiště se nezdařilo."
 
-#: src/components/review/ReviewConfiguration.jsx:241
-#: src/components/review/ReviewConfiguration.jsx:242
+#: src/components/storage/CockpitStorageIntegration.jsx:84
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "Instalace $0"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:429
+#, fuzzy
+#| msgid "Launch Blivet-gui storage editor"
+msgid "Return to storage editor"
+msgstr "Spustit editor úložiště Blivet-gui"
+
+#: src/components/review/ReviewConfiguration.jsx:203
+#: src/components/review/ReviewConfiguration.jsx:204
 msgid "Review and install"
 msgstr "Zkontrolovat a nainstalovat"
 
@@ -689,15 +733,15 @@ msgstr "Zkontrolovat a nainstalovat"
 msgid "Scan the QR code with your phone or visit:"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:287
+#: src/components/storage/MountPointMapping.jsx:288
 msgid "Select a device"
 msgstr "Vybrat zařízení"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "Vyberte jednotku"
 
-#: src/components/storage/MountPointMapping.jsx:123
+#: src/components/storage/MountPointMapping.jsx:122
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Formát „$0“ vybraného zařízení není možné přeformátovat."
 
@@ -735,11 +779,11 @@ msgstr ""
 "Instalace softwaru: Nastavování úložiště dokončeno. Software se nyní "
 "instaluje do vašeho zařízení."
 
-#: src/components/storage/InstallationScenario.jsx:87
+#: src/components/storage/InstallationScenario.jsx:96
 msgid "Some devices use the same name: $0."
 msgstr "Některá zařízení používají stejný název: $0."
 
-#: src/components/review/ReviewConfiguration.jsx:175
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Storage"
 msgstr "Úložiště"
 
@@ -750,6 +794,22 @@ msgstr "Uspořádání úložiště"
 #: src/components/installation/InstallationProgress.jsx:119
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Nastavování úložiště: Úložiště je právě nastavováno."
+
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "Znovu načíst uspořádání oddílů z jednotky."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:105
+#, fuzzy
+#| msgid "Node login failed."
+msgid "Storage plugin failed"
+msgstr "Přihlášení k uzlu se nezdařilo."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:397
+msgid "Storage requirements not met"
+msgstr ""
 
 #: src/components/Password.jsx:83
 msgid "Strong"
@@ -786,14 +846,14 @@ msgid ""
 "software. "
 msgstr "Vybraný jazyk bude použit pro instalaci a v nainstalovaném softwaru. "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -802,7 +862,7 @@ msgstr[0] "Nejsou dokončené následující nezbytné instalační dialogy:"
 msgstr[1] "Nejsou dokončené následující nezbytné instalační dialogy:"
 msgstr[2] "Nejsou dokončené následující nezbytné instalační dialogy:"
 
-#: src/components/Error.jsx:257
+#: src/components/Error.jsx:265
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
@@ -810,11 +870,11 @@ msgstr ""
 "Následující záznam událostí bude odeslán do systému správy hlášení chyb, ve "
 "kterém můžete doplnit další podrobnosti."
 
-#: src/components/storage/InstallationScenario.jsx:52
+#: src/components/storage/InstallationScenario.jsx:56
 msgid "The installation needs $1 of disk space; "
 msgstr "Instalace potřebuje $1 prostoru na disku; "
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:199
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -822,15 +882,16 @@ msgstr ""
 "Instalace použije dostupné volné místo na zařízeních a nevymaže z nich žádná "
 "data."
 
-#: src/components/storage/InstallationScenario.jsx:136
+#: src/components/storage/InstallationScenario.jsx:213
+#: src/components/storage/InstallationScenario.jsx:227
 msgid "The installation will use your configured partitioning layout."
 msgstr "Instalace využije nastavené rozvržení oddílů."
 
-#: src/components/Error.jsx:226
+#: src/components/Error.jsx:234
 msgid "The installer cannot continue due to a critical error."
 msgstr "Instalátor nemůže kvůli kritické chybě pokračovat."
 
-#: src/components/Error.jsx:225
+#: src/components/Error.jsx:233
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Instalátor nemůže pokračovat kvůli kritické chybě: $0"
 
@@ -843,12 +904,7 @@ msgstr ""
 "Pokud při jejím zadávání nebude možné přepnout na potřebné rozložení "
 "klávesnice, nebude možné ji napsat."
 
-#: src/components/storage/MountPointMapping.jsx:361
-msgid "The root partition is always re-formatted by the installer."
-msgstr ""
-"Na kořenovém oddílu je souborový systém instalátorem vždy vytvořen odznovu."
-
-#: src/components/storage/InstallationScenario.jsx:108
+#: src/components/storage/InstallationScenario.jsx:185
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -856,7 +912,7 @@ msgstr ""
 "Vybrané jednotky budou vymazány, toto nemůže být vráceno zpět. Opravdu "
 "chcete pokračovat v instalaci?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -874,26 +930,33 @@ msgstr "Toto je nestabilní, předprodukční software"
 msgid "This may take a moment"
 msgstr "Může to chvíli trvat"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:391
+#, fuzzy
+#| msgid "This may take a moment"
+msgid "This will take a few moments"
+msgstr "Může to chvíli trvat"
+
 #: src/components/installation/InstallationProgress.jsx:164
 msgid "To begin using $0, reboot your system."
 msgstr "Aby bylo možné začít $0 používat, počítač restartujte."
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:90
 msgid "To continue, select the devices to install to."
 msgstr "Aby bylo možné pokračovat, vyberte zařízení, na která instalovat."
 
-#: src/components/storage/InstallationScenario.jsx:119
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:210
+#: src/components/storage/InstallationScenario.jsx:224
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Abyste zamezili ztrátě dat, nezapomeňte si je zazálohovat."
 
-#: src/components/storage/InstallationScenario.jsx:88
+#: src/components/storage/InstallationScenario.jsx:97
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 "Aby bylo možné tuto volbu použít, přejmenujte zařízení tak, aby se jejich "
 "názvy neopakovaly."
 
-#: src/components/storage/InstallationScenario.jsx:70
+#: src/components/storage/InstallationScenario.jsx:77
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -913,7 +976,13 @@ msgstr "Odemknout zařízení"
 msgid "Unlock encrypted devices"
 msgstr "Odemknout šifrovaná zařízení"
 
-#: src/components/storage/InstallationScenario.jsx:111
+#: src/components/storage/InstallationScenario.jsx:216
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Use configured storage"
+msgstr "Nastavování úložiště"
+
+#: src/components/storage/InstallationScenario.jsx:188
 msgid "Use free space for the installation"
 msgstr "Pro instalaci použít volné místo"
 
@@ -951,11 +1020,17 @@ msgstr "Vítejte"
 msgid "Welcome to $0"
 msgstr "Vítejte v $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:99
 msgid "Welcome. Let's install $0 now."
 msgstr "Vítejte. Pojďme nyní systém $0 nainstalovat."
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:536
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:497
 msgid "Your progress will not be saved."
 msgstr "To, co jste doposud udělali, nebude uloženo."
 
@@ -967,17 +1042,57 @@ msgstr "dokončený krok"
 msgid "current step"
 msgstr "stávající krok"
 
-#: src/components/review/ReviewConfiguration.jsx:70
+#: src/components/review/StorageReview.jsx:54
 msgid "format as $0"
 msgstr "vytvořit souborový systém $0"
 
-#: src/components/review/ReviewConfiguration.jsx:71
+#: src/components/review/StorageReview.jsx:55
 msgid "mount"
 msgstr "připojení"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "čekající krok"
+
+#, fuzzy
+#~| msgid ""
+#~| "You need to configure the network to use a network installation source."
+#~ msgid "Current configuration can be used for installation."
+#~ msgstr "Pokud chcete použít síťový instalační zdroj, je nutné nastavit síť."
+
+#~ msgid "The root partition is always re-formatted by the installer."
+#~ msgstr ""
+#~ "Na kořenovém oddílu je souborový systém instalátorem vždy vytvořen "
+#~ "odznovu."
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-gui je pokročilý editor úložiště který umožňuje změnu velikosti, "
+#~ "smazání a vytváření oddílů. Dál podporuje nastavování LVM svazků a mnoho "
+#~ "dalšího."
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr "Změny provedené v Blivet-gui se rovnou projeví na úložišti."
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr ""
+#~ "Pokud jste provedli změny oddílů nebo disků, proveďte opětovný sken "
+#~ "úložiště."
+
+#~ msgid "Ignore"
+#~ msgstr "Ignorovat"
+
+#~ msgid "Modified storage"
+#~ msgstr "Úložiště pozměněno"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "Změny úložiště se nezdařily."
+
+#~ msgid "Rescan storage"
+#~ msgstr "Znovu naskenovat úložiště"
 
 #~ msgid "Failed to get device names."
 #~ msgstr "Nepodařilo se získat názvy zařízení."
@@ -1954,9 +2069,6 @@ msgstr "čekající krok"
 #~ msgid "Configuring installed system"
 #~ msgstr "Nastavování nainstalovaného systému"
 
-#~ msgid "Configuring storage"
-#~ msgstr "Nastavování úložiště"
-
 #~ msgid "Configuring {}"
 #~ msgstr "Nastavuje se {}"
 
@@ -1988,9 +2100,6 @@ msgstr "čekající krok"
 
 #~ msgid "Connecting..."
 #~ msgstr "Připojování…"
-
-#~ msgid "Continue"
-#~ msgstr "Pokračovat"
 
 #~ msgid ""
 #~ "Continuing with this action will reset all your partitioning selections "
@@ -2431,9 +2540,6 @@ msgstr "čekající krok"
 
 #~ msgid "Failed to change a device."
 #~ msgstr "Změna zařízení se nezdařila."
-
-#~ msgid "Failed to proceed with the installation."
-#~ msgstr "Nepodařilo se pokračovat v instalaci."
 
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "Uložení nastavení pro zavaděč systému se nezdařilo"
@@ -3321,9 +3427,6 @@ msgstr "čekající krok"
 #~ msgid "Node Name"
 #~ msgstr "Název uzlu"
 
-#~ msgid "Node login failed."
-#~ msgstr "Přihlášení k uzlu se nezdařilo."
-
 #~ msgid "None"
 #~ msgstr "Žádné"
 
@@ -3893,9 +3996,6 @@ msgstr "čekající krok"
 
 #~ msgid "Registration failed."
 #~ msgstr "Registrace se nezdařila."
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "Znovu načíst uspořádání oddílů z jednotky."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "Je vyžadován adresář na protějšku"
@@ -5670,10 +5770,6 @@ msgstr "čekající krok"
 
 #~ msgid "You must set a password"
 #~ msgstr "Je třeba nastavit heslo"
-
-#~ msgid ""
-#~ "You need to configure the network to use a network installation source."
-#~ msgstr "Pokud chcete použít síťový instalační zdroj, je nutné nastavit síť."
 
 #~ msgid "You need to set up networking first if you want to use NTP"
 #~ msgstr "Pokud chcete používat NTP, je nejprve potřeba nastavit síť"
