@@ -1116,11 +1116,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
             "passphrase": "redhat",
             "passphrase2": "redhat",
         })
-        # FIXME: Cockpit should leave open LUKS devices afetr creation
-        self.click_card_row("Storage", name=(dev + "3"))
-        b.click(self.card_button("Filesystem", "Mount"))
-        self.dialog({"passphrase": "redhat"})
-        self.wait_mounted("ext4 filesystem")
 
         # Exit the cockpit-storage iframe
         b.switch_to_top()
