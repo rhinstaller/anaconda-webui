@@ -54,10 +54,22 @@ export const InstallationProgress = ({ onCritFail }) => {
     const osRelease = useContext(OsReleaseContext);
 
     useEffect(() => {
+        const progressStepsMap = {
+            ENVIRONMENT_CONFIGURATION: 0,
+            STORAGE_CONFIGURATION: 0,
+            SOFTWARE_INSTALLATION: 1,
+            BOOTLOADER_INSTALLATION: 2,
+            SYSTEM_CONFIGURATION: 3,
+        };
+
         installWithTasks()
                 .then(tasks => {
                     const taskProxy = new BossClient().client.proxy(
                         "org.fedoraproject.Anaconda.Task",
+                        tasks[0]
+                    );
+                    const categoryProxy = new BossClient().client.proxy(
+                        "org.fedoraproject.Anaconda.TaskCategory",
                         tasks[0]
                     );
 
@@ -69,23 +81,6 @@ export const InstallationProgress = ({ onCritFail }) => {
                                             ret => setSteps(ret.v),
                                             onCritFail()
                                         );
-                            // FIXME: hardcoded progress steps
-                            //        - if ProgressStepper turns out to be viable,
-                            //          use a proper DBus API for progress tep discovery
-                            //          and switching
-                            //
-                            // storage
-                            } else if (step <= 3) {
-                                setCurrentProgressStep(0);
-                            // payload
-                            } else if (step === 4) {
-                                setCurrentProgressStep(1);
-                            // configuration
-                            } else if (step >= 5 && step <= 11) {
-                                setCurrentProgressStep(2);
-                            // bootloader
-                            } else if (step >= 12) {
-                                setCurrentProgressStep(3);
                             }
                             if (message) {
                                 setStatusMessage(message);
@@ -99,6 +94,15 @@ export const InstallationProgress = ({ onCritFail }) => {
                             taskProxy.Finish().catch(onCritFail({
                                 context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
                             }));
+                        });
+                        categoryProxy.addEventListener("CategoryChanged", (_, category) => {
+                            const step = progressStepsMap[category];
+                            setCurrentProgressStep(current => {
+                                if (step !== undefined && step >= current) {
+                                    return step;
+                                }
+                                return current;
+                            });
                         });
                         taskProxy.addEventListener("Succeeded", () => {
                             setStatus("success");
