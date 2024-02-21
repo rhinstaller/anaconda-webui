@@ -383,13 +383,16 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         if format_type:
             self.check_mountpoint_row_format_type(row, format_type)
 
-    def select_mountpoint(self, disks, encrypted=False):
+    def select_disks(self, disks):
         self.browser.wait(lambda: self.disks_loaded(disks))
 
         for disk in disks:
             current_selection = self.get_disk_selected(disk[0])
             if current_selection != disk[1]:
                 self.select_disk(disk[0], disk[1], len(disks) == 1)
+
+    def select_mountpoint(self, disks, encrypted=False):
+        self.select_disks(disks)
 
         self.set_partitioning("mount-point-mapping")
 
@@ -487,10 +490,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def select_mountpoint_row_reformat(self, row, selected=True):
         self.browser.set_checked(f"{self.table_row(row)} td[data-label='Reformat'] input", selected)
 
-    def remove_mountpoint_row(self, row):
-        rows = self.browser.call_js_func("ph_count", '#mount-point-mapping-table tbody tr')
+    def remove_mountpoint_row(self, row, initial_count):
+        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count}")
         self.browser.click(f"{self.table_row(row)} button[aria-label='Remove']")
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {rows - 1}")
+        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count - 1}")
 
     def check_mountpoint_row_reformat(self, row, checked):
         checked_selector = "input:checked" if checked else "input:not(:checked)"

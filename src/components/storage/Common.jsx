@@ -21,6 +21,7 @@ import {
     getDiskTotalSpace,
     getMountPointConstraints,
     getRequiredDeviceSize,
+    getFormatTypeData,
 } from "../../apis/storage_devicetree.js";
 import {
     getRequiredSpace
@@ -72,22 +73,20 @@ export const useDuplicateDeviceNames = ({ deviceNames }) => {
     return duplicateDeviceNames;
 };
 
-export const useHasFilesystems = ({ selectedDisks, devices }) => {
-    const [hasFilesystems, setHasFilesystems] = useState();
+export const useUsablePartitions = ({ selectedDisks, devices }) => {
+    const [usablePartitions, setUsablePartitions] = useState();
 
     useEffect(() => {
-        const _hasFilesystems = (
-            selectedDisks.some(device => (
-                devices[device]?.children.v.some(child => (
-                    devices[child]?.formatData.mountable.v || devices[child]?.formatData.type.v === "luks")
-                )
-            ))
-        );
+        const _usablePartitions = Object.values(devices).filter(device =>
+            (device.formatData?.type.v === "biosboot" ||
+             device.formatData?.mountable.v ||
+             device.formatData?.type.v === "luks") &&
+            selectedDisks.includes(device.parents?.v[0]));
 
-        setHasFilesystems(_hasFilesystems);
+        setUsablePartitions(_usablePartitions);
     }, [selectedDisks, devices]);
 
-    return hasFilesystems;
+    return usablePartitions;
 };
 
 export const useRequiredSize = () => {
@@ -111,8 +110,17 @@ export const useMountPointConstraints = () => {
 
     useEffect(() => {
         const update = async () => {
-            const mountPointConstraints = await getMountPointConstraints().catch(console.error);
-            setMountPointConstraints(mountPointConstraints);
+            let _mountPointConstraints = await getMountPointConstraints().catch(console.error);
+            _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
+                let description = "";
+                const formatType = c["required-filesystem-type"].v;
+                if (formatType) {
+                    const formatData = await getFormatTypeData({ formatType });
+                    description = formatData.description.v;
+                }
+                return { ...c, description };
+            }));
+            setMountPointConstraints(_mountPointConstraints);
         };
         update();
     }, []);

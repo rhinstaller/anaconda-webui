@@ -26,7 +26,7 @@ import {
 
 import { SystemTypeContext } from "../Common.jsx";
 import { helpEraseAll, helpUseFreeSpace, helpMountPointMapping, helpConfiguredStorage } from "./HelpAutopartOptions.jsx";
-import { useDiskTotalSpace, useDiskFreeSpace, useDuplicateDeviceNames, useHasFilesystems, useRequiredSize, useMountPointConstraints } from "./Common.jsx";
+import { useDiskTotalSpace, useDiskFreeSpace, useDuplicateDeviceNames, useRequiredSize, useUsablePartitions, useMountPointConstraints } from "./Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
@@ -83,14 +83,35 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize 
     return availability;
 };
 
-const checkMountPointMapping = ({ hasFilesystems, duplicateDeviceNames }) => {
+const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraints) => {
+    const existingNonmountablePartitions = usablePartitions
+            .filter(device => !device.formatData.mountable.v)
+            .map(device => device.formatData.type.v);
+
+    const missingNonmountablePartitions = mountPointConstraints.filter(constraint =>
+        constraint.required.v &&
+        !constraint["mount-point"].v &&
+        !existingNonmountablePartitions.includes(constraint["required-filesystem-type"].v))
+            .map(constraint => constraint.description);
+
+    return missingNonmountablePartitions;
+};
+
+const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountPointConstraints }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
 
+    const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
+    const hasFilesystems = usablePartitions
+            .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
+
     if (!hasFilesystems) {
         availability.available = false;
         availability.reason = _("No usable devices on the selected disks.");
+    } else if (missingNMParts.length) {
+        availability.available = false;
+        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
     } else if (duplicateDeviceNames.length) {
         availability.available = false;
         availability.reason = cockpit.format(_("Some devices use the same name: $0."), duplicateDeviceNames.join(", "));
@@ -263,12 +284,12 @@ const InstallationScenarioSelector = ({
     const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
     const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
     const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
-    const hasFilesystems = useHasFilesystems({ selectedDisks, devices: deviceData });
     const mountPointConstraints = useMountPointConstraints();
+    const usablePartitions = useUsablePartitions({ selectedDisks, devices: deviceData });
     const requiredSize = useRequiredSize();
 
     useEffect(() => {
-        if ([diskTotalSpace, diskFreeSpace, hasFilesystems, mountPointConstraints, requiredSize].some(itm => itm === undefined)) {
+        if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
             return;
         }
 
@@ -281,7 +302,6 @@ const InstallationScenarioSelector = ({
                     diskFreeSpace,
                     diskTotalSpace,
                     duplicateDeviceNames,
-                    hasFilesystems,
                     mountPointConstraints,
                     partitioning,
                     requests,
@@ -289,6 +309,7 @@ const InstallationScenarioSelector = ({
                     scenarioPartitioningMapping,
                     selectedDisks,
                     storageScenarioId,
+                    usablePartitions,
                 });
                 newAvailability[scenario.id] = availability;
             }
@@ -299,7 +320,6 @@ const InstallationScenarioSelector = ({
         diskFreeSpace,
         diskTotalSpace,
         duplicateDeviceNames,
-        hasFilesystems,
         mountPointConstraints,
         partitioning,
         requests,
@@ -307,6 +327,7 @@ const InstallationScenarioSelector = ({
         scenarioPartitioningMapping,
         selectedDisks,
         storageScenarioId,
+        usablePartitions,
     ]);
 
     useEffect(() => {

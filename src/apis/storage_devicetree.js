@@ -82,6 +82,13 @@ export const getMountPointConstraints = () => {
 };
 
 /**
+ * @returns {Promise}           Data static data about a format type
+ */
+export const getFormatTypeData = ({ formatType }) => {
+    return callViewer("GetFormatTypeData", [formatType]);
+};
+
+/**
  * @param {Array[string]} diskNames A list of disk names
  *
  * @returns {Promise}           Resolves the total space on the given disks
