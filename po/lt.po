@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-20 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:19+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Lithuanian <https://translate.fedoraproject.org/projects/"
@@ -36,7 +36,7 @@ msgstr ""
 "1 : 2);\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:148
 msgid "$0 installation"
 msgstr "$0 diegimas"
 
@@ -44,13 +44,13 @@ msgstr "$0 diegimas"
 msgid "$0 installer"
 msgstr "$0 diegyklė"
 
-#: src/components/storage/MountPointMapping.jsx:202
+#: src/components/storage/MountPointMapping.jsx:203
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgstr "%s negali būti šifruotas blokinis įrenginys."
 
-#: src/components/storage/MountPointMapping.jsx:196
+#: src/components/storage/MountPointMapping.jsx:197
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} turi būti {type} tipo įrenginyje"
@@ -59,20 +59,20 @@ msgstr "{fs} turi būti {type} tipo įrenginyje"
 msgid "About"
 msgstr "Apie"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:103
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
 msgid "Account"
 msgstr "_Paskyra"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:395
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
 msgstr "Prisijungti nepavyko"
 
-#: src/components/storage/MountPointMapping.jsx:583
+#: src/components/storage/MountPointMapping.jsx:580
 msgid "Add mount"
 msgstr "Apie prijungimą"
 
@@ -104,26 +104,18 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda projekto puslapis"
 
-#: src/components/storage/InstallationScenario.jsx:131
+#: src/components/storage/InstallationScenario.jsx:208
 msgid "Apply mount point assignment and install"
 msgstr "Pritaikyti prijungimo taško priskyrimą ir įdiegti"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "Pritaikomas naujas disko pasirinkimas..."
 
-#: src/components/AnacondaWizard.jsx:407
-#: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/AnacondaWizard.jsx:436
 msgid "Back"
 msgstr "Grįžti"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-gui yra sudėtingesnis saugyklos redaktorius, kuris leidžia kurti, "
-"trinti bei keisti skaidinių dydį. Juo galima nustatyti LVM ir t. t."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -137,15 +129,18 @@ msgstr ""
 "reikmėms ir pageidaujate pranešti apie bet kokias klaidas ar problemas, taip "
 "pagerinant šį darbą."
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:257
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
-msgstr "Su Blivet-gui atlikti pakeitimai tiesiogiai paveiks jūsų saugyklą."
+#: src/components/storage/CockpitStorageIntegration.jsx:122
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
+msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
+#: src/components/storage/CockpitStorageIntegration.jsx:390
+#: src/components/storage/CockpitStorageIntegration.jsx:402
 msgid "Checking storage configuration"
 msgstr "Tikrinama saugyklos konfigūracija"
 
@@ -157,13 +152,18 @@ msgstr "Pasirinkite kalbą"
 msgid "Chosen language: "
 msgstr "Pasirinkta kalba: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "Išvalyti įvestą reikšmę"
 
 #: src/components/storage/EncryptedDevices.jsx:165
 msgid "Close"
 msgstr "Užverti"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:305
+msgid ""
+"Cockpit storage did not provide the passphrase to unlock encrypted device."
+msgstr ""
 
 #: src/components/localization/InstallationLanguage.jsx:149
 msgid "Common languages"
@@ -173,13 +173,35 @@ msgstr "Dažnos kalbos"
 msgid "Completed"
 msgstr "Užbaigta"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:118
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "Konfigūruojama saugykla"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:438
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage again"
+msgstr "Konfigūruojama saugykla"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Patvirtinti slaptafrazę"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/storage/CockpitStorageIntegration.jsx:423
+msgid "Continue"
+msgstr "Pratęsti"
+
+#: src/components/AnacondaWizard.jsx:488
 msgid "Continue installation"
+msgstr "Tęsti diegimą"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:399
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue with installation"
 msgstr "Tęsti diegimą"
 
 #: src/components/users/Accounts.jsx:351
@@ -196,23 +218,27 @@ msgstr "_Root paskyra"
 msgid "Create account"
 msgstr "Į_jungti root paskyrą"
 
-#: src/components/Error.jsx:234
+#: src/components/Error.jsx:242
 msgid "Critical error"
 msgstr "Kritinė klaida"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "Dabartiniai pasirinkimai"
 
-#: src/components/storage/MountPointMapping.jsx:243
+#: src/components/storage/MountPointMapping.jsx:244
 msgid "Custom"
 msgstr "Pasirinktinis"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "Paskirtis"
 
-#: src/components/storage/MountPointMapping.jsx:559
+#: src/components/storage/CockpitStorageIntegration.jsx:462
+msgid "Detected valid storage layout:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Device"
 msgstr "Įrenginys"
 
@@ -220,24 +246,24 @@ msgstr "Įrenginys"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Įrenginiai turi būti atrakinti prie priskiriant prijungimo taškus."
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Disabled"
 msgstr "Išjungta"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:135
 msgid "Disk configuration"
 msgstr "Disko konfigūracija"
 
+#: src/components/review/ReviewConfiguration.jsx:124
 #: src/components/storage/DiskEncryption.jsx:138
-#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Disko šifravimas"
 
-#: src/components/storage/MountPointMapping.jsx:326
+#: src/components/storage/MountPointMapping.jsx:327
 msgid "Duplicate device."
 msgstr "Dubliuotas įrenginys."
 
-#: src/components/storage/MountPointMapping.jsx:249
+#: src/components/storage/MountPointMapping.jsx:250
 msgid "Duplicate mount point."
 msgstr "Dubliuotas prijungimo taškas."
 
@@ -248,7 +274,7 @@ msgstr "Dubliuotas prijungimo taškas."
 msgid "Enable root account"
 msgstr "Į_jungti root paskyrą"
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Enabled"
 msgstr "Įjungta"
 
@@ -269,28 +295,32 @@ msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Šifravimas padeda apsaugoti jūsų duomenis, neleidžia jų prieiti kitiems."
 
-#: src/components/storage/InstallationScenario.jsx:97
-#: src/components/storage/InstallationScenario.jsx:103
+#: src/components/storage/InstallationScenario.jsx:174
+#: src/components/storage/InstallationScenario.jsx:180
 msgid "Erase data and install"
 msgstr "Ištrinti duomenis ir įdiegti"
 
-#: src/components/storage/InstallationScenario.jsx:107
+#: src/components/storage/InstallationScenario.jsx:184
 msgid "Erase data and install?"
 msgstr "Ištrinti duomenis ir įdiegti?"
 
-#: src/components/storage/InstallationScenario.jsx:105
+#: src/components/storage/InstallationScenario.jsx:182
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Duomenų ištrynimo negalima atstatyti. Įsitikinkite, kad turite atsargines "
 "kopijas."
 
-#: src/components/Error.jsx:237
+#: src/components/Error.jsx:245
 msgid "Error details"
 msgstr "Detali klaida"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:263
 msgid "Error was hit when going back from $0."
 msgstr "Kilo klaida grįžtant iš $0."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:533
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -307,6 +337,10 @@ msgstr ""
 #: src/components/localization/InstallationLanguage.jsx:267
 msgid "Find a language"
 msgstr "Rasti kalbą"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:466
+msgid "Free space requirements met"
+msgstr ""
 
 #: src/components/users/Accounts.jsx:214
 msgid "Full name"
@@ -329,52 +363,53 @@ msgstr "Patvirtinti slaptafrazę"
 msgid "Hide password"
 msgstr "Slėpti slaptažodį"
 
-#: src/components/storage/InstallationScenario.jsx:253
+#: src/components/storage/InstallationScenario.jsx:400
 msgid "How would you like to install?"
 msgstr "Kaip norite įdiegti?"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:509
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Jei nesuprantate arba nesutinkate su rizikomis, išeikite iš programos."
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-"Jei atlikote pakeitimų skaidiniuose ar diskuose, iš naujo nuskaitykite "
-"saugyklą."
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "Nepaisyti"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "Vyksta"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:140
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
 msgstr "Diegiama."
 
-#: src/components/storage/InstallationScenario.jsx:117
+#: src/components/storage/InstallationScenario.jsx:194
+#: src/components/storage/InstallationScenario.jsx:222
 msgid "Install"
 msgstr "Diegti"
 
-#: src/components/storage/InstallationScenario.jsx:135
+#: src/components/storage/InstallationScenario.jsx:212
 msgid "Install on the custom mount points?"
 msgstr "Įdiegti pasirinktiniuose prijungimo taškuose?"
 
-#: src/components/storage/InstallationScenario.jsx:121
+#: src/components/storage/InstallationScenario.jsx:198
 msgid "Install on the free space?"
+msgstr "Įdiegti laisvoje vietoje?"
+
+#: src/components/storage/InstallationScenario.jsx:226
+#, fuzzy
+#| msgid "Install on the free space?"
+msgid "Install using the configured storage?"
 msgstr "Įdiegti laisvoje vietoje?"
 
 #: src/components/installation/InstallationProgress.jsx:149
 msgid "Installation failed"
 msgstr "Diegimas nepavyko"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:98
 msgid "Installation method"
 msgstr "Diegimo metodas"
 
@@ -382,7 +417,7 @@ msgstr "Diegimo metodas"
 msgid "Installation of the system failed: $0"
 msgstr "Nepavyko įdiegti sistemos: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:154
+#: src/components/review/ReviewConfiguration.jsx:113
 msgid "Installation type"
 msgstr "Diegimo tipas"
 
@@ -390,7 +425,7 @@ msgstr "Diegimo tipas"
 msgid "Installing"
 msgstr "Diegiama"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "Diegiama į $0 ($1)"
 
@@ -399,13 +434,9 @@ msgstr "Diegiama į $0 ($1)"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Išlaiko dabartinį diskų išdėstymą ir naudoja tik prieinamą vietą."
 
-#: src/components/review/ReviewConfiguration.jsx:134
+#: src/components/review/ReviewConfiguration.jsx:93
 msgid "Language"
 msgstr "Kalbos"
-
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "Paleisti Bliver-gui saugyklos redaktorių"
 
 #: src/components/storage/EncryptedDevices.jsx:175
 #, fuzzy
@@ -416,11 +447,11 @@ msgstr "Atrakinti įrenginius"
 msgid "Log"
 msgstr "Žurnalas"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:680
 msgid "Manual disk configuration"
 msgstr "Rankinė disko konfigūracija"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:682
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Rankinė disko konfigūracija: prijungimo taškų susiejimas"
 
@@ -432,31 +463,22 @@ msgstr ""
 msgid "Medium"
 msgstr "Laikmena"
 
-#: src/components/storage/MountPointMapping.jsx:140
+#: src/components/storage/MountPointMapping.jsx:139
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Neatitikimas tarp tėvinio įrenginio ir vaikinio įrenginio performatavimo "
 "pasirinkimų."
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "Pakeista saugykla"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:53
 msgid "Modify storage"
 msgstr "Keisti saugyklą"
 
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "Nepavyko pakeisti saugyklos."
-
-#: src/components/storage/MountPointMapping.jsx:558
+#: src/components/storage/MountPointMapping.jsx:555
 msgid "Mount point"
 msgstr "Prijungimo taškas"
 
-#: src/components/storage/MountPointMapping.jsx:556
-#: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/InstallationScenario.jsx:202
 msgid "Mount point assignment"
 msgstr "Prijungimo taškų priskyrimas"
 
@@ -480,37 +502,37 @@ msgstr ""
 "Tinklas neprieinamas. Norėdami pranešti apie klaidą, sukonfigūruokite tinklą "
 "viršutinės juostos meniu."
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:410
 msgid "Next"
 msgstr "Kitas"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "Neaptikta papildomų diskų"
 
-#: src/components/storage/MountPointMapping.jsx:563
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "No devices"
 msgstr "Nėra įrenginių"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Rezultatų nerasta"
 
-#: src/components/storage/InstallationScenario.jsx:84
+#: src/components/storage/InstallationScenario.jsx:93
 msgid "No usable devices on the selected disks."
 msgstr "Pasirinktuose diskuose nėra panaudojamų įrenginių."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "Neaptikta panaudojamų diskų"
 
-#: src/components/storage/InstallationScenario.jsx:68
+#: src/components/storage/InstallationScenario.jsx:75
 #, fuzzy
 msgid "Not enough free space on the selected disks."
 msgstr "Pasirinktuose diskuose nepakanka vietos."
 
-#: src/components/storage/InstallationScenario.jsx:50
+#: src/components/storage/InstallationScenario.jsx:54
 msgid "Not enough space on selected disks."
 msgstr "Pasirinktuose diskuose nepakanka vietos."
 
@@ -530,14 +552,18 @@ msgid ""
 "untouched."
 msgstr "Bus šifruoti tik nauji skaidiniai. Esami skaidiniai liks nepaliesti."
 
-#: src/components/review/ReviewConfiguration.jsx:124
+#: src/components/review/ReviewConfiguration.jsx:83
 msgid "Operating system"
 msgstr "Operacinė sistema"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:541
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Slaptafrazė"
 
@@ -569,25 +595,31 @@ msgstr "Išankstinis leidimas"
 msgid "Preparing report"
 msgstr "Ruošiama ataskaita"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/storage/CockpitStorageIntegration.jsx:444
+#, fuzzy
+#| msgid "Failed to proceed with the installation."
+msgid "Proceed with installation"
+msgstr "Nepavyko tęsti diegimo."
+
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Quit"
 msgstr "Išeiti"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Quit installer?"
 msgstr "Išeiti iš diegyklės?"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "Perskaityti"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:123
 msgid "Reading information about the computer failed."
 msgstr "Nepavyko perskaityti informacijos apie kompiuterį."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:128
 msgid "Reading installer configuration failed."
 msgstr "Nepavyko perskaityti diegyklės konfigūracijos."
 
@@ -595,26 +627,30 @@ msgstr "Nepavyko perskaityti diegyklės konfigūracijos."
 msgid "Reading installer version information failed."
 msgstr "Nepavyko perskaityti diegyklės versijos informacijos."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Reboot"
 msgstr "Perleisti"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Reboot system?"
 msgstr "Perleisti sistemą?"
 
-#: src/components/storage/MountPointMapping.jsx:242
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Recommended"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:349
-#: src/components/storage/MountPointMapping.jsx:560
+#: src/components/storage/CockpitStorageIntegration.jsx:518
+msgid "Recommended partitions:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:347
+#: src/components/storage/MountPointMapping.jsx:557
 msgid "Reformat"
 msgstr "Performatuoti"
 
-#: src/components/storage/MountPointMapping.jsx:382
+#: src/components/storage/MountPointMapping.jsx:374
 msgid "Remove"
 msgstr "Pašalinti"
 
@@ -630,7 +666,7 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Pranešti apie problemą"
 
-#: src/components/Error.jsx:150 src/components/Error.jsx:260
+#: src/components/Error.jsx:150 src/components/Error.jsx:268
 msgid "Report issue"
 msgstr "Pranešti apie problemą"
 
@@ -642,24 +678,38 @@ msgstr ""
 "Pranešant apie problemą bus siunčiama informacija tinklu. Peržiūrėkite ir "
 "pašalinkite jautrius duomenis redaguodami prisegtą žurnalą."
 
-#: src/components/storage/MountPointMapping.jsx:241
+#: src/components/storage/MountPointMapping.jsx:242
 msgid "Required"
 msgstr "Būtina"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:530
+#, fuzzy
+#| msgid "Required"
+msgid "Requirements"
+msgstr "Būtina"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "Perskaityti"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "Perskaityti saugyklą"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "Nepavyko perskaityti diskų."
 
-#: src/components/review/ReviewConfiguration.jsx:241
-#: src/components/review/ReviewConfiguration.jsx:242
+#: src/components/storage/CockpitStorageIntegration.jsx:84
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Return to installation"
+msgstr "$0 diegimas"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:429
+#, fuzzy
+#| msgid "Launch Blivet-gui storage editor"
+msgid "Return to storage editor"
+msgstr "Paleisti Bliver-gui saugyklos redaktorių"
+
+#: src/components/review/ReviewConfiguration.jsx:203
+#: src/components/review/ReviewConfiguration.jsx:204
 msgid "Review and install"
 msgstr "Peržiūrėti ir įdiegti"
 
@@ -667,15 +717,15 @@ msgstr "Peržiūrėti ir įdiegti"
 msgid "Scan the QR code with your phone or visit:"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:287
+#: src/components/storage/MountPointMapping.jsx:288
 msgid "Select a device"
 msgstr "Pasirinkite įrenginį"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "Pasirinkite diską"
 
-#: src/components/storage/MountPointMapping.jsx:123
+#: src/components/storage/MountPointMapping.jsx:122
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
@@ -714,11 +764,11 @@ msgstr ""
 "Programinės įrangos diegimas: saugyklos konfigūracija baigta. Programinė "
 "įranga dabar yra diegiama jūsų įrenginyje."
 
-#: src/components/storage/InstallationScenario.jsx:87
+#: src/components/storage/InstallationScenario.jsx:96
 msgid "Some devices use the same name: $0."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:175
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Storage"
 msgstr "Saugykla"
 
@@ -729,6 +779,22 @@ msgstr "Saugyklos konfigūracija"
 #: src/components/installation/InstallationProgress.jsx:119
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Saugyklos konfigūracija: saugykla šiuo metu yra konfigūruojama."
+
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "Iš naujo įkelti saugyklos konfigūraciją iš disko."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:105
+#, fuzzy
+#| msgid "Node login failed."
+msgid "Storage plugin failed"
+msgstr "Prisijungimas prie viršūnės nepavyko."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:397
+msgid "Storage requirements not met"
+msgstr ""
 
 #: src/components/Password.jsx:83
 msgid "Strong"
@@ -768,14 +834,14 @@ msgid ""
 msgstr ""
 "Pasirinkta kalba bus naudojama diegimui ir įdiegtoje programinėje įrangoje. "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
@@ -784,7 +850,7 @@ msgstr[0] "Neužpildyta ši būtina informacija:"
 msgstr[1] "Neužpildyta ši būtina informacija:"
 msgstr[2] "Neužpildyta ši būtina informacija:"
 
-#: src/components/Error.jsx:257
+#: src/components/Error.jsx:265
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
@@ -792,11 +858,11 @@ msgstr ""
 "Šis žurnalas bus išsiųstas į problemų sekimo sistemą, kur jums reikės "
 "pateikti papildomą informaciją."
 
-#: src/components/storage/InstallationScenario.jsx:52
+#: src/components/storage/InstallationScenario.jsx:56
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:199
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -804,15 +870,16 @@ msgstr ""
 "Diegimas naudos jūsų įrenginiuose esamą vietą ir neištrins jokio įrenginio "
 "duomenų."
 
-#: src/components/storage/InstallationScenario.jsx:136
+#: src/components/storage/InstallationScenario.jsx:213
+#: src/components/storage/InstallationScenario.jsx:227
 msgid "The installation will use your configured partitioning layout."
 msgstr "Diegimas naudos jūsų sukonfigūruotą skaidinių išdėstymą."
 
-#: src/components/Error.jsx:226
+#: src/components/Error.jsx:234
 msgid "The installer cannot continue due to a critical error."
 msgstr "Diegyklė negali tęsti dėl kritinės klaidos."
 
-#: src/components/Error.jsx:225
+#: src/components/Error.jsx:233
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Diegyklė negali tęsti dėl kritinės klaidos: $0"
 
@@ -824,11 +891,7 @@ msgstr ""
 "Jūsų pateiktoje slaptafrazėje yra ne ASCII simbolių. Gali būti, kad "
 "negalėsite keisti klaviatūros išdėstymų ąį įvesdami."
 
-#: src/components/storage/MountPointMapping.jsx:361
-msgid "The root partition is always re-formatted by the installer."
-msgstr "Diegyklė visada performatuoja root skaidinį."
-
-#: src/components/storage/InstallationScenario.jsx:108
+#: src/components/storage/InstallationScenario.jsx:185
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -836,7 +899,7 @@ msgstr ""
 "Pažymėti diskai bus ištrinti, to negalima atstatyti. Ar tikrai norite tęsti "
 "diegimą?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 #| msgid "No usable disks detected"
 msgid "The usable disks have changed"
@@ -854,28 +917,35 @@ msgstr "Tai nestabili, neišleista programinė įranga"
 msgid "This may take a moment"
 msgstr "Tai gali užtrukti"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:391
+#, fuzzy
+#| msgid "This may take a moment"
+msgid "This will take a few moments"
+msgstr "Tai gali užtrukti"
+
 #: src/components/installation/InstallationProgress.jsx:164
 #, fuzzy
 msgid "To begin using $0, reboot your system."
 msgstr ""
 "Norėdami pradėti naudoti Fedora 39 (darbalaukio leidimą) perleiskite sistemą."
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:90
 msgid "To continue, select the devices to install to."
 msgstr "Norėdami tęsti, pasirinkite įrenginius diegimui."
 
-#: src/components/storage/InstallationScenario.jsx:119
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:210
+#: src/components/storage/InstallationScenario.jsx:224
 msgid "To prevent loss, make sure to backup your data."
 msgstr ""
 "Siekiant išvengti praradimų, įsitikinkite, kada pasidarėte atsarginę duomenų "
 "kopiją."
 
-#: src/components/storage/InstallationScenario.jsx:88
+#: src/components/storage/InstallationScenario.jsx:97
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:70
+#: src/components/storage/InstallationScenario.jsx:77
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -893,7 +963,13 @@ msgstr "Atrakinti įrenginius"
 msgid "Unlock encrypted devices"
 msgstr "Atrakinti šifruotus įrenginius"
 
-#: src/components/storage/InstallationScenario.jsx:111
+#: src/components/storage/InstallationScenario.jsx:216
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Use configured storage"
+msgstr "Konfigūruojama saugykla"
+
+#: src/components/storage/InstallationScenario.jsx:188
 msgid "Use free space for the installation"
 msgstr "Naudoti laisvą vietą diegimui"
 
@@ -931,11 +1007,17 @@ msgstr "Sveiki"
 msgid "Welcome to $0"
 msgstr "Sveiki pradėję naudoti $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:99
 msgid "Welcome. Let's install $0 now."
 msgstr "Sveiki. Įdiekime $0."
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:536
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:497
 msgid "Your progress will not be saved."
 msgstr "Jūsų progresas nebus įrašytas."
 
@@ -947,17 +1029,54 @@ msgstr "užbaigtas žingsnis"
 msgid "current step"
 msgstr "dabartinis žingsnis"
 
-#: src/components/review/ReviewConfiguration.jsx:70
+#: src/components/review/StorageReview.jsx:54
 msgid "format as $0"
 msgstr "formatuoti kaip $0"
 
-#: src/components/review/ReviewConfiguration.jsx:71
+#: src/components/review/StorageReview.jsx:55
 msgid "mount"
 msgstr "prijungti"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "laukiantis žingsnis"
+
+#, fuzzy
+#~| msgid ""
+#~| "You need to configure the network to use a network installation source."
+#~ msgid "Current configuration can be used for installation."
+#~ msgstr "Jums reikia sukonfigūruoti tinklą diegimui iš tinklo šaltinio."
+
+#~ msgid "The root partition is always re-formatted by the installer."
+#~ msgstr "Diegyklė visada performatuoja root skaidinį."
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-gui yra sudėtingesnis saugyklos redaktorius, kuris leidžia kurti, "
+#~ "trinti bei keisti skaidinių dydį. Juo galima nustatyti LVM ir t. t."
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr "Su Blivet-gui atlikti pakeitimai tiesiogiai paveiks jūsų saugyklą."
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr ""
+#~ "Jei atlikote pakeitimų skaidiniuose ar diskuose, iš naujo nuskaitykite "
+#~ "saugyklą."
+
+#~ msgid "Ignore"
+#~ msgstr "Nepaisyti"
+
+#~ msgid "Modified storage"
+#~ msgstr "Pakeista saugykla"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "Nepavyko pakeisti saugyklos."
+
+#~ msgid "Rescan storage"
+#~ msgstr "Perskaityti saugyklą"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -1920,9 +2039,6 @@ msgstr "laukiantis žingsnis"
 #~ msgid "Configuring installed system"
 #~ msgstr "Konfigūruojama įdiegta sistema"
 
-#~ msgid "Configuring storage"
-#~ msgstr "Konfigūruojama saugykla"
-
 #~ msgid "Configuring {}"
 #~ msgstr "Konfigūruojama {}"
 
@@ -1954,9 +2070,6 @@ msgstr "laukiantis žingsnis"
 
 #~ msgid "Connecting..."
 #~ msgstr "Jungiamasi..."
-
-#~ msgid "Continue"
-#~ msgstr "Pratęsti"
 
 #~ msgid ""
 #~ "Continuing with this action will reset all your partitioning selections "
@@ -2395,9 +2508,6 @@ msgstr "laukiantis žingsnis"
 
 #~ msgid "Failed to change a device."
 #~ msgstr "Nepavyko pakeisti įrenginio."
-
-#~ msgid "Failed to proceed with the installation."
-#~ msgstr "Nepavyko tęsti diegimo."
 
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "Nepavyko įrašyti įkėliklio konfigūracijos"
@@ -3281,9 +3391,6 @@ msgstr "laukiantis žingsnis"
 #~ msgid "Node Name"
 #~ msgstr "Viršūnės pavadinimas"
 
-#~ msgid "Node login failed."
-#~ msgstr "Prisijungimas prie viršūnės nepavyko."
-
 #~ msgid "None"
 #~ msgstr "Joks"
 
@@ -3854,9 +3961,6 @@ msgstr "laukiantis žingsnis"
 
 #~ msgid "Registration failed."
 #~ msgstr "Prisiregistruoti nepavyko."
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "Iš naujo įkelti saugyklos konfigūraciją iš disko."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "Būtinas nutolęs katalogas"
@@ -5600,10 +5704,6 @@ msgstr "laukiantis žingsnis"
 
 #~ msgid "You must set a password"
 #~ msgstr "Turite nustatyti slaptažodį"
-
-#~ msgid ""
-#~ "You need to configure the network to use a network installation source."
-#~ msgstr "Jums reikia sukonfigūruoti tinklą diegimui iš tinklo šaltinio."
 
 #~ msgid "You need to set up networking first if you want to use NTP"
 #~ msgstr "Jums reikia pirma nustatyti tinklą, jei norite naudoti NTP"

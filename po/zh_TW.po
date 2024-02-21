@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
+"POT-Creation-Date: 2024-02-20 02:48+0000\n"
 "PO-Revision-Date: 2023-11-06 12:23+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -48,7 +48,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:148
 #, fuzzy
 msgid "$0 installation"
 msgstr "安裝"
@@ -58,13 +58,13 @@ msgstr "安裝"
 msgid "$0 installer"
 msgstr "退出安裝程式(_Q)"
 
-#: src/components/storage/MountPointMapping.jsx:202
+#: src/components/storage/MountPointMapping.jsx:203
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgstr "%s 無法位於加密的區塊裝置上。"
 
-#: src/components/storage/MountPointMapping.jsx:196
+#: src/components/storage/MountPointMapping.jsx:197
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} 必須存在類型為 {type} 的裝置"
@@ -73,20 +73,20 @@ msgstr "{fs} 必須存在類型為 {type} 的裝置"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:103
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
 msgid "Account"
 msgstr "帳號(_A)"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:395
 #, fuzzy
 #| msgid "Connection failed"
 msgid "Account setting failed."
 msgstr "連線失敗"
 
-#: src/components/storage/MountPointMapping.jsx:583
+#: src/components/storage/MountPointMapping.jsx:580
 #, fuzzy
 msgid "Add mount"
 msgstr "加入鍵盤配置"
@@ -120,24 +120,18 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda 安裝程式"
 
-#: src/components/storage/InstallationScenario.jsx:131
+#: src/components/storage/InstallationScenario.jsx:208
 #, fuzzy
 msgid "Apply mount point assignment and install"
 msgstr "套用安裝程式中的組態"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:407
-#: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/AnacondaWizard.jsx:436
 msgid "Back"
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:77
@@ -150,15 +144,18 @@ msgstr ""
 "繼續使用此軟體，即表示您了解並接受與預發佈軟體相關的風險，您打算僅將其用於測"
 "試和開發目的，並願意報告任何錯誤或問題以改進此工作。"
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:257
 msgid "Cancel"
 msgstr "取消"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
+#: src/components/storage/CockpitStorageIntegration.jsx:122
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:53
+#: src/components/storage/CockpitStorageIntegration.jsx:390
+#: src/components/storage/CockpitStorageIntegration.jsx:402
 #, fuzzy
 msgid "Checking storage configuration"
 msgstr "正在檢查儲存組態..."
@@ -173,13 +170,18 @@ msgstr "語言"
 msgid "Chosen language: "
 msgstr "語言"
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr ""
 
 #: src/components/storage/EncryptedDevices.jsx:165
 msgid "Close"
 msgstr "關閉"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:305
+msgid ""
+"Cockpit storage did not provide the passphrase to unlock encrypted device."
+msgstr ""
 
 #: src/components/localization/InstallationLanguage.jsx:149
 #, fuzzy
@@ -191,15 +193,36 @@ msgstr "語言"
 msgid "Completed"
 msgstr "已完成！"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:118
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage"
+msgstr "正在設定儲存裝置"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:438
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Configure storage again"
+msgstr "正在設定儲存裝置"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "確認密碼(_C)"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/storage/CockpitStorageIntegration.jsx:423
+msgid "Continue"
+msgstr "繼續"
+
+#: src/components/AnacondaWizard.jsx:488
 #, fuzzy
 msgid "Continue installation"
+msgstr "正在執行安裝前置事項"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:399
+#, fuzzy
+msgid "Continue with installation"
 msgstr "正在執行安裝前置事項"
 
 #: src/components/users/Accounts.jsx:351
@@ -215,25 +238,29 @@ msgstr "Root 帳號(_R)"
 msgid "Create account"
 msgstr "鎖定 root 帳號"
 
-#: src/components/Error.jsx:234
+#: src/components/Error.jsx:242
 msgid "Critical error"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 #, fuzzy
 msgid "Current selections"
 msgstr "重設選取項目(_R)"
 
-#: src/components/storage/MountPointMapping.jsx:243
+#: src/components/storage/MountPointMapping.jsx:244
 msgid "Custom"
 msgstr "自訂"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 #, fuzzy
 msgid "Destination"
 msgstr "細節"
 
-#: src/components/storage/MountPointMapping.jsx:559
+#: src/components/storage/CockpitStorageIntegration.jsx:462
+msgid "Detected valid storage layout:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Device"
 msgstr "裝置"
 
@@ -241,27 +268,27 @@ msgstr "裝置"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Disabled"
 msgstr "停用"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:135
 #, fuzzy
 msgid "Disk configuration"
 msgstr "裝置組態"
 
+#: src/components/review/ReviewConfiguration.jsx:124
 #: src/components/storage/DiskEncryption.jsx:138
-#: src/components/review/ReviewConfiguration.jsx:165
 #, fuzzy
 msgid "Disk encryption"
 msgstr "加密"
 
-#: src/components/storage/MountPointMapping.jsx:326
+#: src/components/storage/MountPointMapping.jsx:327
 #, fuzzy
 msgid "Duplicate device."
 msgstr "Multipath 裝置(_M)"
 
-#: src/components/storage/MountPointMapping.jsx:249
+#: src/components/storage/MountPointMapping.jsx:250
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "請輸入掛載點。"
@@ -273,7 +300,7 @@ msgstr "請輸入掛載點。"
 msgid "Enable root account"
 msgstr "啟用 root 帳號(_E)"
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Enabled"
 msgstr "啟用"
 
@@ -293,28 +320,32 @@ msgstr ""
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:97
-#: src/components/storage/InstallationScenario.jsx:103
+#: src/components/storage/InstallationScenario.jsx:174
+#: src/components/storage/InstallationScenario.jsx:180
 #, fuzzy
 msgid "Erase data and install"
 msgstr "检查和安装(_R)"
 
-#: src/components/storage/InstallationScenario.jsx:107
+#: src/components/storage/InstallationScenario.jsx:184
 #, fuzzy
 msgid "Erase data and install?"
 msgstr "检查和安装(_R)"
 
-#: src/components/storage/InstallationScenario.jsx:105
+#: src/components/storage/InstallationScenario.jsx:182
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 
-#: src/components/Error.jsx:237
+#: src/components/Error.jsx:245
 #, fuzzy
 msgid "Error details"
 msgstr "錯誤詳情： "
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:263
 msgid "Error was hit when going back from $0."
+msgstr ""
+
+#: src/components/storage/CockpitStorageIntegration.jsx:533
+msgid "Fedora linux requires at least $0 of disk space."
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:132
@@ -332,6 +363,10 @@ msgstr ""
 #, fuzzy
 msgid "Find a language"
 msgstr "選擇一個網絡"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:466
+msgid "Free space requirements met"
+msgstr ""
 
 #: src/components/users/Accounts.jsx:214
 msgid "Full name"
@@ -356,24 +391,20 @@ msgstr "確認密碼(_C)"
 msgid "Hide password"
 msgstr "隱藏密碼。"
 
-#: src/components/storage/InstallationScenario.jsx:253
+#: src/components/storage/InstallationScenario.jsx:400
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "您是否無論如何都想使用？"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:509
+msgid "If you are configuring partitions the following are required:"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:184
@@ -381,31 +412,37 @@ msgstr ""
 msgid "In progress"
 msgstr "進度"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:140
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
 msgstr "安裝中。"
 
-#: src/components/storage/InstallationScenario.jsx:117
+#: src/components/storage/InstallationScenario.jsx:194
+#: src/components/storage/InstallationScenario.jsx:222
 msgid "Install"
 msgstr "安裝"
 
-#: src/components/storage/InstallationScenario.jsx:135
+#: src/components/storage/InstallationScenario.jsx:212
 #, fuzzy
 msgid "Install on the custom mount points?"
 msgstr "手動指定掛載點"
 
-#: src/components/storage/InstallationScenario.jsx:121
+#: src/components/storage/InstallationScenario.jsx:198
 #, fuzzy
 msgid "Install on the free space?"
+msgstr "正在安裝軟體"
+
+#: src/components/storage/InstallationScenario.jsx:226
+#, fuzzy
+msgid "Install using the configured storage?"
 msgstr "正在安裝軟體"
 
 #: src/components/installation/InstallationProgress.jsx:149
 msgid "Installation failed"
 msgstr "安裝失敗"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:98
 #, fuzzy
 msgid "Installation method"
 msgstr "安裝完成"
@@ -415,7 +452,7 @@ msgstr "安裝完成"
 msgid "Installation of the system failed: $0"
 msgstr "安裝失敗"
 
-#: src/components/review/ReviewConfiguration.jsx:154
+#: src/components/review/ReviewConfiguration.jsx:113
 #, fuzzy
 msgid "Installation type"
 msgstr "安裝"
@@ -424,7 +461,7 @@ msgstr "安裝"
 msgid "Installing"
 msgstr "安裝中"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 #, fuzzy
 msgid "Installing to $0 ($1)"
 msgstr "正在安裝 {}"
@@ -433,13 +470,9 @@ msgstr "正在安裝 {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:134
+#: src/components/review/ReviewConfiguration.jsx:93
 msgid "Language"
 msgstr "語言"
-
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr ""
 
 #: src/components/storage/EncryptedDevices.jsx:175
 #, fuzzy
@@ -450,12 +483,12 @@ msgstr "重新掃描裝置"
 msgid "Log"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:680
 #, fuzzy
 msgid "Manual disk configuration"
 msgstr "裝置組態"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:682
 #, fuzzy
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "裝置組態"
@@ -468,32 +501,21 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:140
+#: src/components/storage/MountPointMapping.jsx:139
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/ModifyStorage.jsx:51
-#, fuzzy
-msgid "Modified storage"
-msgstr "修改儲存配置(_M)"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:53
 #, fuzzy
 msgid "Modify storage"
 msgstr "修改儲存配置(_M)"
 
-#: src/components/storage/ModifyStorage.jsx:147
-#, fuzzy
-msgid "Modifying the storage failed."
-msgstr "修改儲存配置(_M)"
-
-#: src/components/storage/MountPointMapping.jsx:558
+#: src/components/storage/MountPointMapping.jsx:555
 msgid "Mount point"
 msgstr "掛載點"
 
-#: src/components/storage/MountPointMapping.jsx:556
-#: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/InstallationScenario.jsx:202
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "掛載點"
@@ -513,41 +535,41 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:410
 msgid "Next"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 #, fuzzy
 msgid "No additional disks detected"
 msgstr "未選取任何可用硬碟。"
 
-#: src/components/storage/MountPointMapping.jsx:563
+#: src/components/storage/MountPointMapping.jsx:560
 #, fuzzy
 msgid "No devices"
 msgstr "加入裝置"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:84
+#: src/components/storage/InstallationScenario.jsx:93
 #, fuzzy
 msgid "No usable devices on the selected disks."
 msgstr "所選磁碟上的可用空間不足。"
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 #, fuzzy
 msgid "No usable disks detected"
 msgstr "未選取任何可用硬碟。"
 
-#: src/components/storage/InstallationScenario.jsx:68
+#: src/components/storage/InstallationScenario.jsx:75
 #, fuzzy
 msgid "Not enough free space on the selected disks."
 msgstr "所選磁碟上的可用空間不足。"
 
-#: src/components/storage/InstallationScenario.jsx:50
+#: src/components/storage/InstallationScenario.jsx:54
 #, fuzzy
 msgid "Not enough space on selected disks."
 msgstr "所選磁碟上的可用空間不足。"
@@ -565,15 +587,19 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:124
+#: src/components/review/ReviewConfiguration.jsx:83
 #, fuzzy
 msgid "Operating system"
 msgstr "正在建立使用者"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:541
+msgid "Partitions (advanced)"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "密語"
 
@@ -607,26 +633,32 @@ msgstr ""
 msgid "Preparing report"
 msgstr "正在準備佈署 {}"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/storage/CockpitStorageIntegration.jsx:444
+#, fuzzy
+#| msgid "Failed to proceed with the installation."
+msgid "Proceed with installation"
+msgstr "無法繼續安裝。"
+
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Quit"
 msgstr "退出"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 #, fuzzy
 msgid "Quit installer?"
 msgstr "退出安裝程式(_Q)"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr ""
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:123
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:128
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "裝置重新設定失敗。"
@@ -636,27 +668,31 @@ msgstr "裝置重新設定失敗。"
 msgid "Reading installer version information failed."
 msgstr "註冊失敗。"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Reboot"
 msgstr "重新開機"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 #, fuzzy
 msgid "Reboot system?"
 msgstr "重新啟動系統(_R)"
 
-#: src/components/storage/MountPointMapping.jsx:242
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Recommended"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:349
-#: src/components/storage/MountPointMapping.jsx:560
+#: src/components/storage/CockpitStorageIntegration.jsx:518
+msgid "Recommended partitions:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:347
+#: src/components/storage/MountPointMapping.jsx:557
 msgid "Reformat"
 msgstr "重新格式化"
 
-#: src/components/storage/MountPointMapping.jsx:382
+#: src/components/storage/MountPointMapping.jsx:374
 msgid "Remove"
 msgstr "移除"
 
@@ -670,7 +706,7 @@ msgstr ""
 msgid "Report Issue"
 msgstr ""
 
-#: src/components/Error.jsx:150 src/components/Error.jsx:260
+#: src/components/Error.jsx:150 src/components/Error.jsx:268
 msgid "Report issue"
 msgstr ""
 
@@ -680,28 +716,38 @@ msgid ""
 "edit the attached log to remove any sensitive information."
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:241
+#: src/components/storage/MountPointMapping.jsx:242
 #, fuzzy
 msgid "Required"
 msgstr "未註冊。"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:530
+#, fuzzy
+msgid "Requirements"
+msgstr "未註冊。"
+
+#: src/components/storage/InstallationDestination.jsx:389
 #, fuzzy
 msgid "Rescan"
 msgstr "救援模式"
 
-#: src/components/storage/ModifyStorage.jsx:63
-#, fuzzy
-msgid "Rescan storage"
-msgstr "探測儲存裝置中"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 #, fuzzy
 msgid "Rescanning of the disks failed."
 msgstr "重新掃描磁碟完成。"
 
-#: src/components/review/ReviewConfiguration.jsx:241
-#: src/components/review/ReviewConfiguration.jsx:242
+#: src/components/storage/CockpitStorageIntegration.jsx:84
+#, fuzzy
+msgid "Return to installation"
+msgstr "安裝"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:429
+#, fuzzy
+msgid "Return to storage editor"
+msgstr "安裝"
+
+#: src/components/review/ReviewConfiguration.jsx:203
+#: src/components/review/ReviewConfiguration.jsx:204
 msgid "Review and install"
 msgstr "检查和安装(_R)"
 
@@ -709,17 +755,17 @@ msgstr "检查和安装(_R)"
 msgid "Scan the QR code with your phone or visit:"
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:287
+#: src/components/storage/MountPointMapping.jsx:288
 #, fuzzy
 msgid "Select a device"
 msgstr "選取的裝置"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 #, fuzzy
 msgid "Select a disk"
 msgstr "選擇所有磁碟"
 
-#: src/components/storage/MountPointMapping.jsx:123
+#: src/components/storage/MountPointMapping.jsx:122
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
@@ -758,11 +804,11 @@ msgid ""
 "being installed onto your device."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:87
+#: src/components/storage/InstallationScenario.jsx:96
 msgid "Some devices use the same name: $0."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:175
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Storage"
 msgstr "儲存裝置選項"
@@ -773,6 +819,22 @@ msgstr "儲存裝置組態"
 
 #: src/components/installation/InstallationProgress.jsx:119
 msgid "Storage configuration: Storage is currently being configured."
+msgstr ""
+
+#: src/components/storage/HelpAutopartOptions.jsx:11
+#, fuzzy
+#| msgid "Reload storage configuration from disk."
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr "重新載入磁碟的儲存裝置組態。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:105
+#, fuzzy
+#| msgid "Node login failed."
+msgid "Storage plugin failed"
+msgstr "節點登入失敗。"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:397
+msgid "Storage requirements not met"
 msgstr ""
 
 #: src/components/Password.jsx:83
@@ -809,44 +871,45 @@ msgid ""
 "software. "
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] ""
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 #, fuzzy
 #| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
 msgid_plural "The following disks were detected: $0"
 msgstr[0] "下列必要的輻驟項目尚未完成："
 
-#: src/components/Error.jsx:257
+#: src/components/Error.jsx:265
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:52
+#: src/components/storage/InstallationScenario.jsx:56
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:199
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:136
+#: src/components/storage/InstallationScenario.jsx:213
+#: src/components/storage/InstallationScenario.jsx:227
 msgid "The installation will use your configured partitioning layout."
 msgstr ""
 
-#: src/components/Error.jsx:226
+#: src/components/Error.jsx:234
 #, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr "安裝過程無法繼續，系統將重新啟動"
 
-#: src/components/Error.jsx:225
+#: src/components/Error.jsx:233
 #, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "安裝過程無法繼續，系統將重新啟動"
@@ -857,17 +920,13 @@ msgid ""
 "be able to switch between keyboard layouts when typing it."
 msgstr "您提供的密語包含非 ASCII 字符。您將無法在輸入它時在鍵盤佈局之間切換。"
 
-#: src/components/storage/MountPointMapping.jsx:361
-msgid "The root partition is always re-formatted by the installer."
-msgstr ""
-
-#: src/components/storage/InstallationScenario.jsx:108
+#: src/components/storage/InstallationScenario.jsx:185
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
 msgstr ""
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 #, fuzzy
 msgid "The usable disks have changed"
 msgstr "未選取任何可用硬碟。"
@@ -884,25 +943,32 @@ msgstr "此乃尚未穩定、預先釋出的軟體"
 msgid "This may take a moment"
 msgstr "這可能需要一段時間"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:391
+#, fuzzy
+#| msgid "This may take a moment"
+msgid "This will take a few moments"
+msgstr "這可能需要一段時間"
+
 #: src/components/installation/InstallationProgress.jsx:164
 msgid "To begin using $0, reboot your system."
 msgstr "若要開始使用 $0，請重新開機您的系統。"
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:90
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr "尚未選取磁碟；請選擇至少一個磁碟以便安裝。"
 
-#: src/components/storage/InstallationScenario.jsx:119
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:210
+#: src/components/storage/InstallationScenario.jsx:224
 msgid "To prevent loss, make sure to backup your data."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:88
+#: src/components/storage/InstallationScenario.jsx:97
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:70
+#: src/components/storage/InstallationScenario.jsx:77
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -923,7 +989,13 @@ msgstr "重新掃描裝置"
 msgid "Unlock encrypted devices"
 msgstr "無法解鎖加密的區塊裝置。"
 
-#: src/components/storage/InstallationScenario.jsx:111
+#: src/components/storage/InstallationScenario.jsx:216
+#, fuzzy
+#| msgid "Configuring storage"
+msgid "Use configured storage"
+msgstr "正在設定儲存裝置"
+
+#: src/components/storage/InstallationScenario.jsx:188
 #, fuzzy
 msgid "Use free space for the installation"
 msgstr "無法繼續安裝。"
@@ -962,11 +1034,17 @@ msgstr ""
 msgid "Welcome to $0"
 msgstr "歡迎使用 $0"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:99
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:536
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+
+#: src/components/AnacondaWizard.jsx:497
 msgid "Your progress will not be saved."
 msgstr ""
 
@@ -978,12 +1056,12 @@ msgstr "完成步驟"
 msgid "current step"
 msgstr "目前步驟"
 
-#: src/components/review/ReviewConfiguration.jsx:70
+#: src/components/review/StorageReview.jsx:54
 #, fuzzy
 msgid "format as $0"
 msgstr "重新格式化"
 
-#: src/components/review/ReviewConfiguration.jsx:71
+#: src/components/review/StorageReview.jsx:55
 #, fuzzy
 msgid "mount"
 msgstr "加入鍵盤配置"
@@ -991,6 +1069,24 @@ msgstr "加入鍵盤配置"
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr ""
+
+#, fuzzy
+#~| msgid ""
+#~| "You need to configure the network to use a network installation source."
+#~ msgid "Current configuration can be used for installation."
+#~ msgstr "您必需配置網路以使用網路上的安裝來源。"
+
+#, fuzzy
+#~ msgid "Modified storage"
+#~ msgstr "修改儲存配置(_M)"
+
+#, fuzzy
+#~ msgid "Modifying the storage failed."
+#~ msgstr "修改儲存配置(_M)"
+
+#, fuzzy
+#~ msgid "Rescan storage"
+#~ msgstr "探測儲存裝置中"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -1913,9 +2009,6 @@ msgstr ""
 #~ msgid "Configuring installed system"
 #~ msgstr "正在設定已安裝的系統"
 
-#~ msgid "Configuring storage"
-#~ msgstr "正在設定儲存裝置"
-
 #~ msgid "Configuring {}"
 #~ msgstr "正在設定 {}"
 
@@ -1947,9 +2040,6 @@ msgstr ""
 
 #~ msgid "Connecting..."
 #~ msgstr "正在連接..."
-
-#~ msgid "Continue"
-#~ msgstr "繼續"
 
 #~ msgid ""
 #~ "Continuing with this action will reset all your partitioning selections "
@@ -2353,9 +2443,6 @@ msgstr ""
 
 #~ msgid "Failed to change a device."
 #~ msgstr "更換設備失敗。"
-
-#~ msgid "Failed to proceed with the installation."
-#~ msgstr "無法繼續安裝。"
 
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "無法寫入開機載入器設定"
@@ -3228,9 +3315,6 @@ msgstr ""
 #~ msgid "Node Name"
 #~ msgstr "節點名稱"
 
-#~ msgid "Node login failed."
-#~ msgstr "節點登入失敗。"
-
 #~ msgid "None"
 #~ msgstr "無"
 
@@ -3744,9 +3828,6 @@ msgstr ""
 
 #~ msgid "Registration failed."
 #~ msgstr "註冊失敗。"
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "重新載入磁碟的儲存裝置組態。"
 
 #~ msgid "Remote directory is required"
 #~ msgstr "需要遠端目錄"
@@ -5367,10 +5448,6 @@ msgstr ""
 
 #~ msgid "You must set a password"
 #~ msgstr "您必須設定密碼"
-
-#~ msgid ""
-#~ "You need to configure the network to use a network installation source."
-#~ msgstr "您必需配置網路以使用網路上的安裝來源。"
 
 #~ msgid "You need to set up networking first if you want to use NTP"
 #~ msgstr "若您希望使用 NTP 您需要先設定網路"

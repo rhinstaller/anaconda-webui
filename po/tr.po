@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-06 02:48+0000\n"
-"PO-Revision-Date: 2024-02-04 15:34+0000\n"
+"POT-Creation-Date: 2024-02-20 02:48+0000\n"
+"PO-Revision-Date: 2024-02-18 02:41+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/tr/>\n"
@@ -38,9 +38,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1)\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.4\n"
 
-#: src/components/app.jsx:138
+#: src/components/app.jsx:148
 msgid "$0 installation"
 msgstr "$0 kurulumu"
 
@@ -48,11 +48,11 @@ msgstr "$0 kurulumu"
 msgid "$0 installer"
 msgstr "$0 kurucusu"
 
-#: src/components/storage/MountPointMapping.jsx:202
+#: src/components/storage/MountPointMapping.jsx:203
 msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgstr "'$0' dosya sistemi şifrelenmiş bir blok aygıtı üzerinde olamaz"
 
-#: src/components/storage/MountPointMapping.jsx:196
+#: src/components/storage/MountPointMapping.jsx:197
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0', '$1' olarak biçimlendirilen bir aygıt üzerinde olmalıdır"
 
@@ -60,15 +60,15 @@ msgstr "'$0', '$1' olarak biçimlendirilen bir aygıt üzerinde olmalıdır"
 msgid "About"
 msgstr "Hakkında"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:103
 msgid "Account"
 msgstr "Hesap"
 
-#: src/components/AnacondaWizard.jsx:366
+#: src/components/AnacondaWizard.jsx:395
 msgid "Account setting failed."
 msgstr "Hesap ayarlama başarısız."
 
-#: src/components/storage/MountPointMapping.jsx:583
+#: src/components/storage/MountPointMapping.jsx:580
 msgid "Add mount"
 msgstr "Bağlama noktası ekle"
 
@@ -100,27 +100,18 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda projesi sayfası"
 
-#: src/components/storage/InstallationScenario.jsx:131
+#: src/components/storage/InstallationScenario.jsx:208
 msgid "Apply mount point assignment and install"
 msgstr "Bağlama noktası atamasını uygula ve kur"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "Yeni disk seçimi uygulanıyor..."
 
-#: src/components/AnacondaWizard.jsx:407
-#: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/AnacondaWizard.jsx:436
 msgid "Back"
 msgstr "Geri"
-
-#: src/components/storage/ModifyStorage.jsx:121
-msgid ""
-"Blivet-gui is an advanced storage editor that lets you resize, delete, and "
-"create partitions. It can set up LVM and much more."
-msgstr ""
-"Blivet-gui, bölümleri yeniden boyutlandırmanıza, silmenize ve oluşturmanıza "
-"olanak tanıyan gelişmiş bir depolama düzenleyicisidir. LVM ve çok daha "
-"fazlasını ayarlayabilir."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
@@ -134,16 +125,20 @@ msgstr ""
 "planladığınızı ve bu çalışmayı iyileştirmek için tüm hata veya sorunları "
 "bildirmeye hazır olduğunuzu kabul edersiniz."
 
-#: src/components/storage/ModifyStorage.jsx:115 src/components/Error.jsx:249
+#: src/components/Error.jsx:257
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/components/storage/ModifyStorage.jsx:124
-msgid "Changes made in Blivet-gui will directly affect your storage."
+#: src/components/storage/CockpitStorageIntegration.jsx:122
+msgid ""
+"Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
-"Blivet-gui içinde yapılan değişiklikler depolamanızı doğrudan etkileyecektir."
+"Burada yapılan değişiklikler sistemi hemen etkileyecektir. 'Geri al' "
+"seçeneği yoktur."
 
 #: src/components/storage/DiskEncryption.jsx:53
+#: src/components/storage/CockpitStorageIntegration.jsx:390
+#: src/components/storage/CockpitStorageIntegration.jsx:402
 msgid "Checking storage configuration"
 msgstr "Depolama yapılandırması denetleniyor"
 
@@ -155,13 +150,19 @@ msgstr "Bir dil seçin"
 msgid "Chosen language: "
 msgstr "Seçilen dil: "
 
-#: src/components/storage/InstallationDestination.jsx:238
+#: src/components/storage/InstallationDestination.jsx:239
 msgid "Clear input value"
 msgstr "Giriş değerini temizle"
 
 #: src/components/storage/EncryptedDevices.jsx:165
 msgid "Close"
 msgstr "Kapat"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:305
+msgid ""
+"Cockpit storage did not provide the passphrase to unlock encrypted device."
+msgstr ""
+"Cockpit depolaması, şifrelenen aygıtın kilidini açmak için parola sağlamadı."
 
 #: src/components/localization/InstallationLanguage.jsx:149
 msgid "Common languages"
@@ -171,13 +172,29 @@ msgstr "Yaygın diller"
 msgid "Completed"
 msgstr "Tamamlandı"
 
-#: src/components/storage/DiskEncryption.jsx:96
+#: src/components/storage/CockpitStorageIntegration.jsx:118
+msgid "Configure storage"
+msgstr "Depolamayı yapılandır"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:438
+msgid "Configure storage again"
+msgstr "Depolamayı tekrar yapılandır"
+
 #: src/components/users/Accounts.jsx:194 src/components/users/Accounts.jsx:293
+#: src/components/storage/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Parolayı onayla"
 
-#: src/components/AnacondaWizard.jsx:459
+#: src/components/storage/CockpitStorageIntegration.jsx:423
+msgid "Continue"
+msgstr "Sürdür"
+
+#: src/components/AnacondaWizard.jsx:488
 msgid "Continue installation"
+msgstr "Kuruluma devam et"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:399
+msgid "Continue with installation"
 msgstr "Kuruluma devam et"
 
 #: src/components/users/Accounts.jsx:351
@@ -188,23 +205,27 @@ msgstr "Hesap Oluştur"
 msgid "Create account"
 msgstr "Hesap oluştur"
 
-#: src/components/Error.jsx:234
+#: src/components/Error.jsx:242
 msgid "Critical error"
 msgstr "Önemli hata"
 
-#: src/components/storage/InstallationDestination.jsx:221
+#: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
 msgstr "Geçerli seçimler"
 
-#: src/components/storage/MountPointMapping.jsx:243
+#: src/components/storage/MountPointMapping.jsx:244
 msgid "Custom"
 msgstr "Özel"
 
-#: src/components/storage/InstallationDestination.jsx:404
+#: src/components/storage/InstallationDestination.jsx:407
 msgid "Destination"
 msgstr "Hedef"
 
-#: src/components/storage/MountPointMapping.jsx:559
+#: src/components/storage/CockpitStorageIntegration.jsx:462
+msgid "Detected valid storage layout:"
+msgstr ""
+
+#: src/components/storage/MountPointMapping.jsx:556
 msgid "Device"
 msgstr "Aygıt"
 
@@ -212,24 +233,24 @@ msgstr "Aygıt"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Bağlama noktaları atanmadan önce aygıtların kilidi açılmalıdır."
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Disabled"
 msgstr "Devre dışı"
 
-#: src/components/AnacondaWizard.jsx:120
+#: src/components/AnacondaWizard.jsx:135
 msgid "Disk configuration"
 msgstr "Disk yapılandırması"
 
+#: src/components/review/ReviewConfiguration.jsx:124
 #: src/components/storage/DiskEncryption.jsx:138
-#: src/components/review/ReviewConfiguration.jsx:165
 msgid "Disk encryption"
 msgstr "Disk şifreleme"
 
-#: src/components/storage/MountPointMapping.jsx:326
+#: src/components/storage/MountPointMapping.jsx:327
 msgid "Duplicate device."
 msgstr "Yinelenen aygıt."
 
-#: src/components/storage/MountPointMapping.jsx:249
+#: src/components/storage/MountPointMapping.jsx:250
 msgid "Duplicate mount point."
 msgstr "Yinelenen bağlama noktası."
 
@@ -237,7 +258,7 @@ msgstr "Yinelenen bağlama noktası."
 msgid "Enable root account"
 msgstr "Kök hesabını etkinleştir"
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:127
 msgid "Enabled"
 msgstr "Etkin"
 
@@ -259,27 +280,31 @@ msgstr ""
 "Şifreleme, başkalarının erişmesini önlemek için verilerinizin güvenliğini "
 "sağlamaya yardımcı olur."
 
-#: src/components/storage/InstallationScenario.jsx:97
-#: src/components/storage/InstallationScenario.jsx:103
+#: src/components/storage/InstallationScenario.jsx:174
+#: src/components/storage/InstallationScenario.jsx:180
 msgid "Erase data and install"
 msgstr "Verileri sil ve kur"
 
-#: src/components/storage/InstallationScenario.jsx:107
+#: src/components/storage/InstallationScenario.jsx:184
 msgid "Erase data and install?"
 msgstr "Veriler silinsin ve kurulsun mu?"
 
-#: src/components/storage/InstallationScenario.jsx:105
+#: src/components/storage/InstallationScenario.jsx:182
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Verilerin silinmesi geri alınamaz. Yedeklerinizin olduğundan emin olun."
 
-#: src/components/Error.jsx:237
+#: src/components/Error.jsx:245
 msgid "Error details"
 msgstr "Hata ayrıntıları"
 
-#: src/components/AnacondaWizard.jsx:249
+#: src/components/AnacondaWizard.jsx:263
 msgid "Error was hit when going back from $0."
 msgstr "$0 adımından geri dönerken hata oluştu."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:533
+msgid "Fedora linux requires at least $0 of disk space."
+msgstr "Fedora Linux en az $0 disk alanı gerektirir."
 
 #: src/components/installation/InstallationProgress.jsx:132
 msgid "Finalization"
@@ -296,6 +321,12 @@ msgstr ""
 #: src/components/localization/InstallationLanguage.jsx:267
 msgid "Find a language"
 msgstr "Dil bul"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:466
+#, fuzzy
+#| msgid "Storage requirements not met"
+msgid "Free space requirements met"
+msgstr "Depolama gereksinimleri karşılanmadı"
 
 #: src/components/users/Accounts.jsx:214
 msgid "Full name"
@@ -317,9 +348,13 @@ msgstr "Parolayı gizle"
 msgid "Hide password"
 msgstr "Parolayı gizle"
 
-#: src/components/storage/InstallationScenario.jsx:253
+#: src/components/storage/InstallationScenario.jsx:400
 msgid "How would you like to install?"
 msgstr "Nasıl kurmak istersiniz?"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:509
+msgid "If you are configuring partitions the following are required:"
+msgstr "Bölümleri yapılandırıyorsanız şunlar gereklidir:"
 
 #: src/components/AnacondaHeader.jsx:80
 msgid ""
@@ -327,41 +362,36 @@ msgid ""
 msgstr ""
 "Riskleri anlamadıysanız veya kabul etmiyorsanız, lütfen bu programdan çıkın."
 
-#: src/components/storage/ModifyStorage.jsx:75
-msgid "If you have made changes on partitions or disks, please rescan storage."
-msgstr ""
-"Bölümlerde veya disklerde değişiklik yaptıysanız, lütfen depolamayı yeniden "
-"tarayın."
-
-#: src/components/storage/ModifyStorage.jsx:71
-msgid "Ignore"
-msgstr "Yok say"
-
 #: src/components/installation/InstallationProgress.jsx:184
 msgid "In progress"
 msgstr "Sürüyor"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:140
 msgid "Initializing..."
 msgstr "Başlatılıyor..."
 
-#: src/components/storage/InstallationScenario.jsx:117
+#: src/components/storage/InstallationScenario.jsx:194
+#: src/components/storage/InstallationScenario.jsx:222
 msgid "Install"
 msgstr "Kur"
 
-#: src/components/storage/InstallationScenario.jsx:135
+#: src/components/storage/InstallationScenario.jsx:212
 msgid "Install on the custom mount points?"
 msgstr "Özel bağlama noktalarına kurulsun mu?"
 
-#: src/components/storage/InstallationScenario.jsx:121
+#: src/components/storage/InstallationScenario.jsx:198
 msgid "Install on the free space?"
 msgstr "Boş alana kurulsun mu?"
+
+#: src/components/storage/InstallationScenario.jsx:226
+msgid "Install using the configured storage?"
+msgstr "Yapılandırılan depolama kullanılarak kurulsun mu?"
 
 #: src/components/installation/InstallationProgress.jsx:149
 msgid "Installation failed"
 msgstr "Kurulum başarısız"
 
-#: src/components/storage/InstallationMethod.jsx:88
+#: src/components/storage/InstallationMethod.jsx:98
 msgid "Installation method"
 msgstr "Kurulum yöntemi"
 
@@ -369,7 +399,7 @@ msgstr "Kurulum yöntemi"
 msgid "Installation of the system failed: $0"
 msgstr "Sistem kurulumu başarısız oldu: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:154
+#: src/components/review/ReviewConfiguration.jsx:113
 msgid "Installation type"
 msgstr "Kurulum türü"
 
@@ -377,7 +407,7 @@ msgstr "Kurulum türü"
 msgid "Installing"
 msgstr "Kuruluyor"
 
-#: src/components/storage/InstallationDestination.jsx:423
+#: src/components/storage/InstallationDestination.jsx:426
 msgid "Installing to $0 ($1)"
 msgstr "$0 ($1) aygıtına kuruluyor"
 
@@ -385,13 +415,9 @@ msgstr "$0 ($1) aygıtına kuruluyor"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Geçerli disk düzenini koru ve yalnızca kullanılabilir alana kur."
 
-#: src/components/review/ReviewConfiguration.jsx:134
+#: src/components/review/ReviewConfiguration.jsx:93
 msgid "Language"
 msgstr "Dil"
-
-#: src/components/storage/ModifyStorage.jsx:106
-msgid "Launch Blivet-gui storage editor"
-msgstr "Blivet-gui depolama düzenleyicisini başlat"
 
 #: src/components/storage/EncryptedDevices.jsx:175
 msgid "Locked devices"
@@ -401,11 +427,11 @@ msgstr "Kilitli aygıtlar"
 msgid "Log"
 msgstr "Günlük"
 
-#: src/components/storage/MountPointMapping.jsx:684
+#: src/components/storage/MountPointMapping.jsx:680
 msgid "Manual disk configuration"
 msgstr "Elle disk yapılandırması"
 
-#: src/components/storage/MountPointMapping.jsx:686
+#: src/components/storage/MountPointMapping.jsx:682
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Elle disk yapılandırması: Bağlama noktası eşlemesi"
 
@@ -417,30 +443,21 @@ msgstr "Kurulum için depolama konumlarını elle seç."
 msgid "Medium"
 msgstr "Ortam"
 
-#: src/components/storage/MountPointMapping.jsx:140
+#: src/components/storage/MountPointMapping.jsx:139
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Üst aygıt ve alt aygıt yeniden biçimlendirme seçimi arasında uyumsuzluk."
 
-#: src/components/storage/ModifyStorage.jsx:51
-msgid "Modified storage"
-msgstr "Depolama değiştirildi"
-
-#: src/components/storage/ModifyStorage.jsx:87
-#: src/components/storage/ModifyStorage.jsx:141
+#: src/components/storage/ModifyStorage.jsx:53
 msgid "Modify storage"
 msgstr "Depolamayı değiştir"
 
-#: src/components/storage/ModifyStorage.jsx:147
-msgid "Modifying the storage failed."
-msgstr "Depolamanın değiştirilmesi başarısız oldu."
-
-#: src/components/storage/MountPointMapping.jsx:558
+#: src/components/storage/MountPointMapping.jsx:555
 msgid "Mount point"
 msgstr "Bağlama noktası"
 
-#: src/components/storage/MountPointMapping.jsx:556
-#: src/components/storage/InstallationScenario.jsx:125
+#: src/components/storage/MountPointMapping.jsx:553
+#: src/components/storage/InstallationScenario.jsx:202
 msgid "Mount point assignment"
 msgstr "Bağlama noktası ataması"
 
@@ -460,36 +477,36 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Ağ kullanılabilir değil. Sorunu bildirmek için ağı yapılandırın."
 
-#: src/components/AnacondaWizard.jsx:381
+#: src/components/AnacondaWizard.jsx:410
 msgid "Next"
 msgstr "Sonraki"
 
-#: src/components/storage/InstallationDestination.jsx:463
+#: src/components/storage/InstallationDestination.jsx:473
 msgid "No additional disks detected"
 msgstr "Ek disk algılanmadı"
 
-#: src/components/storage/MountPointMapping.jsx:563
+#: src/components/storage/MountPointMapping.jsx:560
 msgid "No devices"
 msgstr "Aygıt yok"
 
+#: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
-#: src/components/storage/InstallationDestination.jsx:119
 msgid "No results found"
 msgstr "Sonuç bulunamadı"
 
-#: src/components/storage/InstallationScenario.jsx:84
+#: src/components/storage/InstallationScenario.jsx:93
 msgid "No usable devices on the selected disks."
 msgstr "Seçilen disklerde kullanılabilir aygıt yok."
 
-#: src/components/storage/InstallationDestination.jsx:433
+#: src/components/storage/InstallationDestination.jsx:436
 msgid "No usable disks detected"
 msgstr "Kullanılabilir disk algılanmadı"
 
-#: src/components/storage/InstallationScenario.jsx:68
+#: src/components/storage/InstallationScenario.jsx:75
 msgid "Not enough free space on the selected disks."
 msgstr "Seçilen disklerde yeterli boş alan yok."
 
-#: src/components/storage/InstallationScenario.jsx:50
+#: src/components/storage/InstallationScenario.jsx:54
 msgid "Not enough space on selected disks."
 msgstr "Seçilen disklerde yeterli alan yok."
 
@@ -510,14 +527,18 @@ msgid ""
 msgstr ""
 "Yalnızca yeni bölümler şifrelenecek. Var olan bölümlere dokunulmayacak."
 
-#: src/components/review/ReviewConfiguration.jsx:124
+#: src/components/review/ReviewConfiguration.jsx:83
 msgid "Operating system"
 msgstr "İşletim sistemi"
 
-#: src/components/storage/DiskEncryption.jsx:93
+#: src/components/storage/CockpitStorageIntegration.jsx:541
+msgid "Partitions (advanced)"
+msgstr "Bölümler (gelişmiş)"
+
+#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
 #: src/components/storage/EncryptedDevices.jsx:178
 #: src/components/storage/EncryptedDevices.jsx:185
-#: src/components/users/Accounts.jsx:191 src/components/users/Accounts.jsx:290
+#: src/components/storage/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Parola"
 
@@ -549,25 +570,29 @@ msgstr "Ön sürüm"
 msgid "Preparing report"
 msgstr "Rapor hazırlanıyor"
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
+#: src/components/storage/CockpitStorageIntegration.jsx:444
+msgid "Proceed with installation"
+msgstr "Kuruluma devam et"
+
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Quit"
 msgstr "Çık"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Quit installer?"
 msgstr "Kurucudan çıkılsın mı?"
 
-#: src/components/storage/InstallationDestination.jsx:377
+#: src/components/storage/InstallationDestination.jsx:380
 msgid "Re-scan"
 msgstr "Yeniden tara"
 
-#: src/components/app.jsx:113
+#: src/components/app.jsx:123
 msgid "Reading information about the computer failed."
 msgstr "Bilgisayar hakkında bilgilerin okunması başarısız oldu."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:128
 msgid "Reading installer configuration failed."
 msgstr "Kurucu yapılandırmasının okunması başarısız oldu."
 
@@ -575,26 +600,30 @@ msgstr "Kurucu yapılandırmasının okunması başarısız oldu."
 msgid "Reading installer version information failed."
 msgstr "Kurucu sürüm bilgilerinin okunması başarısız oldu."
 
-#: src/components/AnacondaWizard.jsx:429 src/components/AnacondaWizard.jsx:452
-#: src/components/Error.jsx:216
 #: src/components/installation/InstallationProgress.jsx:222
+#: src/components/AnacondaWizard.jsx:458 src/components/AnacondaWizard.jsx:481
+#: src/components/Error.jsx:224
 msgid "Reboot"
 msgstr "Yeniden başlat"
 
-#: src/components/AnacondaWizard.jsx:464
+#: src/components/AnacondaWizard.jsx:493
 msgid "Reboot system?"
 msgstr "Sistem yeniden başlatılsın mı?"
 
-#: src/components/storage/MountPointMapping.jsx:242
+#: src/components/storage/MountPointMapping.jsx:243
 msgid "Recommended"
 msgstr "Tavsiye edilir"
 
-#: src/components/storage/MountPointMapping.jsx:349
-#: src/components/storage/MountPointMapping.jsx:560
+#: src/components/storage/CockpitStorageIntegration.jsx:518
+msgid "Recommended partitions:"
+msgstr "Tavsiye edilen bölümler:"
+
+#: src/components/storage/MountPointMapping.jsx:347
+#: src/components/storage/MountPointMapping.jsx:557
 msgid "Reformat"
 msgstr "Yeniden biçimlendir"
 
-#: src/components/storage/MountPointMapping.jsx:382
+#: src/components/storage/MountPointMapping.jsx:374
 msgid "Remove"
 msgstr "Kaldır"
 
@@ -610,7 +639,7 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Sorunu Bildir"
 
-#: src/components/Error.jsx:150 src/components/Error.jsx:260
+#: src/components/Error.jsx:150 src/components/Error.jsx:268
 msgid "Report issue"
 msgstr "Sorunu bildir"
 
@@ -622,24 +651,32 @@ msgstr ""
 "Bir sorunun bildirilmesi ağ üzerinden bilgi gönderecektir. Hassas bilgileri "
 "kaldırmak için lütfen ekteki günlüğü inceleyin ve düzenleyin."
 
-#: src/components/storage/MountPointMapping.jsx:241
+#: src/components/storage/MountPointMapping.jsx:242
 msgid "Required"
 msgstr "Gerekli"
 
-#: src/components/storage/InstallationDestination.jsx:386
+#: src/components/storage/CockpitStorageIntegration.jsx:530
+msgid "Requirements"
+msgstr "Gereksinimler"
+
+#: src/components/storage/InstallationDestination.jsx:389
 msgid "Rescan"
 msgstr "Yeniden tara"
 
-#: src/components/storage/ModifyStorage.jsx:63
-msgid "Rescan storage"
-msgstr "Depolamayı yeniden tara"
-
-#: src/components/storage/InstallationDestination.jsx:365
+#: src/components/storage/InstallationDestination.jsx:368
 msgid "Rescanning of the disks failed."
 msgstr "Disklerin yeniden taranması başarısız oldu."
 
-#: src/components/review/ReviewConfiguration.jsx:241
-#: src/components/review/ReviewConfiguration.jsx:242
+#: src/components/storage/CockpitStorageIntegration.jsx:84
+msgid "Return to installation"
+msgstr "Kuruluma geri dön"
+
+#: src/components/storage/CockpitStorageIntegration.jsx:429
+msgid "Return to storage editor"
+msgstr "Depolama düzenleyicisine dön"
+
+#: src/components/review/ReviewConfiguration.jsx:203
+#: src/components/review/ReviewConfiguration.jsx:204
 msgid "Review and install"
 msgstr "Gözden geçir ve kur"
 
@@ -647,15 +684,15 @@ msgstr "Gözden geçir ve kur"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "QR kodunu telefonunuzla tarayın veya ziyaret edin:"
 
-#: src/components/storage/MountPointMapping.jsx:287
+#: src/components/storage/MountPointMapping.jsx:288
 msgid "Select a device"
 msgstr "Bir aygıt seçin"
 
-#: src/components/storage/InstallationDestination.jsx:217
+#: src/components/storage/InstallationDestination.jsx:218
 msgid "Select a disk"
 msgstr "Bir disk seçin"
 
-#: src/components/storage/MountPointMapping.jsx:123
+#: src/components/storage/MountPointMapping.jsx:122
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Seçilen aygıtın biçimi '$0' yeniden biçimlendirilemiyor."
 
@@ -691,11 +728,11 @@ msgstr ""
 "Yazılım kurulumu: Depolama yapılandırması tamamlandı. Yazılım şimdi "
 "aygıtınıza kuruluyor."
 
-#: src/components/storage/InstallationScenario.jsx:87
+#: src/components/storage/InstallationScenario.jsx:96
 msgid "Some devices use the same name: $0."
 msgstr "Bazı aygıtlar aynı adı kullanıyor: $0."
 
-#: src/components/review/ReviewConfiguration.jsx:175
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Storage"
 msgstr "Depolama"
 
@@ -706,6 +743,21 @@ msgstr "Depolama yapılandırması"
 #: src/components/installation/InstallationProgress.jsx:119
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Depolama yapılandırması: Depolama alanı şu anda yapılandırılıyor."
+
+#: src/components/storage/HelpAutopartOptions.jsx:11
+msgid "Storage is based on the configuration from 'Modify storage'."
+msgstr ""
+"Depolama, 'Depolamayı değiştir' seçeneğindeki yapılandırmayı temel alır."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:105
+#, fuzzy
+#| msgid "Node login failed."
+msgid "Storage plugin failed"
+msgstr "Düğüm girişi başarısız oldu."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:397
+msgid "Storage requirements not met"
+msgstr "Depolama gereksinimleri karşılanmadı"
 
 #: src/components/Password.jsx:83
 msgid "Strong"
@@ -741,19 +793,19 @@ msgid ""
 "software. "
 msgstr "Seçilen dil kurulum için ve kurulu yazılımlarda kullanılacaktır. "
 
-#: src/components/storage/InstallationDestination.jsx:495
+#: src/components/storage/InstallationDestination.jsx:505
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
 msgstr[0] "Şu disk artık kullanılabilir değil: $0"
 msgstr[1] "Şu diskler artık kullanılabilir değil: $0"
 
-#: src/components/storage/InstallationDestination.jsx:478
+#: src/components/storage/InstallationDestination.jsx:488
 msgid "The following disk was detected: $0"
 msgid_plural "The following disks were detected: $0"
 msgstr[0] "Şu disk algılandı: $0"
 msgstr[1] "Şu diskler algılandı: $0"
 
-#: src/components/Error.jsx:257
+#: src/components/Error.jsx:265
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
 "provide additional details."
@@ -761,11 +813,11 @@ msgstr ""
 "Aşağıdaki günlük, ek ayrıntılar sağlayabileceğiniz sorun izleme sistemine "
 "gönderilecektir."
 
-#: src/components/storage/InstallationScenario.jsx:52
+#: src/components/storage/InstallationScenario.jsx:56
 msgid "The installation needs $1 of disk space; "
 msgstr "Kurulum için $1 disk alanı gerekli; "
 
-#: src/components/storage/InstallationScenario.jsx:122
+#: src/components/storage/InstallationScenario.jsx:199
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -773,15 +825,16 @@ msgstr ""
 "Kurulum, aygıtlarınızdaki kullanılabilir alanı kullanacak ve herhangi bir "
 "aygıt verisini silmeyecek."
 
-#: src/components/storage/InstallationScenario.jsx:136
+#: src/components/storage/InstallationScenario.jsx:213
+#: src/components/storage/InstallationScenario.jsx:227
 msgid "The installation will use your configured partitioning layout."
 msgstr "Kurulum yapılandırılan bölümlendirme düzeninizi kullanacak."
 
-#: src/components/Error.jsx:226
+#: src/components/Error.jsx:234
 msgid "The installer cannot continue due to a critical error."
 msgstr "Kurucu önemli bir hata nedeniyle devam edemiyor."
 
-#: src/components/Error.jsx:225
+#: src/components/Error.jsx:233
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Kurucu önemli bir hata nedeniyle devam edemiyor.: $0"
 
@@ -793,11 +846,7 @@ msgstr ""
 "Sağladığınız parola ASCII olmayan karakterler içeriyor. Bunları tuşlarken "
 "klavye düzenleri arasında geçiş yapamayabilirsiniz."
 
-#: src/components/storage/MountPointMapping.jsx:361
-msgid "The root partition is always re-formatted by the installer."
-msgstr "Kök bölümü kurucu tarafından her zaman yeniden biçimlendirilir."
-
-#: src/components/storage/InstallationScenario.jsx:108
+#: src/components/storage/InstallationScenario.jsx:185
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -805,7 +854,7 @@ msgstr ""
 "Seçilen diskler silinecek, bu geri alınamaz. Kurulumu sürdürmek istediğinize "
 "emin misiniz?"
 
-#: src/components/storage/InstallationDestination.jsx:470
+#: src/components/storage/InstallationDestination.jsx:480
 msgid "The usable disks have changed"
 msgstr "Kullanılabilir diskler değişti"
 
@@ -821,26 +870,31 @@ msgstr "Bu kararlı olmayan, sürüm öncesi yazılımdır"
 msgid "This may take a moment"
 msgstr "Bu biraz zaman alabilir"
 
+#: src/components/storage/CockpitStorageIntegration.jsx:391
+msgid "This will take a few moments"
+msgstr "Bu biraz zaman alacak"
+
 #: src/components/installation/InstallationProgress.jsx:164
 msgid "To begin using $0, reboot your system."
 msgstr "$0 kullanmaya başlamak için sisteminizi yeniden başlatın."
 
-#: src/components/storage/InstallationMethod.jsx:80
+#: src/components/storage/InstallationMethod.jsx:90
 msgid "To continue, select the devices to install to."
 msgstr "Devam etmek için kurulum yapılacak aygıtları seçin."
 
-#: src/components/storage/InstallationScenario.jsx:119
-#: src/components/storage/InstallationScenario.jsx:133
+#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:210
+#: src/components/storage/InstallationScenario.jsx:224
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Kaybı önlemek için verilerinizi yedeklediğinizden emin olun."
 
-#: src/components/storage/InstallationScenario.jsx:88
+#: src/components/storage/InstallationScenario.jsx:97
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 "Bu seçeneği kullanmak için aygıtları benzersiz adlara sahip olacak şekilde "
 "yeniden adlandırın."
 
-#: src/components/storage/InstallationScenario.jsx:70
+#: src/components/storage/InstallationScenario.jsx:77
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -860,7 +914,11 @@ msgstr "Aygıtların kilidini aç"
 msgid "Unlock encrypted devices"
 msgstr "Şifrelenen aygıtların kilidini aç"
 
-#: src/components/storage/InstallationScenario.jsx:111
+#: src/components/storage/InstallationScenario.jsx:216
+msgid "Use configured storage"
+msgstr "Yapılandırılan depolamayı kullan"
+
+#: src/components/storage/InstallationScenario.jsx:188
 msgid "Use free space for the installation"
 msgstr "Kurulum için boş alanı kullan"
 
@@ -896,11 +954,19 @@ msgstr "Hoş Geldiniz"
 msgid "Welcome to $0"
 msgstr "$0'ya hoş geldiniz"
 
-#: src/components/storage/InstallationMethod.jsx:89
+#: src/components/storage/InstallationMethod.jsx:99
 msgid "Welcome. Let's install $0 now."
 msgstr "Hoş geldiniz. Haydi $0 kuralım."
 
-#: src/components/AnacondaWizard.jsx:468
+#: src/components/storage/CockpitStorageIntegration.jsx:536
+msgid ""
+"You can either free up enough space here and let the installer handle the "
+"rest or manually set up partitions."
+msgstr ""
+"Burada yeterince yer ayırıp geri kalanını kurucuya bırakabilir veya "
+"bölümleri elle ayarlayabilirsiniz."
+
+#: src/components/AnacondaWizard.jsx:497
 msgid "Your progress will not be saved."
 msgstr "İlerlemeniz kaydedilmeyecek."
 
@@ -912,17 +978,54 @@ msgstr "tamamlanan adım"
 msgid "current step"
 msgstr "geçerli adım"
 
-#: src/components/review/ReviewConfiguration.jsx:70
+#: src/components/review/StorageReview.jsx:54
 msgid "format as $0"
 msgstr "$0 olarak biçimlendir"
 
-#: src/components/review/ReviewConfiguration.jsx:71
+#: src/components/review/StorageReview.jsx:55
 msgid "mount"
 msgstr "bağla"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "pending step"
 msgstr "bekleyen adım"
+
+#~ msgid "Current configuration can be used for installation."
+#~ msgstr "Geçerli yapılandırma kurulum için kullanılabilir."
+
+#~ msgid "The root partition is always re-formatted by the installer."
+#~ msgstr "Kök bölümü kurucu tarafından her zaman yeniden biçimlendirilir."
+
+#~ msgid ""
+#~ "Blivet-gui is an advanced storage editor that lets you resize, delete, "
+#~ "and create partitions. It can set up LVM and much more."
+#~ msgstr ""
+#~ "Blivet-gui, bölümleri yeniden boyutlandırmanıza, silmenize ve "
+#~ "oluşturmanıza olanak tanıyan gelişmiş bir depolama düzenleyicisidir. LVM "
+#~ "ve çok daha fazlasını ayarlayabilir."
+
+#~ msgid "Changes made in Blivet-gui will directly affect your storage."
+#~ msgstr ""
+#~ "Blivet-gui içinde yapılan değişiklikler depolamanızı doğrudan "
+#~ "etkileyecektir."
+
+#~ msgid ""
+#~ "If you have made changes on partitions or disks, please rescan storage."
+#~ msgstr ""
+#~ "Bölümlerde veya disklerde değişiklik yaptıysanız, lütfen depolamayı "
+#~ "yeniden tarayın."
+
+#~ msgid "Ignore"
+#~ msgstr "Yok say"
+
+#~ msgid "Modified storage"
+#~ msgstr "Depolama değiştirildi"
+
+#~ msgid "Modifying the storage failed."
+#~ msgstr "Depolamanın değiştirilmesi başarısız oldu."
+
+#~ msgid "Rescan storage"
+#~ msgstr "Depolamayı yeniden tara"
 
 #, fuzzy
 #~ msgid "Failed to get device names."
@@ -1886,9 +1989,6 @@ msgstr "bekleyen adım"
 #~ msgid "Configuring installed system"
 #~ msgstr "Kurulu sistem yapılandırılıyor"
 
-#~ msgid "Configuring storage"
-#~ msgstr "Depolama yapılandırılıyor"
-
 #~ msgid "Configuring {}"
 #~ msgstr "{} yapılandırılıyor"
 
@@ -1920,9 +2020,6 @@ msgstr "bekleyen adım"
 
 #~ msgid "Connecting..."
 #~ msgstr "Bağlanıyor..."
-
-#~ msgid "Continue"
-#~ msgstr "Sürdür"
 
 #~ msgid ""
 #~ "Continuing with this action will reset all your partitioning selections "
@@ -2359,9 +2456,6 @@ msgstr "bekleyen adım"
 
 #~ msgid "Failed to change a device."
 #~ msgstr "Aygıt değiştirilemedi."
-
-#~ msgid "Failed to proceed with the installation."
-#~ msgstr "Kurulum sürdürülemedi."
 
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "Önyükleyici yapılandırması kaydedilemedi"
@@ -3258,9 +3352,6 @@ msgstr "bekleyen adım"
 #~ msgid "Node Name"
 #~ msgstr "Düğüm Adı"
 
-#~ msgid "Node login failed."
-#~ msgstr "Düğüm girişi başarısız oldu."
-
 #~ msgid "None"
 #~ msgstr "Hiçbiri"
 
@@ -3821,9 +3912,6 @@ msgstr "bekleyen adım"
 
 #~ msgid "Registration failed."
 #~ msgstr "Kayıt başarısız."
-
-#~ msgid "Reload storage configuration from disk."
-#~ msgstr "Depolama yapılandırmasını diskten yeniden yükle."
 
 #~ msgid "Remote directory is required"
 #~ msgstr "Uzak dizin gerekli"
@@ -5588,10 +5676,6 @@ msgstr "bekleyen adım"
 
 #~ msgid "You must set a password"
 #~ msgstr "Bir parola belirlemelisiniz"
-
-#~ msgid ""
-#~ "You need to configure the network to use a network installation source."
-#~ msgstr "Ağ kurulum kaynağını kullanmak için ağı yapılandırmalısınız."
 
 #~ msgid "You need to set up networking first if you want to use NTP"
 #~ msgstr "NTP kullanmak istiyorsanız önce ağ ayarlarını yapmalısınız"
