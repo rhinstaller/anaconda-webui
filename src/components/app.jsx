@@ -26,19 +26,19 @@ import {
 import { read_os_release as readOsRelease } from "os-release.js";
 
 import { WithDialogs } from "dialogs.jsx";
+import { EmptyStatePanel } from "cockpit-components-empty-state";
 import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext, TargetSystemRootContext } from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { bugzillaPrefiledReportURL, CriticalError, errorHandlerWithContext } from "./Error.jsx";
+import { CriticalError, bugzillaPrefiledReportURL, errorHandlerWithContext } from "./Error.jsx";
 
 import { BossClient } from "../apis/boss.js";
-import { initDataLocalization, LocalizationClient, startEventMonitorLocalization } from "../apis/localization.js";
-import { initDataStorage, startEventMonitorStorage, StorageClient } from "../apis/storage.js";
+import { LocalizationClient, initDataLocalization, startEventMonitorLocalization } from "../apis/localization.js";
+import { StorageClient, initDataStorage, startEventMonitorStorage } from "../apis/storage.js";
 import { PayloadsClient } from "../apis/payloads";
-import { initDataRuntime, RuntimeClient, startEventMonitorRuntime } from "../apis/runtime";
-import { initDataNetwork, NetworkClient, startEventMonitorNetwork } from "../apis/network.js";
+import { RuntimeClient, initDataRuntime, startEventMonitorRuntime } from "../apis/runtime";
+import { NetworkClient, initDataNetwork, startEventMonitorNetwork } from "../apis/network.js";
 import { UsersClient } from "../apis/users";
-import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { setCriticalErrorAction, setCriticalErrorFrontendAction } from "../actions/miscellaneous-actions.js";
 

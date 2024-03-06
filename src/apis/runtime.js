@@ -17,9 +17,9 @@
 
 import cockpit from "cockpit";
 
+import { _getProperty } from "./helpers.js";
 import { getPasswordPoliciesAction } from "../actions/runtime-actions.js";
 import { debug } from "../helpers/log.js";
-import { _getProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime.UserInterface";

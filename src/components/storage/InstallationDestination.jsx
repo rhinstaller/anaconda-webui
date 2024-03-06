@@ -42,8 +42,8 @@ import {
 } from "@patternfly/react-core";
 import { SyncAltIcon, TimesIcon } from "@patternfly/react-icons";
 
-import { SystemTypeContext } from "../Common.jsx";
 import { ModifyStorage } from "./ModifyStorage.jsx";
+import { SystemTypeContext } from "../Common.jsx";
 
 import {
     runStorageTask,

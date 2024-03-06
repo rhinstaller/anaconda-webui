@@ -26,28 +26,28 @@ import {
     PageSectionTypes,
     PageSectionVariants,
     Stack,
-    useWizardContext,
     Wizard,
     WizardFooterWrapper,
-    WizardStep
+    WizardStep,
+    useWizardContext
 } from "@patternfly/react-core";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
-import { getPageProps as getInstallationMethodProps, InstallationMethod } from "./storage/InstallationMethod.jsx";
+import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { getPageProps as getMountPointMappingProps, MountPointMapping } from "./storage/MountPointMapping.jsx";
+import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
 import { DiskEncryption, getPageProps as getDiskEncryptionProps, getStorageEncryptionState } from "./storage/DiskEncryption.jsx";
-import { getPageProps as getInstallationLanguageProps, InstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
 import { Accounts, applyAccounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { getPageProps as getReviewConfigurationProps, ReviewConfiguration, ReviewConfigurationConfirmModal } from "./review/ReviewConfiguration.jsx";
+import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
+import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 import { exitGui } from "../helpers/exit.js";
 import {
     applyStorage,
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
-import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;

@@ -37,9 +37,9 @@ import {
     ExternalLinkAltIcon
 } from "@patternfly/react-icons";
 
-import { getAnacondaVersion } from "../helpers/product.js";
 import { UserIssue } from "./Error.jsx";
 import { OsReleaseContext } from "./Common.jsx";
+import { getAnacondaVersion } from "../helpers/product.js";
 
 import "./HeaderKebab.scss";
 

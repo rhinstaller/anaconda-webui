@@ -26,6 +26,7 @@ import {
     Stack,
 } from "@patternfly/react-core";
 
+import { StorageReview } from "./StorageReview.jsx";
 import {
     getAppliedPartitioning,
     getPartitioningMethod,
@@ -34,7 +35,6 @@ import {
 
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { OsReleaseContext } from "../Common.jsx";
-import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 

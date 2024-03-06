@@ -17,8 +17,8 @@
 import cockpit from "cockpit";
 
 import {
-    runStorageTask,
     StorageClient,
+    runStorageTask,
 } from "./storage.js";
 import {
     setBootloaderDrive,

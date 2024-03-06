@@ -24,9 +24,9 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import { SystemTypeContext } from "../Common.jsx";
 import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
+import { SystemTypeContext } from "../Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
