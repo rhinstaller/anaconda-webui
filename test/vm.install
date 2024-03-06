@@ -14,7 +14,7 @@ sys.path.append(BOTS_DIR)
 
 missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2-lvm2 udisks2-btrfs"
 # Install missing firefox dependencies.
-# Resolving all dependencies with dnf download is possible,
+# Resolving all dependencies with dnf4 download is possible,
 # but it packs to many packages to updates.img
 missing_packages_incl_deps = "firefox"
 
@@ -22,10 +22,10 @@ from machine.machine_core import machine_virtual
 
 
 def download_from_copr(copr_repo, packages, machine):
-    machine.execute(f"dnf -y copr enable {copr_repo}")
+    machine.execute(f"dnf4 -y copr enable {copr_repo}")
     copr_repo_id = f"copr:copr.fedorainfracloud.org:{copr_repo.replace('/', ':').replace('@', 'group_')}"
     machine.execute(
-        f"dnf download --destdir /var/tmp/build/ {packages} --repo {copr_repo_id}",
+        f"dnf4 download --destdir /var/tmp/build/ {packages} --repo {copr_repo_id}",
         stdout=sys.stdout, timeout=300
     )
 
@@ -85,9 +85,9 @@ def vm_install(image, verbose, quick):
         # This will change once we include this changes upstream and start building boot.iso with the new dependencies
         # Then we can enable this only for the various scenarios above
         if packages_to_download is not None:
-            machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
+            machine.execute(f"dnf4 download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
         machine.execute(
-            f"dnf download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}",
+            f"dnf4 download --resolve --setopt=install_weak_deps=False --destdir /var/tmp/build/ {missing_packages_incl_deps}",
             stdout=sys.stdout, timeout=300)
 
         # download rpms
