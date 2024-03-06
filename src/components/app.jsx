@@ -68,9 +68,7 @@ const MaybeBackdrop = ({ children }) => {
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
-    const [conf, setConf] = useState();
     const [language, setLanguage] = useState();
-    const [osRelease, setOsRelease] = useState("");
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitilized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
@@ -89,6 +87,8 @@ export const Application = () => {
             }
         );
     }, [dispatch]);
+    const conf = useConf({ onCritFail });
+    const osRelease = useOsRelease({ onCritFail });
 
     useEffect(() => {
         cockpit.file("/run/anaconda/backend_ready").watch(
@@ -138,13 +138,6 @@ export const Application = () => {
                         startEventMonitorRuntime({ dispatch });
                     }, onCritFail({ context: N_("Reading information about the computer failed.") }));
         });
-
-        readConf().then(
-            setConf,
-            onCritFail({ context: N_("Reading installer configuration failed.") })
-        );
-
-        readOsRelease().then(osRelease => setOsRelease(osRelease));
     }, [dispatch, onCritFail, backendReady]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
@@ -223,4 +216,24 @@ export const Application = () => {
             </LanguageContext.Provider>
         </WithDialogs>
     );
+};
+
+const useConf = ({ onCritFail }) => {
+    const [conf, setConf] = useState();
+
+    useEffect(() => {
+        readConf().then(setConf, onCritFail({ context: N_("Reading installer configuration failed.") }));
+    }, [onCritFail]);
+
+    return conf;
+};
+
+const useOsRelease = ({ onCritFail }) => {
+    const [osRelease, setOsRelease] = useState();
+
+    useEffect(() => {
+        readOsRelease().then(setOsRelease, onCritFail({ context: N_("Reading information about the OS failed.") }));
+    }, [onCritFail]);
+
+    return osRelease;
 };
