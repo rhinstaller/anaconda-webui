@@ -70,7 +70,7 @@ export const Application = () => {
     const [address, setAddress] = useState();
     const [language, setLanguage] = useState();
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
-    const [storeInitilized, setStoreInitialized] = useState(false);
+    const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
     const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
     const [showStorage, setShowStorage] = useState(false);
@@ -141,7 +141,7 @@ export const Application = () => {
     }, [dispatch, onCritFail, backendReady]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!criticalError && (!address || !conf || !osRelease || !storeInitilized)) {
+    if (!criticalError && (!address || !conf || !osRelease || !storeInitialized)) {
         debug("Loading initial data...");
         return (
             <Page>
