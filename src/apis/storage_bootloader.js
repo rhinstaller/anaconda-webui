@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import { StorageClient } from "./storage.js";
 import { _setProperty } from "./helpers.js";
 

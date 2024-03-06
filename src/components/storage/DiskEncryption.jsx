@@ -17,7 +17,6 @@
 
 import cockpit from "cockpit";
 import React, { useEffect, useState } from "react";
-
 import {
     Checkbox,
     EmptyState,

@@ -16,7 +16,6 @@
  */
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
-
 import {
     Button,
     DescriptionList, DescriptionListDescription,
@@ -32,7 +31,6 @@ import {
     getPartitioningMethod,
     getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
-
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { OsReleaseContext } from "../Common.jsx";
 

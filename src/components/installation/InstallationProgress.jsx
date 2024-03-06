@@ -30,11 +30,10 @@ import {
     InProgressIcon,
     PendingIcon
 } from "@patternfly/react-icons";
-
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
+
 import { Feedback } from "./Feedback.jsx";
 import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
-
 import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
 import { exitGui } from "../../helpers/exit.js";
 

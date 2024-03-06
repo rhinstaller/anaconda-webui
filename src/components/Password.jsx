@@ -18,7 +18,6 @@
 import cockpit from "cockpit";
 import React, { useEffect, useMemo, useState } from "react";
 import { debounce } from "throttle-debounce";
-
 import {
     Button,
     FormGroup,

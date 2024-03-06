@@ -17,7 +17,6 @@
 
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
-
 import {
     FormGroup,
     Radio,
@@ -30,7 +29,6 @@ import { SystemTypeContext } from "../Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
-
 import { StorageReview } from "../review/StorageReview.jsx";
 
 import "./InstallationScenario.scss";

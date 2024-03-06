@@ -22,7 +22,6 @@ import {
     getDiskSelectionAction,
     getPartitioningDataAction
 } from "../actions/storage-actions.js";
-
 import { debug } from "../helpers/log.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage";

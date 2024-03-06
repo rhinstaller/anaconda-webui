@@ -16,6 +16,7 @@
  */
 
 import cockpit from "cockpit";
+
 import { _callClient } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";

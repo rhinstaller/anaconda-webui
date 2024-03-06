@@ -16,7 +16,6 @@
  */
 import cockpit from "cockpit";
 import React, { useContext } from "react";
-
 import {
     Button,
 } from "@patternfly/react-core";

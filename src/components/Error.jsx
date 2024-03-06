@@ -17,7 +17,6 @@
 
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
-
 import {
     ActionList,
     Button,

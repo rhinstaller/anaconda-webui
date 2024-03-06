@@ -17,7 +17,6 @@
  */
 import cockpit from "cockpit";
 import React, { useEffect, useMemo, useState } from "react";
-
 import {
     ActionList,
     Alert,
@@ -39,16 +38,14 @@ import {
     Title,
 } from "@patternfly/react-core";
 import { ArrowLeftIcon } from "@patternfly/react-icons";
-
 import { EmptyStatePanel } from "cockpit-components-empty-state";
+
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
-
 import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../apis/storage.js";
-
 import {
     unlockDevice,
 } from "../../apis/storage_devicetree.js";
@@ -65,7 +62,6 @@ import {
     resetPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
-
 import { getDevicesAction } from "../../actions/storage-actions.js";
 import { getDeviceNameByPath } from "../../helpers/storage.js";
 

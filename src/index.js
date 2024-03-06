@@ -22,6 +22,7 @@ import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import cockpit from "cockpit";
+
 import { Application } from "./components/app.jsx";
 /*
  * PF4 overrides need to come after the JSX components imports because

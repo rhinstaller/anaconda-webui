@@ -17,7 +17,6 @@
 
 import React, { useEffect, useState } from "react";
 import cockpit from "cockpit";
-
 import {
     Alert,
     Divider,
@@ -35,11 +34,9 @@ import {
 
 import { AddressContext, LanguageContext } from "../Common.jsx";
 import { setLocale } from "../../apis/boss.js";
-
 import {
     setLanguage,
 } from "../../apis/localization.js";
-
 import {
     convertToCockpitLang,
     getLangCookie,
