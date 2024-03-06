@@ -32,6 +32,7 @@ import {
 } from "@patternfly/react-core";
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
+// eslint-disable-next-line import/order
 import {
     clearRootPassword,
     setCryptedRootPassword,
