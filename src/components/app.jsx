@@ -194,7 +194,6 @@ export const Application = () => {
                                       runtimeData={state.runtime}
                                       dispatch={dispatch}
                                       conf={conf}
-                                      osRelease={osRelease}
                                       setShowStorage={setShowStorage}
                                       showStorage={showStorage}
                                     />
