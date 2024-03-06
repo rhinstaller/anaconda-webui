@@ -17,29 +17,26 @@
 
 import React, { useEffect, useState } from "react";
 import cockpit from "cockpit";
-
 import {
+    Alert,
+    Divider,
     Form,
     FormGroup,
-    Title,
     Menu,
-    MenuList,
-    MenuSearch,
-    MenuItem,
     MenuContent,
     MenuGroup,
-    SearchInput,
-    Divider,
-    Alert, MenuSearchInput,
+    MenuItem,
+    MenuList,
+    MenuSearch,
+    MenuSearchInput,
+    SearchInput, Title,
 } from "@patternfly/react-core";
 
 import { AddressContext, LanguageContext } from "../Common.jsx";
 import { setLocale } from "../../apis/boss.js";
-
 import {
     setLanguage,
 } from "../../apis/localization.js";
-
 import {
     convertToCockpitLang,
     getLangCookie,

@@ -16,25 +16,23 @@
  */
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
-
 import {
     Button,
-    DescriptionList, DescriptionListGroup,
-    DescriptionListTerm, DescriptionListDescription,
+    DescriptionList, DescriptionListDescription,
+    DescriptionListGroup, DescriptionListTerm,
     HelperText, HelperTextItem,
     Modal, ModalVariant,
     Stack,
 } from "@patternfly/react-core";
 
+import { StorageReview } from "./StorageReview.jsx";
 import {
     getAppliedPartitioning,
-    getPartitioningRequest,
     getPartitioningMethod,
+    getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
-
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { OsReleaseContext } from "../Common.jsx";
-import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 

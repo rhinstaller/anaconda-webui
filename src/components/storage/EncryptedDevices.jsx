@@ -17,30 +17,27 @@
 
 import cockpit from "cockpit";
 import React, { useState } from "react";
-
 import {
     ActionList,
     ActionListItem,
     Button,
     Divider,
-    InputGroup,
     Flex,
     FlexItem,
     Form,
     FormGroup,
+    InputGroup,
+    InputGroupItem,
     Modal,
     Stack,
-    StackItem,
-    TextInput, InputGroupItem,
+    StackItem, TextInput,
 } from "@patternfly/react-core";
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
-
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { InlineNotification } from "cockpit-components-inline-notification.jsx";
 import { FormHelper } from "cockpit-components-form-helper.jsx";
 
 import { getDevicesAction } from "../../actions/storage-actions.js";
-
 import {
     unlockDevice,
 } from "../../apis/storage_devicetree.js";

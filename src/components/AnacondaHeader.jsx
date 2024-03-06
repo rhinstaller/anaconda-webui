@@ -15,20 +15,17 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import {
     Flex,
     Label,
     PageSection, PageSectionVariants,
     Popover, PopoverPosition,
-    TextContent, Text, TextVariants
+    Text, TextContent, TextVariants
 } from "@patternfly/react-core";
 import { InfoCircleIcon } from "@patternfly/react-icons";
 
 import { HeaderKebab } from "./HeaderKebab.jsx";
-
 import { getIsFinal } from "../apis/runtime";
 
 import "./AnacondaHeader.scss";

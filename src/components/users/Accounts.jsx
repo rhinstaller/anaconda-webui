@@ -16,17 +16,9 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as python from "python.js";
-import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { debounce } from "throttle-debounce";
-import {
-    setUsers,
-    setIsRootAccountLocked,
-    setCryptedRootPassword,
-    clearRootPassword,
-} from "../../apis/users.js";
-
 import {
     Checkbox,
     Form,
@@ -38,6 +30,15 @@ import {
     InputGroup,
     TextInput,
 } from "@patternfly/react-core";
+
+import encryptUserPw from "../../scripts/encrypt-user-pw.py";
+// eslint-disable-next-line import/order
+import {
+    clearRootPassword,
+    setCryptedRootPassword,
+    setIsRootAccountLocked,
+    setUsers,
+} from "../../apis/users.js";
 
 import "./Accounts.scss";
 

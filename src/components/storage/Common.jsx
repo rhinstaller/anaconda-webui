@@ -19,9 +19,9 @@ import { useEffect, useState } from "react";
 import {
     getDiskFreeSpace,
     getDiskTotalSpace,
+    getFormatTypeData,
     getMountPointConstraints,
     getRequiredDeviceSize,
-    getFormatTypeData,
 } from "../../apis/storage_devicetree.js";
 import {
     getRequiredSpace

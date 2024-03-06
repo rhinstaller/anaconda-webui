@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useReducer, useCallback } from "react";
+import { useCallback, useReducer } from "react";
 
 /* Initial state for the storeage store substate */
 export const storageInitialState = {

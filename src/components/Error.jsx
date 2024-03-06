@@ -17,7 +17,6 @@
 
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
-
 import {
     ActionList,
     Button,
@@ -30,15 +29,15 @@ import {
     ModalVariant,
     Stack,
     StackItem,
+    Text,
     TextArea,
     TextContent,
     TextVariants,
-    Text,
 } from "@patternfly/react-core";
-import { ExternalLinkAltIcon, DisconnectedIcon } from "@patternfly/react-icons";
+import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
-import { exitGui } from "../helpers/exit.js";
 import { SystemTypeContext } from "./Common.jsx";
+import { exitGui } from "../helpers/exit.js";
 
 import "./Error.scss";
 

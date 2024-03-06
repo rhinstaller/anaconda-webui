@@ -15,7 +15,8 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-import { _setProperty, _callClient } from "./helpers.js";
+
+import { _callClient, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Users";

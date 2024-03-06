@@ -16,9 +16,9 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { debounce } from "throttle-debounce";
-
+// eslint-disable-next-line import/order
 import {
     Button,
     FormGroup,
@@ -33,9 +33,9 @@ import {
 // eslint-disable-next-line camelcase
 import { password_quality } from "cockpit-components-password.jsx";
 import {
+    CheckCircleIcon,
     ExclamationCircleIcon,
     ExclamationTriangleIcon,
-    CheckCircleIcon,
     EyeIcon,
     EyeSlashIcon
 } from "@patternfly/react-icons";

@@ -16,14 +16,13 @@
  */
 import cockpit from "cockpit";
 
+import { _callClient, _getProperty } from "./helpers.js";
 import {
     getDevicesAction,
     getDiskSelectionAction,
     getPartitioningDataAction
 } from "../actions/storage-actions.js";
-
 import { debug } from "../helpers/log.js";
-import { _callClient, _getProperty } from "./helpers.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage";

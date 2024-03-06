@@ -18,10 +18,10 @@
 import {
     getCommonLocales,
     getLanguage,
-    getLanguages,
     getLanguageData,
-    getLocales,
+    getLanguages,
     getLocaleData,
+    getLocales,
 } from "../apis/localization.js";
 import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 

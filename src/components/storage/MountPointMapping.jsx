@@ -16,16 +16,15 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
-
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     Button,
-    Switch,
     Flex,
     FlexItem,
     HelperText,
     HelperTextItem,
     Label,
+    Switch,
     TextInput,
 } from "@patternfly/react-core";
 import {
@@ -34,13 +33,11 @@ import {
     SelectVariant
 } from "@patternfly/react-core/deprecated";
 import { TrashIcon } from "@patternfly/react-icons";
-
 import { ListingTable } from "cockpit-components-table.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { useMountPointConstraints } from "./Common.jsx";
-
 import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";

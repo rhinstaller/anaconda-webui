@@ -17,9 +17,9 @@
 
 import cockpit from "cockpit";
 
+import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 import { getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 import { debug } from "../helpers/log.js";
-import { _callClient, _setProperty, _getProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Localization";
