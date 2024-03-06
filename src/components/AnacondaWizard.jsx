@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
 import {
     ActionList,
@@ -33,21 +33,21 @@ import {
 } from "@patternfly/react-core";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
-import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
+import { getPageProps as getInstallationMethodProps, InstallationMethod } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
-import { DiskEncryption, getStorageEncryptionState, getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
-import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
-import { Accounts, getPageProps as getAccountsProps, getAccountsState, applyAccounts } from "./users/Accounts.jsx";
+import { getPageProps as getMountPointMappingProps, MountPointMapping } from "./storage/MountPointMapping.jsx";
+import { DiskEncryption, getPageProps as getDiskEncryptionProps, getStorageEncryptionState } from "./storage/DiskEncryption.jsx";
+import { getPageProps as getInstallationLanguageProps, InstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { Accounts, applyAccounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
+import { getPageProps as getReviewConfigurationProps, ReviewConfiguration, ReviewConfigurationConfirmModal } from "./review/ReviewConfiguration.jsx";
 import { exitGui } from "../helpers/exit.js";
 import {
     applyStorage,
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
-import { SystemTypeContext, OsReleaseContext } from "./Common.jsx";
+import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;

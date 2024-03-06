@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     AboutModal,
     Button,
@@ -24,17 +24,17 @@ import {
     DescriptionListDescription,
     DescriptionListGroup,
     DescriptionListTerm,
-    Flex,
-    Stack,
-    StackItem,
     Dropdown,
     DropdownItem,
+    DropdownList,
+    Flex,
     MenuToggle,
-    DropdownList
+    Stack,
+    StackItem
 } from "@patternfly/react-core";
 import {
-    ExternalLinkAltIcon,
-    EllipsisVIcon
+    EllipsisVIcon,
+    ExternalLinkAltIcon
 } from "@patternfly/react-icons";
 
 import { getAnacondaVersion } from "../helpers/product.js";

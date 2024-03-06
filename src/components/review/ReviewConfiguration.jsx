@@ -19,8 +19,8 @@ import React, { useContext, useEffect, useState } from "react";
 
 import {
     Button,
-    DescriptionList, DescriptionListGroup,
-    DescriptionListTerm, DescriptionListDescription,
+    DescriptionList, DescriptionListDescription,
+    DescriptionListGroup, DescriptionListTerm,
     HelperText, HelperTextItem,
     Modal, ModalVariant,
     Stack,
@@ -28,8 +28,8 @@ import {
 
 import {
     getAppliedPartitioning,
-    getPartitioningRequest,
     getPartitioningMethod,
+    getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
 
 import { getScenario } from "../storage/InstallationScenario.jsx";

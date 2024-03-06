@@ -16,15 +16,15 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as python from "python.js";
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { debounce } from "throttle-debounce";
 import {
-    setUsers,
-    setIsRootAccountLocked,
-    setCryptedRootPassword,
     clearRootPassword,
+    setCryptedRootPassword,
+    setIsRootAccountLocked,
+    setUsers,
 } from "../../apis/users.js";
 
 import {

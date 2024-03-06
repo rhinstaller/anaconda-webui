@@ -16,16 +16,16 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
     Button,
-    Switch,
     Flex,
     FlexItem,
     HelperText,
     HelperTextItem,
     Label,
+    Switch,
     TextInput,
 } from "@patternfly/react-core";
 import {

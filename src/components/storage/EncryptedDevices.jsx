@@ -23,15 +23,15 @@ import {
     ActionListItem,
     Button,
     Divider,
-    InputGroup,
     Flex,
     FlexItem,
     Form,
     FormGroup,
+    InputGroup,
+    InputGroupItem,
     Modal,
     Stack,
-    StackItem,
-    TextInput, InputGroupItem,
+    StackItem, TextInput,
 } from "@patternfly/react-core";
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 

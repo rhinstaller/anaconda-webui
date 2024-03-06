@@ -42,7 +42,7 @@ import { ArrowLeftIcon } from "@patternfly/react-icons";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
-import { useDiskTotalSpace, useDiskFreeSpace, useRequiredSize, useMountPointConstraints } from "./Common.jsx";
+import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
 
 import {
     runStorageTask,

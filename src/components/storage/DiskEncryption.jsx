@@ -16,19 +16,19 @@
  */
 
 import cockpit from "cockpit";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
     Checkbox,
     EmptyState,
+    EmptyStateFooter,
     EmptyStateHeader,
     EmptyStateIcon,
-    EmptyStateFooter,
     Form,
     Spinner,
+    Text,
     TextContent,
     TextVariants,
-    Text,
 } from "@patternfly/react-core";
 
 import "./DiskEncryption.scss";
