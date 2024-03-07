@@ -28,7 +28,7 @@ import { TargetSystemRootContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
-export const ModifyStorage = ({ idPrefix, onCritFail, onRescan, setShowStorage, selectedDevices }) => {
+export const ModifyStorage = ({ idPrefix, setShowStorage, selectedDevices }) => {
     const targetSystemRoot = useContext(TargetSystemRootContext);
     const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");

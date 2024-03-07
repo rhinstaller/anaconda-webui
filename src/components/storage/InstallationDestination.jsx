@@ -318,7 +318,6 @@ export const InstallationDestination = ({
     setIsFormValid,
     setIsFormDisabled,
     setShowStorage,
-    onRescanDisks,
     onCritFail
 }) => {
     const [isRescanningDisks, setIsRescanningDisks] = useState(false);

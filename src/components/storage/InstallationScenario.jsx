@@ -267,7 +267,6 @@ const InstallationScenarioSelector = ({
     deviceNames,
     idPrefix,
     isFormDisabled,
-    onCritFail,
     partitioning,
     requests,
     scenarioPartitioningMapping,
@@ -291,7 +290,7 @@ const InstallationScenarioSelector = ({
             return;
         }
 
-        setScenarioAvailability(oldAvailability => {
+        setScenarioAvailability(() => {
             const newAvailability = {};
 
             for (const scenario of scenarios) {

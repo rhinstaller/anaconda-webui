@@ -40,7 +40,7 @@ const ruleAscii = {
     check: (policy, password) => password.length > 0 && /^[\x20-\x7F]*$/.test(password),
     id: "ascii",
     isError: false,
-    text: (policy) => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
+    text: () => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
 };
 
 export function getStorageEncryptionState (password = "", confirmPassword = "", encrypt = false) {

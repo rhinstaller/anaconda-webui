@@ -71,7 +71,7 @@ export const cryptUserPassword = async (password) => {
     return crypted;
 };
 
-export const applyAccounts = async (accounts, errorHandler) => {
+export const applyAccounts = async (accounts) => {
     const cryptedUserPw = await cryptUserPassword(accounts.password);
     const users = accountsToDbusUsers({ ...accounts, password: cryptedUserPw });
     await setUsers(users);

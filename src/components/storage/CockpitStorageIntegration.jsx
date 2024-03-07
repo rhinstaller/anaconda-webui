@@ -290,7 +290,7 @@ const CheckStorageDialog = ({
                         deviceName: deviceData[dev] ? dev : getDeviceNameByPath(deviceData, dev),
                         passphrase: cockpitPassphrases[dev]
                     })))
-                .filter(({ devicePath, deviceName }) => {
+                .filter(({ deviceName }) => {
                     return (
                         deviceData[deviceName].formatData.type.v === "luks" &&
                             deviceData[deviceName].formatData.attrs.v.has_key !== "True"

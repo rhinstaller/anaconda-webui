@@ -102,7 +102,7 @@ export const Application = () => {
         }
 
         // Before unload ask the user for verification
-        window.onbeforeunload = e => "";
+        window.onbeforeunload = () => "";
 
         // Listen on JS errors
         window.onerror = (message, url, line, col, errObj) => {

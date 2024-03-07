@@ -65,7 +65,7 @@ const _ = cockpit.gettext;
  */
 const getInitialRequests = (requests, mountPointConstraints) => {
     const constrainedRequests = mountPointConstraints.filter(constraint =>
-        !!constraint["mount-point"].v).map((constraint, idx) => {
+        !!constraint["mount-point"].v).map(constraint => {
         const originalRequest = requests.find(request => request["mount-point"] === constraint["mount-point"].v);
         const request = ({ "mount-point": constraint["mount-point"].v, reformat: constraint["mount-point"].v === "/" });
 
@@ -286,7 +286,7 @@ const DeviceColumnSelect = ({ deviceData, devices, idPrefix, isRequiredMountPoin
           selections={device ? [device] : []}
           variant={SelectVariant.single}
           onToggle={(_event, val) => setIsOpen(val)}
-          onSelect={(_, selection, isAPlaceHolder) => {
+          onSelect={(_, selection) => {
               handleRequestChange({ deviceSpec: selection, mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}
