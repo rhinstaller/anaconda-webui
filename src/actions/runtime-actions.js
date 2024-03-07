@@ -18,7 +18,7 @@
 import {
     getPasswordPolicies,
 } from "../apis/runtime.js";
-import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
+import { setCriticalErrorAction } from "./miscellaneous-actions.js";
 
 export const getPasswordPoliciesAction = () => {
     return async (dispatch) => {

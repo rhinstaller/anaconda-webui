@@ -34,7 +34,7 @@ import {
 } from "../apis/storage_disks_selection.js";
 import {
     setCriticalErrorAction,
-} from "../actions/miscellaneous-actions.js";
+} from "./miscellaneous-actions.js";
 
 export const getDevicesAction = () => {
     return async (dispatch) => {
