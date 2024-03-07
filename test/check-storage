@@ -1108,6 +1108,14 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         b._wait_present("#storage.ct-page-fill")
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        # Pixel test the cockpit storage view, modal backdrops should cover the whole screen
+        b.switch_to_top()
+        b.assert_pixels(
+            "#app",
+            "storage-editor",
+            ignore=anacondalib.pixel_tests_ignore,
+        )
+        b.switch_to_frame("cockpit-storage")
         self.confirm()
 
         self.click_dropdown(self.card_row("Storage", 2), "Create partition")
