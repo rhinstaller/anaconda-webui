@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Checkbox,
     EmptyState,
@@ -33,6 +33,7 @@ import {
 import "./DiskEncryption.scss";
 
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
+import { RuntimeContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -66,12 +67,11 @@ export const DiskEncryption = ({
     setIsFormValid,
     storageEncryption,
     setStorageEncryption,
-    passwordPolicies,
 }) => {
     const [password, setPassword] = useState(storageEncryption.password);
     const [confirmPassword, setConfirmPassword] = useState(storageEncryption.confirmPassword);
     const isEncrypted = storageEncryption.encrypt;
-    const luksPolicy = passwordPolicies.luks;
+    const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
 
     const encryptedDevicesCheckbox = content => (
         <Checkbox

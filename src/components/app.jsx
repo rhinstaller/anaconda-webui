@@ -24,7 +24,7 @@ import { read_os_release as readOsRelease } from "os-release.js";
 import { WithDialogs } from "dialogs.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext, TargetSystemRootContext } from "./Common.jsx";
+import { AddressContext, LanguageContext, OsReleaseContext, RuntimeContext, SystemTypeContext, TargetSystemRootContext } from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import { CriticalError, bugzillaPrefiledReportURL, errorHandlerWithContext } from "./Error.jsx";
@@ -185,19 +185,20 @@ export const Application = () => {
                         </PageGroup>}
                         <AddressContext.Provider value={address}>
                             <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                                <WithDialogs>
-                                    <AnacondaWizard
-                                      onCritFail={onCritFail}
-                                      title={title}
-                                      storageData={state.storage}
-                                      localizationData={state.localization}
-                                      runtimeData={state.runtime}
-                                      dispatch={dispatch}
-                                      conf={conf}
-                                      setShowStorage={setShowStorage}
-                                      showStorage={showStorage}
-                                    />
-                                </WithDialogs>
+                                <RuntimeContext.Provider value={state.runtime}>
+                                    <WithDialogs>
+                                        <AnacondaWizard
+                                          onCritFail={onCritFail}
+                                          title={title}
+                                          storageData={state.storage}
+                                          localizationData={state.localization}
+                                          dispatch={dispatch}
+                                          conf={conf}
+                                          setShowStorage={setShowStorage}
+                                          showStorage={showStorage}
+                                        />
+                                    </WithDialogs>
+                                </RuntimeContext.Provider>
                             </TargetSystemRootContext.Provider>
                         </AddressContext.Provider>
                     </>}

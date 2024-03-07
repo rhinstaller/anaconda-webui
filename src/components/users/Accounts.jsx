@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as python from "python.js";
 import { debounce } from "throttle-debounce";
 import {
@@ -42,6 +42,7 @@ import {
 
 import "./Accounts.scss";
 
+import { RuntimeContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 const _ = cockpit.gettext;
@@ -124,7 +125,6 @@ const isUserNameWithInvalidCharacters = (userName) => {
 
 const CreateAccount = ({
     idPrefix,
-    passwordPolicy,
     setIsUserValid,
     accounts,
     setAccounts,
@@ -140,6 +140,7 @@ const CreateAccount = ({
     const [password, setPassword] = useState(accounts.password);
     const [confirmPassword, setConfirmPassword] = useState(accounts.confirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -258,7 +259,6 @@ const CreateAccount = ({
 
 const RootAccount = ({
     idPrefix,
-    passwordPolicy,
     setIsRootValid,
     accounts,
     setAccounts,
@@ -267,6 +267,7 @@ const RootAccount = ({
     const [confirmPassword, setConfirmPassword] = useState(accounts.rootConfirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const isRootAccountEnabled = accounts.isRootEnabled;
+    const passwordPolicy = useContext(RuntimeContext).passwordPolicies.root;
 
     useEffect(() => {
         setIsRootValid(isPasswordValid || !isRootAccountEnabled);
@@ -313,7 +314,6 @@ const RootAccount = ({
 export const Accounts = ({
     idPrefix,
     setIsFormValid,
-    passwordPolicies,
     accounts,
     setAccounts,
 }) => {
@@ -330,14 +330,12 @@ export const Accounts = ({
         >
             <CreateAccount
               idPrefix={idPrefix + "-create-account"}
-              passwordPolicy={passwordPolicies.user}
               setIsUserValid={setIsUserValid}
               accounts={accounts}
               setAccounts={setAccounts}
             />
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
-              passwordPolicy={passwordPolicies.root}
               setIsRootValid={setIsRootValid}
               accounts={accounts}
               setAccounts={setAccounts}
