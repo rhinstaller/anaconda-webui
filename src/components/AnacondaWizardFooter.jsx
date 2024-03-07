@@ -35,6 +35,71 @@ import { exitGui } from "../helpers/exit.js";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
+export const AnacondaWizardFooterTemplate = ({
+    extraActions,
+    currentStepProps,
+    isFirstScreen,
+    isFormDisabled,
+    isFormValid,
+    onNext,
+    setIsFormValid,
+}) => {
+    const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
+    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
+    const onBack = () => {
+        // first reset validation state to default
+        setIsFormValid(true);
+        goToPrevStep();
+    };
+
+    const footerHelperText = currentStepProps?.footerHelperText;
+    const nextButtonText = currentStepProps?.nextButtonText || _("Next");
+    const nextButtonVariant = currentStepProps?.nextButtonVariant || "primary";
+
+    return (
+        <WizardFooterWrapper>
+            <Stack hasGutter>
+                {extraActions}
+                {quitWaitsConfirmation &&
+                    <QuitInstallationConfirmModal
+                      exitGui={exitGui}
+                      setQuitWaitsConfirmation={setQuitWaitsConfirmation}
+                    />}
+                {footerHelperText}
+                <ActionList>
+                    <Button
+                      id="installation-back-btn"
+                      variant="secondary"
+                      isDisabled={isFirstScreen || isFormDisabled}
+                      onClick={() => onBack()}>
+                        {_("Back")}
+                    </Button>
+                    <Button
+                      id="installation-next-btn"
+                      variant={nextButtonVariant}
+                      isDisabled={!isFormValid || isFormDisabled}
+                      onClick={() => onNext(activeStep, goToNextStep)}>
+                        {nextButtonText}
+                    </Button>
+                    <Button
+                      id="installation-quit-btn"
+                      isDisabled={isFormDisabled}
+                      style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
+                      variant="link"
+                      onClick={() => {
+                          setQuitWaitsConfirmation(true);
+                      }}
+                    >
+                        {isBootIso ? _("Reboot") : _("Quit")}
+                    </Button>
+                </ActionList>
+            </Stack>
+        </WizardFooterWrapper>
+    );
+};
+
 export const AnacondaWizardFooter = ({
     onCritFail,
     isFormValid,
@@ -50,9 +115,7 @@ export const AnacondaWizardFooter = ({
     accounts,
 }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
-    const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
-    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const { activeStep } = useWizardContext();
 
     const onNext = (activeStep, goToNextStep) => {
         // first reset validation state to default
@@ -108,68 +171,27 @@ export const AnacondaWizardFooter = ({
         }
     };
 
-    const onBack = () => {
-        // first reset validation state to default
-        setIsFormValid(true);
-        goToPrevStep();
-    };
-
     const currentStep = stepsOrder.find(s => s.id === activeStep.id);
-    const footerHelperText = currentStep?.footerHelperText;
     const isFirstScreen = stepsOrder.filter(step => !step.isHidden)[0].id === activeStep.id;
-    const nextButtonText = currentStep?.nextButtonText || _("Next");
-    const nextButtonVariant = currentStep?.nextButtonVariant || "primary";
 
     return (
-        <WizardFooterWrapper>
-            <Stack hasGutter>
-                {activeStep.id === "installation-review" &&
-                    nextWaitsConfirmation &&
-                    <ReviewConfigurationConfirmModal
-                      idPrefix={activeStep.id}
-                      onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
-                      setNextWaitsConfirmation={setNextWaitsConfirmation}
-                      storageScenarioId={storageScenarioId}
-                    />}
-                {quitWaitsConfirmation &&
-                    <QuitInstallationConfirmModal
-                      exitGui={exitGui}
-                      setQuitWaitsConfirmation={setQuitWaitsConfirmation}
-                    />}
-                {footerHelperText}
-                <ActionList>
-                    <Button
-                      id="installation-back-btn"
-                      variant="secondary"
-                      isDisabled={isFirstScreen || isFormDisabled}
-                      onClick={() => onBack()}>
-                        {_("Back")}
-                    </Button>
-                    <Button
-                      id="installation-next-btn"
-                      variant={nextButtonVariant}
-                      isDisabled={
-                          !isFormValid ||
-                            isFormDisabled ||
-                            nextWaitsConfirmation
-                      }
-                      onClick={() => onNext(activeStep, goToNextStep)}>
-                        {nextButtonText}
-                    </Button>
-                    <Button
-                      id="installation-quit-btn"
-                      isDisabled={isFormDisabled}
-                      style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
-                      variant="link"
-                      onClick={() => {
-                          setQuitWaitsConfirmation(true);
-                      }}
-                    >
-                        {isBootIso ? _("Reboot") : _("Quit")}
-                    </Button>
-                </ActionList>
-            </Stack>
-        </WizardFooterWrapper>
+        <AnacondaWizardFooterTemplate
+          currentStepProps={currentStep}
+          extraActions={
+              activeStep.id === "installation-review" &&
+                  nextWaitsConfirmation &&
+                  <ReviewConfigurationConfirmModal
+                    idPrefix={activeStep.id}
+                    onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
+                    setNextWaitsConfirmation={setNextWaitsConfirmation}
+                    storageScenarioId={storageScenarioId}
+                  />
+          }
+          isFirstScreen={isFirstScreen}
+          isFormDisabled={isFormDisabled}
+          isFormValid={isFormValid}
+          onNext={onNext}
+        />
     );
 };
 
