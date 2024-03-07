@@ -98,7 +98,7 @@ export const CockpitStorageIntegration = ({
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
         iframe.contentWindow.addEventListener("error", exception => {
-            onCritFail({ isFrontend: true, context: _("Storage plugin failed") })(exception.error);
+            onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
         });
 
         resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
@@ -181,13 +181,13 @@ export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
 
                 if (existingRequestIndex !== -1) {
                     requests[existingRequestIndex] = {
-                        "mount-point": cockpit.variant("s", dir || type),
                         "device-spec": cockpit.variant("s", deviceSpec),
+                        "mount-point": cockpit.variant("s", dir || type),
                     };
                 } else {
                     requests.push({
-                        "mount-point": cockpit.variant("s", dir || type),
                         "device-spec": cockpit.variant("s", deviceSpec),
+                        "mount-point": cockpit.variant("s", dir || type),
                     });
                 }
             } else if (subvolumes) {
@@ -224,8 +224,8 @@ const CheckStorageDialog = ({
 }) => {
     const [error, setError] = useState();
     const [checkStep, setCheckStep] = useState("rescan");
-    const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
-    const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
+    const diskTotalSpace = useDiskTotalSpace({ devices: deviceData, selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace({ devices: deviceData, selectedDisks });
     const mountPointConstraints = useMountPointConstraints();
     const requiredSize = useRequiredSize();
 
@@ -236,8 +236,8 @@ const CheckStorageDialog = ({
         const availability = checkConfiguredStorage({
             deviceData,
             mountPointConstraints,
-            scenarioPartitioningMapping,
             newMountPoints,
+            scenarioPartitioningMapping,
         });
 
         return availability.available;
@@ -330,12 +330,12 @@ const CheckStorageDialog = ({
                 const partitioning = await preparePartitioning({ deviceData, newMountPoints });
 
                 applyStorage({
-                    partitioning,
                     onFail: exc => {
                         setCheckStep();
                         setError(exc);
                     },
                     onSuccess: () => setCheckStep(),
+                    partitioning,
                 });
             } catch (exc) {
                 setCheckStep();
@@ -356,7 +356,10 @@ const CheckStorageDialog = ({
         scanDevicesWithTask()
                 .then(task => {
                     return runStorageTask({
-                        task,
+                        onFail: exc => {
+                            setCheckStep();
+                            setError(exc);
+                        },
                         onSuccess: () => dispatch(getDevicesAction())
                                 .then(() => {
                                     setCheckStep("luks");
@@ -365,10 +368,7 @@ const CheckStorageDialog = ({
                                     setCheckStep();
                                     setError(exc);
                                 }),
-                        onFail: exc => {
-                            setCheckStep();
-                            setError(exc);
-                        }
+                        task
                     });
                 });
     }, [useConfiguredStorage, checkStep, dispatch, setError]);

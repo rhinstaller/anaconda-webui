@@ -37,14 +37,14 @@ import { PasswordFormFields, ruleLength } from "../Password.jsx";
 const _ = cockpit.gettext;
 
 const ruleAscii = {
-    id: "ascii",
-    text: (policy) => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
     check: (policy, password) => password.length > 0 && /^[\x20-\x7F]*$/.test(password),
+    id: "ascii",
     isError: false,
+    text: (policy) => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
 };
 
 export function getStorageEncryptionState (password = "", confirmPassword = "", encrypt = false) {
-    return { password, confirmPassword, encrypt };
+    return { confirmPassword, encrypt, password };
 }
 
 const CheckDisksSpinner = (
@@ -134,8 +134,8 @@ export const DiskEncryption = ({
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
         id: "disk-encryption",
-        label: _("Disk encryption"),
         isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
+        label: _("Disk encryption"),
         title: _("Encrypt the selected devices?")
     });
 };

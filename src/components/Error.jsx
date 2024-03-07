@@ -61,10 +61,10 @@ const ensureMaximumReportURLLength = (reportURL) => {
     // The current limit on URL length is 8KiB server limit.
     const searchParamsLimits = [
         // Summary should be short
-        { param: "short_desc", length: 256 },
+        { length: 256, param: "short_desc" },
         // We reserve some space in Details text for attachment message which
         // will be always appended to the end.
-        { param: "comment", length: 8192 - 256 - 100 },
+        { length: 8192 - 256 - 100, param: "comment" },
     ];
     const sp = newUrl.searchParams;
     searchParamsLimits.forEach((limit) => {

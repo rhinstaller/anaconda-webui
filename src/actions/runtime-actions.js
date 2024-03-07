@@ -26,8 +26,8 @@ export const getPasswordPoliciesAction = () => {
             const passwordPolicies = await getPasswordPolicies();
 
             return dispatch({
-                type: "GET_RUNTIME_PASSWORD_POLICIES",
-                payload: { passwordPolicies }
+                payload: { passwordPolicies },
+                type: "GET_RUNTIME_PASSWORD_POLICIES"
             });
         } catch (error) {
             setCriticalErrorAction(error);

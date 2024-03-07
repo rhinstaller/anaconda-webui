@@ -54,10 +54,10 @@ export const InstallationProgress = ({ onCritFail }) => {
 
     useEffect(() => {
         const progressStepsMap = {
-            ENVIRONMENT_CONFIGURATION: 0,
-            STORAGE_CONFIGURATION: 0,
-            SOFTWARE_INSTALLATION: 1,
             BOOTLOADER_INSTALLATION: 2,
+            ENVIRONMENT_CONFIGURATION: 0,
+            SOFTWARE_INSTALLATION: 1,
+            STORAGE_CONFIGURATION: 0,
             SYSTEM_CONFIGURATION: 3,
         };
 
@@ -117,24 +117,24 @@ export const InstallationProgress = ({ onCritFail }) => {
 
     const progressSteps = [
         {
-            title: _("Storage configuration"),
-            id: "installation-progress-step-storage",
             description: _("Storage configuration: Storage is currently being configured."),
+            id: "installation-progress-step-storage",
+            title: _("Storage configuration"),
         },
         {
-            title: _("Software installation"),
-            id: "installation-progress-step-payload",
             description: _("Software installation: Storage configuration complete. The software is now being installed onto your device."),
+            id: "installation-progress-step-payload",
+            title: _("Software installation"),
         },
         {
-            title: _("System configuration"),
-            id: "installation-progress-step-configuration",
             description: _("System configuration: Software installation complete. The system is now being configured."),
+            id: "installation-progress-step-configuration",
+            title: _("System configuration"),
         },
         {
-            title: _("Finalization"),
-            id: "installation-progress-step-boot-loader",
             description: _("Finalizing: The system configuration is complete. Finalizing installation may take a few moments."),
+            id: "installation-progress-step-boot-loader",
+            title: _("Finalization"),
         },
     ];
 

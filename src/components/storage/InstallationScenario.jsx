@@ -189,61 +189,61 @@ export const checkConfiguredStorage = ({
 };
 
 export const scenarios = [{
-    id: "erase-all",
-    label: _("Erase data and install"),
-    detail: helpEraseAll,
-    check: checkEraseAll,
-    default: true,
-    // CLEAR_PARTITIONS_ALL = 1
-    initializationMode: 1,
     buttonLabel: _("Erase data and install"),
     buttonVariant: "danger",
-    screenWarning: _("Erasing the data cannot be undone. Be sure to have backups."),
+    check: checkEraseAll,
+    default: true,
+    detail: helpEraseAll,
     dialogTitleIconVariant: "warning",
-    dialogWarningTitle: _("Erase data and install?"),
     dialogWarning: _("The selected disks will be erased, this cannot be undone. Are you sure you want to continue with the installation?"),
+    dialogWarningTitle: _("Erase data and install?"),
+    id: "erase-all",
+    // CLEAR_PARTITIONS_ALL = 1
+    initializationMode: 1,
+    label: _("Erase data and install"),
+    screenWarning: _("Erasing the data cannot be undone. Be sure to have backups."),
 }, {
-    id: "use-free-space",
-    label: _("Use free space for the installation"),
-    detail: helpUseFreeSpace,
-    check: checkUseFreeSpace,
-    default: false,
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
     buttonLabel: _("Install"),
     buttonVariant: "primary",
-    screenWarning: _("To prevent loss, make sure to backup your data."),
-    dialogTitleIconVariant: "",
-    dialogWarningTitle: _("Install on the free space?"),
-    dialogWarning: _("The installation will use the available space on your devices and will not erase any device data."),
-}, {
-    id: "mount-point-mapping",
-    label: _("Mount point assignment"),
+    check: checkUseFreeSpace,
     default: false,
-    detail: helpMountPointMapping,
-    check: checkMountPointMapping,
+    detail: helpUseFreeSpace,
+    dialogTitleIconVariant: "",
+    dialogWarning: _("The installation will use the available space on your devices and will not erase any device data."),
+    dialogWarningTitle: _("Install on the free space?"),
+    id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
+    label: _("Use free space for the installation"),
+    screenWarning: _("To prevent loss, make sure to backup your data."),
+}, {
     buttonLabel: _("Apply mount point assignment and install"),
     buttonVariant: "danger",
-    screenWarning: _("To prevent loss, make sure to backup your data."),
-    dialogTitleIconVariant: "",
-    dialogWarningTitle: _("Install on the custom mount points?"),
-    dialogWarning: _("The installation will use your configured partitioning layout."),
-}, {
-    id: "use-configured-storage",
-    label: _("Use configured storage"),
+    check: checkMountPointMapping,
     default: false,
-    detail: helpConfiguredStorage,
-    check: checkConfiguredStorage,
+    detail: helpMountPointMapping,
+    dialogTitleIconVariant: "",
+    dialogWarning: _("The installation will use your configured partitioning layout."),
+    dialogWarningTitle: _("Install on the custom mount points?"),
+    id: "mount-point-mapping",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
+    label: _("Mount point assignment"),
+    screenWarning: _("To prevent loss, make sure to backup your data."),
+}, {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
-    screenWarning: _("To prevent loss, make sure to backup your data."),
+    check: checkConfiguredStorage,
+    default: false,
+    detail: helpConfiguredStorage,
     dialogTitleIconVariant: "",
-    dialogWarningTitle: _("Install using the configured storage?"),
     dialogWarning: _("The installation will use your configured partitioning layout."),
+    dialogWarningTitle: _("Install using the configured storage?"),
+    id: "use-configured-storage",
+    // CLEAR_PARTITIONS_NONE = 0
+    initializationMode: 0,
+    label: _("Use configured storage"),
+    screenWarning: _("To prevent loss, make sure to backup your data."),
 }
 ];
 
@@ -279,11 +279,11 @@ const InstallationScenarioSelector = ({
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
     ));
-    const diskTotalSpace = useDiskTotalSpace({ selectedDisks, devices: deviceData });
-    const diskFreeSpace = useDiskFreeSpace({ selectedDisks, devices: deviceData });
+    const diskTotalSpace = useDiskTotalSpace({ devices: deviceData, selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace({ devices: deviceData, selectedDisks });
     const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
     const mountPointConstraints = useMountPointConstraints();
-    const usablePartitions = useUsablePartitions({ selectedDisks, devices: deviceData });
+    const usablePartitions = useUsablePartitions({ devices: deviceData, selectedDisks });
     const requiredSize = useRequiredSize();
 
     useEffect(() => {

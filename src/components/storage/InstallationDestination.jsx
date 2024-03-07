@@ -288,7 +288,11 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
     scanDevicesWithTask()
             .then(task => {
                 return runStorageTask({
-                    task,
+                    onFail: exc => {
+                        setIsFormDisabled(false);
+                        setIsRescanningDisks(false);
+                        errorHandler(exc);
+                    },
                     onSuccess: () => resetPartitioning()
                             .then(() => Promise.all([
                                 dispatch(getDevicesAction()),
@@ -299,11 +303,7 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
                                 setIsRescanningDisks(false);
                             })
                             .catch(errorHandler),
-                    onFail: exc => {
-                        setIsFormDisabled(false);
-                        setIsRescanningDisks(false);
-                        errorHandler(exc);
-                    }
+                    task
                 });
             });
 };

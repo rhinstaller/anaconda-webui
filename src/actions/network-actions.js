@@ -26,8 +26,8 @@ export const getConnectedAction = () => {
             const connected = await getConnected();
 
             return dispatch({
-                type: "GET_NETWORK_CONNECTED",
-                payload: { connected }
+                payload: { connected },
+                type: "GET_NETWORK_CONNECTED"
             });
         } catch (error) {
             setCriticalErrorAction(error);

@@ -107,7 +107,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
     const stepsOrder = [
         {
             component: InstallationLanguage,
-            data: { dispatch, languages: localizationData.languages, language: localizationData.language, commonLocales: localizationData.commonLocales },
+            data: { commonLocales: localizationData.commonLocales, dispatch, language: localizationData.language, languages: localizationData.languages },
             ...getInstallationLanguageProps({ isBootIso, osRelease })
         },
         {
@@ -120,14 +120,14 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 partitioning: storageData.partitioning.path,
                 requests: storageData.partitioning.requests,
                 scenarioPartitioningMapping,
-                storageScenarioId,
+                setShowStorage,
                 setStorageScenarioId: (scenarioId) => {
                     window.sessionStorage.setItem("storage-scenario-id", scenarioId);
                     setStorageScenarioId(scenarioId);
                 },
-                setShowStorage,
+                storageScenarioId,
             },
-            ...getInstallationMethodProps({ isBootIso, osRelease, isFormValid })
+            ...getInstallationMethodProps({ isBootIso, isFormValid, osRelease })
         },
         {
             id: "disk-configuration",
@@ -145,9 +145,9 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
             }, {
                 component: DiskEncryption,
                 data: {
-                    storageEncryption,
-                    setStorageEncryption,
                     passwordPolicies: runtimeData.passwordPolicies,
+                    setStorageEncryption,
+                    storageEncryption,
                 },
                 ...getDiskEncryptionProps({ storageScenarioId })
             }]
@@ -156,21 +156,21 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
             component: Accounts,
             data: {
                 accounts,
-                setAccounts,
                 passwordPolicies: runtimeData.passwordPolicies,
+                setAccounts,
             },
             ...getAccountsProps({ isBootIso })
         },
         {
             component: ReviewConfiguration,
             data: {
+                accounts,
                 deviceData: storageData.devices,
                 diskSelection: storageData.diskSelection,
-                requests: storageData.partitioning ? storageData.partitioning.requests : null,
                 language,
                 localizationData,
+                requests: storageData.partitioning ? storageData.partitioning.requests : null,
                 storageScenarioId,
-                accounts,
             },
             ...getReviewConfigurationProps({ storageScenarioId })
         },
@@ -351,6 +351,8 @@ const Footer = ({
             setIsFormDisabled(true);
 
             applyStorage({
+                encrypt: storageEncryption.encrypt,
+                encryptPassword: storageEncryption.password,
                 onFail: ex => {
                     console.error(ex);
                     setIsFormDisabled(false);
@@ -364,8 +366,6 @@ const Footer = ({
                     setIsFormDisabled(false);
                     setStepNotification();
                 },
-                encrypt: storageEncryption.encrypt,
-                encryptPassword: storageEncryption.password,
             });
         } else if (activeStep.id === "installation-review") {
             setNextWaitsConfirmation(true);
@@ -373,7 +373,6 @@ const Footer = ({
             setIsFormDisabled(true);
 
             applyStorage({
-                partitioning,
                 onFail: ex => {
                     console.error(ex);
                     setIsFormDisabled(false);
@@ -387,6 +386,7 @@ const Footer = ({
                     setIsFormDisabled(false);
                     setStepNotification();
                 },
+                partitioning,
             });
         } else if (activeStep.id === "accounts") {
             applyAccounts(accounts)

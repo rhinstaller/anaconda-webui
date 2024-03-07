@@ -46,7 +46,7 @@ export class LocalizationClient {
 
         this.client = cockpit.dbus(
             INTERFACE_NAME,
-            { superuser: "try", bus: "none", address }
+            { address, bus: "none", superuser: "try" }
         );
         this.address = address;
     }

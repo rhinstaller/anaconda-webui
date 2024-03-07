@@ -200,7 +200,7 @@ export const applyStorage = async ({ partitioning, encrypt, encryptPassword, onF
     const part = partitioning || await createPartitioning({ method: "AUTOMATIC" });
 
     if (encrypt) {
-        await partitioningSetEncrypt({ partitioning: part, encrypt });
+        await partitioningSetEncrypt({ encrypt, partitioning: part });
     }
     if (encryptPassword) {
         await partitioningSetPassphrase({ partitioning: part, passphrase: encryptPassword });
@@ -209,10 +209,10 @@ export const applyStorage = async ({ partitioning, encrypt, encryptPassword, onF
     const tasks = await partitioningConfigureWithTask({ partitioning: part });
 
     runStorageTask({
-        task: tasks[0],
         onFail,
         onSuccess: () => applyPartitioning({ partitioning: part })
                 .then(onSuccess)
-                .catch(onFail)
+                .catch(onFail),
+        task: tasks[0]
     });
 };

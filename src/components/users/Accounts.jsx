@@ -56,18 +56,18 @@ export function getAccountsState (
     isRootEnabled = false,
 ) {
     return {
-        fullName,
-        userName,
-        password,
         confirmPassword,
-        rootPassword,
-        rootConfirmPassword,
+        fullName,
         isRootEnabled,
+        password,
+        rootConfirmPassword,
+        rootPassword,
+        userName,
     };
 }
 
 export const cryptUserPassword = async (password) => {
-    const crypted = await python.spawn(encryptUserPw, password, { err: "message", environ: ["LC_ALL=C.UTF-8"] });
+    const crypted = await python.spawn(encryptUserPw, password, { environ: ["LC_ALL=C.UTF-8"], err: "message" });
     return crypted;
 };
 
@@ -87,11 +87,11 @@ export const applyAccounts = async (accounts, errorHandler) => {
 
 export const accountsToDbusUsers = (accounts) => {
     return [{
-        name: cockpit.variant("s", accounts.userName || ""),
         gecos: cockpit.variant("s", accounts.fullName || ""),
-        password: cockpit.variant("s", accounts.password || ""),
-        "is-crypted": cockpit.variant("b", true),
         groups: cockpit.variant("as", ["wheel"]),
+        "is-crypted": cockpit.variant("b", true),
+        name: cockpit.variant("s", accounts.userName || ""),
+        password: cockpit.variant("s", accounts.password || ""),
     }];
 };
 
@@ -199,7 +199,7 @@ const CreateAccount = ({
     );
 
     useEffect(() => {
-        setAccounts(ac => ({ ...ac, fullName, userName, password, confirmPassword }));
+        setAccounts(ac => ({ ...ac, confirmPassword, fullName, password, userName }));
     }, [setAccounts, fullName, userName, password, confirmPassword]);
 
     const getValidatedVariant = (valid) => valid === null ? "default" : valid ? "success" : "error";
@@ -298,7 +298,7 @@ const RootAccount = ({
     );
 
     useEffect(() => {
-        setAccounts(ac => ({ ...ac, rootPassword: password, rootConfirmPassword: confirmPassword }));
+        setAccounts(ac => ({ ...ac, rootConfirmPassword: confirmPassword, rootPassword: password }));
     }, [setAccounts, password, confirmPassword]);
 
     return (
@@ -349,8 +349,8 @@ export const Accounts = ({
 export const getPageProps = ({ isBootIso }) => {
     return ({
         id: "accounts",
-        label: _("Create Account"),
         isHidden: !isBootIso,
+        label: _("Create Account"),
         title: null,
     });
 };

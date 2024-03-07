@@ -59,11 +59,11 @@ export const getDevicesAction = () => {
             }));
 
             return dispatch({
-                type: "GET_DEVICES_DATA",
                 payload: {
                     deviceNames: devices,
                     devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-                }
+                },
+                type: "GET_DEVICES_DATA"
             });
         } catch (error) {
             return dispatch(setCriticalErrorAction(error));
@@ -78,7 +78,6 @@ export const getDiskSelectionAction = () => {
             const diskSelection = await getAllDiskSelection();
 
             return dispatch({
-                type: "GET_DISK_SELECTION",
                 payload: {
                     diskSelection: {
                         ignoredDisks: diskSelection[0].IgnoredDisks.v,
@@ -86,6 +85,7 @@ export const getDiskSelectionAction = () => {
                         usableDisks,
                     }
                 },
+                type: "GET_DISK_SELECTION",
             });
         } catch (error) {
             return dispatch(setCriticalErrorAction(error));
@@ -111,8 +111,8 @@ export const getPartitioningDataAction = ({ requests, partitioning }) => {
             }
 
             return dispatch({
-                type: "GET_PARTITIONING_DATA",
-                payload: { path: partitioning, partitioningData: props }
+                payload: { partitioningData: props, path: partitioning },
+                type: "GET_PARTITIONING_DATA"
             });
         } catch (error) {
             return dispatch(setCriticalErrorAction(error));

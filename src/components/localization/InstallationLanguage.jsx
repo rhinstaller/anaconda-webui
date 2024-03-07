@@ -251,13 +251,13 @@ class LanguageSelector extends React.Component {
                               // HACK This title should look like the ones in PF Menu. Simply adding it's class
                               // doesn't give it all the attributes.
                               {
-                                  fontSize: "var(--pf-v5-c-menu__group-title--FontSize)",
-                                  paddingLeft: "0",
-                                  paddingTop: "0",
-                                  marginBottom: "0.5em",
-                                  fontWeight: "var(--pf-v5-c-menu__group-title--FontWeight)",
+                                  color: "var(--pf-v5-c-menu__group-title--Color)",
                                   fontFamily: "var(--pf-v5-global--FontFamily--sans-serif)",
-                                  color: "var(--pf-v5-c-menu__group-title--Color)"
+                                  fontSize: "var(--pf-v5-c-menu__group-title--FontSize)",
+                                  fontWeight: "var(--pf-v5-c-menu__group-title--FontWeight)",
+                                  marginBottom: "0.5em",
+                                  paddingLeft: "0",
+                                  paddingTop: "0"
                               }
                           }
                         >
@@ -329,8 +329,8 @@ export const InstallationLanguage = ({ idPrefix, languages, language, commonLoca
 export const getPageProps = ({ isBootIso, osRelease }) => {
     return ({
         id: "installation-language",
-        label: _("Welcome"),
         isHidden: !isBootIso,
+        label: _("Welcome"),
         title: cockpit.format(_("Welcome to $0"), osRelease.NAME),
     });
 };

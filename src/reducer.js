@@ -19,21 +19,21 @@ import { useCallback, useReducer } from "react";
 
 /* Initial state for the storeage store substate */
 export const storageInitialState = {
-    devices: {},
     deviceNames: [],
+    devices: {},
     diskSelection: {
-        usableDisks: [],
+        ignoredDisks: [],
         selectedDisks: [],
-        ignoredDisks: []
+        usableDisks: []
     },
     partitioning: {}
 };
 
 /* Initial state for the localization store substate */
 export const localizationInitialState = {
+    commonLocales: [],
     language: "",
-    languages: {},
-    commonLocales: []
+    languages: {}
 };
 
 /* Intial state for the network store substate */
@@ -54,11 +54,11 @@ export const runtimeInitialState = {
 
 /* Initial state for the global store */
 export const initialState = {
-    localization: localizationInitialState,
-    storage: storageInitialState,
-    network: networkInitialState,
     error: errorInitialState,
+    localization: localizationInitialState,
+    network: networkInitialState,
     runtime: runtimeInitialState,
+    storage: storageInitialState,
 };
 
 /* Custom hook to use the reducer with async actions */
@@ -82,17 +82,17 @@ export const useReducerWithThunk = (reducer, initialState) => {
 
 export const reducer = (state, action) => {
     return ({
-        localization: localizationReducer(state.localization, action),
-        storage: storageReducer(state.storage, action),
-        network: networkReducer(state.network, action),
         error: errorReducer(state.error, action),
+        localization: localizationReducer(state.localization, action),
+        network: networkReducer(state.network, action),
         runtime: runtimeReducer(state.runtime, action),
+        storage: storageReducer(state.storage, action),
     });
 };
 
 export const storageReducer = (state = storageInitialState, action) => {
     if (action.type === "GET_DEVICES_DATA") {
-        return { ...state, devices: action.payload.devices, deviceNames: action.payload.deviceNames };
+        return { ...state, deviceNames: action.payload.deviceNames, devices: action.payload.devices };
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
