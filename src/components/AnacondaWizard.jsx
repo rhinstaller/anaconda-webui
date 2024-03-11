@@ -36,7 +36,7 @@ import { InstallationMethod, getPageProps as getInstallationMethodProps } from "
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
-import { DiskEncryption, getPageProps as getDiskEncryptionProps, getStorageEncryptionState } from "./storage/DiskEncryption.jsx";
+import { DiskEncryption, getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
 import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
 import { Accounts, applyAccounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
@@ -56,7 +56,11 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
-    const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
+    const [storageEncryption, setStorageEncryption] = useState({
+        confirmPassword: storageData.partitioning?.requests[0].passphrase || "",
+        encrypt: storageData.partitioning?.requests[0]?.encrypted,
+        password: storageData.partitioning?.requests[0]?.passphrase || "",
+    });
     const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);

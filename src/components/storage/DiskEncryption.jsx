@@ -44,10 +44,6 @@ const ruleAscii = {
     text: () => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
 };
 
-export function getStorageEncryptionState (password = "", confirmPassword = "", encrypt = false) {
-    return { confirmPassword, encrypt, password };
-}
-
 const CheckDisksSpinner = (
     <EmptyState id="installation-destination-next-spinner">
         <EmptyStateHeader titleText={<>{_("Checking storage configuration")}</>} icon={<EmptyStateIcon icon={Spinner} />} headingLevel="h4" />
