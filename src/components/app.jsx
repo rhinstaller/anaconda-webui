@@ -68,11 +68,9 @@ const MaybeBackdrop = ({ children }) => {
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
-    const [conf, setConf] = useState();
     const [language, setLanguage] = useState();
-    const [osRelease, setOsRelease] = useState("");
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
-    const [storeInitilized, setStoreInitialized] = useState(false);
+    const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
     const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
     const [showStorage, setShowStorage] = useState(false);
@@ -89,6 +87,8 @@ export const Application = () => {
             }
         );
     }, [dispatch]);
+    const conf = useConf({ onCritFail });
+    const osRelease = useOsRelease({ onCritFail });
 
     useEffect(() => {
         cockpit.file("/run/anaconda/backend_ready").watch(
@@ -102,7 +102,7 @@ export const Application = () => {
         }
 
         // Before unload ask the user for verification
-        window.onbeforeunload = e => "";
+        window.onbeforeunload = () => "";
 
         // Listen on JS errors
         window.onerror = (message, url, line, col, errObj) => {
@@ -138,17 +138,10 @@ export const Application = () => {
                         startEventMonitorRuntime({ dispatch });
                     }, onCritFail({ context: N_("Reading information about the computer failed.") }));
         });
-
-        readConf().then(
-            setConf,
-            onCritFail({ context: N_("Reading installer configuration failed.") })
-        );
-
-        readOsRelease().then(osRelease => setOsRelease(osRelease));
     }, [dispatch, onCritFail, backendReady]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!criticalError && (!address || !conf || !osRelease || !storeInitilized)) {
+    if (!criticalError && (!address || !conf || !osRelease || !storeInitialized)) {
         debug("Loading initial data...");
         return (
             <Page>
@@ -201,7 +194,6 @@ export const Application = () => {
                                       runtimeData={state.runtime}
                                       dispatch={dispatch}
                                       conf={conf}
-                                      osRelease={osRelease}
                                       setShowStorage={setShowStorage}
                                       showStorage={showStorage}
                                     />
@@ -223,4 +215,24 @@ export const Application = () => {
             </LanguageContext.Provider>
         </WithDialogs>
     );
+};
+
+const useConf = ({ onCritFail }) => {
+    const [conf, setConf] = useState();
+
+    useEffect(() => {
+        readConf().then(setConf, onCritFail({ context: N_("Reading installer configuration failed.") }));
+    }, [onCritFail]);
+
+    return conf;
+};
+
+const useOsRelease = ({ onCritFail }) => {
+    const [osRelease, setOsRelease] = useState();
+
+    useEffect(() => {
+        readOsRelease().then(setOsRelease, onCritFail({ context: N_("Reading information about the OS failed.") }));
+    }, [onCritFail]);
+
+    return osRelease;
 };

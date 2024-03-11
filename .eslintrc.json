@@ -10,6 +10,7 @@
     },
     "plugins": ["react", "react-hooks"],
     "rules": {
+        "comma-dangle": "off",
         "indent": ["error", 4,
             {
                 "ObjectExpression": "first",
@@ -17,24 +18,28 @@
                 "MemberExpression": 2,
                 "ignoredNodes": [ "JSXAttribute" ]
             }],
-        "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
-        "no-var": "error",
-        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-        "prefer-promise-reject-errors": ["error", { "allowEmptyReject": true }],
-        "react/jsx-indent": ["error", 4],
-        "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
-
-        "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "error",
-
-        "comma-dangle": "off",
-        "no-console": "off",
-        "react/jsx-closing-bracket-location": "off",
-        "react/prop-types": "off",
         "jsx-quotes": ["error", "prefer-double"],
+        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }],
+        "no-console": "off",
+        "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+        "no-var": "error",
+        "prefer-promise-reject-errors": ["error", { "allowEmptyReject": true }],
+        "quotes": ["error", "double" ],
+        "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
         "sort-imports": ["error", { "ignoreDeclarationSort": true }],
+        "sort-keys": ["error", "asc", {"caseSensitive": true, "natural": true, "minKeys": 2}],
+
+        "import/no-useless-path-segments": "error",
         "import/order": [ 1, { "groups": ["external", "builtin", ["internal", "sibling", "parent", "index"]], "newlines-between": "always" } ],
-        "quotes": ["error", "double" ]
+
+        "react/hook-use-state": ["error", { "allowDestructuredState": false }],
+        "react/jsx-closing-bracket-location": "off",
+        "react/jsx-indent": ["error", 4],
+        "react/prop-types": "off",
+
+        "react-hooks/exhaustive-deps": "error",
+        "react-hooks/rules-of-hooks": "error"
     },
     "globals": {
         "require": false,

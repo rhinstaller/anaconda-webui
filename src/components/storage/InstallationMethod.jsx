@@ -93,9 +93,9 @@ const InstallationMethodFooterHelper = () => (
 
 export const getPageProps = ({ isBootIso, osRelease, isFormValid }) => {
     return ({
+        footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
         id: "installation-method",
         label: _("Installation method"),
         title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,
-        footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
     });
 };

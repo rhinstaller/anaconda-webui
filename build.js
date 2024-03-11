@@ -49,7 +49,6 @@ function watchDirs (dir, onChange) {
 }
 
 const context = await esbuild.context({
-    sourcemap: "linked",
     bundle: true,
     entryPoints: ["./src/index.js"],
     external: [
@@ -66,7 +65,6 @@ const context = await esbuild.context({
     minify: production,
     nodePaths,
     outdir,
-    target: ["es2020"],
     plugins: [
         cleanPlugin(),
         // Esbuild will only copy assets that are explicitly imported and used
@@ -100,7 +98,9 @@ const context = await esbuild.context({
                 build.onEnd(() => console.log(`${getTime()}: Build finished`));
             }
         },
-    ]
+    ],
+    sourcemap: "linked",
+    target: ["es2020"],
 });
 
 try {

@@ -23,7 +23,7 @@ import {
     getLocaleData,
     getLocales,
 } from "../apis/localization.js";
-import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
+import { setCriticalErrorAction } from "./miscellaneous-actions.js";
 
 export const getLanguagesAction = () => {
     return async (dispatch) => {
@@ -48,8 +48,8 @@ export const getLanguageDataAction = ({ language }) => {
             const locales = await Promise.all(localeIds.map(async locale => await getLocaleData({ locale })));
 
             return dispatch({
-                type: "GET_LANGUAGE_DATA",
-                payload: { languageData: { [language]: { languageData, locales } } }
+                payload: { languageData: { [language]: { languageData, locales } } },
+                type: "GET_LANGUAGE_DATA"
             });
         } catch (error) {
             dispatch(setCriticalErrorAction(error));
@@ -63,8 +63,8 @@ export const getLanguageAction = () => {
             const language = await getLanguage();
 
             return dispatch({
-                type: "GET_LANGUAGE",
-                payload: { language }
+                payload: { language },
+                type: "GET_LANGUAGE"
             });
         } catch (error) {
             dispatch(setCriticalErrorAction(error));
@@ -78,8 +78,8 @@ export const getCommonLocalesAction = () => {
             const commonLocales = await getCommonLocales();
 
             return dispatch({
-                type: "GET_COMMON_LOCALES",
-                payload: { commonLocales }
+                payload: { commonLocales },
+                type: "GET_COMMON_LOCALES"
             });
         } catch (error) {
             dispatch(setCriticalErrorAction(error));

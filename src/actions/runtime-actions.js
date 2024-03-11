@@ -18,7 +18,7 @@
 import {
     getPasswordPolicies,
 } from "../apis/runtime.js";
-import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
+import { setCriticalErrorAction } from "./miscellaneous-actions.js";
 
 export const getPasswordPoliciesAction = () => {
     return async (dispatch) => {
@@ -26,8 +26,8 @@ export const getPasswordPoliciesAction = () => {
             const passwordPolicies = await getPasswordPolicies();
 
             return dispatch({
-                type: "GET_RUNTIME_PASSWORD_POLICIES",
-                payload: { passwordPolicies }
+                payload: { passwordPolicies },
+                type: "GET_RUNTIME_PASSWORD_POLICIES"
             });
         } catch (error) {
             setCriticalErrorAction(error);

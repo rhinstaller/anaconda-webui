@@ -43,10 +43,10 @@ import {
 const _ = cockpit.gettext;
 
 export const ruleLength = {
-    id: "length",
-    text: (policy) => cockpit.format(_("Must be at least $0 characters"), policy["min-length"].v),
     check: (policy, password) => password.length >= policy["min-length"].v,
+    id: "length",
     isError: true,
+    text: (policy) => cockpit.format(_("Must be at least $0 characters"), policy["min-length"].v),
 };
 
 /* Calculate the password quality levels based on the password policy
@@ -57,35 +57,35 @@ export const ruleLength = {
  */
 const getStrengthLevels = (minQualility, isStrict) => {
     const levels = [{
+        higher_bound: minQualility - 1,
+        icon: <ExclamationCircleIcon />,
         id: "weak",
         label: _("Weak"),
-        variant: "error",
-        icon: <ExclamationCircleIcon />,
         lower_bound: 0,
-        higher_bound: minQualility - 1,
         valid: !isStrict,
+        variant: "error",
     }];
 
     if (minQualility <= 69) {
         levels.push({
+            higher_bound: 69,
+            icon: <ExclamationTriangleIcon />,
             id: "medium",
             label: _("Medium"),
-            variant: "warning",
-            icon: <ExclamationTriangleIcon />,
             lower_bound: minQualility,
-            higher_bound: 69,
             valid: true,
+            variant: "warning",
         });
     }
 
     levels.push({
+        higher_bound: 100,
+        icon: <CheckCircleIcon />,
         id: "strong",
         label: _("Strong"),
-        variant: "success",
-        icon: <CheckCircleIcon />,
         lower_bound: Math.max(70, minQualility),
-        higher_bound: 100,
         valid: true,
+        variant: "success",
     });
 
     return levels;
@@ -95,9 +95,9 @@ const getRuleResults = (rules, policy, password) => {
     return rules.map(rule => {
         return {
             id: rule.id,
-            text: rule.text(policy, password),
+            isError: rule.isError,
             isSatisfied: password.length > 0 ? rule.check(policy, password) : null,
-            isError: rule.isError
+            text: rule.text(policy, password)
         };
     });
 };

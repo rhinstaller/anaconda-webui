@@ -40,7 +40,7 @@ export class RuntimeClient {
 
         this.client = cockpit.dbus(
             "org.fedoraproject.Anaconda.Modules.Runtime",
-            { superuser: "try", bus: "none", address }
+            { address, bus: "none", superuser: "try" }
         );
         this.address = address;
     }

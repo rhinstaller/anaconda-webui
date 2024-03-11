@@ -101,8 +101,8 @@ export const EncryptedDevices = ({ dispatch, idPrefix, isLoadingNewPartitioning,
 const UnlockDialog = ({ isLoadingNewPartitioning, lockedLUKSDevices, onClose, dispatch }) => {
     const [passphrase, setPassphrase] = useState("");
     const [passphraseHidden, setPassphraseHidden] = useState(true);
-    const [dialogWarning, dialogWarningSet] = useState();
-    const [dialogSuccess, dialogSuccessSet] = useState();
+    const [dialogWarning, setDialogWarning] = useState();
+    const [dialogSuccess, setDialogSuccess] = useState();
     const [inProgress, setInProgress] = useState(false);
     const idPrefix = "unlock-device-dialog";
 
@@ -125,12 +125,12 @@ const UnlockDialog = ({ isLoadingNewPartitioning, lockedLUKSDevices, onClose, di
                             return acc;
                         }, []);
                         if (unlockedDevs.length > 0) {
-                            dialogSuccessSet(cockpit.format(_("Successfully unlocked $0."), unlockedDevs.join(", ")));
-                            dialogWarningSet(undefined);
+                            setDialogSuccess(cockpit.format(_("Successfully unlocked $0."), unlockedDevs.join(", ")));
+                            setDialogWarning(undefined);
                             setPassphrase("");
                         } else {
-                            dialogSuccessSet(undefined);
-                            dialogWarningSet(_("Passphrase did not match any locked device"));
+                            setDialogSuccess(undefined);
+                            setDialogWarning(_("Passphrase did not match any locked device"));
                         }
                         setInProgress(false);
                     }
@@ -141,7 +141,7 @@ const UnlockDialog = ({ isLoadingNewPartitioning, lockedLUKSDevices, onClose, di
                 }
             },
             exc => {
-                dialogWarningSet(exc.message);
+                setDialogWarning(exc.message);
                 setInProgress(false);
             }
         );

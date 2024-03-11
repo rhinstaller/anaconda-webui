@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // See Note section here for details: https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event
 // We need to listen to the virtual event that we generate when changing language and adjust the language direction accordingly.
 // This needs to be exposed as a helper function from cockpit: https://github.com/cockpit-project/cockpit/issues/18874
-window.addEventListener("cockpit-lang", event => {
+window.addEventListener("cockpit-lang", () => {
     if (cockpit.language_direction) {
         document.documentElement.setAttribute("dir", cockpit.language_direction);
     }

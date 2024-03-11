@@ -69,7 +69,7 @@ const DeviceRow = ({ deviceData, disk, requests }) => {
             return false;
         }
 
-        return checkDeviceInSubTree({ device: req["device-spec"], rootDevice: name, deviceData });
+        return checkDeviceInSubTree({ device: req["device-spec"], deviceData, rootDevice: name });
     }).map(renderRow) || [];
 
     return (

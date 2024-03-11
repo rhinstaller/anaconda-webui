@@ -41,7 +41,7 @@ const getDeviceAncestors = (deviceData, device) => {
  * @returns {boolean}
  */
 export const checkDeviceInSubTree = ({ device, rootDevice, deviceData }) => {
-    return getDeviceChildren({ deviceData, device: rootDevice }).includes(device);
+    return getDeviceChildren({ device: rootDevice, deviceData }).includes(device);
 };
 
 /* Get the list of names of all the descendants of the given device
@@ -58,7 +58,7 @@ export const getDeviceChildren = ({ deviceData, device }) => {
         children.push(device);
     } else {
         deviceChildren.forEach(child => {
-            children.push(...getDeviceChildren({ deviceData, device: child }));
+            children.push(...getDeviceChildren({ device: child, deviceData }));
         });
     }
 

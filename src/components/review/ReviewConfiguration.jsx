@@ -43,12 +43,12 @@ const ReviewDescriptionList = ({ children }) => {
         <DescriptionList
           isHorizontal
           horizontalTermWidthModifier={{
-              default: "12ch",
-              sm: "15ch",
-              md: "20ch",
-              lg: "20ch",
-              xl: "20ch",
               "2xl": "20ch",
+              default: "12ch",
+              lg: "20ch",
+              md: "20ch",
+              sm: "15ch",
+              xl: "20ch",
           }}
         >
             {children}
@@ -197,11 +197,11 @@ const ReviewConfigurationFooterHelperText = ({ storageScenarioId }) => {
 
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
+        footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,
         id: "installation-review",
         label: _("Review and install"),
-        title: _("Review and install"),
-        footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,
         nextButtonText: getScenario(storageScenarioId)?.buttonLabel,
         nextButtonVariant: "warning",
+        title: _("Review and install"),
     });
 };

@@ -65,7 +65,7 @@ const _ = cockpit.gettext;
  */
 const getInitialRequests = (requests, mountPointConstraints) => {
     const constrainedRequests = mountPointConstraints.filter(constraint =>
-        !!constraint["mount-point"].v).map((constraint, idx) => {
+        !!constraint["mount-point"].v).map(constraint => {
         const originalRequest = requests.find(request => request["mount-point"] === constraint["mount-point"].v);
         const request = ({ "mount-point": constraint["mount-point"].v, reformat: constraint["mount-point"].v === "/" });
 
@@ -120,7 +120,7 @@ const isReformatInvalid = (deviceData, request, requests) => {
                                      deviceData[device].formatData.type.v)];
     }
 
-    const children = getDeviceChildren({ deviceData, device });
+    const children = getDeviceChildren({ device, deviceData });
 
     /* When parent device is re-formatted all children must:
      * - either exist in the mount points mapper table and  be re-formatted
@@ -232,7 +232,7 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRequiredMountPoint,
                     : <TextInput
                         className="mount-point-mapping__mountpoint-text"
                         id={idPrefix}
-                        onBlur={() => handleRequestChange({ mountPoint: mountPointText, deviceSpec: request["device-spec"], requestIndex })}
+                        onBlur={() => handleRequestChange({ deviceSpec: request["device-spec"], mountPoint: mountPointText, requestIndex })}
                         onChange={(_event, val) => setMountPointText(val)}
                         value={mountPointText}
                     />}
@@ -286,12 +286,12 @@ const DeviceColumnSelect = ({ deviceData, devices, idPrefix, isRequiredMountPoin
           selections={device ? [device] : []}
           variant={SelectVariant.single}
           onToggle={(_event, val) => setIsOpen(val)}
-          onSelect={(_, selection, isAPlaceHolder) => {
-              handleRequestChange({ mountPoint: request["mount-point"], deviceSpec: selection, requestIndex });
+          onSelect={(_, selection) => {
+              handleRequestChange({ deviceSpec: selection, mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}
           onClear={() => {
-              handleRequestChange({ mountPoint: request["mount-point"], deviceSpec: "", requestIndex });
+              handleRequestChange({ deviceSpec: "", mountPoint: request["mount-point"], requestIndex });
               setIsOpen();
           }}
           toggleId={idPrefix + "-select-toggle"}
@@ -342,7 +342,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
               id={idPrefix + "-switch"}
               isChecked={!!request.reformat}
               aria-label={_("Reformat")}
-              onChange={(_event, checked) => handleRequestChange({ mountPoint: request["mount-point"], deviceSpec: request["device-spec"], requestIndex, reformat: checked })}
+              onChange={(_event, checked) => handleRequestChange({ deviceSpec: request["device-spec"], mountPoint: request["mount-point"], reformat: checked, requestIndex })}
             />
         );
     };
@@ -363,7 +363,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
 const MountPointRowRemove = ({ requestIndex, handleRequestChange }) => {
     const handleRemove = () => {
         // remove row from requests and update requests with higher ID
-        handleRequestChange({ requestIndex, remove: true });
+        handleRequestChange({ remove: true, requestIndex });
     };
 
     return (
@@ -398,9 +398,9 @@ const getRequestRow = ({
     const rowId = idPrefix + "-row-" + (requestIndex + 1);
 
     return ({
-        props: { key: requestIndex, id: rowId },
         columns: [
             {
+                props: { className: columnClassName },
                 title: (
                     <MountPointColumn
                       handleRequestChange={handleRequestChange}
@@ -411,10 +411,10 @@ const getRequestRow = ({
                       requestIndex={requestIndex}
                       requests={requests}
                     />
-                ),
-                props: { className: columnClassName }
+                )
             },
             {
+                props: { className: columnClassName },
                 title: (
                     <DeviceColumn
                       deviceData={deviceData}
@@ -428,10 +428,10 @@ const getRequestRow = ({
                       requests={requests}
                       mountPointConstraints={mountPointConstraints}
                     />
-                ),
-                props: { className: columnClassName }
+                )
             },
             {
+                props: { className: columnClassName },
                 title: (
                     <FormatColumn
                       deviceData={deviceData}
@@ -441,16 +441,16 @@ const getRequestRow = ({
                       requestIndex={requestIndex}
                       requests={requests}
                     />
-                ),
-                props: { className: columnClassName }
+                )
             },
             {
+                props: { className: columnClassName },
                 title: (
                     (isRequiredMountPoint && !duplicatedMountPoint) ? null : <MountPointRowRemove requestIndex={requestIndex} handleRequestChange={handleRequestChange} />
-                ),
-                props: { className: columnClassName }
+                )
             }
         ],
+        props: { id: rowId, key: requestIndex },
     });
 };
 
@@ -513,8 +513,8 @@ const RequestsTable = ({
             const newRequestProps = newRequests[requestIndex] || {};
             const newRequest = (
                 getNewRequestProps({
-                    mountPoint: mountPoint || newRequestProps.mountPoint,
                     deviceSpec,
+                    mountPoint: mountPoint || newRequestProps.mountPoint,
                     reformat: reformat !== undefined ? reformat : newRequestProps.reformat,
                     requests
                 })
@@ -533,9 +533,9 @@ const RequestsTable = ({
 
         /* Sync newRequests to the backend */
         updatePartitioningRequests({
-            requests,
             newRequests,
-            partitioning: partitioningDataPath
+            partitioning: partitioningDataPath,
+            requests
         }).catch(ex => {
             setStepNotification(ex);
             setIsFormValid(false);
@@ -549,10 +549,10 @@ const RequestsTable = ({
             <ListingTable
               aria-label={_("Mount point assignment")}
               columns={[
-                  { title: _("Mount point"), props: { width: 30 } },
-                  { title: _("Device"), props: { width: 40 } },
-                  { title: _("Reformat"), props: { width: 20 } },
-                  { title: "", props: { width: 10 } },
+                  { props: { width: 30 }, title: _("Mount point") },
+                  { props: { width: 40 }, title: _("Device") },
+                  { props: { width: 20 }, title: _("Reformat") },
+                  { props: { width: 10 }, title: "" },
               ]}
               emptyCaption={_("No devices")}
               id={idPrefix}
@@ -564,10 +564,10 @@ const RequestsTable = ({
                               handleRequestChange,
                               idPrefix,
                               lockedLUKSDevices,
+                              mountPointConstraints,
                               request,
                               requestIndex: idx,
                               requests: unappliedRequests,
-                              mountPointConstraints,
                           })
                       ))} />
             <div>
@@ -674,8 +674,8 @@ export const MountPointMapping = ({
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
         id: "mount-point-mapping",
-        label: _("Manual disk configuration"),
         isHidden: storageScenarioId !== "mount-point-mapping",
+        label: _("Manual disk configuration"),
         title: _("Manual disk configuration: Mount point mapping")
     });
 };

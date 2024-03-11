@@ -28,14 +28,14 @@ import { TargetSystemRootContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
-export const ModifyStorage = ({ idPrefix, onCritFail, onRescan, setShowStorage, selectedDevices }) => {
+export const ModifyStorage = ({ idPrefix, setShowStorage, selectedDevices }) => {
     const targetSystemRoot = useContext(TargetSystemRootContext);
     const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
     const cockpitAnaconda = JSON.stringify({
-        mount_point_prefix: targetSystemRoot,
         available_devices: selectedDevices,
         efi: isEfi,
+        mount_point_prefix: targetSystemRoot,
     });
 
     return (

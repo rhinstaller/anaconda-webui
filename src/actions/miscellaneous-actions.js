@@ -16,11 +16,11 @@
  */
 
 export const setCriticalErrorAction = (criticalError) => ({
-    type: "SET_CRITICAL_ERROR",
-    payload: { criticalError }
+    payload: { criticalError },
+    type: "SET_CRITICAL_ERROR"
 });
 
 export const setCriticalErrorFrontendAction = (criticalErrorFrontend) => ({
-    type: "SET_CRITICAL_ERROR_FRONTEND",
-    payload: { criticalErrorFrontend }
+    payload: { criticalErrorFrontend },
+    type: "SET_CRITICAL_ERROR_FRONTEND"
 });
