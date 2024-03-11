@@ -26,6 +26,7 @@ import {
     Label,
     Switch,
     TextInput,
+    useWizardFooter,
 } from "@patternfly/react-core";
 import {
     Select,
@@ -36,12 +37,14 @@ import { TrashIcon } from "@patternfly/react-icons";
 import { ListingTable } from "cockpit-components-table.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { useMountPointConstraints } from "./Common.jsx";
 import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";
 import {
+    applyStorage,
     createPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
@@ -609,6 +612,7 @@ export const MountPointMapping = ({
     setIsFormValid,
     setReusePartitioning,
     setStepNotification,
+    storageScenarioId,
 }) => {
     const [usedPartitioning, setUsedPartitioning] = useState(partitioningData?.path);
     const mountPointConstraints = useMountPointConstraints();
@@ -617,6 +621,17 @@ export const MountPointMapping = ({
         () => getLockedLUKSDevices(partitioningData?.requests, deviceData),
         [deviceData, partitioningData?.requests]
     );
+
+    // Display custom footer
+    const getFooter = useMemo(
+        () => (
+            <CustomFooter
+              partitioning={usedPartitioning}
+              storageScenarioId={storageScenarioId} />
+        ),
+        [usedPartitioning, storageScenarioId]
+    );
+    useWizardFooter(getFooter);
 
     useEffect(() => {
         if (!reusePartitioning || partitioningData?.method !== "MANUAL") {
@@ -669,6 +684,29 @@ export const MountPointMapping = ({
                     ))}
         </>
     );
+};
+
+const CustomFooter = ({ partitioning, storageScenarioId }) => {
+    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+        return applyStorage({
+            onFail: ex => {
+                console.error(ex);
+                setIsFormDisabled(false);
+                setStepNotification({ step: getPageProps({ storageScenarioId }).id, ...ex });
+            },
+            onSuccess: () => {
+                goToNextStep();
+
+                // Reset the state after the onNext call. Otherwise,
+                // React will try to render the current step again.
+                setIsFormDisabled(false);
+                setStepNotification();
+            },
+            partitioning
+        });
+    };
+
+    return <AnacondaWizardFooter onNext={onNext} />;
 };
 
 export const getPageProps = ({ storageScenarioId }) => {

@@ -26,37 +26,50 @@ import {
     useWizardContext
 } from "@patternfly/react-core";
 
-import { ReviewConfigurationConfirmModal } from "./review/ReviewConfiguration.jsx";
-import { SystemTypeContext } from "./Common.jsx";
-import { applyStorage } from "../apis/storage_partitioning.js";
-import { applyAccounts } from "./users/Accounts.jsx";
+import { FooterContext, SystemTypeContext } from "./Common.jsx";
 import { exitGui } from "../helpers/exit.js";
 
 const _ = cockpit.gettext;
-const N_ = cockpit.noop;
 
-export const AnacondaWizardFooterTemplate = ({
+export const AnacondaWizardFooter = ({
     extraActions,
-    currentStepProps,
-    isFirstScreen,
-    isFormDisabled,
-    isFormValid,
+    footerHelperText,
+    nextButtonText,
+    nextButtonVariant,
     onNext,
-    setIsFormValid,
 }) => {
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
     const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
+    const isFirstScreen = activeStep.index === 1;
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const {
+        isFormDisabled,
+        isFormValid,
+        setIsFormDisabled,
+        setIsFormValid,
+        setStepNotification
+    } = useContext(FooterContext);
+
+    const onNextButtonClicked = () => {
+        if (onNext) {
+            onNext({
+                goToNextStep,
+                isFormDisabled,
+                isFormValid,
+                setIsFormDisabled,
+                setIsFormValid,
+                setStepNotification,
+            });
+        } else {
+            goToNextStep();
+        }
+    };
 
     const onBack = () => {
         // first reset validation state to default
         setIsFormValid(true);
         goToPrevStep();
     };
-
-    const footerHelperText = currentStepProps?.footerHelperText;
-    const nextButtonText = currentStepProps?.nextButtonText || _("Next");
-    const nextButtonVariant = currentStepProps?.nextButtonVariant || "primary";
 
     return (
         <WizardFooterWrapper>
@@ -78,10 +91,10 @@ export const AnacondaWizardFooterTemplate = ({
                     </Button>
                     <Button
                       id="installation-next-btn"
-                      variant={nextButtonVariant}
+                      variant={nextButtonVariant || "primary"}
                       isDisabled={!isFormValid || isFormDisabled}
-                      onClick={() => onNext(activeStep, goToNextStep)}>
-                        {nextButtonText}
+                      onClick={onNextButtonClicked}>
+                        {nextButtonText || _("Next")}
                     </Button>
                     <Button
                       id="installation-quit-btn"
@@ -97,101 +110,6 @@ export const AnacondaWizardFooterTemplate = ({
                 </ActionList>
             </Stack>
         </WizardFooterWrapper>
-    );
-};
-
-export const AnacondaWizardFooter = ({
-    onCritFail,
-    isFormValid,
-    setIsFormValid,
-    setStepNotification,
-    isFormDisabled,
-    partitioning,
-    setIsFormDisabled,
-    setShowWizard,
-    stepsOrder,
-    storageEncryption,
-    storageScenarioId,
-    accounts,
-}) => {
-    const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
-    const { activeStep } = useWizardContext();
-
-    const onNext = (activeStep, goToNextStep) => {
-        // first reset validation state to default
-        setIsFormValid(true);
-
-        if (activeStep.id === "disk-encryption") {
-            setIsFormDisabled(true);
-
-            applyStorage({
-                encrypt: storageEncryption.encrypt,
-                encryptPassword: storageEncryption.password,
-                onFail: ex => {
-                    console.error(ex);
-                    setIsFormDisabled(false);
-                    setStepNotification({ step: activeStep.id, ...ex });
-                },
-                onSuccess: () => {
-                    goToNextStep();
-
-                    // Reset the state after the onNext call. Otherwise,
-                    // React will try to render the current step again.
-                    setIsFormDisabled(false);
-                    setStepNotification();
-                },
-            });
-        } else if (activeStep.id === "installation-review") {
-            setNextWaitsConfirmation(true);
-        } else if (activeStep.id === "mount-point-mapping") {
-            setIsFormDisabled(true);
-
-            applyStorage({
-                onFail: ex => {
-                    console.error(ex);
-                    setIsFormDisabled(false);
-                    setStepNotification({ step: activeStep.id, ...ex });
-                },
-                onSuccess: () => {
-                    goToNextStep();
-
-                    // Reset the state after the onNext call. Otherwise,
-                    // React will try to render the current step again.
-                    setIsFormDisabled(false);
-                    setStepNotification();
-                },
-                partitioning,
-            });
-        } else if (activeStep.id === "accounts") {
-            applyAccounts(accounts)
-                    .then(() => goToNextStep())
-                    .catch(onCritFail({ context: N_("Account setting failed.") }));
-        } else {
-            goToNextStep();
-        }
-    };
-
-    const currentStep = stepsOrder.find(s => s.id === activeStep.id);
-    const isFirstScreen = stepsOrder.filter(step => !step.isHidden)[0].id === activeStep.id;
-
-    return (
-        <AnacondaWizardFooterTemplate
-          currentStepProps={currentStep}
-          extraActions={
-              activeStep.id === "installation-review" &&
-                  nextWaitsConfirmation &&
-                  <ReviewConfigurationConfirmModal
-                    idPrefix={activeStep.id}
-                    onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
-                    setNextWaitsConfirmation={setNextWaitsConfirmation}
-                    storageScenarioId={storageScenarioId}
-                  />
-          }
-          isFirstScreen={isFirstScreen}
-          isFormDisabled={isFormDisabled}
-          isFormValid={isFormValid}
-          onNext={onNext}
-        />
     );
 };
 

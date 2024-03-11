@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import * as python from "python.js";
 import { debounce } from "throttle-debounce";
 import {
@@ -29,6 +29,7 @@ import {
     HelperTextItem,
     InputGroup,
     TextInput,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
@@ -42,7 +43,8 @@ import {
 
 import "./Accounts.scss";
 
-import { RuntimeContext } from "../Common.jsx";
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { RuntimeContext, SystemTypeContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 const _ = cockpit.gettext;
@@ -319,9 +321,14 @@ export const Accounts = ({
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
+
     useEffect(() => {
         setIsFormValid(isUserValid && isRootValid);
     }, [setIsFormValid, isUserValid, isRootValid]);
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter accounts={accounts} />, [accounts]);
+    useWizardFooter(getFooter);
 
     return (
         <Form
@@ -341,6 +348,20 @@ export const Accounts = ({
               setAccounts={setAccounts}
             />
         </Form>
+    );
+};
+
+const CustomFooter = ({ accounts }) => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const onNext = ({ goToNextStep }) => {
+        applyAccounts(accounts).then(goToNextStep);
+    };
+
+    return (
+        <AnacondaWizardFooter
+          currentStepProps={getPageProps({ isBootIso })}
+          onNext={onNext}
+        />
     );
 };
 

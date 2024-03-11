@@ -20,6 +20,7 @@ import { Popover, PopoverPosition } from "@patternfly/react-core";
 
 export const AddressContext = createContext("");
 export const ConfContext = createContext();
+export const FooterContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
 export const RuntimeContext = createContext(null);

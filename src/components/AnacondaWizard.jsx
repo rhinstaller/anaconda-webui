@@ -35,7 +35,7 @@ import { InstallationLanguage, getPageProps as getInstallationLanguageProps } fr
 import { Accounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
-import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
+import { FooterContext, OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 import { resetPartitioning } from "../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
@@ -46,11 +46,6 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
-    const [storageEncryption, setStorageEncryption] = useState({
-        confirmPassword: storageData.partitioning?.requests[0].passphrase || "",
-        encrypt: storageData.partitioning?.requests[0]?.encrypted,
-        password: storageData.partitioning?.requests[0]?.passphrase || "",
-    });
     const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
@@ -98,7 +93,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
             }
         }
     }, [localizationData]);
-    const stepsOrder = [
+    let stepsOrder = [
         {
             component: InstallationLanguage,
             data: { commonLocales: localizationData.commonLocales, dispatch, language: localizationData.language, languages: localizationData.languages },
@@ -134,13 +129,13 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
                     partitioningData: storageData.partitioning,
                     reusePartitioning,
                     setReusePartitioning,
+                    storageScenarioId,
                 },
                 ...getMountPointMappingProps({ storageScenarioId })
             }, {
                 component: DiskEncryption,
                 data: {
-                    setStorageEncryption,
-                    storageEncryption,
+                    partitioningData: storageData.partitioning,
                 },
                 ...getDiskEncryptionProps({ storageScenarioId })
             }]
@@ -167,6 +162,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
             ...getReviewConfigurationProps({ storageScenarioId })
         },
     ];
+    stepsOrder = stepsOrder.filter(step => !step.isHidden);
 
     const componentProps = {
         isFormDisabled,
@@ -190,7 +186,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
         return stepIds;
     };
     const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
-    const firstStepId = stepsOrder.filter(step => !step.isHidden)[0].id;
+    const firstStepId = stepsOrder[0].id;
 
     const isStepFollowedBy = (earlierStepId, laterStepId) => {
         const earlierStepIdx = flattenedStepsIds.findIndex(s => s === earlierStepId);
@@ -273,6 +269,15 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
         return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
     }) + 1;
 
+    // Properties from getPageProps to be passed to the Wizard Footer,
+    // in case the Page is not using custom footer.
+    const stepProps = stepsOrder[startIndex - 1];
+    const footerProps = {
+        footerHelperText: stepProps?.footerHelperText,
+        nextButtonText: stepProps?.nextButtonText,
+        nextButtonVariant: stepProps?.nextButtonVariant,
+    };
+
     if (showStorage) {
         return (
             <CockpitStorageIntegration
@@ -290,28 +295,24 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
-            <Wizard
-              id="installation-wizard"
-              isVisitRequired
-              startIndex={startIndex}
-              footer={<AnacondaWizardFooter
-                onCritFail={onCritFail}
-                isFormValid={isFormValid}
-                partitioning={storageData.partitioning?.path}
-                setIsFormValid={setIsFormValid}
-                setStepNotification={setStepNotification}
-                isFormDisabled={isFormDisabled}
-                setIsFormDisabled={setIsFormDisabled}
-                setShowWizard={setShowWizard}
-                stepsOrder={stepsOrder}
-                storageEncryption={storageEncryption}
-                storageScenarioId={storageScenarioId}
-                accounts={accounts}
-              />}
-              onStepChange={((event, currentStep, prevStep) => goToStep(currentStep, prevStep))}
-            >
-                {steps}
-            </Wizard>
+            <FooterContext.Provider value={{
+                isFormDisabled,
+                isFormValid,
+                setIsFormDisabled,
+                setIsFormValid,
+                setShowWizard,
+                setStepNotification,
+            }}>
+                <Wizard
+                  id="installation-wizard"
+                  isVisitRequired
+                  startIndex={startIndex}
+                  footer={<AnacondaWizardFooter {...footerProps} />}
+                  onStepChange={((event, currentStep, prevStep) => goToStep(currentStep, prevStep))}
+                >
+                    {steps}
+                </Wizard>
+            </FooterContext.Provider>
         </PageSection>
     );
 };

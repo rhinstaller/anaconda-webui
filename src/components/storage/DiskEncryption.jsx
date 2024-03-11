@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Checkbox,
     EmptyState,
@@ -28,12 +28,15 @@ import {
     Text,
     TextContent,
     TextVariants,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
 import "./DiskEncryption.scss";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 import { RuntimeContext } from "../Common.jsx";
+import { applyStorage } from "../../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
 
@@ -60,14 +63,22 @@ const CheckDisksSpinner = (
 export const DiskEncryption = ({
     idPrefix,
     isInProgress,
+    partitioningData,
     setIsFormValid,
-    storageEncryption,
-    setStorageEncryption,
 }) => {
+    const [storageEncryption, setStorageEncryption] = useState({
+        confirmPassword: partitioningData?.requests?.[0]?.passphrase || "",
+        encrypt: partitioningData?.requests?.[0]?.encrypted,
+        password: partitioningData?.requests?.[0]?.passphrase || "",
+    });
     const [password, setPassword] = useState(storageEncryption.password);
     const [confirmPassword, setConfirmPassword] = useState(storageEncryption.confirmPassword);
     const isEncrypted = storageEncryption.encrypt;
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter encrypt={isEncrypted} encryptPassword={password} />, [isEncrypted, password]);
+    useWizardFooter(getFooter);
 
     const encryptedDevicesCheckbox = content => (
         <Checkbox
@@ -125,6 +136,30 @@ export const DiskEncryption = ({
             </Form>
         </>
     );
+};
+
+const CustomFooter = ({ storageEncryption }) => {
+    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+        return applyStorage({
+            encrypt: storageEncryption.encrypt,
+            encryptPassword: storageEncryption.password,
+            onFail: ex => {
+                console.error(ex);
+                setIsFormDisabled(false);
+                setStepNotification({ step: getPageProps().id, ...ex });
+            },
+            onSuccess: () => {
+                goToNextStep();
+
+                // Reset the state after the onNext call. Otherwise,
+                // React will try to render the current step again.
+                setIsFormDisabled(false);
+                setStepNotification();
+            },
+        });
+    };
+
+    return <AnacondaWizardFooter onNext={onNext} />;
 };
 
 export const getPageProps = ({ storageScenarioId }) => {
