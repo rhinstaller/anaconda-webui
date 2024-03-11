@@ -55,13 +55,6 @@ class Language():
         else:
             self.browser.wait_not_present(f"#{self._step}-option-alpha-{locale}")
 
-    @log_step()
-    def locale_common_option_visible(self, locale, visible=True):
-        if visible:
-            self.browser.wait_visible(f"#{self._step}-option-common-{locale}")
-        else:
-            self.browser.wait_not_present(f"#{self._step}-option-common-{locale}")
-
     @log_step(snapshot_before=True)
     def check_selected_locale(self, locale):
         self.browser.wait_visible(f"#{self._step}-option-alpha-{locale}.pf-m-selected")

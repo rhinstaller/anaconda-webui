@@ -60,7 +60,7 @@ def cmd_cli():
         # print marker that the VM is ready; tests can poll for this to wait for the VM
         print("RUNNING")
 
-        signal.signal(signal.SIGTERM, lambda sig, frame: machine.stop())
+        signal.signal(signal.SIGTERM, lambda _, frame: machine.stop())
         signal.pause()
     except KeyboardInterrupt:
         machine.stop()

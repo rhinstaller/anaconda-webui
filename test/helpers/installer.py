@@ -199,9 +199,3 @@ class Installer():
             self.browser.wait_visible("#betanag-icon")
         else:
             self.browser.wait_not_present("#betang-icon")
-
-    @log_step()
-    def quit(self):
-        self.browser.click("#installation-quit-btn")
-        self.browser.wait_visible("#installation-quit-confirm-dialog")
-        self.browser.click("#installation-quit-confirm-btn")
