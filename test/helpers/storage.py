@@ -84,11 +84,6 @@ class StorageDestination():
                                   "To continue, select the devices to install to.")
 
     @log_step()
-    def wait_no_disks_detected(self):
-        self.browser.wait_in_text("#no-disks-detected-alert",
-                                  "No additional disks detected")
-
-    @log_step()
     def wait_no_disks_detected_not_present(self):
         self.browser.wait_not_present("#no-disks-detected-alert")
 
@@ -165,11 +160,6 @@ class StorageUtils(StorageDestination):
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
-
-    def get_disks(self):
-        output = self.machine.execute('list-harddrives')
-        for disk in output.splitlines():
-            yield disk.split()[0]
 
     @log_step(docstring=True)
     def unlock_storage_on_boot(self, password):
@@ -499,12 +489,6 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         checked_selector = "input:checked" if checked else "input:not(:checked)"
         self.browser.wait_visible(f"{self.table_row(row)} td[data-label='Reformat'] {checked_selector}")
 
-    def check_mountpoint_row_device_disabled(self, row):
-        self.browser.wait_visible(f"{self.table_row(row)} td[data-label='Device'] .pf-v5-c-select__toggle.pf-m-disabled")
-
-    def check_mountpoint_row_reformat_disabled(self, row):
-        self.browser.wait_visible(f"{self.table_row(row)} td[data-label='Reformat'] .pf-v5-c-check__input:disabled")
-
     def add_mountpoint_row(self):
         rows = self.browser.call_js_func("ph_count", '#mount-point-mapping-table tbody tr')
         self.browser.click("button:contains('Add mount')")
@@ -515,9 +499,6 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def unlock_all_encrypted_skip(self):
         self.browser.click("button:contains('Skip')")
-
-    def assert_inline_error(self, text):
-        self.browser.wait_in_text(".pf-v5-c-alert.pf-m-inline.pf-m-danger", text)
 
     def wait_mountpoint_table_column_helper(self, row, column, text=None, present=True):
         if present:
