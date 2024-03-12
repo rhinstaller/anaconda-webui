@@ -367,7 +367,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         disk = "/dev/vda"
         dev = "vda"
@@ -492,7 +492,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         m.add_disk(10)
 
@@ -627,7 +627,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, "vda5")
@@ -650,7 +650,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        _r = Review(b)  # noqa: F841
+        _r = Review(b, m)  # noqa: F841
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -720,7 +720,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         # BIOS boot partition, /boot partition, / on RAID
         disk = "/dev/vda"
@@ -769,7 +769,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         # BIOS boot partition, /boot partition, / on RAID
         disk = "/dev/vda"
@@ -822,7 +822,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         disk = "/dev/vda"
         dev = "vda"
@@ -949,7 +949,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        _r = Review(b)  # noqa: F841
+        _r = Review(b, m)  # noqa: F841
 
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
@@ -980,7 +980,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         vgname = "fedoravg"
 
@@ -1091,7 +1091,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         dev = "vda"
 
@@ -1158,7 +1158,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         vgname = "fedoravg"
 
@@ -1250,7 +1250,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         tmp_mount = "/btrfs-mount-test"
 
@@ -1324,7 +1324,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         tmp_mount = "/btrfs-mount-test"
 
@@ -1418,7 +1418,7 @@ class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         disk = "/dev/vda"
         dev = "vda"

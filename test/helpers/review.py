@@ -20,13 +20,23 @@ HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from installer import InstallerSteps  # pylint: disable=import-error
+from network import NetworkDBus
 from step_logger import log_step
 
 
-class Review():
-    def __init__(self, browser):
+class Review(NetworkDBus):
+    def __init__(self, browser, machine):
         self.browser = browser
         self._step = InstallerSteps.REVIEW
+
+        NetworkDBus.__init__(self, machine)
+
+    @log_step()
+    def check_hostname(self, hostname):
+        self.browser.wait_in_text(f"#{self._step}-target-system-hostname > .pf-v5-c-description-list__text", hostname)
+
+    def check_hostname_not_present(self):
+        self.browser.wait_not_present(f"#{self._step}-target-system-hostname")
 
     @log_step()
     def check_language(self, lang):

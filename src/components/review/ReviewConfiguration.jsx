@@ -29,8 +29,9 @@ import {
 } from "@patternfly/react-core";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, UsersContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
+import { HostnameRow } from "./Hostname.jsx";
 import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
@@ -61,6 +62,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const accounts = useContext(UsersContext);
     const { partitioning, storageScenarioId } = useContext(StorageContext);
     const { label: scenarioLabel } = useScenario();
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
         setIsFormValid(true);
@@ -118,6 +120,10 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
                             </DescriptionListDescription>
                         </DescriptionListGroup>
                     </ReviewDescriptionList>
+                    {isBootIso &&
+                    <ReviewDescriptionList>
+                        <HostnameRow />
+                    </ReviewDescriptionList>}
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>

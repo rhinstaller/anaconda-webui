@@ -17,16 +17,20 @@
 
 import cockpit from "cockpit";
 
-import { getConnectedAction } from "../actions/network-actions.js";
+import { getConnectedAction, getHostnameAction } from "../actions/network-actions.js";
 
 import { debug } from "../helpers/log.js";
-import { _getProperty } from "./helpers.js";
+import { _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Network";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Network";
 
 const getProperty = (...args) => {
     return _getProperty(NetworkClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
+
+const setProperty = (...args) => {
+    return _setProperty(NetworkClient, OBJECT_PATH, INTERFACE_NAME, ...args);
 };
 
 export class NetworkClient {
@@ -57,6 +61,7 @@ export class NetworkClient {
 
     async initData () {
         await this.dispatch(getConnectedAction());
+        await this.dispatch(getHostnameAction());
     }
 
     startEventMonitor () {
@@ -67,6 +72,8 @@ export class NetworkClient {
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Connected")) {
                         this.dispatch(getConnectedAction());
+                    } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Hostname")) {
+                        this.dispatch(getHostnameAction());
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -84,4 +91,18 @@ export class NetworkClient {
  */
 export const getConnected = () => {
     return getProperty("Connected");
+};
+
+/**
+ * @returns {Promise}           The string value of the hostname of installed system
+ */
+export const getHostname = () => {
+    return getProperty("Hostname");
+};
+
+/**
+ * @returns {Promise}           The hostname setter
+ */
+export const setHostname = ({ hostname }) => {
+    return setProperty("Hostname", cockpit.variant("s", hostname));
 };
