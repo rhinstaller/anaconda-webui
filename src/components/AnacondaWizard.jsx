@@ -84,9 +84,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     }, [availableDevices, selectedDisks]);
 
     let stepsOrder = [
-        {
-            ...pageInstallationLanguage()
-        },
+        pageInstallationLanguage(),
         {
             data: {
                 dispatch,
@@ -103,17 +101,18 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         {
             id: "disk-configuration",
             label: _("Disk configuration"),
-            steps: [{
-                data: {
-                    dispatch,
-                    reusePartitioning,
-                    setReusePartitioning,
-                    storageScenarioId,
+            steps: [
+                {
+                    data: {
+                        dispatch,
+                        reusePartitioning,
+                        setReusePartitioning,
+                        storageScenarioId,
+                    },
+                    ...pageMountPointMapping({ storageScenarioId })
                 },
-                ...pageMountPointMapping({ storageScenarioId })
-            }, {
-                ...pageDiskEncryption({ storageScenarioId })
-            }]
+                pageDiskEncryption({ storageScenarioId })
+            ]
         },
         {
             data: {
