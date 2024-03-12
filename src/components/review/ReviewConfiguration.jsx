@@ -33,7 +33,7 @@ import {
     getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
 import { getScenario } from "../storage/InstallationScenario.jsx";
-import { FooterContext, OsReleaseContext } from "../Common.jsx";
+import { FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 
 import "./ReviewConfiguration.scss";
@@ -58,9 +58,10 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ deviceData, diskSelection, language, localizationData, requests, idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
+export const ReviewConfiguration = ({ language, localizationData, idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
     const [encrypt, setEncrypt] = useState();
     const osRelease = useContext(OsReleaseContext);
+    const { devices, diskSelection, partitioning } = useContext(StorageContext);
 
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter storageScenarioId={storageScenarioId} />, [storageScenarioId]);
@@ -140,8 +141,8 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
                     <DescriptionListDescription id={idPrefix + "-target-storage"}>
                         <Stack hasGutter>
                             <StorageReview
-                              deviceData={deviceData}
-                              requests={requests}
+                              deviceData={devices}
+                              requests={partitioning?.requests}
                               selectedDisks={diskSelection.selectedDisks}
                               storageScenarioId={storageScenarioId}
                             />

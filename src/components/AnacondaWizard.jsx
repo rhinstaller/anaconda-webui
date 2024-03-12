@@ -146,11 +146,8 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
             component: ReviewConfiguration,
             data: {
                 accounts,
-                deviceData: storageData.devices,
-                diskSelection: storageData.diskSelection,
                 language,
                 localizationData,
-                requests: storageData.partitioning ? storageData.partitioning.requests : null,
                 storageScenarioId,
             },
             ...getReviewConfigurationProps({ storageScenarioId })
