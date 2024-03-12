@@ -24,6 +24,7 @@ export const FooterContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
 export const RuntimeContext = createContext(null);
+export const StorageContext = createContext(null);
 export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
 

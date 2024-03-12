@@ -24,7 +24,15 @@ import { read_os_release as readOsRelease } from "os-release.js";
 import { WithDialogs } from "dialogs.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { AddressContext, LanguageContext, OsReleaseContext, RuntimeContext, SystemTypeContext, TargetSystemRootContext } from "./Common.jsx";
+import {
+    AddressContext,
+    LanguageContext,
+    OsReleaseContext,
+    RuntimeContext,
+    StorageContext,
+    SystemTypeContext,
+    TargetSystemRootContext,
+} from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import { CriticalError, bugzillaPrefiledReportURL, errorHandlerWithContext } from "./Error.jsx";
@@ -190,7 +198,6 @@ export const Application = () => {
                                         <AnacondaWizard
                                           onCritFail={onCritFail}
                                           title={title}
-                                          storageData={state.storage}
                                           localizationData={state.localization}
                                           dispatch={dispatch}
                                           conf={conf}
@@ -210,9 +217,11 @@ export const Application = () => {
     return (
         <WithDialogs>
             <LanguageContext.Provider value={{ language, setLanguage }}>
-                <MaybeBackdrop>
-                    {page}
-                </MaybeBackdrop>
+                <StorageContext.Provider value={state.storage}>
+                    <MaybeBackdrop>
+                        {page}
+                    </MaybeBackdrop>
+                </StorageContext.Provider>
             </LanguageContext.Provider>
         </WithDialogs>
     );

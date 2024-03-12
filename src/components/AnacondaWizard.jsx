@@ -35,13 +35,13 @@ import { InstallationLanguage, getPageProps as getInstallationLanguageProps } fr
 import { Accounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { ReviewConfiguration, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
-import { FooterContext, OsReleaseContext, SystemTypeContext } from "./Common.jsx";
+import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "./Common.jsx";
 import { resetPartitioning } from "../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCritFail, showStorage, setShowStorage }) => {
+export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showStorage, setShowStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
@@ -52,6 +52,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, onCrit
     const [currentStepId, setCurrentStepId] = useState();
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const storageData = useContext(StorageContext);
     const selectedDisks = storageData.diskSelection.selectedDisks;
     const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
 
