@@ -35,7 +35,7 @@ import "./DiskEncryption.scss";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
-import { RuntimeContext } from "../Common.jsx";
+import { RuntimeContext, StorageContext } from "../Common.jsx";
 import { applyStorage } from "../../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
@@ -63,10 +63,10 @@ const CheckDisksSpinner = (
 export const DiskEncryption = ({
     idPrefix,
     isInProgress,
-    partitioningData,
     setIsFormValid,
 }) => {
-    const request = partitioningData?.requests?.[0];
+    const { partitioning } = useContext(StorageContext);
+    const request = partitioning?.requests?.[0];
     const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
     const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
     const [password, setPassword] = useState(request?.passphrase || "");

@@ -128,9 +128,6 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
                 ...getMountPointMappingProps({ storageScenarioId })
             }, {
                 component: DiskEncryption,
-                data: {
-                    partitioningData: storageData.partitioning,
-                },
                 ...getDiskEncryptionProps({ storageScenarioId })
             }]
         },
