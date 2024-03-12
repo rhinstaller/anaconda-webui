@@ -103,12 +103,7 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
         {
             component: InstallationMethod,
             data: {
-                deviceData: storageData.devices,
-                deviceNames: storageData.deviceNames,
-                diskSelection: storageData.diskSelection,
                 dispatch,
-                partitioning: storageData.partitioning.path,
-                requests: storageData.partitioning.requests,
                 scenarioPartitioningMapping,
                 setShowStorage,
                 setStorageScenarioId: (scenarioId) => {
