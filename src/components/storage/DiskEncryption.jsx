@@ -66,14 +66,10 @@ export const DiskEncryption = ({
     partitioningData,
     setIsFormValid,
 }) => {
-    const [storageEncryption, setStorageEncryption] = useState({
-        confirmPassword: partitioningData?.requests?.[0]?.passphrase || "",
-        encrypt: partitioningData?.requests?.[0]?.encrypted,
-        password: partitioningData?.requests?.[0]?.passphrase || "",
-    });
-    const [password, setPassword] = useState(storageEncryption.password);
-    const [confirmPassword, setConfirmPassword] = useState(storageEncryption.confirmPassword);
-    const isEncrypted = storageEncryption.encrypt;
+    const request = partitioningData?.requests?.[0];
+    const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
+    const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
+    const [password, setPassword] = useState(request?.passphrase || "");
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
 
     // Display custom footer
@@ -85,7 +81,7 @@ export const DiskEncryption = ({
           id={idPrefix + "-encrypt-devices"}
           label={_("Encrypt my data")}
           isChecked={isEncrypted}
-          onChange={(_event, encrypt) => setStorageEncryption(se => ({ ...se, encrypt }))}
+          onChange={(_event, isEncrypted) => setIsEncrypted(isEncrypted)}
           body={content}
         />
     );
@@ -109,14 +105,6 @@ export const DiskEncryption = ({
         setIsFormValid(!isEncrypted);
     }, [setIsFormValid, isEncrypted]);
 
-    useEffect(() => {
-        setStorageEncryption(se => ({ ...se, password }));
-    }, [password, setStorageEncryption]);
-
-    useEffect(() => {
-        setStorageEncryption(se => ({ ...se, confirmPassword }));
-    }, [confirmPassword, setStorageEncryption]);
-
     if (isInProgress) {
         return CheckDisksSpinner;
     }
@@ -138,11 +126,11 @@ export const DiskEncryption = ({
     );
 };
 
-const CustomFooter = ({ storageEncryption }) => {
+const CustomFooter = ({ encrypt, encryptPassword }) => {
     const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
         return applyStorage({
-            encrypt: storageEncryption.encrypt,
-            encryptPassword: storageEncryption.password,
+            encrypt,
+            encryptPassword,
             onFail: ex => {
                 console.error(ex);
                 setIsFormDisabled(false);
