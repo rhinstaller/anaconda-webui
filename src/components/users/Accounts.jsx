@@ -313,7 +313,7 @@ const RootAccount = ({
     );
 };
 
-export const Accounts = ({
+const Accounts = ({
     idPrefix,
     setIsFormValid,
     accounts,
@@ -367,6 +367,7 @@ const CustomFooter = ({ accounts }) => {
 
 export const getPageProps = ({ isBootIso }) => {
     return ({
+        component: Accounts,
         id: "accounts",
         isHidden: !isBootIso,
         label: _("Create Account"),

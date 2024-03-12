@@ -60,7 +60,7 @@ const CheckDisksSpinner = (
     </EmptyState>
 );
 
-export const DiskEncryption = ({
+const DiskEncryption = ({
     idPrefix,
     isInProgress,
     setIsFormValid,
@@ -152,6 +152,7 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
 
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
+        component: DiskEncryption,
         id: "disk-encryption",
         isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
         label: _("Disk encryption"),

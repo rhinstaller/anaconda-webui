@@ -604,7 +604,7 @@ const isUsableDevice = (devSpec, deviceData) => {
     return false;
 };
 
-export const MountPointMapping = ({
+const MountPointMapping = ({
     dispatch,
     idPrefix,
     reusePartitioning,
@@ -711,6 +711,7 @@ const CustomFooter = ({ partitioning, storageScenarioId }) => {
 
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
+        component: MountPointMapping,
         id: "mount-point-mapping",
         isHidden: storageScenarioId !== "mount-point-mapping",
         label: _("Manual disk configuration"),

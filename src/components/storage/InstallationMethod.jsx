@@ -28,7 +28,7 @@ import { StorageContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
-export const InstallationMethod = ({
+const InstallationMethod = ({
     dispatch,
     idPrefix,
     isEfi,
@@ -91,6 +91,7 @@ const InstallationMethodFooterHelper = () => (
 
 export const getPageProps = ({ isBootIso, osRelease, isFormValid }) => {
     return ({
+        component: InstallationMethod,
         footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
         id: "installation-method",
         label: _("Installation method"),

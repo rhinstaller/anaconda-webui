@@ -282,7 +282,7 @@ class LanguageSelector extends React.Component {
 }
 LanguageSelector.contextType = AddressContext;
 
-export const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
+const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
     const { language, languages, commonLocales } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
     useEffect(() => {
@@ -328,6 +328,7 @@ export const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotifica
 
 export const getPageProps = ({ isBootIso, osRelease }) => {
     return ({
+        component: InstallationLanguage,
         id: "installation-language",
         isHidden: !isBootIso,
         label: _("Welcome"),

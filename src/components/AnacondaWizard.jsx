@@ -26,15 +26,15 @@ import {
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
+import { getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
-import { DiskEncryption, getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
-import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
-import { Accounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
+import { getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
+import { getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
+import { getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
+import { getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { ReviewConfiguration, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
+import { getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
 import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "./Common.jsx";
 import { resetPartitioning } from "../apis/storage_partitioning.js";
 
@@ -87,11 +87,9 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
 
     let stepsOrder = [
         {
-            component: InstallationLanguage,
             ...getInstallationLanguageProps({ isBootIso, osRelease })
         },
         {
-            component: InstallationMethod,
             data: {
                 dispatch,
                 scenarioPartitioningMapping,
@@ -108,7 +106,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
             id: "disk-configuration",
             label: _("Disk configuration"),
             steps: [{
-                component: MountPointMapping,
                 data: {
                     dispatch,
                     reusePartitioning,
@@ -117,12 +114,10 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 },
                 ...getMountPointMappingProps({ storageScenarioId })
             }, {
-                component: DiskEncryption,
                 ...getDiskEncryptionProps({ storageScenarioId })
             }]
         },
         {
-            component: Accounts,
             data: {
                 accounts,
                 setAccounts,
@@ -130,7 +125,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
             ...getAccountsProps({ isBootIso })
         },
         {
-            component: ReviewConfiguration,
             data: {
                 accounts,
                 storageScenarioId,

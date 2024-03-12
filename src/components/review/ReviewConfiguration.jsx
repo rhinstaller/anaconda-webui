@@ -58,7 +58,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
+const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
     const [encrypt, setEncrypt] = useState();
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
@@ -239,6 +239,7 @@ const CustomFooter = ({ storageScenarioId }) => {
 
 export const getPageProps = ({ storageScenarioId }) => {
     return ({
+        component: ReviewConfiguration,
         footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,
         id: "installation-review",
         label: _("Review and install"),
