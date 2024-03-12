@@ -120,9 +120,7 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
             steps: [{
                 component: MountPointMapping,
                 data: {
-                    deviceData: storageData.devices,
                     dispatch,
-                    partitioningData: storageData.partitioning,
                     reusePartitioning,
                     setReusePartitioning,
                     storageScenarioId,

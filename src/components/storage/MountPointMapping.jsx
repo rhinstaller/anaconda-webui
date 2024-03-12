@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Button,
     Flex,
@@ -38,6 +38,7 @@ import { ListingTable } from "cockpit-components-table.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { StorageContext } from "../Common.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { useMountPointConstraints } from "./Common.jsx";
 import {
@@ -604,22 +605,21 @@ const isUsableDevice = (devSpec, deviceData) => {
 };
 
 export const MountPointMapping = ({
-    deviceData,
     dispatch,
     idPrefix,
-    partitioningData,
     reusePartitioning,
     setIsFormValid,
     setReusePartitioning,
     setStepNotification,
     storageScenarioId,
 }) => {
-    const [usedPartitioning, setUsedPartitioning] = useState(partitioningData?.path);
+    const { devices, partitioning } = useContext(StorageContext);
+    const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
     const mountPointConstraints = useMountPointConstraints();
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(partitioningData?.requests, deviceData),
-        [deviceData, partitioningData?.requests]
+        () => getLockedLUKSDevices(partitioning?.requests, devices),
+        [devices, partitioning?.requests]
     );
 
     // Display custom footer
@@ -634,7 +634,7 @@ export const MountPointMapping = ({
     useWizardFooter(getFooter);
 
     useEffect(() => {
-        if (!reusePartitioning || partitioningData?.method !== "MANUAL") {
+        if (!reusePartitioning || partitioning?.method !== "MANUAL") {
             /* Reset the bootloader drive before we schedule partitions
              * The bootloader drive is automatically set during the partitioning, so
              * make sure we always reset the previous value before we run another one,
@@ -648,9 +648,9 @@ export const MountPointMapping = ({
                         setReusePartitioning(true);
                     });
         }
-    }, [reusePartitioning, setReusePartitioning, partitioningData?.method, partitioningData?.path]);
+    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
 
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioningData.path;
+    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (
@@ -666,18 +666,18 @@ export const MountPointMapping = ({
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioningData?.requests)
+                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioning?.requests)
                     ? (
                         <EmptyStatePanel loading />
                     )
                     : (
                         <RequestsTable
-                          deviceData={deviceData}
+                          deviceData={devices}
                           idPrefix={idPrefix + "-table"}
                           lockedLUKSDevices={lockedLUKSDevices}
                           setStepNotification={setStepNotification}
-                          partitioningDataPath={partitioningData?.path}
-                          requests={partitioningData?.requests}
+                          partitioningDataPath={partitioning?.path}
+                          requests={partitioning?.requests}
                           mountPointConstraints={mountPointConstraints}
                           setIsFormValid={setIsFormValid}
                         />
