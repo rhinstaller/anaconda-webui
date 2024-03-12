@@ -26,16 +26,16 @@ import {
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
+import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
-import { getPageProps as getDiskEncryptionProps } from "./storage/DiskEncryption.jsx";
-import { getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
-import { getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
+import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
+import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
+import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { getAccountsState, usePage as pageAccounts } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
-import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "./Common.jsx";
+import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { FooterContext, StorageContext } from "./Common.jsx";
 import { resetPartitioning } from "../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
@@ -50,8 +50,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
-    const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const storageData = useContext(StorageContext);
     const selectedDisks = storageData.diskSelection.selectedDisks;
     const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
@@ -87,7 +85,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
 
     let stepsOrder = [
         {
-            ...getInstallationLanguageProps({ isBootIso, osRelease })
+            ...pageInstallationLanguage()
         },
         {
             data: {
@@ -100,7 +98,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 },
                 storageScenarioId,
             },
-            ...getInstallationMethodProps({ isBootIso, isFormValid, osRelease })
+            ...pageInstallationMethod({ isFormValid })
         },
         {
             id: "disk-configuration",
@@ -112,9 +110,9 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                     setReusePartitioning,
                     storageScenarioId,
                 },
-                ...getMountPointMappingProps({ storageScenarioId })
+                ...pageMountPointMapping({ storageScenarioId })
             }, {
-                ...getDiskEncryptionProps({ storageScenarioId })
+                ...pageDiskEncryption({ storageScenarioId })
             }]
         },
         {
@@ -122,14 +120,14 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 accounts,
                 setAccounts,
             },
-            ...getAccountsProps({ isBootIso })
+            ...pageAccounts()
         },
         {
             data: {
                 accounts,
                 storageScenarioId,
             },
-            ...getReviewConfigurationProps({ storageScenarioId })
+            ...pageReviewConfiguration({ storageScenarioId })
         },
     ];
     stepsOrder = stepsOrder.filter(step => !step.isHidden);
@@ -239,7 +237,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
     }) + 1;
 
-    // Properties from getPageProps to be passed to the Wizard Footer,
+    // Properties from usePage to be passed to the Wizard Footer,
     // in case the Page is not using custom footer.
     const stepProps = stepsOrder[startIndex - 1];
     const footerProps = {

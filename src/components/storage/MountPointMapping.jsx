@@ -687,12 +687,13 @@ const MountPointMapping = ({
 };
 
 const CustomFooter = ({ partitioning, storageScenarioId }) => {
+    const step = usePage({ storageScenarioId }).id;
     const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
         return applyStorage({
             onFail: ex => {
                 console.error(ex);
                 setIsFormDisabled(false);
-                setStepNotification({ step: getPageProps({ storageScenarioId }).id, ...ex });
+                setStepNotification({ step, ...ex });
             },
             onSuccess: () => {
                 goToNextStep();
@@ -709,7 +710,7 @@ const CustomFooter = ({ partitioning, storageScenarioId }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+export const usePage = ({ storageScenarioId }) => {
     return ({
         component: MountPointMapping,
         id: "mount-point-mapping",

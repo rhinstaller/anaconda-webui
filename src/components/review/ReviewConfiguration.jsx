@@ -216,7 +216,7 @@ const ReviewConfigurationFooterHelperText = ({ storageScenarioId }) => {
 const CustomFooter = ({ storageScenarioId }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
     const { setShowWizard } = useContext(FooterContext);
-    const pageProps = getPageProps({ storageScenarioId });
+    const pageProps = usePage({ storageScenarioId });
 
     return (
         <>
@@ -237,7 +237,7 @@ const CustomFooter = ({ storageScenarioId }) => {
     );
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+export const usePage = ({ storageScenarioId }) => {
     return ({
         component: ReviewConfiguration,
         footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,

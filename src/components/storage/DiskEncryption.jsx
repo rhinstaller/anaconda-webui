@@ -127,6 +127,7 @@ const DiskEncryption = ({
 };
 
 const CustomFooter = ({ encrypt, encryptPassword }) => {
+    const step = usePage({}).id;
     const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
         return applyStorage({
             encrypt,
@@ -134,7 +135,7 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
             onFail: ex => {
                 console.error(ex);
                 setIsFormDisabled(false);
-                setStepNotification({ step: getPageProps().id, ...ex });
+                setStepNotification({ step, ...ex });
             },
             onSuccess: () => {
                 goToNextStep();
@@ -150,7 +151,7 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+export const usePage = ({ storageScenarioId }) => {
     return ({
         component: DiskEncryption,
         id: "disk-encryption",

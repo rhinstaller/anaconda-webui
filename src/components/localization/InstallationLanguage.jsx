@@ -32,7 +32,7 @@ import {
     SearchInput, Title,
 } from "@patternfly/react-core";
 
-import { AddressContext, LanguageContext } from "../Common.jsx";
+import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { setLocale } from "../../apis/boss.js";
 import {
     setLanguage,
@@ -326,7 +326,10 @@ const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification })
     );
 };
 
-export const getPageProps = ({ isBootIso, osRelease }) => {
+export const usePage = () => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
         component: InstallationLanguage,
         id: "installation-language",

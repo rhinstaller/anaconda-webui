@@ -352,20 +352,21 @@ const Accounts = ({
 };
 
 const CustomFooter = ({ accounts }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const onNext = ({ goToNextStep }) => {
         applyAccounts(accounts).then(goToNextStep);
     };
 
     return (
         <AnacondaWizardFooter
-          currentStepProps={getPageProps({ isBootIso })}
+          currentStepProps={usePage()}
           onNext={onNext}
         />
     );
 };
 
-export const getPageProps = ({ isBootIso }) => {
+export const usePage = () => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
         component: Accounts,
         id: "accounts",

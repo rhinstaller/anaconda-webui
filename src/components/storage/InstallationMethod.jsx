@@ -24,7 +24,7 @@ import {
 
 import { InstallationScenario } from "./InstallationScenario.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
-import { StorageContext } from "../Common.jsx";
+import { OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -89,7 +89,10 @@ const InstallationMethodFooterHelper = () => (
     </HelperText>
 );
 
-export const getPageProps = ({ isBootIso, osRelease, isFormValid }) => {
+export const usePage = ({ isFormValid }) => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
         component: InstallationMethod,
         footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
