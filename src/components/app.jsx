@@ -194,6 +194,7 @@ export const Application = () => {
                                       runtimeData={state.runtime}
                                       dispatch={dispatch}
                                       conf={conf}
+                                      hostname={state.network.hostname}
                                       setShowStorage={setShowStorage}
                                       showStorage={showStorage}
                                     />

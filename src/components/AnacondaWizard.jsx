@@ -51,7 +51,7 @@ import {
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, showStorage, setShowStorage }) => {
+export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, showStorage, setShowStorage, hostname }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
@@ -167,6 +167,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 accounts,
                 deviceData: storageData.devices,
                 diskSelection: storageData.diskSelection,
+                hostname,
                 language,
                 localizationData,
                 requests: storageData.partitioning ? storageData.partitioning.requests : null,
