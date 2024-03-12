@@ -41,7 +41,7 @@ import { resetPartitioning } from "../apis/storage_partitioning.js";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showStorage, setShowStorage }) => {
+export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
@@ -85,19 +85,9 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
         setReusePartitioning(false);
     }, [availableDevices, selectedDisks]);
 
-    const language = useMemo(() => {
-        for (const l of Object.keys(localizationData.languages)) {
-            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
-
-            if (locale) {
-                return locale;
-            }
-        }
-    }, [localizationData]);
     let stepsOrder = [
         {
             component: InstallationLanguage,
-            data: { commonLocales: localizationData.commonLocales, dispatch, language: localizationData.language, languages: localizationData.languages },
             ...getInstallationLanguageProps({ isBootIso, osRelease })
         },
         {
@@ -143,8 +133,6 @@ export const AnacondaWizard = ({ dispatch, localizationData, onCritFail, showSto
             component: ReviewConfiguration,
             data: {
                 accounts,
-                language,
-                localizationData,
                 storageScenarioId,
             },
             ...getReviewConfigurationProps({ storageScenarioId })

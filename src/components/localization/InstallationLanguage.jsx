@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import cockpit from "cockpit";
 import {
     Alert,
@@ -282,9 +282,9 @@ class LanguageSelector extends React.Component {
 }
 LanguageSelector.contextType = AddressContext;
 
-export const InstallationLanguage = ({ idPrefix, languages, language, commonLocales, setIsFormValid, setStepNotification }) => {
+export const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
+    const { language, languages, commonLocales } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
-    const { setLanguage } = React.useContext(LanguageContext);
     useEffect(() => {
         setIsFormValid(language !== "");
     }, [language, setIsFormValid]);

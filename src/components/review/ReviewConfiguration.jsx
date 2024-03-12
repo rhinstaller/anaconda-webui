@@ -33,7 +33,7 @@ import {
     getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
 import { getScenario } from "../storage/InstallationScenario.jsx";
-import { FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 
 import "./ReviewConfiguration.scss";
@@ -58,9 +58,10 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ language, localizationData, idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
+export const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
     const [encrypt, setEncrypt] = useState();
     const osRelease = useContext(OsReleaseContext);
+    const localizationData = useContext(LanguageContext);
     const { devices, diskSelection, partitioning } = useContext(StorageContext);
 
     // Display custom footer
@@ -79,6 +80,16 @@ export const ReviewConfiguration = ({ language, localizationData, idPrefix, setI
         initializeEncrypt();
         setIsFormValid(true);
     }, [setIsFormValid]);
+
+    const language = useMemo(() => {
+        for (const l of Object.keys(localizationData.languages)) {
+            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
+
+            if (locale) {
+                return locale;
+            }
+        }
+    }, [localizationData]);
 
     return (
         <>

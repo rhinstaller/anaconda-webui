@@ -76,7 +76,6 @@ const MaybeBackdrop = ({ children }) => {
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
-    const [language, setLanguage] = useState();
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
@@ -198,7 +197,6 @@ export const Application = () => {
                                         <AnacondaWizard
                                           onCritFail={onCritFail}
                                           title={title}
-                                          localizationData={state.localization}
                                           dispatch={dispatch}
                                           conf={conf}
                                           setShowStorage={setShowStorage}
@@ -216,7 +214,7 @@ export const Application = () => {
 
     return (
         <WithDialogs>
-            <LanguageContext.Provider value={{ language, setLanguage }}>
+            <LanguageContext.Provider value={state.localization}>
                 <StorageContext.Provider value={state.storage}>
                     <MaybeBackdrop>
                         {page}
