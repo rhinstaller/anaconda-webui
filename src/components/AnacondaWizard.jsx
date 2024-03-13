@@ -17,52 +17,40 @@
 import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
-    ActionList,
-    Button,
-    Modal,
-    ModalVariant,
     PageSection,
     PageSectionTypes,
     PageSectionVariants,
-    Stack,
     Wizard,
-    WizardFooterWrapper,
     WizardStep,
-    useWizardContext
 } from "@patternfly/react-core";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
-import { InstallationMethod, getPageProps as getInstallationMethodProps } from "./storage/InstallationMethod.jsx";
+import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
+import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { MountPointMapping, getPageProps as getMountPointMappingProps } from "./storage/MountPointMapping.jsx";
-import { DiskEncryption, getPageProps as getDiskEncryptionProps, getStorageEncryptionState } from "./storage/DiskEncryption.jsx";
-import { InstallationLanguage, getPageProps as getInstallationLanguageProps } from "./localization/InstallationLanguage.jsx";
-import { Accounts, applyAccounts, getPageProps as getAccountsProps, getAccountsState } from "./users/Accounts.jsx";
+import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
+import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
+import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { getAccountsState, usePage as pageAccounts } from "./users/Accounts.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { ReviewConfiguration, ReviewConfigurationConfirmModal, getPageProps as getReviewConfigurationProps } from "./review/ReviewConfiguration.jsx";
-import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
-import { exitGui } from "../helpers/exit.js";
-import {
-    applyStorage,
-    resetPartitioning,
-} from "../apis/storage_partitioning.js";
+import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { FooterContext, StorageContext } from "./Common.jsx";
+import { resetPartitioning } from "../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtimeData, onCritFail, showStorage, setShowStorage }) => {
+export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
-    const [storageEncryption, setStorageEncryption] = useState(getStorageEncryptionState());
     const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
-    const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const storageData = useContext(StorageContext);
     const selectedDisks = storageData.diskSelection.selectedDisks;
     const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
 
@@ -95,30 +83,11 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         setReusePartitioning(false);
     }, [availableDevices, selectedDisks]);
 
-    const language = useMemo(() => {
-        for (const l of Object.keys(localizationData.languages)) {
-            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
-
-            if (locale) {
-                return locale;
-            }
-        }
-    }, [localizationData]);
-    const stepsOrder = [
+    let stepsOrder = [
+        pageInstallationLanguage(),
         {
-            component: InstallationLanguage,
-            data: { commonLocales: localizationData.commonLocales, dispatch, language: localizationData.language, languages: localizationData.languages },
-            ...getInstallationLanguageProps({ isBootIso, osRelease })
-        },
-        {
-            component: InstallationMethod,
             data: {
-                deviceData: storageData.devices,
-                deviceNames: storageData.deviceNames,
-                diskSelection: storageData.diskSelection,
                 dispatch,
-                partitioning: storageData.partitioning.path,
-                requests: storageData.partitioning.requests,
                 scenarioPartitioningMapping,
                 setShowStorage,
                 setStorageScenarioId: (scenarioId) => {
@@ -127,54 +96,40 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
                 },
                 storageScenarioId,
             },
-            ...getInstallationMethodProps({ isBootIso, isFormValid, osRelease })
+            ...pageInstallationMethod({ isFormValid })
         },
         {
             id: "disk-configuration",
             label: _("Disk configuration"),
-            steps: [{
-                component: MountPointMapping,
-                data: {
-                    deviceData: storageData.devices,
-                    dispatch,
-                    partitioningData: storageData.partitioning,
-                    reusePartitioning,
-                    setReusePartitioning,
+            steps: [
+                {
+                    data: {
+                        dispatch,
+                        reusePartitioning,
+                        setReusePartitioning,
+                        storageScenarioId,
+                    },
+                    ...pageMountPointMapping({ storageScenarioId })
                 },
-                ...getMountPointMappingProps({ storageScenarioId })
-            }, {
-                component: DiskEncryption,
-                data: {
-                    passwordPolicies: runtimeData.passwordPolicies,
-                    setStorageEncryption,
-                    storageEncryption,
-                },
-                ...getDiskEncryptionProps({ storageScenarioId })
-            }]
+                pageDiskEncryption({ storageScenarioId })
+            ]
         },
         {
-            component: Accounts,
             data: {
                 accounts,
-                passwordPolicies: runtimeData.passwordPolicies,
                 setAccounts,
             },
-            ...getAccountsProps({ isBootIso })
+            ...pageAccounts()
         },
         {
-            component: ReviewConfiguration,
             data: {
                 accounts,
-                deviceData: storageData.devices,
-                diskSelection: storageData.diskSelection,
-                language,
-                localizationData,
-                requests: storageData.partitioning ? storageData.partitioning.requests : null,
                 storageScenarioId,
             },
-            ...getReviewConfigurationProps({ storageScenarioId })
+            ...pageReviewConfiguration({ storageScenarioId })
         },
     ];
+    stepsOrder = stepsOrder.filter(step => !step.isHidden);
 
     const componentProps = {
         isFormDisabled,
@@ -198,7 +153,7 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         return stepIds;
     };
     const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
-    const firstStepId = stepsOrder.filter(step => !step.isHidden)[0].id;
+    const firstStepId = stepsOrder[0].id;
 
     const isStepFollowedBy = (earlierStepId, laterStepId) => {
         const earlierStepIdx = flattenedStepsIds.findIndex(s => s === earlierStepId);
@@ -281,6 +236,15 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
         return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
     }) + 1;
 
+    // Properties from usePage to be passed to the Wizard Footer,
+    // in case the Page is not using custom footer.
+    const stepProps = stepsOrder[startIndex - 1];
+    const footerProps = {
+        footerHelperText: stepProps?.footerHelperText,
+        nextButtonText: stepProps?.nextButtonText,
+        nextButtonVariant: stepProps?.nextButtonVariant,
+    };
+
     if (showStorage) {
         return (
             <CockpitStorageIntegration
@@ -298,202 +262,24 @@ export const AnacondaWizard = ({ dispatch, storageData, localizationData, runtim
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
-            <Wizard
-              id="installation-wizard"
-              isVisitRequired
-              startIndex={startIndex}
-              footer={<Footer
-                onCritFail={onCritFail}
-                isFormValid={isFormValid}
-                partitioning={storageData.partitioning?.path}
-                setIsFormValid={setIsFormValid}
-                setStepNotification={setStepNotification}
-                isFormDisabled={isFormDisabled}
-                setIsFormDisabled={setIsFormDisabled}
-                setShowWizard={setShowWizard}
-                stepsOrder={stepsOrder}
-                storageEncryption={storageEncryption}
-                storageScenarioId={storageScenarioId}
-                accounts={accounts}
-              />}
-              onStepChange={((event, currentStep, prevStep) => goToStep(currentStep, prevStep))}
-            >
-                {steps}
-            </Wizard>
+            <FooterContext.Provider value={{
+                isFormDisabled,
+                isFormValid,
+                setIsFormDisabled,
+                setIsFormValid,
+                setShowWizard,
+                setStepNotification,
+            }}>
+                <Wizard
+                  id="installation-wizard"
+                  isVisitRequired
+                  startIndex={startIndex}
+                  footer={<AnacondaWizardFooter {...footerProps} />}
+                  onStepChange={((event, currentStep, prevStep) => goToStep(currentStep, prevStep))}
+                >
+                    {steps}
+                </Wizard>
+            </FooterContext.Provider>
         </PageSection>
-    );
-};
-
-const Footer = ({
-    onCritFail,
-    isFormValid,
-    setIsFormValid,
-    setStepNotification,
-    isFormDisabled,
-    partitioning,
-    setIsFormDisabled,
-    setShowWizard,
-    stepsOrder,
-    storageEncryption,
-    storageScenarioId,
-    accounts,
-}) => {
-    const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState(false);
-    const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
-    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    const onNext = (activeStep, goToNextStep) => {
-        // first reset validation state to default
-        setIsFormValid(true);
-
-        if (activeStep.id === "disk-encryption") {
-            setIsFormDisabled(true);
-
-            applyStorage({
-                encrypt: storageEncryption.encrypt,
-                encryptPassword: storageEncryption.password,
-                onFail: ex => {
-                    console.error(ex);
-                    setIsFormDisabled(false);
-                    setStepNotification({ step: activeStep.id, ...ex });
-                },
-                onSuccess: () => {
-                    goToNextStep();
-
-                    // Reset the state after the onNext call. Otherwise,
-                    // React will try to render the current step again.
-                    setIsFormDisabled(false);
-                    setStepNotification();
-                },
-            });
-        } else if (activeStep.id === "installation-review") {
-            setNextWaitsConfirmation(true);
-        } else if (activeStep.id === "mount-point-mapping") {
-            setIsFormDisabled(true);
-
-            applyStorage({
-                onFail: ex => {
-                    console.error(ex);
-                    setIsFormDisabled(false);
-                    setStepNotification({ step: activeStep.id, ...ex });
-                },
-                onSuccess: () => {
-                    goToNextStep();
-
-                    // Reset the state after the onNext call. Otherwise,
-                    // React will try to render the current step again.
-                    setIsFormDisabled(false);
-                    setStepNotification();
-                },
-                partitioning,
-            });
-        } else if (activeStep.id === "accounts") {
-            applyAccounts(accounts)
-                    .then(() => goToNextStep())
-                    .catch(onCritFail({ context: N_("Account setting failed.") }));
-        } else {
-            goToNextStep();
-        }
-    };
-
-    const onBack = () => {
-        // first reset validation state to default
-        setIsFormValid(true);
-        goToPrevStep();
-    };
-
-    const currentStep = stepsOrder.find(s => s.id === activeStep.id);
-    const footerHelperText = currentStep?.footerHelperText;
-    const isFirstScreen = stepsOrder.filter(step => !step.isHidden)[0].id === activeStep.id;
-    const nextButtonText = currentStep?.nextButtonText || _("Next");
-    const nextButtonVariant = currentStep?.nextButtonVariant || "primary";
-
-    return (
-        <WizardFooterWrapper>
-            <Stack hasGutter>
-                {activeStep.id === "installation-review" &&
-                    nextWaitsConfirmation &&
-                    <ReviewConfigurationConfirmModal
-                      idPrefix={activeStep.id}
-                      onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
-                      setNextWaitsConfirmation={setNextWaitsConfirmation}
-                      storageScenarioId={storageScenarioId}
-                    />}
-                {quitWaitsConfirmation &&
-                    <QuitInstallationConfirmModal
-                      exitGui={exitGui}
-                      setQuitWaitsConfirmation={setQuitWaitsConfirmation}
-                    />}
-                {footerHelperText}
-                <ActionList>
-                    <Button
-                      id="installation-back-btn"
-                      variant="secondary"
-                      isDisabled={isFirstScreen || isFormDisabled}
-                      onClick={() => onBack()}>
-                        {_("Back")}
-                    </Button>
-                    <Button
-                      id="installation-next-btn"
-                      variant={nextButtonVariant}
-                      isDisabled={
-                          !isFormValid ||
-                            isFormDisabled ||
-                            nextWaitsConfirmation
-                      }
-                      onClick={() => onNext(activeStep, goToNextStep)}>
-                        {nextButtonText}
-                    </Button>
-                    <Button
-                      id="installation-quit-btn"
-                      isDisabled={isFormDisabled}
-                      style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
-                      variant="link"
-                      onClick={() => {
-                          setQuitWaitsConfirmation(true);
-                      }}
-                    >
-                        {isBootIso ? _("Reboot") : _("Quit")}
-                    </Button>
-                </ActionList>
-            </Stack>
-        </WizardFooterWrapper>
-    );
-};
-
-export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    return (
-        <Modal
-          id="installation-quit-confirm-dialog"
-          actions={[
-              <Button
-                id="installation-quit-confirm-btn"
-                key="confirm"
-                onClick={() => {
-                    exitGui();
-                }}
-                variant="danger"
-              >
-                  {isBootIso ? _("Reboot") : _("Quit")}
-              </Button>,
-              <Button
-                id="installation-quit-confirm-cancel-btn"
-                key="cancel"
-                onClick={() => setQuitWaitsConfirmation(false)}
-                variant="secondary">
-                  {_("Continue installation")}
-              </Button>
-          ]}
-          isOpen
-          onClose={() => setQuitWaitsConfirmation(false)}
-          title={isBootIso ? _("Reboot system?") : _("Quit installer?")}
-          titleIconVariant="warning"
-          variant={ModalVariant.small}
-        >
-            {_("Your progress will not be saved.")}
-        </Modal>
     );
 };

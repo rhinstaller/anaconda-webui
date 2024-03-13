@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Button,
     Flex,
@@ -26,6 +26,7 @@ import {
     Label,
     Switch,
     TextInput,
+    useWizardFooter,
 } from "@patternfly/react-core";
 import {
     Select,
@@ -36,12 +37,15 @@ import { TrashIcon } from "@patternfly/react-icons";
 import { ListingTable } from "cockpit-components-table.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { StorageContext } from "../Common.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { useMountPointConstraints } from "./Common.jsx";
 import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";
 import {
+    applyStorage,
     createPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
@@ -600,26 +604,37 @@ const isUsableDevice = (devSpec, deviceData) => {
     return false;
 };
 
-export const MountPointMapping = ({
-    deviceData,
+const MountPointMapping = ({
     dispatch,
     idPrefix,
-    partitioningData,
     reusePartitioning,
     setIsFormValid,
     setReusePartitioning,
     setStepNotification,
+    storageScenarioId,
 }) => {
-    const [usedPartitioning, setUsedPartitioning] = useState(partitioningData?.path);
+    const { devices, partitioning } = useContext(StorageContext);
+    const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
     const mountPointConstraints = useMountPointConstraints();
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(partitioningData?.requests, deviceData),
-        [deviceData, partitioningData?.requests]
+        () => getLockedLUKSDevices(partitioning?.requests, devices),
+        [devices, partitioning?.requests]
     );
 
+    // Display custom footer
+    const getFooter = useMemo(
+        () => (
+            <CustomFooter
+              partitioning={usedPartitioning}
+              storageScenarioId={storageScenarioId} />
+        ),
+        [usedPartitioning, storageScenarioId]
+    );
+    useWizardFooter(getFooter);
+
     useEffect(() => {
-        if (!reusePartitioning || partitioningData?.method !== "MANUAL") {
+        if (!reusePartitioning || partitioning?.method !== "MANUAL") {
             /* Reset the bootloader drive before we schedule partitions
              * The bootloader drive is automatically set during the partitioning, so
              * make sure we always reset the previous value before we run another one,
@@ -633,9 +648,9 @@ export const MountPointMapping = ({
                         setReusePartitioning(true);
                     });
         }
-    }, [reusePartitioning, setReusePartitioning, partitioningData?.method, partitioningData?.path]);
+    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
 
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioningData.path;
+    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (
@@ -651,18 +666,18 @@ export const MountPointMapping = ({
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioningData?.requests)
+                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioning?.requests)
                     ? (
                         <EmptyStatePanel loading />
                     )
                     : (
                         <RequestsTable
-                          deviceData={deviceData}
+                          deviceData={devices}
                           idPrefix={idPrefix + "-table"}
                           lockedLUKSDevices={lockedLUKSDevices}
                           setStepNotification={setStepNotification}
-                          partitioningDataPath={partitioningData?.path}
-                          requests={partitioningData?.requests}
+                          partitioningDataPath={partitioning?.path}
+                          requests={partitioning?.requests}
                           mountPointConstraints={mountPointConstraints}
                           setIsFormValid={setIsFormValid}
                         />
@@ -671,8 +686,33 @@ export const MountPointMapping = ({
     );
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+const CustomFooter = ({ partitioning, storageScenarioId }) => {
+    const step = usePage({ storageScenarioId }).id;
+    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+        return applyStorage({
+            onFail: ex => {
+                console.error(ex);
+                setIsFormDisabled(false);
+                setStepNotification({ step, ...ex });
+            },
+            onSuccess: () => {
+                goToNextStep();
+
+                // Reset the state after the onNext call. Otherwise,
+                // React will try to render the current step again.
+                setIsFormDisabled(false);
+                setStepNotification();
+            },
+            partitioning
+        });
+    };
+
+    return <AnacondaWizardFooter onNext={onNext} />;
+};
+
+export const usePage = ({ storageScenarioId }) => {
     return ({
+        component: MountPointMapping,
         id: "mount-point-mapping",
         isHidden: storageScenarioId !== "mount-point-mapping",
         label: _("Manual disk configuration"),

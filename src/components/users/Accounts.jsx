@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import * as python from "python.js";
 import { debounce } from "throttle-debounce";
 import {
@@ -29,6 +29,7 @@ import {
     HelperTextItem,
     InputGroup,
     TextInput,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
@@ -42,6 +43,8 @@ import {
 
 import "./Accounts.scss";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { RuntimeContext, SystemTypeContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 const _ = cockpit.gettext;
@@ -124,7 +127,6 @@ const isUserNameWithInvalidCharacters = (userName) => {
 
 const CreateAccount = ({
     idPrefix,
-    passwordPolicy,
     setIsUserValid,
     accounts,
     setAccounts,
@@ -140,6 +142,7 @@ const CreateAccount = ({
     const [password, setPassword] = useState(accounts.password);
     const [confirmPassword, setConfirmPassword] = useState(accounts.confirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -258,7 +261,6 @@ const CreateAccount = ({
 
 const RootAccount = ({
     idPrefix,
-    passwordPolicy,
     setIsRootValid,
     accounts,
     setAccounts,
@@ -267,6 +269,7 @@ const RootAccount = ({
     const [confirmPassword, setConfirmPassword] = useState(accounts.rootConfirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const isRootAccountEnabled = accounts.isRootEnabled;
+    const passwordPolicy = useContext(RuntimeContext).passwordPolicies.root;
 
     useEffect(() => {
         setIsRootValid(isPasswordValid || !isRootAccountEnabled);
@@ -310,18 +313,22 @@ const RootAccount = ({
     );
 };
 
-export const Accounts = ({
+const Accounts = ({
     idPrefix,
     setIsFormValid,
-    passwordPolicies,
     accounts,
     setAccounts,
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
+
     useEffect(() => {
         setIsFormValid(isUserValid && isRootValid);
     }, [setIsFormValid, isUserValid, isRootValid]);
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter accounts={accounts} />, [accounts]);
+    useWizardFooter(getFooter);
 
     return (
         <Form
@@ -330,14 +337,12 @@ export const Accounts = ({
         >
             <CreateAccount
               idPrefix={idPrefix + "-create-account"}
-              passwordPolicy={passwordPolicies.user}
               setIsUserValid={setIsUserValid}
               accounts={accounts}
               setAccounts={setAccounts}
             />
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
-              passwordPolicy={passwordPolicies.root}
               setIsRootValid={setIsRootValid}
               accounts={accounts}
               setAccounts={setAccounts}
@@ -346,8 +351,24 @@ export const Accounts = ({
     );
 };
 
-export const getPageProps = ({ isBootIso }) => {
+const CustomFooter = ({ accounts }) => {
+    const onNext = ({ goToNextStep }) => {
+        applyAccounts(accounts).then(goToNextStep);
+    };
+
+    return (
+        <AnacondaWizardFooter
+          currentStepProps={usePage()}
+          onNext={onNext}
+        />
+    );
+};
+
+export const usePage = () => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
+        component: Accounts,
         id: "accounts",
         isHidden: !isBootIso,
         label: _("Create Account"),

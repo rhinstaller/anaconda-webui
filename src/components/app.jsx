@@ -24,7 +24,15 @@ import { read_os_release as readOsRelease } from "os-release.js";
 import { WithDialogs } from "dialogs.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext, TargetSystemRootContext } from "./Common.jsx";
+import {
+    AddressContext,
+    LanguageContext,
+    OsReleaseContext,
+    RuntimeContext,
+    StorageContext,
+    SystemTypeContext,
+    TargetSystemRootContext,
+} from "./Common.jsx";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import { CriticalError, bugzillaPrefiledReportURL, errorHandlerWithContext } from "./Error.jsx";
@@ -68,7 +76,6 @@ const MaybeBackdrop = ({ children }) => {
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
-    const [language, setLanguage] = useState();
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
@@ -185,19 +192,18 @@ export const Application = () => {
                         </PageGroup>}
                         <AddressContext.Provider value={address}>
                             <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                                <WithDialogs>
-                                    <AnacondaWizard
-                                      onCritFail={onCritFail}
-                                      title={title}
-                                      storageData={state.storage}
-                                      localizationData={state.localization}
-                                      runtimeData={state.runtime}
-                                      dispatch={dispatch}
-                                      conf={conf}
-                                      setShowStorage={setShowStorage}
-                                      showStorage={showStorage}
-                                    />
-                                </WithDialogs>
+                                <RuntimeContext.Provider value={state.runtime}>
+                                    <WithDialogs>
+                                        <AnacondaWizard
+                                          onCritFail={onCritFail}
+                                          title={title}
+                                          dispatch={dispatch}
+                                          conf={conf}
+                                          setShowStorage={setShowStorage}
+                                          showStorage={showStorage}
+                                        />
+                                    </WithDialogs>
+                                </RuntimeContext.Provider>
                             </TargetSystemRootContext.Provider>
                         </AddressContext.Provider>
                     </>}
@@ -208,10 +214,12 @@ export const Application = () => {
 
     return (
         <WithDialogs>
-            <LanguageContext.Provider value={{ language, setLanguage }}>
-                <MaybeBackdrop>
-                    {page}
-                </MaybeBackdrop>
+            <LanguageContext.Provider value={state.localization}>
+                <StorageContext.Provider value={state.storage}>
+                    <MaybeBackdrop>
+                        {page}
+                    </MaybeBackdrop>
+                </StorageContext.Provider>
             </LanguageContext.Provider>
         </WithDialogs>
     );

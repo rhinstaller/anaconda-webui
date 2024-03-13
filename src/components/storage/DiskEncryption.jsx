@@ -16,7 +16,7 @@
  */
 
 import cockpit from "cockpit";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Checkbox,
     EmptyState,
@@ -28,11 +28,15 @@ import {
     Text,
     TextContent,
     TextVariants,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
 import "./DiskEncryption.scss";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
+import { RuntimeContext, StorageContext } from "../Common.jsx";
+import { applyStorage } from "../../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
 
@@ -42,10 +46,6 @@ const ruleAscii = {
     isError: false,
     text: () => _("The passphrase you have provided contains non-ASCII characters. You may not be able to switch between keyboard layouts when typing it."),
 };
-
-export function getStorageEncryptionState (password = "", confirmPassword = "", encrypt = false) {
-    return { confirmPassword, encrypt, password };
-}
 
 const CheckDisksSpinner = (
     <EmptyState id="installation-destination-next-spinner">
@@ -60,25 +60,28 @@ const CheckDisksSpinner = (
     </EmptyState>
 );
 
-export const DiskEncryption = ({
+const DiskEncryption = ({
     idPrefix,
     isInProgress,
     setIsFormValid,
-    storageEncryption,
-    setStorageEncryption,
-    passwordPolicies,
 }) => {
-    const [password, setPassword] = useState(storageEncryption.password);
-    const [confirmPassword, setConfirmPassword] = useState(storageEncryption.confirmPassword);
-    const isEncrypted = storageEncryption.encrypt;
-    const luksPolicy = passwordPolicies.luks;
+    const { partitioning } = useContext(StorageContext);
+    const request = partitioning?.requests?.[0];
+    const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
+    const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
+    const [password, setPassword] = useState(request?.passphrase || "");
+    const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter encrypt={isEncrypted} encryptPassword={password} />, [isEncrypted, password]);
+    useWizardFooter(getFooter);
 
     const encryptedDevicesCheckbox = content => (
         <Checkbox
           id={idPrefix + "-encrypt-devices"}
           label={_("Encrypt my data")}
           isChecked={isEncrypted}
-          onChange={(_event, encrypt) => setStorageEncryption(se => ({ ...se, encrypt }))}
+          onChange={(_event, isEncrypted) => setIsEncrypted(isEncrypted)}
           body={content}
         />
     );
@@ -102,14 +105,6 @@ export const DiskEncryption = ({
         setIsFormValid(!isEncrypted);
     }, [setIsFormValid, isEncrypted]);
 
-    useEffect(() => {
-        setStorageEncryption(se => ({ ...se, password }));
-    }, [password, setStorageEncryption]);
-
-    useEffect(() => {
-        setStorageEncryption(se => ({ ...se, confirmPassword }));
-    }, [confirmPassword, setStorageEncryption]);
-
     if (isInProgress) {
         return CheckDisksSpinner;
     }
@@ -131,8 +126,34 @@ export const DiskEncryption = ({
     );
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+const CustomFooter = ({ encrypt, encryptPassword }) => {
+    const step = usePage({}).id;
+    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+        return applyStorage({
+            encrypt,
+            encryptPassword,
+            onFail: ex => {
+                console.error(ex);
+                setIsFormDisabled(false);
+                setStepNotification({ step, ...ex });
+            },
+            onSuccess: () => {
+                goToNextStep();
+
+                // Reset the state after the onNext call. Otherwise,
+                // React will try to render the current step again.
+                setIsFormDisabled(false);
+                setStepNotification();
+            },
+        });
+    };
+
+    return <AnacondaWizardFooter onNext={onNext} />;
+};
+
+export const usePage = ({ storageScenarioId }) => {
     return ({
+        component: DiskEncryption,
         id: "disk-encryption",
         isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
         label: _("Disk encryption"),

@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import cockpit from "cockpit";
 import {
     Alert,
@@ -32,7 +32,7 @@ import {
     SearchInput, Title,
 } from "@patternfly/react-core";
 
-import { AddressContext, LanguageContext } from "../Common.jsx";
+import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { setLocale } from "../../apis/boss.js";
 import {
     setLanguage,
@@ -282,9 +282,9 @@ class LanguageSelector extends React.Component {
 }
 LanguageSelector.contextType = AddressContext;
 
-export const InstallationLanguage = ({ idPrefix, languages, language, commonLocales, setIsFormValid, setStepNotification }) => {
+const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
+    const { language, languages, commonLocales } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
-    const { setLanguage } = React.useContext(LanguageContext);
     useEffect(() => {
         setIsFormValid(language !== "");
     }, [language, setIsFormValid]);
@@ -326,8 +326,12 @@ export const InstallationLanguage = ({ idPrefix, languages, language, commonLoca
     );
 };
 
-export const getPageProps = ({ isBootIso, osRelease }) => {
+export const usePage = () => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
+        component: InstallationLanguage,
         id: "installation-language",
         isHidden: !isBootIso,
         label: _("Welcome"),

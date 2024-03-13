@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-import React from "react";
+import React, { useContext } from "react";
 import {
     Form,
     HelperText,
@@ -24,20 +24,16 @@ import {
 
 import { InstallationScenario } from "./InstallationScenario.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
+import { OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
-export const InstallationMethod = ({
-    deviceData,
-    deviceNames,
-    diskSelection,
+const InstallationMethod = ({
     dispatch,
     idPrefix,
     isEfi,
     isFormDisabled,
     onCritFail,
-    partitioning,
-    requests,
     scenarioPartitioningMapping,
     setIsFormDisabled,
     setIsFormValid,
@@ -45,6 +41,8 @@ export const InstallationMethod = ({
     setStorageScenarioId,
     storageScenarioId,
 }) => {
+    const { devices, deviceNames, diskSelection, partitioning } = useContext(StorageContext);
+
     return (
         <Form
           className={idPrefix + "-selector"}
@@ -52,7 +50,7 @@ export const InstallationMethod = ({
           onSubmit={e => { e.preventDefault(); return false }}
         >
             <InstallationDestination
-              deviceData={deviceData}
+              deviceData={devices}
               diskSelection={diskSelection}
               isEfi={isEfi}
               dispatch={dispatch}
@@ -64,7 +62,7 @@ export const InstallationMethod = ({
               onCritFail={onCritFail}
             />
             <InstallationScenario
-              deviceData={deviceData}
+              deviceData={devices}
               deviceNames={deviceNames}
               selectedDisks={diskSelection.selectedDisks}
               dispatch={dispatch}
@@ -72,8 +70,8 @@ export const InstallationMethod = ({
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
-              partitioning={partitioning}
-              requests={requests}
+              partitioning={partitioning.path}
+              requests={partitioning.requests}
               setIsFormValid={setIsFormValid}
               setStorageScenarioId={setStorageScenarioId}
               storageScenarioId={storageScenarioId}
@@ -91,8 +89,12 @@ const InstallationMethodFooterHelper = () => (
     </HelperText>
 );
 
-export const getPageProps = ({ isBootIso, osRelease, isFormValid }) => {
+export const usePage = ({ isFormValid }) => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
     return ({
+        component: InstallationMethod,
         footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
         id: "installation-method",
         label: _("Installation method"),

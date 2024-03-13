@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
     DescriptionList, DescriptionListDescription,
@@ -23,6 +23,7 @@ import {
     HelperText, HelperTextItem,
     Modal, ModalVariant,
     Stack,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
 import { StorageReview } from "./StorageReview.jsx";
@@ -32,7 +33,8 @@ import {
     getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
 import { getScenario } from "../storage/InstallationScenario.jsx";
-import { OsReleaseContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 
 import "./ReviewConfiguration.scss";
 
@@ -56,9 +58,15 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ deviceData, diskSelection, language, localizationData, requests, idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
+const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
     const [encrypt, setEncrypt] = useState();
     const osRelease = useContext(OsReleaseContext);
+    const localizationData = useContext(LanguageContext);
+    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter storageScenarioId={storageScenarioId} />, [storageScenarioId]);
+    useWizardFooter(getFooter);
 
     useEffect(() => {
         const initializeEncrypt = async () => {
@@ -72,6 +80,16 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
         initializeEncrypt();
         setIsFormValid(true);
     }, [setIsFormValid]);
+
+    const language = useMemo(() => {
+        for (const l of Object.keys(localizationData.languages)) {
+            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
+
+            if (locale) {
+                return locale;
+            }
+        }
+    }, [localizationData]);
 
     return (
         <>
@@ -134,8 +152,8 @@ export const ReviewConfiguration = ({ deviceData, diskSelection, language, local
                     <DescriptionListDescription id={idPrefix + "-target-storage"}>
                         <Stack hasGutter>
                             <StorageReview
-                              deviceData={deviceData}
-                              requests={requests}
+                              deviceData={devices}
+                              requests={partitioning?.requests}
                               selectedDisks={diskSelection.selectedDisks}
                               storageScenarioId={storageScenarioId}
                             />
@@ -195,8 +213,33 @@ const ReviewConfigurationFooterHelperText = ({ storageScenarioId }) => {
     );
 };
 
-export const getPageProps = ({ storageScenarioId }) => {
+const CustomFooter = ({ storageScenarioId }) => {
+    const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
+    const { setShowWizard } = useContext(FooterContext);
+    const pageProps = usePage({ storageScenarioId });
+
+    return (
+        <>
+            {nextWaitsConfirmation &&
+            <ReviewConfigurationConfirmModal
+              idPrefix={pageProps.id}
+              onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
+              setNextWaitsConfirmation={setNextWaitsConfirmation}
+              storageScenarioId={storageScenarioId}
+            />}
+            <AnacondaWizardFooter
+              footerHelperText={pageProps.footerHelperText}
+              nextButtonText={pageProps.nextButtonText}
+              nextButtonVariant={pageProps.nextButtonVariant}
+              onNext={() => nextWaitsConfirmation === undefined && setNextWaitsConfirmation(true)}
+            />
+        </>
+    );
+};
+
+export const usePage = ({ storageScenarioId }) => {
     return ({
+        component: ReviewConfiguration,
         footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,
         id: "installation-review",
         label: _("Review and install"),
