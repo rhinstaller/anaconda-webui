@@ -22,11 +22,43 @@ sys.path.append(HELPERS_DIR)
 from installer import InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
 
+NETWORK_SERVICE = "org.fedoraproject.Anaconda.Modules.Network"
+NETWORK_INTERFACE = NETWORK_SERVICE
+NETWORK_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Network"
 
-class Review():
-    def __init__(self, browser):
+
+class NetworkDBus():
+    def __init__(self, machine):
+        self.machine = machine
+        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
+
+    def dbus_get_hostname(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+                    get-property  \
+                    {NETWORK_SERVICE} \
+                    {NETWORK_OBJECT_PATH} \
+                    {NETWORK_INTERFACE} Hostname')
+
+        return ret
+
+    def dbus_set_hostname(self, hostname):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property  \
+            {NETWORK_SERVICE} \
+            {NETWORK_OBJECT_PATH} \
+            {NETWORK_INTERFACE} Hostname s {hostname}')
+
+
+class Review(NetworkDBus):
+    def __init__(self, browser, machine):
         self.browser = browser
         self._step = InstallerSteps.REVIEW
+
+        NetworkDBus.__init__(self, machine)
+
+    @log_step()
+    def check_hostname(self, hostname):
+        self.browser.wait_in_text(f"#{self._step}-target-system-hostname > .pf-v5-c-description-list__text", hostname)
 
     @log_step()
     def check_language(self, lang):

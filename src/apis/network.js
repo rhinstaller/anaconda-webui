@@ -17,8 +17,8 @@
 
 import cockpit from "cockpit";
 
-import { _getProperty } from "./helpers.js";
-import { getConnectedAction } from "../actions/network-actions.js";
+import { _getProperty, _setProperty } from "./helpers.js";
+import { getConnectedAction, getHostnameAction } from "../actions/network-actions.js";
 import { debug } from "../helpers/log.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Network";
@@ -26,6 +26,10 @@ const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Network";
 
 const getProperty = (...args) => {
     return _getProperty(NetworkClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
+
+const setProperty = (...args) => {
+    return _setProperty(NetworkClient, OBJECT_PATH, INTERFACE_NAME, ...args);
 };
 
 export class NetworkClient {
@@ -57,6 +61,14 @@ export const getConnected = () => {
     return getProperty("Connected");
 };
 
+export const getHostname = () => {
+    return getProperty("Hostname");
+};
+
+export const setHostname = ({ hostname }) => {
+    return setProperty("Hostname", cockpit.variant("s", hostname));
+};
+
 export const startEventMonitorNetwork = ({ dispatch }) => {
     return new NetworkClient().client.subscribe(
         { },
@@ -65,6 +77,8 @@ export const startEventMonitorNetwork = ({ dispatch }) => {
             case "PropertiesChanged":
                 if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Connected")) {
                     dispatch(getConnectedAction());
+                } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Hostname")) {
+                    dispatch(getHostnameAction());
                 } else {
                     debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                 }
@@ -78,6 +92,7 @@ export const startEventMonitorNetwork = ({ dispatch }) => {
 
 export const initDataNetwork = ({ dispatch }) => {
     return Promise.all([
-        dispatch(getConnectedAction())
+        dispatch(getConnectedAction()),
+        dispatch(getHostnameAction())
     ]);
 };

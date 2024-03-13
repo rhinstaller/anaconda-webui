@@ -32,7 +32,11 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
+
+        # Set default hostname for check
+        hostname = "test-hostname-123"
+        r.dbus_set_hostname(hostname)
 
         i.open()
         # After clicking 'Next' on the storage step, partitioning is done, thus changing the available space on the disk
@@ -41,6 +45,9 @@ class TestReview(anacondalib.VirtInstallMachineCase):
 
         self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
+
+        # check hostname is shown
+        r.check_hostname(hostname)
 
         # check language is shown
         r.check_language("English (United States)")
@@ -83,7 +90,7 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         l = Language(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         i.open()
         # Set language to Macedonian that is now in the installer translated languages
@@ -94,6 +101,28 @@ class TestReview(anacondalib.VirtInstallMachineCase):
 
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
+
+    def testHostnameHandling(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+
+        i.open()
+
+        self.addCleanup(lambda: dbus_reset_users(self.machine))
+        i.reach(i.steps.REVIEW)
+
+        # change hostname in modal
+        b.click("button:contains('set')")
+        b.set_input_text("#review-handle-hostname-hostname", "Test false", append=False, value_check=False)
+        b.set_input_text("#review-handle-hostname-hostname", "test123", append=False, value_check=True)
+        b.click("button:contains('Save')")
+
+        r.check_hostname("test123")
+
+        hostname = r.dbus_get_hostname()
+        self.assertIn('s "test123"\n', hostname)
 
 
 if __name__ == '__main__':
