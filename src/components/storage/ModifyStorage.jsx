@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext } from "react";
 import {
     Button,
@@ -23,8 +24,8 @@ import {
     WrenchIcon,
 } from "@patternfly/react-icons";
 
-import { useMountPointConstraints } from "./Common.jsx";
 import { TargetSystemRootContext } from "../Common.jsx";
+import { useMountPointConstraints } from "./Common.jsx";
 
 const _ = cockpit.gettext;
 

@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Button,
@@ -30,12 +31,15 @@ import {
     InProgressIcon,
     PendingIcon
 } from "@patternfly/react-icons";
+
+import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
+
+import { exitGui } from "../../helpers/exit.js";
+
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { Feedback } from "./Feedback.jsx";
 import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
-import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
-import { exitGui } from "../../helpers/exit.js";
+import { Feedback } from "./Feedback.jsx";
 
 import "./InstallationProgress.scss";
 

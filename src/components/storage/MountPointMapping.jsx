@@ -16,6 +16,7 @@
  */
 
 import cockpit from "cockpit";
+
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Button,
@@ -34,13 +35,7 @@ import {
     SelectVariant
 } from "@patternfly/react-core/deprecated";
 import { TrashIcon } from "@patternfly/react-icons";
-import { ListingTable } from "cockpit-components-table.jsx";
-import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { StorageContext } from "../Common.jsx";
-import { EncryptedDevices } from "./EncryptedDevices.jsx";
-import { useMountPointConstraints } from "./Common.jsx";
 import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";
@@ -49,12 +44,21 @@ import {
     createPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
+
 import {
     getDeviceChildren,
     getLockedLUKSDevices,
     hasDuplicateFields,
     isDuplicateRequestField,
 } from "../../helpers/storage.js";
+
+import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
+import { ListingTable } from "cockpit-components-table.jsx";
+
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { StorageContext } from "../Common.jsx";
+import { useMountPointConstraints } from "./Common.jsx";
+import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./MountPointMapping.scss";
 

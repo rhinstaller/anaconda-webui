@@ -16,6 +16,7 @@
  */
 
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Checkbox,
@@ -31,12 +32,13 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import "./DiskEncryption.scss";
+import { applyStorage } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { PasswordFormFields, ruleLength } from "../Password.jsx";
 import { RuntimeContext, StorageContext } from "../Common.jsx";
-import { applyStorage } from "../../apis/storage_partitioning.js";
+import { PasswordFormFields, ruleLength } from "../Password.jsx";
+
+import "./DiskEncryption.scss";
 
 const _ = cockpit.gettext;
 

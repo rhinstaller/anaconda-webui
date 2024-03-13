@@ -16,9 +16,11 @@
  */
 import cockpit from "cockpit";
 
+import { _callClient, _getProperty } from "./helpers.js";
+
 import {
-    StorageClient,
     runStorageTask,
+    StorageClient,
 } from "./storage.js";
 import {
     setBootloaderDrive,
@@ -26,7 +28,6 @@ import {
 import {
     setInitializeLabelsEnabled,
 } from "./storage_disk_initialization.js";
-import { _callClient, _getProperty } from "./helpers.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";

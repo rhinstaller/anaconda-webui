@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useEffect, useState } from "react";
 import {
     Flex,
@@ -25,8 +26,9 @@ import {
 } from "@patternfly/react-core";
 import { InfoCircleIcon } from "@patternfly/react-icons";
 
-import { HeaderKebab } from "./HeaderKebab.jsx";
 import { getIsFinal } from "../apis/runtime";
+
+import { HeaderKebab } from "./HeaderKebab.jsx";
 
 import "./AnacondaHeader.scss";
 

@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext } from "react";
 import {
     Form,
@@ -22,9 +23,9 @@ import {
     HelperTextItem,
 } from "@patternfly/react-core";
 
-import { InstallationScenario } from "./InstallationScenario.jsx";
-import { InstallationDestination } from "./InstallationDestination.jsx";
 import { OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { InstallationDestination } from "./InstallationDestination.jsx";
+import { InstallationScenario } from "./InstallationScenario.jsx";
 
 const _ = cockpit.gettext;
 

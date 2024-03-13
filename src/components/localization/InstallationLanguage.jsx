@@ -15,8 +15,9 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useContext, useEffect, useState } from "react";
 import cockpit from "cockpit";
+
+import React, { useContext, useEffect, useState } from "react";
 import {
     Alert,
     Divider,
@@ -32,16 +33,18 @@ import {
     SearchInput, Title,
 } from "@patternfly/react-core";
 
-import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { setLocale } from "../../apis/boss.js";
 import {
     setLanguage,
 } from "../../apis/localization.js";
+
 import {
     convertToCockpitLang,
     getLangCookie,
     setLangCookie
 } from "../../helpers/language.js";
+
+import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 
 import "./InstallationLanguage.scss";
 

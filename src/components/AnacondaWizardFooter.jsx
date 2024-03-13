@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useState } from "react";
 import {
     ActionList,
@@ -22,12 +23,13 @@ import {
     Modal,
     ModalVariant,
     Stack,
-    WizardFooterWrapper,
-    useWizardContext
+    useWizardContext,
+    WizardFooterWrapper
 } from "@patternfly/react-core";
 
-import { FooterContext, SystemTypeContext } from "./Common.jsx";
 import { exitGui } from "../helpers/exit.js";
+
+import { FooterContext, SystemTypeContext } from "./Common.jsx";
 
 const _ = cockpit.gettext;
 

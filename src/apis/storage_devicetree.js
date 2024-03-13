@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import { StorageClient } from "./storage.js";
 import { _callClient } from "./helpers.js";
+
+import { StorageClient } from "./storage.js";
 
 const INTERFACE_NAME_VIEWER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Viewer";
 const INTERFACE_NAME_HANDLER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Handler";

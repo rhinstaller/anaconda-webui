@@ -16,6 +16,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useEffect, useMemo, useState } from "react";
 import {
     ActionList,
@@ -38,20 +39,17 @@ import {
     Title,
 } from "@patternfly/react-core";
 import { ArrowLeftIcon } from "@patternfly/react-icons";
-import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
-import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
 import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 import {
-    unlockDevice,
-} from "../../apis/storage_devicetree.js";
-import {
     setBootloaderDrive,
 } from "../../apis/storage_bootloader.js";
+import {
+    unlockDevice,
+} from "../../apis/storage_devicetree.js";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
@@ -62,8 +60,15 @@ import {
     resetPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
+
 import { getDevicesAction } from "../../actions/storage-actions.js";
+
 import { getDeviceNameByPath } from "../../helpers/storage.js";
+
+import { EmptyStatePanel } from "cockpit-components-empty-state";
+
+import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
+import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 
 import "./CockpitStorageIntegration.scss";
 

@@ -1,15 +1,14 @@
 #!/usr/bin/env node
-import copy from "esbuild-plugin-copy";
 import esbuild from "esbuild";
+import copy from "esbuild-plugin-copy";
 import { sassPlugin } from "esbuild-sass-plugin";
-
 import fs from "fs";
 import path from "path";
 
-import { cockpitCompressPlugin } from "./pkg/lib/esbuild-compress-plugin.js";
-import { cleanPlugin } from "./pkg/lib/esbuild-cleanup-plugin.js";
 import { cockpitPoEsbuildPlugin } from "./pkg/lib/cockpit-po-plugin.js";
 import { cockpitRsyncEsbuildPlugin } from "./pkg/lib/cockpit-rsync-plugin.js";
+import { cleanPlugin } from "./pkg/lib/esbuild-cleanup-plugin.js";
+import { cockpitCompressPlugin } from "./pkg/lib/esbuild-compress-plugin.js";
 
 const production = process.env.NODE_ENV === "production";
 const watchMode = process.env.ESBUILD_WATCH === "true" || false;

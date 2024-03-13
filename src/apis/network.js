@@ -17,9 +17,10 @@
 
 import cockpit from "cockpit";
 
-import { _getProperty } from "./helpers.js";
 import { getConnectedAction } from "../actions/network-actions.js";
+
 import { debug } from "../helpers/log.js";
+import { _getProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Network";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Network";

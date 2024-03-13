@@ -16,9 +16,11 @@
  */
 
 import cockpit from "cockpit";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+
 import * as python from "python.js";
 import { debounce } from "throttle-debounce";
+
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Checkbox,
     Form,
@@ -32,8 +34,6 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import encryptUserPw from "../../scripts/encrypt-user-pw.py";
-// eslint-disable-next-line import/order
 import {
     clearRootPassword,
     setCryptedRootPassword,
@@ -41,11 +41,12 @@ import {
     setUsers,
 } from "../../apis/users.js";
 
-import "./Accounts.scss";
-
+import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { RuntimeContext, SystemTypeContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
+
+import "./Accounts.scss";
 
 const _ = cockpit.gettext;
 

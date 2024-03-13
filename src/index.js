@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Cockpit; If not, see <http://www.gnu.org/licenses/>.
  */
+import cockpit from "cockpit";
+
 import "cockpit-dark-theme";
-import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import cockpit from "cockpit";
 
 import { Application } from "./components/app.jsx";
+
+import "./components/app.scss";
+import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
 /*
  * PF4 overrides need to come after the JSX components imports because
  * these are importing CSS stylesheets that we are overriding
@@ -32,7 +35,6 @@ import { Application } from "./components/app.jsx";
  * the overrides will be correctly in the end of our stylesheet.
  */
 import "../pkg/lib/patternfly/patternfly-5-overrides.scss";
-import "./components/app.scss";
 
 document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(document.getElementById("app"));

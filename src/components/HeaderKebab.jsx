@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useState } from "react";
 import {
     AboutModal,
@@ -36,9 +37,10 @@ import {
     ExternalLinkAltIcon
 } from "@patternfly/react-icons";
 
-import { UserIssue } from "./Error.jsx";
-import { OsReleaseContext } from "./Common.jsx";
 import { getAnacondaVersion } from "../helpers/product.js";
+
+import { OsReleaseContext } from "./Common.jsx";
+import { UserIssue } from "./Error.jsx";
 
 import "./HeaderKebab.scss";
 
