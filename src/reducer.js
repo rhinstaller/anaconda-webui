@@ -52,6 +52,19 @@ export const runtimeInitialState = {
     connected: null
 };
 
+/* Initial state for the users store substate */
+/* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
+/* The Store is meant to store information from the backend only */
+export const usersInitialState = {
+    confirmPassword: "",
+    fullName: "",
+    isRootEnabled: false,
+    password: "",
+    rootConfirmPassword: "",
+    rootPassword: "",
+    userName: "",
+};
+
 /* Initial state for the global store */
 export const initialState = {
     error: errorInitialState,
@@ -59,6 +72,7 @@ export const initialState = {
     network: networkInitialState,
     runtime: runtimeInitialState,
     storage: storageInitialState,
+    users: usersInitialState,
 };
 
 /* Custom hook to use the reducer with async actions */
@@ -87,6 +101,7 @@ export const reducer = (state, action) => {
         network: networkReducer(state.network, action),
         runtime: runtimeReducer(state.runtime, action),
         storage: storageReducer(state.storage, action),
+        users: usersReducer(state.users, action)
     });
 };
 
@@ -135,6 +150,14 @@ const errorReducer = (state = errorInitialState, action) => {
 export const runtimeReducer = (state = runtimeInitialState, action) => {
     if (action.type === "GET_RUNTIME_PASSWORD_POLICIES") {
         return { ...state, passwordPolicies: action.payload.passwordPolicies };
+    } else {
+        return state;
+    }
+};
+
+export const usersReducer = (state = usersInitialState, action) => {
+    if (action.type === "SET_USERS") {
+        return { ...state, ...action.payload.users };
     } else {
         return state;
     }

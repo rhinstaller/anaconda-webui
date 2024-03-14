@@ -38,7 +38,7 @@ import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
 import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { getAccountsState, usePage as pageAccounts } from "./users/Accounts.jsx";
+import { usePage as pageAccounts } from "./users/Accounts.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
@@ -49,7 +49,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
-    const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
     const storageData = useContext(StorageContext);
@@ -117,15 +116,11 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
             ]
         },
         {
-            data: {
-                accounts,
-                setAccounts,
-            },
-            ...pageAccounts()
+            data: { dispatch },
+            ...pageAccounts(),
         },
         {
             data: {
-                accounts,
                 storageScenarioId,
             },
             ...pageReviewConfiguration({ storageScenarioId })

@@ -34,7 +34,7 @@ import {
 } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, UsersContext } from "../Common.jsx";
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { StorageReview } from "./StorageReview.jsx";
 
@@ -60,10 +60,11 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
+const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId }) => {
     const [encrypt, setEncrypt] = useState();
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
+    const accounts = useContext(UsersContext);
     const { devices, diskSelection, partitioning } = useContext(StorageContext);
 
     // Display custom footer
