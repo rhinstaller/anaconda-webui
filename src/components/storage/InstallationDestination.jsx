@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Alert,
@@ -41,17 +42,20 @@ import {
 } from "@patternfly/react-core";
 import { SyncAltIcon, TimesIcon } from "@patternfly/react-icons";
 
-import { ModifyStorage } from "./ModifyStorage.jsx";
-import { SystemTypeContext } from "../Common.jsx";
 import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../apis/storage.js";
-import { resetPartitioning } from "../../apis/storage_partitioning.js";
 import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
+import { resetPartitioning } from "../../apis/storage_partitioning.js";
+
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
+
 import { debug } from "../../helpers/log.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
+
+import { SystemTypeContext } from "../Common.jsx";
+import { ModifyStorage } from "./ModifyStorage.jsx";
 
 import "./InstallationDestination.scss";
 

@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     PageSection,
@@ -24,19 +25,20 @@ import {
     WizardStep,
 } from "@patternfly/react-core";
 
+import { resetPartitioning } from "../apis/storage_partitioning.js";
+
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
+import { FooterContext, StorageContext } from "./Common.jsx";
+import { InstallationProgress } from "./installation/InstallationProgress.jsx";
+import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
+import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
 import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
 import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
-import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
-import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
 import { getAccountsState, usePage as pageAccounts } from "./users/Accounts.jsx";
-import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
-import { FooterContext, StorageContext } from "./Common.jsx";
-import { resetPartitioning } from "../apis/storage_partitioning.js";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;

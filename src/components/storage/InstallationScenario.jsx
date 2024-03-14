@@ -16,6 +16,7 @@
  */
 
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useState } from "react";
 import {
     FormGroup,
@@ -23,13 +24,14 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
-import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
-import { SystemTypeContext } from "../Common.jsx";
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
+
+import { SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
+import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
+import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 
 import "./InstallationScenario.scss";
 

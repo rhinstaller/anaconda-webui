@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import { Alert, Stack, Title } from "@patternfly/react-core";
 import React from "react";
+import { Alert, Stack, Title } from "@patternfly/react-core";
 
 export const AnacondaPage = ({ title, children, step, stepNotification }) => {
     return (

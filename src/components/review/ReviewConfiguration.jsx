@@ -15,6 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
@@ -26,15 +27,16 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import { StorageReview } from "./StorageReview.jsx";
 import {
     getAppliedPartitioning,
     getPartitioningMethod,
     getPartitioningRequest,
 } from "../../apis/storage_partitioning.js";
-import { getScenario } from "../storage/InstallationScenario.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import { getScenario } from "../storage/InstallationScenario.jsx";
+import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 

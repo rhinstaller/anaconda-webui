@@ -17,15 +17,16 @@
 import { useEffect, useState } from "react";
 
 import {
+    getRequiredSpace
+} from "../../apis/payloads.js";
+import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatTypeData,
     getMountPointConstraints,
     getRequiredDeviceSize,
 } from "../../apis/storage_devicetree.js";
-import {
-    getRequiredSpace
-} from "../../apis/payloads.js";
+
 import { findDuplicatesInArray } from "../../helpers/utils.js";
 
 export const useDiskTotalSpace = ({ selectedDisks, devices }) => {

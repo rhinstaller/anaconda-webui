@@ -16,6 +16,7 @@
  */
 
 import cockpit from "cockpit";
+
 import React, { useContext, useEffect, useState } from "react";
 import {
     ActionList,
@@ -36,8 +37,9 @@ import {
 } from "@patternfly/react-core";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
-import { SystemTypeContext } from "./Common.jsx";
 import { exitGui } from "../helpers/exit.js";
+
+import { SystemTypeContext } from "./Common.jsx";
 
 import "./Error.scss";
 

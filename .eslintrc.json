@@ -8,7 +8,7 @@
     "parserOptions": {
         "ecmaVersion": 2022
     },
-    "plugins": ["react", "react-hooks"],
+    "plugins": ["react", "react-hooks", "simple-import-sort"],
     "rules": {
         "comma-dangle": "off",
         "indent": ["error", 4,
@@ -27,11 +27,20 @@
         "prefer-promise-reject-errors": ["error", { "allowEmptyReject": true }],
         "quotes": ["error", "double" ],
         "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
-        "sort-imports": ["error", { "ignoreDeclarationSort": true }],
         "sort-keys": ["error", "asc", {"caseSensitive": true, "natural": true, "minKeys": 2}],
-
+        "simple-import-sort/imports": ["error", { "groups": [
+            ["^cockpit$"],
+            ["^"],
+            ["^react", "^@patternfly"],
+            ["/apis"],
+            ["/actions", "/reducer"],
+            ["/helpers"],
+            ["/components.*js[x]$"],
+            ["^cockpit-", "^os-release", "^dialogs"],
+            ["^\\."],
+            ["\\.scss"]
+        ] }],
         "import/no-useless-path-segments": "error",
-        "import/order": [ 1, { "groups": ["external", "builtin", ["internal", "sibling", "parent", "index"]], "newlines-between": "always" } ],
 
         "react/hook-use-state": ["error", { "allowDestructuredState": false }],
         "react/jsx-closing-bracket-location": "off",

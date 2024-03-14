@@ -23,6 +23,7 @@ import {
     getLocaleData,
     getLocales,
 } from "../apis/localization.js";
+
 import { setCriticalErrorAction } from "./miscellaneous-actions.js";
 
 export const getLanguagesAction = () => {

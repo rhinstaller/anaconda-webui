@@ -15,8 +15,8 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import React, { createContext } from "react";
-import { HelpIcon } from "@patternfly/react-icons";
 import { Popover, PopoverPosition } from "@patternfly/react-core";
+import { HelpIcon } from "@patternfly/react-icons";
 
 export const AddressContext = createContext("");
 export const ConfContext = createContext();

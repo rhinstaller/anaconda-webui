@@ -16,8 +16,9 @@
  */
 import cockpit from "cockpit";
 
-import { StorageClient } from "./storage.js";
 import { _getProperty, _setProperty } from "./helpers.js";
+
+import { StorageClient } from "./storage.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage.DiskInitialization";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DiskInitialization";
