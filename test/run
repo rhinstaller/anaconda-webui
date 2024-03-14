@@ -5,4 +5,10 @@
 set -eux
 
 make codecheck
+
+# The default and only available browser inside the installation environment is firefox so even
+# though we are testing remote installation we are closer to the real use case by testing against
+# firefox
+export TEST_BROWSER=firefox
+
 make integration-test
