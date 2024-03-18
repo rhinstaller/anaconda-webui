@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
     List, ListItem,
     Stack,
@@ -24,18 +24,21 @@ import {
 
 import { checkDeviceInSubTree } from "../../helpers/storage.js";
 
+import { StorageContext } from "../Common.jsx";
+
 const _ = cockpit.gettext;
 
-export const StorageReview = ({ selectedDisks, deviceData, requests }) => {
+export const StorageReview = () => {
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+
     return (
         <>
             {selectedDisks.map(disk => {
                 return (
                     <DeviceRow
                       key={disk}
-                      deviceData={deviceData}
                       disk={disk}
-                      requests={requests}
                     />
                 );
             })}
@@ -43,8 +46,10 @@ export const StorageReview = ({ selectedDisks, deviceData, requests }) => {
     );
 };
 
-const DeviceRow = ({ deviceData, disk, requests }) => {
-    const data = deviceData[disk];
+const DeviceRow = ({ disk }) => {
+    const { devices, partitioning } = useContext(StorageContext);
+    const requests = partitioning.requests;
+    const data = devices[disk];
     const name = data.name.v;
 
     const renderRow = row => {
@@ -56,7 +61,7 @@ const DeviceRow = ({ deviceData, disk, requests }) => {
         );
         const mount = row["mount-point"] || null;
         const actions = [action, mount].filter(Boolean).join(", ");
-        const size = cockpit.format_bytes(deviceData[name].size.v);
+        const size = cockpit.format_bytes(devices[name].size.v);
 
         return (
             <ListItem className="pf-v5-u-font-size-s" key={name}>
@@ -71,7 +76,7 @@ const DeviceRow = ({ deviceData, disk, requests }) => {
                 return false;
             }
 
-            return checkDeviceInSubTree({ device: req["device-spec"], deviceData, rootDevice: name });
+            return checkDeviceInSubTree({ device: req["device-spec"], deviceData: devices, rootDevice: name });
         }).map(renderRow)
         : []);
 

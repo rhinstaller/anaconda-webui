@@ -17,7 +17,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     ActionList,
     Alert,
@@ -61,12 +61,13 @@ import {
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
-import { getDevicesAction } from "../../actions/storage-actions.js";
+import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { getDeviceNameByPath } from "../../helpers/storage.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
+import { StorageContext } from "../Common.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 
@@ -89,17 +90,12 @@ const ReturnToInstallationButton = ({ isDisabled, onAction }) => (
 export const CockpitStorageIntegration = ({
     scenarioAvailability,
     scenarioPartitioningMapping,
-    selectedDisks,
-    setStorageScenarioId,
-    deviceData,
     dispatch,
     onCritFail,
-    requests,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [needsResetPartitioning, setNeedsResetPartitioning] = useState(true);
-
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
         iframe.contentWindow.addEventListener("error", exception => {
@@ -146,22 +142,18 @@ export const CockpitStorageIntegration = ({
             </PageSection>
             {showDialog &&
             <CheckStorageDialog
-              deviceData={deviceData}
               dispatch={dispatch}
               onCritFail={onCritFail}
-              requests={requests}
               scenarioAvailability={scenarioAvailability}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
-              selectedDisks={selectedDisks}
               setShowDialog={setShowDialog}
               setShowStorage={setShowStorage}
-              setStorageScenarioId={setStorageScenarioId}
             />}
         </>
     );
 };
 
-export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
+export const preparePartitioning = async ({ devices, newMountPoints }) => {
     try {
         await setBootloaderDrive({ drive: "" });
 
@@ -172,8 +164,8 @@ export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
             const { dir, type, subvolumes, content } = object;
             let deviceSpec;
             if (!isSubVolume) {
-                deviceSpec = getDeviceNameByPath(deviceData, devicePath);
-            } else if (deviceData[devicePath]) {
+                deviceSpec = getDeviceNameByPath(devices, devicePath);
+            } else if (devices[devicePath]) {
                 deviceSpec = devicePath;
             } else {
                 return;
@@ -198,8 +190,8 @@ export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
             } else if (subvolumes) {
                 Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true));
             } else if (type === "crypto") {
-                const clearTextDevice = deviceData[deviceSpec].children.v[0];
-                const clearTextDevicePath = deviceData[clearTextDevice].path.v;
+                const clearTextDevice = devices[deviceSpec].children.v[0];
+                const clearTextDevicePath = devices[clearTextDevice].path.v;
 
                 addRequest(clearTextDevicePath, content);
             }
@@ -217,20 +209,19 @@ export const preparePartitioning = async ({ deviceData, newMountPoints }) => {
 };
 
 const CheckStorageDialog = ({
-    deviceData,
     dispatch,
     onCritFail,
-    requests,
     scenarioPartitioningMapping,
-    selectedDisks,
     setShowDialog,
     setShowStorage,
-    setStorageScenarioId,
 }) => {
+    const { diskSelection, devices } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+
     const [error, setError] = useState();
     const [checkStep, setCheckStep] = useState("rescan");
-    const diskTotalSpace = useDiskTotalSpace({ devices: deviceData, selectedDisks });
-    const diskFreeSpace = useDiskFreeSpace({ devices: deviceData, selectedDisks });
+    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
     const mountPointConstraints = useMountPointConstraints();
     const requiredSize = useRequiredSize();
 
@@ -239,34 +230,29 @@ const CheckStorageDialog = ({
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({
-            deviceData,
+            devices,
             mountPointConstraints,
             newMountPoints,
             scenarioPartitioningMapping,
         });
 
         return availability.available;
-    }, [deviceData, mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
+    }, [devices, mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
 
     const useConfiguredStorageReview = useMemo(() => {
         const availability = checkConfiguredStorage({
-            deviceData,
+            devices,
             mountPointConstraints,
             newMountPoints,
-            requests,
             scenarioPartitioningMapping,
-            selectedDisks,
-            storageScenarioId: "use-configured-storage"
         });
 
         return availability.review;
     }, [
-        deviceData,
+        devices,
         mountPointConstraints,
         newMountPoints,
-        requests,
         scenarioPartitioningMapping,
-        selectedDisks,
     ]);
 
     const useFreeSpace = useMemo(() => {
@@ -292,13 +278,13 @@ const CheckStorageDialog = ({
         const devicesToUnlock = (
             Object.keys(cockpitPassphrases)
                     .map(dev => ({
-                        deviceName: deviceData[dev] ? dev : getDeviceNameByPath(deviceData, dev),
+                        deviceName: devices[dev] ? dev : getDeviceNameByPath(devices, dev),
                         passphrase: cockpitPassphrases[dev]
                     })))
                 .filter(({ deviceName }) => {
                     return (
-                        deviceData[deviceName].formatData.type.v === "luks" &&
-                            deviceData[deviceName].formatData.attrs.v.has_key !== "True"
+                        devices[deviceName].formatData.type.v === "luks" &&
+                            devices[deviceName].formatData.attrs.v.has_key !== "True"
                     );
                 });
 
@@ -319,7 +305,7 @@ const CheckStorageDialog = ({
                 .then(() => {
                     dispatch(getDevicesAction());
                 });
-    }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, deviceData, onCritFail, setError]);
+    }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, devices, onCritFail, setError]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
@@ -332,7 +318,7 @@ const CheckStorageDialog = ({
             // CLEAR_PARTITIONS_NONE = 0
             try {
                 await setInitializationMode({ mode: 0 });
-                const partitioning = await preparePartitioning({ deviceData, newMountPoints });
+                const partitioning = await preparePartitioning({ devices, newMountPoints });
 
                 applyStorage({
                     onFail: exc => {
@@ -349,7 +335,7 @@ const CheckStorageDialog = ({
         };
 
         applyNewPartitioning();
-    }, [deviceData, checkStep, newMountPoints, useConfiguredStorage]);
+    }, [devices, checkStep, newMountPoints, useConfiguredStorage]);
 
     useEffect(() => {
         if (checkStep !== "rescan" || useConfiguredStorage === undefined) {
@@ -381,7 +367,7 @@ const CheckStorageDialog = ({
     const goBackToInstallation = () => {
         const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
 
-        setStorageScenarioId(mode);
+        dispatch(setStorageScenarioAction(mode));
         setShowStorage(false);
     };
 

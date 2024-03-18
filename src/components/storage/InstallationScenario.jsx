@@ -28,7 +28,9 @@ import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
 
-import { SystemTypeContext } from "../Common.jsx";
+import { setStorageScenarioAction } from "../../actions/storage-actions.js";
+
+import { StorageContext, SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
 import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
@@ -123,13 +125,11 @@ const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountP
 };
 
 export const checkConfiguredStorage = ({
-    deviceData,
+    devices,
     mountPointConstraints,
     partitioning,
     newMountPoints,
-    requests,
     scenarioPartitioningMapping,
-    selectedDisks,
 }) => {
     const availability = new AvailabilityState();
 
@@ -167,7 +167,7 @@ export const checkConfiguredStorage = ({
                         }
 
                         if (m["required-filesystem-type"].v === "biosboot") {
-                            const biosboot = Object.keys(deviceData).find(d => deviceData[d].formatData.type.v === "biosboot");
+                            const biosboot = Object.keys(devices).find(d => devices[d].formatData.type.v === "biosboot");
 
                             return biosboot !== undefined;
                         }
@@ -177,13 +177,7 @@ export const checkConfiguredStorage = ({
         )
     );
 
-    availability.review = deviceData && requests && selectedDisks && (
-        <StorageReview
-          deviceData={deviceData}
-          requests={requests}
-          selectedDisks={selectedDisks}
-        />
-    );
+    availability.review = <StorageReview />;
 
     return availability;
 };
@@ -263,27 +257,24 @@ export const getDefaultScenario = () => {
 };
 
 const InstallationScenarioSelector = ({
-    deviceData,
-    deviceNames,
+    dispatch,
     idPrefix,
     isFormDisabled,
-    partitioning,
-    requests,
     scenarioPartitioningMapping,
-    selectedDisks,
     setIsFormValid,
-    setStorageScenarioId,
-    storageScenarioId,
 }) => {
+    const { devices, deviceNames, partitioning, diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
     ));
-    const diskTotalSpace = useDiskTotalSpace({ devices: deviceData, selectedDisks });
-    const diskFreeSpace = useDiskFreeSpace({ devices: deviceData, selectedDisks });
+    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
     const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
     const mountPointConstraints = useMountPointConstraints();
-    const usablePartitions = useUsablePartitions({ devices: deviceData, selectedDisks });
+    const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
+    const { storageScenarioId } = useContext(StorageContext);
 
     useEffect(() => {
         if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
@@ -295,16 +286,14 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
-                    deviceData,
+                    devices,
                     diskFreeSpace,
                     diskTotalSpace,
                     duplicateDeviceNames,
                     mountPointConstraints,
-                    partitioning,
-                    requests,
+                    partitioning: partitioning.path,
                     requiredSize,
                     scenarioPartitioningMapping,
-                    selectedDisks,
                     usablePartitions,
                 });
                 newAvailability[scenario.id] = availability;
@@ -312,16 +301,14 @@ const InstallationScenarioSelector = ({
             return newAvailability;
         });
     }, [
-        deviceData,
+        devices,
         diskFreeSpace,
         diskTotalSpace,
         duplicateDeviceNames,
         mountPointConstraints,
-        partitioning,
-        requests,
+        partitioning.path,
         requiredSize,
         scenarioPartitioningMapping,
-        selectedDisks,
         usablePartitions,
     ]);
 
@@ -348,10 +335,10 @@ const InstallationScenarioSelector = ({
             }
         }
         if (availableScenarioExists) {
-            setStorageScenarioId(selectedScenarioId);
+            dispatch(setStorageScenarioAction(selectedScenarioId));
         }
         setIsFormValid(availableScenarioExists);
-    }, [scenarioAvailability, setStorageScenarioId, setIsFormValid, storageScenarioId]);
+    }, [dispatch, scenarioAvailability, setIsFormValid, storageScenarioId]);
 
     useEffect(() => {
         const applyScenario = async (scenarioId) => {
@@ -364,7 +351,7 @@ const InstallationScenarioSelector = ({
     }, [storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
-        setStorageScenarioId(scenarioId);
+        dispatch(setStorageScenarioAction(scenarioId));
     };
 
     const scenarioItems = scenarios.filter(scenario => !scenarioAvailability[scenario.id].hidden).map(scenario => (
@@ -395,18 +382,12 @@ const InstallationScenarioSelector = ({
 };
 
 export const InstallationScenario = ({
-    deviceData,
-    deviceNames,
+    dispatch,
     idPrefix,
     isFormDisabled,
     onCritFail,
-    partitioning,
-    requests,
     scenarioPartitioningMapping,
-    selectedDisks,
     setIsFormValid,
-    setStorageScenarioId,
-    storageScenarioId,
 }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const headingLevel = isBootIso ? "h2" : "h3";
@@ -416,18 +397,12 @@ export const InstallationScenario = ({
             <Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>
             <FormGroup isStack hasNoPaddingTop>
                 <InstallationScenarioSelector
-                  deviceData={deviceData}
-                  deviceNames={deviceNames}
+                  dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
-                  partitioning={partitioning}
-                  requests={requests}
                   scenarioPartitioningMapping={scenarioPartitioningMapping}
-                  selectedDisks={selectedDisks}
                   setIsFormValid={setIsFormValid}
-                  setStorageScenarioId={setStorageScenarioId}
-                  storageScenarioId={storageScenarioId}
                 />
             </FormGroup>
         </>

@@ -36,7 +36,6 @@ import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
 import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
-import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
 import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
 import { usePage as pageAccounts } from "./users/Accounts.jsx";
 
@@ -48,10 +47,10 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
-    const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
     const storageData = useContext(StorageContext);
+    const storageScenarioId = storageData.storageScenarioId;
     const selectedDisks = storageData.diskSelection.selectedDisks;
     const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
 
@@ -91,11 +90,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 dispatch,
                 scenarioPartitioningMapping,
                 setShowStorage,
-                setStorageScenarioId: (scenarioId) => {
-                    window.sessionStorage.setItem("storage-scenario-id", scenarioId);
-                    setStorageScenarioId(scenarioId);
-                },
-                storageScenarioId,
             },
             ...pageInstallationMethod({ isFormValid })
         },
@@ -108,23 +102,17 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                         dispatch,
                         reusePartitioning,
                         setReusePartitioning,
-                        storageScenarioId,
                     },
-                    ...pageMountPointMapping({ storageScenarioId })
+                    ...pageMountPointMapping()
                 },
-                pageDiskEncryption({ storageScenarioId })
+                pageDiskEncryption()
             ]
         },
         {
             data: { dispatch },
             ...pageAccounts(),
         },
-        {
-            data: {
-                storageScenarioId,
-            },
-            ...pageReviewConfiguration({ storageScenarioId })
-        },
+        pageReviewConfiguration()
     ];
     stepsOrder = stepsOrder.filter(step => !step.isHidden);
 
@@ -245,14 +233,10 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     if (showStorage) {
         return (
             <CockpitStorageIntegration
-              deviceData={storageData.devices}
               dispatch={dispatch}
               onCritFail={onCritFail}
-              requests={storageData.partitioning.requests}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
-              selectedDisks={selectedDisks}
               setShowStorage={setShowStorage}
-              setStorageScenarioId={setStorageScenarioId}
             />
         );
     }

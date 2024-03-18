@@ -120,3 +120,12 @@ export const getPartitioningDataAction = ({ requests, partitioning }) => {
         }
     };
 };
+
+export const setStorageScenarioAction = (scenario) => {
+    window.sessionStorage.setItem("storage-scenario-id", scenario);
+
+    return {
+        payload: { scenario },
+        type: "SET_STORAGE_SCENARIO",
+    };
+};

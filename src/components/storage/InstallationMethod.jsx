@@ -23,7 +23,7 @@ import {
     HelperTextItem,
 } from "@patternfly/react-core";
 
-import { OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
 
@@ -39,11 +39,7 @@ const InstallationMethod = ({
     setIsFormDisabled,
     setIsFormValid,
     setShowStorage,
-    setStorageScenarioId,
-    storageScenarioId,
 }) => {
-    const { devices, deviceNames, diskSelection, partitioning } = useContext(StorageContext);
-
     return (
         <Form
           className={idPrefix + "-selector"}
@@ -51,31 +47,22 @@ const InstallationMethod = ({
           onSubmit={e => { e.preventDefault(); return false }}
         >
             <InstallationDestination
-              deviceData={devices}
-              diskSelection={diskSelection}
               isEfi={isEfi}
               dispatch={dispatch}
               idPrefix={idPrefix}
               isFormDisabled={isFormDisabled}
               setIsFormValid={setIsFormValid}
-              setShowStorage={setShowStorage}
               setIsFormDisabled={setIsFormDisabled}
+              setShowStorage={setShowStorage}
               onCritFail={onCritFail}
             />
             <InstallationScenario
-              deviceData={devices}
-              deviceNames={deviceNames}
-              selectedDisks={diskSelection.selectedDisks}
               dispatch={dispatch}
               idPrefix={idPrefix}
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
-              partitioning={partitioning.path}
-              requests={partitioning.requests}
               setIsFormValid={setIsFormValid}
-              setStorageScenarioId={setStorageScenarioId}
-              storageScenarioId={storageScenarioId}
             />
         </Form>
     );

@@ -26,7 +26,8 @@ export const storageInitialState = {
         selectedDisks: [],
         usableDisks: []
     },
-    partitioning: {}
+    partitioning: {},
+    storageScenarioId: null,
 };
 
 /* Initial state for the localization store substate */
@@ -112,6 +113,8 @@ export const storageReducer = (state = storageInitialState, action) => {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
         return { ...state, partitioning: { ...state.partitioning, ...action.payload.partitioningData } };
+    } else if (action.type === "SET_STORAGE_SCENARIO") {
+        return { ...state, storageScenarioId: action.payload.scenario };
     } else {
         return state;
     }

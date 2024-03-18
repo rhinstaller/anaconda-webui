@@ -19,11 +19,14 @@ import cockpit from "cockpit";
 import {
     getDevicesAction,
     getDiskSelectionAction,
-    getPartitioningDataAction
+    getPartitioningDataAction,
+    setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
 import { debug } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
+
+import { getDefaultScenario } from "../components/storage/InstallationScenario.jsx";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage";
@@ -120,6 +123,8 @@ export const startEventMonitorStorage = ({ dispatch }) => {
 };
 
 export const initDataStorage = ({ dispatch }) => {
+    dispatch(setStorageScenarioAction(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
+
     return getProperty("CreatedPartitioning")
             .then(res => {
                 if (res.length !== 0) {

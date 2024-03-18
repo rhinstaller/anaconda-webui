@@ -153,7 +153,9 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-export const usePage = ({ storageScenarioId }) => {
+export const usePage = () => {
+    const { storageScenarioId } = useContext(StorageContext);
+
     return ({
         component: DiskEncryption,
         id: "disk-encryption",
