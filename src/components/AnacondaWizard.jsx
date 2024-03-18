@@ -87,7 +87,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         pageInstallationLanguage(),
         {
             data: {
-                dispatch,
                 scenarioPartitioningMapping,
                 setShowStorage,
             },
@@ -99,7 +98,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
             steps: [
                 {
                     data: {
-                        dispatch,
                         reusePartitioning,
                         setReusePartitioning,
                     },
@@ -108,15 +106,13 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 pageDiskEncryption()
             ]
         },
-        {
-            data: { dispatch },
-            ...pageAccounts(),
-        },
+        pageAccounts(),
         pageReviewConfiguration()
     ];
     stepsOrder = stepsOrder.filter(step => !step.isHidden);
 
     const componentProps = {
+        dispatch,
         isFormDisabled,
         onCritFail,
         setIsFormDisabled,
