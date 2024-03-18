@@ -90,7 +90,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                 scenarioPartitioningMapping,
                 setShowStorage,
             },
-            ...pageInstallationMethod({ isFormValid })
+            ...pageInstallationMethod()
         },
         {
             id: "disk-configuration",

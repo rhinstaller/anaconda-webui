@@ -23,7 +23,7 @@ import {
     HelperTextItem,
 } from "@patternfly/react-core";
 
-import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
+import { FooterContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
 
@@ -68,22 +68,30 @@ const InstallationMethod = ({
     );
 };
 
-const InstallationMethodFooterHelper = () => (
-    <HelperText id="next-helper-text">
-        <HelperTextItem
-          variant="indeterminate">
-            {_("To continue, select the devices to install to.")}
-        </HelperTextItem>
-    </HelperText>
-);
+const InstallationMethodFooterHelper = () => {
+    const { isFormValid } = useContext(FooterContext);
 
-export const usePage = ({ isFormValid }) => {
+    if (isFormValid) {
+        return null;
+    }
+
+    return (
+        <HelperText id="next-helper-text">
+            <HelperTextItem
+              variant="indeterminate">
+                {_("To continue, select the devices to install to.")}
+            </HelperTextItem>
+        </HelperText>
+    );
+};
+
+export const usePage = () => {
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     return ({
         component: InstallationMethod,
-        footerHelperText: !isFormValid && <InstallationMethodFooterHelper />,
+        footerHelperText: <InstallationMethodFooterHelper />,
         id: "installation-method",
         label: _("Installation method"),
         title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,
