@@ -21,7 +21,7 @@ If you are not interested in dealing with containers, just skip this part and co
 
 To create and enter a development toolbx for Anaconda Web UI run this command::
 
-    toolbox create --image quay.io/cockpit/tasks -c anaconda-webui
+    toolbox create --image ghcr.io/cockpit-project/tasks -c anaconda-webui
     toolbox enter anaconda-webui
 
 
