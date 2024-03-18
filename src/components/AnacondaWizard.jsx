@@ -31,15 +31,8 @@ import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext } from "./Common.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
-import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { getSteps } from "./steps.js";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
-import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
-import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { usePage as pageAccounts } from "./users/Accounts.jsx";
-
-const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStorage }) => {
@@ -83,22 +76,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         setReusePartitioning(false);
     }, [availableDevices, selectedDisks]);
 
-    let stepsOrder = [
-        pageInstallationLanguage(),
-        pageInstallationMethod(),
-        {
-            id: "disk-configuration",
-            label: _("Disk configuration"),
-            steps: [
-                pageMountPointMapping(),
-                pageDiskEncryption()
-            ]
-        },
-        pageAccounts(),
-        pageReviewConfiguration()
-    ];
-    stepsOrder = stepsOrder.filter(step => !step.isHidden);
-
     const componentProps = {
         dispatch,
         isFormDisabled,
@@ -125,6 +102,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         }
         return stepIds;
     };
+    const stepsOrder = getSteps();
     const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
     const firstStepId = stepsOrder[0].id;
 
