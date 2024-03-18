@@ -30,6 +30,7 @@ import {
 } from "../apis/storage_disks_selection.js";
 import {
     gatherRequests,
+    getAutomaticPartitioningRequest,
     getPartitioningMethod,
 } from "../apis/storage_partitioning.js";
 
@@ -106,6 +107,10 @@ export const getPartitioningDataAction = ({ requests, partitioning }) => {
                     const reqs = await gatherRequests({ partitioning });
 
                     props.requests = convertRequests(reqs);
+                } else {
+                    const reqs = await getAutomaticPartitioningRequest({ partitioning });
+
+                    props.requests = convertRequests([reqs]);
                 }
             } else {
                 props.requests = convertRequests(requests);
