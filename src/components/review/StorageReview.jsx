@@ -26,7 +26,7 @@ import { checkDeviceInSubTree } from "../../helpers/storage.js";
 
 const _ = cockpit.gettext;
 
-export const StorageReview = ({ selectedDisks, deviceData, requests, storageScenarioId }) => {
+export const StorageReview = ({ selectedDisks, deviceData, requests }) => {
     return (
         <>
             {selectedDisks.map(disk => {
@@ -35,7 +35,7 @@ export const StorageReview = ({ selectedDisks, deviceData, requests, storageScen
                       key={disk}
                       deviceData={deviceData}
                       disk={disk}
-                      requests={["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? requests : null}
+                      requests={requests}
                     />
                 );
             })}
@@ -65,13 +65,15 @@ const DeviceRow = ({ deviceData, disk, requests }) => {
         );
     };
 
-    const partitionRows = requests?.filter(req => {
-        if (!req.reformat && req["mount-point"] === "") {
-            return false;
-        }
+    const partitionRows = (requests?.length > 1
+        ? requests.filter(req => {
+            if (!req.reformat && req["mount-point"] === "") {
+                return false;
+            }
 
-        return checkDeviceInSubTree({ device: req["device-spec"], deviceData, rootDevice: name });
-    }).map(renderRow) || [];
+            return checkDeviceInSubTree({ device: req["device-spec"], deviceData, rootDevice: name });
+        }).map(renderRow)
+        : []);
 
     return (
         <Stack id={`disk-${name}`} hasGutter>

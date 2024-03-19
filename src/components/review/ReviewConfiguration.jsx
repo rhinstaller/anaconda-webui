@@ -158,7 +158,6 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId }) =>
                               deviceData={devices}
                               requests={partitioning?.requests}
                               selectedDisks={diskSelection.selectedDisks}
-                              storageScenarioId={storageScenarioId}
                             />
                         </Stack>
                     </DescriptionListDescription>

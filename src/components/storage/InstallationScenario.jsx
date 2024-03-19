@@ -130,7 +130,6 @@ export const checkConfiguredStorage = ({
     requests,
     scenarioPartitioningMapping,
     selectedDisks,
-    storageScenarioId,
 }) => {
     const availability = new AvailabilityState();
 
@@ -178,12 +177,11 @@ export const checkConfiguredStorage = ({
         )
     );
 
-    availability.review = deviceData && requests && selectedDisks && storageScenarioId && (
+    availability.review = deviceData && requests && selectedDisks && (
         <StorageReview
           deviceData={deviceData}
           requests={requests}
           selectedDisks={selectedDisks}
-          storageScenarioId={storageScenarioId}
         />
     );
 
@@ -307,7 +305,6 @@ const InstallationScenarioSelector = ({
                     requiredSize,
                     scenarioPartitioningMapping,
                     selectedDisks,
-                    storageScenarioId,
                     usablePartitions,
                 });
                 newAvailability[scenario.id] = availability;
@@ -325,7 +322,6 @@ const InstallationScenarioSelector = ({
         requiredSize,
         scenarioPartitioningMapping,
         selectedDisks,
-        storageScenarioId,
         usablePartitions,
     ]);
 
