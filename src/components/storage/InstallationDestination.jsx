@@ -313,20 +313,20 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
 };
 
 export const InstallationDestination = ({
-    isEfi,
     dispatch,
     idPrefix,
+    isEfi,
     isFormDisabled,
-    setIsFormValid,
+    onCritFail,
     setIsFormDisabled,
-    setShowStorage,
-    onCritFail
+    setIsFormValid,
+    setShowStorage
 }) => {
     const [isRescanningDisks, setIsRescanningDisks] = useState(false);
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const { diskSelection, devices } = useContext(StorageContext);
+    const { devices, diskSelection } = useContext(StorageContext);
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 

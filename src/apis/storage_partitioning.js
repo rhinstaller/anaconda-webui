@@ -79,7 +79,7 @@ export const partitioningSetPassphrase = ({ partitioning, passphrase }) => {
  * @param {string} partitioning     DBus path to a partitioning
  * @param {boolean} encrypt         True if partitions should be encrypted, False otherwise
  */
-export const partitioningSetEncrypt = ({ partitioning, encrypt }) => {
+export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
     return getPartitioningRequest({ partitioning })
             .then(request => {
                 request.encrypted = cockpit.variant("b", encrypt);
@@ -204,7 +204,7 @@ export const gatherRequests = ({ partitioning }) => {
     ).then(res => res[0]);
 };
 
-export const applyStorage = async ({ partitioning, encrypt, encryptPassword, onFail, onSuccess }) => {
+export const applyStorage = async ({ encrypt, encryptPassword, onFail, onSuccess, partitioning }) => {
     await setInitializeLabelsEnabled({ enabled: true });
     await setBootloaderDrive({ drive: "" });
 

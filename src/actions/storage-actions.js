@@ -95,7 +95,7 @@ export const getDiskSelectionAction = () => {
     };
 };
 
-export const getPartitioningDataAction = ({ requests, partitioning }) => {
+export const getPartitioningDataAction = ({ partitioning, requests }) => {
     return async (dispatch) => {
         try {
             const props = { path: partitioning };

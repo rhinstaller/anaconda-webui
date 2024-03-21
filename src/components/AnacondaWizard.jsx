@@ -35,7 +35,7 @@ import { getSteps } from "./steps.js";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 const N_ = cockpit.noop;
 
-export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStorage }) => {
+export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);

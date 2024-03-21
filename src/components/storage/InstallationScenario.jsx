@@ -46,7 +46,7 @@ function AvailabilityState (available = false, hidden = true, reason = null, hin
     this.hint = hint;
 }
 
-const checkEraseAll = ({ requiredSize, diskTotalSpace }) => {
+const checkEraseAll = ({ diskTotalSpace, requiredSize }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
@@ -99,7 +99,7 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
     return missingNonmountablePartitions;
 };
 
-const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountPointConstraints }) => {
+const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, usablePartitions }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
@@ -127,8 +127,8 @@ const checkMountPointMapping = ({ duplicateDeviceNames, usablePartitions, mountP
 export const checkConfiguredStorage = ({
     devices,
     mountPointConstraints,
-    partitioning,
     newMountPoints,
+    partitioning,
     scenarioPartitioningMapping,
 }) => {
     const availability = new AvailabilityState();
@@ -147,7 +147,7 @@ export const checkConfiguredStorage = ({
                             if (!object) {
                                 return;
                             }
-                            const { dir, content, subvolumes } = object;
+                            const { content, dir, subvolumes } = object;
 
                             if (dir) {
                                 allDirs.push(dir);
@@ -263,7 +263,7 @@ const InstallationScenarioSelector = ({
     scenarioPartitioningMapping,
     setIsFormValid,
 }) => {
-    const { devices, deviceNames, partitioning, diskSelection } = useContext(StorageContext);
+    const { deviceNames, devices, diskSelection, partitioning } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])

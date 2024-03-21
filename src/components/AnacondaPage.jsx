@@ -17,7 +17,7 @@
 import React from "react";
 import { Alert, Stack, Title } from "@patternfly/react-core";
 
-export const AnacondaPage = ({ title, children, step, stepNotification }) => {
+export const AnacondaPage = ({ children, step, stepNotification, title }) => {
     return (
         <Stack hasGutter>
             {title && <Title headingLevel="h2">{title}</Title>}

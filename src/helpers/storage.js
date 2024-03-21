@@ -40,7 +40,7 @@ const getDeviceAncestors = (deviceData, device) => {
  * @param {Object} deviceData - The device data object
  * @returns {boolean}
  */
-export const checkDeviceInSubTree = ({ device, rootDevice, deviceData }) => {
+export const checkDeviceInSubTree = ({ device, deviceData, rootDevice }) => {
     return getDeviceChildren({ device: rootDevice, deviceData }).includes(device);
 };
 
@@ -50,7 +50,7 @@ export const checkDeviceInSubTree = ({ device, rootDevice, deviceData }) => {
  * @param {Object} deviceData - The device data object
  * @returns {Array}
  */
-export const getDeviceChildren = ({ deviceData, device }) => {
+export const getDeviceChildren = ({ device, deviceData }) => {
     const children = [];
     const deviceChildren = deviceData[device]?.children?.v || [];
 

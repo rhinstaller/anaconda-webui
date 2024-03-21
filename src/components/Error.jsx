@@ -86,16 +86,16 @@ const addLogAttachmentCommentToReportURL = (reportURL, logFile) => {
 };
 
 export const BZReportModal = ({
-    description,
-    reportLinkURL,
-    idPrefix,
-    title,
-    titleIconVariant,
-    logFile,
-    detailsLabel,
-    detailsContent,
     buttons,
-    isConnected
+    description,
+    detailsContent,
+    detailsLabel,
+    idPrefix,
+    isConnected,
+    logFile,
+    reportLinkURL,
+    title,
+    titleIconVariant
 }) => {
     const [logContent, setLogContent] = useState();
     const [preparingReport, setPreparingReport] = useState(false);
@@ -260,7 +260,7 @@ const cancelButton = (onClose) => {
     );
 };
 
-export const UserIssue = ({ reportLinkURL, setIsReportIssueOpen, isConnected }) => {
+export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) => {
     return (
         <BZReportModal
           description={_("The following log will be sent to the issue tracking system where you may provide additional details.")}

@@ -88,10 +88,10 @@ const ReturnToInstallationButton = ({ isDisabled, onAction }) => (
 );
 
 export const CockpitStorageIntegration = ({
-    scenarioAvailability,
-    scenarioPartitioningMapping,
     dispatch,
     onCritFail,
+    scenarioAvailability,
+    scenarioPartitioningMapping,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -161,7 +161,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
         const requests = await gatherRequests({ partitioning });
 
         const addRequest = (devicePath, object, isSubVolume = false) => {
-            const { dir, type, subvolumes, content } = object;
+            const { content, dir, subvolumes, type } = object;
             let deviceSpec;
             if (!isSubVolume) {
                 deviceSpec = getDeviceNameByPath(devices, devicePath);
@@ -215,7 +215,7 @@ const CheckStorageDialog = ({
     setShowDialog,
     setShowStorage,
 }) => {
-    const { diskSelection, devices } = useContext(StorageContext);
+    const { devices, diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
 
     const [error, setError] = useState();

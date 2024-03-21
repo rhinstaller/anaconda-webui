@@ -35,7 +35,7 @@ import "./AnacondaHeader.scss";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaHeader = ({ title, reportLinkURL, isConnected, onCritFail }) => {
+export const AnacondaHeader = ({ isConnected, onCritFail, reportLinkURL, title }) => {
     const [beta, setBeta] = useState();
 
     useEffect(() => {

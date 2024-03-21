@@ -166,7 +166,7 @@ const requestsToDbus = (requests) => {
  * @param string partitioning DBus path to a partitioning
  * @returns {Promise}
  */
-const updatePartitioningRequests = ({ requests, newRequests, partitioning }) => {
+const updatePartitioningRequests = ({ newRequests, partitioning, requests }) => {
     const backendRequests = [...requests];
 
     backendRequests.forEach((backendRequest, backendRequestIndex) => {
@@ -212,7 +212,7 @@ const isDeviceMountPointInvalid = (deviceData, mountPointConstraints, request) =
     return [false, ""];
 };
 
-const MountPointColumn = ({ handleRequestChange, idPrefix, isRequiredMountPoint, isRecommendedMountPoint, request, requests, requestIndex }) => {
+const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoint, isRequiredMountPoint, request, requestIndex, requests }) => {
     const mountpoint = request["mount-point"] || "";
 
     const [mountPointText, setMountPointText] = useState(mountpoint);
@@ -259,7 +259,7 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRequiredMountPoint,
     );
 };
 
-const DeviceColumnSelect = ({ deviceData, devices, idPrefix, isRequiredMountPoint, lockedLUKSDevices, handleRequestChange, request, requestIndex }) => {
+const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, request, requestIndex }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const device = request["device-spec"];
@@ -309,7 +309,7 @@ const DeviceColumnSelect = ({ deviceData, devices, idPrefix, isRequiredMountPoin
     );
 };
 
-const DeviceColumn = ({ deviceData, devices, mountPointConstraints, idPrefix, isRequiredMountPoint, handleRequestChange, lockedLUKSDevices, request, requests, requestIndex }) => {
+const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, mountPointConstraints, request, requestIndex, requests }) => {
     const device = request["device-spec"];
     const duplicatedDevice = isDuplicateRequestField(requests, "device-spec", device);
     const [deviceInvalid, errorMessage] = isDeviceMountPointInvalid(deviceData, mountPointConstraints, request);
@@ -342,7 +342,7 @@ const DeviceColumn = ({ deviceData, devices, mountPointConstraints, idPrefix, is
     );
 };
 
-const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requests, requestIndex }) => {
+const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requestIndex, requests }) => {
     const [reformatInvalid, reformatErrorMsg] = isReformatInvalid(deviceData, request, requests);
     const FormatSwitch = () => {
         return (
@@ -368,7 +368,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
     );
 };
 
-const MountPointRowRemove = ({ requestIndex, handleRequestChange }) => {
+const MountPointRowRemove = ({ handleRequestChange, requestIndex }) => {
     const handleRemove = () => {
         // remove row from requests and update requests with higher ID
         handleRequestChange({ remove: true, requestIndex });
@@ -391,10 +391,10 @@ const getRequestRow = ({
     handleRequestChange,
     idPrefix,
     lockedLUKSDevices,
+    mountPointConstraints,
     request,
     requestIndex,
     requests,
-    mountPointConstraints,
 }) => {
     const columnClassName = idPrefix + "__column";
     const isRequiredMountPoint = (
@@ -462,7 +462,7 @@ const getRequestRow = ({
     });
 };
 
-const getNewRequestProps = ({ mountPoint, deviceSpec, reformat, requests }) => {
+const getNewRequestProps = ({ deviceSpec, mountPoint, reformat, requests }) => {
     const existingRequestForDev = requests.find(device => device["device-spec"] === deviceSpec);
     const newProps = { ...existingRequestForDev };
 
@@ -486,11 +486,11 @@ const RequestsTable = ({
     deviceData,
     idPrefix,
     lockedLUKSDevices,
-    setStepNotification,
+    mountPointConstraints,
     partitioningDataPath,
     requests,
-    mountPointConstraints,
     setIsFormValid,
+    setStepNotification,
 }) => {
     const currentPartitioning = useRef();
     const [unappliedRequests, setUnappliedRequests] = useState([]);
@@ -512,7 +512,7 @@ const RequestsTable = ({
         setIsFormValid(getRequestsValid(initialRequests, deviceData));
     }, [deviceData, setIsFormValid, partitioningDataPath, requests, mountPointConstraints]);
 
-    const handleRequestChange = useCallback(({ mountPoint, deviceSpec, requestIndex, reformat, remove }) => {
+    const handleRequestChange = useCallback(({ deviceSpec, mountPoint, reformat, remove, requestIndex }) => {
         const newRequests = [...unappliedRequests];
         if (remove) {
             // Remove a request from the specified index
@@ -690,7 +690,7 @@ const MountPointMapping = ({
 
 const CustomFooter = ({ partitioning }) => {
     const step = usePage().id;
-    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+    const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
         return applyStorage({
             onFail: ex => {
                 console.error(ex);
