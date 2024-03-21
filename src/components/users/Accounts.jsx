@@ -41,34 +41,18 @@ import {
     setUsers,
 } from "../../apis/users.js";
 
+import {
+    setUsers as setUsersAction,
+} from "../../actions/users-actions.js";
+
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { RuntimeContext, SystemTypeContext } from "../Common.jsx";
+import { RuntimeContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./Accounts.scss";
 
 const _ = cockpit.gettext;
-
-export function getAccountsState (
-    fullName = "",
-    userName = "",
-    password = "",
-    confirmPassword = "",
-    rootPassword = "",
-    rootConfirmPassword = "",
-    isRootEnabled = false,
-) {
-    return {
-        confirmPassword,
-        fullName,
-        isRootEnabled,
-        password,
-        rootConfirmPassword,
-        rootPassword,
-        userName,
-    };
-}
 
 export const cryptUserPassword = async (password) => {
     const crypted = await python.spawn(encryptUserPw, password, { environ: ["LC_ALL=C.UTF-8"], err: "message" });
@@ -129,9 +113,9 @@ const isUserNameWithInvalidCharacters = (userName) => {
 const CreateAccount = ({
     idPrefix,
     setIsUserValid,
-    accounts,
     setAccounts,
 }) => {
+    const accounts = useContext(UsersContext);
     const [fullName, setFullName] = useState(accounts.fullName);
     const [checkFullName, setCheckFullName] = useState(accounts.fullName);
     const [fullNameInvalidHint, setFullNameInvalidHint] = useState("");
@@ -203,7 +187,7 @@ const CreateAccount = ({
     );
 
     useEffect(() => {
-        setAccounts(ac => ({ ...ac, confirmPassword, fullName, password, userName }));
+        setAccounts({ confirmPassword, fullName, password, userName });
     }, [setAccounts, fullName, userName, password, confirmPassword]);
 
     const getValidatedVariant = (valid) => valid === null ? "default" : valid ? "success" : "error";
@@ -263,9 +247,9 @@ const CreateAccount = ({
 const RootAccount = ({
     idPrefix,
     setIsRootValid,
-    accounts,
     setAccounts,
 }) => {
+    const accounts = useContext(UsersContext);
     const [password, setPassword] = useState(accounts.rootPassword);
     const [confirmPassword, setConfirmPassword] = useState(accounts.rootConfirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -281,7 +265,7 @@ const RootAccount = ({
           id={idPrefix + "-enable-root-account"}
           label={_("Enable root account")}
           isChecked={isRootAccountEnabled}
-          onChange={(_event, enable) => setAccounts(ac => ({ ...ac, isRootEnabled: enable }))}
+          onChange={(_event, enable) => setAccounts({ isRootEnabled: enable })}
           body={content}
         />
     );
@@ -302,7 +286,7 @@ const RootAccount = ({
     );
 
     useEffect(() => {
-        setAccounts(ac => ({ ...ac, rootConfirmPassword: confirmPassword, rootPassword: password }));
+        setAccounts({ rootConfirmPassword: confirmPassword, rootPassword: password });
     }, [setAccounts, password, confirmPassword]);
 
     return (
@@ -315,20 +299,20 @@ const RootAccount = ({
 };
 
 const Accounts = ({
+    dispatch,
     idPrefix,
     setIsFormValid,
-    accounts,
-    setAccounts,
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
+    const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
 
     useEffect(() => {
         setIsFormValid(isUserValid && isRootValid);
     }, [setIsFormValid, isUserValid, isRootValid]);
 
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter accounts={accounts} />, [accounts]);
+    const getFooter = useMemo(() => <CustomFooter />, []);
     useWizardFooter(getFooter);
 
     return (
@@ -339,20 +323,20 @@ const Accounts = ({
             <CreateAccount
               idPrefix={idPrefix + "-create-account"}
               setIsUserValid={setIsUserValid}
-              accounts={accounts}
               setAccounts={setAccounts}
             />
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
               setIsRootValid={setIsRootValid}
-              accounts={accounts}
               setAccounts={setAccounts}
             />
         </Form>
     );
 };
 
-const CustomFooter = ({ accounts }) => {
+const CustomFooter = () => {
+    const accounts = useContext(UsersContext);
+
     const onNext = ({ goToNextStep }) => {
         applyAccounts(accounts).then(goToNextStep);
     };

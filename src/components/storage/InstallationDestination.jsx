@@ -54,7 +54,7 @@ import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-
 import { debug } from "../../helpers/log.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
-import { SystemTypeContext } from "../Common.jsx";
+import { StorageContext, SystemTypeContext } from "../Common.jsx";
 import { ModifyStorage } from "./ModifyStorage.jsx";
 
 import "./InstallationDestination.scss";
@@ -88,7 +88,7 @@ const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
     }
 };
 
-const LocalDisksSelect = ({ deviceData, diskSelection, idPrefix, isDisabled, setSelectedDisks }) => {
+const LocalDisksSelect = ({ devices, diskSelection, idPrefix, isDisabled, setSelectedDisks }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
     const [focusedItemIndex, setFocusedItemIndex] = useState(null);
@@ -101,9 +101,9 @@ const LocalDisksSelect = ({ deviceData, diskSelection, idPrefix, isDisabled, set
 
     let selectOptions = diskSelection.usableDisks
             .map(disk => ({
-                description: deviceData[disk]?.description.v,
+                description: devices[disk]?.description.v,
                 name: disk,
-                size: cockpit.format_bytes(deviceData[disk]?.total.v),
+                size: cockpit.format_bytes(devices[disk]?.total.v),
                 value: disk,
             }))
             .filter(option =>
@@ -313,8 +313,6 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
 };
 
 export const InstallationDestination = ({
-    deviceData,
-    diskSelection,
     isEfi,
     dispatch,
     idPrefix,
@@ -328,8 +326,9 @@ export const InstallationDestination = ({
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const { diskSelection, devices } = useContext(StorageContext);
 
-    debug("DiskSelector: deviceData: ", JSON.stringify(Object.keys(deviceData)), ", diskSelection: ", JSON.stringify(diskSelection));
+    debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 
     useEffect(() => {
         if (isRescanningDisks && refUsableDisks.current === undefined) {
@@ -361,7 +360,7 @@ export const InstallationDestination = ({
         setIsFormValid(selectedDisksCnt > 0);
     }, [selectedDisksCnt, setIsFormValid]);
 
-    const loading = !deviceData || diskSelection.usableDisks.some(disk => !deviceData[disk]);
+    const loading = !devices || diskSelection.usableDisks.some(disk => !devices[disk]);
 
     const rescanErrorHandler = onCritFail({
         context: N_("Rescanning of the disks failed.")
@@ -392,7 +391,7 @@ export const InstallationDestination = ({
     const localDisksSelect = (
         <LocalDisksSelect
           idPrefix={idPrefix + "-disk-selector"}
-          deviceData={deviceData}
+          devices={devices}
           diskSelection={diskSelection}
           setSelectedDisks={setSelectedDisks}
           isDisabled={isRescanningDisks || loading || isFormDisabled}
@@ -406,7 +405,7 @@ export const InstallationDestination = ({
             <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
             {!isRescanningDisks && diskSelection.usableDisks !== undefined && refUsableDisks.current !== undefined &&
             <DisksChangedAlert
-              deviceData={deviceData}
+              devices={devices}
               equalDisksNotify={equalDisksNotify}
               refUsableDisks={refUsableDisks}
               setEqualDisksNotify={setEqualDisksNotify}
@@ -423,12 +422,12 @@ export const InstallationDestination = ({
                                         <FlexItem>
                                             {cockpit.format(
                                                 _("Installing to $0 ($1)"),
-                                                deviceData[diskSelection.selectedDisks[0]]?.description.v,
+                                                devices[diskSelection.selectedDisks[0]]?.description.v,
                                                 diskSelection.selectedDisks[0]
                                             )}
                                         </FlexItem>
                                         <FlexItem className={idPrefix + "-target-disk-size"}>
-                                            {cockpit.format_bytes(deviceData[diskSelection.selectedDisks[0]]?.total.v)}
+                                            {cockpit.format_bytes(devices[diskSelection.selectedDisks[0]]?.total.v)}
                                         </FlexItem>
                                     </Flex>
                                 )
@@ -439,9 +438,9 @@ export const InstallationDestination = ({
                       idPrefix={idPrefix}
                       onCritFail={onCritFail}
                       onRescan={onClickRescan}
-                      setShowStorage={setShowStorage}
-                      selectedDevices={diskSelection.selectedDisks.map(disk => deviceData[disk].path.v)}
                       isEfi={isEfi}
+                      dispatch={dispatch}
+                      setShowStorage={setShowStorage}
                     />
                 </Flex>
             </FormGroup>
@@ -450,7 +449,7 @@ export const InstallationDestination = ({
 };
 
 const DisksChangedAlert = ({
-    deviceData,
+    devices,
     equalDisksNotify,
     refUsableDisks,
     setEqualDisksNotify,
@@ -491,8 +490,8 @@ const DisksChangedAlert = ({
                                 disksAdded.map(disk => (
                                     cockpit.format(
                                         "$0 ($1)",
-                                        deviceData[disk].name.v,
-                                        deviceData[disk].description.v
+                                        devices[disk].name.v,
+                                        devices[disk].description.v
                                     ))
                                 ).join(", ")
                             )}
@@ -508,8 +507,8 @@ const DisksChangedAlert = ({
                                 disksRemoved.map(disk => (
                                     cockpit.format(
                                         "$0 ($1)",
-                                        deviceData[disk].name.v,
-                                        deviceData[disk].description.v
+                                        devices[disk].name.v,
+                                        devices[disk].description.v
                                     ))
                                 ).join(", ")
                             )}

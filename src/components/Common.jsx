@@ -27,6 +27,7 @@ export const RuntimeContext = createContext(null);
 export const StorageContext = createContext(null);
 export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
+export const UsersContext = createContext(null);
 
 export const FormGroupHelpPopover = ({ helpContent }) => {
     return (

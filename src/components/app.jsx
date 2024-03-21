@@ -50,6 +50,7 @@ import {
     StorageContext,
     SystemTypeContext,
     TargetSystemRootContext,
+    UsersContext,
 } from "./Common.jsx";
 import { bugzillaPrefiledReportURL, CriticalError, errorHandlerWithContext } from "./Error.jsx";
 
@@ -221,9 +222,11 @@ export const Application = () => {
         <WithDialogs>
             <LanguageContext.Provider value={state.localization}>
                 <StorageContext.Provider value={state.storage}>
-                    <MaybeBackdrop>
-                        {page}
-                    </MaybeBackdrop>
+                    <UsersContext.Provider value={state.users}>
+                        <MaybeBackdrop>
+                            {page}
+                        </MaybeBackdrop>
+                    </UsersContext.Provider>
                 </StorageContext.Provider>
             </LanguageContext.Provider>
         </WithDialogs>

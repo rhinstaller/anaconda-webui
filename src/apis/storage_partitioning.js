@@ -41,6 +41,9 @@ const callClient = (...args) => {
 const getProperty = (...args) => {
     return _getProperty(StorageClient, OBJECT_PATH, INTERFACE_NAME_STORAGE, ...args);
 };
+const getPropertyAutomatic = (path, ...args) => {
+    return _getProperty(StorageClient, path, INTERFACE_NAME_PARTITIONING_AUTOMATIC, ...args);
+};
 
 /**
  * @param {string} partitioning DBus path to a partitioning
@@ -127,6 +130,13 @@ export const getPartitioningMethod = ({ partitioning }) => {
  */
 export const getAppliedPartitioning = () => {
     return getProperty("AppliedPartitioning");
+};
+
+/**
+ * @returns {Promise}           The applied partitioning
+ */
+export const getAutomaticPartitioningRequest = ({ partitioning }) => {
+    return getPropertyAutomatic(partitioning, "Request");
 };
 
 /**

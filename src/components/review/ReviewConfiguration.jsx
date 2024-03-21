@@ -27,14 +27,8 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import {
-    getAppliedPartitioning,
-    getPartitioningMethod,
-    getPartitioningRequest,
-} from "../../apis/storage_partitioning.js";
-
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, UsersContext } from "../Common.jsx";
 import { getScenario } from "../storage/InstallationScenario.jsx";
 import { StorageReview } from "./StorageReview.jsx";
 
@@ -60,28 +54,19 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, accounts }) => {
-    const [encrypt, setEncrypt] = useState();
+const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
-    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const accounts = useContext(UsersContext);
+    const { partitioning, storageScenarioId } = useContext(StorageContext);
+
+    useEffect(() => {
+        setIsFormValid(true);
+    }, [setIsFormValid]);
 
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter storageScenarioId={storageScenarioId} />, [storageScenarioId]);
     useWizardFooter(getFooter);
-
-    useEffect(() => {
-        const initializeEncrypt = async () => {
-            const partitioning = await getAppliedPartitioning().catch(console.error);
-            const method = await getPartitioningMethod({ partitioning }).catch(console.error);
-            if (method === "AUTOMATIC") {
-                const request = await getPartitioningRequest({ partitioning }).catch(console.error);
-                setEncrypt(request.encrypted.v);
-            }
-        };
-        initializeEncrypt();
-        setIsFormValid(true);
-    }, [setIsFormValid]);
 
     const language = useMemo(() => {
         for (const l of Object.keys(localizationData.languages)) {
@@ -142,7 +127,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, acco
                             {_("Disk encryption")}
                         </DescriptionListTerm>
                         <DescriptionListDescription id={idPrefix + "-target-system-encrypt"}>
-                            {encrypt ? _("Enabled") : _("Disabled")}
+                            {partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
                         </DescriptionListDescription>
                     </DescriptionListGroup>
                 </ReviewDescriptionList>}
@@ -153,12 +138,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid, storageScenarioId, acco
                     </DescriptionListTerm>
                     <DescriptionListDescription id={idPrefix + "-target-storage"}>
                         <Stack hasGutter>
-                            <StorageReview
-                              deviceData={devices}
-                              requests={partitioning?.requests}
-                              selectedDisks={diskSelection.selectedDisks}
-                              storageScenarioId={storageScenarioId}
-                            />
+                            <StorageReview />
                         </Stack>
                     </DescriptionListDescription>
                 </DescriptionListGroup>
@@ -201,7 +181,8 @@ export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaits
     );
 };
 
-const ReviewConfigurationFooterHelperText = ({ storageScenarioId }) => {
+const ReviewConfigurationFooterHelperText = () => {
+    const { storageScenarioId } = useContext(StorageContext);
     const reviewWarning = getScenario(storageScenarioId).screenWarning;
 
     return (
@@ -239,10 +220,12 @@ const CustomFooter = ({ storageScenarioId }) => {
     );
 };
 
-export const usePage = ({ storageScenarioId }) => {
+export const usePage = () => {
+    const { storageScenarioId } = useContext(StorageContext);
+
     return ({
         component: ReviewConfiguration,
-        footerHelperText: <ReviewConfigurationFooterHelperText storageScenarioId={storageScenarioId} />,
+        footerHelperText: <ReviewConfigurationFooterHelperText />,
         id: "installation-review",
         label: _("Review and install"),
         nextButtonText: getScenario(storageScenarioId)?.buttonLabel,

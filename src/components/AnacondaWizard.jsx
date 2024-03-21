@@ -31,16 +31,8 @@ import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext } from "./Common.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
-import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
-import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { getSteps } from "./steps.js";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
-import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
-import { getDefaultScenario } from "./storage/InstallationScenario.jsx";
-import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { getAccountsState, usePage as pageAccounts } from "./users/Accounts.jsx";
-
-const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStorage }) => {
@@ -48,11 +40,10 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     const [isFormValid, setIsFormValid] = useState(false);
     const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
-    const [storageScenarioId, setStorageScenarioId] = useState(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id);
-    const [accounts, setAccounts] = useState(getAccountsState());
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
     const storageData = useContext(StorageContext);
+    const storageScenarioId = storageData.storageScenarioId;
     const selectedDisks = storageData.diskSelection.selectedDisks;
     const [scenarioPartitioningMapping, setScenarioPartitioningMapping] = useState({});
 
@@ -85,59 +76,16 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         setReusePartitioning(false);
     }, [availableDevices, selectedDisks]);
 
-    let stepsOrder = [
-        pageInstallationLanguage(),
-        {
-            data: {
-                dispatch,
-                scenarioPartitioningMapping,
-                setShowStorage,
-                setStorageScenarioId: (scenarioId) => {
-                    window.sessionStorage.setItem("storage-scenario-id", scenarioId);
-                    setStorageScenarioId(scenarioId);
-                },
-                storageScenarioId,
-            },
-            ...pageInstallationMethod({ isFormValid })
-        },
-        {
-            id: "disk-configuration",
-            label: _("Disk configuration"),
-            steps: [
-                {
-                    data: {
-                        dispatch,
-                        reusePartitioning,
-                        setReusePartitioning,
-                        storageScenarioId,
-                    },
-                    ...pageMountPointMapping({ storageScenarioId })
-                },
-                pageDiskEncryption({ storageScenarioId })
-            ]
-        },
-        {
-            data: {
-                accounts,
-                setAccounts,
-            },
-            ...pageAccounts()
-        },
-        {
-            data: {
-                accounts,
-                storageScenarioId,
-            },
-            ...pageReviewConfiguration({ storageScenarioId })
-        },
-    ];
-    stepsOrder = stepsOrder.filter(step => !step.isHidden);
-
     const componentProps = {
+        dispatch,
         isFormDisabled,
         onCritFail,
+        reusePartitioning,
+        scenarioPartitioningMapping,
         setIsFormDisabled,
         setIsFormValid,
+        setReusePartitioning,
+        setShowStorage,
     };
 
     const getFlattenedStepsIds = (steps) => {
@@ -154,6 +102,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
         }
         return stepIds;
     };
+    const stepsOrder = getSteps();
     const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
     const firstStepId = stepsOrder[0].id;
 
@@ -182,7 +131,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
                               idPrefix={s.id}
                               setStepNotification={ex => setStepNotification({ step: s.id, ...ex })}
                               {...componentProps}
-                              {...s.data}
                             />
                         </AnacondaPage>
                     ),
@@ -250,14 +198,10 @@ export const AnacondaWizard = ({ dispatch, onCritFail, showStorage, setShowStora
     if (showStorage) {
         return (
             <CockpitStorageIntegration
-              deviceData={storageData.devices}
               dispatch={dispatch}
               onCritFail={onCritFail}
-              requests={storageData.partitioning.requests}
               scenarioPartitioningMapping={scenarioPartitioningMapping}
-              selectedDisks={selectedDisks}
               setShowStorage={setShowStorage}
-              setStorageScenarioId={setStorageScenarioId}
             />
         );
     }

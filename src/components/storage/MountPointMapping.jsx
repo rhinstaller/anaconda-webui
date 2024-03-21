@@ -615,7 +615,6 @@ const MountPointMapping = ({
     setIsFormValid,
     setReusePartitioning,
     setStepNotification,
-    storageScenarioId,
 }) => {
     const { devices, partitioning } = useContext(StorageContext);
     const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
@@ -630,10 +629,9 @@ const MountPointMapping = ({
     const getFooter = useMemo(
         () => (
             <CustomFooter
-              partitioning={usedPartitioning}
-              storageScenarioId={storageScenarioId} />
+              partitioning={usedPartitioning} />
         ),
-        [usedPartitioning, storageScenarioId]
+        [usedPartitioning]
     );
     useWizardFooter(getFooter);
 
@@ -690,8 +688,8 @@ const MountPointMapping = ({
     );
 };
 
-const CustomFooter = ({ partitioning, storageScenarioId }) => {
-    const step = usePage({ storageScenarioId }).id;
+const CustomFooter = ({ partitioning }) => {
+    const step = usePage().id;
     const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
         return applyStorage({
             onFail: ex => {
@@ -714,7 +712,9 @@ const CustomFooter = ({ partitioning, storageScenarioId }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-export const usePage = ({ storageScenarioId }) => {
+export const usePage = () => {
+    const { storageScenarioId } = useContext(StorageContext);
+
     return ({
         component: MountPointMapping,
         id: "mount-point-mapping",
