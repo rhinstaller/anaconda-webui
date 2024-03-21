@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Bullseye,
     Page, PageGroup,
@@ -30,7 +30,7 @@ import { initDataRuntime, RuntimeClient, startEventMonitorRuntime } from "../api
 import { initDataStorage, startEventMonitorStorage, StorageClient } from "../apis/storage.js";
 import { UsersClient } from "../apis/users";
 
-import { setCriticalErrorAction, setCriticalErrorFrontendAction } from "../actions/miscellaneous-actions.js";
+import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
 import { readConf } from "../helpers/conf.js";
@@ -52,7 +52,7 @@ import {
     TargetSystemRootContext,
     UsersContext,
 } from "./Common.jsx";
-import { bugzillaPrefiledReportURL, CriticalError, errorHandlerWithContext } from "./Error.jsx";
+import { bugzillaPrefiledReportURL, CriticalError, useError } from "./Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
@@ -87,19 +87,7 @@ export const Application = () => {
     const criticalError = state?.error?.criticalError;
     const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
     const [showStorage, setShowStorage] = useState(false);
-
-    const onCritFail = useCallback((contextData) => {
-        return errorHandlerWithContext(
-            contextData,
-            exc => {
-                if (contextData.isFrontend) {
-                    dispatch(setCriticalErrorFrontendAction(exc));
-                } else {
-                    dispatch(setCriticalErrorAction(exc));
-                }
-            }
-        );
-    }, [dispatch]);
+    const onCritFail = useError({ dispatch });
     const conf = useConf({ onCritFail });
     const osRelease = useOsRelease({ onCritFail });
 
@@ -116,20 +104,6 @@ export const Application = () => {
 
         // Before unload ask the user for verification
         window.onbeforeunload = () => "";
-
-        // Listen on JS errors
-        window.onerror = (message, url, line, col, errObj) => {
-            dispatch(setCriticalErrorFrontendAction(errObj));
-        };
-
-        // Listen to JS errors from async operations
-        const handleUnhandledRejection = (event) => {
-            dispatch(setCriticalErrorFrontendAction(event.reason));
-        };
-        window.addEventListener("unhandledrejection", handleUnhandledRejection);
-        return () => {
-            window.removeEventListener("unhandledrejection", handleUnhandledRejection);
-        };
 
         cockpit.file("/run/anaconda/bus.address").watch(address => {
             dispatch(setCriticalErrorAction());
