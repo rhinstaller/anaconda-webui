@@ -199,7 +199,7 @@ const ReviewConfigurationFooterHelperText = () => {
 const CustomFooter = ({ storageScenarioId }) => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
     const { setShowWizard } = useContext(FooterContext);
-    const pageProps = usePage({ storageScenarioId });
+    const pageProps = usePage();
 
     return (
         <>
