@@ -85,7 +85,7 @@ class LanguageSelector extends React.Component {
     }
 
     renderOptions (filter) {
-        const { languages, commonLocales } = this.props;
+        const { commonLocales, languages } = this.props;
         const idPrefix = this.props.idPrefix;
         const filterLow = filter.toLowerCase();
 
@@ -286,7 +286,7 @@ class LanguageSelector extends React.Component {
 LanguageSelector.contextType = AddressContext;
 
 const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
-    const { language, languages, commonLocales } = useContext(LanguageContext);
+    const { commonLocales, language, languages } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
     useEffect(() => {
         setIsFormValid(language !== "");

@@ -119,16 +119,16 @@ const passwordStrengthLabel = (idPrefix, strength, strengthLevels) => {
 };
 
 export const PasswordFormFields = ({
-    idPrefix,
-    policy,
-    password,
-    setPassword,
-    passwordLabel,
     confirmPassword,
-    setConfirmPassword,
     confirmPasswordLabel,
+    idPrefix,
+    password,
+    passwordLabel,
+    policy,
     rules,
+    setConfirmPassword,
     setIsValid,
+    setPassword,
 }) => {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [confirmHidden, setConfirmHidden] = useState(true);

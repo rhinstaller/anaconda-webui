@@ -104,7 +104,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
     );
 };
 
-export const HeaderKebab = ({ reportLinkURL, isConnected }) => {
+export const HeaderKebab = ({ isConnected, reportLinkURL }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);

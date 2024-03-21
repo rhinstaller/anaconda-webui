@@ -130,7 +130,7 @@ const DiskEncryption = ({
 
 const CustomFooter = ({ encrypt, encryptPassword }) => {
     const step = usePage({}).id;
-    const onNext = ({ setIsFormDisabled, setStepNotification, goToNextStep }) => {
+    const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
         return applyStorage({
             encrypt,
             encryptPassword,

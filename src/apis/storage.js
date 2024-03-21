@@ -67,7 +67,7 @@ export class StorageClient {
  *
  * @returns {Promise}           Resolves a DBus path to a task
  */
-export const runStorageTask = ({ task, onSuccess, onFail }) => {
+export const runStorageTask = ({ onFail, onSuccess, task }) => {
     // FIXME: This is a workaround for 'Succeeded' signal being emited twice
     let succeededEmitted = false;
     const taskProxy = new StorageClient().client.proxy(

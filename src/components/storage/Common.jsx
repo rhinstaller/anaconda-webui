@@ -29,7 +29,7 @@ import {
 
 import { findDuplicatesInArray } from "../../helpers/utils.js";
 
-export const useDiskTotalSpace = ({ selectedDisks, devices }) => {
+export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export const useDiskTotalSpace = ({ selectedDisks, devices }) => {
     return diskTotalSpace;
 };
 
-export const useDiskFreeSpace = ({ selectedDisks, devices }) => {
+export const useDiskFreeSpace = ({ devices, selectedDisks }) => {
     const [diskFreeSpace, setDiskFreeSpace] = useState();
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export const useDuplicateDeviceNames = ({ deviceNames }) => {
     return duplicateDeviceNames;
 };
 
-export const useUsablePartitions = ({ selectedDisks, devices }) => {
+export const useUsablePartitions = ({ devices, selectedDisks }) => {
     const [usablePartitions, setUsablePartitions] = useState();
 
     useEffect(() => {

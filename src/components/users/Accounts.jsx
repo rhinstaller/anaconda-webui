@@ -112,8 +112,8 @@ const isUserNameWithInvalidCharacters = (userName) => {
 
 const CreateAccount = ({
     idPrefix,
-    setIsUserValid,
     setAccounts,
+    setIsUserValid,
 }) => {
     const accounts = useContext(UsersContext);
     const [fullName, setFullName] = useState(accounts.fullName);
@@ -246,8 +246,8 @@ const CreateAccount = ({
 
 const RootAccount = ({
     idPrefix,
-    setIsRootValid,
     setAccounts,
+    setIsRootValid,
 }) => {
     const accounts = useContext(UsersContext);
     const [password, setPassword] = useState(accounts.rootPassword);

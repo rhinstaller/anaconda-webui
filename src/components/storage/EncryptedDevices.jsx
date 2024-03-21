@@ -101,7 +101,7 @@ export const EncryptedDevices = ({ dispatch, idPrefix, isLoadingNewPartitioning,
     );
 };
 
-const UnlockDialog = ({ isLoadingNewPartitioning, lockedLUKSDevices, onClose, dispatch }) => {
+const UnlockDialog = ({ dispatch, isLoadingNewPartitioning, lockedLUKSDevices, onClose }) => {
     const [passphrase, setPassphrase] = useState("");
     const [passphraseHidden, setPassphraseHidden] = useState(true);
     const [dialogWarning, setDialogWarning] = useState();
