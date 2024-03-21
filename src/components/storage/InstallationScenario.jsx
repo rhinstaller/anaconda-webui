@@ -243,8 +243,15 @@ export const scenarios = [{
 }
 ];
 
-export const getScenario = (scenarioId) => {
-    return scenarios.filter(s => s.id === scenarioId)[0];
+export const useScenario = () => {
+    const { storageScenarioId } = useContext(StorageContext);
+    const [scenario, setScenario] = useState({});
+
+    useEffect(() => {
+        setScenario(scenarios.find(s => s.id === storageScenarioId) || {});
+    }, [storageScenarioId]);
+
+    return scenario;
 };
 
 export const scenarioForInitializationMode = (mode) => {
@@ -344,7 +351,7 @@ const InstallationScenarioSelector = ({
 
     useEffect(() => {
         const applyScenario = async (scenarioId) => {
-            const scenario = getScenario(scenarioId);
+            const scenario = scenarios.find(s => s.id === scenarioId);
             await setInitializationMode({ mode: scenario.initializationMode });
         };
         if (storageScenarioId) {

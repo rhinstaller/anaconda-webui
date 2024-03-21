@@ -29,7 +29,7 @@ import {
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, UsersContext } from "../Common.jsx";
-import { getScenario } from "../storage/InstallationScenario.jsx";
+import { useScenario } from "../storage/InstallationScenario.jsx";
 import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
@@ -59,13 +59,14 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { label: scenarioLabel } = useScenario();
 
     useEffect(() => {
         setIsFormValid(true);
     }, [setIsFormValid]);
 
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter storageScenarioId={storageScenarioId} />, [storageScenarioId]);
+    const getFooter = useMemo(() => <CustomFooter />, []);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -116,7 +117,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
                         {_("Installation type")}
                     </DescriptionListTerm>
                     <DescriptionListDescription id={idPrefix + "-target-system-mode"}>
-                        {getScenario(storageScenarioId).label}
+                        {scenarioLabel}
                     </DescriptionListDescription>
                 </DescriptionListGroup>
             </ReviewDescriptionList>
@@ -147,8 +148,9 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     );
 };
 
-export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaitsConfirmation, storageScenarioId }) => {
-    const scenario = getScenario(storageScenarioId);
+export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaitsConfirmation }) => {
+    const { buttonLabel, buttonVariant, dialogTitleIconVariant, dialogWarning, dialogWarningTitle } = useScenario();
+
     return (
         <Modal
           actions={[
@@ -159,9 +161,9 @@ export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaits
                     setNextWaitsConfirmation(false);
                     onNext();
                 }}
-                variant={scenario.buttonVariant}
+                variant={buttonVariant}
               >
-                  {scenario.buttonLabel}
+                  {buttonLabel}
               </Button>,
               <Button
                 key="cancel"
@@ -172,31 +174,30 @@ export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaits
           ]}
           isOpen
           onClose={() => setNextWaitsConfirmation(false)}
-          title={scenario.dialogWarningTitle}
-          titleIconVariant={scenario.dialogTitleIconVariant}
+          title={dialogWarningTitle}
+          titleIconVariant={dialogTitleIconVariant}
           variant={ModalVariant.small}
         >
-            {scenario.dialogWarning}
+            {dialogWarning}
         </Modal>
     );
 };
 
 const ReviewConfigurationFooterHelperText = () => {
-    const { storageScenarioId } = useContext(StorageContext);
-    const reviewWarning = getScenario(storageScenarioId).screenWarning;
+    const { screenWarning } = useScenario();
 
     return (
         <HelperText id="review-warning-text">
             <HelperTextItem
               variant="warning"
               hasIcon>
-                {reviewWarning}
+                {screenWarning}
             </HelperTextItem>
         </HelperText>
     );
 };
 
-const CustomFooter = ({ storageScenarioId }) => {
+const CustomFooter = () => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
     const { setShowWizard } = useContext(FooterContext);
     const pageProps = usePage();
@@ -208,7 +209,6 @@ const CustomFooter = ({ storageScenarioId }) => {
               idPrefix={pageProps.id}
               onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
               setNextWaitsConfirmation={setNextWaitsConfirmation}
-              storageScenarioId={storageScenarioId}
             />}
             <AnacondaWizardFooter
               footerHelperText={pageProps.footerHelperText}
@@ -221,14 +221,14 @@ const CustomFooter = ({ storageScenarioId }) => {
 };
 
 export const usePage = () => {
-    const { storageScenarioId } = useContext(StorageContext);
+    const { buttonLabel } = useScenario();
 
     return ({
         component: ReviewConfiguration,
         footerHelperText: <ReviewConfigurationFooterHelperText />,
         id: "installation-review",
         label: _("Review and install"),
-        nextButtonText: getScenario(storageScenarioId)?.buttonLabel,
+        nextButtonText: buttonLabel,
         nextButtonVariant: "warning",
         title: _("Review and install"),
     });
