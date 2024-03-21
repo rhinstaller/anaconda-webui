@@ -343,7 +343,7 @@ const InstallationScenarioSelector = ({
     useEffect(() => {
         const applyScenario = async (scenarioId) => {
             const scenario = getScenario(scenarioId);
-            await setInitializationMode({ mode: scenario.initializationMode }).catch(console.error);
+            await setInitializationMode({ mode: scenario.initializationMode });
         };
         if (storageScenarioId) {
             applyScenario(storageScenarioId);
