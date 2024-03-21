@@ -30,6 +30,8 @@ import {
 
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
+import { debug } from "../../helpers/log.js";
+
 import { StorageContext, SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
@@ -325,11 +327,11 @@ const InstallationScenarioSelector = ({
             if (!availability.hidden && availability.available) {
                 availableScenarioExists = true;
                 if (scenario.id === storageScenarioId) {
-                    console.log(`Selecting backend scenario ${scenario.id}`);
+                    debug(`Selecting backend scenario ${scenario.id}`);
                     selectedScenarioId = scenario.id;
                 }
                 if (!selectedScenarioId && scenario.default) {
-                    console.log(`Selecting default scenario ${scenario.id}`);
+                    debug(`Selecting default scenario ${scenario.id}`);
                     selectedScenarioId = scenario.id;
                 }
             }
