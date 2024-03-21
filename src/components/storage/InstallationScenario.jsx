@@ -385,7 +385,6 @@ export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFormDisabled,
-    onCritFail,
     scenarioPartitioningMapping,
     setIsFormValid,
 }) => {
@@ -400,7 +399,6 @@ export const InstallationScenario = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
-                  onCritFail={onCritFail}
                   scenarioPartitioningMapping={scenarioPartitioningMapping}
                   setIsFormValid={setIsFormValid}
                 />
