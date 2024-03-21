@@ -122,6 +122,15 @@ export const Application = () => {
             dispatch(setCriticalErrorFrontendAction(errObj));
         };
 
+        // Listen to JS errors from async operations
+        const handleUnhandledRejection = (event) => {
+            dispatch(setCriticalErrorFrontendAction(event.reason));
+        };
+        window.addEventListener("unhandledrejection", handleUnhandledRejection);
+        return () => {
+            window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+        };
+
         cockpit.file("/run/anaconda/bus.address").watch(address => {
             dispatch(setCriticalErrorAction());
             const clients = [
