@@ -38,13 +38,10 @@ import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import {
     AddressContext,
-    LanguageContext,
+    ModuleContextWrapper,
     OsReleaseContext,
-    RuntimeContext,
-    StorageContext,
     SystemTypeContext,
     TargetSystemRootContext,
-    UsersContext,
 } from "./Common.jsx";
 import { bugzillaPrefiledReportURL, CriticalError, useError } from "./Error.jsx";
 
@@ -155,18 +152,16 @@ export const Application = () => {
                         </PageGroup>}
                         <AddressContext.Provider value={address}>
                             <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                                <RuntimeContext.Provider value={state.runtime}>
-                                    <WithDialogs>
-                                        <AnacondaWizard
-                                          onCritFail={onCritFail}
-                                          title={title}
-                                          dispatch={dispatch}
-                                          conf={conf}
-                                          setShowStorage={setShowStorage}
-                                          showStorage={showStorage}
-                                        />
-                                    </WithDialogs>
-                                </RuntimeContext.Provider>
+                                <WithDialogs>
+                                    <AnacondaWizard
+                                      onCritFail={onCritFail}
+                                      title={title}
+                                      dispatch={dispatch}
+                                      conf={conf}
+                                      setShowStorage={setShowStorage}
+                                      showStorage={showStorage}
+                                    />
+                                </WithDialogs>
                             </TargetSystemRootContext.Provider>
                         </AddressContext.Provider>
                     </>}
@@ -177,15 +172,11 @@ export const Application = () => {
 
     return (
         <WithDialogs>
-            <LanguageContext.Provider value={state.localization}>
-                <StorageContext.Provider value={state.storage}>
-                    <UsersContext.Provider value={state.users}>
-                        <MaybeBackdrop>
-                            {page}
-                        </MaybeBackdrop>
-                    </UsersContext.Provider>
-                </StorageContext.Provider>
-            </LanguageContext.Provider>
+            <ModuleContextWrapper state={state}>
+                <MaybeBackdrop>
+                    {page}
+                </MaybeBackdrop>
+            </ModuleContextWrapper>
         </WithDialogs>
     );
 };

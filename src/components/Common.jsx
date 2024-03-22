@@ -45,3 +45,17 @@ export const FormGroupHelpPopover = ({ helpContent }) => {
         </Popover>
     );
 };
+
+export const ModuleContextWrapper = ({ children, state }) => {
+    return (
+        <LanguageContext.Provider value={state.localization}>
+            <RuntimeContext.Provider value={state.runtime}>
+                <StorageContext.Provider value={state.storage}>
+                    <UsersContext.Provider value={state.users}>
+                        {children}
+                    </UsersContext.Provider>
+                </StorageContext.Provider>
+            </RuntimeContext.Provider>
+        </LanguageContext.Provider>
+    );
+};
