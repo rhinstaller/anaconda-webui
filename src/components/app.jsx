@@ -42,41 +42,31 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const Application = () => {
-    const [backendReady, setBackendReady] = useState(false);
-    const [address, setAddress] = useState();
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
     const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
     const [showStorage, setShowStorage] = useState(false);
     const onCritFail = useError({ dispatch });
+    const address = useAddress();
     const conf = useConf({ onCritFail });
     const osRelease = useOsRelease({ onCritFail });
 
     useEffect(() => {
-        cockpit.file("/run/anaconda/backend_ready").watch(
-            res => setBackendReady(res !== null)
-        );
-    }, []);
-
-    useEffect(() => {
-        if (!backendReady) {
+        if (!address) {
             return;
         }
 
         // Before unload ask the user for verification
         window.onbeforeunload = () => "";
 
-        cockpit.file("/run/anaconda/bus.address").watch(address => {
-            dispatch(setCriticalErrorAction());
-            setAddress(address);
+        dispatch(setCriticalErrorAction());
 
-            Promise.all(clients.map(Client => new Client(address, dispatch).init()))
-                    .then(() => {
-                        setStoreInitialized(true);
-                    }, onCritFail({ context: N_("Reading information about the computer failed.") }));
-        });
-    }, [dispatch, onCritFail, backendReady]);
+        Promise.all(clients.map(Client => new Client(address, dispatch).init()))
+                .then(() => {
+                    setStoreInitialized(true);
+                }, onCritFail({ context: N_("Reading information about the computer failed.") }));
+    }, [address, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!criticalError && (!address || !conf || !osRelease || !storeInitialized)) {
@@ -155,4 +145,27 @@ const useOsRelease = ({ onCritFail }) => {
     }, [onCritFail]);
 
     return osRelease;
+};
+
+const useAddress = () => {
+    const [backendReady, setBackendReady] = useState(false);
+    const [address, setAddress] = useState();
+
+    useEffect(() => {
+        if (!backendReady) {
+            return;
+        }
+
+        cockpit.file("/run/anaconda/bus.address").watch(address => {
+            setAddress(address);
+        });
+    }, [backendReady]);
+
+    useEffect(() => {
+        cockpit.file("/run/anaconda/backend_ready").watch(
+            res => setBackendReady(res !== null)
+        );
+    }, []);
+
+    return address;
 };
