@@ -32,43 +32,14 @@ import { debug } from "../helpers/log.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 import { read_os_release as readOsRelease } from "os-release.js";
-import { WithDialogs } from "dialogs.jsx";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import {
-    AddressContext,
-    ModuleContextWrapper,
-    OsReleaseContext,
-    SystemTypeContext,
-    TargetSystemRootContext,
-} from "./Common.jsx";
+import { MainContextWrapper } from "./Common.jsx";
 import { bugzillaPrefiledReportURL, CriticalError, useError } from "./Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
-
-const MaybeBackdrop = ({ children }) => {
-    const [hasDialogOpen, setHasDialogOpen] = useState(false);
-
-    useEffect(() => {
-        const handleStorageEvent = (event) => {
-            if (event.key === "cockpit_has_modal") {
-                setHasDialogOpen(event.newValue === "true");
-            }
-        };
-
-        window.addEventListener("storage", handleStorageEvent);
-
-        return () => window.removeEventListener("storage", handleStorageEvent);
-    }, []);
-
-    return (
-        <div className={hasDialogOpen ? "cockpit-has-modal" : ""}>
-            {children}
-        </div>
-    );
-};
 
 export const Application = () => {
     const [backendReady, setBackendReady] = useState(false);
@@ -120,7 +91,6 @@ export const Application = () => {
     }
 
     // On live media rebooting the system will actually shut it off
-    const systemType = conf?.["Installation System"].type;
     const title = cockpit.format(_("$0 installation"), osRelease.PRETTY_NAME);
 
     const bzReportURL = bugzillaPrefiledReportURL({
@@ -129,55 +99,41 @@ export const Application = () => {
     });
 
     const page = (
-        <OsReleaseContext.Provider value={osRelease}>
-            <SystemTypeContext.Provider value={systemType}>
-                <Page
-                  data-debug={conf.Anaconda.debug}
-                >
-                    {(criticalError || criticalErrorFrontend) &&
-                    <CriticalError
-                      exception={{ backendException: criticalError, frontendException: criticalErrorFrontend }}
+        <Page
+          data-debug={conf.Anaconda.debug}
+        >
+            {(criticalError || criticalErrorFrontend) &&
+            <CriticalError
+              exception={{ backendException: criticalError, frontendException: criticalErrorFrontend }}
+              isConnected={state.network.connected}
+              reportLinkURL={bzReportURL} />}
+            {!criticalErrorFrontend &&
+            <>
+                {!showStorage &&
+                <PageGroup stickyOnBreakpoint={{ default: "top" }}>
+                    <AnacondaHeader
+                      title={title}
+                      reportLinkURL={bzReportURL}
                       isConnected={state.network.connected}
-                      reportLinkURL={bzReportURL} />}
-                    {!criticalErrorFrontend &&
-                    <>
-                        {!showStorage &&
-                        <PageGroup stickyOnBreakpoint={{ default: "top" }}>
-                            <AnacondaHeader
-                              title={title}
-                              reportLinkURL={bzReportURL}
-                              isConnected={state.network.connected}
-                              onCritFail={onCritFail}
-                            />
-                        </PageGroup>}
-                        <AddressContext.Provider value={address}>
-                            <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                                <WithDialogs>
-                                    <AnacondaWizard
-                                      onCritFail={onCritFail}
-                                      title={title}
-                                      dispatch={dispatch}
-                                      conf={conf}
-                                      setShowStorage={setShowStorage}
-                                      showStorage={showStorage}
-                                    />
-                                </WithDialogs>
-                            </TargetSystemRootContext.Provider>
-                        </AddressContext.Provider>
-                    </>}
-                </Page>
-            </SystemTypeContext.Provider>
-        </OsReleaseContext.Provider>
+                      onCritFail={onCritFail}
+                    />
+                </PageGroup>}
+                <AnacondaWizard
+                  onCritFail={onCritFail}
+                  title={title}
+                  dispatch={dispatch}
+                  conf={conf}
+                  setShowStorage={setShowStorage}
+                  showStorage={showStorage}
+                />
+            </>}
+        </Page>
     );
 
     return (
-        <WithDialogs>
-            <ModuleContextWrapper state={state}>
-                <MaybeBackdrop>
-                    {page}
-                </MaybeBackdrop>
-            </ModuleContextWrapper>
-        </WithDialogs>
+        <MainContextWrapper state={state} osRelease={osRelease} conf={conf} address={address}>
+            {page}
+        </MainContextWrapper>
     );
 };
 
