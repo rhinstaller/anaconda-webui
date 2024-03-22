@@ -22,13 +22,7 @@ import {
     Page, PageGroup,
 } from "@patternfly/react-core";
 
-import { BossClient } from "../apis/boss.js";
-import { LocalizationClient } from "../apis/localization.js";
-import { NetworkClient } from "../apis/network.js";
-import { PayloadsClient } from "../apis/payloads";
-import { RuntimeClient } from "../apis/runtime";
-import { StorageClient } from "../apis/storage.js";
-import { UsersClient } from "../apis/users";
+import { clients } from "../apis";
 
 import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
@@ -109,15 +103,7 @@ export const Application = () => {
             dispatch(setCriticalErrorAction());
             setAddress(address);
 
-            Promise.all([
-                new LocalizationClient(address, dispatch).init(),
-                new NetworkClient(address, dispatch).init(),
-                new PayloadsClient(address, dispatch).init(),
-                new RuntimeClient(address, dispatch).init(),
-                new BossClient(address, dispatch).init(),
-                new StorageClient(address, dispatch).init(),
-                new UsersClient(address, dispatch).init(),
-            ])
+            Promise.all(clients.map(Client => new Client(address, dispatch).init()))
                     .then(() => {
                         setStoreInitialized(true);
                     }, onCritFail({ context: N_("Reading information about the computer failed.") }));
