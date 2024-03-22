@@ -44,7 +44,7 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { AddressContext, LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -283,7 +283,6 @@ class LanguageSelector extends React.Component {
         );
     }
 }
-LanguageSelector.contextType = AddressContext;
 
 const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
     const { commonLocales, language, languages } = useContext(LanguageContext);
