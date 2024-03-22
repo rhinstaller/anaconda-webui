@@ -23,11 +23,11 @@ import {
 } from "@patternfly/react-core";
 
 import { BossClient } from "../apis/boss.js";
-import { initDataLocalization, LocalizationClient, startEventMonitorLocalization } from "../apis/localization.js";
-import { initDataNetwork, NetworkClient, startEventMonitorNetwork } from "../apis/network.js";
+import { LocalizationClient } from "../apis/localization.js";
+import { NetworkClient } from "../apis/network.js";
 import { PayloadsClient } from "../apis/payloads";
-import { initDataRuntime, RuntimeClient, startEventMonitorRuntime } from "../apis/runtime";
-import { initDataStorage, startEventMonitorStorage, StorageClient } from "../apis/storage.js";
+import { RuntimeClient } from "../apis/runtime";
+import { StorageClient } from "../apis/storage.js";
 import { UsersClient } from "../apis/users";
 
 import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
@@ -107,31 +107,19 @@ export const Application = () => {
 
         cockpit.file("/run/anaconda/bus.address").watch(address => {
             dispatch(setCriticalErrorAction());
-            const clients = [
-                new LocalizationClient(address),
-                new StorageClient(address),
-                new PayloadsClient(address),
-                new RuntimeClient(address),
-                new BossClient(address),
-                new NetworkClient(address),
-                new UsersClient(address),
-            ];
-            clients.forEach(c => c.init());
-
             setAddress(address);
 
             Promise.all([
-                initDataStorage({ dispatch }),
-                initDataLocalization({ dispatch }),
-                initDataNetwork({ dispatch }),
-                initDataRuntime({ dispatch }),
+                new LocalizationClient(address, dispatch).init(),
+                new NetworkClient(address, dispatch).init(),
+                new PayloadsClient(address, dispatch).init(),
+                new RuntimeClient(address, dispatch).init(),
+                new BossClient(address, dispatch).init(),
+                new StorageClient(address, dispatch).init(),
+                new UsersClient(address, dispatch).init(),
             ])
                     .then(() => {
                         setStoreInitialized(true);
-                        startEventMonitorStorage({ dispatch });
-                        startEventMonitorLocalization({ dispatch });
-                        startEventMonitorNetwork({ dispatch });
-                        startEventMonitorRuntime({ dispatch });
                     }, onCritFail({ context: N_("Reading information about the computer failed.") }));
         });
     }, [dispatch, onCritFail, backendReady]);

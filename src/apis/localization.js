@@ -36,7 +36,7 @@ const getProperty = (...args) => {
 };
 
 export class LocalizationClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (LocalizationClient.instance && (!address || LocalizationClient.instance.address === address)) {
             return LocalizationClient.instance;
         }
@@ -50,10 +50,38 @@ export class LocalizationClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
-    init () {
+    async init () {
         this.client.addEventListener("close", () => console.error("Localization client closed"));
+
+        this.startEventMonitor();
+
+        await this.initData();
+    }
+
+    async initData () {
+        await this.dispatch(getLanguageAction());
+        await this.dispatch(getLanguagesAction());
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
+                        this.dispatch(getLanguageAction());
+                    } else {
+                        debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                    }
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                }
+            });
     }
 }
 
@@ -110,29 +138,4 @@ export const getLocaleData = ({ locale }) => {
  */
 export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
-};
-
-export const startEventMonitorLocalization = ({ dispatch }) => {
-    return new LocalizationClient().client.subscribe(
-        { },
-        (path, iface, signal, args) => {
-            switch (signal) {
-            case "PropertiesChanged":
-                if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
-                    dispatch(getLanguageAction());
-                } else {
-                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-                }
-                break;
-            default:
-                debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-            }
-        });
-};
-
-export const initDataLocalization = ({ dispatch }) => {
-    return Promise.all([
-        dispatch(getLanguageAction()),
-        dispatch(getLanguagesAction())
-    ]);
 };

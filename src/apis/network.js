@@ -30,7 +30,7 @@ const getProperty = (...args) => {
 };
 
 export class NetworkClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (NetworkClient.instance && (!address || NetworkClient.instance.address === address)) {
             return NetworkClient.instance;
         }
@@ -44,10 +44,38 @@ export class NetworkClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
-    init () {
+    async init () {
         this.client.addEventListener("close", () => console.error("Network client closed"));
+
+        this.startEventMonitor();
+
+        await this.initData();
+    }
+
+    async initData () {
+        await this.dispatch(getConnectedAction());
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Connected")) {
+                        this.dispatch(getConnectedAction());
+                    } else {
+                        debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                    }
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                }
+            }
+        );
     }
 }
 
@@ -56,29 +84,4 @@ export class NetworkClient {
  */
 export const getConnected = () => {
     return getProperty("Connected");
-};
-
-export const startEventMonitorNetwork = ({ dispatch }) => {
-    return new NetworkClient().client.subscribe(
-        { },
-        (path, iface, signal, args) => {
-            switch (signal) {
-            case "PropertiesChanged":
-                if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Connected")) {
-                    dispatch(getConnectedAction());
-                } else {
-                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-                }
-                break;
-            default:
-                debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-            }
-        }
-    );
-};
-
-export const initDataNetwork = ({ dispatch }) => {
-    return Promise.all([
-        dispatch(getConnectedAction())
-    ]);
 };

@@ -26,7 +26,7 @@ const callClient = (...args) => {
 };
 
 export class PayloadsClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (PayloadsClient.instance && (!address || PayloadsClient.instance.address === address)) {
             return PayloadsClient.instance;
         }
@@ -40,6 +40,7 @@ export class PayloadsClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
     init () {
