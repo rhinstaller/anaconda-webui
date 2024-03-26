@@ -47,6 +47,37 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 const idPrefix = "installation-progress";
 
+const progressSteps = [
+    {
+        description: _("Storage configuration: Storage is currently being configured."),
+        id: "installation-progress-step-storage",
+        title: _("Storage configuration"),
+    },
+    {
+        description: _("Software installation: Storage configuration complete. The software is now being installed onto your device."),
+        id: "installation-progress-step-payload",
+        title: _("Software installation"),
+    },
+    {
+        description: _("System configuration: Software installation complete. The system is now being configured."),
+        id: "installation-progress-step-configuration",
+        title: _("System configuration"),
+    },
+    {
+        description: _("Finalizing: The system configuration is complete. Finalizing installation may take a few moments."),
+        id: "installation-progress-step-boot-loader",
+        title: _("Finalization"),
+    },
+];
+
+const progressStepsMap = {
+    BOOTLOADER_INSTALLATION: 2,
+    ENVIRONMENT_CONFIGURATION: 0,
+    SOFTWARE_INSTALLATION: 1,
+    STORAGE_CONFIGURATION: 0,
+    SYSTEM_CONFIGURATION: 3,
+};
+
 export const InstallationProgress = ({ onCritFail }) => {
     const [status, setStatus] = useState();
     const [statusMessage, setStatusMessage] = useState("");
@@ -57,14 +88,6 @@ export const InstallationProgress = ({ onCritFail }) => {
     const osRelease = useContext(OsReleaseContext);
 
     useEffect(() => {
-        const progressStepsMap = {
-            BOOTLOADER_INSTALLATION: 2,
-            ENVIRONMENT_CONFIGURATION: 0,
-            SOFTWARE_INSTALLATION: 1,
-            STORAGE_CONFIGURATION: 0,
-            SYSTEM_CONFIGURATION: 3,
-        };
-
         installWithTasks()
                 .then(tasks => {
                     const taskProxy = new BossClient().client.proxy(
@@ -118,29 +141,6 @@ export const InstallationProgress = ({ onCritFail }) => {
                     });
                 }, console.error);
     }, [onCritFail]);
-
-    const progressSteps = [
-        {
-            description: _("Storage configuration: Storage is currently being configured."),
-            id: "installation-progress-step-storage",
-            title: _("Storage configuration"),
-        },
-        {
-            description: _("Software installation: Storage configuration complete. The software is now being installed onto your device."),
-            id: "installation-progress-step-payload",
-            title: _("Software installation"),
-        },
-        {
-            description: _("System configuration: Software installation complete. The system is now being configured."),
-            id: "installation-progress-step-configuration",
-            title: _("System configuration"),
-        },
-        {
-            description: _("Finalizing: The system configuration is complete. Finalizing installation may take a few moments."),
-            id: "installation-progress-step-boot-loader",
-            title: _("Finalization"),
-        },
-    ];
 
     if (steps === undefined) {
         return null;

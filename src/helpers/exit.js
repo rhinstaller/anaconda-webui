@@ -16,13 +16,15 @@
  */
 import cockpit from "cockpit";
 
+import { debug } from "./log.js";
+
 export const exitGui = () => {
     const pidFile = cockpit.file("/run/anaconda/webui_script.pid", { superuser: "try" });
     let pid;
     pidFile.read()
             .then(content => {
                 pid = content.trim();
-                console.log("Killing WebUI process, PID: ", pid);
+                debug("Killing WebUI process, PID: ", pid);
                 return cockpit.spawn(["kill", pid]);
             })
             .catch(exc => console.error("Failed to kill WebUI process, PID: ", pid, exc.message))

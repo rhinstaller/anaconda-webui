@@ -30,7 +30,7 @@ const callClient = (...args) => {
 };
 
 export class UsersClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (UsersClient.instance && (!address || UsersClient.instance.address === address)) {
             return UsersClient.instance;
         }
@@ -44,6 +44,7 @@ export class UsersClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
     init () {

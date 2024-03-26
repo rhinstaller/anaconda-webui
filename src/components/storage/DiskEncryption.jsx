@@ -135,7 +135,6 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
             encrypt,
             encryptPassword,
             onFail: ex => {
-                console.error(ex);
                 setIsFormDisabled(false);
                 setStepNotification({ step, ...ex });
             },

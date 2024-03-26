@@ -30,6 +30,8 @@ import {
 
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
+import { debug } from "../../helpers/log.js";
+
 import { StorageContext, SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
@@ -241,8 +243,15 @@ export const scenarios = [{
 }
 ];
 
-export const getScenario = (scenarioId) => {
-    return scenarios.filter(s => s.id === scenarioId)[0];
+export const useScenario = () => {
+    const { storageScenarioId } = useContext(StorageContext);
+    const [scenario, setScenario] = useState({});
+
+    useEffect(() => {
+        setScenario(scenarios.find(s => s.id === storageScenarioId) || {});
+    }, [storageScenarioId]);
+
+    return scenario;
 };
 
 export const scenarioForInitializationMode = (mode) => {
@@ -325,11 +334,11 @@ const InstallationScenarioSelector = ({
             if (!availability.hidden && availability.available) {
                 availableScenarioExists = true;
                 if (scenario.id === storageScenarioId) {
-                    console.log(`Selecting backend scenario ${scenario.id}`);
+                    debug(`Selecting backend scenario ${scenario.id}`);
                     selectedScenarioId = scenario.id;
                 }
                 if (!selectedScenarioId && scenario.default) {
-                    console.log(`Selecting default scenario ${scenario.id}`);
+                    debug(`Selecting default scenario ${scenario.id}`);
                     selectedScenarioId = scenario.id;
                 }
             }
@@ -342,8 +351,8 @@ const InstallationScenarioSelector = ({
 
     useEffect(() => {
         const applyScenario = async (scenarioId) => {
-            const scenario = getScenario(scenarioId);
-            await setInitializationMode({ mode: scenario.initializationMode }).catch(console.error);
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            await setInitializationMode({ mode: scenario.initializationMode });
         };
         if (storageScenarioId) {
             applyScenario(storageScenarioId);
@@ -385,7 +394,6 @@ export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFormDisabled,
-    onCritFail,
     scenarioPartitioningMapping,
     setIsFormValid,
 }) => {
@@ -400,7 +408,6 @@ export const InstallationScenario = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
-                  onCritFail={onCritFail}
                   scenarioPartitioningMapping={scenarioPartitioningMapping}
                   setIsFormValid={setIsFormValid}
                 />

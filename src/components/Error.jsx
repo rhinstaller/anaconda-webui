@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
     ActionList,
     Button,
@@ -36,6 +36,8 @@ import {
     TextVariants,
 } from "@patternfly/react-core";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
+
+import { setCriticalErrorAction, setCriticalErrorFrontendAction } from "../actions/miscellaneous-actions.js";
 
 import { exitGui } from "../helpers/exit.js";
 
@@ -275,9 +277,42 @@ export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) 
     );
 };
 
-export const errorHandlerWithContext = (contextData, handler) => {
+const errorHandlerWithContext = (contextData, handler) => {
     return (exception) => {
         exception.contextData = contextData;
         handler(exception);
     };
+};
+
+export const useError = ({ dispatch }) => {
+    useEffect(() => {
+        // Listen on JS errors
+        window.onerror = (message, url, line, col, errObj) => {
+            dispatch(setCriticalErrorFrontendAction(errObj));
+        };
+
+        // Listen to JS errors from async operations
+        const handleUnhandledRejection = (event) => {
+            dispatch(setCriticalErrorFrontendAction(event.reason));
+        };
+        window.addEventListener("unhandledrejection", handleUnhandledRejection);
+        return () => {
+            window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+        };
+    }, [dispatch]);
+
+    const onCritFail = useCallback((contextData) => {
+        return errorHandlerWithContext(
+            contextData,
+            exc => {
+                if (contextData.isFrontend) {
+                    dispatch(setCriticalErrorFrontendAction(exc));
+                } else {
+                    dispatch(setCriticalErrorAction(exc));
+                }
+            }
+        );
+    }, [dispatch]);
+
+    return onCritFail;
 };

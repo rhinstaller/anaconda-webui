@@ -39,7 +39,7 @@ const getProperty = (...args) => {
 };
 
 export class StorageClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (StorageClient.instance && (!address || StorageClient.instance.address === address)) {
             return StorageClient.instance;
         }
@@ -53,10 +53,53 @@ export class StorageClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
-    init () {
+    async init () {
         this.client.addEventListener("close", () => console.error("Storage client closed"));
+
+        this.startEventMonitor();
+
+        await this.initData();
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.DiskSelection") {
+                        this.dispatch(getDiskSelectionAction());
+                    } else if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.Partitioning.Manual" && Object.hasOwn(args[1], "Requests")) {
+                        this.dispatch(getPartitioningDataAction({ partitioning: path, requests: args[1].Requests.v }));
+                    } else if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.Partitioning.Automatic" && Object.hasOwn(args[1], "Request")) {
+                        this.dispatch(getPartitioningDataAction({ partitioning: path, requests: [args[1].Request.v] }));
+                    } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "CreatedPartitioning")) {
+                        const last = args[1].CreatedPartitioning.v.length - 1;
+                        this.dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
+                    } else {
+                        debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
+                    }
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
+                }
+            });
+    }
+
+    async initData () {
+        this.dispatch(setStorageScenarioAction(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
+
+        const partitioning = await getProperty("CreatedPartitioning");
+        if (partitioning.length !== 0) {
+            for (const path of partitioning) {
+                await this.dispatch(getPartitioningDataAction({ partitioning: path }));
+            }
+        }
+        await this.dispatch(getDevicesAction());
+        await this.dispatch(getDiskSelectionAction());
     }
 }
 
@@ -95,42 +138,4 @@ export const runStorageTask = ({ onFail, onSuccess, task }) => {
  */
 export const scanDevicesWithTask = () => {
     return callClient("ScanDevicesWithTask", []);
-};
-
-export const startEventMonitorStorage = ({ dispatch }) => {
-    return new StorageClient().client.subscribe(
-        { },
-        (path, iface, signal, args) => {
-            switch (signal) {
-            case "PropertiesChanged":
-                if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.DiskSelection") {
-                    dispatch(getDiskSelectionAction());
-                } else if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.Partitioning.Manual" && Object.hasOwn(args[1], "Requests")) {
-                    dispatch(getPartitioningDataAction({ partitioning: path, requests: args[1].Requests.v }));
-                } else if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.Partitioning.Automatic" && Object.hasOwn(args[1], "Request")) {
-                    dispatch(getPartitioningDataAction({ partitioning: path, requests: [args[1].Request.v] }));
-                } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "CreatedPartitioning")) {
-                    const last = args[1].CreatedPartitioning.v.length - 1;
-                    dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
-                } else {
-                    debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
-                }
-                break;
-            default:
-                debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
-            }
-        });
-};
-
-export const initDataStorage = ({ dispatch }) => {
-    dispatch(setStorageScenarioAction(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
-
-    return getProperty("CreatedPartitioning")
-            .then(res => {
-                if (res.length !== 0) {
-                    return Promise.all(res.map(path => dispatch(getPartitioningDataAction({ partitioning: path }))));
-                }
-            })
-            .then(() => dispatch(getDevicesAction()))
-            .then(() => dispatch(getDiskSelectionAction()));
 };

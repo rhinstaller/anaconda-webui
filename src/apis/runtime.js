@@ -30,7 +30,7 @@ const getProperty = (...args) => {
 };
 
 export class RuntimeClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (RuntimeClient.instance && (!address || RuntimeClient.instance.address === address)) {
             return RuntimeClient.instance;
         }
@@ -44,12 +44,40 @@ export class RuntimeClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
-    init () {
+    async init () {
         this.client.addEventListener(
             "close", () => console.error("Runtime client closed")
         );
+
+        this.startEventMonitor();
+
+        await this.initData();
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "PasswordPolicies")) {
+                        this.dispatch(getPasswordPoliciesAction());
+                    } else {
+                        debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                    }
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                }
+            }
+        );
+    }
+
+    async initData () {
+        await this.dispatch(getPasswordPoliciesAction());
     }
 }
 
@@ -67,29 +95,4 @@ export const getIsFinal = () => {
  */
 export const getPasswordPolicies = () => {
     return getProperty("PasswordPolicies");
-};
-
-export const startEventMonitorRuntime = ({ dispatch }) => {
-    return new RuntimeClient().client.subscribe(
-        { },
-        (path, iface, signal, args) => {
-            switch (signal) {
-            case "PropertiesChanged":
-                if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "PasswordPolicies")) {
-                    dispatch(getPasswordPoliciesAction());
-                } else {
-                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-                }
-                break;
-            default:
-                debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
-            }
-        }
-    );
-};
-
-export const initDataRuntime = ({ dispatch }) => {
-    return Promise.all([
-        dispatch(getPasswordPoliciesAction())
-    ]);
 };

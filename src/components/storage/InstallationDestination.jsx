@@ -74,11 +74,11 @@ const N_ = cockpit.noop;
 const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
     if (selectedDisks.length && selectedDisks.some(disk => usableDisks.includes(disk))) {
         // Filter the selection by checking the usable disks if there are some disks selected
-        console.log("Selecting disks selected in backend:", selectedDisks.join(","));
+        debug("Selecting disks selected in backend:", selectedDisks.join(","));
         return selectedDisks.filter(disk => usableDisks.includes(disk));
     } else {
         const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
-        console.log("Selecting one or less disks by default:", availableDisks.join(","));
+        debug("Selecting one or less disks by default:", availableDisks.join(","));
 
         // Select a usable disk if there is only one available
         if (availableDisks.length === 1) {

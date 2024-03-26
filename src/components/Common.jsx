@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React, { createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Popover, PopoverPosition } from "@patternfly/react-core";
 import { HelpIcon } from "@patternfly/react-icons";
 
+import { WithDialogs } from "dialogs.jsx";
+
 export const AddressContext = createContext("");
-export const ConfContext = createContext();
 export const FooterContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
@@ -43,5 +44,71 @@ export const FormGroupHelpPopover = ({ helpContent }) => {
                 <HelpIcon />
             </button>
         </Popover>
+    );
+};
+
+const ModuleContextWrapper = ({ children, state }) => {
+    return (
+        <LanguageContext.Provider value={state.localization}>
+            <RuntimeContext.Provider value={state.runtime}>
+                <StorageContext.Provider value={state.storage}>
+                    <UsersContext.Provider value={state.users}>
+                        {children}
+                    </UsersContext.Provider>
+                </StorageContext.Provider>
+            </RuntimeContext.Provider>
+        </LanguageContext.Provider>
+    );
+};
+
+const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
+    const systemType = conf?.["Installation System"].type;
+
+    return (
+        <OsReleaseContext.Provider value={osRelease}>
+            <SystemTypeContext.Provider value={systemType}>
+                <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
+                    {children}
+                </TargetSystemRootContext.Provider>
+            </SystemTypeContext.Provider>
+        </OsReleaseContext.Provider>
+    );
+};
+
+const MaybeBackdrop = ({ children }) => {
+    const [hasDialogOpen, setHasDialogOpen] = useState(false);
+
+    useEffect(() => {
+        const handleStorageEvent = (event) => {
+            if (event.key === "cockpit_has_modal") {
+                setHasDialogOpen(event.newValue === "true");
+            }
+        };
+
+        window.addEventListener("storage", handleStorageEvent);
+
+        return () => window.removeEventListener("storage", handleStorageEvent);
+    }, []);
+
+    return (
+        <div className={hasDialogOpen ? "cockpit-has-modal" : ""}>
+            {children}
+        </div>
+    );
+};
+
+export const MainContextWrapper = ({ address, children, conf, osRelease, state }) => {
+    return (
+        <ModuleContextWrapper state={state}>
+            <SystemInfoContextWrapper osRelease={osRelease} conf={conf}>
+                <WithDialogs>
+                    <MaybeBackdrop>
+                        <AddressContext.Provider value={address}>
+                            {children}
+                        </AddressContext.Provider>
+                    </MaybeBackdrop>
+                </WithDialogs>
+            </SystemInfoContextWrapper>
+        </ModuleContextWrapper>
     );
 };

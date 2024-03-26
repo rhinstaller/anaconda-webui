@@ -95,8 +95,8 @@ export const useRequiredSize = () => {
 
     useEffect(() => {
         const update = async () => {
-            const requiredSpace = await getRequiredSpace().catch(console.error);
-            const requiredSize = await getRequiredDeviceSize({ requiredSpace }).catch(console.error);
+            const requiredSpace = await getRequiredSpace();
+            const requiredSize = await getRequiredDeviceSize({ requiredSpace });
 
             setRequiredSize(requiredSize);
         };
@@ -111,7 +111,7 @@ export const useMountPointConstraints = () => {
 
     useEffect(() => {
         const update = async () => {
-            let _mountPointConstraints = await getMountPointConstraints().catch(console.error);
+            let _mountPointConstraints = await getMountPointConstraints();
             _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
                 let description = "";
                 const formatType = c["required-filesystem-type"].v;
