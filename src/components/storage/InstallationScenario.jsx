@@ -131,11 +131,11 @@ export const checkConfiguredStorage = ({
     mountPointConstraints,
     newMountPoints,
     partitioning,
-    scenarioPartitioningMapping,
+    storageScenarioId,
 }) => {
     const availability = new AvailabilityState();
 
-    const currentPartitioningMatches = partitioning !== undefined && scenarioPartitioningMapping["use-configured-storage"] === partitioning;
+    const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
     availability.hidden = partitioning === undefined || !currentPartitioningMatches;
 
     availability.available = (
@@ -269,7 +269,6 @@ const InstallationScenarioSelector = ({
     dispatch,
     idPrefix,
     isFormDisabled,
-    scenarioPartitioningMapping,
     setIsFormValid,
 }) => {
     const { deviceNames, devices, diskSelection, partitioning } = useContext(StorageContext);
@@ -302,7 +301,7 @@ const InstallationScenarioSelector = ({
                     mountPointConstraints,
                     partitioning: partitioning.path,
                     requiredSize,
-                    scenarioPartitioningMapping,
+                    storageScenarioId: partitioning.storageScenarioId,
                     usablePartitions,
                 });
                 newAvailability[scenario.id] = availability;
@@ -316,8 +315,8 @@ const InstallationScenarioSelector = ({
         duplicateDeviceNames,
         mountPointConstraints,
         partitioning.path,
+        partitioning.storageScenarioId,
         requiredSize,
-        scenarioPartitioningMapping,
         usablePartitions,
     ]);
 
@@ -394,7 +393,6 @@ export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFormDisabled,
-    scenarioPartitioningMapping,
     setIsFormValid,
 }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
@@ -408,7 +406,6 @@ export const InstallationScenario = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
-                  scenarioPartitioningMapping={scenarioPartitioningMapping}
                   setIsFormValid={setIsFormValid}
                 />
             </FormGroup>

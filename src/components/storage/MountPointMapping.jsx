@@ -46,6 +46,7 @@ import {
 } from "../../apis/storage_partitioning.js";
 
 import {
+    getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
     hasDuplicateFields,
@@ -611,13 +612,40 @@ const isUsableDevice = (devSpec, deviceData) => {
 const MountPointMapping = ({
     dispatch,
     idPrefix,
-    reusePartitioning,
     setIsFormValid,
-    setReusePartitioning,
     setStepNotification,
 }) => {
-    const { devices, partitioning } = useContext(StorageContext);
-    const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
+    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const [usedPartitioning, setUsedPartitioning] = useState();
+    const reusePartitioning = useMemo(() => {
+        // Calculate usable devices for partitioning by replicating the logic in the backend
+        // FIXME: Create a backend API for that
+        // https://github.com/rhinstaller/anaconda/blob/f79f019e22c87dc388dbcc637a7a5612a3c223a7/pyanaconda/modules/storage/partitioning/manual/manual_module.py#L127
+        const usableDevices = Object.keys(devices).filter(device => {
+            const children = devices[device].children.v;
+            const ancestors = getDeviceAncestors(devices, device);
+
+            if (children.length > 0 && devices[device].type.v !== "btrfs subvolume") {
+                return false;
+            }
+
+            // We don't want to allow to use snapshots in mount point assignment.
+            if (devices[device].type.v === "btrfs snapshot") {
+                return false;
+            }
+
+            // All device's disks have to be in selected disks.
+            return diskSelection.selectedDisks.some(disk => ancestors.includes(disk));
+        });
+
+        const usedDevices = partitioning?.requests?.map(r => r["device-spec"]) || [];
+
+        if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
+            return true;
+        }
+        return false;
+    }, [devices, diskSelection.selectedDisks, partitioning.requests]);
+
     const mountPointConstraints = useMountPointConstraints();
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
@@ -647,10 +675,11 @@ const MountPointMapping = ({
                     .then(() => createPartitioning({ method: "MANUAL" }))
                     .then(path => {
                         setUsedPartitioning(path);
-                        setReusePartitioning(true);
                     });
+        } else {
+            setUsedPartitioning(partitioning.path);
         }
-    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
+    }, [reusePartitioning, partitioning?.method, partitioning?.path]);
 
     const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;

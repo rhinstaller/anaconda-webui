@@ -57,7 +57,6 @@ import {
     applyStorage,
     createPartitioning,
     gatherRequests,
-    resetPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
@@ -76,11 +75,10 @@ import "./CockpitStorageIntegration.scss";
 const _ = cockpit.gettext;
 const idPrefix = "cockpit-storage-integration";
 
-const ReturnToInstallationButton = ({ isDisabled, onAction }) => (
+const ReturnToInstallationButton = ({ onAction }) => (
     <Button
       icon={<ArrowLeftIcon />}
       id={idPrefix + "-return-to-installation-button"}
-      isDisabled={isDisabled}
       variant="secondary"
       onClick={onAction}>
         {_("Return to installation")}
@@ -91,18 +89,14 @@ export const CockpitStorageIntegration = ({
     dispatch,
     onCritFail,
     scenarioAvailability,
-    scenarioPartitioningMapping,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
-    const [needsResetPartitioning, setNeedsResetPartitioning] = useState(true);
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
         iframe.contentWindow.addEventListener("error", exception => {
             onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
         });
-
-        resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
     }, [onCritFail]);
 
     return (
@@ -137,7 +131,6 @@ export const CockpitStorageIntegration = ({
               variant={PageSectionVariants.light}
             >
                 <ReturnToInstallationButton
-                  isDisabled={needsResetPartitioning}
                   onAction={() => setShowDialog(true)} />
             </PageSection>
             {showDialog &&
@@ -145,7 +138,6 @@ export const CockpitStorageIntegration = ({
               dispatch={dispatch}
               onCritFail={onCritFail}
               scenarioAvailability={scenarioAvailability}
-              scenarioPartitioningMapping={scenarioPartitioningMapping}
               setShowDialog={setShowDialog}
               setShowStorage={setShowStorage}
             />}
@@ -212,7 +204,6 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
 const CheckStorageDialog = ({
     dispatch,
     onCritFail,
-    scenarioPartitioningMapping,
     setShowDialog,
     setShowStorage,
 }) => {
@@ -234,18 +225,16 @@ const CheckStorageDialog = ({
             devices,
             mountPointConstraints,
             newMountPoints,
-            scenarioPartitioningMapping,
         });
 
         return availability.available;
-    }, [devices, mountPointConstraints, newMountPoints, scenarioPartitioningMapping]);
+    }, [devices, mountPointConstraints, newMountPoints]);
 
     const useConfiguredStorageReview = useMemo(() => {
         const availability = checkConfiguredStorage({
             devices,
             mountPointConstraints,
             newMountPoints,
-            scenarioPartitioningMapping,
         });
 
         return availability.review;
@@ -253,7 +242,6 @@ const CheckStorageDialog = ({
         devices,
         mountPointConstraints,
         newMountPoints,
-        scenarioPartitioningMapping,
     ]);
 
     const useFreeSpace = useMemo(() => {
@@ -266,10 +254,14 @@ const CheckStorageDialog = ({
     const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace));
 
     useEffect(() => {
+        const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
+
+        dispatch(setStorageScenarioAction(mode));
+
         if (!useConfiguredStorage && checkStep === "prepare-partitioning") {
             setCheckStep();
         }
-    }, [useConfiguredStorage, checkStep]);
+    }, [useConfiguredStorage, checkStep, dispatch]);
 
     useEffect(() => {
         if (checkStep !== "luks") {
@@ -366,9 +358,6 @@ const CheckStorageDialog = ({
     }, [useConfiguredStorage, checkStep, dispatch, setError]);
 
     const goBackToInstallation = () => {
-        const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
-
-        dispatch(setStorageScenarioAction(mode));
         setShowStorage(false);
     };
 
