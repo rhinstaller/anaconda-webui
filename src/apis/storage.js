@@ -79,6 +79,8 @@ export class StorageClient {
                     } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "CreatedPartitioning")) {
                         const last = args[1].CreatedPartitioning.v.length - 1;
                         this.dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
+                    } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "AppliedPartitioning")) {
+                        this.dispatch(getPartitioningDataAction({ partitioning: args[1].AppliedPartitioning.v }));
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
                     }
@@ -92,11 +94,9 @@ export class StorageClient {
     async initData () {
         this.dispatch(setStorageScenarioAction(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
 
-        const partitioning = await getProperty("CreatedPartitioning");
-        if (partitioning.length !== 0) {
-            for (const path of partitioning) {
-                await this.dispatch(getPartitioningDataAction({ partitioning: path }));
-            }
+        const partitioning = await getProperty("AppliedPartitioning");
+        if (partitioning) {
+            await this.dispatch(getPartitioningDataAction({ partitioning }));
         }
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());

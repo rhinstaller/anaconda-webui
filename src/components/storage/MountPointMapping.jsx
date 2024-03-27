@@ -611,9 +611,7 @@ const isUsableDevice = (devSpec, deviceData) => {
 const MountPointMapping = ({
     dispatch,
     idPrefix,
-    reusePartitioning,
     setIsFormValid,
-    setReusePartitioning,
     setStepNotification,
 }) => {
     const { devices, partitioning } = useContext(StorageContext);
@@ -636,7 +634,7 @@ const MountPointMapping = ({
     useWizardFooter(getFooter);
 
     useEffect(() => {
-        if (!reusePartitioning || partitioning?.method !== "MANUAL") {
+        if (partitioning?.method !== "MANUAL") {
             /* Reset the bootloader drive before we schedule partitions
              * The bootloader drive is automatically set during the partitioning, so
              * make sure we always reset the previous value before we run another one,
@@ -647,12 +645,11 @@ const MountPointMapping = ({
                     .then(() => createPartitioning({ method: "MANUAL" }))
                     .then(path => {
                         setUsedPartitioning(path);
-                        setReusePartitioning(true);
                     });
         }
-    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
+    }, [partitioning?.method, partitioning?.path]);
 
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
+    const isLoadingNewPartitioning = usedPartitioning !== partitioning.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (

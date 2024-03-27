@@ -101,7 +101,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
             const props = { path: partitioning };
             const convertRequests = reqs => reqs.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
 
-            if (!requests) {
+            if (partitioning && !requests) {
                 props.method = await getPartitioningMethod({ partitioning });
                 if (props.method === "MANUAL") {
                     const reqs = await gatherRequests({ partitioning });
@@ -112,7 +112,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
 
                     props.requests = convertRequests([reqs]);
                 }
-            } else {
+            } else if (partitioning && requests) {
                 props.requests = convertRequests(requests);
             }
 
