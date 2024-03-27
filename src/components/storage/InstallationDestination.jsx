@@ -47,7 +47,6 @@ import {
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
-import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
 
@@ -297,11 +296,10 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
                         setIsRescanningDisks(false);
                         errorHandler(exc);
                     },
-                    onSuccess: () => resetPartitioning()
-                            .then(() => Promise.all([
-                                dispatch(getDevicesAction()),
-                                dispatch(getDiskSelectionAction())
-                            ]))
+                    onSuccess: () => Promise.all([
+                        dispatch(getDevicesAction()),
+                        dispatch(getDiskSelectionAction())
+                    ])
                             .finally(() => {
                                 setIsFormDisabled(false);
                                 setIsRescanningDisks(false);
