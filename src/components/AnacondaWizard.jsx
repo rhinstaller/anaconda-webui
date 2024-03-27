@@ -33,12 +33,10 @@ import { FooterContext, StorageContext } from "./Common.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
-const N_ = cockpit.noop;
 
 export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [reusePartitioning, setReusePartitioning] = useState(false);
     const [stepNotification, setStepNotification] = useState();
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
@@ -73,44 +71,26 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
          * For Automatic partitioning we do it each time we go to review page,
          * but for custom mount assignment we try to reuse the partitioning when possible.
          */
-        setReusePartitioning(false);
+        const resetPartitioningAsync = async () => {
+            setIsFormDisabled(true);
+            await resetPartitioning();
+            setIsFormDisabled(false);
+        };
+        resetPartitioningAsync();
     }, [availableDevices, selectedDisks]);
 
     const componentProps = {
         dispatch,
         isFormDisabled,
         onCritFail,
-        reusePartitioning,
         scenarioPartitioningMapping,
         setIsFormDisabled,
         setIsFormValid,
-        setReusePartitioning,
         setShowStorage,
     };
 
-    const getFlattenedStepsIds = (steps) => {
-        const stepIds = [];
-        for (const step of steps) {
-            stepIds.push(step.id);
-            if (step.steps) {
-                for (const childStep of step.steps) {
-                    if (childStep?.isHidden !== true) {
-                        stepIds.push(childStep.id);
-                    }
-                }
-            }
-        }
-        return stepIds;
-    };
     const stepsOrder = getSteps();
-    const flattenedStepsIds = getFlattenedStepsIds(stepsOrder);
     const firstStepId = stepsOrder[0].id;
-
-    const isStepFollowedBy = (earlierStepId, laterStepId) => {
-        const earlierStepIdx = flattenedStepsIds.findIndex(s => s === earlierStepId);
-        const laterStepIdx = flattenedStepsIds.findIndex(s => s === laterStepId);
-        return earlierStepIdx < laterStepIdx;
-    };
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
@@ -156,20 +136,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
             setIsFormValid(false);
         }
 
-        // Reset the applied partitioning when going back from a step after creating partitioning to a step
-        // before creating partitioning.
-        if ((prevStep.id === "accounts" || isStepFollowedBy("accounts", prevStep.id)) &&
-            isStepFollowedBy(newStep.id, "accounts")) {
-            setIsFormDisabled(true);
-            resetPartitioning()
-                    .then(
-                        () => setCurrentStepId(newStep.id),
-                        () => onCritFail({ context: cockpit.format(N_("Error was hit when going back from $0."), prevStep.prevName) })
-                    )
-                    .always(() => setIsFormDisabled(false));
-        } else {
-            setCurrentStepId(newStep.id);
-        }
+        setCurrentStepId(newStep.id);
     };
 
     if (!showWizard) {

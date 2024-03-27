@@ -57,7 +57,6 @@ import {
     applyStorage,
     createPartitioning,
     gatherRequests,
-    resetPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
@@ -76,11 +75,10 @@ import "./CockpitStorageIntegration.scss";
 const _ = cockpit.gettext;
 const idPrefix = "cockpit-storage-integration";
 
-const ReturnToInstallationButton = ({ isDisabled, onAction }) => (
+const ReturnToInstallationButton = ({ onAction }) => (
     <Button
       icon={<ArrowLeftIcon />}
       id={idPrefix + "-return-to-installation-button"}
-      isDisabled={isDisabled}
       variant="secondary"
       onClick={onAction}>
         {_("Return to installation")}
@@ -95,14 +93,11 @@ export const CockpitStorageIntegration = ({
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
-    const [needsResetPartitioning, setNeedsResetPartitioning] = useState(true);
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
         iframe.contentWindow.addEventListener("error", exception => {
             onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
         });
-
-        resetPartitioning().then(() => setNeedsResetPartitioning(false), onCritFail);
     }, [onCritFail]);
 
     return (
@@ -137,7 +132,6 @@ export const CockpitStorageIntegration = ({
               variant={PageSectionVariants.light}
             >
                 <ReturnToInstallationButton
-                  isDisabled={needsResetPartitioning}
                   onAction={() => setShowDialog(true)} />
             </PageSection>
             {showDialog &&
