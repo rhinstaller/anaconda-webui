@@ -1376,14 +1376,12 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
 
-        s.select_mountpoint_row_device(1, "root")
-        s.select_mountpoint_row_device(2, "vda2")
-        s.select_mountpoint_row_reformat(2)
-        s.add_mountpoint_row()
+        s.check_mountpoint_row(1, "/", "root", True, "btrfs")
+        s.check_mountpoint_row(2, "/boot", "vda2", False, "ext4")
+        s.check_mountpoint_row(3, "/home", "home", False, "btrfs")
 
-        # Selecting first device, then mount point and then reformat
-        s.select_mountpoint_row_device(3, "home")
-        s.select_mountpoint_row_mountpoint(3, "/home")
+        s.select_mountpoint_row_reformat(1)
+        s.select_mountpoint_row_reformat(2)
         s.select_mountpoint_row_reformat(3, False)
 
         # Root should be preselected to reformat

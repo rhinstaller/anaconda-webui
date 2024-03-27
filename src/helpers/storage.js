@@ -21,7 +21,7 @@
  * @param {string} device - The name of the device
  * @returns {Array}
  */
-const getDeviceAncestors = (deviceData, device) => {
+export const getDeviceAncestors = (deviceData, device) => {
     // device ancestors including the device itself
     const ancestors = [];
     const deviceParents = deviceData[device]?.parents?.v || [];
