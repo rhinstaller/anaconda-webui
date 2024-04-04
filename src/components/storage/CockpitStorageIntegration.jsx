@@ -178,6 +178,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
 
                 if (existingRequestIndex !== -1) {
                     requests[existingRequestIndex] = {
+                        ...requests[existingRequestIndex],
                         "device-spec": cockpit.variant("s", deviceSpec),
                         "mount-point": cockpit.variant("s", dir || type),
                     };

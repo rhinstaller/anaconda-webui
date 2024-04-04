@@ -1311,6 +1311,13 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         r.check_disk_row(dev, "root, 15.0 GB: mount, /")
         r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
 
+        # Check fstab
+        fstab = m.execute("cat /etc/fstab")
+        self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot/btrfs-mount-test auto subvol=/ 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
+
     @nondestructive
     def testBtrfsAndMountPointAssignment(self):
         b = self.browser
