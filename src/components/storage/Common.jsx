@@ -20,12 +20,19 @@ import {
     getRequiredSpace
 } from "../../apis/payloads.js";
 import {
+    setBootloaderDrive,
+} from "../../apis/storage_bootloader.js";
+import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatTypeData,
     getMountPointConstraints,
     getRequiredDeviceSize,
 } from "../../apis/storage_devicetree.js";
+import {
+    setInitializeLabelsEnabled,
+} from "../../apis/storage_disk_initialization.js";
+import { createPartitioning } from "../../apis/storage_partitioning.js";
 
 import { findDuplicatesInArray } from "../../helpers/utils.js";
 
@@ -127,4 +134,13 @@ export const useMountPointConstraints = () => {
     }, []);
 
     return mountPointConstraints;
+};
+
+export const getNewPartitioning = async ({ method = "AUTOMATIC" }) => {
+    await setInitializeLabelsEnabled({ enabled: true });
+    await setBootloaderDrive({ drive: "" });
+
+    const part = await createPartitioning({ method });
+
+    return part;
 };

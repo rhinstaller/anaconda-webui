@@ -51,7 +51,7 @@ export const StorageReview = () => {
 };
 
 const DeviceRow = ({ disk }) => {
-    const { devices, mountPoints, partitioning } = useContext(StorageContext);
+    const { actions, devices, mountPoints, partitioning } = useContext(StorageContext);
     const requests = partitioning.requests;
     const deviceData = devices[disk];
 
@@ -89,19 +89,52 @@ const DeviceRow = ({ disk }) => {
         );
     };
 
-    const tableDevicesRows = Object.entries(mountPoints).filter(mp => {
+    const getActionRow = action => {
+        const actionType = action["action-description"].v === "destroy device" ? _("delete") : action["action-description"].v;
+
+        return (
+            {
+                columns: [
+                    { title: "" },
+                    { title: action["device-name"].v },
+                    { title: "" },
+                    {
+                        props: { className: idPrefix + "-table-column-action-" + action["action-type"].v },
+                        title: actionType,
+                    },
+                    { title: "" },
+                ],
+                props: {
+                    key: action["device-name"].v + action["action-type"].v,
+                },
+            }
+        );
+    };
+
+    const newMountPointRows = Object.entries(mountPoints).filter(mp => {
         const parents = getDeviceAncestors(devices, mp[1]);
 
         return parents.includes(disk);
     });
+
     const swap = Object.keys(devices).find(device => devices[device].formatData.type.v === "swap");
     if (swap) {
         const parents = getDeviceAncestors(devices, swap);
 
         if (parents.includes(disk)) {
-            tableDevicesRows.push(["swap", swap]);
+            newMountPointRows.push(["swap", swap]);
         }
     }
+
+    const actionRows = actions.filter(action => {
+        if (action["action-description"].v !== "destroy device") {
+            return false;
+        }
+
+        const parents = getDeviceAncestors(devices, action["device-name"].v);
+
+        return parents.includes(disk);
+    });
 
     return (
         <div>
@@ -118,7 +151,7 @@ const DeviceRow = ({ disk }) => {
               ]}
               gridBreakPoint=""
               id={idPrefix + "-table-" + disk}
-              rows={tableDevicesRows.map(getDeviceRow)}
+              rows={[...actionRows.map(getActionRow), ...newMountPointRows.map(getDeviceRow)]}
               variant="compact"
             />
 

@@ -20,14 +20,30 @@ import { StorageClient } from "./storage.js";
 
 const INTERFACE_NAME_VIEWER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Viewer";
 const INTERFACE_NAME_HANDLER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Handler";
+const INTERFACE_NAME_RESIZABLE = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Resizable";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DeviceTree";
 
-const callViewer = (...args) => {
-    return _callClient(StorageClient, OBJECT_PATH, INTERFACE_NAME_VIEWER, ...args);
-};
-const callHandler = (...args) => {
-    return _callClient(StorageClient, OBJECT_PATH, INTERFACE_NAME_HANDLER, ...args);
-};
+export class DeviceTree {
+    constructor (deviceTree = OBJECT_PATH) {
+        if (DeviceTree.instance && DeviceTree.instance.deviceTree === deviceTree) {
+            return DeviceTree.instance;
+        }
+        DeviceTree.instance = this;
+        this.deviceTree = deviceTree;
+    }
+
+    callViewer (...args) {
+        return _callClient(StorageClient, this.deviceTree, INTERFACE_NAME_VIEWER, ...args);
+    }
+
+    callResizable (...args) {
+        return _callClient(StorageClient, this.deviceTree, INTERFACE_NAME_RESIZABLE, ...args);
+    }
+
+    callHandler (...args) {
+        return _callClient(StorageClient, this.deviceTree, INTERFACE_NAME_HANDLER, ...args);
+    }
+}
 
 /**
  * @param {string} deviceName   A device name
@@ -36,7 +52,7 @@ const callHandler = (...args) => {
  * @returns {Promise}           Resolves true if success otherwise false
  */
 export const unlockDevice = ({ deviceName, passphrase }) => {
-    return callHandler("UnlockDevice", [deviceName, passphrase]);
+    return new DeviceTree().callHandler("UnlockDevice", [deviceName, passphrase]);
 };
 
 /**
@@ -45,7 +61,7 @@ export const unlockDevice = ({ deviceName, passphrase }) => {
  * @returns {Promise}           Resolves an object with the device data
  */
 export const getDeviceData = ({ disk }) => {
-    return callViewer("GetDeviceData", [disk]);
+    return new DeviceTree().callViewer("GetDeviceData", [disk]);
 };
 
 /**
@@ -54,7 +70,7 @@ export const getDeviceData = ({ disk }) => {
  * @returns {Promise}           Resolves the total free space on the given disks
  */
 export const getDiskFreeSpace = ({ diskNames }) => {
-    return callViewer("GetDiskFreeSpace", [diskNames]);
+    return new DeviceTree().callViewer("GetDiskFreeSpace", [diskNames]);
 };
 
 /**
@@ -63,7 +79,7 @@ export const getDiskFreeSpace = ({ diskNames }) => {
  * @returns {Promise}           Resolves the device format data
  */
 export const getFormatData = ({ diskName }) => {
-    return callViewer("GetFormatData", [diskName]);
+    return new DeviceTree().callViewer("GetFormatData", [diskName]);
 };
 
 /**
@@ -72,21 +88,21 @@ export const getFormatData = ({ diskName }) => {
  * @returns {Promise}           Resolves the total free space on the given disks
  */
 export const getRequiredDeviceSize = ({ requiredSpace }) => {
-    return callViewer("GetRequiredDeviceSize", [requiredSpace]);
+    return new DeviceTree().callViewer("GetRequiredDeviceSize", [requiredSpace]);
 };
 
 /**
  * @returns {Promise}           List of mount point constraints for the platform
  */
 export const getMountPointConstraints = () => {
-    return callViewer("GetMountPointConstraints", []);
+    return new DeviceTree().callViewer("GetMountPointConstraints", []);
 };
 
 /**
  * @returns {Promise}           Data static data about a format type
  */
 export const getFormatTypeData = ({ formatType }) => {
-    return callViewer("GetFormatTypeData", [formatType]);
+    return new DeviceTree().callViewer("GetFormatTypeData", [formatType]);
 };
 
 /**
@@ -95,19 +111,26 @@ export const getFormatTypeData = ({ formatType }) => {
  * @returns {Promise}           Resolves the total space on the given disks
  */
 export const getDiskTotalSpace = ({ diskNames }) => {
-    return callViewer("GetDiskTotalSpace", [diskNames]);
+    return new DeviceTree().callViewer("GetDiskTotalSpace", [diskNames]);
 };
 
 /**
  * @returns {Promise}           Resolves all devices in a device tree
  */
 export const getDevices = () => {
-    return callViewer("GetDevices", []);
+    return new DeviceTree().callViewer("GetDevices", []);
+};
+
+/**
+ * @returns {Promise}           Resolves all actions in a device tree
+ */
+export const getActions = () => {
+    return new DeviceTree().callViewer("GetActions", []);
 };
 
 /**
  * @returns {Promise}           Resolves all mount points in a device tree
  */
 export const getMountPoints = () => {
-    return callViewer("GetMountPoints", []);
+    return new DeviceTree().callViewer("GetMountPoints", []);
 };

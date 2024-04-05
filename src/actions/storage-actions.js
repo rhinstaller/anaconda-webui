@@ -18,6 +18,7 @@
 import cockpit from "cockpit";
 
 import {
+    getActions,
     getDeviceData,
     getDevices,
     getDiskFreeSpace,
@@ -32,6 +33,7 @@ import {
 import {
     gatherRequests,
     getAutomaticPartitioningRequest,
+    getDeviceTree,
     getPartitioningMethod,
 } from "../apis/storage_partitioning.js";
 
@@ -42,6 +44,7 @@ import {
 export const getDevicesAction = () => {
     return async (dispatch) => {
         try {
+            const actions = await getActions();
             const devices = await getDevices();
             const mountPoints = await getMountPoints();
             const devicesData = await Promise.all(devices.map(async (device) => {
@@ -64,6 +67,7 @@ export const getDevicesAction = () => {
 
             return dispatch({
                 payload: {
+                    actions,
                     deviceNames: devices,
                     devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
                     mountPoints,
@@ -71,6 +75,8 @@ export const getDevicesAction = () => {
                 type: "GET_DEVICES_DATA"
             });
         } catch (error) {
+            error.message = `Function: getDevicesAction\n${error.message}`;
+
             return dispatch(setCriticalErrorAction(error));
         }
     };
@@ -103,6 +109,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
         try {
             const props = { path: partitioning };
             const convertRequests = reqs => reqs.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
+            const deviceTreePath = await getDeviceTree({ partitioning });
 
             if (!requests) {
                 props.method = await getPartitioningMethod({ partitioning });
@@ -120,7 +127,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
             }
 
             return dispatch({
-                payload: { partitioningData: props, path: partitioning },
+                payload: { deviceTree: { path: deviceTreePath }, partitioningData: props, path: partitioning },
                 type: "GET_PARTITIONING_DATA"
             });
         } catch (error) {

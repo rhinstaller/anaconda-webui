@@ -342,6 +342,52 @@ class StorageScenario():
         self.browser.wait_visible(self._partitioning_selector(scenario) + ":checked")
 
 
+class StorageReclaimDialog():
+    def __init__(self, browser):
+        self.browser = browser
+
+    def reclaim_check_device_row(self, name, location="", deviceType=None, space=None):
+        self.browser.wait_visible(
+            f"#reclaim-space-modal-table td[data-label=Name]:contains({name}) + "
+            f"td[data-label=Location]:contains({location}) + "
+            f"td[data-label=Type]:contains({deviceType}) + "
+            f"td[data-label=Space]:contains({space})"
+        )
+
+    def reclaim_remove_device(self, device):
+        self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='delete']")
+
+    def reclaim_check_action_present(self, device, action, present=True):
+        selector = f"#reclaim-space-modal-table tr:contains('{device}') td[data-label=Actions]"
+        if present:
+            self.browser.wait_in_text(selector, action)
+        else:
+            self.browser.wait_not_in_text(selector, action)
+
+    def reclaim_undo_action(self, device):
+        self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='undo']")
+
+    def reclaim_check_available_space(self, space):
+        self.browser.wait_text("#reclaim-space-modal-hint-available-free-space", space)
+
+    def reclaim_check_checkbox(self, value, isDisabled):
+        self.browser.wait_visible("#reclaim-space-checkbox:checked" if value else "#reclaim-space-checkbox:not(:checked)")
+
+        if isDisabled:
+            self.browser.wait_visible("#reclaim-space-checkbox:disabled")
+        else:
+            self.browser.wait_visible("#reclaim-space-checkbox:not(:disabled)")
+
+    def reclaim_modal_check_submit_disabled(self, disabled):
+        if disabled:
+            self.browser.wait_visible("button:contains('Reclaim space'):disabled")
+        else:
+            self.browser.wait_visible("button:contains('Reclaim space'):not(:disabled)")
+
+    def reclaim_modal_submit(self):
+        self.browser.click("button:contains('Reclaim space')")
+
+
 class StorageMountPointMapping(StorageDBus, StorageDestination):
     def __init__(self, browser, machine):
         self.browser = browser
@@ -507,9 +553,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
 
 
-class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageUtils):
+class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):
     def __init__(self, browser, machine):
         StorageEncryption.__init__(self, browser, machine)
         StorageMountPointMapping.__init__(self, browser, machine)
         StorageScenario.__init__(self, browser, machine)
+        StorageReclaimDialog.__init__(self, browser)
         StorageUtils.__init__(self, browser, machine)
