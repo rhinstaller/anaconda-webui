@@ -30,6 +30,7 @@ export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
 export const UsersContext = createContext(null);
 export const NetworkContext = createContext(null);
+export const DialogsContext = createContext(null);
 
 export const FormGroupHelpPopover = ({ helpContent }) => {
     return (

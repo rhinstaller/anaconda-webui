@@ -18,6 +18,7 @@
 import cockpit from "cockpit";
 
 import {
+    getActions,
     getDeviceData,
     getDevices,
     getDiskFreeSpace,
@@ -32,6 +33,7 @@ import {
 import {
     gatherRequests,
     getAutomaticPartitioningRequest,
+    getDeviceTree,
     getPartitioningMethod,
 } from "../apis/storage_partitioning.js";
 
@@ -47,6 +49,7 @@ export const getDevicesAction = () => {
         });
 
         try {
+            const actions = await getActions();
             const devices = await getDevices();
             const deviceData = {};
             const mountPoints = await getMountPoints();
@@ -81,6 +84,7 @@ export const getDevicesAction = () => {
 
             return dispatch({
                 payload: {
+                    actions,
                     deviceNames: devices,
                     devices: deviceData,
                     mountPoints,
@@ -125,6 +129,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
         try {
             const props = { path: partitioning };
             const convertRequests = reqs => reqs.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
+            const deviceTreePath = await getDeviceTree({ partitioning });
 
             if (!requests) {
                 props.method = await getPartitioningMethod({ partitioning });
@@ -142,7 +147,7 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
             }
 
             return dispatch({
-                payload: { partitioningData: props, path: partitioning },
+                payload: { deviceTree: { path: deviceTreePath }, partitioningData: props, path: partitioning },
                 type: "GET_PARTITIONING_DATA"
             });
         } catch (error) {

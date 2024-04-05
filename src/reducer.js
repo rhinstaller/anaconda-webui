@@ -19,6 +19,7 @@ import { useCallback, useReducer } from "react";
 
 /* Initial state for the storeage store substate */
 export const storageInitialState = {
+    actions: [],
     deviceNames: [],
     devices: {},
     diskSelection: {
@@ -115,11 +116,25 @@ export const reducer = (state, action) => {
 
 export const storageReducer = (state = storageInitialState, action) => {
     if (action.type === "GET_DEVICES_DATA") {
-        return { ...state, deviceNames: action.payload.deviceNames, devices: action.payload.devices, mountPoints: action.payload.mountPoints };
+        return {
+            ...state,
+            actions: action.payload.actions,
+            deviceNames: action.payload.deviceNames,
+            devices: action.payload.devices,
+            mountPoints: action.payload.mountPoints,
+        };
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
-        return { ...state, partitioning: { ...state.partitioning, ...action.payload.partitioningData, storageScenarioId: state.storageScenarioId } };
+        return {
+            ...state,
+            partitioning: {
+                ...state.partitioning,
+                ...action.payload.partitioningData,
+                deviceTree: action.payload.deviceTree,
+                storageScenarioId: state.storageScenarioId
+            }
+        };
     } else if (action.type === "SET_APPLIED_PARTITIONING") {
         return { ...state, appliedPartitioning: action.payload.appliedPartitioning };
     } else if (action.type === "SET_STORAGE_SCENARIO") {

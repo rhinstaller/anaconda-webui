@@ -28,11 +28,12 @@ import {
 import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { DialogsContext, FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 import { CockpitStorageIntegration } from "./CockpitStorageIntegration.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
-import { InstallationScenario } from "./InstallationScenario.jsx";
+import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
+import { ReclaimSpaceModal } from "./ReclaimSpaceModal.jsx";
 
 const _ = cockpit.gettext;
 
@@ -47,11 +48,15 @@ const InstallationMethod = ({
 }) => {
     const [showStorage, setShowStorage] = useState(false);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter />
-    ), []);
+        <CustomFooter
+          isFormDisabled={isFormDisabled}
+          isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked}
+        />
+    ), [isFormDisabled, isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
 
     useEffect(() => {
@@ -93,19 +98,23 @@ const InstallationMethod = ({
               setShowStorage={setShowStorage}
               onCritFail={onCritFail}
             />
-            <InstallationScenario
-              dispatch={dispatch}
-              idPrefix={idPrefix}
-              isFormDisabled={isFormDisabled}
-              onCritFail={onCritFail}
-              setIsFormValid={setIsFormValid}
-              showStorage={showStorage}
-            />
+            <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>
+                <InstallationScenario
+                  dispatch={dispatch}
+                  idPrefix={idPrefix}
+                  isFormDisabled={isFormDisabled}
+                  onCritFail={onCritFail}
+                  setIsFormValid={setIsFormValid}
+                  showStorage={showStorage}
+                />
+            </DialogsContext.Provider>
         </Form>
     );
 };
 
-const CustomFooter = () => {
+const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
+    const [isReclaimSpaceModalOpen, setIsReclaimSpaceModalOpen] = useState(false);
+    const [isNextClicked, setIsNextClicked] = useState(false);
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const nextRef = useRef();
@@ -113,27 +122,54 @@ const CustomFooter = () => {
     const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
 
     useEffect(() => {
-        if (nextRef.current !== true && newPartitioning === partitioning.path) {
+        if (nextRef.current !== true && newPartitioning === partitioning.path && isNextClicked) {
             nextRef.current = true;
             goToNextStep();
         }
-    }, [goToNextStep, newPartitioning, partitioning.path, storageScenarioId]);
+    }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
     const onNext = async () => {
         if (method === "MANUAL") {
             setNewPartitioning(partitioning.path);
+            setIsNextClicked(true);
         } else {
             const part = await getNewPartitioning({ currentPartitioning: partitioning, method, storageScenarioId });
             setNewPartitioning(part);
+
+            const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
+            const willShowReclaimSpaceModal = scenarioSupportsReclaimSpace && isReclaimSpaceCheckboxChecked;
+
+            if (willShowReclaimSpaceModal) {
+                setIsReclaimSpaceModalOpen(true);
+            } else {
+                setIsNextClicked(true);
+            }
         }
     };
 
-    return (
-        <AnacondaWizardFooter
-          currentStepProps={usePage()}
-          footerHelperText={<InstallationMethodFooterHelper />}
-          onNext={onNext}
+    const reclaimSpaceModal = (
+        <ReclaimSpaceModal
+          isFormDisabled={isFormDisabled}
+          onNext={goToNextStep}
+          onClose={() => setIsReclaimSpaceModalOpen(false)}
         />
+    );
+
+    const currentStepProps = usePage();
+
+    if (newPartitioning === undefined && isReclaimSpaceModalOpen) {
+        return;
+    }
+
+    return (
+        <>
+            {isReclaimSpaceModalOpen ? reclaimSpaceModal : null}
+            <AnacondaWizardFooter
+              currentStepProps={currentStepProps}
+              footerHelperText={<InstallationMethodFooterHelper />}
+              onNext={onNext}
+            />
+        </>
     );
 };
 

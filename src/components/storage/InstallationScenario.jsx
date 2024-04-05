@@ -19,6 +19,7 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
 import {
+    Checkbox,
     FormGroup,
     Radio,
     Title,
@@ -28,7 +29,7 @@ import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
 
-import { StorageContext, SystemTypeContext } from "../Common.jsx";
+import { DialogsContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import { useDiskFreeSpace, useDiskTotalSpace, useDuplicateDeviceNames, useMountPointConstraints, useRequiredSize, useUsablePartitions } from "./Common.jsx";
 import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
@@ -37,8 +38,9 @@ import "./InstallationScenario.scss";
 
 const _ = cockpit.gettext;
 
-function AvailabilityState (available = false, hidden = true, reason = null, hint = null) {
+function AvailabilityState (available = false, hidden = true, reason = null, hint = null, enforceAction = false) {
     this.available = available;
+    this.enforceAction = enforceAction;
     this.hidden = hidden;
     this.reason = reason;
     this.hint = hint;
@@ -72,14 +74,12 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize,
         availability.hidden = diskFreeSpace === diskTotalSpace;
     }
     if (diskFreeSpace < requiredSize) {
-        availability.available = false;
+        availability.enforceAction = true;
         availability.reason = _("Not enough free space on the selected disks.");
         availability.hint = cockpit.format(
             _("To use this option, resize or remove existing partitions to free up at least $0."),
             cockpit.format_bytes(requiredSize)
         );
-    } else {
-        availability.available = true;
     }
     return availability;
 };
@@ -180,6 +180,25 @@ export const checkConfiguredStorage = ({
     return availability;
 };
 
+const ReclaimSpace = ({ availability }) => {
+    const { isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked } = useContext(DialogsContext);
+
+    useEffect(() => {
+        setIsReclaimSpaceCheckboxChecked(availability.enforceAction);
+    }, [availability.enforceAction, setIsReclaimSpaceCheckboxChecked]);
+
+    return (
+        <Checkbox
+          id="reclaim-space-checkbox"
+          isChecked={isReclaimSpaceCheckboxChecked}
+          isDisabled={availability.enforceAction}
+          label={!availability.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
+          name="reclaim-space"
+          onChange={(_, value) => setIsReclaimSpaceCheckboxChecked(value)}
+        />
+    );
+};
+
 export const scenarios = [{
     buttonLabel: _("Erase data and install"),
     buttonVariant: "danger",
@@ -195,8 +214,10 @@ export const scenarios = [{
     label: _("Erase data and install"),
     screenWarning: _("Erasing the data cannot be undone. Be sure to have backups."),
 }, {
+    action: ReclaimSpace,
     buttonLabel: _("Install"),
     buttonVariant: "primary",
+    canReclaimSpace: true,
     check: checkUseFreeSpace,
     default: false,
     detail: helpUseFreeSpace,
@@ -377,6 +398,7 @@ const InstallationScenarioSelector = ({
                   </span>}
                   {selectedDisks.length > 0 && <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>}
                   {scenarioAvailability[scenario.id].review && <span className={idPrefix + "-scenario-review"}>{scenarioAvailability[scenario.id].review}</span>}
+                  {scenario.action && <scenario.action availability={scenarioAvailability[scenario.id]} />}
               </>
           } />
     ));
