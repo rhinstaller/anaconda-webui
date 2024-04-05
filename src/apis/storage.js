@@ -90,7 +90,7 @@ export class StorageClient {
     }
 
     async initData () {
-        this.dispatch(setStorageScenarioAction(window.localStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
+        this.dispatch(setStorageScenarioAction(window.sessionStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
 
         const partitioning = await getProperty("CreatedPartitioning");
         if (partitioning.length !== 0) {
