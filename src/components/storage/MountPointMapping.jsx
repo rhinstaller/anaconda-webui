@@ -609,14 +609,10 @@ const isUsableDevice = (devSpec, deviceData) => {
     return false;
 };
 
-const MountPointMapping = ({
-    dispatch,
-    idPrefix,
-    setIsFormValid,
-    setStepNotification,
-}) => {
+const useExistingPartitioning = () => {
     const { devices, diskSelection, partitioning } = useContext(StorageContext);
     const [usedPartitioning, setUsedPartitioning] = useState();
+
     const reusePartitioning = useMemo(() => {
         // Calculate usable devices for partitioning by replicating the logic in the backend
         // FIXME: Create a backend API for that
@@ -646,23 +642,6 @@ const MountPointMapping = ({
         return false;
     }, [devices, diskSelection.selectedDisks, partitioning.requests]);
 
-    const mountPointConstraints = useMountPointConstraints();
-    const [skipUnlock, setSkipUnlock] = useState(false);
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(partitioning?.requests, devices),
-        [devices, partitioning?.requests]
-    );
-
-    // Display custom footer
-    const getFooter = useMemo(
-        () => (
-            <CustomFooter
-              partitioning={usedPartitioning} />
-        ),
-        [usedPartitioning]
-    );
-    useWizardFooter(getFooter);
-
     useEffect(() => {
         if (!reusePartitioning || partitioning?.method !== "MANUAL") {
             /* Reset the bootloader drive before we schedule partitions
@@ -681,7 +660,35 @@ const MountPointMapping = ({
         }
     }, [reusePartitioning, partitioning?.method, partitioning?.path]);
 
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
+    return usedPartitioning === partitioning.path;
+};
+
+const MountPointMapping = ({
+    dispatch,
+    idPrefix,
+    setIsFormValid,
+    setStepNotification,
+}) => {
+    const { devices, partitioning } = useContext(StorageContext);
+    const reusePartitioning = useExistingPartitioning();
+
+    const mountPointConstraints = useMountPointConstraints();
+    const [skipUnlock, setSkipUnlock] = useState(false);
+    const lockedLUKSDevices = useMemo(
+        () => getLockedLUKSDevices(partitioning?.requests, devices),
+        [devices, partitioning?.requests]
+    );
+
+    // Display custom footer
+    const getFooter = useMemo(
+        () => (
+            <CustomFooter
+              partitioning={partitioning.path} />
+        ),
+        [partitioning.path]
+    );
+    useWizardFooter(getFooter);
+
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (
@@ -691,13 +698,13 @@ const MountPointMapping = ({
                 <EncryptedDevices
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isLoadingNewPartitioning={isLoadingNewPartitioning}
+                  isLoadingNewPartitioning={!reusePartitioning}
                   lockedLUKSDevices={lockedLUKSDevices}
                   setSkipUnlock={setSkipUnlock}
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioning?.requests)
+                (!reusePartitioning || mountPointConstraints === undefined || !partitioning?.requests)
                     ? (
                         <EmptyStatePanel loading />
                     )
