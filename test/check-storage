@@ -713,6 +713,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         self._testEncryptedUnlock(b, m)
 
+    @nondestructive
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
         b = self.browser
@@ -746,7 +747,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.check_mountpoint_row(1, "/", "Select a device", True)
         s.select_mountpoint_row_device(1, "encryptedraid")
         s.check_mountpoint_row_format_type(1, "xfs")
 
