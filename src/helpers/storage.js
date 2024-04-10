@@ -51,18 +51,11 @@ export const checkDeviceInSubTree = ({ device, deviceData, rootDevice }) => {
  * @returns {Array}
  */
 export const getDeviceChildren = ({ device, deviceData }) => {
-    const children = [];
     const deviceChildren = deviceData[device]?.children?.v || [];
 
-    if (deviceChildren.length === 0) {
-        children.push(device);
-    } else {
-        deviceChildren.forEach(child => {
-            children.push(...getDeviceChildren({ device: child, deviceData }));
-        });
-    }
-
-    return children;
+    return deviceChildren.reduce((acc, child) => {
+        return [...acc, child, ...getDeviceChildren({ device: child, deviceData })];
+    }, []);
 };
 
 /* Get the list of names of all LUKS devices
