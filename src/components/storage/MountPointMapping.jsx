@@ -37,11 +37,7 @@ import {
 import { TrashIcon } from "@patternfly/react-icons";
 
 import {
-    setBootloaderDrive,
-} from "../../apis/storage_bootloader.js";
-import {
     applyStorage,
-    createPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
@@ -611,13 +607,10 @@ const isUsableDevice = (devSpec, deviceData) => {
 const MountPointMapping = ({
     dispatch,
     idPrefix,
-    reusePartitioning,
     setIsFormValid,
-    setReusePartitioning,
     setStepNotification,
 }) => {
     const { devices, partitioning } = useContext(StorageContext);
-    const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
     const mountPointConstraints = useMountPointConstraints();
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
@@ -629,30 +622,12 @@ const MountPointMapping = ({
     const getFooter = useMemo(
         () => (
             <CustomFooter
-              partitioning={usedPartitioning} />
+              partitioning={partitioning.path} />
         ),
-        [usedPartitioning]
+        [partitioning.path]
     );
     useWizardFooter(getFooter);
 
-    useEffect(() => {
-        if (!reusePartitioning || partitioning?.method !== "MANUAL") {
-            /* Reset the bootloader drive before we schedule partitions
-             * The bootloader drive is automatically set during the partitioning, so
-             * make sure we always reset the previous value before we run another one,
-             * so it can be automatically set again based on the current disk selection.
-             * Otherwise, the partitioning can fail with an error.
-             */
-            setBootloaderDrive({ drive: "" })
-                    .then(() => createPartitioning({ method: "MANUAL" }))
-                    .then(path => {
-                        setUsedPartitioning(path);
-                        setReusePartitioning(true);
-                    });
-        }
-    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
-
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (
@@ -662,13 +637,12 @@ const MountPointMapping = ({
                 <EncryptedDevices
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isLoadingNewPartitioning={isLoadingNewPartitioning}
                   lockedLUKSDevices={lockedLUKSDevices}
                   setSkipUnlock={setSkipUnlock}
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioning?.requests)
+                (mountPointConstraints === undefined || !partitioning?.requests)
                     ? (
                         <EmptyStatePanel loading />
                     )

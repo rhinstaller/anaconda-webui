@@ -16,16 +16,23 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Form,
     HelperText,
     HelperTextItem,
+    useWizardContext,
+    useWizardFooter,
 } from "@patternfly/react-core";
 
-import { FooterContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
+import { setBootloaderDrive } from "../../apis/storage_bootloader.js";
+import { setInitializationMode, setInitializeLabelsEnabled } from "../../apis/storage_disk_initialization.js";
+import { createPartitioning } from "../../apis/storage_partitioning.js";
+
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
-import { InstallationScenario } from "./InstallationScenario.jsx";
+import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
 
 const _ = cockpit.gettext;
 
@@ -35,11 +42,22 @@ const InstallationMethod = ({
     isEfi,
     isFormDisabled,
     onCritFail,
+    reusePartitioning,
     scenarioPartitioningMapping,
     setIsFormDisabled,
     setIsFormValid,
+    setReusePartitioning,
     setShowStorage,
 }) => {
+    // Display custom footer
+    const getFooter = useMemo(() => (
+        <CustomFooter
+          reusePartitioning={reusePartitioning}
+          setReusePartitioning={setReusePartitioning}
+        />
+    ), [reusePartitioning, setReusePartitioning]);
+    useWizardFooter(getFooter);
+
     return (
         <Form
           className={idPrefix + "-selector"}
@@ -68,6 +86,46 @@ const InstallationMethod = ({
     );
 };
 
+const CustomFooter = ({ reusePartitioning, setReusePartitioning }) => {
+    const [newPartitioning, setNewPartitioning] = useState();
+    const [onNextClicked, setOnNextClicked] = useState();
+    const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { goToNextStep } = useWizardContext();
+    const method = storageScenarioId === "mount-point-mapping" ? "MANUAL" : "AUTOMATIC";
+    const scenario = scenarios.find(s => s.id === storageScenarioId);
+
+    const onNext = async () => {
+        // For automatic partitioning let's always create a new partitioning
+        // This is for simplicity, can be revisited later
+        if (method === "AUTOMATIC" || !reusePartitioning || partitioning.method !== method) {
+            await setInitializationMode({ mode: scenario.initializationMode });
+            await setInitializeLabelsEnabled({ enabled: true });
+            await setBootloaderDrive({ drive: "" });
+            const part = await createPartitioning({ method });
+
+            setReusePartitioning(true);
+            setNewPartitioning(part);
+        } else {
+            setNewPartitioning(partitioning.path);
+        }
+        setOnNextClicked(true);
+    };
+
+    useEffect(() => {
+        if (onNextClicked && newPartitioning === partitioning.path) {
+            goToNextStep();
+            setOnNextClicked(false);
+        }
+    }, [goToNextStep, newPartitioning, onNextClicked, partitioning.path]);
+
+    return (
+        <AnacondaWizardFooter
+          onNext={onNext}
+          footerHelperText={<InstallationMethodFooterHelper />}
+        />
+    );
+};
+
 const InstallationMethodFooterHelper = () => {
     const { isFormValid } = useContext(FooterContext);
 
@@ -91,7 +149,6 @@ export const usePage = () => {
 
     return ({
         component: InstallationMethod,
-        footerHelperText: <InstallationMethodFooterHelper />,
         id: "installation-method",
         label: _("Installation method"),
         title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,

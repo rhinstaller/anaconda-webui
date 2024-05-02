@@ -130,6 +130,8 @@ const DiskEncryption = ({
 
 const CustomFooter = ({ encrypt, encryptPassword }) => {
     const step = usePage({}).id;
+    const { partitioning } = useContext(StorageContext);
+
     const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
         return applyStorage({
             encrypt,
@@ -146,6 +148,7 @@ const CustomFooter = ({ encrypt, encryptPassword }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
+            partitioning: partitioning.path,
         });
     };
 
