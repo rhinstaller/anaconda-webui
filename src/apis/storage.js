@@ -79,6 +79,8 @@ export class StorageClient {
                     } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "CreatedPartitioning")) {
                         const last = args[1].CreatedPartitioning.v.length - 1;
                         this.dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
+                    } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "AppliedPartitioning")) {
+                        this.dispatch(getDevicesAction());
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
                     }

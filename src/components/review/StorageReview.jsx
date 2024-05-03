@@ -18,22 +18,26 @@ import cockpit from "cockpit";
 
 import React, { useContext } from "react";
 import {
-    List, ListItem,
     Stack,
 } from "@patternfly/react-core";
 
-import { checkDeviceInSubTree } from "../../helpers/storage.js";
+import { checkDeviceOnStorageType, getDeviceAncestors, getParentPartitions, hasEncryptedAncestor } from "../../helpers/storage.js";
+
+import { ListingTable } from "cockpit-components-table.jsx";
 
 import { StorageContext } from "../Common.jsx";
 
+import "./StorageReview.scss";
+
 const _ = cockpit.gettext;
+const idPrefix = "storage-review";
 
 export const StorageReview = () => {
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
 
     return (
-        <>
+        <Stack hasGutter>
             {selectedDisks.map(disk => {
                 return (
                     <DeviceRow
@@ -42,50 +46,82 @@ export const StorageReview = () => {
                     />
                 );
             })}
-        </>
+        </Stack>
     );
 };
 
 const DeviceRow = ({ disk }) => {
-    const { devices, partitioning } = useContext(StorageContext);
+    const { devices, mountPoints, partitioning } = useContext(StorageContext);
     const requests = partitioning.requests;
-    const data = devices[disk];
-    const name = data.name.v;
+    const deviceData = devices[disk];
 
-    const renderRow = row => {
-        const name = row["device-spec"];
-        const action = (
-            row.reformat
-                ? (row["format-type"] ? cockpit.format(_("format as $0"), row["format-type"]) : null)
-                : ((row["format-type"] === "biosboot") ? row["format-type"] : _("mount"))
-        );
-        const mount = row["mount-point"] || null;
-        const actions = [action, mount].filter(Boolean).join(", ");
+    const getDeviceRow = ([mount, name]) => {
         const size = cockpit.format_bytes(devices[name].size.v);
+        const request = requests.find(request => request["device-spec"] === name);
+        const format = devices[name].formatData.type.v;
+        const action = (
+            request === undefined || request.reformat
+                ? (format ? cockpit.format(_("format as $0"), format) : null)
+                : ((format === "biosboot") ? format : _("mount"))
+        );
+        const parents = getParentPartitions(devices, name);
+        const showMaybeType = () => {
+            if (checkDeviceOnStorageType(devices, name, "lvmvg")) {
+                return ", LVM";
+            } else if (checkDeviceOnStorageType(devices, name, "mdarray")) {
+                return ", RAID";
+            } else {
+                return "";
+            }
+        };
 
         return (
-            <ListItem className="pf-v5-u-font-size-s" key={name}>
-                {name}, {size}: {actions}
-            </ListItem>
+            {
+                columns: [
+                    { title: mount },
+                    { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()) },
+                    { title: size },
+                    { title: action },
+                    { title: hasEncryptedAncestor(devices, name) ? (!request || request.reformat ? _("encrypt") : _("encrypted")) : "" },
+                ],
+                props: { key: name },
+            }
         );
     };
 
-    const partitionRows = (requests?.length > 1
-        ? requests.filter(req => {
-            if (!req.reformat && req["mount-point"] === "") {
-                return false;
-            }
+    const tableDevicesRows = Object.entries(mountPoints).filter(mp => {
+        const parents = getDeviceAncestors(devices, mp[1]);
 
-            return checkDeviceInSubTree({ device: req["device-spec"], deviceData: devices, rootDevice: name });
-        }).map(renderRow)
-        : []);
+        return parents.includes(disk);
+    });
+    const swap = Object.keys(devices).find(device => devices[device].formatData.type.v === "swap");
+    if (swap) {
+        const parents = getDeviceAncestors(devices, swap);
+
+        if (parents.includes(disk)) {
+            tableDevicesRows.push(["swap", swap]);
+        }
+    }
 
     return (
-        <Stack id={`disk-${name}`} hasGutter>
-            <span>{cockpit.format_bytes(data.size.v)} {name} {"(" + data.description.v + ")"}</span>
-            <List>
-                {partitionRows}
-            </List>
-        </Stack>
+        <div>
+            <span id={`disk-${disk}`}>{cockpit.format_bytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
+            <ListingTable
+              aria-label={_("Device tree for $0", disk)}
+              className={"pf-m-no-border-rows " + idPrefix + "-table"}
+              columns={[
+                  { props: { screenReaderText: _("Mount point") } },
+                  { props: { screenReaderText: _("Device") } },
+                  { props: { screenReaderText: _("Size") } },
+                  { props: { screenReaderText: _("Actions") } },
+                  { props: { screenReaderText: _("Encrypted") } }
+              ]}
+              gridBreakPoint=""
+              id={idPrefix + "-table-" + disk}
+              rows={tableDevicesRows.map(getDeviceRow)}
+              variant="compact"
+            />
+
+        </div>
     );
 };

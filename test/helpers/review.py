@@ -55,13 +55,20 @@ class Review(NetworkDBus):
         self.browser.wait_in_text(f"#{self._step}-target-system-mode > .pf-v5-c-description-list__text", scenario)
 
     def check_disk(self, disk, text):
-        self.browser.wait_text(f"#disk-{disk} span", text)
+        self.browser.wait_text(f"#disk-{disk}", text)
 
-    def check_disk_row(self, disk, text):
-        self.browser.wait_visible(f"#disk-{disk} ul li:contains({text})")
+    def check_disk_row(self, disk, mount_point, parent, size, reformat, fs_type=None, is_encrypted=False, rowIndex=None):
+        reformat_text = f"format as {fs_type}" if reformat else "mount"
+        encrypt_text = "encrypted" if is_encrypted and not reformat else "encrypt" if is_encrypted and reformat else ""
+        self.browser.wait_visible(
+            f"table[aria-label={disk}] "
+            f"tbody{'' if rowIndex is None else f' tr:nth-child({rowIndex})'} "
+            f"td:contains('{mount_point}') + "
+            f"td:contains('{parent}') + "
+            f"td:contains('{size}') + "
+            f"td:contains('{reformat_text}') + "
+            f"td:contains('{encrypt_text}')"
+        )
 
-    def check_in_disk_row(self, disk, row, text):
-        self.browser.wait_in_text(f"#disk-{disk} ul li:nth-child({row})", text)
-
-    def check_disk_row_not_present(self, disk, text):
-        self.browser.wait_not_present(f"#disk-{disk} ul li:contains({text})")
+    def check_disk_row_not_present(self, disk, mount):
+        self.browser.wait_not_present(f"table[aria-label={disk}] td:contains({mount})")

@@ -414,9 +414,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(dev, "btrfstest, 10.7 GB: format as btrfs, /")
-        r.check_disk_row(dev, "vda4, 4.29 GB: mount, /home")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
+        r.check_disk_row(dev, "/", "vda3", "10.7 GB", True, "btrfs")
+        r.check_disk_row(dev, "/home", "vda4", "4.29 GB", False)
 
         applied_partitioning = s.dbus_get_applied_partitioning()
 
@@ -551,12 +551,12 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
-        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, "vda3, 15.0 GB: format as xfs, /")
+        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(disk, "/", "vda3", "15.0 GB", True, "xfs")
 
         disk = "vdb"
         r.check_disk(disk, "10.7 GB vdb (0x1af4)")
-        r.check_disk_row(disk, "vdb1, 10.7 GB: mount, /home")
+        r.check_disk_row(disk, "/home", "vdb1", "10.7 GB", False)
 
         b.assert_pixels(
             "#app",
@@ -643,7 +643,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
-        r.check_in_disk_row(dev1, 2, "luks-")
+        r.check_disk_row(dev1, "/", "vda3", "", True, "xfs", True)
 
     def testEncryptedUnlockCockpit(self):
         b = self.browser
@@ -760,8 +760,8 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda2, 1.07 GB: format as xfs, /boot")
-        r.check_disk_row(dev, "encryptedraid, 5.35 GB: format as xfs, /")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
+        r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
     def testEncryptedUnlockLUKSonRAID(self):
         # LUKS on RAID: partition -> RAID -> LUKS -> filesystem
@@ -812,8 +812,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
-
-        r.check_in_disk_row(dev, 2, "luks-")
+        r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB",  True, "xfs", True)
 
     @nondestructive
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
@@ -876,9 +875,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(dev, "root, 15.0 GB: format as btrfs, /")
-        r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
+        r.check_disk_row(dev, "/boot", "vda2",  "1.07 GB", True, "ext4")
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", True, "btrfs")
+        r.check_disk_row(dev, "/home", "vda3", "15.0 GB",  False)
         r.check_disk_row_not_present(dev, "unused")
 
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
@@ -1038,10 +1037,10 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(disk, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: format as ext4, /")
-        r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
-        r.check_disk_row(disk, f"{vgname}-swap, 902 MB: mount, swap")
+        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", True, "ext4")
+        r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", True, "ext4")
+        r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False)
+        r.check_disk_row(disk, "swap", "vda3, LVM", "902 MB", False)
 
         i.reach_on_sidebar(i.steps.CUSTOM_MOUNT_POINT)
 
@@ -1057,9 +1056,9 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: format as ext4, /")
-        r.check_disk_row(disk, f"{vgname}-swap, 902 MB: mount, swap")
+        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", True, "ext4")
+        r.check_disk_row(disk, "swap", "vda3, LVM", "902 MB", False)
 
     @nondestructive
     def testUnusableFormats(self):
@@ -1150,7 +1149,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
-        r.check_in_disk_row(dev, 2, "luks-")
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, True)
 
     @nondestructive
     def testLVM(self):
@@ -1220,10 +1219,10 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         def checkStorageReview():
             disk = "vda"
             r.check_disk(disk, "16.1 GB vda (0x1af4)")
-            r.check_disk_row(disk, "vda2, 1.07 GB: mount, /boot")
-            r.check_disk_row(disk, f"{vgname}-root, 6.01 GB: mount, /")
-            r.check_disk_row(disk, f"{vgname}-home, 8.12 GB: mount, /home")
-            r.check_disk_row(disk, f"{vgname}-swap, 898 MB: mount, swap")
+            r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
+            r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False)
+            r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False)
+            r.check_disk_row(disk, "swap", "vda3, LVM", "898 MB", False)
 
         s.return_to_installation()
 
@@ -1307,9 +1306,9 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(dev, "root, 15.0 GB: mount, /")
-        r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, False, 2)
+        r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -1396,9 +1395,9 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda2, 1.07 GB: format as ext4, /boot")
-        r.check_disk_row(dev, "root, 15.0 GB: format as btrfs, /")
-        r.check_disk_row(dev, "home, 15.0 GB: mount, /home")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", True, "btrfs")
+        r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -1450,9 +1449,9 @@ class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
 
-        r.check_disk_row(dev, "vda1, 524 MB: mount, /boot/efi")
-        r.check_disk_row(dev, "vda2, 1.07 GB: mount, /boot")
-        r.check_disk_row(dev, "vda3, 14.5 GB: format as xfs, /")
+        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "xfs")
 
 
 if __name__ == '__main__':

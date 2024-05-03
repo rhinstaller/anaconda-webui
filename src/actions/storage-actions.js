@@ -23,6 +23,7 @@ import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatData,
+    getMountPoints,
 } from "../apis/storage_devicetree.js";
 import {
     getAllDiskSelection,
@@ -42,6 +43,7 @@ export const getDevicesAction = () => {
     return async (dispatch) => {
         try {
             const devices = await getDevices();
+            const mountPoints = await getMountPoints();
             const devicesData = await Promise.all(devices.map(async (device) => {
                 const devData = await getDeviceData({ disk: device });
 
@@ -64,6 +66,7 @@ export const getDevicesAction = () => {
                 payload: {
                     deviceNames: devices,
                     devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+                    mountPoints,
                 },
                 type: "GET_DEVICES_DATA"
             });
