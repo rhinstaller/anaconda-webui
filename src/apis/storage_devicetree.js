@@ -104,3 +104,10 @@ export const getDiskTotalSpace = ({ diskNames }) => {
 export const getDevices = () => {
     return callViewer("GetDevices", []);
 };
+
+/**
+ * @returns {Promise}           Resolves all mount points in a device tree
+ */
+export const getMountPoints = () => {
+    return callViewer("GetMountPoints", []);
+};
