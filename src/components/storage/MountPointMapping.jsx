@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
     Flex,
@@ -487,31 +487,30 @@ const RequestsTable = ({
     deviceData,
     idPrefix,
     lockedLUKSDevices,
-    mountPointConstraints,
-    partitioningDataPath,
-    requests,
     setIsFormValid,
     setStepNotification,
 }) => {
-    const currentPartitioning = useRef();
-    const [unappliedRequests, setUnappliedRequests] = useState([]);
+    const mountPointConstraints = useMountPointConstraints();
+    const { partitioning } = useContext(StorageContext);
+    const requests = partitioning?.requests;
+    const reusePartitioning = useExistingPartitioning();
+    const [unappliedRequests, setUnappliedRequests] = useState();
     const allDevices = useMemo(() => {
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
+    const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
 
     // Add the required mount points to the initial requests
     useEffect(() => {
-        if (partitioningDataPath === currentPartitioning.current) {
+        if (isLoadingPartitioning || unappliedRequests !== undefined) {
             return;
         }
-
-        currentPartitioning.current = partitioningDataPath;
 
         const initialRequests = getInitialRequests(requests, mountPointConstraints);
         setUnappliedRequests(initialRequests);
 
         setIsFormValid(getRequestsValid(initialRequests, deviceData));
-    }, [deviceData, setIsFormValid, partitioningDataPath, requests, mountPointConstraints]);
+    }, [deviceData, setIsFormValid, partitioning.path, requests, isLoadingPartitioning, unappliedRequests, mountPointConstraints]);
 
     const handleRequestChange = useCallback(({ deviceSpec, mountPoint, reformat, remove, requestIndex }) => {
         const newRequests = [...unappliedRequests];
@@ -543,7 +542,7 @@ const RequestsTable = ({
         /* Sync newRequests to the backend */
         updatePartitioningRequests({
             newRequests,
-            partitioning: partitioningDataPath,
+            partitioning: partitioning.path,
             requests
         }).catch(ex => {
             setStepNotification(ex);
@@ -551,7 +550,11 @@ const RequestsTable = ({
         });
 
         setUnappliedRequests(newRequests);
-    }, [setIsFormValid, deviceData, unappliedRequests, requests, partitioningDataPath, setStepNotification]);
+    }, [setIsFormValid, deviceData, unappliedRequests, requests, partitioning.path, setStepNotification]);
+
+    if (isLoadingPartitioning || unappliedRequests === undefined) {
+        return <EmptyStatePanel loading />;
+    }
 
     return (
         <>
@@ -669,24 +672,16 @@ const MountPointMapping = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { devices, partitioning } = useContext(StorageContext);
-    const reusePartitioning = useExistingPartitioning();
+    const { devices, diskSelection } = useContext(StorageContext);
 
-    const mountPointConstraints = useMountPointConstraints();
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(partitioning?.requests, devices),
-        [devices, partitioning?.requests]
+        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
+        [devices, diskSelection.selectedDisks]
     );
 
     // Display custom footer
-    const getFooter = useMemo(
-        () => (
-            <CustomFooter
-              partitioning={partitioning.path} />
-        ),
-        [partitioning.path]
-    );
+    const getFooter = useMemo(() => <CustomFooter />, []);
     useWizardFooter(getFooter);
 
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
@@ -698,33 +693,25 @@ const MountPointMapping = ({
                 <EncryptedDevices
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isLoadingNewPartitioning={!reusePartitioning}
                   lockedLUKSDevices={lockedLUKSDevices}
                   setSkipUnlock={setSkipUnlock}
                 />
             )}
             {!showLuksUnlock && (
-                (!reusePartitioning || mountPointConstraints === undefined || !partitioning?.requests)
-                    ? (
-                        <EmptyStatePanel loading />
-                    )
-                    : (
-                        <RequestsTable
-                          deviceData={devices}
-                          idPrefix={idPrefix + "-table"}
-                          lockedLUKSDevices={lockedLUKSDevices}
-                          setStepNotification={setStepNotification}
-                          partitioningDataPath={partitioning?.path}
-                          requests={partitioning?.requests}
-                          mountPointConstraints={mountPointConstraints}
-                          setIsFormValid={setIsFormValid}
-                        />
-                    ))}
+                <RequestsTable
+                  deviceData={devices}
+                  idPrefix={idPrefix + "-table"}
+                  lockedLUKSDevices={lockedLUKSDevices}
+                  setStepNotification={setStepNotification}
+                  setIsFormValid={setIsFormValid}
+                />
+            )}
         </>
     );
 };
 
-const CustomFooter = ({ partitioning }) => {
+const CustomFooter = () => {
+    const { partitioning } = useContext(StorageContext);
     const step = usePage().id;
     const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
         return applyStorage({
@@ -741,7 +728,7 @@ const CustomFooter = ({ partitioning }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
-            partitioning
+            partitioning: partitioning.path,
         });
     };
 

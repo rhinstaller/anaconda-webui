@@ -63,19 +63,17 @@ export const getDeviceChildren = ({ device, deviceData }) => {
  * @param {Array} requests - The list of requests from a partitioning
  * @returns {Array}
  */
-export const getLockedLUKSDevices = (requests, deviceData) => {
-    const devs = requests?.map(r => r["device-spec"]) || [];
-
-    // check for requests and all their ancestors for locked LUKS devices
-    const requestsAncestors = [];
-    devs.forEach(d => {
-        const ancestors = getDeviceAncestors(deviceData, d);
-        requestsAncestors.push(...ancestors);
+export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
+    // check for selected disks and their children devices for locked LUKS devices
+    const relevantDevs = [];
+    selectedDisks.forEach(device => {
+        const children = getDeviceChildren({ device, deviceData });
+        relevantDevs.push(...children);
     });
 
     return Object.keys(deviceData).filter(d => {
         return (
-            requestsAncestors.includes(d) &&
+            relevantDevs.includes(d) &&
             deviceData[d].formatData.type.v === "luks" &&
             deviceData[d].formatData.attrs.v.has_key !== "True"
         );
