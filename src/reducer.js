@@ -135,6 +135,8 @@ export const localizationReducer = (state = localizationInitialState, action) =>
 export const networkReducer = (state = networkInitialState, action) => {
     if (action.type === "GET_NETWORK_CONNECTED") {
         return { ...state, connected: action.payload.connected };
+    } else if (action.type === "GET_NETWORK_HOSTNAME") {
+        return { ...state, hostname: action.payload.hostname };
     } else {
         return state;
     }

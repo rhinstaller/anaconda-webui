@@ -21,6 +21,7 @@ import {
     Button,
     DescriptionList, DescriptionListDescription,
     DescriptionListGroup, DescriptionListTerm,
+    Flex, FlexItem,
     HelperText, HelperTextItem,
     Modal, ModalVariant,
     Stack,
@@ -28,8 +29,9 @@ import {
 } from "@patternfly/react-core";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, UsersContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
+import { HostnameRow } from "./Hostname.jsx";
 import { StorageReview } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
@@ -60,6 +62,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const accounts = useContext(UsersContext);
     const { partitioning, storageScenarioId } = useContext(StorageContext);
     const { label: scenarioLabel } = useScenario();
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
         setIsFormValid(true);
@@ -80,77 +83,92 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     }, [localizationData]);
 
     return (
-        <>
-            <ReviewDescriptionList>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>
-                        {_("Operating system")}
-                    </DescriptionListTerm>
-                    <DescriptionListDescription id={idPrefix + "-target-operating-system"}>
-                        {osRelease.PRETTY_NAME}
-                    </DescriptionListDescription>
-                </DescriptionListGroup>
-            </ReviewDescriptionList>
-            <ReviewDescriptionList>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>
-                        {_("Language")}
-                    </DescriptionListTerm>
-                    <DescriptionListDescription id={idPrefix + "-target-system-language"}>
-                        {language ? language["native-name"].v : localizationData.language}
-                    </DescriptionListDescription>
-                </DescriptionListGroup>
-            </ReviewDescriptionList>
-            <ReviewDescriptionList>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>
-                        {_("Account")}
-                    </DescriptionListTerm>
-                    <DescriptionListDescription id={idPrefix + "-target-system-account"}>
-                        {accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
-                    </DescriptionListDescription>
-                </DescriptionListGroup>
-            </ReviewDescriptionList>
-            <ReviewDescriptionList>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>
-                        {_("Installation type")}
-                    </DescriptionListTerm>
-                    <DescriptionListDescription id={idPrefix + "-target-system-mode"}>
-                        {scenarioLabel}
-                    </DescriptionListDescription>
-                </DescriptionListGroup>
-            </ReviewDescriptionList>
-            {storageScenarioId !== "mount-point-mapping" &&
+        <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
+            <FlexItem>
                 <ReviewDescriptionList>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>
-                            {_("Disk encryption")}
-                        </DescriptionListTerm>
-                        <DescriptionListDescription id={idPrefix + "-target-system-encrypt"}>
-                            {partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
-                        </DescriptionListDescription>
-                    </DescriptionListGroup>
-                </ReviewDescriptionList>}
-            <ReviewDescriptionList>
-                <DescriptionListGroup>
-                    <DescriptionListTerm>
-                        {_("Storage")}
-                    </DescriptionListTerm>
-                    <DescriptionListDescription id={idPrefix + "-target-storage"}>
-                        <Stack hasGutter>
-                            <StorageReview />
-                        </Stack>
-                    </DescriptionListDescription>
-                </DescriptionListGroup>
-            </ReviewDescriptionList>
-        </>
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Operating system")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-operating-system"}>
+                                {osRelease.PRETTY_NAME}
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>
+                </ReviewDescriptionList>
+            </FlexItem>
+            <FlexItem>
+                <ReviewDescriptionList>
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Language")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-system-language"}>
+                                {language ? language["native-name"].v : localizationData.language}
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Account")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-system-account"}>
+                                {accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>
+                    {isBootIso &&
+                    <ReviewDescriptionList>
+                        <HostnameRow />
+                    </ReviewDescriptionList>}
+                </ReviewDescriptionList>
+            </FlexItem>
+            <FlexItem>
+                <ReviewDescriptionList>
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Installation type")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-system-mode"}>
+                                {scenarioLabel}
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>
+                    {storageScenarioId !== "mount-point-mapping" &&
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Disk encryption")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-system-encrypt"}>
+                                {partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>}
+                    <ReviewDescriptionList>
+                        <DescriptionListGroup>
+                            <DescriptionListTerm>
+                                {_("Storage")}
+                            </DescriptionListTerm>
+                            <DescriptionListDescription id={idPrefix + "-target-storage"}>
+                                <Stack hasGutter>
+                                    <StorageReview />
+                                </Stack>
+                            </DescriptionListDescription>
+                        </DescriptionListGroup>
+                    </ReviewDescriptionList>
+                </ReviewDescriptionList>
+            </FlexItem>
+        </Flex>
     );
 };
 
 export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaitsConfirmation }) => {
     const { buttonLabel, buttonVariant, dialogTitleIconVariant, dialogWarning, dialogWarningTitle } = useScenario();
-
     return (
         <Modal
           actions={[

@@ -215,7 +215,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         p.set_password_confirm(password)
         u.set_full_name(full_name)
         u.set_user_name(user_name)
-        r = Review(b)
+        r = Review(b, self.machine)
         i.reach(i.steps.REVIEW)
         r.check_account(f"{full_name} ({user_name})")
 

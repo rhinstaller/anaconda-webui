@@ -22,6 +22,7 @@ from review import Review
 from storage import Storage  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from users import dbus_reset_users
+from utils import pretend_live_iso
 
 
 @nondestructive
@@ -32,21 +33,17 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
+        pretend_live_iso(self, i)
         i.open()
         # After clicking 'Next' on the storage step, partitioning is done, thus changing the available space on the disk
         # Since this is a non-destructive test we need to make sure the we reset partitioning to how it was before the test started
         self.addCleanup(s.dbus_reset_partitioning)
-
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # check language is shown
         r.check_language("English (United States)")
-
-        # check account is shown
-        r.check_account("tester")
 
         # check selected disks are shown
         r.check_disk("vda", "16.1 GB vda (0x1af4)")
@@ -56,6 +53,9 @@ class TestReview(anacondalib.VirtInstallMachineCase):
 
         # check storage configuration
         r.check_storage_config("Erase data and install")
+
+        # check hostname is not visible for Live ISO
+        r.check_hostname_not_present()
 
         # Pixel test the review step
         b.assert_pixels(
@@ -83,7 +83,7 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         l = Language(b, m)
-        r = Review(b)
+        r = Review(b, m)
 
         i.open()
         # Set language to Macedonian that is now in the installer translated languages
@@ -94,6 +94,46 @@ class TestReview(anacondalib.VirtInstallMachineCase):
 
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
+
+    def testHostnameHandling(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+
+        i.open()
+
+        self.addCleanup(lambda: dbus_reset_users(self.machine))
+        self.addCleanup(r.dbus_reset_hostname)
+        i.reach(i.steps.REVIEW)
+
+        # Save hostname in modal - variant for empty hostname
+        b.click("button:contains('edit')")
+        b.wait_in_text("#system_information_change_hostname", "Set custom hostname")
+        b.set_input_text("#review-handle-hostname-hostname", "Test false", append=False, value_check=False)
+        b.set_input_text("#review-handle-hostname-hostname", "test123.first", append=False, value_check=True)
+        b.click("button:contains('Save')")
+        r.check_hostname("test123.first")
+
+        # Try to set empty hostname - variant for changing hostname
+        b.click("button:contains('edit')")
+        b.wait_in_text("#system_information_change_hostname", "Change hostname")
+        b.set_input_text("#review-handle-hostname-hostname", "", append=False, value_check=True)
+        b.click("button:contains('Change')")
+        r.check_hostname("")
+
+        hostname = r.dbus_get_hostname()
+        self.assertIn('s ""\n', hostname)
+
+        # Change hostname in modal - variant for changing hostname
+        b.click("button:contains('edit')")
+        b.wait_in_text("#system_information_change_hostname", "Set custom hostname")
+        b.set_input_text("#review-handle-hostname-hostname", "test123", append=False, value_check=True)
+        b.click("button:contains('Save')")
+        r.check_hostname("test123")
+
+        hostname = r.dbus_get_hostname()
+        self.assertIn('s "test123"\n', hostname)
 
 
 if __name__ == '__main__':

@@ -29,6 +29,7 @@ export const StorageContext = createContext(null);
 export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
 export const UsersContext = createContext(null);
+export const NetworkContext = createContext(null);
 
 export const FormGroupHelpPopover = ({ helpContent }) => {
     return (
@@ -53,7 +54,9 @@ const ModuleContextWrapper = ({ children, state }) => {
             <RuntimeContext.Provider value={state.runtime}>
                 <StorageContext.Provider value={state.storage}>
                     <UsersContext.Provider value={state.users}>
-                        {children}
+                        <NetworkContext.Provider value={state.network}>
+                            {children}
+                        </NetworkContext.Provider>
                     </UsersContext.Provider>
                 </StorageContext.Provider>
             </RuntimeContext.Provider>

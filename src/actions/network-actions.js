@@ -16,7 +16,7 @@
  */
 
 import {
-    getConnected,
+    getConnected, getHostname,
 } from "../apis/network.js";
 
 import { setCriticalErrorAction } from "./miscellaneous-actions.js";
@@ -29,6 +29,21 @@ export const getConnectedAction = () => {
             return dispatch({
                 payload: { connected },
                 type: "GET_NETWORK_CONNECTED"
+            });
+        } catch (error) {
+            setCriticalErrorAction(error);
+        }
+    };
+};
+
+export const getHostnameAction = () => {
+    return async (dispatch) => {
+        try {
+            const hostname = await getHostname();
+
+            return dispatch({
+                payload: { hostname },
+                type: "GET_NETWORK_HOSTNAME"
             });
         } catch (error) {
             setCriticalErrorAction(error);
