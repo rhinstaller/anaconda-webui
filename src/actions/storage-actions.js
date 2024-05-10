@@ -43,8 +43,9 @@ export const getDevicesAction = () => {
     return async (dispatch) => {
         try {
             const devices = await getDevices();
+            const deviceData = {};
             const mountPoints = await getMountPoints();
-            const devicesData = await Promise.all(devices.map(async (device) => {
+            for (const device of devices) {
                 const devData = await getDeviceData({ disk: device });
 
                 const free = await getDiskFreeSpace({ diskNames: [device] });
@@ -57,15 +58,13 @@ export const getDevicesAction = () => {
                 const formatData = await getFormatData({ diskName: device });
                 devData.formatData = formatData;
 
-                const deviceData = { [device]: devData };
-
-                return deviceData;
-            }));
+                deviceData[device] = devData;
+            }
 
             return dispatch({
                 payload: {
                     deviceNames: devices,
-                    devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+                    devices: deviceData,
                     mountPoints,
                 },
                 type: "GET_DEVICES_DATA"
