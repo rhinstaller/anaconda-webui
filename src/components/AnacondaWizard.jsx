@@ -35,7 +35,6 @@ import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.j
 export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [stepNotification, setStepNotification] = useState();
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
 
@@ -72,12 +71,8 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
             if (s.component) {
                 stepProps = {
                     children: (
-                        <AnacondaPage step={s.id} title={s.title} stepNotification={stepNotification}>
-                            <s.component
-                              idPrefix={s.id}
-                              setStepNotification={ex => setStepNotification({ step: s.id, ...ex })}
-                              {...componentProps}
-                            />
+                        <AnacondaPage step={s.id} title={s.title}>
+                            <s.component {...componentProps} />
                         </AnacondaPage>
                     ),
                     ...stepProps
@@ -146,7 +141,6 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
                 setIsFormDisabled,
                 setIsFormValid,
                 setShowWizard,
-                setStepNotification,
             }}>
                 <Wizard
                   id="installation-wizard"
