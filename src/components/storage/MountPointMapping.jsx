@@ -681,7 +681,7 @@ const MountPointMapping = ({
     );
 
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter />, []);
+    const getFooter = useMemo(() => <CustomFooter setStepNotification={setStepNotification} />, [setStepNotification]);
     useWizardFooter(getFooter);
 
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
@@ -710,10 +710,10 @@ const MountPointMapping = ({
     );
 };
 
-const CustomFooter = () => {
+const CustomFooter = ({ setStepNotification }) => {
     const { partitioning } = useContext(StorageContext);
     const step = usePage().id;
-    const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
+    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
             onFail: ex => {
                 console.error(ex);
