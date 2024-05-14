@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
@@ -65,7 +65,7 @@ msgstr "{fs} ha d'estar en un tipus de dispositiu {type}"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Account"
@@ -115,7 +115,7 @@ msgstr "Aplica la configuració al programa d'instal·lació"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -141,10 +141,23 @@ msgstr ""
 "Si no enteneu o bé no accepteu els riscs, aleshores, si us plau deixeu el "
 "programa en seleccionar \"Vull sortir\", que reiniciarà el sistema."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "_Cancel·la"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "De_sa els canvis"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Estableix el nom d'amfitrió"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -266,7 +279,7 @@ msgstr "Dispositiu"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Habilitat"
@@ -277,7 +290,7 @@ msgid "Disk configuration"
 msgstr "Configuració del dispositiu"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Xifratge"
@@ -298,7 +311,7 @@ msgstr "Introduïu un punt de muntatge."
 msgid "Enable root account"
 msgstr "Bloqueja el compte root"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Habilitat"
 
@@ -389,12 +402,23 @@ msgstr "_Confirmació de la contrasenya"
 msgid "Hide password"
 msgstr "Oculta la contrasenya."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Nom d'amfitrió"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Voleu utilitzar-la de totes maneres?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -451,7 +475,7 @@ msgstr "S'ha completat la instal·lació"
 msgid "Installation of the system failed: $0"
 msgstr "Instal·lació"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Instal·lació"
@@ -470,7 +494,7 @@ msgstr "S'està instal·lant %s"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Idiomes"
@@ -496,6 +520,10 @@ msgstr "Configuració del dispositiu"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -588,7 +616,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "S'estan creant els usuaris"
@@ -674,6 +702,19 @@ msgstr "La reconfiguració del dispositiu ha fallat."
 msgid "Reading installer version information failed."
 msgstr "La connexió ha fallat"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 255 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+"El nom d'amfitrió ha de tenir una mida igual o inferior a 255 caràcters."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -754,11 +795,18 @@ msgstr "Instal·lació"
 msgid "Return to storage editor"
 msgstr "Instal·lació"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Comença a instal·lar"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "De_sa"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -782,6 +830,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Ha fallat la configuració de l'origen de la instal·lació"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Estableix el nom d'amfitrió"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -821,7 +875,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Opcions d'emmagatzematge"
@@ -954,6 +1008,10 @@ msgstr "No s'ha seleccionat cap disc que es pugui utilitzar."
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 #, fuzzy
 msgid "This is unstable, pre-release software"
@@ -1083,6 +1141,10 @@ msgstr "S'ha completat!"
 #, fuzzy
 msgid "current step"
 msgstr "Nom d'amfitrió actual:"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2736,9 +2798,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "_Directori de l'usuari:"
 
-#~ msgid "Host Name"
-#~ msgstr "Nom d'amfitrió"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Nom d'amfitrió: %s\n"
@@ -2749,12 +2808,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "El nom d'amfitrió no és vàlid: %s"
-
-#, fuzzy
-#~| msgid "Host name must be 255 or fewer characters in length."
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr ""
-#~ "El nom d'amfitrió ha de tenir una mida igual o inferior a 255 caràcters."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4264,9 +4317,6 @@ msgstr ""
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Estableix com al nom d'amfitrió actual."
-
-#~ msgid "Set host name"
-#~ msgstr "Estableix el nom d'amfitrió"
 
 #~ msgid "Set timezone"
 #~ msgstr "Estableix la zona horària"
@@ -6442,14 +6492,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Contrasenya de _root:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "De_sa"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "De_sa els canvis"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

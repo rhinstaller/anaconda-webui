@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2024-04-02 02:38+0000\n"
 "Last-Translator: Josef Hruska <hrusjos@gmail.com>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/anaconda-"
@@ -78,7 +78,7 @@ msgstr "Je třeba, aby „$0“ bylo na zařízení naformátované na „$1“"
 msgid "About"
 msgstr "O aplikaci"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Účet"
 
@@ -122,7 +122,7 @@ msgstr "Uplatnit přiřazení přípojného bodu a nainstalovat"
 msgid "Applying new disk selection..."
 msgstr "Uplatňování výběru nového disku…"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Zpět"
@@ -139,9 +139,22 @@ msgstr ""
 "pouze pro testovací a vývojové účely a jste ochotni hlásit jakékoli chyby "
 "nebo problémy za účelem zlepšení tohoto díla."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Zrušit"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Uložit změny"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Nastavit název stroje"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -248,7 +261,7 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "Zařízení by neměla být odemykána dříve, než budou přiřazeny přípojné body."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Vypnuto"
 
@@ -257,7 +270,7 @@ msgid "Disk configuration"
 msgstr "Nastavení jednotky"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Šifrování disku"
 
@@ -273,7 +286,7 @@ msgstr "Zduplikovat přípojný bod."
 msgid "Enable root account"
 msgstr "Povolit účet správce"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Zapnuto"
 
@@ -359,9 +372,20 @@ msgstr "Skrýt heslovou frázi"
 msgid "Hide password"
 msgstr "Skrýt heslo"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Název stroje"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Jak si přejete nainstalovat?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -411,7 +435,7 @@ msgstr "Metoda instalace"
 msgid "Installation of the system failed: $0"
 msgstr "instalace systému se nezdařila: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Typ instalace"
 
@@ -429,7 +453,7 @@ msgstr ""
 "Ponechat stávající rozvržení jednotky a nainstalovat pouze do dostupného "
 "prostoru."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Jazyk"
 
@@ -452,6 +476,10 @@ msgstr "Ruční nastavení pro jednotku: mapování přípojného bodu"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Vybrat umístění úložiště pro instalaci."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -542,7 +570,7 @@ msgstr ""
 "Šifrovány budou pouze nově vytvořené oddíly. Ty stávající budou ponechány "
 "beze změn."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Operační systém"
 
@@ -618,6 +646,18 @@ msgstr "Nepodařilo se načíst nastavení instalátoru."
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "Nepodařilo se načíst verzi instalátoru."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Je třeba, aby délka názvu stroje nepřesahovala 64 znaků."
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -695,10 +735,17 @@ msgstr "Návrat k instalaci"
 msgid "Return to storage editor"
 msgstr "Návrat k editoru úložiště"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Zkontrolovat a nainstalovat"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Uložit"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -719,6 +766,12 @@ msgstr "Formát „$0“ vybraného zařízení není možné přeformátovat."
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "Pošlete nám zpětnou vazbu o vaší instalaci"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Nastavit název stroje"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -756,7 +809,7 @@ msgstr "Některá zařízení používají stejný název: $0."
 msgid "Some required partitions are missing: $0"
 msgstr "Chybí některé vyžadované oddíly: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Úložiště"
 
@@ -885,6 +938,10 @@ msgstr "Použitelné disky byly změněny"
 msgid "This account will have administration priviledge with sudo."
 msgstr "Tento účet bude mít oprávnění správce se sudo."
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Toto je nestabilní, předprodukční software"
@@ -1001,6 +1058,10 @@ msgstr "dokončený krok"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "stávající krok"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2716,9 +2777,6 @@ msgstr "čekající krok"
 #~ msgid "Home _directory:"
 #~ msgstr "_Domovská složka:"
 
-#~ msgid "Host Name"
-#~ msgstr "Název stroje"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Název stroje: %s\n"
@@ -2729,9 +2787,6 @@ msgstr "čekající krok"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Neplatný název stroje: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Je třeba, aby délka názvu stroje nepřesahovala 64 znaků."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "Název stroje nebo IP adresa NFS serveru"
@@ -4237,9 +4292,6 @@ msgstr "čekající krok"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Nastavit jako stávající název stroje."
-
-#~ msgid "Set host name"
-#~ msgstr "Nastavit název stroje"
 
 #~ msgid "Set timezone"
 #~ msgstr "Nastavit časové pásmo"
@@ -6485,14 +6537,6 @@ msgstr "čekající krok"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Heslo sp_rávce:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Uložit"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Uložit změny"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
-"PO-Revision-Date: 2024-03-13 02:39+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
+"PO-Revision-Date: 2024-05-10 02:48+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/tr/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1)\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.5.2\n"
 
 #: src/components/app.jsx:84
 msgid "$0 installation"
@@ -60,7 +60,7 @@ msgstr "'$0', '$1' olarak biçimlendirilen bir aygıt üzerinde olmalıdır"
 msgid "About"
 msgstr "Hakkında"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Hesap"
 
@@ -104,7 +104,7 @@ msgstr "Bağlama noktası atamasını uygula ve kur"
 msgid "Applying new disk selection..."
 msgstr "Yeni disk seçimi uygulanıyor..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Geri"
@@ -121,9 +121,17 @@ msgstr ""
 "planladığınızı ve bu çalışmayı iyileştirmek için tüm hata veya sorunları "
 "bildirmeye hazır olduğunuzu kabul edersiniz."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "İptal"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Change"
+msgstr "Değiştir"
+
+#: src/components/review/Hostname.jsx:113
+msgid "Change hostname"
+msgstr "Ana makine adını değiştir"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -229,7 +237,7 @@ msgstr "Aygıt"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Bağlama noktaları atanmadan önce aygıtların kilidi açılmalıdır."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -238,7 +246,7 @@ msgid "Disk configuration"
 msgstr "Disk yapılandırması"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Disk şifreleme"
 
@@ -254,7 +262,7 @@ msgstr "Yinelenen bağlama noktası."
 msgid "Enable root account"
 msgstr "Kök hesabını etkinleştir"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Etkin"
 
@@ -342,9 +350,20 @@ msgstr "Parolayı gizle"
 msgid "Hide password"
 msgstr "Parolayı gizle"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+msgid "Hostname"
+msgstr "Ana makine adı"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Nasıl kurmak istersiniz?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
+"Boşsa, ana makine adı geçici olacak ve ağ bilgileri tarafından "
+"ayarlanacaktır."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -393,7 +412,7 @@ msgstr "Kurulum yöntemi"
 msgid "Installation of the system failed: $0"
 msgstr "Sistem kurulumu başarısız oldu: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Kurulum türü"
 
@@ -409,7 +428,7 @@ msgstr "$0 ($1) aygıtına kuruluyor"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Geçerli disk düzenini koru ve yalnızca kullanılabilir alana kur."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Dil"
 
@@ -432,6 +451,10 @@ msgstr "Elle disk yapılandırması: Bağlama noktası eşlemesi"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Kurulum için depolama konumlarını elle seç."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr "Harf, rakam ve tire işareti içerebilir."
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -521,7 +544,7 @@ msgid ""
 msgstr ""
 "Yalnızca yeni bölümler şifrelenecek. Var olan bölümlere dokunulmayacak."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "İşletim sistemi"
 
@@ -598,6 +621,18 @@ msgstr "Kurucu yapılandırmasının okunması başarısız oldu."
 msgid "Reading installer version information failed."
 msgstr "Kurucu sürüm bilgilerinin okunması başarısız oldu."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+"Gerçek ana makine adı yalnızca karakter, rakam, tire işareti (bir karakterin "
+"başında veya sonunda değil) ve nokta içerebilir"
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr "Gerçek ana makine adı 64 karakter veya daha az olmalıdır"
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -673,10 +708,14 @@ msgstr "Kuruluma geri dön"
 msgid "Return to storage editor"
 msgstr "Depolama düzenleyicisine dön"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Gözden geçir ve kur"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Save"
+msgstr "Kaydet"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -697,6 +736,10 @@ msgstr "Seçilen aygıtın biçimi '$0' yeniden biçimlendirilemiyor."
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "Kurulumunuz hakkında bize geri bildirim gönderin"
+
+#: src/components/review/Hostname.jsx:113
+msgid "Set custom hostname"
+msgstr "Özel ana makine adı ayarla"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -734,7 +777,7 @@ msgstr "Bazı aygıtlar aynı adı kullanıyor: $0."
 msgid "Some required partitions are missing: $0"
 msgstr "Bazı gerekli bölümler eksik: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Depolama"
 
@@ -862,6 +905,10 @@ msgstr "Kullanılabilir diskler değişti"
 msgid "This account will have administration priviledge with sudo."
 msgstr "Bu hesap sudo ile yönetim ayrıcalıklarına sahip olacak."
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr "Bu ana makine adı kaydedilemiyor"
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Bu kararlı olmayan, sürüm öncesi yazılımdır"
@@ -977,6 +1024,10 @@ msgstr "tamamlanan adım"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "geçerli adım"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr "düzenle"
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2662,9 +2713,6 @@ msgstr "bekleyen adım"
 #~ msgid "Home _directory:"
 #~ msgstr "Ev _dizini:"
 
-#~ msgid "Host Name"
-#~ msgstr "Ana Makine Adı"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Ana Makine Adı: %s\n"
@@ -2675,9 +2723,6 @@ msgstr "bekleyen adım"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Ana makine adı geçerli değil: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Ana makine adı 64 veya daha az karakter uzunluğunda olmalıdır."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4197,9 +4242,6 @@ msgstr "bekleyen adım"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Geçerli ana makine adı olarak belirle."
-
-#~ msgid "Set host name"
-#~ msgstr "Ana makine adını belirle"
 
 #~ msgid "Set timezone"
 #~ msgstr "Saat dilimi belirle"
@@ -6433,14 +6475,6 @@ msgstr "bekleyen adım"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Kök Parolası:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Kaydet"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "Değişiklikleri _Kaydet"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

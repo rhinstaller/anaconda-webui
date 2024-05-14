@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: English (United Kingdom) <https://translate.fedoraproject.org/"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "Add Layout"
@@ -100,7 +100,7 @@ msgstr "Apply configuration in installer"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -113,9 +113,17 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Change"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:113
+msgid "Change hostname"
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -228,7 +236,7 @@ msgstr ""
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr ""
 
@@ -237,7 +245,7 @@ msgid "Disk configuration"
 msgstr ""
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr ""
 
@@ -254,7 +262,7 @@ msgstr "Add a new mount point."
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr ""
 
@@ -341,12 +349,21 @@ msgstr "CHAP _Password:"
 msgid "Hide password"
 msgstr "CHAP _Password:"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+msgid "Hostname"
+msgstr ""
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Would you like to use it anyway?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -398,7 +415,7 @@ msgstr "Installation failed"
 msgid "Installation of the system failed: $0"
 msgstr "Installation failed"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Installation failed"
@@ -416,7 +433,7 @@ msgstr "Installing {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr ""
 
@@ -441,6 +458,10 @@ msgstr "An error occurred while activating your storage configuration."
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -527,7 +548,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr ""
 
@@ -609,6 +630,16 @@ msgstr "An error occurred while activating your storage configuration."
 msgid "Reading installer version information failed."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -684,10 +715,14 @@ msgstr "Software installation"
 msgid "Return to storage editor"
 msgstr "Software installation"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Review and install"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Save"
+msgstr ""
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -709,6 +744,10 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Software installation"
+
+#: src/components/review/Hostname.jsx:113
+msgid "Set custom hostname"
+msgstr ""
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -744,7 +783,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr ""
 
@@ -863,6 +902,10 @@ msgstr ""
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr ""
@@ -979,6 +1022,10 @@ msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59

@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:23+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -73,7 +73,7 @@ msgstr "{fs} 必須存在類型為 {type} 的裝置"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -123,7 +123,7 @@ msgstr "套用安裝程式中的組態"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -138,9 +138,22 @@ msgstr ""
 "繼續使用此軟體，即表示您了解並接受與預發佈軟體相關的風險，您打算僅將其用於測"
 "試和開發目的，並願意報告任何錯誤或問題以改進此工作。"
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "取消"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "儲存變更(_S)"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "設定主機名稱"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -262,7 +275,7 @@ msgstr "裝置"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "停用"
 
@@ -272,7 +285,7 @@ msgid "Disk configuration"
 msgstr "裝置組態"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "加密"
@@ -294,7 +307,7 @@ msgstr "請輸入掛載點。"
 msgid "Enable root account"
 msgstr "啟用 root 帳號(_E)"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "啟用"
 
@@ -385,12 +398,23 @@ msgstr "確認密碼(_C)"
 msgid "Hide password"
 msgstr "隱藏密碼。"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "主機名稱"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "您是否無論如何都想使用？"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -446,7 +470,7 @@ msgstr "安裝完成"
 msgid "Installation of the system failed: $0"
 msgstr "安裝失敗"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "安裝"
@@ -464,7 +488,7 @@ msgstr "正在安裝 {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "語言"
 
@@ -489,6 +513,10 @@ msgstr "裝置組態"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -581,7 +609,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "正在建立使用者"
@@ -667,6 +695,18 @@ msgstr "裝置重新設定失敗。"
 msgid "Reading installer version information failed."
 msgstr "註冊失敗。"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "主機名稱長度必須為 64 個或更少個字元。"
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -745,10 +785,17 @@ msgstr "安裝"
 msgid "Return to storage editor"
 msgstr "安裝"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "检查和安装(_R)"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "儲存(_S)"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -772,6 +819,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "無法繼續安裝。"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "設定主機名稱"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -811,7 +864,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "儲存裝置選項"
@@ -938,6 +991,10 @@ msgstr "未選取任何可用硬碟。"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "此乃尚未穩定、預先釋出的軟體"
@@ -1058,6 +1115,10 @@ msgstr "完成步驟"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "目前步驟"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2647,9 +2708,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "家目錄(_D)："
 
-#~ msgid "Host Name"
-#~ msgstr "主機名稱"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "主機名稱：%s\n"
@@ -2660,9 +2718,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "主機名稱無效：%s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "主機名稱長度必須為 64 個或更少個字元。"
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4103,9 +4158,6 @@ msgstr ""
 
 #~ msgid "Set as current system host name."
 #~ msgstr "設為目前系統主機名稱。"
-
-#~ msgid "Set host name"
-#~ msgstr "設定主機名稱"
 
 #~ msgid "Set timezone"
 #~ msgstr "設定時區"
@@ -6198,14 +6250,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Root 密碼："
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "儲存(_S)"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "儲存變更(_S)"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

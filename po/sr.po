@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:22+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Serbian <https://translate.fedoraproject.org/projects/"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Account"
@@ -102,7 +102,7 @@ msgstr "Примени подешавања у инсталатеру"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -127,10 +127,23 @@ msgstr ""
 "Уколико не разумете или не прихватате ризике, изађите из овог програма "
 "бирањем опције „Желим да изађем“ да бисте поново покренули ваш систем."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "_Откажи"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Сачувај измене"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Постави host name"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -252,7 +265,7 @@ msgstr "Уређај"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Омогућено"
@@ -263,7 +276,7 @@ msgid "Disk configuration"
 msgstr "Подешавање уређаја"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Шифровање"
@@ -284,7 +297,7 @@ msgstr "Унесите тачку качења."
 msgid "Enable root account"
 msgstr "Закључај рут налог"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Омогућено"
 
@@ -375,12 +388,23 @@ msgstr "_Потврди лозинку"
 msgid "Hide password"
 msgstr "Сакриј лозинку."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Host Name"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Желите ли да употребите свакако?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -437,7 +461,7 @@ msgstr "Инсталирање је завршено"
 msgid "Installation of the system failed: $0"
 msgstr "Инсталација"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Инсталација"
@@ -456,7 +480,7 @@ msgstr "Инсталирам %s"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Језици"
@@ -482,6 +506,10 @@ msgstr "Подешавање уређаја"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -574,7 +602,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Правим кориснике"
@@ -660,6 +688,18 @@ msgstr "подешавање складишта неуспешно: %s"
 msgid "Reading installer version information failed."
 msgstr "Повезивање неуспешно"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 255 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Дужина host name-а мора бити 255 или мање знакова."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -740,11 +780,18 @@ msgstr "Инсталација"
 msgid "Return to storage editor"
 msgstr "Инсталација"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Започни инсталацију"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "Са_чувај"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -768,6 +815,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Неуспешно успостављање извора инсталације"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Постави host name"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -807,7 +860,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Опције складиштења"
@@ -942,6 +995,10 @@ msgstr "Нема одабраних дискова"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 #, fuzzy
 msgid "This is unstable, pre-release software"
@@ -1071,6 +1128,10 @@ msgstr "Завршено!"
 #, fuzzy
 msgid "current step"
 msgstr "Тренутно име машине:"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2569,9 +2630,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "Лични _директоријум:"
 
-#~ msgid "Host Name"
-#~ msgstr "Host Name"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Име машине: %s\n"
@@ -2582,11 +2640,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Host name није исправно: %s"
-
-#, fuzzy
-#~| msgid "Host name must be 255 or fewer characters in length."
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Дужина host name-а мора бити 255 или мање знакова."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4028,9 +4081,6 @@ msgstr ""
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Постави као тренутно системско име машине."
-
-#~ msgid "Set host name"
-#~ msgstr "Постави host name"
 
 #~ msgid "Set timezone"
 #~ msgstr "Подеси временску зону"
@@ -6009,14 +6059,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Root лозинка:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "Са_чувај"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Сачувај измене"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

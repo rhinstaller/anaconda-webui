@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 35.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:17+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Frisian <https://translate.fedoraproject.org/projects/"
@@ -43,7 +43,7 @@ msgstr "{fs} moat op in apparaat stean fan it type {type}"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "Yndieling tafoegje"
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -104,10 +104,20 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "Ofbrekke"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Change"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Host namme ynstelle"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -225,7 +235,7 @@ msgstr ""
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr ""
 
@@ -235,7 +245,7 @@ msgid "Disk configuration"
 msgstr "Apparaat konfiguraasje"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr ""
 
@@ -253,7 +263,7 @@ msgstr "Graach in jildich keppelpunt ynfiere."
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr ""
 
@@ -344,12 +354,23 @@ msgstr "Wachtwurd beside bergje."
 msgid "Hide password"
 msgstr "Wachtwurd beside bergje."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Host Namme"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Wolle jo it dochs brûke?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -405,7 +426,7 @@ msgstr "Ynstallaasje ôfrûn"
 msgid "Installation of the system failed: $0"
 msgstr "Ynstallaasje"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Ynstallaasje"
@@ -424,7 +445,7 @@ msgstr "Ynstallearje {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Taal ynstellings"
@@ -450,6 +471,10 @@ msgstr "Apparaat konfiguraasje"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -541,7 +566,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Brûkers oanmeitsje"
@@ -627,6 +652,16 @@ msgstr "Registraasje mislearre."
 msgid "Reading installer version information failed."
 msgstr "Registraasje mislearre."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -705,11 +740,15 @@ msgstr "Ynstallaasje"
 msgid "Return to storage editor"
 msgstr "Ynstallaasje"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "om mei de ynstallaasje útein te setten"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Save"
+msgstr ""
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -733,6 +772,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Kin net troch gean mei de ynstallaasje."
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Host namme ynstelle"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -772,7 +817,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr ""
 
@@ -899,6 +944,10 @@ msgstr "Gjin brûkbere skiven selektearre."
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr ""
@@ -1019,6 +1068,10 @@ msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -1620,9 +1673,6 @@ msgstr ""
 #~ msgid "Hide password."
 #~ msgstr "Wachtwurd beside bergje."
 
-#~ msgid "Host Name"
-#~ msgstr "Host Namme"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Host namme: %s\n"
@@ -2148,9 +2198,6 @@ msgstr ""
 #~ "Selektearje it apparaat wêr jo op ynstallearre wolle. Der sil neat mei "
 #~ "barre oant jo yn it haadmenu op de knop \"Ynstallaasje Uteinsette\" "
 #~ "drukke."
-
-#~ msgid "Set host name"
-#~ msgstr "Host namme ynstelle"
 
 #~ msgid "Set timezone"
 #~ msgstr "Tiidsône ynstelle"

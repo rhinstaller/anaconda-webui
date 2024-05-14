@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bengali (India) <https://translate.fedoraproject.org/projects/"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "সজ্জা যোগ করুন"
@@ -108,7 +108,7 @@ msgstr "ইনস্টলারে কনফিগারেশন প্রয�
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -121,10 +121,23 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "বাতিল(_C)"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "পরিবর্তন সংরক্ষণ করুন (_S)"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "হোস্ট নাম সেট করুন"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -239,7 +252,7 @@ msgstr "ডিভাইস"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "সক্রিয়"
@@ -250,7 +263,7 @@ msgid "Disk configuration"
 msgstr "ডিভাইস কনফিগারেশন"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "এনক্রিপশন"
@@ -269,7 +282,7 @@ msgstr "নতুন মাউন্ট-পয়েন্ট যোগ করু�
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "সক্রিয়"
 
@@ -363,8 +376,19 @@ msgstr "পাসওয়ার্ড নিশ্চিত করুন (_C)"
 msgid "Hide password"
 msgstr "খালি পাসওয়ার্ড"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "হোস্ট নাম"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
 msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
@@ -420,7 +444,7 @@ msgstr "ইনস্টলেশন"
 msgid "Installation of the system failed: $0"
 msgstr "ইনস্টলেশন"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "ইনস্টলেশন"
@@ -439,7 +463,7 @@ msgstr "%s ইনস্টল করা হচ্ছে"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "ভাষা"
@@ -465,6 +489,10 @@ msgstr "ডিভাইস কনফিগারেশন"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -557,7 +585,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "ব্যবহারকারীদের তৈরি করা হচ্ছে"
@@ -643,6 +671,16 @@ msgstr "স্টোরেজ কনফিগারেশন ব্যর্থ:
 msgid "Reading installer version information failed."
 msgstr "সংযোগ বিফল"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -722,11 +760,18 @@ msgstr "ইনস্টলেশন"
 msgid "Return to storage editor"
 msgstr "ইনস্টলেশন"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "ইনস্টলেশান শুরু করুন (_B)"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "সংরক্ষণ করুন (_S)"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -750,6 +795,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "ইনস্টলেশান সোর্স সেট অাপ করতে ব্যর্থ"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "হোস্ট নাম সেট করুন"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -789,7 +840,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "স্টোরেজ বিকল্প"
@@ -918,6 +969,10 @@ msgstr "কোনো ডিস্ক নির্বাচন করা হয�
 
 #: src/components/users/Accounts.jsx:201
 msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:67
@@ -1049,6 +1104,10 @@ msgstr "সম্পন্ন!"
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -2262,9 +2321,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "হোম ডিরেক্টরি (_d):"
 
-#~ msgid "Host Name"
-#~ msgstr "হোস্ট নাম"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "হোস্ট নাম: %s\n"
@@ -3367,9 +3423,6 @@ msgstr ""
 
 #~ msgid "Set Date & Time"
 #~ msgstr "তারিখ ও সময় সেট"
-
-#~ msgid "Set host name"
-#~ msgstr "হোস্ট নাম সেট করুন"
 
 #~ msgid "Setting up installation source..."
 #~ msgstr "ইনস্টলেশান সোর্স সেট অাপ করা হচ্ছে..."
@@ -4981,14 +5034,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "রুট পাসওয়ার্ড (_R):"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "সংরক্ষণ করুন (_S)"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "পরিবর্তন সংরক্ষণ করুন (_S)"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

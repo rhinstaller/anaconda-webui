@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:20+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Norwegian Bokmål <https://translate.fedoraproject.org/"
@@ -54,7 +54,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "_Legg til monteringspunkt"
@@ -102,7 +102,7 @@ msgstr "Bekreft konfigurert installasjon"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -115,9 +115,22 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Avbryt"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Lagre endringer"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Velg vertsnavn"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -237,7 +250,7 @@ msgstr ""
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Aktivert"
@@ -248,7 +261,7 @@ msgid "Disk configuration"
 msgstr "Enhetskonfigurasjon"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Beskrivelse"
@@ -267,7 +280,7 @@ msgstr "_Legg til monteringspunkt"
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Aktivert"
 
@@ -361,8 +374,19 @@ msgstr "Bekreft pass_ord"
 msgid "Hide password"
 msgstr "tomt passord"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Vertsnavn"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
 msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
@@ -417,7 +441,7 @@ msgstr "Installasjon"
 msgid "Installation of the system failed: $0"
 msgstr "Installasjon"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Installasjon"
@@ -436,7 +460,7 @@ msgstr "Installerer %s"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Innstillinger for språk"
@@ -462,6 +486,10 @@ msgstr "Enhetskonfigurasjon"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -553,7 +581,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Lager brukere"
@@ -639,6 +667,16 @@ msgstr "lagringskonfigurasjon feilet: %s"
 msgid "Reading installer version information failed."
 msgstr "Tilkobling feilet"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -717,11 +755,18 @@ msgstr "Installasjon"
 msgid "Return to storage editor"
 msgstr "Installasjon"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Begynn installasjon"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Lagre"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -745,6 +790,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Klarte ikke å sette opp kilde for installasjonen"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Velg vertsnavn"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -784,7 +835,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr ""
 
@@ -910,6 +961,10 @@ msgstr "Ingen disker valgt"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 #, fuzzy
 msgid "This is unstable, pre-release software"
@@ -1031,6 +1086,10 @@ msgstr "Fullført!"
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -1941,9 +2000,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "_Hjemmemappe"
 
-#~ msgid "Host Name"
-#~ msgstr "Vertsnavn"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Vertsnavn: %s\n"
@@ -2724,9 +2780,6 @@ msgstr ""
 #~| msgid "_zSeries Devices"
 #~ msgid "Service level"
 #~ msgstr "_zSeries-enheter"
-
-#~ msgid "Set host name"
-#~ msgstr "Velg vertsnavn"
 
 #~ msgid "Setting up installation source..."
 #~ msgstr "Setter opp installasjonskilde …"
@@ -4062,14 +4115,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Rotpassord:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Lagre"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Lagre endringer"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

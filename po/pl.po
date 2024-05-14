@@ -31,7 +31,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:21+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Polish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -66,7 +66,7 @@ msgstr "„$0” musi być na urządzeniu sformatowanym jako „$1”"
 msgid "About"
 msgstr "Informacje"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -113,7 +113,7 @@ msgstr "Zastosuj przydział punktów montowania i zainstaluj"
 msgid "Applying new disk selection..."
 msgstr "Zastosowywanie nowego wyboru dysków…"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Wstecz"
@@ -130,9 +130,22 @@ msgstr ""
 "wyłącznie do testowania i rozwijania, a także chce zgłaszać błędy lub "
 "problemy w celu jego ulepszenia."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Anuluj"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "Zapi_sz zmiany"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Ustaw nazwę komputera"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -247,7 +260,7 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "Urządzenia muszą zostać odblokowane przed przydzieleniem punktów montowania."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Wyłączone"
 
@@ -256,7 +269,7 @@ msgid "Disk configuration"
 msgstr "Konfiguracja dysku"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Szyfrowanie dysku"
 
@@ -275,7 +288,7 @@ msgstr "Podwójny punkt montowania."
 msgid "Enable root account"
 msgstr "Włą_czone konto roota"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Włączone"
 
@@ -364,9 +377,20 @@ msgstr "Ukryj hasło"
 msgid "Hide password"
 msgstr "Ukryj hasło"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Nazwa komputera"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "W jaki sposób zainstalować?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -420,7 +444,7 @@ msgstr "Metoda instalacji"
 msgid "Installation of the system failed: $0"
 msgstr "Instalacja systemu się nie powiodła: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Typ instalacji"
 
@@ -436,7 +460,7 @@ msgstr "Instalowanie na $0 ($1)"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Zachowuje obecny układ dysku i instaluje tylko w wolnym miejscu."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Język"
 
@@ -460,6 +484,10 @@ msgstr "Ręczna konfiguracja dysku: mapowanie punktów montowania"
 msgid "Manually select storage locations for installation."
 msgstr ""
 "Ręcznie wybiera położenia urządzeń do przechowywania danych do instalacji."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -554,7 +582,7 @@ msgstr ""
 "Tylko nowe partycje zostaną zaszyfrowane. Istniejące partycje nie zostaną "
 "zmodyfikowane."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "System operacyjny"
 
@@ -634,6 +662,18 @@ msgstr "Odczytanie konfiguracji instalatora się nie powiodło."
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "Odczytanie informacji o wersji instalatora się nie powiodło."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Nazwa komputera musi składać się z 64 znaków lub mniej."
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -717,10 +757,17 @@ msgstr "Instalacja systemu $0"
 msgid "Return to storage editor"
 msgstr "Uruchom edytor dysków Blivet-GUI"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Przegląd i instalacja"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Zapisz"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -743,6 +790,12 @@ msgstr "Nie można ponownie formatować formatu „$0” wybranego urządzenia."
 #| msgid "Use free space for the installation"
 msgid "Send us feedback on your installation"
 msgstr "Użyj wolnego miejsca do instalacji"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Ustaw nazwę komputera"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -780,7 +833,7 @@ msgstr "Jakieś urządzenia używają tej samej nazwy: $0."
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Przechowywanie danych"
 
@@ -922,6 +975,10 @@ msgstr "Nie wykryto żadnych używalnych dysków"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "To jest niestabilne, testowe oprogramowanie"
@@ -1039,6 +1096,10 @@ msgstr "ukończony krok"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "obecny krok"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2769,9 +2830,6 @@ msgstr "nieukończony krok"
 #~ msgid "Home _directory:"
 #~ msgstr "_Katalog domowy:"
 
-#~ msgid "Host Name"
-#~ msgstr "Nazwa komputera"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Nazwa komputera: %s\n"
@@ -2783,9 +2841,6 @@ msgstr "nieukończony krok"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Nazwa komputera jest nieprawidłowa: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Nazwa komputera musi składać się z 64 znaków lub mniej."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "Nazwa komputera lub adres IP serwera NFS"
@@ -4308,9 +4363,6 @@ msgstr "nieukończony krok"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Ustawia jako obecną systemową nazwę komputera."
-
-#~ msgid "Set host name"
-#~ msgstr "Ustaw nazwę komputera"
 
 #~ msgid "Set timezone"
 #~ msgstr "Ustaw strefę czasową"
@@ -6572,14 +6624,6 @@ msgstr "nieukończony krok"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Hasło _roota:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Zapisz"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "Zapi_sz zmiany"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"
