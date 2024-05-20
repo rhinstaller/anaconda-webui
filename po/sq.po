@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:21+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Albanian <https://translate.fedoraproject.org/projects/"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "Shto Faqosje"
@@ -98,7 +98,7 @@ msgstr "Apliko konfigurimin në instalues"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -111,10 +111,23 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "_Anullo"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Ruani Ndryshimet"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Vendosni emrin e host-it"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -229,7 +242,7 @@ msgstr "Pajisje"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Aktivizuar"
@@ -240,7 +253,7 @@ msgid "Disk configuration"
 msgstr "Konfigurimi i pajisjes"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Enkriptim"
@@ -259,7 +272,7 @@ msgstr "Shto një pikë të re montimi."
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Aktivizuar"
 
@@ -353,6 +366,13 @@ msgstr "_Konfirmo fjalëkalimin"
 msgid "Hide password"
 msgstr "fjalëkalim bosh"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Emri i host-it"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
@@ -360,6 +380,10 @@ msgstr ""
 "\n"
 "\n"
 "Dëshironi  ta përdorni gjithsesi?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -414,7 +438,7 @@ msgstr "Instalimi"
 msgid "Installation of the system failed: $0"
 msgstr "Instalimi"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalimi"
@@ -433,7 +457,7 @@ msgstr "Duke instaluar %s"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Gjuhët"
@@ -459,6 +483,10 @@ msgstr "Konfigurimi i pajisjes"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -551,7 +579,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Duke krijuar përdorues"
@@ -637,6 +665,16 @@ msgstr "konfigurimi i memorjes dështoi: %s"
 msgid "Reading installer version information failed."
 msgstr "Lidhja dështoi"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -715,11 +753,18 @@ msgstr "Instalimi"
 msgid "Return to storage editor"
 msgstr "Instalimi"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Fillo Instalimin"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Ruaje"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -743,6 +788,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Dështoi vendosja e burimit të instaluesit"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Vendosni emrin e host-it"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -782,7 +833,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Mundësitë e depozitimit"
@@ -913,6 +964,10 @@ msgstr "Nuk ka disqe të zgjedhur"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 #, fuzzy
 msgid "This is unstable, pre-release software"
@@ -1037,6 +1092,10 @@ msgstr "I plotë!"
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -2372,9 +2431,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "_Drejtoria  mëmë"
 
-#~ msgid "Host Name"
-#~ msgstr "Emri i host-it"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Emri i host-it: %s\n"
@@ -3541,9 +3597,6 @@ msgstr ""
 
 #~ msgid "Set Date & Time"
 #~ msgstr "Vendos Datën & Orën "
-
-#~ msgid "Set host name"
-#~ msgstr "Vendosni emrin e host-it"
 
 #~ msgid "Setting up installation source..."
 #~ msgstr "Duke vendosur burimin e instalimit..."
@@ -5340,14 +5393,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_FJALËKALIMI RRËNJË"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Ruaje"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Ruani Ndryshimet"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

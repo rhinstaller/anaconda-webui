@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:15+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Belarusian <https://translate.fedoraproject.org/projects/"
@@ -59,7 +59,7 @@ msgstr "{fs} мусіць быць на прыладзе тыпу {type}"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Account"
@@ -109,7 +109,7 @@ msgstr "Ужыць канфігурацыю ў інсталеры"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -134,10 +134,23 @@ msgstr ""
 "Калі вы не разумееце, або не прымаеце гэтых рызыкаў, калі ласка, завяршыце "
 "гэтую праграму, выбраўшы \"Я хачу выйсці\", што перазапусціць вашу сістэму."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "Адмена"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Захаваць змены"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Вызначыце назву вузла"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -259,7 +272,7 @@ msgstr "Прылада"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Уключана"
@@ -270,7 +283,7 @@ msgid "Disk configuration"
 msgstr "Канфігурацыя прылады"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Шыфраванне"
@@ -291,7 +304,7 @@ msgstr "Упішыце  пункт мантавання."
 msgid "Enable root account"
 msgstr "Заблакаваць карыстальніка root"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Уключана"
 
@@ -382,12 +395,23 @@ msgstr "Па_цвердзіць пароль"
 msgid "Hide password"
 msgstr "Схаваць пароль."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Назва вузла"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Усё адно ўжыць гэта?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -444,7 +468,7 @@ msgstr "Інсталяцыя завершаная"
 msgid "Installation of the system failed: $0"
 msgstr "Інсталяцыя"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Інсталяцыя"
@@ -463,7 +487,7 @@ msgstr "Інсталяцыя {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Мовы"
@@ -489,6 +513,10 @@ msgstr "Канфігурацыя прылады"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -581,7 +609,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Стварэнне карыстальникаў"
@@ -667,6 +695,18 @@ msgstr "Пераканфігурацыя прыладаў не атрымала�
 msgid "Reading installer version information failed."
 msgstr "Падлучэнне не атрымалася"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 255 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Назва кампутара мусіць быць даўжынёй не болей за 255 знакаў."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -747,11 +787,18 @@ msgstr "Інсталяцыя"
 msgid "Return to storage editor"
 msgstr "Інсталяцыя"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "П_ачатак інсталяцыі"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Захаваць"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -775,6 +822,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Не атрымалася наладзіць крыніцу інсталяцыі"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Вызначыце назву вузла"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -814,7 +867,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Опцыі сховішча"
@@ -950,6 +1003,10 @@ msgstr "Не выбрана прыдатных дыскаў."
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 #, fuzzy
 msgid "This is unstable, pre-release software"
@@ -1078,6 +1135,10 @@ msgstr "Скончана!"
 #, fuzzy
 msgid "current step"
 msgstr "Цяпер імя кампутара:"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2706,9 +2767,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "_Хатні каталог"
 
-#~ msgid "Host Name"
-#~ msgstr "Назва вузла"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Імя вузла: %s\n"
@@ -2719,11 +2777,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Несапраўдная назва вузла: %s"
-
-#, fuzzy
-#~| msgid "Host name must be 255 or fewer characters in length."
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Назва кампутара мусіць быць даўжынёй не болей за 255 знакаў."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4181,9 +4234,6 @@ msgstr ""
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Назначыць у якасці сістэмнай назвы кампутара"
-
-#~ msgid "Set host name"
-#~ msgstr "Вызначыце назву вузла"
 
 #~ msgid "Set timezone"
 #~ msgstr "Задаць  часавы пояс"
@@ -6370,14 +6420,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Па_роль root: "
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Захаваць"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Захаваць змены"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:21+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/"
@@ -75,7 +75,7 @@ msgstr "{fs} deve estar num dispositivo do tipo {type}"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -125,7 +125,7 @@ msgstr "Aplicar configuração no instalador"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -150,9 +150,22 @@ msgstr ""
 "Se não entender ou aceitar os riscos, saia deste programa ao selecionar "
 "\"Desejo sair\", que o sistema reiniciará."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Cancelar"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Guardar Alterações"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Definir máquina"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -275,7 +288,7 @@ msgstr "Dispositivo"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Desativado"
 
@@ -285,7 +298,7 @@ msgid "Disk configuration"
 msgstr "Configuração de dispositivo"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Cifrado"
@@ -306,7 +319,7 @@ msgstr "Por favor, insira ponto de montagem."
 msgid "Enable root account"
 msgstr "Bloquear conta \"root\""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Ativado"
 
@@ -398,12 +411,23 @@ msgstr "_Confirmar palavra-passe"
 msgid "Hide password"
 msgstr "Ocultar palavra-passe."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Máquina"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Deseja usar à mesma?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -460,7 +484,7 @@ msgstr "Instalação finalizada"
 msgid "Installation of the system failed: $0"
 msgstr "Instalação"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalação"
@@ -478,7 +502,7 @@ msgstr "A instalar {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Língua"
 
@@ -503,6 +527,10 @@ msgstr "Configuração de dispositivo"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -595,7 +623,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "A criar usuários"
@@ -681,6 +709,18 @@ msgstr "Falha ao reconfigurar dispositivo."
 msgid "Reading installer version information failed."
 msgstr "A remoção do registo falhou."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "O nome da máquina deve ter 64 ou menos caracteres de comprimento."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -759,11 +799,18 @@ msgstr "Instalação"
 msgid "Return to storage editor"
 msgstr "Instalação"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Iniciar a Instalação"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Gravar"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -787,6 +834,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Falha ao prosseguir com a instalação."
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Definir máquina"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -826,7 +879,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Opções de Armazenamento"
@@ -958,6 +1011,10 @@ msgstr "Sem discos utilizáveis selecionados."
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Este é um software instável de pré-lançamento"
@@ -1086,6 +1143,10 @@ msgstr "Concluído!"
 #, fuzzy
 msgid "current step"
 msgstr "Máquina atual:"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2727,9 +2788,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "_Diretoria inicial:"
 
-#~ msgid "Host Name"
-#~ msgstr "Máquina"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Máquina: %s\n"
@@ -2740,9 +2798,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "O nome da máquina não é válido: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "O nome da máquina deve ter 64 ou menos caracteres de comprimento."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4269,9 +4324,6 @@ msgstr ""
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Definir como máquina do sistema atual."
-
-#~ msgid "Set host name"
-#~ msgstr "Definir máquina"
 
 #~ msgid "Set timezone"
 #~ msgstr "Definir fuso horário"
@@ -6504,14 +6556,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Palavra passe de _Root:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Gravar"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Guardar Alterações"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

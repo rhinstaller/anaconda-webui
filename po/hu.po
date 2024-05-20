@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/"
@@ -69,7 +69,7 @@ msgstr "A „$0”-nak „$1”-re formázott eszközön kell lennie"
 msgid "About"
 msgstr "Névjegy"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -117,7 +117,7 @@ msgstr "Alkalmazza a csatlakozási pont hozzárendelését és telepítse"
 msgid "Applying new disk selection..."
 msgstr "Új lemezkijelölés alkalmazása..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Vissza"
@@ -134,9 +134,22 @@ msgstr ""
 "fejlesztési célokra használja, valamint hajlandó bejelenteni az esetleges "
 "problémákat, hogy javítson ezen a munkán."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Mégse"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "Változá_sok mentése"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Gépnév beállítása"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -251,7 +264,7 @@ msgstr "Eszköz"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Az eszközöket fel kell oldani a rögzítési pontok hozzárendelése előtt."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Letiltott"
 
@@ -260,7 +273,7 @@ msgid "Disk configuration"
 msgstr "Lemez beállítások"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Lemez titkosítás"
 
@@ -279,7 +292,7 @@ msgstr "Duplikált csatolási pont."
 msgid "Enable root account"
 msgstr "Rendszergazdai fiók _engedélyezése"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Engedélyezve"
 
@@ -366,9 +379,20 @@ msgstr "Jelszó elrejtése"
 msgid "Hide password"
 msgstr "Jelszó elrejtése"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Gépnév"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Hogyan szeretné telepíteni?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -422,7 +446,7 @@ msgstr "Telepítési mód"
 msgid "Installation of the system failed: $0"
 msgstr "A rendszer telepítése sikertelen: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Telepítés típusa"
 
@@ -440,7 +464,7 @@ msgstr ""
 "Tartsa meg a jelenlegi lemezelrendezést, és csak a rendelkezésre álló helyre "
 "telepítse."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Nyelv"
 
@@ -463,6 +487,10 @@ msgstr "Kézi lemezkonfiguráció: Csatlakozási pont leképezés"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Manuálisan válassza ki a tárolási helyeket a telepítéshez."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -557,7 +585,7 @@ msgstr ""
 "Csak az új partíciók lesznek titkosítva. A meglévő partíciók érintetlenek "
 "maradnak."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Operációs rendszer"
 
@@ -637,6 +665,18 @@ msgstr "Nem sikerült beolvasni a telepítő konfigurációját."
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "Nem sikerült beolvasni a telepítő verzió információit."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "A gépnév 64 vagy kevesebb karakter lehet."
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -721,10 +761,17 @@ msgstr "$0 telepítés"
 msgid "Return to storage editor"
 msgstr "Indítsa el a Blivet-gui tárolószerkesztőt"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Áttekintés és telepítés"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "Menté_s"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -747,6 +794,12 @@ msgstr "A kiválasztott eszköz '$0' formátuma nem formázható újra."
 #| msgid "Use free space for the installation"
 msgid "Send us feedback on your installation"
 msgstr "Használjon szabad helyet a telepítéshez"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Gépnév beállítása"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -784,7 +837,7 @@ msgstr "Egyes eszközök ugyanazt a nevet használják: $0."
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Tárhely"
 
@@ -924,6 +977,10 @@ msgstr "Nem található használható lemez"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Ez egy instabil, előzetes kiadású szoftver"
@@ -1044,6 +1101,10 @@ msgstr "befejezett lépés"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "jelenlegi lépés"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2764,9 +2825,6 @@ msgstr "függőben lévő lépés"
 #~ msgid "Home _directory:"
 #~ msgstr "Saját _könyvtár:"
 
-#~ msgid "Host Name"
-#~ msgstr "Gépnév"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Gépnév: %s\n"
@@ -2777,9 +2835,6 @@ msgstr "függőben lévő lépés"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "A gépnév érvénytelen: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "A gépnév 64 vagy kevesebb karakter lehet."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "Az NFS-kiszolgáló gazdagépneve vagy IP-címe"
@@ -4298,9 +4353,6 @@ msgstr "függőben lévő lépés"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Beállítás a jelenlegi rendszer gépneveként."
-
-#~ msgid "Set host name"
-#~ msgstr "Gépnév beállítása"
 
 #~ msgid "Set timezone"
 #~ msgstr "Időzóna beállítása"
@@ -6540,14 +6592,6 @@ msgstr "függőben lévő lépés"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Rendszergazda jelszó:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "Menté_s"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "Változá_sok mentése"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

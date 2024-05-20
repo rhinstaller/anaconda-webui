@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Esperanto <https://translate.fedoraproject.org/projects/"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Account"
@@ -95,7 +95,7 @@ msgstr "Apliki agordadon en instalilon"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -119,10 +119,23 @@ msgstr ""
 "Se vi ne komprenas aŭ akceptas la riskojn, tiam bonvolu ĉesigi ĉi tiun "
 "programon per elekti \"Mi volas ĉesigi\", kiu restartigos vian sistemon."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "_Nuligi"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "Kon_servi ŝanĝojn"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Agordi gastignomon"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -244,7 +257,7 @@ msgstr "Aparato"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 #, fuzzy
 msgid "Disabled"
 msgstr "Enŝaltite"
@@ -255,7 +268,7 @@ msgid "Disk configuration"
 msgstr "Aparata agordado"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "Ĉifrado"
@@ -276,7 +289,7 @@ msgstr "Aldoni novan surmetingon."
 msgid "Enable root account"
 msgstr "Ŝlosi administrantan konton"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Enŝaltite"
 
@@ -367,12 +380,23 @@ msgstr "_Konfirmi pasvorton"
 msgid "Hide password"
 msgstr "Kaŝi pasvorton."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Gastignomo"
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Ĉu vi volas ĝin tamen uzi?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -429,7 +453,7 @@ msgstr "Instalado plenumita"
 msgid "Installation of the system failed: $0"
 msgstr "Instalo"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalo"
@@ -448,7 +472,7 @@ msgstr "Instalante %s"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Lingvoj"
@@ -474,6 +498,10 @@ msgstr "Aparata agordado"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -566,7 +594,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Kreante uzantojn"
@@ -652,6 +680,18 @@ msgstr "Aparata reagordado malsukcesis."
 msgid "Reading installer version information failed."
 msgstr "Konektado malsukcesis"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Gastignomo devas enhavi malpli ol 256 signoj."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -732,11 +772,18 @@ msgstr "Instalo"
 msgid "Return to storage editor"
 msgstr "Instalo"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "_Komenci instaladon"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Konservi"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -760,6 +807,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Malsukcesis agordi fonton de instalo"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Agordi gastignomon"
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -799,7 +852,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 #, fuzzy
 msgid "Storage"
 msgstr "Konservejaj agordoj"
@@ -927,6 +980,10 @@ msgstr "Neniu disko elektita"
 
 #: src/components/users/Accounts.jsx:201
 msgid "This account will have administration priviledge with sudo."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:67
@@ -1058,6 +1115,10 @@ msgstr "Plenumita!"
 #, fuzzy
 msgid "current step"
 msgstr "Aktuala gastignomo:"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 #, fuzzy
@@ -2476,9 +2537,6 @@ msgstr ""
 #~ msgid "Home _directory:"
 #~ msgstr "Hejma _dosierujo:"
 
-#~ msgid "Host Name"
-#~ msgstr "Gastignomo"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Gastignomo: %s\n"
@@ -2489,9 +2547,6 @@ msgstr ""
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Gastignomo nevalidas: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Gastignomo devas enhavi malpli ol 256 signoj."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -3832,9 +3887,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Set as current system host name."
 #~ msgstr "Aktuala gastignomo:"
-
-#~ msgid "Set host name"
-#~ msgstr "Agordi gastignomon"
 
 #~ msgid "Set timezone"
 #~ msgstr "Agordi horzonon"
@@ -5724,14 +5776,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Administranta pasvorto:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Konservi"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "Kon_servi ŝanĝojn"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

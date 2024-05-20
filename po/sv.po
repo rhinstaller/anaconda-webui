@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
-"PO-Revision-Date: 2024-03-13 02:39+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
+"PO-Revision-Date: 2024-05-14 02:47+0000\n"
 "Last-Translator: Luna Jernberg <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/sv/>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.5.2\n"
 
 #: src/components/app.jsx:84
 msgid "$0 installation"
@@ -61,7 +61,7 @@ msgstr "\"$0\" måste vara på en enhet som är formaterad till \"$1\""
 msgid "About"
 msgstr "Om"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Konto"
 
@@ -105,7 +105,7 @@ msgstr "Tillämpa monteringspunktstilldelningar och installera"
 msgid "Applying new disk selection..."
 msgstr "Tillämpar nytt diskval..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Tillbaka"
@@ -122,9 +122,17 @@ msgstr ""
 "för test- och utvecklingssyften och är villig att rapportera eventuella "
 "buggar eller problem för att förbättra detta arbete."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Avbryt"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Change"
+msgstr "Ändra"
+
+#: src/components/review/Hostname.jsx:113
+msgid "Change hostname"
+msgstr "Ändra värdnamn"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -229,7 +237,7 @@ msgstr "Enhet"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Enheter bör låsas upp innan monteringspunkter tilldelas."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Avaktiverad"
 
@@ -238,7 +246,7 @@ msgid "Disk configuration"
 msgstr "Diskkonfiguration"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Diskkryptering"
 
@@ -254,7 +262,7 @@ msgstr "Duplicera monteringspunkt."
 msgid "Enable root account"
 msgstr "Aktivera root-konto"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Aktiverat"
 
@@ -341,9 +349,20 @@ msgstr "Dölj lösenfras"
 msgid "Hide password"
 msgstr "Dölj lösenord"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+msgid "Hostname"
+msgstr "Värdnamn"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Hur vill du installera?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
+"Om det är tomt kommer värdnamnet att vara tillfälligt och ställas in av "
+"nätverksinformation."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -392,7 +411,7 @@ msgstr "Installationsmetod"
 msgid "Installation of the system failed: $0"
 msgstr "installationen av systemet misslyckades: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Installationstyp"
 
@@ -409,7 +428,7 @@ msgid "Keep current disk layout and only install into available space."
 msgstr ""
 "Behåll nuvarande disklayout och installera endast i tillgängligt utrymme."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Språk"
 
@@ -432,6 +451,10 @@ msgstr "Manuell diskkonfiguration: Mappning av monteringspunkter"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Välj lagringsplatser för installation manuellt."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr "Kan innehålla bokstäver, siffror och bindestreck."
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -524,7 +547,7 @@ msgstr ""
 "Endast nya partitioner kommer att krypteras. Befintliga partitioner kommer "
 "att förbli orörda."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Operativsystem"
 
@@ -600,6 +623,18 @@ msgstr "Läsa installationskonfigurationen misslyckades."
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "Läsa installation version information misslyckades."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+"Riktigt värdnamn kan bara innehålla tecken, siffror, bindestreck (inte börja "
+"eller avslutas med ett tecken) och punkter"
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr "Riktiga värdnamn måste bestå av 64 tecken eller mindre"
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -677,10 +712,14 @@ msgstr "Återgå till installation"
 msgid "Return to storage editor"
 msgstr "Återgå till lagringseditor"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Granska och installera"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Save"
+msgstr "Spara"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -701,6 +740,10 @@ msgstr "Den valda enhetens format '$0' kan inte formateras om."
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "Skicka oss feedback om din installation"
+
+#: src/components/review/Hostname.jsx:113
+msgid "Set custom hostname"
+msgstr "Ställ in ett anpassat värdnamn"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -738,7 +781,7 @@ msgstr "Vissa enheter använder samma namn: $0."
 msgid "Some required partitions are missing: $0"
 msgstr "Vissa nödvändiga partitioner saknas: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Lagring"
 
@@ -870,6 +913,10 @@ msgstr "De användbara diskarna har ändrats"
 msgid "This account will have administration priviledge with sudo."
 msgstr "Detta konto kommer att ha administratörs rättigheter med sudo."
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr "Detta värdnamn kan inte skickas in"
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Detta är en instabil förhandsutgåva av programvaran"
@@ -985,6 +1032,10 @@ msgstr "färdigt steg"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "aktuellt steg"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr "redigera"
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2682,9 +2733,6 @@ msgstr "väntande steg"
 #~ msgid "Home _directory:"
 #~ msgstr "Hem _katalog:"
 
-#~ msgid "Host Name"
-#~ msgstr "Värdnamn"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Värdnamn: %s\n"
@@ -2695,9 +2743,6 @@ msgstr "väntande steg"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Värdnamnet är inte korrekt: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Värdnamnet får vara högst 64 tecken långt."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "Värdnamn eller IP-adress för NFS-servern"
@@ -4204,9 +4249,6 @@ msgstr "väntande steg"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Ange som aktuellt värdnamn på systemet."
-
-#~ msgid "Set host name"
-#~ msgstr "Sätt värdnamn"
 
 #~ msgid "Set timezone"
 #~ msgstr "Välj tidszon"
@@ -6439,14 +6481,6 @@ msgstr "väntande steg"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "_Rootlösenord:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Spara"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Spara ändringar"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2024-03-26 02:38+0000\n"
 "Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
 "memory@weblate.org>\n"
@@ -97,7 +97,7 @@ msgstr "'$0' は、'$1' にフォーマットされたデバイス上でなけ�
 msgid "About"
 msgstr "About"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "アカウント"
 
@@ -141,7 +141,7 @@ msgstr "マウントポイントの割り当てを適用してインストール
 msgid "Applying new disk selection..."
 msgstr "新しいディスク選択を適用しています..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "戻る"
@@ -158,9 +158,22 @@ msgstr ""
 "用して、このソフトウェアを強化するためにバグや問題を率先して報告するものとし"
 "ます。"
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "取り消し"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "変更を保存(_S)"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "ホスト名の指定"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -267,7 +280,7 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "マウントポイントを割り当てる前に、デバイスのロック解除する必要があります。"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "無効"
 
@@ -276,7 +289,7 @@ msgid "Disk configuration"
 msgstr "ディスクの設定"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "ディスク暗号化"
 
@@ -292,7 +305,7 @@ msgstr "重複されたマウントポイントです。"
 msgid "Enable root account"
 msgstr "rootアカウントを有効化"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "有効"
 
@@ -380,9 +393,20 @@ msgstr "パスフレーズを非表示にする"
 msgid "Hide password"
 msgstr "パスワードを非表示にする"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "ホスト名"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "どのようにインストールしますか？"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -430,7 +454,7 @@ msgstr "インストール方法"
 msgid "Installation of the system failed: $0"
 msgstr "システムのインストールに失敗しました: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "インストールタイプ"
 
@@ -448,7 +472,7 @@ msgstr ""
 "現在のディスクレイアウトを維持し、利用可能なスペースのみにインストールしま"
 "す。"
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "言語"
 
@@ -471,6 +495,10 @@ msgstr "手動のディスク構成: マウントポイントの割り当て"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "インストールに使用するストレージの場所を手動で選択してください。"
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -561,7 +589,7 @@ msgstr ""
 "新しいパーティションのみが暗号化されます。 既存のパーティションはそのまま残り"
 "ます。"
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "オペレーティングシステム"
 
@@ -638,6 +666,18 @@ msgstr "インストーラーの設定の読み込みに失敗しました。"
 msgid "Reading installer version information failed."
 msgstr "インストーラーのバージョン情報の読み取りに失敗しました。"
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "ホスト名は、64 文字以下の長さにする必要があります。"
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -713,10 +753,17 @@ msgstr "インストールに戻る"
 msgid "Return to storage editor"
 msgstr "ストレージエディターに戻る"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "確認とインストール"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "保存(_S)"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -737,6 +784,12 @@ msgstr "選択したデバイスのフォーマット '$0' は再フォーマッ
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "インストールに関するフィードバックをお寄せください"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "ホスト名の指定"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -774,7 +827,7 @@ msgstr "複数のデバイスが同じ名前を使用しています: $0。"
 msgid "Some required partitions are missing: $0"
 msgstr "いくつかのパーティションが見つかりません: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "ストレージ"
 
@@ -903,6 +956,10 @@ msgstr "使用可能なディスクが検出されていません。"
 msgid "This account will have administration priviledge with sudo."
 msgstr "このアカウントは sudo を使った管理者権限を持つことになります。"
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "これは、プレリリースの不安定なソフトウェアです"
@@ -1016,6 +1073,10 @@ msgstr "完了した手順"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "現在の手順"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2717,9 +2778,6 @@ msgstr "保留中の手順"
 #~ msgid "Home _directory:"
 #~ msgstr "ホームディレクトリー(_D):"
 
-#~ msgid "Host Name"
-#~ msgstr "ホスト名"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "ホスト名: %s\n"
@@ -2730,9 +2788,6 @@ msgstr "保留中の手順"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "ホスト名が有効ではありません: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "ホスト名は、64 文字以下の長さにする必要があります。"
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "NFSサーバーのホスト名もしくはIPアドレス"
@@ -4253,9 +4308,6 @@ msgstr "保留中の手順"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "現在のシステムホスト名として設定します。"
-
-#~ msgid "Set host name"
-#~ msgstr "ホスト名の指定"
 
 #~ msgid "Set timezone"
 #~ msgstr "タイムゾーンの設定"
@@ -6482,14 +6534,6 @@ msgstr "保留中の手順"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "root パスワード(_R):"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "保存(_S)"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "変更を保存(_S)"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

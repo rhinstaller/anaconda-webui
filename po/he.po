@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -54,7 +54,7 @@ msgstr "{fs} חייב להיות על התקן מסוג {type}"
 msgid "About"
 msgstr "על אודות"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -101,7 +101,7 @@ msgstr "החלת הקצאת נקודת עיגון והתקנה"
 msgid "Applying new disk selection..."
 msgstr "בחירת הכונן החדשה חלה…"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "חזרה"
@@ -117,9 +117,22 @@ msgstr ""
 "בתוכנה שטרם יצאה לאור, אותה ייעדת לשימוש למטרות בדיקות ופיתוח ולקחת על עצמך "
 "אחריות לדווח על תקלות או בעיות שצצות כדי לשפר את המערכת הזאת."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "ביטול"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_שמירת השינויים"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "הגדרת שם מארח"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -233,7 +246,7 @@ msgstr "התקן"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "יש לשחרר התקנים בטרם הקצאת נקודות עיגון."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "מושבת"
 
@@ -242,7 +255,7 @@ msgid "Disk configuration"
 msgstr "הגדרת כונן"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "הצפנת כונן"
 
@@ -261,7 +274,7 @@ msgstr "נקודת עגינה כפולה."
 msgid "Enable root account"
 msgstr "ה_פעלת חשבון root"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "מאופשר"
 
@@ -345,9 +358,20 @@ msgstr "אישור מילת צופן"
 msgid "Hide password"
 msgstr "הסתרת הסיסמה"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "שם מארח"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "איך להתקין?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -399,7 +423,7 @@ msgstr "שיטת התקנה"
 msgid "Installation of the system failed: $0"
 msgstr "התקנת המערכת נכשלה: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "סוג התקנה"
 
@@ -416,7 +440,7 @@ msgstr "מתבצעת התקנה אל $0 ($1)"
 msgid "Keep current disk layout and only install into available space."
 msgstr "שומר על פריסת הכונן הנוכחית ומשתמש רק במקום הזמין."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "שפה"
 
@@ -439,6 +463,10 @@ msgstr "הגדרות כונן ידניות: מיפוי נקודות עיגון"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -531,7 +559,7 @@ msgid ""
 "untouched."
 msgstr "רק מחיצות חדשות תוצפנה. מחיצות קיימות תישאר כמו שהן."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "מערכת הפעלה"
 
@@ -611,6 +639,18 @@ msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "קריאת פרטי גרסה תוכנית ההתקנה נכשלה."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "שם המארח חייב להיות באורך 64 תווים או פחות."
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -693,10 +733,17 @@ msgstr "התקנת $0"
 msgid "Return to storage editor"
 msgstr "הפעלת עורך אמצעי האחסון Blivet-gui"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "סקירה והתקנה"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_שמירה"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -719,6 +766,12 @@ msgstr "לא ניתן לפרמט מחדש את תצורת הכונן הנבחר�
 #| msgid "Use free space for the installation"
 msgid "Send us feedback on your installation"
 msgstr "להשתמש במקום הפנוי להתקנה"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "הגדרת שם מארח"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -755,7 +808,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "אחסון"
 
@@ -885,6 +938,10 @@ msgstr "לא זוהו כוננים שמישים"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "זו תוכנה בלתי יציבה, לפני יציאה לאור"
@@ -1000,6 +1057,10 @@ msgstr "שלב שהושלם"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "שלב נוכחי"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2651,9 +2712,6 @@ msgstr "שלב בהמתנה"
 #~ msgid "Home _directory:"
 #~ msgstr "תיקיית ה_בית:"
 
-#~ msgid "Host Name"
-#~ msgstr "שם מארח"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "שם מארח: %s\n"
@@ -2664,9 +2722,6 @@ msgstr "שלב בהמתנה"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "שם המארח אינו חוקי: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "שם המארח חייב להיות באורך 64 תווים או פחות."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "שם מארח או כתובת IP של שרת ה־NFS"
@@ -4139,9 +4194,6 @@ msgstr "שלב בהמתנה"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "קביעה כשם המארח הנוכחי של המערכת."
-
-#~ msgid "Set host name"
-#~ msgstr "הגדרת שם מארח"
 
 #~ msgid "Set timezone"
 #~ msgstr "הגדרת אזור זמן"
@@ -6296,14 +6348,6 @@ msgstr "שלב בהמתנה"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "סיסמת מ_נהל המערכת (root):"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_שמירה"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_שמירת השינויים"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

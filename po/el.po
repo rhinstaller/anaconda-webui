@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/anaconda-"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "_Προσθήκη διάταξης"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -118,10 +118,20 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 #, fuzzy
 msgid "Cancel"
 msgstr "Ακύρωση"
+
+#: src/components/review/Hostname.jsx:104
+msgid "Change"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Current host name:"
+msgid "Change hostname"
+msgstr "Τρέχον όνομα κόμβου:"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -233,7 +243,7 @@ msgstr "Συσκευή"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -243,7 +253,7 @@ msgid "Disk configuration"
 msgstr "Εγγραφή ρυθμίσεων δικτύου"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr ""
 
@@ -261,7 +271,7 @@ msgstr "Επιλογή δικτύου"
 msgid "Enable root account"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Ενεργοποιημένο"
 
@@ -353,8 +363,20 @@ msgstr "_Κωδικός"
 msgid "Hide password"
 msgstr "_Κωδικός"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgctxt "GUI|Network"
+#| msgid "_Host Name:"
+msgid "Hostname"
+msgstr "Ό_νομα κόμβου:"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
 msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
@@ -411,7 +433,7 @@ msgstr "Εγκατάσταση"
 msgid "Installation of the system failed: $0"
 msgstr "Εγκατάσταση"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "Εγκατάσταση"
@@ -430,7 +452,7 @@ msgstr "Γίνεται εγκατάσταση {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "Επιλογή δικτύου"
@@ -456,6 +478,10 @@ msgstr "Εγγραφή ρυθμίσεων δικτύου"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -544,7 +570,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "Δημιουργία χρηστών"
@@ -628,6 +654,16 @@ msgstr "Αποτυχία εγγραφής."
 msgid "Reading installer version information failed."
 msgstr "Αποτυχία εγγραφής."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+msgid "Real hostname must be 64 characters or less"
+msgstr ""
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -702,11 +738,15 @@ msgstr "Εκτέλεση δέσμης ενεργειών πριν την εγκ�
 msgid "Return to storage editor"
 msgstr "Εκτέλεση δέσμης ενεργειών πριν την εγκατάσταση "
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 #, fuzzy
 msgid "Review and install"
 msgstr "Εκτέλεση δέσμης ενεργειών πριν την εγκατάσταση "
+
+#: src/components/review/Hostname.jsx:104
+msgid "Save"
+msgstr ""
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -730,6 +770,12 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Εκτέλεση δέσμης ενεργειών πριν την εγκατάσταση "
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set as current system host name."
+msgid "Set custom hostname"
+msgstr "Ορισμός ως τρέχον όνομα κόμβου συστήματος."
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -768,7 +814,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr ""
 
@@ -890,6 +936,10 @@ msgstr ""
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr ""
@@ -1009,6 +1059,10 @@ msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -1234,9 +1288,6 @@ msgstr ""
 
 #~ msgid "Creating users"
 #~ msgstr "Δημιουργία χρηστών"
-
-#~ msgid "Current host name:"
-#~ msgstr "Τρέχον όνομα κόμβου:"
 
 #~ msgid "DATA"
 #~ msgstr "ΔΕΔΟΜΕΝΑ"
@@ -1611,9 +1662,6 @@ msgstr ""
 #~ msgid "Set Date & Time"
 #~ msgstr "Ρύθμιση ώρας και ημερομηνίας"
 
-#~ msgid "Set as current system host name."
-#~ msgstr "Ορισμός ως τρέχον όνομα κόμβου συστήματος."
-
 #~ msgid "Setting up kexec"
 #~ msgstr "Ρύθμιση kexec"
 
@@ -1879,10 +1927,6 @@ msgstr ""
 #~ msgctxt "GUI|Error Dialog"
 #~ msgid "_Exit Installer"
 #~ msgstr "Έ_ξοδος εγκαταστάτη"
-
-#~ msgctxt "GUI|Network"
-#~ msgid "_Host Name:"
-#~ msgstr "Ό_νομα κόμβου:"
 
 #~ msgctxt "GUI|Installation Destination|Filter|Search|Port Target LUN"
 #~ msgid "_LUN:"

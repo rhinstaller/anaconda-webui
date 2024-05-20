@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:15+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Arabic <https://translate.fedoraproject.org/projects/anaconda-"
@@ -69,7 +69,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 msgid "Account"
 msgstr "أضِف مخططًا"
@@ -118,7 +118,7 @@ msgstr "طبّق الإعدادات ضمن المُثبّت"
 msgid "Applying new disk selection..."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr ""
@@ -131,9 +131,22 @@ msgid ""
 "issues in order to enhance this work."
 msgstr ""
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "ألغِ"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "ا_حفظ التغييرات"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Change timezone"
+msgid "Change hostname"
+msgstr "غير النطاق الزمني"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -250,7 +263,7 @@ msgstr "جهاز"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "معطّل"
 
@@ -260,7 +273,7 @@ msgid "Disk configuration"
 msgstr "إعدادات الجهاز"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 #, fuzzy
 msgid "Disk encryption"
 msgstr "الوصف"
@@ -282,7 +295,7 @@ msgstr "أضف نقطة وصل جديدة."
 msgid "Enable root account"
 msgstr "ع_طل حساب root"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "مفعّل"
 
@@ -374,12 +387,21 @@ msgstr "أكّ_د كلمة المرور"
 msgid "Hide password"
 msgstr "أخفِ كلمة المرور."
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+msgid "Hostname"
+msgstr ""
+
 #: src/components/storage/InstallationScenario.jsx:405
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "هل ترغب باستعمالها بأي حال؟"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -432,7 +454,7 @@ msgstr "فشل التثبيت"
 msgid "Installation of the system failed: $0"
 msgstr "فشل التثبيت"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 #, fuzzy
 msgid "Installation type"
 msgstr "التثبيت"
@@ -450,7 +472,7 @@ msgstr "يثبّت {}"
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 #, fuzzy
 msgid "Language"
 msgstr "اعثر على لغة"
@@ -476,6 +498,10 @@ msgstr "إعدادات الجهاز"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
+msgstr ""
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
 #: src/components/Password.jsx:75
@@ -566,7 +592,7 @@ msgid ""
 "untouched."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 #, fuzzy
 msgid "Operating system"
 msgstr "يجري إنشاء المستخدمين"
@@ -652,6 +678,18 @@ msgstr "فشل إعادة ضبط الجهاز."
 msgid "Reading installer version information failed."
 msgstr "فشل التسجيل."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "ينبغي أن يكون طول اسم المضيف 64 حرفا أو أقل."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -729,10 +767,17 @@ msgstr "التثبيت"
 msgid "Return to storage editor"
 msgstr "التثبيت"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "راجع وثبّت"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "اح_فظ"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -756,6 +801,10 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "فشل في متابعة التثبيت."
+
+#: src/components/review/Hostname.jsx:113
+msgid "Set custom hostname"
+msgstr ""
 
 #: src/components/Password.jsx:242
 #, fuzzy
@@ -794,7 +843,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr ""
 
@@ -931,6 +980,10 @@ msgstr "لم تُكتشف أي أقراص أضافية"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "هذه برمجيّات ما قبل الإصدار وهي غير مستقرة"
@@ -1057,6 +1110,10 @@ msgstr "الخطوة المتممة"
 
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
@@ -1950,9 +2007,6 @@ msgstr ""
 #~ msgid "Capacity"
 #~ msgstr "السعة"
 
-#~ msgid "Change timezone"
-#~ msgstr "غير النطاق الزمني"
-
 #~ msgid ""
 #~ "Changes here will only apply to the installed system. Use the desktop's "
 #~ "tool to configure the keyboard for the installation process."
@@ -2517,9 +2571,6 @@ msgstr ""
 
 #~ msgid "Host name cannot be None or an empty string."
 #~ msgstr "لا يمكن أن يكون اسم المضيف لا شيء أو فارغا."
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "ينبغي أن يكون طول اسم المضيف 64 حرفا أو أقل."
 
 #~ msgid ""
 #~ "Host names can only contain the characters 'a-z', 'A-Z', '0-9', '-', or "
@@ -4268,14 +4319,6 @@ msgstr ""
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "كلمة مرور ال_جذر:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "اح_فظ"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "ا_حفظ التغييرات"
 
 #~ msgctxt "GUI|Custom Partitioning|Configure Dialog"
 #~ msgid "_Select"

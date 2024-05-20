@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2024-04-20 02:37+0000\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.fedoraproject.org/projects/"
@@ -66,7 +66,7 @@ msgstr "'$0' harus berada pada peranti yang diformat ke '$1'"
 msgid "About"
 msgstr "Ihwal"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Akun"
 
@@ -110,7 +110,7 @@ msgstr "Terapkan penugasan titik kait dan pasang"
 msgid "Applying new disk selection..."
 msgstr "Menerapkan pilihan disk baru..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Mundur"
@@ -127,9 +127,22 @@ msgstr ""
 "hanya untuk tujuan pengujian dan pengembangan dan Anda bersedia melaporkan "
 "sebarang kutu atau masalah untuk memajukan karya ini."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Batal"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "_Simpan Perubahan"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Atur nama host"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -236,7 +249,7 @@ msgstr "Peranti"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Perangkat harus dibuka kuncinya sebelum menugaskan titik kait."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
@@ -245,7 +258,7 @@ msgid "Disk configuration"
 msgstr "Konfigurasi disk"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Enkripsi disk"
 
@@ -261,7 +274,7 @@ msgstr "Titik kait duplikat."
 msgid "Enable root account"
 msgstr "Fungsikan akun root"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Difungsikan"
 
@@ -348,9 +361,20 @@ msgstr "Sembunyikan frasa sandi"
 msgid "Hide password"
 msgstr "Sembunyikan kata sandi"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Nama Host"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Bagaimana Anda ingin memasang?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -400,7 +424,7 @@ msgstr "Metode instalasi"
 msgid "Installation of the system failed: $0"
 msgstr "Instalasi sistem gagal: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Tipe instalasi"
 
@@ -418,7 +442,7 @@ msgstr ""
 "Pertahankan tata letak disk saat ini dan instal hanya pada ruang yang "
 "tersedia."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Bahasa"
 
@@ -441,6 +465,10 @@ msgstr "Konfigurasi disk manual: Pemetaan titik kait"
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Pilih lokasi penyimpanan secara manual untuk instalasi."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -532,7 +560,7 @@ msgstr ""
 "Hanya partisi-partisi baru yang akan dienkripsi. Partisi yang ada akan tetap "
 "tidak disentuh."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Sistem operasi"
 
@@ -609,6 +637,18 @@ msgstr "Gagal membaca konfigurasi pemasang."
 msgid "Reading installer version information failed."
 msgstr "Gagal membaca informasi versi pemasang."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Panjang nama host mesti 64 karakter atau kurang."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -684,10 +724,17 @@ msgstr "Kembali ke instalasi"
 msgid "Return to storage editor"
 msgstr "Kembali ke penyunting penyimpanan"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Tinjau dan pasang"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Simpan"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -708,6 +755,12 @@ msgstr "Format '$0' dari perangkat yang dipilih tidak bisa diformat ulang."
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "Kirimi kami umpan balik tentang instalasi Anda"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Atur nama host"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -745,7 +798,7 @@ msgstr "Beberapa perangkat menggunakan nama yang sama: $0."
 msgid "Some required partitions are missing: $0"
 msgstr "Beberapa partisi yang diperlukan kurang: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Penyimpanan"
 
@@ -873,6 +926,10 @@ msgstr "Diska yang dapat dipakai telah berubah"
 msgid "This account will have administration priviledge with sudo."
 msgstr "Akun ini akan memiliki hak administrasi dengan sudo."
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Ini perangkat lunak pra-rilis yang tidak stabil"
@@ -988,6 +1045,10 @@ msgstr "langkah yang telah lengkap"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "langkah kini"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2687,9 +2748,6 @@ msgstr "langkah tertunda"
 #~ msgid "Home _directory:"
 #~ msgstr "_Direktori rumah:"
 
-#~ msgid "Host Name"
-#~ msgstr "Nama Host"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Nama Host: %s\n"
@@ -2700,9 +2758,6 @@ msgstr "langkah tertunda"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Nama host tidak valid: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Panjang nama host mesti 64 karakter atau kurang."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "Nama host atau alamat IP dari server NFS"
@@ -4216,9 +4271,6 @@ msgstr "langkah tertunda"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Jadikan nama host sistem saat ini."
-
-#~ msgid "Set host name"
-#~ msgstr "Atur nama host"
 
 #~ msgid "Set timezone"
 #~ msgstr "Tata zona waktu"
@@ -6471,14 +6523,6 @@ msgstr "langkah tertunda"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Sandi _Root:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Simpan"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "_Simpan Perubahan"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

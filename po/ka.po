@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2024-03-13 02:39+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
@@ -45,7 +45,7 @@ msgstr "'$0' '$1'-ით დაფორმატებულ მოწყობ
 msgid "About"
 msgstr "შესახებ"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "ანგარიში"
 
@@ -89,7 +89,7 @@ msgstr "მიმაგრების წერტილების გად�
 msgid "Applying new disk selection..."
 msgstr "ახალი დისკის არჩევანის გადატარება..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "უკან"
@@ -106,9 +106,22 @@ msgstr ""
 "ტესტირებისთვის და მზად ხართ, გამოგვიგზავნოთ ანგარიში ნებისმიერი შეცდომის "
 "შესახებ."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "გაუქმება"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "ცვლილებების _შენახვა"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "ჰოსტის სახელის დაყენება"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -215,7 +228,7 @@ msgstr "მოწყობილობა"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "მიმაგრების წერტილის მინიჭებამდე აუცილებელია მოწყობილობების განბლოკვა."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "გამორთულია"
 
@@ -224,7 +237,7 @@ msgid "Disk configuration"
 msgstr "დისკის მორგება"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "დისკის დაშიფვრა"
 
@@ -240,7 +253,7 @@ msgstr "მიმაგრების წერტილი დუბლირ�
 msgid "Enable root account"
 msgstr "Root-ის ანგარიშის ჩართვა"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "ჩართულია"
 
@@ -328,9 +341,20 @@ msgstr "საკვანძო ფრაზის დამალვა"
 msgid "Hide password"
 msgstr "პაროლის დამალვა"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "ჰოსტი"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "როგორ გნებავთ, დააყენოთ?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -381,7 +405,7 @@ msgstr "დაყენების მეთოდი"
 msgid "Installation of the system failed: $0"
 msgstr "სისტემის დაყენება ჩავარდა: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "დაყენების ტიპი"
 
@@ -399,7 +423,7 @@ msgstr ""
 "დისკის მიმდინარე განლაგების შენარჩუნება და მხოლოდ ხელმისაწვდომ ადგილას "
 "დაყენება."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "ენა"
 
@@ -422,6 +446,10 @@ msgstr "დისკის ხელით მორგება: მიმა�
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "დაყენებისთვის საცავის მდებარეობების ხელით მითითება."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -510,7 +538,7 @@ msgid ""
 "untouched."
 msgstr "დაიშიფრება მხოლოდ ახალი დანაყოფები. არსებული დანაყოფები არ შეიცვლება."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "ოპერაციული სისტემა"
 
@@ -587,6 +615,18 @@ msgstr "დაყენების პროგრამის კონფგ�
 msgid "Reading installer version information failed."
 msgstr "დაყენების პროგრამის ვერსიის წაკითხვის შეცდომა."
 
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "ჰოსტის რეალური სახელი 64 სიმბოლოზე დიდი არ უნდა იყოს."
+
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
 #: src/components/AnacondaWizardFooter.jsx:133
@@ -662,10 +702,17 @@ msgstr "დაყენებაზე დაბრუნება"
 msgid "Return to storage editor"
 msgstr "დაბრუნება საცავის რედაქტორზე"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "გადახედვა და დაყენება"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_შენახვა"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -686,6 +733,12 @@ msgstr "მონიშნული მოწყობილობის ფო�
 #: src/components/installation/Feedback.jsx:37
 msgid "Send us feedback on your installation"
 msgstr "გამოგვიგზავნეთ თქვენი აზრი დაყენების შესახებ"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "ჰოსტის სახელის დაყენება"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -723,7 +776,7 @@ msgstr "ზოგიერთი მოწყობილობა იგივ�
 msgid "Some required partitions are missing: $0"
 msgstr "ვერ ვიპოვე ზოგიერთი აუცილებელი დანაყოფი: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "საცავი"
 
@@ -850,6 +903,10 @@ msgstr "გამოყენებადი დისკები შეიც�
 msgid "This account will have administration priviledge with sudo."
 msgstr "ამ ანგარიშს ადმინისტრირების პრივილეგია sudo-ით ექნება."
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "ეს არასტაბილური, სატესტო პროგრამული უზრუნველყოფაა"
@@ -966,6 +1023,10 @@ msgstr "ნაბიჯი დასრულდა"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "მიმდინარე ბიჯი"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2667,9 +2728,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgid "Home _directory:"
 #~ msgstr "საშინაო _დირექტორია:"
 
-#~ msgid "Host Name"
-#~ msgstr "ჰოსტი"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "ჰოსტის სახელი: %s\n"
@@ -2680,9 +2738,6 @@ msgstr "დარჩენილი ბიჯები"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "ჰოსტის არასწორი სახელი: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "ჰოსტის რეალური სახელი 64 სიმბოლოზე დიდი არ უნდა იყოს."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "NFS სერვერის ჰოსტის სახელი ან IP მისამართი"
@@ -4202,9 +4257,6 @@ msgstr "დარჩენილი ბიჯები"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "სისტემის მიმდინარე ჰოსტის სახელად დაყენება."
-
-#~ msgid "Set host name"
-#~ msgstr "ჰოსტის სახელის დაყენება"
 
 #~ msgid "Set timezone"
 #~ msgstr "დროის სარტყლის დაყენება"
@@ -6430,14 +6482,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Root-ის _პაროლი:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_შენახვა"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "ცვლილებების _შენახვა"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"

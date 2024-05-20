@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-07 02:49+0000\n"
+"POT-Creation-Date: 2024-05-14 02:49+0000\n"
 "PO-Revision-Date: 2023-11-06 12:19+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Kazakh <https://translate.fedoraproject.org/projects/anaconda-"
@@ -46,7 +46,7 @@ msgstr "'$0' '$1' түріндегі бөлімде болуы тиіс"
 msgid "About"
 msgstr "Осы туралы"
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -93,7 +93,7 @@ msgstr "Тіркеу нүктелерді тағайындауды іске ас
 msgid "Applying new disk selection..."
 msgstr "Жаңа диск таңдауын іске асыру..."
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 #: src/components/AnacondaWizardFooter.jsx:92
 msgid "Back"
 msgstr "Артқа"
@@ -111,9 +111,22 @@ msgstr ""
 "келеді және осы жұмысты жақсарту үшін кез келген қателер мен мәселелер "
 "туралы хабарлауға дайын боласыз."
 
-#: src/components/Error.jsx:260
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:260
 msgid "Cancel"
 msgstr "Бас тарту"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Advanced User"
+#| msgid "_Save Changes"
+msgid "Change"
+msgstr "Өзгерістерді _сақтау"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Change hostname"
+msgstr "Хост атын орнату"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:119
 msgid ""
@@ -228,7 +241,7 @@ msgid "Devices should be unlocked before assigning mount points."
 msgstr ""
 "Тіркеу нүктелерін тағайындау алдында құрылғылар блоктаудан босатылуы керек."
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Сөндірілген"
 
@@ -237,7 +250,7 @@ msgid "Disk configuration"
 msgstr "Диск баптаулары"
 
 #: src/components/storage/DiskEncryption.jsx:162
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Диск шифрлеуі"
 
@@ -256,7 +269,7 @@ msgstr "Қайталанатын тіркеу нүктесі."
 msgid "Enable root account"
 msgstr "Root тіркелгісін іск_е қосу"
 
-#: src/components/review/ReviewConfiguration.jsx:131
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Іске қосылған"
 
@@ -344,9 +357,20 @@ msgstr "Кілттік фразаны жасыру"
 msgid "Hide password"
 msgstr "Парольді жасыру"
 
+#: src/components/review/Hostname.jsx:117
+#: src/components/review/Hostname.jsx:163
+#, fuzzy
+#| msgid "Host Name"
+msgid "Hostname"
+msgstr "Хост аты"
+
 #: src/components/storage/InstallationScenario.jsx:405
 msgid "How would you like to install?"
 msgstr "Қалай орнатуды қалайсыз?"
+
+#: src/components/review/Hostname.jsx:140
+msgid "If empty, hostname will be transient and set by network information."
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:497
 msgid "If you are configuring partitions the following are required:"
@@ -400,7 +424,7 @@ msgstr "Орнату тәсілі"
 msgid "Installation of the system failed: $0"
 msgstr "Жүйені орнату сәтсіз аяқталды: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Орнату түрі"
 
@@ -416,7 +440,7 @@ msgstr "$0 ($1) жеріне орнату"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Ағымдағы диск жаймасын сақтау және тек қолжетімді орынға орнату."
 
-#: src/components/review/ReviewConfiguration.jsx:97
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Тіл"
 
@@ -439,6 +463,10 @@ msgstr "Дисктерді қолмен баптау: Тіркеу нүктел�
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
 msgstr "Орнату үшін сақтау орындарын қолмен таңдау."
+
+#: src/components/review/Hostname.jsx:137
+msgid "May contain letters, numbers, and dashes."
+msgstr ""
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -531,7 +559,7 @@ msgid ""
 "untouched."
 msgstr "Тек жаңа бөлімдер шифрленеді. Бар болып тұрған бөлімдер өзгертілмейді."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Операциялық жүйе"
 
@@ -611,6 +639,18 @@ msgstr "Орнатқыш баптауларын оқу сәтсіз аяқтал
 #: src/components/AnacondaHeader.jsx:44
 msgid "Reading installer version information failed."
 msgstr "Орнатқыш нұсқасы ақпаратын оқу сәтсіз аяқталды."
+
+#: src/components/review/Hostname.jsx:55
+msgid ""
+"Real hostname can only contain characters, digits, dashes (not starting or "
+"ending a character) and dots"
+msgstr ""
+
+#: src/components/review/Hostname.jsx:51
+#, fuzzy
+#| msgid "Host name must be 64 or fewer characters in length."
+msgid "Real hostname must be 64 characters or less"
+msgstr "Хост аты 64 не одан аз таңбадан тұруы тиіс."
 
 #: src/components/installation/InstallationProgress.jsx:229
 #: src/components/Error.jsx:227 src/components/AnacondaWizardFooter.jsx:110
@@ -694,10 +734,17 @@ msgstr "$0 орнатуы"
 msgid "Return to storage editor"
 msgstr "Blivet-gui сақтау құрылғыларын түзеткішін жөнелту"
 
-#: src/components/review/ReviewConfiguration.jsx:230
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:251
 msgid "Review and install"
 msgstr "Қарап шығу және орнату"
+
+#: src/components/review/Hostname.jsx:104
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Container Dialog"
+#| msgid "_Save"
+msgid "Save"
+msgstr "_Сақтау"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
@@ -720,6 +767,12 @@ msgstr "Таңдалған құрылғының \"$0\" пішімін қайта
 #| msgid "Use free space for the installation"
 msgid "Send us feedback on your installation"
 msgstr "Орнату үшін бос орынды қолдану"
+
+#: src/components/review/Hostname.jsx:113
+#, fuzzy
+#| msgid "Set host name"
+msgid "Set custom hostname"
+msgstr "Хост атын орнату"
 
 #: src/components/Password.jsx:242
 msgid "Show confirmed password"
@@ -757,7 +810,7 @@ msgstr "Кейбір құрылғылар бірдей атауды қолдан
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:138
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Сақтау құрылғысы"
 
@@ -892,6 +945,10 @@ msgstr "Қолдануға болатын дисктер анықталмады"
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
 
+#: src/components/review/Hostname.jsx:71
+msgid "This hostname can't be submitted"
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
 msgstr "Бұл тұрақсыз, шығарылымға дейінгі бағд. қамтама"
@@ -1011,6 +1068,10 @@ msgstr "аяқталған қадам"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "ағымдағы қадам"
+
+#: src/components/review/Hostname.jsx:97
+msgid "edit"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:59
 msgid "format as $0"
@@ -2712,9 +2773,6 @@ msgstr "күту қадамы"
 #~ msgid "Home _directory:"
 #~ msgstr "Үй бу_масы:"
 
-#~ msgid "Host Name"
-#~ msgstr "Хост аты"
-
 #, python-format
 #~ msgid "Host Name: %s\n"
 #~ msgstr "Хост аты: %s\n"
@@ -2725,9 +2783,6 @@ msgstr "күту қадамы"
 #, python-format
 #~ msgid "Host name is not valid: %s"
 #~ msgstr "Хост аты жарамсыз: %s"
-
-#~ msgid "Host name must be 64 or fewer characters in length."
-#~ msgstr "Хост аты 64 не одан аз таңбадан тұруы тиіс."
 
 #~ msgid "Host name or IP address of the NFS server"
 #~ msgstr "NFS серверінің хост аты немесе IP адресі"
@@ -4241,9 +4296,6 @@ msgstr "күту қадамы"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Жүйенің ағымдағы хост аты ретінде орнату."
-
-#~ msgid "Set host name"
-#~ msgstr "Хост атын орнату"
 
 #~ msgid "Set timezone"
 #~ msgstr "Уақыт белдеуін орнату"
@@ -6466,14 +6518,6 @@ msgstr "күту қадамы"
 #~ msgctxt "GUI|Password"
 #~ msgid "_Root Password:"
 #~ msgstr "Әкімші (root) па_ролі:"
-
-#~ msgctxt "GUI|Custom Partitioning|Container Dialog"
-#~ msgid "_Save"
-#~ msgstr "_Сақтау"
-
-#~ msgctxt "GUI|Advanced User"
-#~ msgid "_Save Changes"
-#~ msgstr "Өзгерістерді _сақтау"
 
 #~ msgctxt "GUI|Passphrase Dialog"
 #~ msgid "_Save Passphrase"
