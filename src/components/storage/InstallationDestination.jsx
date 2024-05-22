@@ -326,7 +326,7 @@ export const InstallationDestination = ({
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { devices, diskSelection, partitioning } = useContext(StorageContext);
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 
@@ -336,6 +336,21 @@ export const InstallationDestination = ({
             setEqualDisksNotify(true);
         }
     }, [isRescanningDisks, diskSelection.usableDisks]);
+
+    useEffect(() => {
+        // Always reset the partitioning when entering the installation destination page
+        const resetPartitioningAsync = async () => {
+            setIsFormDisabled(true);
+            await resetPartitioning();
+            setIsFormDisabled(false);
+        };
+
+        // If the last partitioning applied was from the cockpit storage integration
+        // we should not reset it, as this option does apply the partitioning onNext
+        if (partitioning.storageScenarioId !== "use-configured-storage") {
+            resetPartitioningAsync();
+        }
+    }, [setIsFormDisabled, partitioning.storageScenarioId]);
 
     useEffect(() => {
         // Select default disks for the partitioning on component mount

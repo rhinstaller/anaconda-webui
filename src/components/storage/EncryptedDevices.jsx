@@ -60,7 +60,7 @@ const LuksDevices = ({ id, lockedLUKSDevices }) => {
     );
 };
 
-export const EncryptedDevices = ({ dispatch, idPrefix, isLoadingNewPartitioning, lockedLUKSDevices, setSkipUnlock }) => {
+export const EncryptedDevices = ({ dispatch, idPrefix, lockedLUKSDevices, setSkipUnlock }) => {
     const [showUnlockDialog, setShowUnlockDialog] = useState(false);
     return (
         <>
@@ -94,14 +94,13 @@ export const EncryptedDevices = ({ dispatch, idPrefix, isLoadingNewPartitioning,
             {showUnlockDialog &&
             <UnlockDialog
               dispatch={dispatch}
-              isLoadingNewPartitioning={isLoadingNewPartitioning}
               onClose={() => setShowUnlockDialog(false)}
               lockedLUKSDevices={lockedLUKSDevices} />}
         </>
     );
 };
 
-const UnlockDialog = ({ dispatch, isLoadingNewPartitioning, lockedLUKSDevices, onClose }) => {
+const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
     const [passphrase, setPassphrase] = useState("");
     const [passphraseHidden, setPassphraseHidden] = useState(true);
     const [dialogWarning, setDialogWarning] = useState();
@@ -158,7 +157,7 @@ const UnlockDialog = ({ dispatch, isLoadingNewPartitioning, lockedLUKSDevices, o
           title={_("Unlock encrypted devices")}
           footer={
               <>
-                  <Button variant="primary" onClick={onSubmit} isDisabled={inProgress || isLoadingNewPartitioning} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
+                  <Button variant="primary" onClick={onSubmit} isDisabled={inProgress} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
                       {_("Unlock")}
                   </Button>
                   <Button variant="secondary" onClick={() => onClose()} id={idPrefix + "-close-btn"}>

@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
     Flex,
@@ -46,6 +46,7 @@ import {
 } from "../../apis/storage_partitioning.js";
 
 import {
+    getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
     hasDuplicateFields,
@@ -486,31 +487,30 @@ const RequestsTable = ({
     deviceData,
     idPrefix,
     lockedLUKSDevices,
-    mountPointConstraints,
-    partitioningDataPath,
-    requests,
     setIsFormValid,
     setStepNotification,
 }) => {
-    const currentPartitioning = useRef();
-    const [unappliedRequests, setUnappliedRequests] = useState([]);
+    const mountPointConstraints = useMountPointConstraints();
+    const { partitioning } = useContext(StorageContext);
+    const requests = partitioning?.requests;
+    const reusePartitioning = useExistingPartitioning();
+    const [unappliedRequests, setUnappliedRequests] = useState();
     const allDevices = useMemo(() => {
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
+    const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
 
     // Add the required mount points to the initial requests
     useEffect(() => {
-        if (partitioningDataPath === currentPartitioning.current) {
+        if (isLoadingPartitioning || unappliedRequests !== undefined) {
             return;
         }
-
-        currentPartitioning.current = partitioningDataPath;
 
         const initialRequests = getInitialRequests(requests, mountPointConstraints);
         setUnappliedRequests(initialRequests);
 
         setIsFormValid(getRequestsValid(initialRequests, deviceData));
-    }, [deviceData, setIsFormValid, partitioningDataPath, requests, mountPointConstraints]);
+    }, [deviceData, setIsFormValid, partitioning.path, requests, isLoadingPartitioning, unappliedRequests, mountPointConstraints]);
 
     const handleRequestChange = useCallback(({ deviceSpec, mountPoint, reformat, remove, requestIndex }) => {
         const newRequests = [...unappliedRequests];
@@ -542,7 +542,7 @@ const RequestsTable = ({
         /* Sync newRequests to the backend */
         updatePartitioningRequests({
             newRequests,
-            partitioning: partitioningDataPath,
+            partitioning: partitioning.path,
             requests
         }).catch(ex => {
             setStepNotification(ex);
@@ -550,7 +550,11 @@ const RequestsTable = ({
         });
 
         setUnappliedRequests(newRequests);
-    }, [setIsFormValid, deviceData, unappliedRequests, requests, partitioningDataPath, setStepNotification]);
+    }, [setIsFormValid, deviceData, unappliedRequests, requests, partitioning.path, setStepNotification]);
+
+    if (isLoadingPartitioning || unappliedRequests === undefined) {
+        return <EmptyStatePanel loading />;
+    }
 
     return (
         <>
@@ -608,32 +612,38 @@ const isUsableDevice = (devSpec, deviceData) => {
     return false;
 };
 
-const MountPointMapping = ({
-    dispatch,
-    idPrefix,
-    reusePartitioning,
-    setIsFormValid,
-    setReusePartitioning,
-    setStepNotification,
-}) => {
-    const { devices, partitioning } = useContext(StorageContext);
-    const [usedPartitioning, setUsedPartitioning] = useState(partitioning?.path);
-    const mountPointConstraints = useMountPointConstraints();
-    const [skipUnlock, setSkipUnlock] = useState(false);
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(partitioning?.requests, devices),
-        [devices, partitioning?.requests]
-    );
+const useExistingPartitioning = () => {
+    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const [usedPartitioning, setUsedPartitioning] = useState();
 
-    // Display custom footer
-    const getFooter = useMemo(
-        () => (
-            <CustomFooter
-              partitioning={usedPartitioning} />
-        ),
-        [usedPartitioning]
-    );
-    useWizardFooter(getFooter);
+    const reusePartitioning = useMemo(() => {
+        // Calculate usable devices for partitioning by replicating the logic in the backend
+        // FIXME: Create a backend API for that
+        // https://github.com/rhinstaller/anaconda/blob/f79f019e22c87dc388dbcc637a7a5612a3c223a7/pyanaconda/modules/storage/partitioning/manual/manual_module.py#L127
+        const usableDevices = Object.keys(devices).filter(device => {
+            const children = devices[device].children.v;
+            const ancestors = getDeviceAncestors(devices, device);
+
+            if (children.length > 0 && devices[device].type.v !== "btrfs subvolume") {
+                return false;
+            }
+
+            // We don't want to allow to use snapshots in mount point assignment.
+            if (devices[device].type.v === "btrfs snapshot") {
+                return false;
+            }
+
+            // All device's disks have to be in selected disks.
+            return diskSelection.selectedDisks.some(disk => ancestors.includes(disk));
+        });
+
+        const usedDevices = partitioning?.requests?.map(r => r["device-spec"]) || [];
+
+        if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
+            return true;
+        }
+        return false;
+    }, [devices, diskSelection.selectedDisks, partitioning.requests]);
 
     useEffect(() => {
         if (!reusePartitioning || partitioning?.method !== "MANUAL") {
@@ -647,12 +657,33 @@ const MountPointMapping = ({
                     .then(() => createPartitioning({ method: "MANUAL" }))
                     .then(path => {
                         setUsedPartitioning(path);
-                        setReusePartitioning(true);
                     });
+        } else {
+            setUsedPartitioning(partitioning.path);
         }
-    }, [reusePartitioning, setReusePartitioning, partitioning?.method, partitioning?.path]);
+    }, [reusePartitioning, partitioning?.method, partitioning?.path]);
 
-    const isLoadingNewPartitioning = !reusePartitioning || usedPartitioning !== partitioning.path;
+    return usedPartitioning === partitioning.path;
+};
+
+const MountPointMapping = ({
+    dispatch,
+    idPrefix,
+    setIsFormValid,
+    setStepNotification,
+}) => {
+    const { devices, diskSelection } = useContext(StorageContext);
+
+    const [skipUnlock, setSkipUnlock] = useState(false);
+    const lockedLUKSDevices = useMemo(
+        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
+        [devices, diskSelection.selectedDisks]
+    );
+
+    // Display custom footer
+    const getFooter = useMemo(() => <CustomFooter />, []);
+    useWizardFooter(getFooter);
+
     const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
 
     return (
@@ -662,33 +693,25 @@ const MountPointMapping = ({
                 <EncryptedDevices
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isLoadingNewPartitioning={isLoadingNewPartitioning}
                   lockedLUKSDevices={lockedLUKSDevices}
                   setSkipUnlock={setSkipUnlock}
                 />
             )}
             {!showLuksUnlock && (
-                (isLoadingNewPartitioning || mountPointConstraints === undefined || !partitioning?.requests)
-                    ? (
-                        <EmptyStatePanel loading />
-                    )
-                    : (
-                        <RequestsTable
-                          deviceData={devices}
-                          idPrefix={idPrefix + "-table"}
-                          lockedLUKSDevices={lockedLUKSDevices}
-                          setStepNotification={setStepNotification}
-                          partitioningDataPath={partitioning?.path}
-                          requests={partitioning?.requests}
-                          mountPointConstraints={mountPointConstraints}
-                          setIsFormValid={setIsFormValid}
-                        />
-                    ))}
+                <RequestsTable
+                  deviceData={devices}
+                  idPrefix={idPrefix + "-table"}
+                  lockedLUKSDevices={lockedLUKSDevices}
+                  setStepNotification={setStepNotification}
+                  setIsFormValid={setIsFormValid}
+                />
+            )}
         </>
     );
 };
 
-const CustomFooter = ({ partitioning }) => {
+const CustomFooter = () => {
+    const { partitioning } = useContext(StorageContext);
     const step = usePage().id;
     const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
         return applyStorage({
@@ -705,7 +728,7 @@ const CustomFooter = ({ partitioning }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
-            partitioning
+            partitioning: partitioning.path,
         });
     };
 

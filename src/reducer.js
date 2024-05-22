@@ -112,7 +112,9 @@ export const storageReducer = (state = storageInitialState, action) => {
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
-        return { ...state, partitioning: { ...state.partitioning, ...action.payload.partitioningData } };
+        const storageScenarioId = window.sessionStorage.getItem("storage-scenario-id");
+
+        return { ...state, partitioning: { ...state.partitioning, ...action.payload.partitioningData, storageScenarioId } };
     } else if (action.type === "SET_STORAGE_SCENARIO") {
         return { ...state, storageScenarioId: action.payload.scenario };
     } else {

@@ -35,7 +35,6 @@ const InstallationMethod = ({
     isEfi,
     isFormDisabled,
     onCritFail,
-    scenarioPartitioningMapping,
     setIsFormDisabled,
     setIsFormValid,
     setShowStorage,
@@ -61,7 +60,6 @@ const InstallationMethod = ({
               idPrefix={idPrefix}
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
-              scenarioPartitioningMapping={scenarioPartitioningMapping}
               setIsFormValid={setIsFormValid}
             />
         </Form>
