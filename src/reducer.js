@@ -26,6 +26,7 @@ export const storageInitialState = {
         selectedDisks: [],
         usableDisks: []
     },
+    mountPoints: {},
     partitioning: {},
     storageScenarioId: null,
 };
@@ -108,7 +109,7 @@ export const reducer = (state, action) => {
 
 export const storageReducer = (state = storageInitialState, action) => {
     if (action.type === "GET_DEVICES_DATA") {
-        return { ...state, deviceNames: action.payload.deviceNames, devices: action.payload.devices };
+        return { ...state, deviceNames: action.payload.deviceNames, devices: action.payload.devices, mountPoints: action.payload.mountPoints };
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {

@@ -34,16 +34,6 @@ export const getDeviceAncestors = (deviceData, device) => {
     return ancestors;
 };
 
-/* Check if the given device is a descendant of the given ancestor
- * @param {string} device - The name of the device
- * @param {string} rootDevice - The name of the ancestor
- * @param {Object} deviceData - The device data object
- * @returns {boolean}
- */
-export const checkDeviceInSubTree = ({ device, deviceData, rootDevice }) => {
-    return getDeviceChildren({ device: rootDevice, deviceData }).includes(device);
-};
-
 /* Get the list of names of all the descendants of the given device
  * (including the device itself)
  * @param {string} device - The name of the device
@@ -110,4 +100,50 @@ export const isDuplicateRequestField = (requests, fieldName, fieldValue) => {
 
 export const getDeviceNameByPath = (deviceData, path) => {
     return Object.keys(deviceData).find(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+};
+
+/* Check if a device has a LUKS encrypted parent
+ * @param {Object} deviceData - The device data object
+ * @param {string} device - The name of the device
+ * @returns {boolean}
+ * */
+export const hasEncryptedAncestor = (deviceData, device) => {
+    if (deviceData[device].type.v === "luks/dm-crypt") {
+        return true;
+    }
+
+    const parent = deviceData[device].parents.v?.[0];
+
+    if (parent) {
+        return hasEncryptedAncestor(deviceData, parent);
+    } else {
+        return false;
+    }
+};
+
+/* Get the parent partitions names of a given device
+ * @param {Object} deviceData - The device data object
+ * @param {string} device - The name of the device
+ * @returns {Array}
+ * */
+export const getParentPartitions = (deviceData, device) => {
+    if (deviceData[device].type.v === "partition") {
+        return [device];
+    }
+
+    return deviceData[device].parents.v.map(parent => getParentPartitions(deviceData, parent)).flat(Infinity);
+};
+
+/* Check if a device has parents of a given type
+ * @param {Object} deviceData - The device data object
+ * @param {string} device - The name of the device
+ * @param {string} type - The type of the device to check for
+ * @returns {boolean}
+ * */
+export const checkDeviceOnStorageType = (deviceData, device, type) => {
+    if (deviceData[device].type.v === type) {
+        return true;
+    }
+
+    return deviceData[device].parents.v?.some(parent => checkDeviceOnStorageType(deviceData, parent, type));
 };
