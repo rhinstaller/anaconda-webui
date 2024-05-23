@@ -66,6 +66,7 @@ const DiskEncryption = ({
     idPrefix,
     isInProgress,
     setIsFormValid,
+    setStepNotification,
 }) => {
     const { partitioning } = useContext(StorageContext);
     const request = partitioning?.requests?.[0];
@@ -75,7 +76,10 @@ const DiskEncryption = ({
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
 
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter encrypt={isEncrypted} encryptPassword={password} />, [isEncrypted, password]);
+    const getFooter = useMemo(
+        () => <CustomFooter encrypt={isEncrypted} encryptPassword={password} setStepNotification={setStepNotification} />,
+        [isEncrypted, password, setStepNotification]
+    );
     useWizardFooter(getFooter);
 
     const encryptedDevicesCheckbox = content => (
@@ -128,9 +132,9 @@ const DiskEncryption = ({
     );
 };
 
-const CustomFooter = ({ encrypt, encryptPassword }) => {
+const CustomFooter = ({ encrypt, encryptPassword, setStepNotification }) => {
     const step = usePage({}).id;
-    const onNext = ({ goToNextStep, setIsFormDisabled, setStepNotification }) => {
+    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
             encrypt,
             encryptPassword,

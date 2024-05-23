@@ -49,7 +49,6 @@ export const AnacondaWizardFooter = ({
         isFormValid,
         setIsFormDisabled,
         setIsFormValid,
-        setStepNotification
     } = useContext(FooterContext);
 
     const onNextButtonClicked = () => {
@@ -60,7 +59,6 @@ export const AnacondaWizardFooter = ({
                 isFormValid,
                 setIsFormDisabled,
                 setIsFormValid,
-                setStepNotification,
             });
         } else {
             goToNextStep();
