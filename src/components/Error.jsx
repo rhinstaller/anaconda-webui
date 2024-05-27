@@ -134,7 +134,7 @@ export const BZReportModal = ({
           variant={ModalVariant.large}
           footer={
               <Stack hasGutter>
-                  <FormHelperText isHidden={false}>
+                  <FormHelperText>
                       <HelperText>
                           {isConnected
                               ? <HelperTextItem> {_("Reporting an issue will send information over the network. Please review and edit the attached log to remove any sensitive information.")} </HelperTextItem>
