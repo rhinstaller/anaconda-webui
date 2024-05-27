@@ -77,8 +77,14 @@ const DiskEncryption = ({
 
     // Display custom footer
     const getFooter = useMemo(
-        () => <CustomFooter encrypt={isEncrypted} encryptPassword={password} setStepNotification={setStepNotification} />,
-        [isEncrypted, password, setStepNotification]
+        () =>
+            <CustomFooter
+              encrypt={isEncrypted}
+              encryptPassword={password}
+              partitioning={partitioning.path}
+              setStepNotification={setStepNotification}
+            />,
+        [isEncrypted, password, partitioning.path, setStepNotification]
     );
     useWizardFooter(getFooter);
 
@@ -132,7 +138,7 @@ const DiskEncryption = ({
     );
 };
 
-const CustomFooter = ({ encrypt, encryptPassword, setStepNotification }) => {
+const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotification }) => {
     const step = usePage({}).id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
@@ -150,6 +156,7 @@ const CustomFooter = ({ encrypt, encryptPassword, setStepNotification }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
+            partitioning,
         });
     };
 
