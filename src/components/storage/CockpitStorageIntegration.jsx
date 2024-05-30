@@ -24,6 +24,7 @@ import {
     Button,
     Card,
     CardBody,
+    Divider,
     Flex,
     FlexItem,
     HelperText,
@@ -31,8 +32,8 @@ import {
     List,
     ListItem,
     Modal,
+    ModalVariant,
     PageSection,
-    PageSectionVariants,
     Stack,
     Text,
     TextContent,
@@ -91,31 +92,34 @@ export const CockpitStorageIntegration = ({
     onCritFail,
     scenarioAvailability,
     setShowStorage,
+    showStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
-        iframe.contentWindow.addEventListener("error", exception => {
-            onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
-        });
+        if (iframe) {
+            iframe.contentWindow.addEventListener("error", exception => {
+                onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
+            });
+        }
     }, [onCritFail]);
 
     return (
-        <>
-            <PageSection
-              stickyOnBreakpoint={{ default: "top" }}
-              variant={PageSectionVariants.light}
-            >
-                <Flex spaceItems={{ default: "spaceItemsLg" }}>
-                    <Title headingLevel="h1" size="2xl">{_("Configure storage")}</Title>
-                    <Alert
-                      isInline
-                      isPlain
-                      title={_("Changes made here will immediately affect the system. There is no 'undo'.")}
-                      variant="warning"
-                    />
-                </Flex>
-            </PageSection>
+        <Modal
+          aria-label={_("Configure storage")}
+          className={idPrefix + "-modal-page-section"}
+          footer={<ReturnToInstallationButton onAction={() => setShowDialog(true)} />}
+          hasNoBodyWrapper
+          isOpen={showStorage}
+          onClose={() => setShowDialog(true)}
+          showClose={false}
+          variant={ModalVariant.large}>
+            <Alert
+              isInline
+              title={_("Changes made here will immediately affect the system. There is no 'undo'.")}
+              variant="warning"
+            />
+            <Divider />
             <div className={idPrefix + "-page-section-cockpit-storage"}>
                 <PageSection>
                     <iframe
@@ -126,14 +130,6 @@ export const CockpitStorageIntegration = ({
                 </PageSection>
                 <ModifyStorageSideBar />
             </div>
-            <PageSection
-              className={idPrefix + "-page-section-storage-footer"}
-              stickyOnBreakpoint={{ default: "bottom" }}
-              variant={PageSectionVariants.light}
-            >
-                <ReturnToInstallationButton
-                  onAction={() => setShowDialog(true)} />
-            </PageSection>
             {showDialog &&
             <CheckStorageDialog
               dispatch={dispatch}
@@ -143,7 +139,7 @@ export const CockpitStorageIntegration = ({
               setShowDialog={setShowDialog}
               setShowStorage={setShowStorage}
             />}
-        </>
+        </Modal>
     );
 };
 
@@ -229,7 +225,6 @@ const CheckStorageDialog = ({
             mountPointConstraints,
             newMountPoints,
         });
-
         return availability.available;
     }, [devices, mountPointConstraints, newMountPoints]);
 

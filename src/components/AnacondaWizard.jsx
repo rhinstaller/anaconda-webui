@@ -30,9 +30,8 @@ import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext } from "./Common.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
-import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 
-export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, setShowStorage, showStorage }) => {
+export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [showWizard, setShowWizard] = useState(true);
@@ -51,7 +50,6 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, setShowStorag
         onCritFail,
         setIsFormDisabled,
         setIsFormValid,
-        setShowStorage,
     };
 
     const stepsOrder = getSteps();
@@ -123,17 +121,6 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, setShowStorag
         nextButtonText: stepProps?.nextButtonText,
         nextButtonVariant: stepProps?.nextButtonVariant,
     };
-
-    if (showStorage) {
-        return (
-            <CockpitStorageIntegration
-              dispatch={dispatch}
-              isFormDisabled={isFormDisabled}
-              onCritFail={onCritFail}
-              setShowStorage={setShowStorage}
-            />
-        );
-    }
 
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>

@@ -46,7 +46,6 @@ export const Application = () => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const criticalError = state?.error?.criticalError;
     const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
-    const [showStorage, setShowStorage] = useState(false);
     const onCritFail = useError({ dispatch });
     const address = useAddress();
     const conf = useConf({ onCritFail });
@@ -99,7 +98,6 @@ export const Application = () => {
               reportLinkURL={bzReportURL} />}
             {!criticalErrorFrontend &&
             <>
-                {!showStorage &&
                 <PageGroup stickyOnBreakpoint={{ default: "top" }}>
                     <AnacondaHeader
                       title={title}
@@ -107,15 +105,13 @@ export const Application = () => {
                       isConnected={state.network.connected}
                       onCritFail={onCritFail}
                     />
-                </PageGroup>}
+                </PageGroup>
                 <AnacondaWizard
                   isFetching={state.misc.isFetching}
                   onCritFail={onCritFail}
                   title={title}
                   dispatch={dispatch}
                   conf={conf}
-                  setShowStorage={setShowStorage}
-                  showStorage={showStorage}
                 />
             </>}
         </Page>
