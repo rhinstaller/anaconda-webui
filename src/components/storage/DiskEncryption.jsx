@@ -64,7 +64,6 @@ const CheckDisksSpinner = (
 
 const DiskEncryption = ({
     idPrefix,
-    isInProgress,
     setIsFormValid,
     setStepNotification,
 }) => {
@@ -87,6 +86,14 @@ const DiskEncryption = ({
         [isEncrypted, password, partitioning.path, setStepNotification]
     );
     useWizardFooter(getFooter);
+
+    useEffect(() => {
+        setIsFormValid(!isEncrypted);
+    }, [setIsFormValid, isEncrypted]);
+
+    if (password === undefined) {
+        return CheckDisksSpinner;
+    }
 
     const encryptedDevicesCheckbox = content => (
         <Checkbox
@@ -112,14 +119,6 @@ const DiskEncryption = ({
           setIsValid={setIsFormValid}
         />
     );
-
-    useEffect(() => {
-        setIsFormValid(!isEncrypted);
-    }, [setIsFormValid, isEncrypted]);
-
-    if (isInProgress) {
-        return CheckDisksSpinner;
-    }
 
     return (
         <>
