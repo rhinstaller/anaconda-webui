@@ -62,6 +62,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
             const isVisited = firstStepId === s.id || currentStepId === s.id;
             let stepProps = {
                 id: s.id,
+                isDisabled: isFormDisabled,
                 isHidden: s.isHidden,
                 isVisited,
                 name: s.label,
