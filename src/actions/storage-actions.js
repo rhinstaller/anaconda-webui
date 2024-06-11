@@ -41,6 +41,11 @@ import {
 
 export const getDevicesAction = () => {
     return async (dispatch) => {
+        dispatch({
+            payload: { isFetching: true },
+            type: "SET_IS_FETCHING",
+        });
+
         try {
             const devices = await getDevices();
             const deviceData = {};
@@ -69,6 +74,11 @@ export const getDevicesAction = () => {
                 }
             }
 
+            dispatch({
+                payload: { isFetching: false },
+                type: "SET_IS_FETCHING",
+            });
+
             return dispatch({
                 payload: {
                     deviceNames: devices,
@@ -78,6 +88,11 @@ export const getDevicesAction = () => {
                 type: "GET_DEVICES_DATA"
             });
         } catch (error) {
+            dispatch({
+                payload: { isFetching: false },
+                type: "SET_IS_FETCHING",
+            });
+
             return dispatch(setCriticalErrorAction(error));
         }
     };
