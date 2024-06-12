@@ -158,7 +158,7 @@ export const getNewPartitioning = async ({
 
     const part = await createPartitioning({ method });
 
-    if (currentPartitioning.method === method && method === "AUTOMATIC" && currentPartitioning.requests[0].encrypted) {
+    if (currentPartitioning?.method === method && method === "AUTOMATIC" && currentPartitioning.requests[0].encrypted) {
         await partitioningSetEncrypt({ encrypt: true, partitioning: part });
         await partitioningSetPassphrase({ partitioning: part, passphrase: currentPartitioning.requests[0].passphrase });
     }
