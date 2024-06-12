@@ -94,7 +94,7 @@ const CustomFooter = () => {
         if (method === "MANUAL") {
             setNewPartitioning(partitioning.path);
         } else {
-            const part = await getNewPartitioning({ currentPartitioning: partitioning, method });
+            const part = await getNewPartitioning({ currentPartitioning: partitioning, method, storageScenarioId });
             setNewPartitioning(part);
         }
     };

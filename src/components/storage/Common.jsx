@@ -30,6 +30,7 @@ import {
     getRequiredDeviceSize,
 } from "../../apis/storage_devicetree.js";
 import {
+    setInitializationMode,
     setInitializeLabelsEnabled,
 } from "../../apis/storage_disk_initialization.js";
 import {
@@ -39,6 +40,8 @@ import {
 } from "../../apis/storage_partitioning.js";
 
 import { findDuplicatesInArray } from "../../helpers/utils.js";
+
+import { scenarios } from "./InstallationScenario.jsx";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();
@@ -140,7 +143,14 @@ export const useMountPointConstraints = () => {
     return mountPointConstraints;
 };
 
-export const getNewPartitioning = async ({ currentPartitioning, method = "AUTOMATIC" }) => {
+export const getNewPartitioning = async ({
+    currentPartitioning,
+    method = "AUTOMATIC",
+    storageScenarioId,
+}) => {
+    const initializationMode = scenarios.find(sc => sc.id === storageScenarioId).initializationMode;
+    await setInitializationMode({ mode: initializationMode });
+
     if (method === "AUTOMATIC") {
         await setInitializeLabelsEnabled({ enabled: true });
     }
