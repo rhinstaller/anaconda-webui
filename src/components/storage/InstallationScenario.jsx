@@ -376,11 +376,12 @@ export const InstallationScenario = ({
 }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const headingLevel = isBootIso ? "h2" : "h3";
+    const { storageScenarioId } = useContext(StorageContext);
 
     return (
         <>
             <Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>
-            <FormGroup isStack hasNoPaddingTop>
+            <FormGroup isStack hasNoPaddingTop data-scenario={storageScenarioId}>
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
