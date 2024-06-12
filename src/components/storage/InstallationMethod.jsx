@@ -25,6 +25,8 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
+import { getAppliedPartitioning, resetPartitioning } from "../../apis/storage_partitioning.js";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 import { getNewPartitioning } from "./Common.jsx";
@@ -43,11 +45,37 @@ const InstallationMethod = ({
     setIsFormValid,
     setShowStorage,
 }) => {
+    const { partitioning } = useContext(StorageContext);
+    const [isLoading, setIsLoading] = useState(true);
+
     // Display custom footer
     const getFooter = useMemo(() => (
         <CustomFooter />
     ), []);
     useWizardFooter(getFooter);
+
+    useEffect(() => {
+        // Always reset the partitioning when entering the installation destination page
+        const resetPartitioningAsync = async () => {
+            const appliedPartitioning = await getAppliedPartitioning();
+            if (appliedPartitioning) {
+                await resetPartitioning();
+            }
+            setIsLoading(false);
+        };
+
+        // If the last partitioning applied was from the cockpit storage integration
+        // we should not reset it, as this option does apply the partitioning onNext
+        if (partitioning.storageScenarioId !== "use-configured-storage") {
+            resetPartitioningAsync();
+        } else {
+            setIsLoading(false);
+        }
+    }, [setIsFormDisabled, partitioning.storageScenarioId]);
+
+    if (isLoading) {
+        return null;
+    }
 
     return (
         <Form

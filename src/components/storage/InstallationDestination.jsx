@@ -47,7 +47,7 @@ import {
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
-import { getAppliedPartitioning, resetPartitioning } from "../../apis/storage_partitioning.js";
+import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
 
@@ -326,7 +326,7 @@ export const InstallationDestination = ({
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const { devices, diskSelection } = useContext(StorageContext);
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 
@@ -336,24 +336,6 @@ export const InstallationDestination = ({
             setEqualDisksNotify(true);
         }
     }, [isRescanningDisks, diskSelection.usableDisks]);
-
-    useEffect(() => {
-        // Always reset the partitioning when entering the installation destination page
-        const resetPartitioningAsync = async () => {
-            setIsFormDisabled(true);
-            const appliedPartitioning = await getAppliedPartitioning();
-            if (appliedPartitioning) {
-                await resetPartitioning();
-            }
-            setIsFormDisabled(false);
-        };
-
-        // If the last partitioning applied was from the cockpit storage integration
-        // we should not reset it, as this option does apply the partitioning onNext
-        if (partitioning.storageScenarioId !== "use-configured-storage") {
-            resetPartitioningAsync();
-        }
-    }, [setIsFormDisabled, partitioning.storageScenarioId]);
 
     useEffect(() => {
         // Select default disks for the partitioning on component mount
