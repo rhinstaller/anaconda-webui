@@ -128,6 +128,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, setShowStorag
         return (
             <CockpitStorageIntegration
               dispatch={dispatch}
+              isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               setShowStorage={setShowStorage}
             />
