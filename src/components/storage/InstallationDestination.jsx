@@ -47,7 +47,7 @@ import {
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
-import { resetPartitioning } from "../../apis/storage_partitioning.js";
+import { getAppliedPartitioning, resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
 
@@ -341,7 +341,10 @@ export const InstallationDestination = ({
         // Always reset the partitioning when entering the installation destination page
         const resetPartitioningAsync = async () => {
             setIsFormDisabled(true);
-            await resetPartitioning();
+            const appliedPartitioning = await getAppliedPartitioning();
+            if (appliedPartitioning) {
+                await resetPartitioning();
+            }
             setIsFormDisabled(false);
         };
 
