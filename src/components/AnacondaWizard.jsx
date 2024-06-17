@@ -55,7 +55,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
     };
 
     const stepsOrder = getSteps();
-    const firstStepId = stepsOrder[0].id;
+    const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
