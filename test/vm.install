@@ -49,8 +49,7 @@ def vm_install(image, verbose, quick):
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
-            # FIXME: Download cockpit-storaged from custom COPR till release 311 is available in rawhide
-            download_from_copr("@cockpit/main-builds", "cockpit-storaged", machine)
+            packages_to_download += " cockpit-storaged"
 
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
         # from a different repo, then pull it from the anaconda-webui PR COPR repo
