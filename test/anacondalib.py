@@ -50,6 +50,8 @@ class VirtInstallMachineCase(MachineCase):
 
         super().setUp()
 
+        self.resetLanguage()
+
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
         self.installation_finished = False
 
