@@ -24,5 +24,5 @@ export const getSteps = () => {
         pageAccounts(),
         pageReviewConfiguration()
     ];
-    return stepsOrder.filter(step => !step.isHidden);
+    return stepsOrder;
 };

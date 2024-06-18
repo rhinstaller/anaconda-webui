@@ -41,8 +41,8 @@ export const AnacondaWizardFooter = ({
     onNext,
 }) => {
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
-    const { activeStep, goToNextStep, goToPrevStep } = useWizardContext();
-    const isFirstScreen = activeStep.index === 1;
+    const { activeStep, goToNextStep, goToPrevStep, steps } = useWizardContext();
+    const isFirstScreen = activeStep.id === steps.find(step => !step.isHidden).id;
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const {
         isFormDisabled,
