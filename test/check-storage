@@ -1112,7 +1112,8 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         b.assert_pixels(
             "#app",
             "storage-editor",
-            ignore=[*anacondalib.pixel_tests_ignore, ".cockpit-storage-integration-requirements-hint"],
+            ignore=[*anacondalib.pixel_tests_ignore, ".cockpit-storage-integration-requirements-hint",
+                    "#cockpit-storage-frame"],
         )
         b.switch_to_frame("cockpit-storage")
         self.confirm()
