@@ -43,29 +43,36 @@ export const getDevicesAction = () => {
     return async (dispatch) => {
         try {
             const devices = await getDevices();
+            const deviceData = {};
             const mountPoints = await getMountPoints();
-            const devicesData = await Promise.all(devices.map(async (device) => {
-                const devData = await getDeviceData({ disk: device });
+            for (const device of devices) {
+                try {
+                    const devData = await getDeviceData({ disk: device });
 
-                const free = await getDiskFreeSpace({ diskNames: [device] });
-                // extend it with variants to keep the format consistent
-                devData.free = cockpit.variant(String, free);
+                    const free = await getDiskFreeSpace({ diskNames: [device] });
+                    // extend it with variants to keep the format consistent
+                    devData.free = cockpit.variant(String, free);
 
-                const total = await getDiskTotalSpace({ diskNames: [device] });
-                devData.total = cockpit.variant(String, total);
+                    const total = await getDiskTotalSpace({ diskNames: [device] });
+                    devData.total = cockpit.variant(String, total);
 
-                const formatData = await getFormatData({ diskName: device });
-                devData.formatData = formatData;
+                    const formatData = await getFormatData({ diskName: device });
+                    devData.formatData = formatData;
 
-                const deviceData = { [device]: devData };
-
-                return deviceData;
-            }));
+                    deviceData[device] = devData;
+                } catch (error) {
+                    if (error.name === "org.fedoraproject.Anaconda.Modules.Storage.UnknownDeviceError") {
+                        continue;
+                    } else {
+                        throw error;
+                    }
+                }
+            }
 
             return dispatch({
                 payload: {
                     deviceNames: devices,
-                    devices: devicesData.reduce((acc, curr) => ({ ...acc, ...curr }), {}),
+                    devices: deviceData,
                     mountPoints,
                 },
                 type: "GET_DEVICES_DATA"
