@@ -1216,18 +1216,18 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         # Exit the cockpit-storage iframe
         b.switch_to_top()
 
-        def checkStorageReview():
+        def checkStorageReview(prefix=""):
             disk = "vda"
             r.check_disk(disk, "16.1 GB vda (0x1af4)")
-            r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
-            r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False)
-            r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False)
-            r.check_disk_row(disk, "swap", "vda3, LVM", "898 MB", False)
+            r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "swap", "vda3, LVM", "898 MB", False, prefix=prefix)
 
         s.return_to_installation()
 
         # verify storage layout review in Cockpit storage exit dialog
-        checkStorageReview()
+        checkStorageReview(prefix="#cockpit-storage-integration-check-storage-dialog")
         b.assert_pixels(
             "#cockpit-storage-integration-check-storage-dialog",
             "cockpit-storage-integration-check-storage-dialog-LVM",
