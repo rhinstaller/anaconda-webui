@@ -99,6 +99,7 @@ const InstallationMethod = ({
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               setIsFormValid={setIsFormValid}
+              showStorage={showStorage}
             />
         </Form>
     );
