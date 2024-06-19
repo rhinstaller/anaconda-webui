@@ -32,7 +32,7 @@ import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
 import { CockpitStorageIntegration } from "./storage/CockpitStorageIntegration.jsx";
 
-export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStorage }) => {
+export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, setShowStorage, showStorage }) => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
     const [showWizard, setShowWizard] = useState(true);
@@ -62,6 +62,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
             const isVisited = firstStepId === s.id || currentStepId === s.id;
             let stepProps = {
                 id: s.id,
+                isDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden,
                 isVisited,
                 name: s.label,
@@ -85,7 +86,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
                 };
             }
             return (
-                <WizardStep key={s.id + s.isVisited} {...stepProps} />
+                <WizardStep key={s.id + s.isVisited + (stepProps.isDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
             );
         });
     };
@@ -127,6 +128,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
         return (
             <CockpitStorageIntegration
               dispatch={dispatch}
+              isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               setShowStorage={setShowStorage}
             />
@@ -136,7 +138,7 @@ export const AnacondaWizard = ({ dispatch, onCritFail, setShowStorage, showStora
     return (
         <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
             <FooterContext.Provider value={{
-                isFormDisabled,
+                isFormDisabled: isFormDisabled || isFetching,
                 isFormValid,
                 setIsFormDisabled,
                 setIsFormValid,

@@ -385,6 +385,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.select_disks(disks)
 
         self.set_partitioning("mount-point-mapping")
+        self.browser.wait_visible("div[data-scenario='mount-point-mapping']")
 
         i = Installer(self.browser, self.machine)
         i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)

@@ -22,12 +22,6 @@ import {
     runStorageTask,
     StorageClient,
 } from "./storage.js";
-import {
-    setBootloaderDrive,
-} from "./storage_bootloader.js";
-import {
-    setInitializeLabelsEnabled,
-} from "./storage_disk_initialization.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";
@@ -205,23 +199,18 @@ export const gatherRequests = ({ partitioning }) => {
 };
 
 export const applyStorage = async ({ encrypt, encryptPassword, onFail, onSuccess, partitioning }) => {
-    await setInitializeLabelsEnabled({ enabled: true });
-    await setBootloaderDrive({ drive: "" });
-
-    const part = partitioning || await createPartitioning({ method: "AUTOMATIC" });
-
-    if (encrypt) {
-        await partitioningSetEncrypt({ encrypt, partitioning: part });
+    if (encrypt !== undefined) {
+        await partitioningSetEncrypt({ encrypt, partitioning });
     }
     if (encryptPassword) {
-        await partitioningSetPassphrase({ partitioning: part, passphrase: encryptPassword });
+        await partitioningSetPassphrase({ partitioning, passphrase: encryptPassword });
     }
 
-    const tasks = await partitioningConfigureWithTask({ partitioning: part });
+    const tasks = await partitioningConfigureWithTask({ partitioning });
 
     runStorageTask({
         onFail,
-        onSuccess: () => applyPartitioning({ partitioning: part })
+        onSuccess: () => applyPartitioning({ partitioning })
                 .then(onSuccess)
                 .catch(onFail),
         task: tasks[0]

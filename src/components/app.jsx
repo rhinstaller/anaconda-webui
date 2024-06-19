@@ -109,6 +109,7 @@ export const Application = () => {
                     />
                 </PageGroup>}
                 <AnacondaWizard
+                  isFetching={state.misc.isFetching}
                   onCritFail={onCritFail}
                   title={title}
                   dispatch={dispatch}

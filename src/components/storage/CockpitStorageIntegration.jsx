@@ -87,6 +87,7 @@ const ReturnToInstallationButton = ({ onAction }) => (
 
 export const CockpitStorageIntegration = ({
     dispatch,
+    isFormDisabled,
     onCritFail,
     scenarioAvailability,
     setShowStorage,
@@ -136,6 +137,7 @@ export const CockpitStorageIntegration = ({
             {showDialog &&
             <CheckStorageDialog
               dispatch={dispatch}
+              isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               scenarioAvailability={scenarioAvailability}
               setShowDialog={setShowDialog}
@@ -203,6 +205,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
 
 const CheckStorageDialog = ({
     dispatch,
+    isFormDisabled,
     onCritFail,
     setShowDialog,
     setShowStorage,
@@ -395,6 +398,7 @@ const CheckStorageDialog = ({
                           <>
                               <Button
                                 id={idPrefix + "-check-storage-dialog-continue"}
+                                isDisabled={isFormDisabled}
                                 variant="primary"
                                 onClick={goBackToInstallation}>
                                   {_("Continue")}
@@ -416,6 +420,7 @@ const CheckStorageDialog = ({
                               </Button>
                               <Button
                                 id={idPrefix + "-check-storage-dialog-continue"}
+                                isDisabled={isFormDisabled}
                                 variant="secondary"
                                 onClick={() => setShowStorage(false)}>
                                   {_("Proceed with installation")}

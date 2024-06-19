@@ -64,7 +64,6 @@ const CheckDisksSpinner = (
 
 const DiskEncryption = ({
     idPrefix,
-    isInProgress,
     setIsFormValid,
     setStepNotification,
 }) => {
@@ -77,10 +76,24 @@ const DiskEncryption = ({
 
     // Display custom footer
     const getFooter = useMemo(
-        () => <CustomFooter encrypt={isEncrypted} encryptPassword={password} setStepNotification={setStepNotification} />,
-        [isEncrypted, password, setStepNotification]
+        () =>
+            <CustomFooter
+              encrypt={isEncrypted}
+              encryptPassword={password}
+              partitioning={partitioning.path}
+              setStepNotification={setStepNotification}
+            />,
+        [isEncrypted, password, partitioning.path, setStepNotification]
     );
     useWizardFooter(getFooter);
+
+    useEffect(() => {
+        setIsFormValid(!isEncrypted);
+    }, [setIsFormValid, isEncrypted]);
+
+    if (password === undefined) {
+        return CheckDisksSpinner;
+    }
 
     const encryptedDevicesCheckbox = content => (
         <Checkbox
@@ -107,14 +120,6 @@ const DiskEncryption = ({
         />
     );
 
-    useEffect(() => {
-        setIsFormValid(!isEncrypted);
-    }, [setIsFormValid, isEncrypted]);
-
-    if (isInProgress) {
-        return CheckDisksSpinner;
-    }
-
     return (
         <>
             <TextContent>
@@ -132,9 +137,10 @@ const DiskEncryption = ({
     );
 };
 
-const CustomFooter = ({ encrypt, encryptPassword, setStepNotification }) => {
+const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotification }) => {
     const step = usePage({}).id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
+        setIsFormDisabled(true);
         return applyStorage({
             encrypt,
             encryptPassword,
@@ -150,6 +156,7 @@ const CustomFooter = ({ encrypt, encryptPassword, setStepNotification }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
+            partitioning,
         });
     };
 

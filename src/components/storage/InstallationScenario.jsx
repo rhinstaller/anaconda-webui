@@ -24,10 +24,6 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import {
-    setInitializationMode,
-} from "../../apis/storage_disk_initialization.js";
-
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
@@ -254,13 +250,6 @@ export const useScenario = () => {
     return scenario;
 };
 
-export const scenarioForInitializationMode = (mode) => {
-    const ss = scenarios.filter(s => s.initializationMode === mode);
-    if (ss.length > 0) {
-        return ss[0];
-    }
-};
-
 export const getDefaultScenario = () => {
     return scenarios.filter(s => s.default)[0];
 };
@@ -348,16 +337,6 @@ const InstallationScenarioSelector = ({
         setIsFormValid(availableScenarioExists);
     }, [dispatch, scenarioAvailability, setIsFormValid, storageScenarioId]);
 
-    useEffect(() => {
-        const applyScenario = async (scenarioId) => {
-            const scenario = scenarios.find(s => s.id === scenarioId);
-            await setInitializationMode({ mode: scenario.initializationMode });
-        };
-        if (storageScenarioId) {
-            applyScenario(storageScenarioId);
-        }
-    }, [storageScenarioId]);
-
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
     };
@@ -397,11 +376,12 @@ export const InstallationScenario = ({
 }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const headingLevel = isBootIso ? "h2" : "h3";
+    const { storageScenarioId } = useContext(StorageContext);
 
     return (
         <>
             <Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>
-            <FormGroup isStack hasNoPaddingTop>
+            <FormGroup isStack hasNoPaddingTop data-scenario={storageScenarioId}>
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}

@@ -37,11 +37,7 @@ import {
 import { TrashIcon } from "@patternfly/react-icons";
 
 import {
-    setBootloaderDrive,
-} from "../../apis/storage_bootloader.js";
-import {
     applyStorage,
-    createPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
@@ -58,7 +54,7 @@ import { ListingTable } from "cockpit-components-table.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { StorageContext } from "../Common.jsx";
-import { useMountPointConstraints } from "./Common.jsx";
+import { getNewPartitioning, useMountPointConstraints } from "./Common.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./MountPointMapping.scss";
@@ -646,21 +642,22 @@ const useExistingPartitioning = () => {
     }, [devices, diskSelection.selectedDisks, partitioning.requests]);
 
     useEffect(() => {
-        if (!reusePartitioning || partitioning?.method !== "MANUAL") {
-            /* Reset the bootloader drive before we schedule partitions
-             * The bootloader drive is automatically set during the partitioning, so
-             * make sure we always reset the previous value before we run another one,
-             * so it can be automatically set again based on the current disk selection.
-             * Otherwise, the partitioning can fail with an error.
-             */
-            setBootloaderDrive({ drive: "" })
-                    .then(() => createPartitioning({ method: "MANUAL" }))
-                    .then(path => {
-                        setUsedPartitioning(path);
-                    });
-        } else {
-            setUsedPartitioning(partitioning.path);
-        }
+        const _setPartitioningPath = async () => {
+            if (!reusePartitioning || partitioning?.method !== "MANUAL") {
+                /* Reset the bootloader drive before we schedule partitions
+                 * The bootloader drive is automatically set during the partitioning, so
+                 * make sure we always reset the previous value before we run another one,
+                 * so it can be automatically set again based on the current disk selection.
+                 * Otherwise, the partitioning can fail with an error.
+                 */
+                const path = await getNewPartitioning({ method: "MANUAL", storageScenarioId: "mount-point-mapping" });
+                setUsedPartitioning(path);
+            } else {
+                setUsedPartitioning(partitioning.path);
+            }
+        };
+
+        _setPartitioningPath();
     }, [reusePartitioning, partitioning?.method, partitioning?.path]);
 
     return usedPartitioning === partitioning.path;

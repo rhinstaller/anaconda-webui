@@ -54,6 +54,10 @@ export const runtimeInitialState = {
     connected: null
 };
 
+export const miscInitialState = {
+    isFetching: false,
+};
+
 /* Initial state for the users store substate */
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
@@ -71,6 +75,7 @@ export const usersInitialState = {
 export const initialState = {
     error: errorInitialState,
     localization: localizationInitialState,
+    misc: miscInitialState,
     network: networkInitialState,
     runtime: runtimeInitialState,
     storage: storageInitialState,
@@ -100,6 +105,7 @@ export const reducer = (state, action) => {
     return ({
         error: errorReducer(state.error, action),
         localization: localizationReducer(state.localization, action),
+        misc: miscReducer(state.misc, action),
         network: networkReducer(state.network, action),
         runtime: runtimeReducer(state.runtime, action),
         storage: storageReducer(state.storage, action),
@@ -150,6 +156,14 @@ const errorReducer = (state = errorInitialState, action) => {
         return { ...state, criticalError: action.payload.criticalError };
     } else if (action.type === "SET_CRITICAL_ERROR_FRONTEND") {
         return { ...state, criticalErrorFrontend: action.payload.criticalErrorFrontend };
+    } else {
+        return state;
+    }
+};
+
+const miscReducer = (state = miscInitialState, action) => {
+    if (action.type === "SET_IS_FETCHING") {
+        return { ...state, isFetching: action.payload.isFetching };
     } else {
         return state;
     }
