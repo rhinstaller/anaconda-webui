@@ -120,6 +120,8 @@ export const storageReducer = (state = storageInitialState, action) => {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {
         return { ...state, partitioning: { ...state.partitioning, ...action.payload.partitioningData, storageScenarioId: state.storageScenarioId } };
+    } else if (action.type === "SET_APPLIED_PARTITIONING") {
+        return { ...state, appliedPartitioning: action.payload.appliedPartitioning };
     } else if (action.type === "SET_STORAGE_SCENARIO") {
         return { ...state, storageScenarioId: action.payload.scenario };
     } else {

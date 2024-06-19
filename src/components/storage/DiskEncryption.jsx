@@ -32,7 +32,7 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import { applyStorage } from "../../apis/storage_partitioning.js";
+import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { RuntimeContext, StorageContext } from "../Common.jsx";
@@ -68,16 +68,29 @@ const DiskEncryption = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { partitioning } = useContext(StorageContext);
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const request = partitioning?.requests?.[0];
     const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
     const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
     const [password, setPassword] = useState(request?.passphrase || "");
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
 
+    // Reset the partitioning before applying the new one, because in the 'use-free-space' case
+    // the remaining space is not calculated correctly if the partitioning is not reset.
+    // FIXME: https://issues.redhat.com/browse/INSTALLER-3982
+    // This is a workaround, as reseting the partitioning just before the 'applyStorage'
+    // call results in a deadlock.
     useEffect(() => {
-        setIsFormDisabled(false);
-    }, [setIsFormDisabled]);
+        const _resetPartitioning = async () => {
+            await resetPartitioning();
+        };
+
+        if (appliedPartitioning && appliedPartitioning !== partitioning.path) {
+            _resetPartitioning();
+        } else {
+            setIsFormDisabled(false);
+        }
+    }, [appliedPartitioning, partitioning.path, setIsFormDisabled]);
 
     // Display custom footer
     const getFooter = useMemo(
