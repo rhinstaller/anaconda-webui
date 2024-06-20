@@ -29,6 +29,7 @@ import { getAppliedPartitioning, resetPartitioning } from "../../apis/storage_pa
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { CockpitStorageIntegration } from "./CockpitStorageIntegration.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
@@ -43,8 +44,8 @@ const InstallationMethod = ({
     onCritFail,
     setIsFormDisabled,
     setIsFormValid,
-    setShowStorage,
 }) => {
+    const [showStorage, setShowStorage] = useState(false);
     const { partitioning } = useContext(StorageContext);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -83,6 +84,13 @@ const InstallationMethod = ({
           id={idPrefix + "-selector-form"}
           onSubmit={e => { e.preventDefault(); return false }}
         >
+            <CockpitStorageIntegration
+              dispatch={dispatch}
+              isFormDisabled={isFormDisabled}
+              onCritFail={onCritFail}
+              setShowStorage={setShowStorage}
+              showStorage={showStorage}
+            />
             <InstallationDestination
               isEfi={isEfi}
               dispatch={dispatch}
@@ -99,6 +107,7 @@ const InstallationMethod = ({
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               setIsFormValid={setIsFormValid}
+              showStorage={showStorage}
             />
         </Form>
     );

@@ -57,11 +57,11 @@ class Review(NetworkDBus):
     def check_disk(self, disk, text):
         self.browser.wait_text(f"#disk-{disk}", text)
 
-    def check_disk_row(self, disk, mount_point, parent, size, reformat, fs_type=None, is_encrypted=False, rowIndex=None):
+    def check_disk_row(self, disk, mount_point, parent, size, reformat, fs_type=None, is_encrypted=False, rowIndex=None, prefix=""):
         reformat_text = f"format as {fs_type}" if reformat else "mount"
         encrypt_text = "encrypted" if is_encrypted and not reformat else "encrypt" if is_encrypted and reformat else ""
         self.browser.wait_visible(
-            f"table[aria-label={disk}] "
+            f"{prefix} table[aria-label={disk}] "
             f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
             f"td:contains('{mount_point}') + "
             f"td:contains('{parent}') + "
