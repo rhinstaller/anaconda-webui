@@ -146,3 +146,13 @@ export const checkDeviceOnStorageType = (deviceData, device, type) => {
 
     return deviceData[device].parents.v?.some(parent => checkDeviceOnStorageType(deviceData, parent, type));
 };
+
+/* Match the units to their respective sizes */
+export const unitMultiplier = {
+    B: 1,
+    KB: 1000,
+    MB: 1000000,
+    // eslint-disable-next-line sort-keys
+    GB: 1000000000,
+    TB: 1000000000000,
+};

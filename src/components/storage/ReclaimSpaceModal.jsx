@@ -29,15 +29,17 @@ import {
     Modal,
     ModalVariant,
     Panel,
+    Popover,
+    Slider,
     Stack,
     Text,
     TextContent,
 } from "@patternfly/react-core";
-import { HddIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
+import { CompressArrowsAltIcon, HddIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
 
-import { removeDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
+import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
 
-import { getDeviceAncestors } from "../../helpers/storage.js";
+import { getDeviceAncestors, unitMultiplier } from "../../helpers/storage.js";
 
 import { ListingTable } from "cockpit-components-table.jsx";
 
@@ -66,8 +68,17 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
         for (const item of Object.entries(unappliedActions)) {
             const [device, actions] = item;
             for (const action of actions) {
-                if (action === "remove") {
-                    await removeDevice({ deviceName: device, deviceTree: partitioning.deviceTree.path });
+                if (action.type === "remove") {
+                    await removeDevice({
+                        deviceName: device,
+                        deviceTree: partitioning.deviceTree.path,
+                    });
+                } else if (action.type === "shrink") {
+                    await shrinkDevice({
+                        deviceName: device,
+                        deviceTree: partitioning.deviceTree.path,
+                        newSize: action.value,
+                    });
                 }
             }
         }
@@ -87,11 +98,12 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
         <Modal
           description={
               <TextContent>
-                  <Text>{_("Remove existing filesystems to free up space for the installation.")}</Text>
+                  <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
                   <Text>{
                       _(
                           "Removing a filesystem will permanently delete all of the data it contains. " +
-                        "Be sure to have backups of anything important before reclaiming space."
+                          "Resizing a partition can free up unused space, but is not risk-free. " +
+                          "Be sure to have backups of anything important before reclaiming space."
                       )
                   }
                   </Text>
@@ -126,22 +138,38 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
     );
 };
 
+const getReclaimableSpaceFromAction = ({ action, devices, unappliedActions }) => {
+    const isDeviceRemoved = device => (
+        unappliedActions[device].map(_action => _action.type).includes("remove")
+    );
+    const isDeviceResized = device => (
+        unappliedActions[device].map(_action => _action.type).includes("shrink")
+    );
+    const isDeviceParentRemoved = device => (
+        getDeviceAncestors(devices, device).some(isDeviceRemoved)
+    );
+
+    if (action === "remove") {
+        return Object.keys(unappliedActions)
+                .filter(device => isDeviceRemoved(device) && !isDeviceParentRemoved(device))
+                .reduce((acc, device) => acc + devices[device].total.v - devices[device].free.v, 0);
+    }
+
+    if (action === "shrink") {
+        return Object.keys(unappliedActions)
+                .filter(device => isDeviceResized(device) && !isDeviceParentRemoved(device))
+                .reduce((acc, device) => acc + unappliedActions[device].reduce((acc, action) => acc + devices[device].total.v - action.value, 0), 0);
+    }
+};
+
 const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions }) => {
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks: diskSelection.selectedDisks });
     const requiredSize = useRequiredSize();
-    const isDeviceRemoved = device => (
-        unappliedActions[device].includes("remove")
-    );
-    const isDeviceParentRemoved = device => (
-        getDeviceAncestors(devices, device).some(isDeviceRemoved)
-    );
-    const selectedSpaceToReclaim = (
-        Object.keys(unappliedActions)
-                .filter(device => isDeviceRemoved(device) && !isDeviceParentRemoved(device))
-                .reduce((acc, device) => acc + devices[device].total.v - devices[device].free.v, 0)
-    );
+    const selectedSpaceToDelete = getReclaimableSpaceFromAction({ action: "remove", devices, unappliedActions });
+    const selectedSpaceToShrink = getReclaimableSpaceFromAction({ action: "shrink", devices, unappliedActions });
+    const selectedSpaceToReclaim = selectedSpaceToDelete + selectedSpaceToShrink;
     const status = (diskFreeSpace + selectedSpaceToReclaim) < requiredSize ? "warning" : "success";
 
     return (
@@ -221,6 +249,10 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     ];
 };
 
+const getDeviceActionOfType = ({ device, type, unappliedActions }) => {
+    return unappliedActions[device].find(action => action.type === type);
+};
+
 const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions }) => {
     // Only show actions for disks and the first level of partitions
     // This is to simplify the feature for the first iteration
@@ -229,14 +261,15 @@ const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions })
     }
 
     const parents = device.parents.v;
-    const parentHasRemove = parents?.some((parent) => unappliedActions[parent].includes("remove"));
+    const parentHasRemove = parents?.some((parent) => getDeviceActionOfType({ device: parent, type: "remove", unappliedActions }));
+    const hasBeenRemoved = parentHasRemove || getDeviceActionOfType({ device: device.name.v, type: "remove", unappliedActions });
+    const newDeviceSize = getDeviceActionOfType({ device: device.name.v, type: "shrink", unappliedActions })?.value;
+    const hasUnappliedActions = !parentHasRemove && unappliedActions[device.name.v].length > 0;
 
-    // Disable the remove action for disk devices without partitions
-    const isRemoveDisabled = device.type.v === "disk" && device.children.v.length === 0;
-    const onRemove = () => {
+    const onAction = (action, value = "") => {
         setUnappliedActions((prevUnappliedActions) => {
             const _unappliedActions = { ...prevUnappliedActions };
-            _unappliedActions[device.name.v].push("remove");
+            _unappliedActions[device.name.v].push({ type: action, value });
 
             return _unappliedActions;
         });
@@ -249,22 +282,142 @@ const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions })
             return _unappliedActions;
         });
     };
-
-    const hasBeenRemoved = parentHasRemove || unappliedActions[device.name.v]?.includes("remove");
-    const hasUnappliedActions = !parentHasRemove && unappliedActions[device.name.v]?.length > 0;
-    // Do not show 'delete' text for disks directly, we show 'delete' text for the contained partitions
-    const deleteText = (
-        device.type.v !== "disk"
-            ? <span className={idPrefix + "-device-action-delete"}>{_("delete")}</span>
-            : ""
-    );
+    const deviceActionProps = {
+        device,
+        hasBeenRemoved,
+        newDeviceSize,
+        onAction,
+    };
 
     return (
-        <Flex spaceItems={{ default: "spaceItemsSm" }}>
-            {hasBeenRemoved
-                ? deleteText
-                : <Button variant="plain" onClick={onRemove} isDisabled={isRemoveDisabled} icon={<TrashIcon />} aria-label={_("delete")} />}
+        <Flex spaceItems={{ default: "spaceItemsXs" }}>
+            <DeviceActionShrink {...deviceActionProps} />
+            <DeviceActionDelete {...deviceActionProps} />
             {hasUnappliedActions && <Button variant="plain" icon={<UndoIcon />} onClick={onUndo} aria-label={_("undo")} />}
         </Flex>
+    );
+};
+
+const DeleteText = () => (
+    <span className={idPrefix + "-device-action-delete"}>{_("delete")}</span>
+);
+
+const DeviceActionDelete = ({ device, hasBeenRemoved, newDeviceSize, onAction }) => {
+    const onRemove = () => onAction("remove");
+
+    // Disable the remove action for disk devices without partitions
+    const isRemoveDisabled = device.type.v === "disk" && device.children.v.length === 0;
+
+    // Do not show 'delete' text for disks directly, we show 'delete' text for the contained partitions
+    const deleteText = device.type.v !== "disk" ? <DeleteText /> : "";
+    const deleteButton = (
+        <Button
+          aria-label={_("delete")}
+          icon={<TrashIcon />}
+          isDisabled={isRemoveDisabled}
+          onClick={onRemove}
+          variant="plain"
+        />
+    );
+
+    if (newDeviceSize !== undefined) {
+        return null;
+    }
+
+    return (
+        hasBeenRemoved
+            ? deleteText
+            : deleteButton
+    );
+};
+
+const ShrinkText = ({ newDeviceSize }) => (
+    <span className={idPrefix + "-device-action-shrink"}>
+        {cockpit.format(_("shrink to $0"), cockpit.format_bytes(newDeviceSize))}
+    </span>
+);
+
+const useIsDeviceShrinkable = ({ device }) => {
+    const { partitioning } = useContext(StorageContext);
+    const [isShrinkable, setIsShrinkable] = useState(undefined);
+
+    useEffect(() => {
+        const getIsShrinkable = async () => {
+            const isShrinkable = await isDeviceShrinkable({
+                deviceName: device.name.v,
+                deviceTree: partitioning.deviceTree.path,
+            });
+
+            setIsShrinkable(isShrinkable);
+        };
+        getIsShrinkable();
+    }, [device.name.v, partitioning.deviceTree.path]);
+
+    return isShrinkable;
+};
+
+const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction }) => {
+    const onShrink = value => onAction("shrink", value);
+    const isDeviceShrinkable = useIsDeviceShrinkable({ device });
+    const shrinkButton = <ShrinkPopover device={device} isDisabled={!isDeviceShrinkable} onShrink={onShrink} />;
+
+    if (hasBeenRemoved) {
+        return null;
+    }
+
+    return (
+        newDeviceSize
+            ? <ShrinkText newDeviceSize={newDeviceSize} />
+            : (device.type.v !== "disk" && shrinkButton)
+    );
+};
+
+const ShrinkPopover = ({ device, isDisabled, onShrink }) => {
+    const [value, setValue] = useState(device.total.v);
+    const originalUnit = cockpit.format_bytes(device.total.v).split(" ")[1];
+    const shrinkButton = <Button variant="plain" isDisabled={isDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
+
+    return (
+        <Popover
+          aria-label={_("shrink")}
+          id={idPrefix + "-shrink"}
+          hasAutoWidth
+          bodyContent={() => (
+              <Flex alignItems={{ default: "alignItemsFlexStart" }} spaceItems={{ default: "spaceItemsMd" }}>
+                  <Slider
+                    areCustomStepsContinuous
+                    className={idPrefix + "-shrink-slider"}
+                    id={idPrefix + "-shrink-slider"}
+                    inputLabel={originalUnit}
+                    inputValue={cockpit.format_bytes(value, originalUnit).split(" ")[0]}
+                    isInputVisible
+                    value={value * 100 / device.total.v}
+                    showBoundaries={false}
+                    onChange={(_, sliderValue, inputValue) => {
+                        if (inputValue !== undefined) {
+                            // Ensure that the boundary is respected
+                            const newInputValue = Math.min(device.total.v, inputValue * unitMultiplier[originalUnit]);
+                            setValue(newInputValue);
+                        } else if (sliderValue !== undefined) {
+                            setValue(Math.round((sliderValue / 100) * device.total.v));
+                        }
+                    }}
+                    customSteps={[
+                        { label: "0", value: 0 },
+                        { label: cockpit.format_bytes(device.total.v), value: 100 },
+                    ]}
+                  />
+                  <Button
+                    id={idPrefix + "-shrink-button"}
+                    variant="primary"
+                    isDisabled={value === 0 || value === device.total.v}
+                    onClick={() => onShrink(value)}>
+                      {_("Resize")}
+                  </Button>
+              </Flex>
+          )}
+        >
+            {shrinkButton}
+        </Popover>
     );
 };

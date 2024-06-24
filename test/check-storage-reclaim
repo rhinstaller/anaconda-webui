@@ -76,7 +76,7 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
 
         r.check_disk_row(dev, "/", "vda5, LVM", "8.59 GB", True, "xfs")
 
-    def testReclaimSpaceBtrfsSubvolumes(self):
+    def testReclaimSpaceDeleteBtrfsSubvolumes(self):
         # When there is not enough free space for the installation
         # the reclaim action is selected and disabled
 
@@ -148,6 +148,66 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev, parent="vda4", action="delete")
+
+    def testReclaimSpaceShrinkBtrfsSubvolumes(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        disk = "/dev/vda"
+        dev = "vda"
+        btrfsname = "btrfstest"
+        s.partition_disk(
+            disk,
+            [
+                ("1MB", "biosboot"),
+                ("4GB", "ext4"),
+                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
+                ("", "btrfs", "-f", "-L", btrfsname + "B")
+            ]
+        )
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("use-free-space")
+        i.next(True)
+
+        s.reclaim_check_available_space("1.03 MB")
+
+        # Check that shrinking action is only available for partitions
+        s.reclaim_check_action_button_present("vda (0x", "shrink", False)
+        for device in ["vda2"]:
+            s.reclaim_check_action_button_present(device, "shrink", True)
+
+        for device in ["vda3", "vda4"]:
+            # Shrinking Btrfs partitions is not yet supported by blivet:
+            # https://bugzilla.redhat.com/show_bug.cgi?id=962143
+            s.reclaim_check_action_button_present(device, "shrink", True, True)
+
+        # Shrink a partition
+        s.reclaim_shrink_device("vda2", "1", "4.29")
+        s.reclaim_check_available_space("3.30 GB")
+
+        # Undo the shrink actions
+        for device in ["vda2"]:
+            s.reclaim_undo_action(device)
+            s.reclaim_check_action_present(device, "shrink", False)
+
+        s.reclaim_check_available_space("1.03 MB")
+
+        # Shrink one partition and allocate enough space for the installation
+        s.reclaim_shrink_device("vda2", "1", "4.29")
+
+        s.reclaim_modal_submit()
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk_row(dev, parent="vda2", action="shrink")
 
 
 @nondestructive

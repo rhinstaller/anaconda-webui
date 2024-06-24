@@ -357,6 +357,30 @@ class StorageReclaimDialog():
     def reclaim_remove_device(self, device):
         self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='delete']")
 
+    def reclaim_check_action_button_present(self, device, action, present=True, disabled=False):
+        if present:
+            self.browser.wait_visible(
+                "#reclaim-space-modal-table "
+                f"tr:contains('{device}') "
+                f"button[aria-label='{action}']"
+                f"{disabled and ':disabled' or ':not(:disabled)'}"
+            )
+        else:
+            self.browser.wait_not_present(
+                "#reclaim-space-modal-table "
+                f"tr:contains('{device}') "
+                f"button[aria-label='{action}']"
+            )
+
+    def reclaim_shrink_device(self, device, new_size, current_size):
+        self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='shrink']")
+        self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
+        self.browser.wait_val("#reclaim-space-modal-shrink-slider input", current_size)
+        self.browser.set_input_text("#reclaim-space-modal-shrink-slider input", new_size)
+        self.browser.click("#reclaim-space-modal-shrink-button")
+        self.browser.wait_not_present("#reclaim-space-modal-shrink-slider")
+        self.reclaim_check_action_present(device, "shrink")
+
     def reclaim_check_action_present(self, device, action, present=True):
         selector = f"#reclaim-space-modal-table tr:contains('{device}') td[data-label=Actions]"
         if present:
