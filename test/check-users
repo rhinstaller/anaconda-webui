@@ -39,6 +39,10 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
 
         i.reach(i.steps.ACCOUNTS)
         create_user(b, self.machine)
+
+        # Wait for the form to be ready before taking a screenshot
+        i.check_next_disabled(False)
+
         b.assert_pixels(
             "#app",
             "users-step-basic",
