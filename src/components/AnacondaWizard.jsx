@@ -32,7 +32,11 @@ import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
 
 export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
+    // The Form should be disabled while backend checks are in progress
+    // or the page initialization is in progress
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+    // The Form should be marked as invalid when the user filled data
+    // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
@@ -94,6 +98,9 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
         if (prevStep.id !== newStep.id) {
             // first reset validation state to default
             setIsFormValid(false);
+            // and disable the form so that the page can perform
+            //  initialization before the user can interact with it
+            setIsFormDisabled(true);
         }
 
         setCurrentStepId(newStep.id);

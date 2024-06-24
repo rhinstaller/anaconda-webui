@@ -64,6 +64,7 @@ const CheckDisksSpinner = (
 
 const DiskEncryption = ({
     idPrefix,
+    setIsFormDisabled,
     setIsFormValid,
     setStepNotification,
 }) => {
@@ -73,6 +74,10 @@ const DiskEncryption = ({
     const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
     const [password, setPassword] = useState(request?.passphrase || "");
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
+
+    useEffect(() => {
+        setIsFormDisabled(false);
+    }, [setIsFormDisabled]);
 
     // Display custom footer
     const getFooter = useMemo(

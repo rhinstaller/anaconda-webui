@@ -47,7 +47,6 @@ const InstallationMethod = ({
 }) => {
     const [showStorage, setShowStorage] = useState(false);
     const { partitioning } = useContext(StorageContext);
-    const [isLoading, setIsLoading] = useState(true);
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -62,7 +61,7 @@ const InstallationMethod = ({
             if (appliedPartitioning) {
                 await resetPartitioning();
             }
-            setIsLoading(false);
+            setIsFormDisabled(false);
         };
 
         // If the last partitioning applied was from the cockpit storage integration
@@ -70,13 +69,9 @@ const InstallationMethod = ({
         if (partitioning.storageScenarioId !== "use-configured-storage") {
             resetPartitioningAsync();
         } else {
-            setIsLoading(false);
+            setIsFormDisabled(false);
         }
     }, [setIsFormDisabled, partitioning.storageScenarioId]);
-
-    if (isLoading) {
-        return null;
-    }
 
     return (
         <Form

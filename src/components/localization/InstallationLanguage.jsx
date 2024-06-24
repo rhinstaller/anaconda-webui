@@ -284,9 +284,14 @@ class LanguageSelector extends React.Component {
     }
 }
 
-const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
+const InstallationLanguage = ({ idPrefix, setIsFormDisabled, setIsFormValid, setStepNotification }) => {
     const { commonLocales, language, languages } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
+
+    useEffect(() => {
+        setIsFormDisabled(false);
+    }, [setIsFormDisabled]);
+
     useEffect(() => {
         setIsFormValid(language !== "");
     }, [language, setIsFormValid]);
