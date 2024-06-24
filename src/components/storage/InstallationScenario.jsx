@@ -261,7 +261,7 @@ const InstallationScenarioSelector = ({
     setIsFormValid,
     showStorage,
 }) => {
-    const { deviceNames, devices, diskSelection, partitioning } = useContext(StorageContext);
+    const { deviceNames, devices, diskSelection, mountPoints, partitioning } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
@@ -323,6 +323,13 @@ const InstallationScenarioSelector = ({
             return;
         }
 
+        // If we detect mount points, there is an still an applied partitioning
+        // and we should wait for the reset to take effect in the backend before deciding on the
+        // selected scenario
+        if (Object.keys(mountPoints).length > 0 && storageScenarioId !== "use-configured-storage") {
+            return;
+        }
+
         for (const scenario of scenarios) {
             const availability = scenarioAvailability[scenario.id];
             if (!availability.hidden && availability.available) {
@@ -337,11 +344,12 @@ const InstallationScenarioSelector = ({
                 }
             }
         }
+
         if (availableScenarioExists) {
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
         setIsFormValid(availableScenarioExists);
-    }, [dispatch, scenarioAvailability, setIsFormValid, showStorage, storageScenarioId]);
+    }, [dispatch, mountPoints, scenarioAvailability, setIsFormValid, showStorage, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));

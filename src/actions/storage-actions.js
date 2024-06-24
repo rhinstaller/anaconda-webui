@@ -151,6 +151,13 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
     };
 };
 
+export const setAppliedPartitioningAction = ({ appliedPartitioning }) => {
+    return {
+        payload: { appliedPartitioning },
+        type: "SET_APPLIED_PARTITIONING",
+    };
+};
+
 export const setStorageScenarioAction = (scenario) => {
     window.sessionStorage.setItem("storage-scenario-id", scenario);
 

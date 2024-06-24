@@ -301,11 +301,16 @@ const RootAccount = ({
 const Accounts = ({
     dispatch,
     idPrefix,
+    setIsFormDisabled,
     setIsFormValid,
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
+
+    useEffect(() => {
+        setIsFormDisabled(false);
+    }, [setIsFormDisabled]);
 
     useEffect(() => {
         setIsFormValid(isUserValid && isRootValid);

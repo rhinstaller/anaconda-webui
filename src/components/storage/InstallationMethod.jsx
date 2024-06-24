@@ -25,7 +25,7 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import { getAppliedPartitioning, resetPartitioning } from "../../apis/storage_partitioning.js";
+import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
@@ -46,8 +46,7 @@ const InstallationMethod = ({
     setIsFormValid,
 }) => {
     const [showStorage, setShowStorage] = useState(false);
-    const { partitioning } = useContext(StorageContext);
-    const [isLoading, setIsLoading] = useState(true);
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -57,26 +56,19 @@ const InstallationMethod = ({
 
     useEffect(() => {
         // Always reset the partitioning when entering the installation destination page
-        const resetPartitioningAsync = async () => {
-            const appliedPartitioning = await getAppliedPartitioning();
-            if (appliedPartitioning) {
-                await resetPartitioning();
-            }
-            setIsLoading(false);
+        const _resetPartitioning = async () => {
+            await resetPartitioning();
         };
 
         // If the last partitioning applied was from the cockpit storage integration
         // we should not reset it, as this option does apply the partitioning onNext
-        if (partitioning.storageScenarioId !== "use-configured-storage") {
-            resetPartitioningAsync();
+        if (partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning) {
+            setIsFormDisabled(true);
+            _resetPartitioning();
         } else {
-            setIsLoading(false);
+            setIsFormDisabled(false);
         }
-    }, [setIsFormDisabled, partitioning.storageScenarioId]);
-
-    if (isLoading) {
-        return null;
-    }
+    }, [appliedPartitioning, setIsFormDisabled, partitioning.storageScenarioId]);
 
     return (
         <Form

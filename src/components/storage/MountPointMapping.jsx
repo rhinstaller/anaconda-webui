@@ -666,10 +666,15 @@ const useExistingPartitioning = () => {
 const MountPointMapping = ({
     dispatch,
     idPrefix,
+    setIsFormDisabled,
     setIsFormValid,
     setStepNotification,
 }) => {
     const { devices, diskSelection } = useContext(StorageContext);
+
+    useEffect(() => {
+        setIsFormDisabled(false);
+    }, [setIsFormDisabled]);
 
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(

@@ -20,6 +20,7 @@ import {
     getDevicesAction,
     getDiskSelectionAction,
     getPartitioningDataAction,
+    setAppliedPartitioningAction,
     setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
@@ -81,6 +82,7 @@ export class StorageClient {
                         this.dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
                     } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "AppliedPartitioning")) {
                         this.dispatch(getDevicesAction());
+                        this.dispatch(setAppliedPartitioningAction({ appliedPartitioning: args[1].AppliedPartitioning.v }));
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
                     }
