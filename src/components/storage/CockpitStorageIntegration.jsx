@@ -224,15 +224,22 @@ const CheckStorageDialog = ({
             devices,
             mountPointConstraints,
             newMountPoints,
+            selectedDisks,
         });
         return availability.available;
-    }, [devices, mountPointConstraints, newMountPoints]);
+    }, [
+        devices,
+        mountPointConstraints,
+        newMountPoints,
+        selectedDisks,
+    ]);
 
     const useConfiguredStorageReview = useMemo(() => {
         const availability = checkConfiguredStorage({
             devices,
             mountPointConstraints,
             newMountPoints,
+            selectedDisks,
         });
 
         return availability.review;
@@ -240,13 +247,19 @@ const CheckStorageDialog = ({
         devices,
         mountPointConstraints,
         newMountPoints,
+        selectedDisks,
     ]);
 
     const useFreeSpace = useMemo(() => {
-        const availability = checkUseFreeSpace({ diskFreeSpace, diskTotalSpace, requiredSize });
+        const availability = checkUseFreeSpace({
+            diskFreeSpace,
+            diskTotalSpace,
+            requiredSize,
+            selectedDisks,
+        });
 
         return availability.available && !availability.hidden;
-    }, [diskFreeSpace, diskTotalSpace, requiredSize]);
+    }, [diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks]);
 
     const loading = !error && checkStep !== undefined;
     const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace));

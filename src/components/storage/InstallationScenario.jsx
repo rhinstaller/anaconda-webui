@@ -44,9 +44,10 @@ function AvailabilityState (available = false, hidden = true, reason = null, hin
     this.hint = hint;
 }
 
-const checkEraseAll = ({ diskTotalSpace, requiredSize }) => {
+const checkEraseAll = ({ diskTotalSpace, requiredSize, selectedDisks }) => {
     const availability = new AvailabilityState();
 
+    availability.available = !!selectedDisks.length;
     availability.hidden = false;
 
     if (diskTotalSpace < requiredSize) {
@@ -56,16 +57,16 @@ const checkEraseAll = ({ diskTotalSpace, requiredSize }) => {
             "The installation needs $1 of disk space; " +
             "however, the capacity of the selected disks is only $0."
         ), cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
-    } else {
-        availability.available = true;
     }
+
     return availability;
 };
 
-export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize }) => {
+export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
+    availability.available = !!selectedDisks.length;
 
     if (diskFreeSpace > 0 && diskTotalSpace > 0) {
         availability.hidden = diskFreeSpace === diskTotalSpace;
@@ -97,10 +98,11 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
     return missingNonmountablePartitions;
 };
 
-const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, usablePartitions }) => {
+const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, selectedDisks, usablePartitions }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
+    availability.available = !!selectedDisks.length;
 
     const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
     const hasFilesystems = usablePartitions
@@ -116,8 +118,6 @@ const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, u
         availability.available = false;
         availability.reason = cockpit.format(_("Some devices use the same name: $0."), duplicateDeviceNames.join(", "));
         availability.hint = _("To use this option, rename devices to have unique names.");
-    } else {
-        availability.available = true;
     }
     return availability;
 };
@@ -291,6 +291,7 @@ const InstallationScenarioSelector = ({
                     mountPointConstraints,
                     partitioning: partitioning.path,
                     requiredSize,
+                    selectedDisks,
                     storageScenarioId: partitioning.storageScenarioId,
                     usablePartitions,
                 });
@@ -307,6 +308,7 @@ const InstallationScenarioSelector = ({
         partitioning.path,
         partitioning.storageScenarioId,
         requiredSize,
+        selectedDisks,
         usablePartitions,
     ]);
 
