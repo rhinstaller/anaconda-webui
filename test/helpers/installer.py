@@ -16,6 +16,7 @@ from collections import UserDict
 from time import sleep
 
 from step_logger import log_step
+from storage import StorageEncryption
 from users import create_user
 
 
@@ -43,6 +44,7 @@ class InstallerSteps(UserDict):
 
     _steps_callbacks = {}
     _steps_callbacks[ACCOUNTS] = create_user
+    _steps_callbacks[DISK_ENCRYPTION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
 
 
 class Installer():
