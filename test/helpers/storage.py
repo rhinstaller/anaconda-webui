@@ -339,6 +339,7 @@ class StorageScenario():
     def set_partitioning(self, scenario):
         self.browser.click(self._partitioning_selector(scenario))
         self.browser.wait_visible(self._partitioning_selector(scenario) + ":checked")
+        self.browser.wait_visible(f"div[data-scenario='{scenario}']")
 
 
 class StorageMountPointMapping(StorageDBus, StorageDestination):
@@ -384,7 +385,6 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.select_disks(disks)
 
         self.set_partitioning("mount-point-mapping")
-        self.browser.wait_visible("div[data-scenario='mount-point-mapping']")
 
         self.browser.click("button:contains(Next)")
         self.browser.wait_js_cond('window.location.hash === "#/mount-point-mapping"')
