@@ -35,7 +35,7 @@ import {
 import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { RuntimeContext, StorageContext } from "../Common.jsx";
+import { FooterContext, RuntimeContext, StorageContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./DiskEncryption.scss";
@@ -64,33 +64,15 @@ const CheckDisksSpinner = (
 
 const DiskEncryption = ({
     idPrefix,
-    setIsFormDisabled,
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const { partitioning } = useContext(StorageContext);
     const request = partitioning?.requests?.[0];
     const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
     const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
     const [password, setPassword] = useState(request?.passphrase || "");
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
-
-    // Reset the partitioning before applying the new one, because in the 'use-free-space' case
-    // the remaining space is not calculated correctly if the partitioning is not reset.
-    // FIXME: https://issues.redhat.com/browse/INSTALLER-3982
-    // This is a workaround, as reseting the partitioning just before the 'applyStorage'
-    // call results in a deadlock.
-    useEffect(() => {
-        const _resetPartitioning = async () => {
-            await resetPartitioning();
-        };
-
-        if (appliedPartitioning && appliedPartitioning !== partitioning.path) {
-            _resetPartitioning();
-        } else {
-            setIsFormDisabled(false);
-        }
-    }, [appliedPartitioning, partitioning.path, setIsFormDisabled]);
 
     // Display custom footer
     const getFooter = useMemo(
@@ -181,6 +163,33 @@ const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotificat
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
+const usePageInit = () => {
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const { setIsFormDisabled } = useContext(FooterContext);
+    // Reset the partitioning before applying the new one, because in the 'use-free-space' case
+    // the remaining space is not calculated correctly if the partitioning is not reset.
+    // FIXME: https://issues.redhat.com/browse/INSTALLER-3982
+    // This is a workaround, as reseting the partitioning just before the 'applyStorage'
+    // call results in a deadlock.
+    const needsReset = appliedPartitioning && appliedPartitioning !== partitioning.path;
+
+    useEffect(() => {
+        const _resetPartitioning = async () => {
+            await resetPartitioning();
+        };
+
+        if (needsReset) {
+            _resetPartitioning();
+        }
+    }, [needsReset]);
+
+    useEffect(() => {
+        if (!needsReset) {
+            setIsFormDisabled(false);
+        }
+    }, [needsReset, setIsFormDisabled]);
+};
+
 export const usePage = () => {
     const { storageScenarioId } = useContext(StorageContext);
 
@@ -189,6 +198,7 @@ export const usePage = () => {
         id: "disk-encryption",
         isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
         label: _("Disk encryption"),
-        title: _("Encrypt the selected devices?")
+        title: _("Encrypt the selected devices?"),
+        usePageInit,
     });
 };

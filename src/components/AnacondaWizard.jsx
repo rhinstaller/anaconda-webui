@@ -74,7 +74,11 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
             if (s.component) {
                 stepProps = {
                     children: (
-                        <AnacondaPage step={s.id} title={s.title}>
+                        <AnacondaPage
+                          step={s.id}
+                          title={s.title}
+                          setIsFormDisabled={setIsFormDisabled}
+                          usePageInit={s.usePageInit}>
                             <s.component {...componentProps} />
                         </AnacondaPage>
                     ),
