@@ -47,7 +47,6 @@ const InstallationMethod = ({
     setIsFormValid,
 }) => {
     const [showStorage, setShowStorage] = useState(false);
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
 
     // Display custom footer
@@ -58,22 +57,6 @@ const InstallationMethod = ({
         />
     ), [isFormDisabled, isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
-
-    useEffect(() => {
-        // Always reset the partitioning when entering the installation destination page
-        const _resetPartitioning = async () => {
-            await resetPartitioning();
-        };
-
-        // If the last partitioning applied was from the cockpit storage integration
-        // we should not reset it, as this option does apply the partitioning onNext
-        if (partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning) {
-            setIsFormDisabled(true);
-            _resetPartitioning();
-        } else {
-            setIsFormDisabled(false);
-        }
-    }, [appliedPartitioning, setIsFormDisabled, partitioning.storageScenarioId]);
 
     return (
         <Form
@@ -190,6 +173,31 @@ const InstallationMethodFooterHelper = () => {
     );
 };
 
+const usePageInit = () => {
+    const { setIsFormDisabled } = useContext(FooterContext);
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+
+    useEffect(() => {
+        // Always reset the partitioning when entering the installation destination page
+        const _resetPartitioning = async () => {
+            await resetPartitioning();
+        };
+
+        // If the last partitioning applied was from the cockpit storage integration
+        // we should not reset it, as this option does apply the partitioning onNext
+        if (partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning) {
+            setIsFormDisabled(true);
+            _resetPartitioning();
+        }
+    }, [appliedPartitioning, partitioning.storageScenarioId, setIsFormDisabled]);
+
+    useEffect(() => {
+        if (partitioning.storageScenarioId === "use-configured-storage" || !appliedPartitioning) {
+            setIsFormDisabled(false);
+        }
+    }, [appliedPartitioning, partitioning.storageScenarioId, setIsFormDisabled]);
+};
+
 export const usePage = () => {
     const osRelease = useContext(OsReleaseContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
@@ -199,5 +207,6 @@ export const usePage = () => {
         id: "installation-method",
         label: _("Installation method"),
         title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,
+        usePageInit,
     });
 };

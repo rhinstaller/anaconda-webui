@@ -56,7 +56,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-const ReviewConfiguration = ({ idPrefix, setIsFormDisabled, setIsFormValid }) => {
+const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
@@ -65,9 +65,8 @@ const ReviewConfiguration = ({ idPrefix, setIsFormDisabled, setIsFormValid }) =>
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
-        setIsFormDisabled(false);
         setIsFormValid(true);
-    }, [setIsFormDisabled, setIsFormValid]);
+    }, [setIsFormValid]);
 
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter />, []);

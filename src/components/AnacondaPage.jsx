@@ -14,11 +14,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React, { cloneElement, useState } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 import { Alert, Stack, Title } from "@patternfly/react-core";
 
-export const AnacondaPage = ({ children, step, title }) => {
+export const AnacondaPage = ({ children, setIsFormDisabled, step, title, usePageInit }) => {
     const [stepNotification, setStepNotification] = useState();
+
+    // If there is usePageInit custom hook for the page, call it
+    usePageInit?.();
+
+    // Otherwise just set the form to enabled so that the user can interact with it
+    useEffect(() => {
+        if (!usePageInit) {
+            setIsFormDisabled(false);
+        }
+    }, [setIsFormDisabled, usePageInit]);
 
     return (
         <Stack hasGutter>
