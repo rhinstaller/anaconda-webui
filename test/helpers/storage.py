@@ -20,7 +20,6 @@ import sys
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
-from installer import Installer, InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
@@ -34,7 +33,7 @@ id_prefix = "installation-method"
 
 class StorageDestination():
     def __init__(self, browser, machine):
-        self._step = InstallerSteps.INSTALLATION_METHOD
+        self._step = "installation-method"
         self.browser = browser
         self.machine = machine
 
@@ -340,6 +339,7 @@ class StorageScenario():
     def set_partitioning(self, scenario):
         self.browser.click(self._partitioning_selector(scenario))
         self.browser.wait_visible(self._partitioning_selector(scenario) + ":checked")
+        self.browser.wait_visible(f"div[data-scenario='{scenario}']")
 
 
 class StorageMountPointMapping(StorageDBus, StorageDestination):
@@ -385,10 +385,9 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.select_disks(disks)
 
         self.set_partitioning("mount-point-mapping")
-        self.browser.wait_visible("div[data-scenario='mount-point-mapping']")
 
-        i = Installer(self.browser, self.machine)
-        i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
+        self.browser.click("button:contains(Next)")
+        self.browser.wait_js_cond('window.location.hash === "#/mount-point-mapping"')
 
         with self.browser.wait_timeout(30):
             if not encrypted:
