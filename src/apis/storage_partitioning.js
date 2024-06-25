@@ -58,6 +58,20 @@ export const createPartitioning = ({ method }) => {
 };
 
 /**
+ * @param {string} partitioning DBus path to a partitioning
+ *
+ * @returns {Promise}           The device tree object
+ */
+export const getDeviceTree = ({ partitioning }) => {
+    return new StorageClient().client.call(
+        partitioning,
+        INTERFACE_NAME_PARTITIONING,
+        "GetDeviceTree",
+        []
+    ).then(res => res[0]);
+};
+
+/**
  * @param {string} partitioning    DBus path to a partitioning
  * @param {string} passphrase      passphrase for disk encryption
  */

@@ -50,7 +50,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
 
     const componentProps = {
         dispatch,
-        isFormDisabled,
+        isFormDisabled: isFormDisabled || isFetching,
         onCritFail,
         setIsFormDisabled,
         setIsFormValid,
