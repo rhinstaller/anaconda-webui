@@ -1,9 +1,26 @@
+[tool.mypy]
+follow_imports = 'silent'  # https://github.com/python-lsp/pylsp-mypy/issues/81
+scripts_are_modules = true  # allow checking all scripts in one invocation
+explicit_package_bases = true
+mypy_path = 'test:test/helpers:test/common:bots'
+exclude = [
+    "bots"
+]
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+    # run without bots checked out
+    "machine.*",
+    "testvm",
+]
 [tool.ruff]
 exclude = [
     ".git/",
     "modules/",
     "node_modules/",
 ]
+
 # we want 118, but fix tests first
 # line-length = 118
 line-length = 149

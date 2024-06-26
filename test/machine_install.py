@@ -28,10 +28,9 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 # pylint: disable=environment-modify
 sys.path.append(BOTS_DIR)
-sys.path.append(f'{BOTS_DIR}/machine')
 
 # pylint: disable=import-error
-from machine_core import timeout
+from machine.machine_core import timeout
 from testvm import (
     Machine,  # nopep8
     VirtMachine,  # nopep8
