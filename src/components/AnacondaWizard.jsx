@@ -75,6 +75,8 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
                 stepProps = {
                     children: (
                         <AnacondaPage
+                          isFormDisabled={isFormDisabled}
+                          setIsFormDisabled={setIsFormDisabled}
                           step={s.id}
                           title={s.title}
                           setIsFormDisabled={setIsFormDisabled}
