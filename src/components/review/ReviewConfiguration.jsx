@@ -218,7 +218,9 @@ const ReviewConfigurationFooterHelperText = () => {
 const CustomFooter = () => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
     const { setShowWizard } = useContext(FooterContext);
-    const pageProps = usePage();
+    const { buttonLabel } = useScenario();
+    const pageProps = new Page();
+    const footerHelperText = <ReviewConfigurationFooterHelperText />;
 
     return (
         <>
@@ -229,25 +231,20 @@ const CustomFooter = () => {
               setNextWaitsConfirmation={setNextWaitsConfirmation}
             />}
             <AnacondaWizardFooter
-              footerHelperText={pageProps.footerHelperText}
-              nextButtonText={pageProps.nextButtonText}
-              nextButtonVariant={pageProps.nextButtonVariant}
+              footerHelperText={footerHelperText}
+              nextButtonText={buttonLabel}
+              nextButtonVariant="warning"
               onNext={() => nextWaitsConfirmation === undefined && setNextWaitsConfirmation(true)}
             />
         </>
     );
 };
 
-export const usePage = () => {
-    const { buttonLabel } = useScenario();
-
-    return ({
-        component: ReviewConfiguration,
-        footerHelperText: <ReviewConfigurationFooterHelperText />,
-        id: "installation-review",
-        label: _("Review and install"),
-        nextButtonText: buttonLabel,
-        nextButtonVariant: "warning",
-        title: _("Review and install"),
-    });
-};
+export class Page {
+    constructor () {
+        this.component = ReviewConfiguration;
+        this.id = "installation-review";
+        this.label = _("Review and install");
+        this.title = _("Review and install");
+    }
+}

@@ -138,7 +138,7 @@ const DiskEncryption = ({
 };
 
 const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotification }) => {
-    const step = usePage({}).id;
+    const step = new Page().id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         setIsFormDisabled(true);
         return applyStorage({
@@ -190,15 +190,13 @@ const usePageInit = () => {
     }, [needsReset, setIsFormDisabled]);
 };
 
-export const usePage = () => {
-    const { storageScenarioId } = useContext(StorageContext);
-
-    return ({
-        component: DiskEncryption,
-        id: "disk-encryption",
-        isHidden: ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId),
-        label: _("Disk encryption"),
-        title: _("Encrypt the selected devices?"),
-        usePageInit,
-    });
-};
+export class Page {
+    constructor (isBootIso, storageScenarioId) {
+        this.component = DiskEncryption;
+        this.id = "disk-encryption";
+        this.isHidden = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId);
+        this.label = _("Disk encryption");
+        this.title = _("Encrypt the selected devices?");
+        this.usePageInit = usePageInit;
+    }
+}

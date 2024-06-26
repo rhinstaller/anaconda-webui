@@ -28,7 +28,7 @@ import {
 import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { DialogsContext, FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { DialogsContext, FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
 import { CockpitStorageIntegration } from "./CockpitStorageIntegration.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -187,15 +187,18 @@ const usePageInit = () => {
     }, [needsReset, setIsFormDisabled]);
 };
 
-export const usePage = () => {
+const PageTitle = () => {
     const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
-    return ({
-        component: InstallationMethod,
-        id: "installation-method",
-        label: _("Installation method"),
-        title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,
-        usePageInit,
-    });
+    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT);
 };
+
+export class Page {
+    constructor (isBootIso) {
+        this.component = InstallationMethod;
+        this.id = "installation-method";
+        this.label = _("Installation method");
+        this.title = !isBootIso ? <PageTitle /> : null;
+        this.usePageInit = usePageInit;
+    }
+}

@@ -47,7 +47,7 @@ import {
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { RuntimeContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { RuntimeContext, UsersContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./Accounts.scss";
@@ -348,14 +348,12 @@ const CustomFooter = () => {
     );
 };
 
-export const usePage = () => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    return ({
-        component: Accounts,
-        id: "accounts",
-        isHidden: !isBootIso,
-        label: _("Create Account"),
-        title: null,
-    });
-};
+export class Page {
+    constructor (isBootIso) {
+        this.component = Accounts;
+        this.id = "accounts";
+        this.isHidden = !isBootIso;
+        this.label = _("Create Account");
+        this.title = null;
+    }
+}
