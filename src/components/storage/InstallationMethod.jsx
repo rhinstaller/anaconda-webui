@@ -138,8 +138,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         />
     );
 
-    const currentStepProps = usePage();
-
     if (newPartitioning === undefined && isReclaimSpaceModalOpen) {
         return;
     }
@@ -148,7 +146,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         <>
             {isReclaimSpaceModalOpen ? reclaimSpaceModal : null}
             <AnacondaWizardFooter
-              currentStepProps={currentStepProps}
               footerHelperText={<InstallationMethodFooterHelper />}
               onNext={onNext}
             />

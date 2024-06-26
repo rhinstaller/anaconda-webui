@@ -343,7 +343,6 @@ const CustomFooter = () => {
 
     return (
         <AnacondaWizardFooter
-          currentStepProps={usePage()}
           onNext={onNext}
         />
     );
