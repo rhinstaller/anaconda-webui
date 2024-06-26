@@ -138,7 +138,8 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         />
     );
 
-    if (newPartitioning === undefined && isReclaimSpaceModalOpen) {
+    const hasNewPartitioning = newPartitioning === undefined || newPartitioning !== partitioning.path;
+    if (hasNewPartitioning && isReclaimSpaceModalOpen) {
         return;
     }
 
