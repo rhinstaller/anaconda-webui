@@ -31,7 +31,7 @@ sys.path.append(BOTS_DIR)
 
 # pylint: disable=import-error
 from machine.machine_core import timeout
-from testvm import (
+from machine.testvm import (
     Machine,  # nopep8
     VirtMachine,  # nopep8
 )
