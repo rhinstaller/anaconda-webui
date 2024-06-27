@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext } from "react";
 import { Popover, PopoverPosition } from "@patternfly/react-core";
 import { HelpIcon } from "@patternfly/react-icons";
 
@@ -79,38 +79,14 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
     );
 };
 
-const MaybeBackdrop = ({ children }) => {
-    const [hasDialogOpen, setHasDialogOpen] = useState(false);
-
-    useEffect(() => {
-        const handleStorageEvent = (event) => {
-            if (event.key === "cockpit_has_modal") {
-                setHasDialogOpen(event.newValue === "true");
-            }
-        };
-
-        window.addEventListener("storage", handleStorageEvent);
-
-        return () => window.removeEventListener("storage", handleStorageEvent);
-    }, []);
-
-    return (
-        <div className={hasDialogOpen ? "cockpit-has-modal" : ""}>
-            {children}
-        </div>
-    );
-};
-
 export const MainContextWrapper = ({ address, children, conf, osRelease, state }) => {
     return (
         <ModuleContextWrapper state={state}>
             <SystemInfoContextWrapper osRelease={osRelease} conf={conf}>
                 <WithDialogs>
-                    <MaybeBackdrop>
-                        <AddressContext.Provider value={address}>
-                            {children}
-                        </AddressContext.Provider>
-                    </MaybeBackdrop>
+                    <AddressContext.Provider value={address}>
+                        {children}
+                    </AddressContext.Provider>
                 </WithDialogs>
             </SystemInfoContextWrapper>
         </ModuleContextWrapper>

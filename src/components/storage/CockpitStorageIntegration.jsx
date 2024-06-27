@@ -86,6 +86,24 @@ const ReturnToInstallationButton = ({ onAction }) => (
     </Button>
 );
 
+export const useMaybeBackdrop = () => {
+    const [hasDialogOpen, setHasDialogOpen] = useState(false);
+
+    useEffect(() => {
+        const handleStorageEvent = (event) => {
+            if (event.key === "cockpit_has_modal") {
+                setHasDialogOpen(event.newValue === "true");
+            }
+        };
+
+        window.addEventListener("storage", handleStorageEvent);
+
+        return () => window.removeEventListener("storage", handleStorageEvent);
+    }, []);
+
+    return hasDialogOpen ? "cockpit-has-modal" : "";
+};
+
 export const CockpitStorageIntegration = ({
     dispatch,
     isFormDisabled,
@@ -95,6 +113,8 @@ export const CockpitStorageIntegration = ({
     showStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
+    const backdropClass = useMaybeBackdrop();
+
     useEffect(() => {
         const iframe = document.getElementById("cockpit-storage-frame");
         if (iframe) {
@@ -107,7 +127,7 @@ export const CockpitStorageIntegration = ({
     return (
         <Modal
           aria-label={_("Configure storage")}
-          className={idPrefix + "-modal-page-section"}
+          className={backdropClass + " " + idPrefix + "-modal-page-section"}
           footer={<ReturnToInstallationButton onAction={() => setShowDialog(true)} />}
           hasNoBodyWrapper
           isOpen={showStorage}
