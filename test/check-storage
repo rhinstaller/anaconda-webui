@@ -442,19 +442,19 @@ class TestStorageExtraDisks(anacondalib.VirtInstallMachineCase, StorageHelpers):
         i = Installer(b, m)
         s = Storage(b, m)
 
-        # This attaches a disk to the running VM
-        # However, since the storage module initialization is long completed
-        # the newly added disk, will not be visible in the UI,
-        # until the test clicks on the re-scan button
-        dev = self.add_ram_disk(2)
-        dev = dev.split("/")[-1]
-
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.wait_no_disks_detected_not_present()
 
         s.check_single_disk_destination("vda")
+
+        # This attaches a disk to the running VM
+        # However, since the storage module initialization is long completed
+        # the newly added disk, will not be visible in the UI,
+        # until the test clicks on the re-scan button
+        dev = self.add_ram_disk(2)
+        dev = dev.split("/")[-1]
 
         s.rescan_disks()
 
@@ -610,6 +610,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
+    @nondestructive
     def testMultipleDisks(self):
         b = self.browser
         m = self.machine
@@ -617,7 +618,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        m.add_disk(10)
+        self.add_disk(10)
 
         # BIOS boot partition, /boot partition, /
         disk1 = "/dev/vda"

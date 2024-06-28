@@ -14,11 +14,14 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import subprocess
 import sys
-from subprocess import CalledProcessError
+import tempfile
 
 # import Cockpit's machinery for test VMs and its browser test API
 TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
 sys.path.append(os.path.join(TEST_DIR, "common"))
 sys.path.insert(0, os.path.join(TEST_DIR, "helpers"))
 sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
@@ -35,6 +38,7 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 
 class VirtInstallMachineCase(MachineCase):
     efi = False
+    disk_image = ""
     MachineCase.machine_class = VirtInstallMachine
 
     @classmethod
@@ -50,6 +54,18 @@ class VirtInstallMachineCase(MachineCase):
 
         super().setUp()
 
+        # Add installation target disk
+        backing_file = None if not self.disk_image else os.path.join(BOTS_DIR, f"./images/{self.disk_image}")
+        size = None if backing_file else 15
+        self.add_disk(size, backing_file)
+        # Select the disk as boot device
+        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --edit --boot hd")
+
+        m = self.machine
+        b = self.browser
+        s = Storage(b, m)
+        s.dbus_scan_devices()
+
         self.resetLanguage()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
@@ -59,6 +75,31 @@ class VirtInstallMachineCase(MachineCase):
             # Assume destructive tests may reboot the machine and ignore errors related to that
             self.allow_browser_errors(".*client closed.*")
             self.allow_browser_errors(".*Server has closed the connection.*")
+
+    def _execute(self, cmd):
+        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
+
+    def add_disk(self, size, backing_file=None):
+        image = self._create_disk_image(size, backing_file=backing_file)
+        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --update --add-device --disk {image},format=qcow2")
+
+        if self.is_nondestructive():
+            self.addCleanup(self.rem_disk, image)
+
+        return image
+
+    def rem_disk(self, disk):
+        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --update --remove-device --disk {disk}")
+        os.remove(disk)
+
+    def _create_disk_image(self, size, image_path=None, quiet=False, backing_file=None):
+        if not image_path:
+            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}")
+        quiet = "-q" if quiet else ""
+        backing_file = f"-o backing_file={backing_file},backing_fmt=qcow2" if backing_file else ""
+        size = f"{size}G" if size else ""
+        self._execute(f"qemu-img create -f qcow2 {backing_file} {quiet} {image_path} {size}")
+        return image_path
 
     def resetLanguage(self):
         m = self.machine
@@ -96,7 +137,7 @@ class VirtInstallMachineCase(MachineCase):
         self.machine.download('/tmp/syslog', 'syslog', self.logs_dir)
         try:
             self.machine.download('/tmp/anaconda-tb-*', '.', self.logs_dir)
-        except CalledProcessError:
+        except subprocess.CalledProcessError:
             pass
 
     def handleReboot(self):
