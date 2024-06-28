@@ -127,7 +127,8 @@ const DeviceRow = ({ disk }) => {
     }
 
     const actionRows = actions.filter(action => {
-        if (action["action-description"].v !== "destroy device") {
+        // Show only delete actions for partitions to not overload the summary with deleted children
+        if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
             return false;
         }
 
