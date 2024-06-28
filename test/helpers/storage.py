@@ -16,6 +16,7 @@
 import os
 import re
 import sys
+import time
 
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
@@ -376,6 +377,12 @@ class StorageReclaimDialog():
         self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='shrink']")
         self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
         self.browser.wait_val("#reclaim-space-modal-shrink-slider input", current_size)
+        # HACK: there is some race here which steals the focus from the input and selects the page text instead
+        for _ in range(3):
+            self.browser.focus('#reclaim-space-modal-shrink-slider input')
+            time.sleep(1)
+            if self.browser.eval_js('document.activeElement == document.querySelector("#reclaim-space-modal-shrink-slider input")'):
+                break
         self.browser.set_input_text("#reclaim-space-modal-shrink-slider input", new_size)
         self.browser.click("#reclaim-space-modal-shrink-button")
         self.browser.wait_not_present("#reclaim-space-modal-shrink-slider")
