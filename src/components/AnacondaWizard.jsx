@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     PageSection,
     PageSectionTypes,
@@ -27,7 +27,7 @@ import {
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { FooterContext } from "./Common.jsx";
+import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
 import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
 
@@ -40,6 +40,8 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
+    const { storageScenarioId } = useContext(StorageContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
         if (!currentStepId) {
@@ -56,7 +58,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
         setIsFormValid,
     };
 
-    const stepsOrder = getSteps();
+    const stepsOrder = getSteps(isBootIso, storageScenarioId);
     const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
 
     const createSteps = (stepsOrder, componentProps) => {
@@ -74,7 +76,12 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
             if (s.component) {
                 stepProps = {
                     children: (
-                        <AnacondaPage step={s.id} title={s.title}>
+                        <AnacondaPage
+                          isFormDisabled={isFormDisabled}
+                          setIsFormDisabled={setIsFormDisabled}
+                          step={s.id}
+                          title={s.title}
+                          usePageInit={s.usePageInit}>
                             <s.component {...componentProps} />
                         </AnacondaPage>
                     ),

@@ -666,15 +666,10 @@ const useExistingPartitioning = () => {
 const MountPointMapping = ({
     dispatch,
     idPrefix,
-    setIsFormDisabled,
     setIsFormValid,
     setStepNotification,
 }) => {
     const { devices, diskSelection } = useContext(StorageContext);
-
-    useEffect(() => {
-        setIsFormDisabled(false);
-    }, [setIsFormDisabled]);
 
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
@@ -714,7 +709,7 @@ const MountPointMapping = ({
 
 const CustomFooter = ({ setStepNotification }) => {
     const { partitioning } = useContext(StorageContext);
-    const step = usePage().id;
+    const step = new Page().id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
             onFail: ex => {
@@ -737,14 +732,12 @@ const CustomFooter = ({ setStepNotification }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-export const usePage = () => {
-    const { storageScenarioId } = useContext(StorageContext);
-
-    return ({
-        component: MountPointMapping,
-        id: "mount-point-mapping",
-        isHidden: storageScenarioId !== "mount-point-mapping",
-        label: _("Manual disk configuration"),
-        title: _("Manual disk configuration: Mount point mapping")
-    });
-};
+export class Page {
+    constructor (isBootIso, storageScenarioId) {
+        this.component = MountPointMapping;
+        this.id = "mount-point-mapping";
+        this.label = _("Manual disk configuration");
+        this.isHidden = storageScenarioId !== "mount-point-mapping";
+        this.title = _("Manual disk configuration: Mount point mapping");
+    }
+}

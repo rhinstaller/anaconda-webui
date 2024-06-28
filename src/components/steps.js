@@ -1,28 +1,28 @@
 import cockpit from "cockpit";
 
-import { usePage as pageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
-import { usePage as pageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
-import { usePage as pageDiskEncryption } from "./storage/DiskEncryption.jsx";
-import { usePage as pageInstallationMethod } from "./storage/InstallationMethod.jsx";
-import { usePage as pageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { usePage as pageAccounts } from "./users/Accounts.jsx";
+import { Page as PageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
+import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
+import { Page as PageDiskEncryption } from "./storage/DiskEncryption.jsx";
+import { Page as PageInstallationMethod } from "./storage/InstallationMethod.jsx";
+import { Page as PageMountPointMapping } from "./storage/MountPointMapping.jsx";
+import { Page as PageAccounts } from "./users/Accounts.jsx";
 
 const _ = cockpit.gettext;
 
-export const getSteps = () => {
+export const getSteps = (...args) => {
     const stepsOrder = [
-        pageInstallationLanguage(),
-        pageInstallationMethod(),
+        new PageInstallationLanguage(...args),
+        new PageInstallationMethod(...args),
         {
             id: "disk-configuration",
             label: _("Disk configuration"),
             steps: [
-                pageMountPointMapping(),
-                pageDiskEncryption()
+                new PageMountPointMapping(...args),
+                new PageDiskEncryption(...args),
             ]
         },
-        pageAccounts(),
-        pageReviewConfiguration()
+        new PageAccounts(...args),
+        new PageReviewConfiguration(...args),
     ];
     return stepsOrder;
 };

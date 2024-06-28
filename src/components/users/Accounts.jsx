@@ -47,7 +47,7 @@ import {
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { RuntimeContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { RuntimeContext, UsersContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./Accounts.scss";
@@ -301,16 +301,11 @@ const RootAccount = ({
 const Accounts = ({
     dispatch,
     idPrefix,
-    setIsFormDisabled,
     setIsFormValid,
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
-
-    useEffect(() => {
-        setIsFormDisabled(false);
-    }, [setIsFormDisabled]);
 
     useEffect(() => {
         setIsFormValid(isUserValid && isRootValid);
@@ -348,20 +343,17 @@ const CustomFooter = () => {
 
     return (
         <AnacondaWizardFooter
-          currentStepProps={usePage()}
           onNext={onNext}
         />
     );
 };
 
-export const usePage = () => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    return ({
-        component: Accounts,
-        id: "accounts",
-        isHidden: !isBootIso,
-        label: _("Create Account"),
-        title: null,
-    });
-};
+export class Page {
+    constructor (isBootIso) {
+        this.component = Accounts;
+        this.id = "accounts";
+        this.isHidden = !isBootIso;
+        this.label = _("Create Account");
+        this.title = null;
+    }
+}

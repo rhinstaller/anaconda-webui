@@ -28,7 +28,7 @@ import {
 import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { DialogsContext, FooterContext, OsReleaseContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import { DialogsContext, FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
 import { CockpitStorageIntegration } from "./CockpitStorageIntegration.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -47,7 +47,6 @@ const InstallationMethod = ({
     setIsFormValid,
 }) => {
     const [showStorage, setShowStorage] = useState(false);
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
 
     // Display custom footer
@@ -58,22 +57,6 @@ const InstallationMethod = ({
         />
     ), [isFormDisabled, isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
-
-    useEffect(() => {
-        // Always reset the partitioning when entering the installation destination page
-        const _resetPartitioning = async () => {
-            await resetPartitioning();
-        };
-
-        // If the last partitioning applied was from the cockpit storage integration
-        // we should not reset it, as this option does apply the partitioning onNext
-        if (partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning) {
-            setIsFormDisabled(true);
-            _resetPartitioning();
-        } else {
-            setIsFormDisabled(false);
-        }
-    }, [appliedPartitioning, setIsFormDisabled, partitioning.storageScenarioId]);
 
     return (
         <Form
@@ -155,8 +138,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         />
     );
 
-    const currentStepProps = usePage();
-
     if (newPartitioning === undefined && isReclaimSpaceModalOpen) {
         return;
     }
@@ -165,7 +146,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         <>
             {isReclaimSpaceModalOpen ? reclaimSpaceModal : null}
             <AnacondaWizardFooter
-              currentStepProps={currentStepProps}
               footerHelperText={<InstallationMethodFooterHelper />}
               onNext={onNext}
             />
@@ -190,14 +170,35 @@ const InstallationMethodFooterHelper = () => {
     );
 };
 
-export const usePage = () => {
-    const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+const usePageInit = () => {
+    const { setIsFormDisabled } = useContext(FooterContext);
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    // If the last partitioning applied was from the cockpit storage integration
+    // we should not reset it, as this option does apply the partitioning onNext
+    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning;
 
-    return ({
-        component: InstallationMethod,
-        id: "installation-method",
-        label: _("Installation method"),
-        title: !isBootIso ? cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT) : null,
-    });
+    useEffect(() => {
+        // Always reset the partitioning when entering the installation destination page
+        if (needsReset) {
+            resetPartitioning();
+        } else {
+            setIsFormDisabled(false);
+        }
+    }, [needsReset, setIsFormDisabled]);
 };
+
+const PageTitle = () => {
+    const osRelease = useContext(OsReleaseContext);
+
+    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT);
+};
+
+export class Page {
+    constructor (isBootIso) {
+        this.component = InstallationMethod;
+        this.id = "installation-method";
+        this.label = _("Installation method");
+        this.title = !isBootIso ? <PageTitle /> : null;
+        this.usePageInit = usePageInit;
+    }
+}

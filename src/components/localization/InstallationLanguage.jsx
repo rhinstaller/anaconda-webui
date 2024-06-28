@@ -44,7 +44,7 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { LanguageContext, OsReleaseContext, SystemTypeContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext } from "../Common.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -284,13 +284,9 @@ class LanguageSelector extends React.Component {
     }
 }
 
-const InstallationLanguage = ({ idPrefix, setIsFormDisabled, setIsFormValid, setStepNotification }) => {
+const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
     const { commonLocales, language, languages } = useContext(LanguageContext);
     const [nativeName, setNativeName] = useState(false);
-
-    useEffect(() => {
-        setIsFormDisabled(false);
-    }, [setIsFormDisabled]);
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -333,15 +329,17 @@ const InstallationLanguage = ({ idPrefix, setIsFormDisabled, setIsFormValid, set
     );
 };
 
-export const usePage = () => {
+const PageTitle = () => {
     const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    return ({
-        component: InstallationLanguage,
-        id: "installation-language",
-        isHidden: !isBootIso,
-        label: _("Welcome"),
-        title: cockpit.format(_("Welcome to $0"), osRelease.NAME),
-    });
+    return cockpit.format(_("Welcome to $0"), osRelease.NAME);
 };
+
+export class Page {
+    constructor (isBootIso) {
+        this.component = InstallationLanguage;
+        this.id = "installation-language";
+        this.isHidden = !isBootIso;
+        this.label = _("Welcome");
+        this.title = <PageTitle />;
+    }
+}
