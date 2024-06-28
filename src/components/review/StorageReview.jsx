@@ -16,10 +16,12 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Stack,
 } from "@patternfly/react-core";
+
+import { getDeviceTree } from "../../apis/storage_partitioning.js";
 
 import { checkDeviceOnStorageType, getDeviceAncestors, getParentPartitions, hasEncryptedAncestor } from "../../helpers/storage.js";
 
@@ -50,10 +52,30 @@ export const StorageReview = () => {
     );
 };
 
+export const useDeviceTree = () => {
+    const [deviceTreePath, setDeviceTreePath] = useState();
+    const { appliedPartitioning, deviceTrees } = useContext(StorageContext);
+
+    useEffect(() => {
+        const _getDeviceTree = async () => {
+            const _deviceTreePath = appliedPartitioning ? await getDeviceTree({ partitioning: appliedPartitioning }) : "";
+            setDeviceTreePath(_deviceTreePath);
+        };
+        _getDeviceTree();
+    }, [appliedPartitioning, deviceTrees]);
+
+    return deviceTrees[deviceTreePath];
+};
+
 const DeviceRow = ({ disk }) => {
     const { deviceTrees, partitioning } = useContext(StorageContext);
-    const currentDeviceTree = partitioning.deviceTree.path;
-    const { actions, devices, mountPoints } = deviceTrees[currentDeviceTree];
+    const actualDeviceTree = useDeviceTree();
+
+    if (actualDeviceTree === undefined) {
+        return null;
+    }
+
+    const { actions, devices, mountPoints } = actualDeviceTree;
     const requests = partitioning.requests;
     const deviceData = devices[disk];
 
@@ -134,7 +156,9 @@ const DeviceRow = ({ disk }) => {
             return false;
         }
 
-        const parents = getDeviceAncestors(devices, action["device-name"].v);
+        // For deleted device information we need to take a look at the original device tree
+        const originalDevices = deviceTrees[""].devices;
+        const parents = getDeviceAncestors(originalDevices, action["device-name"].v);
 
         return parents.includes(disk);
     });
