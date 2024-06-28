@@ -36,11 +36,6 @@ class TestExistingSystemFedora(anacondalib.VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         for device in ["vda1", "vda2", "vda3", "vda4"]:
-            if device == "vda4":
-                # FIXME: XFAIL
-                # Remove when merged:
-                # https://github.com/rhinstaller/anaconda-webui/pull/328
-                continue
             r.check_disk_row("vda", parent=device, action="delete")
 
 if __name__ == '__main__':
