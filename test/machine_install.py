@@ -44,6 +44,7 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
 class VirtInstallMachine(VirtMachine):
     efi = False
+    disk_image = ""
     http_payload_server = None
 
     def _execute(self, cmd):
@@ -57,11 +58,12 @@ class VirtInstallMachine(VirtMachine):
                     return port
             port = port + 1
 
-    def _create_disk_image(self, size, image_path=None, quiet=False):
+    def _create_disk_image(self, size, image_path=None, quiet=False, backing_file=None):
         if not image_path:
             _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.label}", dir=self.run_dir)
         quiet = "-q" if quiet else ""
-        self._execute(f"qemu-img create -f qcow2 {quiet} {image_path} {size}G")
+        backing_file = f"-o backing_file={backing_file},backing_fmt=qcow2" if backing_file else ""
+        self._execute(f"qemu-img create -f qcow2 {backing_file} {quiet} {image_path} {size}G")
         return image_path
 
     def _wait_http_server_running(self, port):
@@ -107,7 +109,7 @@ class VirtInstallMachine(VirtMachine):
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
-        disk_image = self._create_disk_image(15, quiet=True)
+        disk_image = self._create_disk_image(15, quiet=True, backing_file=self.disk_image)
 
         iso_path = f"{os.getcwd()}/bots/images/{self.image}"
         extra_args = ""

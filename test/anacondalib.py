@@ -35,11 +35,13 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 
 class VirtInstallMachineCase(MachineCase):
     efi = False
+    disk_image = ""
     MachineCase.machine_class = VirtInstallMachine
 
     @classmethod
     def setUpClass(cls):
         VirtInstallMachine.efi = cls.efi
+        VirtInstallMachine.disk_image = cls.disk_image
         cls.ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
     def setUp(self):
