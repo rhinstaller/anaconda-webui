@@ -311,6 +311,24 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
 
 @nondestructive
 class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, StorageCase):
+    def setup_partitions(self, s, i):
+        disk = "/dev/vda"
+        btrfsname = "btrfstest"
+        s.partition_disk(
+            disk,
+            [
+                ("1MB", "biosboot"),
+                ("4GB", "ext4"),
+                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
+                ("", "btrfs", "-f", "-L", btrfsname + "B")
+            ]
+        )
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
 
     def testReclaimSpaceOptional(self):
         # When there is enough free space for the installation
@@ -372,18 +390,7 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s = Storage(b, m)
         r = Review(b, m)
 
-        disk = "/dev/vda"
-        dev = "vda"
-        btrfsname = "btrfstest"
-        s.partition_disk(
-            disk,
-            [
-                ("1MB", "biosboot"),
-                ("1GB", "ext4"),
-                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
-                ("", "btrfs", "-f", "-L", btrfsname + "B")
-            ]
-        )
+        self.setup_partitions(s, i)
 
         s.udevadm_settle()
 
@@ -398,11 +405,11 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_check_available_space("1.03 MB")
 
         # Check that all partitions are present
-        s.reclaim_check_device_row("vda (0x", disk, "disk", "16.1 GB")
+        s.reclaim_check_device_row("vda (0x", "/dev/vda", "disk", "16.1 GB")
         s.reclaim_check_device_row("vda1", "", "partition", "1.05 MB")
-        s.reclaim_check_device_row("vda2", "", "partition", "1.07 GB")
+        s.reclaim_check_device_row("vda2", "", "partition", "4.29 GB")
         s.reclaim_check_device_row("vda3", "", "partition", "5.37 GB")
-        s.reclaim_check_device_row("vda4", "", "partition", "9.66 GB")
+        s.reclaim_check_device_row("vda4", "", "partition", "6.44")
 
         # Check that deleting a disk will delete all contained partitions
         s.reclaim_remove_device("vda (0x")
@@ -421,14 +428,14 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         # Remove one partition and allocate enough space for the installation
         s.reclaim_remove_device("vda4")
         s.reclaim_check_action_present("vda4", "delete", True)
-        s.reclaim_check_available_space("9.66 GB")
+        s.reclaim_check_available_space("6.44 GB")
 
         s.reclaim_modal_submit()
         s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
         self.addCleanup(lambda: dbus_reset_users(self.machine))
 
-        r.check_disk_row(dev, parent="vda4", action="delete")
+        r.check_disk_row("vda", parent="vda4", action="delete")
 
     def testReclaimSpaceShrinkBtrfsSubvolumes(self):
         b = self.browser
@@ -437,24 +444,7 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s = Storage(b, m)
         r = Review(b, m)
 
-        disk = "/dev/vda"
-        dev = "vda"
-        btrfsname = "btrfstest"
-        s.partition_disk(
-            disk,
-            [
-                ("1MB", "biosboot"),
-                ("4GB", "ext4"),
-                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
-                ("", "btrfs", "-f", "-L", btrfsname + "B")
-            ]
-        )
-
-        s.udevadm_settle()
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
+        self.setup_partitions(s, i)
 
         s.set_partitioning("use-free-space")
         i.next(True)
@@ -490,7 +480,7 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         i.reach(i.steps.REVIEW)
         self.addCleanup(lambda: dbus_reset_users(self.machine))
 
-        r.check_disk_row(dev, parent="vda2", action="shrink")
+        r.check_disk_row("vda", parent="vda2", action="shrink")
 
 
 # TODO add next back test keeping the choice
