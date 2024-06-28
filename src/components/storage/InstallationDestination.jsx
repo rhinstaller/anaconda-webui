@@ -326,7 +326,8 @@ export const InstallationDestination = ({
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { deviceTrees, diskSelection } = useContext(StorageContext);
+    const devices = deviceTrees[""].devices;
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 

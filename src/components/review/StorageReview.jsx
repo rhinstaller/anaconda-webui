@@ -51,7 +51,9 @@ export const StorageReview = () => {
 };
 
 const DeviceRow = ({ disk }) => {
-    const { actions, devices, mountPoints, partitioning } = useContext(StorageContext);
+    const { deviceTrees, partitioning } = useContext(StorageContext);
+    const currentDeviceTree = partitioning.deviceTree.path;
+    const { actions, devices, mountPoints } = deviceTrees[currentDeviceTree];
     const requests = partitioning.requests;
     const deviceData = devices[disk];
 

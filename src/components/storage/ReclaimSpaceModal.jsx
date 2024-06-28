@@ -48,7 +48,8 @@ const _ = cockpit.gettext;
 const idPrefix = "reclaim-space-modal";
 
 export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
-    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const { deviceTrees, diskSelection, partitioning } = useContext(StorageContext);
+    const { devices } = deviceTrees[""];
     const [onNextClicked, setOnNextClicked] = useState(false);
     const [unappliedActions, setUnappliedActions] = useState(
         Object.keys(devices).reduce((acc, device) => { acc[device] = []; return acc }, {})
@@ -124,7 +125,8 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
 };
 
 const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions }) => {
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { deviceTrees, diskSelection } = useContext(StorageContext);
+    const { devices } = deviceTrees[""];
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks: diskSelection.selectedDisks });
     const requiredSize = useRequiredSize();
     const selectedSpaceToReclaim = (
