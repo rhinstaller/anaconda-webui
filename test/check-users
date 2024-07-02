@@ -20,7 +20,7 @@ from installer import Installer
 from password import Password
 from review import Review
 from testlib import nondestructive, test_main  # pylint: disable=import-error
-from users import CREATE_ACCOUNT_ID_PREFIX, Users, create_user, dbus_reset_users
+from users import CREATE_ACCOUNT_ID_PREFIX, Users, create_user
 
 
 @nondestructive
@@ -32,8 +32,6 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         b = self.browser
         i = Installer(b, self.machine)
         u = Users(b, self.machine)
-
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
 
         i.open()
 
@@ -92,8 +90,6 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         i = Installer(b, self.machine)
         p = Password(b, CREATE_ACCOUNT_ID_PREFIX)
         u = Users(b, self.machine)
-
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
 
         i.open()
 
