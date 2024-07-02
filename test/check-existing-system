@@ -1,0 +1,47 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import anacondalib
+from installer import Installer
+from review import Review
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestExistingSystemFedora(anacondalib.VirtInstallMachineCase):
+    disk_image = "fedora-rawhide"
+
+    def testScenarioEraseAll(self):
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.REVIEW)
+
+        for device in ["vda1", "vda2", "vda3", "vda4"]:
+            if device == "vda4":
+                # FIXME: XFAIL
+                # Remove when merged:
+                # https://github.com/rhinstaller/anaconda-webui/pull/328
+                continue
+            r.check_disk_row("vda", parent=device, action="delete")
+
+if __name__ == '__main__':
+    test_main()
