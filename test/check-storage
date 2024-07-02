@@ -239,8 +239,6 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         i = Installer(b, self.machine)
         s = Storage(b, self.machine)
 
-        self.addCleanup(s.dbus_reset_partitioning)
-
         # Read partitioning data before we do anything
         created_partitioning = s.dbus_get_created_partitioning()
 

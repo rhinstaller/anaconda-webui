@@ -19,7 +19,6 @@ import anacondalib
 from installer import Installer
 from language import Language
 from review import Review
-from storage import Storage  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_iso
 
@@ -31,14 +30,12 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
-        s = Storage(b, m)
         r = Review(b, m)
 
         pretend_live_iso(self, i)
         i.open()
         # After clicking 'Next' on the storage step, partitioning is done, thus changing the available space on the disk
         # Since this is a non-destructive test we need to make sure the we reset partitioning to how it was before the test started
-        self.addCleanup(s.dbus_reset_partitioning)
         i.reach(i.steps.REVIEW)
 
         # check language is shown
@@ -69,9 +66,6 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
-        s = Storage(b, m)
-
-        self.addCleanup(s.dbus_reset_partitioning)
 
         i.open()
 
