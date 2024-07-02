@@ -130,6 +130,7 @@ export const storageReducer = (state = storageInitialState, action) => {
                     actions: action.payload.actions,
                     deviceNames: action.payload.deviceNames,
                     devices: action.payload.devices,
+                    existingSystems: action.payload.existingSystems,
                     mountPoints: action.payload.mountPoints,
                 }
             }

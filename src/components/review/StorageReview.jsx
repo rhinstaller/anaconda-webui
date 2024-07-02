@@ -18,6 +18,8 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
 import {
+    List,
+    ListItem,
     Stack,
 } from "@patternfly/react-core";
 
@@ -28,6 +30,7 @@ import { checkDeviceOnStorageType, getDeviceAncestors, getParentPartitions, hasE
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { StorageContext } from "../Common.jsx";
+import { ReviewDescriptionListItem } from "./Common";
 
 import "./StorageReview.scss";
 
@@ -150,19 +153,18 @@ const DeviceRow = ({ disk }) => {
         }
     }
 
+    // For deleted device information we need to take a look at the original device tree
+    const originalDevices = deviceTrees[""].devices;
     const actionRows = actions.filter(action => {
         // Show only delete actions for partitions to not overload the summary with deleted children
         if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
             return false;
         }
 
-        // For deleted device information we need to take a look at the original device tree
-        const originalDevices = deviceTrees[""].devices;
         const parents = getDeviceAncestors(originalDevices, action["device-name"].v);
 
         return parents.includes(disk);
     });
-
     return (
         <div>
             <span id={`disk-${disk}`}>{cockpit.format_bytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
@@ -178,10 +180,55 @@ const DeviceRow = ({ disk }) => {
               ]}
               gridBreakPoint=""
               id={idPrefix + "-table-" + disk}
-              rows={[...actionRows.map(getActionRow), ...newMountPointRows.map(getDeviceRow)]}
+              rows={[
+                  ...actionRows.map(getActionRow),
+                  ...newMountPointRows.map(getDeviceRow)
+              ]}
               variant="compact"
             />
 
         </div>
+    );
+};
+
+/**
+ * @returns {boolean}   True is the device will be deleted according to the actions
+ */
+const isDeviceDeleted = ({ actions, device }) => (
+    actions.find(action => action["device-name"].v === device && action["action-type"].v === "destroy")
+);
+
+export const StorageReviewNote = () => {
+    const actualDeviceTree = useDeviceTree();
+
+    if (actualDeviceTree === undefined) {
+        return null;
+    }
+
+    const { actions, existingSystems } = actualDeviceTree;
+    const deletedSystems = existingSystems.filter(
+        system => system.devices.v.every(device => isDeviceDeleted({ actions, device }))
+    );
+
+    const description = (
+        <List isPlain>
+            {deletedSystems.map(system => (
+                <ListItem key={system["os-name"].v}>
+                    {cockpit.format(_("$0 will be deleted"), system["os-name"].v)}
+                </ListItem>
+            ))}
+        </List>
+    );
+
+    if (deletedSystems.length === 0) {
+        return null;
+    }
+
+    return (
+        <ReviewDescriptionListItem
+          id="installation-review-target-storage-note"
+          term={_("Note")}
+          description={description}
+        />
     );
 };

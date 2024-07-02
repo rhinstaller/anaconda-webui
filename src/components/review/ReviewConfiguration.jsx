@@ -19,8 +19,7 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
-    DescriptionList, DescriptionListDescription,
-    DescriptionListGroup, DescriptionListTerm,
+    DescriptionList,
     Flex, FlexItem,
     HelperText, HelperTextItem,
     Modal, ModalVariant,
@@ -31,8 +30,9 @@ import {
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
+import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
-import { StorageReview } from "./StorageReview.jsx";
+import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 
@@ -53,15 +53,6 @@ const ReviewDescriptionList = ({ children }) => {
         >
             {children}
         </DescriptionList>
-    );
-};
-
-const ReviewDescriptionListItem = ({ description, id, term }) => {
-    return (
-        <DescriptionListGroup>
-            <DescriptionListTerm>{term}</DescriptionListTerm>
-            <DescriptionListDescription id={id}>{description}</DescriptionListDescription>
-        </DescriptionListGroup>
     );
 };
 
@@ -153,6 +144,7 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
                               </Stack>
                           }
                         />
+                        <StorageReviewNote />
                     </ReviewDescriptionList>
                 </ReviewDescriptionList>
             </FlexItem>

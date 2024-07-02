@@ -61,6 +61,13 @@ export const getDeviceData = ({ disk }) => {
 };
 
 /**
+ * @returns {Promise}           Resolves a list with the existing GNU/Linux installations
+ */
+export const getExistingSystems = () => {
+    return new DeviceTree().callViewer("GetExistingSystems", []);
+};
+
+/**
  * @param {Array[string]} diskNames A list of disk names
  *
  * @returns {Promise}           Resolves the total free space on the given disks

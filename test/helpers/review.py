@@ -78,3 +78,6 @@ class Review(NetworkDBus):
 
     def check_disk_row_not_present(self, disk, mount):
         self.browser.wait_not_present(f"table[aria-label={disk}] td:contains({mount})")
+
+    def check_deleted_system(self, os_name):
+        self.browser.wait_in_text(f"#{self._step}-target-storage-note li", os_name)

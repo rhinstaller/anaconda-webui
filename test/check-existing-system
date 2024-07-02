@@ -38,5 +38,8 @@ class TestExistingSystemFedora(anacondalib.VirtInstallMachineCase):
         for device in ["vda1", "vda2", "vda3", "vda4"]:
             r.check_disk_row("vda", parent=device, action="delete")
 
+        r.check_deleted_system("Fedora Linux")
+
+
 if __name__ == '__main__':
     test_main()
