@@ -94,7 +94,7 @@ class VirtInstallMachineCase(MachineCase):
 
     def _create_disk_image(self, size, image_path=None, quiet=False, backing_file=None):
         if not image_path:
-            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}")
+            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}", dir="/var/tmp")
         quiet = "-q" if quiet else ""
         backing_file = f"-o backing_file={backing_file},backing_fmt=qcow2" if backing_file else ""
         size = f"{size}G" if size else ""
