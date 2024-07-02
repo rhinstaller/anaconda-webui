@@ -609,7 +609,8 @@ const isUsableDevice = (devSpec, deviceData) => {
 };
 
 const useExistingPartitioning = () => {
-    const { devices, diskSelection, partitioning } = useContext(StorageContext);
+    const { deviceTrees, diskSelection, partitioning } = useContext(StorageContext);
+    const { devices } = deviceTrees[""];
     const [usedPartitioning, setUsedPartitioning] = useState();
 
     const reusePartitioning = useMemo(() => {
@@ -669,7 +670,8 @@ const MountPointMapping = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { deviceTrees, diskSelection } = useContext(StorageContext);
+    const { devices } = deviceTrees[""];
 
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(

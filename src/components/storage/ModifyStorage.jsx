@@ -31,7 +31,8 @@ const _ = cockpit.gettext;
 
 export const ModifyStorage = ({ idPrefix, setShowStorage }) => {
     const targetSystemRoot = useContext(TargetSystemRootContext);
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { deviceTrees, diskSelection } = useContext(StorageContext);
+    const devices = deviceTrees[""].devices;
     const selectedDevices = diskSelection.selectedDisks.map(disk => devices[disk].path.v);
     const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");

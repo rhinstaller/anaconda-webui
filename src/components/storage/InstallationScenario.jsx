@@ -282,7 +282,8 @@ const InstallationScenarioSelector = ({
     setIsFormValid,
     showStorage,
 }) => {
-    const { deviceNames, devices, diskSelection, mountPoints, partitioning } = useContext(StorageContext);
+    const { deviceTrees, diskSelection, partitioning } = useContext(StorageContext);
+    const { deviceNames, devices, mountPoints } = deviceTrees[""];
     const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])

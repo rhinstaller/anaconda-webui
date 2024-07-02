@@ -16,10 +16,12 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Stack,
 } from "@patternfly/react-core";
+
+import { getDeviceTree } from "../../apis/storage_partitioning.js";
 
 import { checkDeviceOnStorageType, getDeviceAncestors, getParentPartitions, hasEncryptedAncestor } from "../../helpers/storage.js";
 
@@ -50,8 +52,30 @@ export const StorageReview = () => {
     );
 };
 
+export const useDeviceTree = () => {
+    const [deviceTreePath, setDeviceTreePath] = useState();
+    const { appliedPartitioning, deviceTrees } = useContext(StorageContext);
+
+    useEffect(() => {
+        const _getDeviceTree = async () => {
+            const _deviceTreePath = appliedPartitioning ? await getDeviceTree({ partitioning: appliedPartitioning }) : "";
+            setDeviceTreePath(_deviceTreePath);
+        };
+        _getDeviceTree();
+    }, [appliedPartitioning, deviceTrees]);
+
+    return deviceTrees[deviceTreePath];
+};
+
 const DeviceRow = ({ disk }) => {
-    const { actions, devices, mountPoints, partitioning } = useContext(StorageContext);
+    const { deviceTrees, partitioning } = useContext(StorageContext);
+    const actualDeviceTree = useDeviceTree();
+
+    if (actualDeviceTree === undefined) {
+        return null;
+    }
+
+    const { actions, devices, mountPoints } = actualDeviceTree;
     const requests = partitioning.requests;
     const deviceData = devices[disk];
 
@@ -127,11 +151,14 @@ const DeviceRow = ({ disk }) => {
     }
 
     const actionRows = actions.filter(action => {
-        if (action["action-description"].v !== "destroy device") {
+        // Show only delete actions for partitions to not overload the summary with deleted children
+        if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
             return false;
         }
 
-        const parents = getDeviceAncestors(devices, action["device-name"].v);
+        // For deleted device information we need to take a look at the original device tree
+        const originalDevices = deviceTrees[""].devices;
+        const parents = getDeviceAncestors(originalDevices, action["device-name"].v);
 
         return parents.includes(disk);
     });

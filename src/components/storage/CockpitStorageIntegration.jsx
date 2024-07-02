@@ -226,7 +226,8 @@ const CheckStorageDialog = ({
     setShowDialog,
     setShowStorage,
 }) => {
-    const { devices, diskSelection } = useContext(StorageContext);
+    const { deviceTrees, diskSelection } = useContext(StorageContext);
+    const { devices } = deviceTrees[""];
     const selectedDisks = diskSelection.selectedDisks;
 
     const [error, setError] = useState();
