@@ -116,7 +116,3 @@ def create_user(browser, machine):
     p.set_password(password)
     p.set_password_confirm(password)
     u.set_user_name("tester")
-
-
-def dbus_reset_users(machine):
-    UsersDBus(machine).dbus_clear_users()

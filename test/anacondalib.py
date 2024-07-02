@@ -31,6 +31,7 @@ from machine_install import VirtInstallMachine
 from progress import Progress
 from storage import Storage
 from testlib import MachineCase  # pylint: disable=import-error
+from users import Users
 from utils import add_public_key
 
 pixel_tests_ignore = [".logo", "#betanag-icon"]
@@ -49,6 +50,7 @@ class VirtInstallMachineCase(MachineCase):
     def setUp(self):
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
+            self.addCleanup(self.resetUsers)
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
 
@@ -114,6 +116,12 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         lang = Language(b, m)
         lang.dbus_set_language("en_US.UTF-8")
+
+    def resetUsers(self):
+        m = self.machine
+        b = self.browser
+        users = Users(b, m)
+        users.dbus_clear_users()
 
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data
