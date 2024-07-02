@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-25 02:50+0000\n"
-"PO-Revision-Date: 2024-05-25 02:47+0000\n"
+"POT-Creation-Date: 2024-07-02 02:50+0000\n"
+"PO-Revision-Date: 2024-06-26 15:24+0000\n"
 "Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
 "memory@weblate.org>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
@@ -46,11 +46,12 @@ msgstr "'$0' '$1'-ით დაფორმატებულ მოწყობ
 msgid "About"
 msgstr "შესახებ"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "ანგარიში"
 
-#: src/components/review/StorageReview.jsx:116
+#: src/components/storage/ReclaimSpaceModal.jsx:115
+#: src/components/review/StorageReview.jsx:149
 msgid "Actions"
 msgstr "ქმედებები"
 
@@ -86,7 +87,7 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda-ის პროექტის გვერდი"
 
-#: src/components/storage/InstallationScenario.jsx:212
+#: src/components/storage/InstallationScenario.jsx:233
 msgid "Apply mount point assignment and install"
 msgstr "მიმაგრების წერტილების გადატარება და დაყენება"
 
@@ -94,8 +95,12 @@ msgstr "მიმაგრების წერტილების გად�
 msgid "Applying new disk selection..."
 msgstr "ახალი დისკის არჩევანის გადატარება..."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:142
+msgid "Available free space: $0. Installation requires: $1."
+msgstr "ხელმისაწვდომია თავისუფალი ადგილი: $0. დაყენებას სჭირდება: $1."
+
 #: src/components/AnacondaWizardFooter.jsx:90
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid "Back"
 msgstr "უკან"
 
@@ -111,6 +116,7 @@ msgstr ""
 "ტესტირებისთვის და მზად ხართ, გამოგვიგზავნოთ ანგარიში ნებისმიერი შეცდომის "
 "შესახებ."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:153
 #: src/components/Error.jsx:260 src/components/review/Hostname.jsx:106
 msgid "Cancel"
 msgstr "გაუქმება"
@@ -136,11 +142,11 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "საცავის კონფიგურაციის შემოწმება"
 
-#: src/components/localization/InstallationLanguage.jsx:304
+#: src/components/localization/InstallationLanguage.jsx:300
 msgid "Choose a language"
 msgstr "აირჩიეთ ენა"
 
-#: src/components/localization/InstallationLanguage.jsx:313
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Chosen language: "
 msgstr "არჩეული ენა: "
 
@@ -175,7 +181,7 @@ msgstr "საცავის მორგება"
 msgid "Configure storage again"
 msgstr "საცავის თავიდან მორგება"
 
-#: src/components/storage/DiskEncryption.jsx:135
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:282
 msgid "Confirm passphrase"
 msgstr "დაადასტურეთ საკვანძო ფრაზა"
@@ -192,7 +198,7 @@ msgstr "დაყენებს გაგრძელება"
 msgid "Continue with installation"
 msgstr "დაყენების გაგრძელება"
 
-#: src/components/users/Accounts.jsx:364
+#: src/components/users/Accounts.jsx:356
 msgid "Create Account"
 msgstr "ანგარიშის შექმნა"
 
@@ -221,7 +227,7 @@ msgid "Detected valid storage layout:"
 msgstr "აღმოჩენილია სწორი საცავის განლაგება:"
 
 #: src/components/storage/MountPointMapping.jsx:561
-#: src/components/review/StorageReview.jsx:114
+#: src/components/review/StorageReview.jsx:147
 msgid "Device"
 msgstr "მოწყობილობა"
 
@@ -229,7 +235,7 @@ msgstr "მოწყობილობა"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "მიმაგრების წერტილის მინიჭებამდე აუცილებელია მოწყობილობების განბლოკვა."
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "გამორთულია"
 
@@ -237,8 +243,8 @@ msgstr "გამორთულია"
 msgid "Disk configuration"
 msgstr "დისკის მორგება"
 
-#: src/components/storage/DiskEncryption.jsx:191
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/storage/DiskEncryption.jsx:198
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "დისკის დაშიფვრა"
 
@@ -254,19 +260,19 @@ msgstr "მიმაგრების წერტილი დუბლირ�
 msgid "Enable root account"
 msgstr "Root-ის ანგარიშის ჩართვა"
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "ჩართულია"
 
-#: src/components/storage/DiskEncryption.jsx:119
+#: src/components/storage/DiskEncryption.jsx:101
 msgid "Encrypt my data"
 msgstr "ჩემი მონაცემების დაშიფვრა"
 
-#: src/components/storage/DiskEncryption.jsx:192
+#: src/components/storage/DiskEncryption.jsx:199
 msgid "Encrypt the selected devices?"
 msgstr "დავშიფრო მონიშნული მოწყობილობა?"
 
-#: src/components/review/StorageReview.jsx:117
+#: src/components/review/StorageReview.jsx:150
 msgid "Encrypted"
 msgstr "დაშიფრულია"
 
@@ -274,22 +280,22 @@ msgstr "დაშიფრულია"
 msgid "Encrypted devices are locked"
 msgstr "დაშიფრული მოწყობილობები დაბლოკილია"
 
-#: src/components/storage/DiskEncryption.jsx:145
+#: src/components/storage/DiskEncryption.jsx:127
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "დაშიფვრა დაგეხმარებათ დაიცვათ თქვენი მონაცემები, რათა სხვებს მასზე წვდომა არ "
 "ჰქონდეთ."
 
-#: src/components/storage/InstallationScenario.jsx:184
-#: src/components/storage/InstallationScenario.jsx:195
+#: src/components/storage/InstallationScenario.jsx:203
+#: src/components/storage/InstallationScenario.jsx:214
 msgid "Erase data and install"
 msgstr "მონაცემების წაშლა და დაყენება"
 
-#: src/components/storage/InstallationScenario.jsx:191
+#: src/components/storage/InstallationScenario.jsx:210
 msgid "Erase data and install?"
 msgstr "წავშალო მონაცემები და დავაყენო?"
 
-#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "მონაცემების წაშლა შეუქცევადია. დარწმუნდით, რომ თქვენი ინფორმაცია შეინახეთ."
@@ -347,7 +353,7 @@ msgstr "პაროლის დამალვა"
 msgid "Hostname"
 msgstr "ჰოსტის სახელი"
 
-#: src/components/storage/InstallationScenario.jsx:400
+#: src/components/storage/InstallationScenario.jsx:422
 msgid "How would you like to install?"
 msgstr "როგორ გნებავთ, დააყენოთ?"
 
@@ -377,20 +383,20 @@ msgstr "მიმდინარეობს"
 msgid "Initializing..."
 msgstr "ინიციალიზაცია..."
 
-#: src/components/storage/InstallationScenario.jsx:198
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Install"
 msgstr "დაყენება"
 
-#: src/components/storage/InstallationScenario.jsx:219
+#: src/components/storage/InstallationScenario.jsx:240
 msgid "Install on the custom mount points?"
 msgstr "დავაყენო ხელით მითითებულ მიმაგრების წერტილებზე?"
 
-#: src/components/storage/InstallationScenario.jsx:205
+#: src/components/storage/InstallationScenario.jsx:226
 msgid "Install on the free space?"
 msgstr "დავაყენო თავისუფალ ადგილზე?"
 
-#: src/components/storage/InstallationScenario.jsx:233
+#: src/components/storage/InstallationScenario.jsx:254
 msgid "Install using the configured storage?"
 msgstr "დავაყენო მორგებული საცავის გამოყენებით?"
 
@@ -398,7 +404,7 @@ msgstr "დავაყენო მორგებული საცავი�
 msgid "Installation failed"
 msgstr "დაყენების შეცდომა"
 
-#: src/components/storage/InstallationMethod.jsx:164
+#: src/components/storage/InstallationMethod.jsx:200
 msgid "Installation method"
 msgstr "დაყენების მეთოდი"
 
@@ -406,7 +412,7 @@ msgstr "დაყენების მეთოდი"
 msgid "Installation of the system failed: $0"
 msgstr "სისტემის დაყენება ჩავარდა: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "დაყენების ტიპი"
 
@@ -424,9 +430,13 @@ msgstr ""
 "დისკის მიმდინარე განლაგების შენარჩუნება და მხოლოდ ხელმისაწვდომ ადგილას "
 "დაყენება."
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "ენა"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:112
+msgid "Location"
+msgstr "მდებარეობა"
 
 #: src/components/storage/EncryptedDevices.jsx:174
 msgid "Locked devices"
@@ -436,11 +446,11 @@ msgstr "დაბლოკილი მოწყობილობები"
 msgid "Log"
 msgstr "ჟურნალი"
 
-#: src/components/storage/MountPointMapping.jsx:747
+#: src/components/storage/MountPointMapping.jsx:739
 msgid "Manual disk configuration"
 msgstr "დისკის ხელით მორგება"
 
-#: src/components/storage/MountPointMapping.jsx:748
+#: src/components/storage/MountPointMapping.jsx:741
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "დისკის ხელით მორგება: მიმაგრების წერტილის მიბმა"
 
@@ -467,11 +477,11 @@ msgid "Modify storage"
 msgstr "საცავის შეცვლა"
 
 #: src/components/storage/MountPointMapping.jsx:560
-#: src/components/review/StorageReview.jsx:113
+#: src/components/review/StorageReview.jsx:146
 msgid "Mount point"
 msgstr "მიმაგრების წერტილი"
 
-#: src/components/storage/InstallationScenario.jsx:223
+#: src/components/storage/InstallationScenario.jsx:244
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point assignment"
 msgstr "მიმაგრების წერტილის მინიჭება"
@@ -479,6 +489,10 @@ msgstr "მიმაგრების წერტილის მინიჭ�
 #: src/components/Password.jsx:50
 msgid "Must be at least $0 characters"
 msgstr "უნდა შეიცავდეს $0 სიმბოლოს მაინც"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:111
+msgid "Name"
+msgstr "სახელი"
 
 #: src/components/Error.jsx:122
 msgid ""
@@ -501,6 +515,7 @@ msgid "No additional disks detected"
 msgstr "დამატებითი დისკები ნაპოვნი არაა"
 
 #: src/components/storage/MountPointMapping.jsx:565
+#: src/components/storage/ReclaimSpaceModal.jsx:117
 msgid "No devices"
 msgstr "მოწყობილობების გარეშე"
 
@@ -517,11 +532,11 @@ msgstr "მონიშნულ დისკებზე გამოყენ�
 msgid "No usable disks detected"
 msgstr "გამოყენებადი დისკი აღმოჩენილი არაა"
 
-#: src/components/storage/InstallationScenario.jsx:76
+#: src/components/storage/InstallationScenario.jsx:78
 msgid "Not enough free space on the selected disks."
 msgstr "მონიშნულ დისკებზე საკმარისი თავისუფალი ადგილი არაა."
 
-#: src/components/storage/InstallationScenario.jsx:55
+#: src/components/storage/InstallationScenario.jsx:57
 msgid "Not enough space on selected disks."
 msgstr "მონიშნულ დისკებზე საკმარისი ადგილი არაა."
 
@@ -534,13 +549,13 @@ msgstr ""
 "შენიშვნა: ეს სატესტო პროგრამაა, რომელიც მხოლოდ ტესტირებისთვისაა განკუთვნილი. "
 "*არ* გამოიყენოთ ეს პროგრამა კრიტიკულ ან საწარმოო გარემოში."
 
-#: src/components/storage/DiskEncryption.jsx:148
+#: src/components/storage/DiskEncryption.jsx:130
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
 msgstr "დაიშიფრება მხოლოდ ახალი დანაყოფები. არსებული დანაყოფები არ შეიცვლება."
 
-#: src/components/review/ReviewConfiguration.jsx:93
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "ოპერაციული სისტემა"
 
@@ -548,7 +563,7 @@ msgstr "ოპერაციული სისტემა"
 msgid "Partitions (advanced)"
 msgstr "დანაყოფები (დამატებით)"
 
-#: src/components/storage/DiskEncryption.jsx:132
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
 #: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:279
@@ -639,6 +654,20 @@ msgstr "გადატვირთვა"
 msgid "Reboot system?"
 msgstr "გადავტვირთო სისტემა?"
 
+#: src/components/storage/InstallationScenario.jsx:195
+msgid "Reclaim additional space"
+msgstr "დამატებითი ადგილის გამოთხოვა"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:101
+#: src/components/storage/ReclaimSpaceModal.jsx:109
+#: src/components/storage/ReclaimSpaceModal.jsx:150
+msgid "Reclaim space"
+msgstr "ადგილის გამოთხოვა"
+
+#: src/components/storage/InstallationScenario.jsx:195
+msgid "Reclaim space (required)"
+msgstr "ადგილის გამოთხოვა (აუცილებელია)"
+
 #: src/components/storage/MountPointMapping.jsx:245
 msgid "Recommended"
 msgstr "რეკომენდებულია"
@@ -663,6 +692,19 @@ msgid ""
 msgstr ""
 "მონიშნული დისკებიდან ყველა დანაყოფის, არსებული ოპერაციული სისტემების "
 "ჩათვლით, წაშლა. დარწმუნდით, რომ თქვენი მონაცემები უსაფრთხო ადგილასაა."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:87
+msgid "Remove existing filesystems to free up space for the installation."
+msgstr ""
+"არსებულ ფაილური სისტემების წაშლა და დასაყენებლად თავისუფალი ადგილის "
+"გამოთავისუფლება."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:90
+msgid ""
+"Removing a filesystem will permanently delete all of the data it contains. "
+msgstr ""
+"ფაილური სისტემის წაშლა მისი შემცველი მონაცემების სამუდამოდ წაშლას "
+"გამოიწვევს. "
 
 #: src/components/HeaderKebab.jsx:132
 msgid "Report Issue"
@@ -704,8 +746,8 @@ msgstr "დაყენებაზე დაბრუნება"
 msgid "Return to storage editor"
 msgstr "დაბრუნება საცავის რედაქტორზე"
 
-#: src/components/review/ReviewConfiguration.jsx:249
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Review and install"
 msgstr "გადახედვა და დაყენება"
 
@@ -749,7 +791,7 @@ msgstr "საკვანძო ფრაზის ჩვენება"
 msgid "Show password"
 msgstr "პაროლის ჩვენება"
 
-#: src/components/review/StorageReview.jsx:115
+#: src/components/review/StorageReview.jsx:148
 msgid "Size"
 msgstr "ზომა"
 
@@ -777,7 +819,11 @@ msgstr "ზოგიერთი მოწყობილობა იგივ�
 msgid "Some required partitions are missing: $0"
 msgstr "ვერ ვიპოვე ზოგიერთი აუცილებელი დანაყოფი: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:156
+#: src/components/storage/ReclaimSpaceModal.jsx:114
+msgid "Space"
+msgstr "ადგილი"
+
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "საცავი"
 
@@ -830,7 +876,7 @@ msgstr ""
 "სისტემის მორგება. პროგრამების დაყენება დასრულდა. მიმდინარეობს სისტემის "
 "მორგება."
 
-#: src/components/localization/InstallationLanguage.jsx:315
+#: src/components/localization/InstallationLanguage.jsx:311
 msgid ""
 "The chosen language will be used for installation and in the installed "
 "software. "
@@ -855,11 +901,11 @@ msgstr ""
 "შემდეგი ჟურნალის ფაილი გადაიგზავნება შეცდომების ტრეკინგის სისტემაში, სადაც "
 "დამატებითი დეტალების მითითება შეგეძლებათ."
 
-#: src/components/storage/InstallationScenario.jsx:57
+#: src/components/storage/InstallationScenario.jsx:59
 msgid "The installation needs $1 of disk space; "
 msgstr "დაყენებას დისკზე $1 ადგილი სჭირდება: "
 
-#: src/components/storage/InstallationScenario.jsx:204
+#: src/components/storage/InstallationScenario.jsx:225
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -867,8 +913,8 @@ msgstr ""
 "დაყენება თქვენ მოწყობილობებზე არსებულ ადგილს გამოიყენებს და მონაცემებს არ "
 "წაშლის."
 
-#: src/components/storage/InstallationScenario.jsx:218
-#: src/components/storage/InstallationScenario.jsx:232
+#: src/components/storage/InstallationScenario.jsx:239
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "The installation will use your configured partitioning layout."
 msgstr "დაყენება მორგებულ დანაყოფების განლაგებას გამოიყენებს."
 
@@ -888,7 +934,7 @@ msgstr ""
 "საკვანძო ფრაზა, რომელიც შეიყვანეთ, სპეციალურ სიმბოლოებს შეიცავს. მისით "
 "აკრეფისას შეიძლება კლავიატურის განლაგებებს შორის გადართვა ვერ შეძლოთ."
 
-#: src/components/storage/InstallationScenario.jsx:190
+#: src/components/storage/InstallationScenario.jsx:209
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -924,13 +970,13 @@ msgstr "ამას, შეიძლება, რაღაც დრო და
 msgid "To begin using $0, reboot your system."
 msgstr "$0-ის გამოყენების დასაწყებად გადატვირთეთ თქვენი სისტემა."
 
-#: src/components/storage/InstallationMethod.jsx:151
+#: src/components/storage/InstallationMethod.jsx:167
 msgid "To continue, select the devices to install to."
 msgstr "გასაგრძელებლად აირჩიეთ მოწყობილობა, რომელზეც დაყენება გნებავთ."
 
-#: src/components/storage/InstallationScenario.jsx:210
-#: src/components/storage/InstallationScenario.jsx:224
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:231
+#: src/components/storage/InstallationScenario.jsx:245
+#: src/components/storage/InstallationScenario.jsx:259
 msgid "To prevent loss, make sure to backup your data."
 msgstr ""
 "დაკარგვის თავიდან ასაცილებლად დარწმუნდით, რომ მონაცემები დამარქაფებულია."
@@ -941,13 +987,17 @@ msgstr ""
 "ამ პარამეტრის გამოსაყენებლად, დარწმუნდით, რომ მოწყობილობის სახელები "
 "უნიკალურია."
 
-#: src/components/storage/InstallationScenario.jsx:78
+#: src/components/storage/InstallationScenario.jsx:80
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
 "ამ პარამეტრის გამოსაყენებლად არსებული დანაყოფების ზომა შეცვალეთ ან წაშალეთ "
 "ისინი, სანამ თავისუფალი ადგილი $0 მაინც არ იქნება."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:113
+msgid "Type"
+msgstr "ტიპი"
 
 #: src/components/storage/EncryptedDevices.jsx:161
 msgid "Unlock"
@@ -961,11 +1011,11 @@ msgstr "მოწყობილობების განბლოკვა"
 msgid "Unlock encrypted devices"
 msgstr "დაშიფრული მოწყობილობების განბლოკვა"
 
-#: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/InstallationScenario.jsx:258
 msgid "Use configured storage"
 msgstr "მორგებული საცავის გამოყენება"
 
-#: src/components/storage/InstallationScenario.jsx:209
+#: src/components/storage/InstallationScenario.jsx:230
 msgid "Use free space for the installation"
 msgstr "დასაყენებლად თავისუფალი ადგილის გამოყენება"
 
@@ -993,15 +1043,15 @@ msgstr "მომხმარებლის სახელის სიგრ�
 msgid "Weak"
 msgstr "სუსტი"
 
-#: src/components/localization/InstallationLanguage.jsx:344
+#: src/components/localization/InstallationLanguage.jsx:342
 msgid "Welcome"
 msgstr "კეთილი იყოს თქვენი მობრძანება"
 
-#: src/components/localization/InstallationLanguage.jsx:345
+#: src/components/localization/InstallationLanguage.jsx:334
 msgid "Welcome to $0"
 msgstr "მოგესალმებათ $0"
 
-#: src/components/storage/InstallationMethod.jsx:165
+#: src/components/storage/InstallationMethod.jsx:193
 msgid "Welcome. Let's install $0 now."
 msgstr "მოგესალმებით. მოდით, $0 დავაყენოთ."
 
@@ -1024,6 +1074,12 @@ msgstr "ნაბიჯი დასრულდა"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "მიმდინარე ბიჯი"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:248
+#: src/components/storage/ReclaimSpaceModal.jsx:256
+#: src/components/review/StorageReview.jsx:93
+msgid "delete"
+msgstr "წაშლა"
 
 #: src/components/review/Hostname.jsx:97
 msgid "edit"
@@ -1048,6 +1104,10 @@ msgstr "მიმაგრება"
 #: src/components/installation/InstallationProgress.jsx:179
 msgid "pending step"
 msgstr "დარჩენილი ბიჯები"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:257
+msgid "undo"
+msgstr "გაუქმება"
 
 #~ msgid "Error was hit when going back from $0."
 #~ msgstr "შეცდომას წამოვედეთ, როცა $0-დან ვბრუნდებოდით."
@@ -2174,9 +2234,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgid "Default spoke title"
 #~ msgstr "სექციის ნაგულისხმები სათაური"
 
-#~ msgid "Delete"
-#~ msgstr "წაშლა"
-
 #~ msgctxt "GUI|Reclaim Dialog"
 #~ msgid "Delete _all"
 #~ msgstr "ყველ_ას წაშლა"
@@ -3102,9 +3159,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgid "Locales"
 #~ msgstr "ლოკალიზაცია"
 
-#~ msgid "Location"
-#~ msgstr "მდებარეობა"
-
 #~ msgid "Logical volume \"{}\" given in logvol command does not exist."
 #~ msgstr ""
 #~ "ლოგიკური ტომი \"{}\", რომელიც logvol ბრძანების პარამეტრადაა მითითებული, "
@@ -3234,9 +3288,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgid "N_FS mount options:"
 #~ msgstr "N_FS-ის მიმაგრების პარამეტრები:"
 
-#~ msgid "Name"
-#~ msgstr "სახელი"
-
 #~ msgid "Name '$' is not allowed."
 #~ msgstr "სახელი '$' დაუშვებელია."
 
@@ -3310,9 +3361,6 @@ msgstr "დარჩენილი ბიჯები"
 
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "მოწყობილობის ზედა საქაღალდეში *.iso ფაილი ვერ ვიპოვე"
-
-#~ msgid "No Space"
-#~ msgstr "დისკზე არაა საკმარისი ადგილი"
 
 #~ msgid "No additional software to select."
 #~ msgstr "დამატებითი პროგრამები ვერ ვიპოვე."
@@ -5163,9 +5211,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgstr ""
 #~ "ტომების ჯგუფის აღწერაში აღუწერელი დანაყოფის, \"{}\" გამოყენების მცდელობა"
 
-#~ msgid "Type"
-#~ msgstr "ტიპი"
-
 #~ msgid "Type here to search."
 #~ msgstr "შეიყვანეთ საძებნი სტრიქონი."
 
@@ -6416,10 +6461,6 @@ msgstr "დარჩენილი ბიჯები"
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Reboot System"
 #~ msgstr "_სისტემის გადატვირთვა"
-
-#~ msgctxt "GUI|Reclaim Dialog"
-#~ msgid "_Reclaim space"
-#~ msgstr "_ადგილის გამოთხოვნა"
 
 #~ msgctxt "GUI|Storage|Need Space Dialog"
 #~ msgid "_Reclaim space"

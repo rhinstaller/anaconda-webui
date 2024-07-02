@@ -28,10 +28,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-25 02:50+0000\n"
-"PO-Revision-Date: 2024-06-25 02:46+0000\n"
-"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
-"memory@weblate.org>\n"
+"POT-Creation-Date: 2024-07-02 02:50+0000\n"
+"PO-Revision-Date: 2024-07-02 02:46+0000\n"
+"Last-Translator: Jan Kuparinen <copper_fin@hotmail.com>\n"
 "Language-Team: Finnish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/fi/>\n"
 "Language: fi\n"
@@ -39,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: src/components/app.jsx:83
 msgid "$0 installation"
@@ -64,11 +63,12 @@ msgstr "{fs}:n on oltava laitteella tyyppiä {type}"
 msgid "About"
 msgstr "Aiheesta"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Tili"
 
-#: src/components/review/StorageReview.jsx:116
+#: src/components/storage/ReclaimSpaceModal.jsx:115
+#: src/components/review/StorageReview.jsx:149
 msgid "Actions"
 msgstr "Toimet"
 
@@ -103,7 +103,7 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda-projektin sivu"
 
-#: src/components/storage/InstallationScenario.jsx:212
+#: src/components/storage/InstallationScenario.jsx:233
 msgid "Apply mount point assignment and install"
 msgstr "Käytä kiinnityspisteiden määritystä ja asenna"
 
@@ -111,8 +111,12 @@ msgstr "Käytä kiinnityspisteiden määritystä ja asenna"
 msgid "Applying new disk selection..."
 msgstr "Otetaan uutta levyvalintaa käyttöön..."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:142
+msgid "Available free space: $0. Installation requires: $1."
+msgstr ""
+
 #: src/components/AnacondaWizardFooter.jsx:90
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid "Back"
 msgstr "Takaisin"
 
@@ -128,6 +132,7 @@ msgstr ""
 "testaustarkoituksiin, ja olet halukas ilmoittamaan mahdollisista ongelmista "
 "parantaaksesi tätä ohjelmistoa."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:153
 #: src/components/Error.jsx:260 src/components/review/Hostname.jsx:106
 msgid "Cancel"
 msgstr "Peru"
@@ -153,11 +158,11 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "Tarkistetaan tallennustilan asetuksia"
 
-#: src/components/localization/InstallationLanguage.jsx:304
+#: src/components/localization/InstallationLanguage.jsx:300
 msgid "Choose a language"
 msgstr "Valitse kieli"
 
-#: src/components/localization/InstallationLanguage.jsx:313
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Chosen language: "
 msgstr "Valittu kieli: "
 
@@ -192,7 +197,7 @@ msgstr "Määritä tallennustila"
 msgid "Configure storage again"
 msgstr "Määritetään tallennustilaa"
 
-#: src/components/storage/DiskEncryption.jsx:135
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:282
 msgid "Confirm passphrase"
 msgstr "Vahvista salalause"
@@ -211,7 +216,7 @@ msgstr "Jatka asennusta"
 msgid "Continue with installation"
 msgstr "Jatka asennusta"
 
-#: src/components/users/Accounts.jsx:364
+#: src/components/users/Accounts.jsx:356
 #, fuzzy
 #| msgctxt "GUI|Spoke"
 #| msgid "_Root Account"
@@ -245,7 +250,7 @@ msgid "Detected valid storage layout:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:561
-#: src/components/review/StorageReview.jsx:114
+#: src/components/review/StorageReview.jsx:147
 msgid "Device"
 msgstr "Laite"
 
@@ -253,7 +258,7 @@ msgstr "Laite"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Laitteiden lukitus tulee avata ennen liitospisteiden määrittämistä."
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Ei käytössä"
 
@@ -261,8 +266,8 @@ msgstr "Ei käytössä"
 msgid "Disk configuration"
 msgstr "Laitteen asetukset"
 
-#: src/components/storage/DiskEncryption.jsx:191
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/storage/DiskEncryption.jsx:198
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Levyn salaus"
 
@@ -278,19 +283,19 @@ msgstr "Liitospisteen kaksoiskappale."
 msgid "Enable root account"
 msgstr "Ota root-tili käyttöön"
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: src/components/storage/DiskEncryption.jsx:119
+#: src/components/storage/DiskEncryption.jsx:101
 msgid "Encrypt my data"
 msgstr "Salaa tietoni"
 
-#: src/components/storage/DiskEncryption.jsx:192
+#: src/components/storage/DiskEncryption.jsx:199
 msgid "Encrypt the selected devices?"
 msgstr "Salataanko valitut laitteet?"
 
-#: src/components/review/StorageReview.jsx:117
+#: src/components/review/StorageReview.jsx:150
 msgid "Encrypted"
 msgstr "Salattu"
 
@@ -298,21 +303,21 @@ msgstr "Salattu"
 msgid "Encrypted devices are locked"
 msgstr "Salatut laitteet on lukittu"
 
-#: src/components/storage/DiskEncryption.jsx:145
+#: src/components/storage/DiskEncryption.jsx:127
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Salaus auttaa suojaamaan tietosi, jotta muut eivät pääse niihin käsiksi."
 
-#: src/components/storage/InstallationScenario.jsx:184
-#: src/components/storage/InstallationScenario.jsx:195
+#: src/components/storage/InstallationScenario.jsx:203
+#: src/components/storage/InstallationScenario.jsx:214
 msgid "Erase data and install"
 msgstr "Tyhjennä levyt ja asenna"
 
-#: src/components/storage/InstallationScenario.jsx:191
+#: src/components/storage/InstallationScenario.jsx:210
 msgid "Erase data and install?"
 msgstr "Tyhjennetäänkö levyt ja asennetaanko?"
 
-#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Tietojen tyhjentämistä ei voi kumota. Varmistu, että sinulla on "
@@ -371,7 +376,7 @@ msgstr "Piilota salasana"
 msgid "Hostname"
 msgstr "Koneen nimi"
 
-#: src/components/storage/InstallationScenario.jsx:400
+#: src/components/storage/InstallationScenario.jsx:422
 msgid "How would you like to install?"
 msgstr "Miten haluaisit asentaa?"
 
@@ -396,20 +401,20 @@ msgstr "Meneillään"
 msgid "Initializing..."
 msgstr "Alustetaan ..."
 
-#: src/components/storage/InstallationScenario.jsx:198
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Install"
 msgstr "Asenna"
 
-#: src/components/storage/InstallationScenario.jsx:219
+#: src/components/storage/InstallationScenario.jsx:240
 msgid "Install on the custom mount points?"
 msgstr "Asennetaanko mukautettuihin liitospisteisiin?"
 
-#: src/components/storage/InstallationScenario.jsx:205
+#: src/components/storage/InstallationScenario.jsx:226
 msgid "Install on the free space?"
 msgstr "Asennetaanko vapaaseen tilaan?"
 
-#: src/components/storage/InstallationScenario.jsx:233
+#: src/components/storage/InstallationScenario.jsx:254
 #, fuzzy
 #| msgid "Install on the free space?"
 msgid "Install using the configured storage?"
@@ -419,7 +424,7 @@ msgstr "Asennetaanko vapaaseen tilaan?"
 msgid "Installation failed"
 msgstr "Asennus epäonnistui"
 
-#: src/components/storage/InstallationMethod.jsx:164
+#: src/components/storage/InstallationMethod.jsx:200
 msgid "Installation method"
 msgstr "Asennustapa"
 
@@ -427,7 +432,7 @@ msgstr "Asennustapa"
 msgid "Installation of the system failed: $0"
 msgstr "Järjestelmän asennus epäonnistui: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Asennustyyppi"
 
@@ -444,9 +449,13 @@ msgstr "Asennetaan kohteeseen $0 ($1)"
 msgid "Keep current disk layout and only install into available space."
 msgstr "Säilyttää nykyisen levyasettelun ja käyttää vain vapaata tilaa."
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Kieli"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:112
+msgid "Location"
+msgstr "Sijainti"
 
 #: src/components/storage/EncryptedDevices.jsx:174
 msgid "Locked devices"
@@ -456,11 +465,11 @@ msgstr "Lukitut laitteet"
 msgid "Log"
 msgstr "Loki"
 
-#: src/components/storage/MountPointMapping.jsx:747
+#: src/components/storage/MountPointMapping.jsx:739
 msgid "Manual disk configuration"
 msgstr "Manuaalinen levyn konfigurointi"
 
-#: src/components/storage/MountPointMapping.jsx:748
+#: src/components/storage/MountPointMapping.jsx:741
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Manuaalinen levykonfigurointi: Liitospisteiden kartoitus"
 
@@ -486,11 +495,11 @@ msgid "Modify storage"
 msgstr "Muokkaa tallennustilaa"
 
 #: src/components/storage/MountPointMapping.jsx:560
-#: src/components/review/StorageReview.jsx:113
+#: src/components/review/StorageReview.jsx:146
 msgid "Mount point"
 msgstr "Liitospiste"
 
-#: src/components/storage/InstallationScenario.jsx:223
+#: src/components/storage/InstallationScenario.jsx:244
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point assignment"
 msgstr "Liitospisteen määrittely"
@@ -498,6 +507,10 @@ msgstr "Liitospisteen määrittely"
 #: src/components/Password.jsx:50
 msgid "Must be at least $0 characters"
 msgstr "Salasanan on oltava vähintään $0 merkkiä pitkä"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:111
+msgid "Name"
+msgstr "Nimi"
 
 #: src/components/Error.jsx:122
 msgid ""
@@ -523,6 +536,7 @@ msgid "No additional disks detected"
 msgstr "Ylimääräisiä levyjä ei havaittu"
 
 #: src/components/storage/MountPointMapping.jsx:565
+#: src/components/storage/ReclaimSpaceModal.jsx:117
 msgid "No devices"
 msgstr "Ei laiteita"
 
@@ -539,11 +553,11 @@ msgstr "Valituilla levyillä ei ole käyttökelpoisia laitteita."
 msgid "No usable disks detected"
 msgstr "Yhtään käyttökelpoista levyä ei löytynyt"
 
-#: src/components/storage/InstallationScenario.jsx:76
+#: src/components/storage/InstallationScenario.jsx:78
 msgid "Not enough free space on the selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
-#: src/components/storage/InstallationScenario.jsx:55
+#: src/components/storage/InstallationScenario.jsx:57
 msgid "Not enough space on selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
@@ -557,13 +571,13 @@ msgstr ""
 "kehitys- ja testaustarkoituksiin. ÄLÄ käytä tätä ohjelmistoa kriittisissä "
 "töissä tai tuotantoympäristöissä."
 
-#: src/components/storage/DiskEncryption.jsx:148
+#: src/components/storage/DiskEncryption.jsx:130
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
 msgstr "Vain uudet osiot salataan. Olemassa olevat osiot säilyvät ennallaan."
 
-#: src/components/review/ReviewConfiguration.jsx:93
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Käyttöjärjestelmä"
 
@@ -571,7 +585,7 @@ msgstr "Käyttöjärjestelmä"
 msgid "Partitions (advanced)"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:132
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
 #: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:279
@@ -666,6 +680,26 @@ msgstr "Käynnistä uudelleen"
 msgid "Reboot system?"
 msgstr "Käynnistä järjestelmä uudelleen?"
 
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim additional space"
+msgstr "_Vapauta tilaa"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:101
+#: src/components/storage/ReclaimSpaceModal.jsx:109
+#: src/components/storage/ReclaimSpaceModal.jsx:150
+msgid "Reclaim space"
+msgstr "Vapauta tilaa"
+
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim space (required)"
+msgstr "_Vapauta tilaa"
+
 #: src/components/storage/MountPointMapping.jsx:245
 msgid "Recommended"
 msgstr "Suositeltu"
@@ -690,6 +724,17 @@ msgid ""
 msgstr ""
 "Poista kaikki osiot valituista laitteista, mukaan lukien olemassa olevat "
 "käyttöjärjestelmät. Varmista, että olet varmuuskopioinut tietosi."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:87
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Remove existing filesystems to free up space for the installation."
+msgstr "Käytä vapaata tilaa asennukseen"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:90
+msgid ""
+"Removing a filesystem will permanently delete all of the data it contains. "
+msgstr ""
 
 #: src/components/HeaderKebab.jsx:132
 msgid "Report Issue"
@@ -737,8 +782,8 @@ msgstr "$0 -asennus"
 msgid "Return to storage editor"
 msgstr "Käynnistä Blivet-gui-tallennuseditori"
 
-#: src/components/review/ReviewConfiguration.jsx:249
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Review and install"
 msgstr "Arvioi ja asenna"
 
@@ -786,7 +831,7 @@ msgstr "Näytä tunnuslause"
 msgid "Show password"
 msgstr "Näytä salasana"
 
-#: src/components/review/StorageReview.jsx:115
+#: src/components/review/StorageReview.jsx:148
 msgid "Size"
 msgstr "Koko"
 
@@ -814,7 +859,13 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:156
+#: src/components/storage/ReclaimSpaceModal.jsx:114
+#, fuzzy
+#| msgid "No Space"
+msgid "Space"
+msgstr "Ei tilaa"
+
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Tallennustila"
 
@@ -871,7 +922,7 @@ msgstr ""
 "Järjestelmän konfigurointi: Ohjelmiston asennus valmis. Järjestelmää "
 "konfiguroidaan nyt."
 
-#: src/components/localization/InstallationLanguage.jsx:315
+#: src/components/localization/InstallationLanguage.jsx:311
 msgid ""
 "The chosen language will be used for installation and in the installed "
 "software. "
@@ -899,19 +950,19 @@ msgstr ""
 "Seuraava loki lähetetään ongelmanseurantajärjestelmään, jossa voit antaa "
 "lisätietoja."
 
-#: src/components/storage/InstallationScenario.jsx:57
+#: src/components/storage/InstallationScenario.jsx:59
 msgid "The installation needs $1 of disk space; "
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:204
+#: src/components/storage/InstallationScenario.jsx:225
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr ""
 "Asennus käyttää laitteidesi vapaata tilaa eikä poista laitteen tietoja."
 
-#: src/components/storage/InstallationScenario.jsx:218
-#: src/components/storage/InstallationScenario.jsx:232
+#: src/components/storage/InstallationScenario.jsx:239
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "The installation will use your configured partitioning layout."
 msgstr "Asennus käyttää määritettyä osiointiasettelua."
 
@@ -931,7 +982,7 @@ msgstr ""
 "Antamasi salalause sisältää merkkejä, jotka eivät ole ASCII:ta. Jos "
 "näppäimistöasettelua vaihdetaan, kirjautuminen ei ehkä onnistu."
 
-#: src/components/storage/InstallationScenario.jsx:190
+#: src/components/storage/InstallationScenario.jsx:209
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -971,13 +1022,13 @@ msgstr "Tämä saattaa kestää hetken"
 msgid "To begin using $0, reboot your system."
 msgstr "Aloita $0 käyttö käynnistämällä järjestelmä uudelleen."
 
-#: src/components/storage/InstallationMethod.jsx:151
+#: src/components/storage/InstallationMethod.jsx:167
 msgid "To continue, select the devices to install to."
 msgstr "Jatka valitsemalla laitteet, joihin haluat asentaa."
 
-#: src/components/storage/InstallationScenario.jsx:210
-#: src/components/storage/InstallationScenario.jsx:224
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:231
+#: src/components/storage/InstallationScenario.jsx:245
+#: src/components/storage/InstallationScenario.jsx:259
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Muista varmuuskopioida tiedot, jotta ne eivät katoa."
 
@@ -985,11 +1036,15 @@ msgstr "Muista varmuuskopioida tiedot, jotta ne eivät katoa."
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:78
+#: src/components/storage/InstallationScenario.jsx:80
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
+
+#: src/components/storage/ReclaimSpaceModal.jsx:113
+msgid "Type"
+msgstr "Tyyppi"
 
 #: src/components/storage/EncryptedDevices.jsx:161
 msgid "Unlock"
@@ -1003,13 +1058,13 @@ msgstr "Avaa laite"
 msgid "Unlock encrypted devices"
 msgstr "Avaa salatut laitteet"
 
-#: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/InstallationScenario.jsx:258
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Use configured storage"
 msgstr "Määritetään tallennustilaa"
 
-#: src/components/storage/InstallationScenario.jsx:209
+#: src/components/storage/InstallationScenario.jsx:230
 msgid "Use free space for the installation"
 msgstr "Käytä vapaata tilaa asennukseen"
 
@@ -1039,15 +1094,15 @@ msgstr "Nimi voi sisältää korkeintaan 33 merkkiä."
 msgid "Weak"
 msgstr "Heikko"
 
-#: src/components/localization/InstallationLanguage.jsx:344
+#: src/components/localization/InstallationLanguage.jsx:342
 msgid "Welcome"
 msgstr "Tervetuloa"
 
-#: src/components/localization/InstallationLanguage.jsx:345
+#: src/components/localization/InstallationLanguage.jsx:334
 msgid "Welcome to $0"
 msgstr "Tervetuloa $0an"
 
-#: src/components/storage/InstallationMethod.jsx:165
+#: src/components/storage/InstallationMethod.jsx:193
 msgid "Welcome. Let's install $0 now."
 msgstr "Tervetuloa. Asennataan nyt $0."
 
@@ -1068,6 +1123,12 @@ msgstr "suoritettu vaihe"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "nykyinen vaihe"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:248
+#: src/components/storage/ReclaimSpaceModal.jsx:256
+#: src/components/review/StorageReview.jsx:93
+msgid "delete"
+msgstr "poista"
 
 #: src/components/review/Hostname.jsx:97
 msgid "edit"
@@ -1092,6 +1153,10 @@ msgstr "liitä"
 #: src/components/installation/InstallationProgress.jsx:179
 msgid "pending step"
 msgstr "käsittelyä odottava vaihe"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:257
+msgid "undo"
+msgstr ""
 
 #~ msgid "Error was hit when going back from $0."
 #~ msgstr "Virhe palatessa takaisin kohteesta $0."
@@ -2228,9 +2293,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "Default spoke title"
 #~ msgstr "Vaiheen oletusotsikko"
 
-#~ msgid "Delete"
-#~ msgstr "Poista"
-
 #~ msgctxt "GUI|Reclaim Dialog"
 #~ msgid "Delete _all"
 #~ msgstr "Poista _kaikki"
@@ -3155,9 +3217,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "Locales"
 #~ msgstr "Maa-asetustot"
 
-#~ msgid "Location"
-#~ msgstr "Sijainti"
-
 #~ msgid "Logical volume \"{}\" given in logvol command does not exist."
 #~ msgstr ""
 #~ "Komennossa 'logvol' annettua loogista taltiota \"{}\" ei ole olemassa."
@@ -3283,9 +3342,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgid "N_FS mount options:"
 #~ msgstr "N_FS-liitäntävalinnat:"
 
-#~ msgid "Name"
-#~ msgstr "Nimi"
-
 #~ msgid "Name '$' is not allowed."
 #~ msgstr "Nimi '$' ei ole sallittu."
 
@@ -3357,9 +3413,6 @@ msgstr "käsittelyä odottava vaihe"
 
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "Laitteen juurihakemistosta ei löytynyt *.iso-tiedostoja"
-
-#~ msgid "No Space"
-#~ msgstr "Ei tilaa"
 
 #~ msgid "No additional software to select."
 #~ msgstr "Ei valittavaa lisäohjelmistoa."
@@ -5213,9 +5266,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgstr ""
 #~ "Yritti käyttää määrittelemätöntä osiota \"{}\" taltioryhmän määrityksessä"
 
-#~ msgid "Type"
-#~ msgstr "Tyyppi"
-
 #~ msgid "Type here to search."
 #~ msgstr "Kirjoita tähän etsiäksesi."
 
@@ -6472,10 +6522,6 @@ msgstr "käsittelyä odottava vaihe"
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Reboot System"
 #~ msgstr "_Käynnistä järjestelmä uudelleen"
-
-#~ msgctxt "GUI|Reclaim Dialog"
-#~ msgid "_Reclaim space"
-#~ msgstr "_Vapauta tilaa"
 
 #~ msgctxt "GUI|Storage|Need Space Dialog"
 #~ msgid "_Reclaim space"

@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-25 02:50+0000\n"
+"POT-Creation-Date: 2024-07-02 02:50+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/"
@@ -69,14 +69,15 @@ msgstr "A „$0”-nak „$1”-re formázott eszközön kell lennie"
 msgid "About"
 msgstr "Névjegy"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
 msgid "Account"
 msgstr "_Fiók"
 
-#: src/components/review/StorageReview.jsx:116
+#: src/components/storage/ReclaimSpaceModal.jsx:115
+#: src/components/review/StorageReview.jsx:149
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -115,7 +116,7 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda projekt oldala"
 
-#: src/components/storage/InstallationScenario.jsx:212
+#: src/components/storage/InstallationScenario.jsx:233
 msgid "Apply mount point assignment and install"
 msgstr "Alkalmazza a csatlakozási pont hozzárendelését és telepítse"
 
@@ -123,8 +124,12 @@ msgstr "Alkalmazza a csatlakozási pont hozzárendelését és telepítse"
 msgid "Applying new disk selection..."
 msgstr "Új lemezkijelölés alkalmazása..."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:142
+msgid "Available free space: $0. Installation requires: $1."
+msgstr ""
+
 #: src/components/AnacondaWizardFooter.jsx:90
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid "Back"
 msgstr "Vissza"
 
@@ -140,6 +145,7 @@ msgstr ""
 "fejlesztési célokra használja, valamint hajlandó bejelenteni az esetleges "
 "problémákat, hogy javítson ezen a munkán."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:153
 #: src/components/Error.jsx:260 src/components/review/Hostname.jsx:106
 msgid "Cancel"
 msgstr "Mégse"
@@ -168,11 +174,11 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "Tároló-összeállítás ellenőrzése"
 
-#: src/components/localization/InstallationLanguage.jsx:304
+#: src/components/localization/InstallationLanguage.jsx:300
 msgid "Choose a language"
 msgstr "Válasszon nyelvet"
 
-#: src/components/localization/InstallationLanguage.jsx:313
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Chosen language: "
 msgstr "Választott nyelv: "
 
@@ -209,7 +215,7 @@ msgstr "Tárhely beállítása"
 msgid "Configure storage again"
 msgstr "Tárhely beállítása"
 
-#: src/components/storage/DiskEncryption.jsx:135
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:282
 msgid "Confirm passphrase"
 msgstr "Erősítse meg a jelszavát"
@@ -228,7 +234,7 @@ msgstr "Telepítés folytatása"
 msgid "Continue with installation"
 msgstr "Telepítés folytatása"
 
-#: src/components/users/Accounts.jsx:364
+#: src/components/users/Accounts.jsx:356
 #, fuzzy
 #| msgctxt "GUI|Spoke"
 #| msgid "_Root Account"
@@ -263,7 +269,7 @@ msgid "Detected valid storage layout:"
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:561
-#: src/components/review/StorageReview.jsx:114
+#: src/components/review/StorageReview.jsx:147
 msgid "Device"
 msgstr "Eszköz"
 
@@ -271,7 +277,7 @@ msgstr "Eszköz"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Az eszközöket fel kell oldani a rögzítési pontok hozzárendelése előtt."
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Letiltott"
 
@@ -279,8 +285,8 @@ msgstr "Letiltott"
 msgid "Disk configuration"
 msgstr "Lemez beállítások"
 
-#: src/components/storage/DiskEncryption.jsx:191
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/storage/DiskEncryption.jsx:198
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Lemez titkosítás"
 
@@ -299,19 +305,19 @@ msgstr "Duplikált csatolási pont."
 msgid "Enable root account"
 msgstr "Rendszergazdai fiók _engedélyezése"
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Engedélyezve"
 
-#: src/components/storage/DiskEncryption.jsx:119
+#: src/components/storage/DiskEncryption.jsx:101
 msgid "Encrypt my data"
 msgstr "Saját adatok titkosítása"
 
-#: src/components/storage/DiskEncryption.jsx:192
+#: src/components/storage/DiskEncryption.jsx:199
 msgid "Encrypt the selected devices?"
 msgstr "Titkosítsuk a kiválasztott eszközöket?"
 
-#: src/components/review/StorageReview.jsx:117
+#: src/components/review/StorageReview.jsx:150
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -321,20 +327,20 @@ msgstr "Titkosítás"
 msgid "Encrypted devices are locked"
 msgstr "Titkosított eszközök zárolva"
 
-#: src/components/storage/DiskEncryption.jsx:145
+#: src/components/storage/DiskEncryption.jsx:127
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr "A titkosítás segít megvédeni adatait, hogy mások ne férjenek hozzá."
 
-#: src/components/storage/InstallationScenario.jsx:184
-#: src/components/storage/InstallationScenario.jsx:195
+#: src/components/storage/InstallationScenario.jsx:203
+#: src/components/storage/InstallationScenario.jsx:214
 msgid "Erase data and install"
 msgstr "Törölje az adatokat és telepítse"
 
-#: src/components/storage/InstallationScenario.jsx:191
+#: src/components/storage/InstallationScenario.jsx:210
 msgid "Erase data and install?"
 msgstr "Törli a lemezeket és elkezdi a telepítést?"
 
-#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
 "Az adatok törlése nem vonható vissza. Ügyeljen arra, hogy legyen biztonsági "
@@ -395,7 +401,7 @@ msgstr "Jelszó elrejtése"
 msgid "Hostname"
 msgstr "Gépnév"
 
-#: src/components/storage/InstallationScenario.jsx:400
+#: src/components/storage/InstallationScenario.jsx:422
 msgid "How would you like to install?"
 msgstr "Hogyan szeretné telepíteni?"
 
@@ -424,20 +430,20 @@ msgstr "Folyamatban"
 msgid "Initializing..."
 msgstr "Telepítés."
 
-#: src/components/storage/InstallationScenario.jsx:198
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Install"
 msgstr "Telepítés"
 
-#: src/components/storage/InstallationScenario.jsx:219
+#: src/components/storage/InstallationScenario.jsx:240
 msgid "Install on the custom mount points?"
 msgstr "Telepítse az egyéni csatolási pontokra?"
 
-#: src/components/storage/InstallationScenario.jsx:205
+#: src/components/storage/InstallationScenario.jsx:226
 msgid "Install on the free space?"
 msgstr "Telepítse a szabad helyre?"
 
-#: src/components/storage/InstallationScenario.jsx:233
+#: src/components/storage/InstallationScenario.jsx:254
 #, fuzzy
 #| msgid "Install on the free space?"
 msgid "Install using the configured storage?"
@@ -447,7 +453,7 @@ msgstr "Telepítse a szabad helyre?"
 msgid "Installation failed"
 msgstr "A telepítés sikertelen"
 
-#: src/components/storage/InstallationMethod.jsx:164
+#: src/components/storage/InstallationMethod.jsx:200
 msgid "Installation method"
 msgstr "Telepítési mód"
 
@@ -455,7 +461,7 @@ msgstr "Telepítési mód"
 msgid "Installation of the system failed: $0"
 msgstr "A rendszer telepítése sikertelen: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Telepítés típusa"
 
@@ -473,9 +479,13 @@ msgstr ""
 "Tartsa meg a jelenlegi lemezelrendezést, és csak a rendelkezésre álló helyre "
 "telepítse."
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Nyelv"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:112
+msgid "Location"
+msgstr "Hely"
 
 #: src/components/storage/EncryptedDevices.jsx:174
 msgid "Locked devices"
@@ -485,11 +495,11 @@ msgstr "Lezárt eszközök"
 msgid "Log"
 msgstr "Napló"
 
-#: src/components/storage/MountPointMapping.jsx:747
+#: src/components/storage/MountPointMapping.jsx:739
 msgid "Manual disk configuration"
 msgstr "Kézi lemezkonfiguráció"
 
-#: src/components/storage/MountPointMapping.jsx:748
+#: src/components/storage/MountPointMapping.jsx:741
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Kézi lemezkonfiguráció: Csatlakozási pont leképezés"
 
@@ -515,11 +525,11 @@ msgid "Modify storage"
 msgstr "Tárhely módosítása"
 
 #: src/components/storage/MountPointMapping.jsx:560
-#: src/components/review/StorageReview.jsx:113
+#: src/components/review/StorageReview.jsx:146
 msgid "Mount point"
 msgstr "Csatolási pont"
 
-#: src/components/storage/InstallationScenario.jsx:223
+#: src/components/storage/InstallationScenario.jsx:244
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point assignment"
 msgstr "Csatlakozási pont hozzárendelése"
@@ -528,6 +538,10 @@ msgstr "Csatlakozási pont hozzárendelése"
 #, fuzzy
 msgid "Must be at least $0 characters"
 msgstr "Legalább 8 karakterből kell állnia"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:111
+msgid "Name"
+msgstr "Név"
 
 #: src/components/Error.jsx:122
 msgid ""
@@ -553,6 +567,7 @@ msgid "No additional disks detected"
 msgstr "Nem észleltek további lemezeket"
 
 #: src/components/storage/MountPointMapping.jsx:565
+#: src/components/storage/ReclaimSpaceModal.jsx:117
 msgid "No devices"
 msgstr "Nincsenek eszközök"
 
@@ -569,11 +584,11 @@ msgstr "A kiválasztott lemezeken nincsenek használható eszközök."
 msgid "No usable disks detected"
 msgstr "Nem található használható lemez"
 
-#: src/components/storage/InstallationScenario.jsx:76
+#: src/components/storage/InstallationScenario.jsx:78
 msgid "Not enough free space on the selected disks."
 msgstr "Nincs elég szabad hely a kiválasztott lemezeken."
 
-#: src/components/storage/InstallationScenario.jsx:55
+#: src/components/storage/InstallationScenario.jsx:57
 msgid "Not enough space on selected disks."
 msgstr "Nincs elég hely a kiválasztott lemezeken."
 
@@ -587,7 +602,7 @@ msgstr ""
 "tesztelési célokra készült. NE használja kritikus munkára vagy éles "
 "rendszerekhez."
 
-#: src/components/storage/DiskEncryption.jsx:148
+#: src/components/storage/DiskEncryption.jsx:130
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -595,7 +610,7 @@ msgstr ""
 "Csak az új partíciók lesznek titkosítva. A meglévő partíciók érintetlenek "
 "maradnak."
 
-#: src/components/review/ReviewConfiguration.jsx:93
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Operációs rendszer"
 
@@ -603,7 +618,7 @@ msgstr "Operációs rendszer"
 msgid "Partitions (advanced)"
 msgstr ""
 
-#: src/components/storage/DiskEncryption.jsx:132
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
 #: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:279
@@ -698,6 +713,29 @@ msgstr "Újraindítás"
 msgid "Reboot system?"
 msgstr "Rendszer újraindítása?"
 
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim additional space"
+msgstr "Lemezte_rület visszanyerése"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:101
+#: src/components/storage/ReclaimSpaceModal.jsx:109
+#: src/components/storage/ReclaimSpaceModal.jsx:150
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim space"
+msgstr "Lemezte_rület visszanyerése"
+
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim space (required)"
+msgstr "Lemezte_rület visszanyerése"
+
 #: src/components/storage/MountPointMapping.jsx:245
 msgid "Recommended"
 msgstr ""
@@ -723,6 +761,17 @@ msgstr ""
 "Távolítsa el az összes partíciót a kiválasztott eszközökről, beleértve a "
 "meglévő operációs rendszereket is. Győződjön meg róla, hogy biztonsági "
 "másolatot készített az adatairól."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:87
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Remove existing filesystems to free up space for the installation."
+msgstr "Használjon szabad helyet a telepítéshez"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:90
+msgid ""
+"Removing a filesystem will permanently delete all of the data it contains. "
+msgstr ""
 
 #: src/components/HeaderKebab.jsx:132
 msgid "Report Issue"
@@ -771,8 +820,8 @@ msgstr "$0 telepítés"
 msgid "Return to storage editor"
 msgstr "Indítsa el a Blivet-gui tárolószerkesztőt"
 
-#: src/components/review/ReviewConfiguration.jsx:249
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Review and install"
 msgstr "Áttekintés és telepítés"
 
@@ -823,7 +872,7 @@ msgstr "Jelszó megjelenítése"
 msgid "Show password"
 msgstr "Jelszó megjelenítése"
 
-#: src/components/review/StorageReview.jsx:115
+#: src/components/review/StorageReview.jsx:148
 msgid "Size"
 msgstr ""
 
@@ -851,7 +900,13 @@ msgstr "Egyes eszközök ugyanazt a nevet használják: $0."
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:156
+#: src/components/storage/ReclaimSpaceModal.jsx:114
+#, fuzzy
+#| msgid "No Space"
+msgid "Space"
+msgstr "Nincs tárhely"
+
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Tárhely"
 
@@ -910,7 +965,7 @@ msgstr ""
 "Rendszerkonfigurátor: A szoftver telepítése befejeződött. A rendszer "
 "konfigurálása folyamatban van."
 
-#: src/components/localization/InstallationLanguage.jsx:315
+#: src/components/localization/InstallationLanguage.jsx:311
 msgid ""
 "The chosen language will be used for installation and in the installed "
 "software. "
@@ -940,11 +995,11 @@ msgstr ""
 "A következő naplót elküldjük a problémakövető rendszernek, ahol további "
 "részleteket adhat meg."
 
-#: src/components/storage/InstallationScenario.jsx:57
+#: src/components/storage/InstallationScenario.jsx:59
 msgid "The installation needs $1 of disk space; "
 msgstr "A telepítéshez $1 lemezterületre van szükség; "
 
-#: src/components/storage/InstallationScenario.jsx:204
+#: src/components/storage/InstallationScenario.jsx:225
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -952,8 +1007,8 @@ msgstr ""
 "A telepítés felhasználja az eszközein rendelkezésre álló helyet, és nem "
 "törli az eszközadatokat."
 
-#: src/components/storage/InstallationScenario.jsx:218
-#: src/components/storage/InstallationScenario.jsx:232
+#: src/components/storage/InstallationScenario.jsx:239
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "The installation will use your configured partitioning layout."
 msgstr "A telepítés a beállított particionálási elrendezést fogja használni."
 
@@ -973,7 +1028,7 @@ msgstr ""
 "A megadott jelszó nem ASCII karaktereket tartalmaz. Lehet, hogy fog tudni "
 "váltani a billentyűkiosztások között, amikor meg kell adnia."
 
-#: src/components/storage/InstallationScenario.jsx:190
+#: src/components/storage/InstallationScenario.jsx:209
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -1013,13 +1068,13 @@ msgstr "Ez eltarthat egy ideig"
 msgid "To begin using $0, reboot your system."
 msgstr "A $0 használatának megkezdéséhez indítsa újra a rendszert."
 
-#: src/components/storage/InstallationMethod.jsx:151
+#: src/components/storage/InstallationMethod.jsx:167
 msgid "To continue, select the devices to install to."
 msgstr "A folytatáshoz, kérem válassza ki a telepíteni kívánt eszközöket."
 
-#: src/components/storage/InstallationScenario.jsx:210
-#: src/components/storage/InstallationScenario.jsx:224
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:231
+#: src/components/storage/InstallationScenario.jsx:245
+#: src/components/storage/InstallationScenario.jsx:259
 msgid "To prevent loss, make sure to backup your data."
 msgstr ""
 "Az adatvesztés elkerülése érdekében készítsen biztonsági másolatot az "
@@ -1030,13 +1085,17 @@ msgid "To use this option, rename devices to have unique names."
 msgstr ""
 "Ennek az opciónak a használatához nevezze át az eszközöket egyedi névre."
 
-#: src/components/storage/InstallationScenario.jsx:78
+#: src/components/storage/InstallationScenario.jsx:80
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
 "Ennek az opciónak a használatához méretezze át vagy távolítsa el a meglévő "
 "partíciókat, hogy legalább $0 szabadítson fel."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:113
+msgid "Type"
+msgstr "Típus"
 
 #: src/components/storage/EncryptedDevices.jsx:161
 msgid "Unlock"
@@ -1050,13 +1109,13 @@ msgstr "Eszköz feloldása"
 msgid "Unlock encrypted devices"
 msgstr "A titkosított eszközök feloldása"
 
-#: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/InstallationScenario.jsx:258
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Use configured storage"
 msgstr "Tárhely beállítása"
 
-#: src/components/storage/InstallationScenario.jsx:209
+#: src/components/storage/InstallationScenario.jsx:230
 msgid "Use free space for the installation"
 msgstr "Használjon szabad helyet a telepítéshez"
 
@@ -1086,15 +1145,15 @@ msgstr "A névnek rövidebbnek kell lennie mint 33 karakter."
 msgid "Weak"
 msgstr "Gyenge"
 
-#: src/components/localization/InstallationLanguage.jsx:344
+#: src/components/localization/InstallationLanguage.jsx:342
 msgid "Welcome"
 msgstr "Üdvözöljük"
 
-#: src/components/localization/InstallationLanguage.jsx:345
+#: src/components/localization/InstallationLanguage.jsx:334
 msgid "Welcome to $0"
 msgstr "Üdvözli a $0"
 
-#: src/components/storage/InstallationMethod.jsx:165
+#: src/components/storage/InstallationMethod.jsx:193
 msgid "Welcome. Let's install $0 now."
 msgstr "Üdvözöljük. Most telepítsük a $0-t."
 
@@ -1115,6 +1174,14 @@ msgstr "befejezett lépés"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "jelenlegi lépés"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:248
+#: src/components/storage/ReclaimSpaceModal.jsx:256
+#: src/components/review/StorageReview.jsx:93
+#, fuzzy
+#| msgid "Delete"
+msgid "delete"
+msgstr "Törlés"
 
 #: src/components/review/Hostname.jsx:97
 msgid "edit"
@@ -1143,6 +1210,10 @@ msgstr "Csatlakoztatás"
 #: src/components/installation/InstallationProgress.jsx:179
 msgid "pending step"
 msgstr "függőben lévő lépés"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:257
+msgid "undo"
+msgstr ""
 
 #~ msgid "Error was hit when going back from $0."
 #~ msgstr "Hiba történt a $0 való visszatéréskor."
@@ -2287,9 +2358,6 @@ msgstr "függőben lévő lépés"
 #~ msgid "Default spoke title"
 #~ msgstr "Alapértelmezett lépcső neve"
 
-#~ msgid "Delete"
-#~ msgstr "Törlés"
-
 #~ msgctxt "GUI|Reclaim Dialog"
 #~ msgid "Delete _all"
 #~ msgstr "Összes _törlése"
@@ -3219,9 +3287,6 @@ msgstr "függőben lévő lépés"
 #~ msgid "Locales"
 #~ msgstr "Területi beállítások"
 
-#~ msgid "Location"
-#~ msgstr "Hely"
-
 #~ msgid "Logical volume \"{}\" given in logvol command does not exist."
 #~ msgstr "A logvol parancsban megadott „{}” logikai kötet nem létezik."
 
@@ -3346,9 +3411,6 @@ msgstr "függőben lévő lépés"
 #~ msgid "N_FS mount options:"
 #~ msgstr "N_FS csatolási beállítások:"
 
-#~ msgid "Name"
-#~ msgstr "Név"
-
 #~ msgid "Name '$' is not allowed."
 #~ msgstr "A „$” név nem megengedett."
 
@@ -3420,9 +3482,6 @@ msgstr "függőben lévő lépés"
 
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "Nem található *.iso fájl az adott eszköz gyökérmappájában"
-
-#~ msgid "No Space"
-#~ msgstr "Nincs tárhely"
 
 #~ msgid "No additional software to select."
 #~ msgstr "További szoftverek nem választhatók."
@@ -5283,9 +5342,6 @@ msgstr "függőben lévő lépés"
 #~ msgstr ""
 #~ "Nem definiált „{}” partíciót próbált használni a kötetcsoport megadásánál"
 
-#~ msgid "Type"
-#~ msgstr "Típus"
-
 #~ msgid "Type here to search."
 #~ msgstr "Gépeljen ide a kereséshez."
 
@@ -6543,10 +6599,6 @@ msgstr "függőben lévő lépés"
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Reboot System"
 #~ msgstr "Rendszer újrai_ndítása"
-
-#~ msgctxt "GUI|Reclaim Dialog"
-#~ msgid "_Reclaim space"
-#~ msgstr "Lemezte_rület visszanyerése"
 
 #~ msgctxt "GUI|Storage|Need Space Dialog"
 #~ msgid "_Reclaim space"
