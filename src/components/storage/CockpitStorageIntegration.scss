@@ -1,3 +1,6 @@
+@import "global-variables";
+@import "@patternfly/patternfly/components/Backdrop/backdrop.scss";
+
 .cockpit-storage-integration-modal-page-section {
     width: 100%;
     height: 100%;
@@ -56,4 +59,26 @@ ul.cockpit-storage-integration-requirements-hint-list {
     .pf-v5-c-helper-text__item-text {
         color: unset;
     }
+}
+
+// Simulate Backdrop behavior for modals in the iframe
+%iframe-zindex {
+  position: relative;
+  z-index: 10;
+}
+
+iframe {
+  @extend %iframe-zindex;
+}
+
+// Simulate a PF background scrim
+.cockpit-has-modal {
+  @extend %iframe-zindex;
+
+  &::after {
+    @extend .pf-v5-c-backdrop;
+    --pf-v5-c-backdrop--Position: absolute;
+    content: "";
+    z-index: 9;
+  }
 }
