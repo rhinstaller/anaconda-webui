@@ -114,7 +114,13 @@ const DeviceRow = ({ disk }) => {
     };
 
     const getActionRow = action => {
-        const actionType = action["action-description"].v === "destroy device" ? _("delete") : action["action-description"].v;
+        let actionType = action["action-description"].v;
+
+        if (action["action-description"].v === "destroy device") {
+            actionType = _("delete");
+        } else if (action["action-description"].v === "resize device") {
+            actionType = _("shrink");
+        }
 
         return (
             {
@@ -152,7 +158,10 @@ const DeviceRow = ({ disk }) => {
 
     const actionRows = actions.filter(action => {
         // Show only delete actions for partitions to not overload the summary with deleted children
-        if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
+        if (
+            !["destroy device", "resize device"].includes(action["action-description"].v) ||
+            action["object-description"].v !== "partition"
+        ) {
             return false;
         }
 
