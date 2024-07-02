@@ -59,7 +59,10 @@ class VirtInstallMachineCase(MachineCase):
         size = None if backing_file else 15
         self.add_disk(size, backing_file)
         # Select the disk as boot device
-        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --edit --boot hd")
+        subprocess.check_call([
+            "virt-xml", "-c", "qemu:///session",
+            self.machine.label, "--edit", "--boot", "hd"
+        ])
 
         m = self.machine
         b = self.browser
@@ -76,12 +79,12 @@ class VirtInstallMachineCase(MachineCase):
             self.allow_browser_errors(".*client closed.*")
             self.allow_browser_errors(".*Server has closed the connection.*")
 
-    def _execute(self, cmd):
-        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
-
     def add_disk(self, size, backing_file=None):
         image = self._create_disk_image(size, backing_file=backing_file)
-        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --update --add-device --disk {image},format=qcow2")
+        subprocess.check_call([
+            "virt-xml", "-c",  "qemu:///session", self.machine.label,
+            "--update", "--add-device", "--disk", f"{image},format=qcow2"
+        ])
 
         if self.is_nondestructive():
             self.addCleanup(self.rem_disk, image)
@@ -89,16 +92,21 @@ class VirtInstallMachineCase(MachineCase):
         return image
 
     def rem_disk(self, disk):
-        self._execute(f"virt-xml -c qemu:///session {self.machine.label} --update --remove-device --disk {disk}")
+        subprocess.check_call([
+            "virt-xml", "-c", "qemu:///session", self.machine.label,
+                "--update", "--remove-device", "--disk", disk
+        ])
         os.remove(disk)
 
-    def _create_disk_image(self, size, image_path=None, quiet=False, backing_file=None):
+    def _create_disk_image(self, size, image_path=None, backing_file=None):
         if not image_path:
             _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}", dir="/var/tmp")
-        quiet = "-q" if quiet else ""
-        backing_file = f"-o backing_file={backing_file},backing_fmt=qcow2" if backing_file else ""
-        size = f"{size}G" if size else ""
-        self._execute(f"qemu-img create -f qcow2 {backing_file} {quiet} {image_path} {size}")
+        subprocess.check_call(
+            ["qemu-img", "create", "-f", "qcow2"] +
+            (["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []) +
+            [image_path] +
+            ([f"{size}G"] if size else [])
+        )
         return image_path
 
     def resetLanguage(self):
