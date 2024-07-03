@@ -25,7 +25,13 @@ import {
 
 import { getDeviceTree } from "../../apis/storage_partitioning.js";
 
-import { checkDeviceOnStorageType, getDeviceAncestors, getParentPartitions, hasEncryptedAncestor } from "../../helpers/storage.js";
+import {
+    checkDeviceOnStorageType,
+    getDeviceAncestors,
+    getDeviceChildren,
+    getParentPartitions,
+    hasEncryptedAncestor,
+} from "../../helpers/storage.js";
 
 import { ListingTable } from "cockpit-components-table.jsx";
 
@@ -68,6 +74,18 @@ export const useDeviceTree = () => {
     }, [appliedPartitioning, deviceTrees]);
 
     return deviceTrees[deviceTreePath];
+};
+
+const usePlannedActions = () => {
+    const actualDeviceTree = useDeviceTree();
+
+    return actualDeviceTree ? actualDeviceTree.actions : [];
+};
+
+const useOriginalExistingSystems = () => {
+    const { deviceTrees } = useContext(StorageContext);
+
+    return deviceTrees[""] ? deviceTrees[""].existingSystems : [];
 };
 
 const DeviceRow = ({ disk }) => {
@@ -199,16 +217,41 @@ const isDeviceDeleted = ({ actions, device }) => (
 );
 
 export const StorageReviewNote = () => {
-    const actualDeviceTree = useDeviceTree();
+    const { deviceTrees } = useContext(StorageContext);
+    const plannedActions = usePlannedActions();
+    const originalExistingSystems = useOriginalExistingSystems();
+    const originalDevices = deviceTrees[""].devices;
 
-    if (actualDeviceTree === undefined) {
-        return null;
-    }
-
-    const { actions, existingSystems } = actualDeviceTree;
-    const deletedSystems = existingSystems.filter(
-        system => system.devices.v.every(device => isDeviceDeleted({ actions, device }))
+    const deletedSystems = originalExistingSystems.filter(
+        system => system.devices.v.every(device => isDeviceDeleted({ actions: plannedActions, device }))
     );
+    const affectedSystems = originalExistingSystems.filter(
+        system => (
+            system.devices.v.some(device => isDeviceDeleted({ actions: plannedActions, device })) &&
+            !system.devices.v.every(device => isDeviceDeleted({ actions: plannedActions, device }))
+        )
+    );
+
+    const getDeletedDevicesText = system => {
+        const deletedDevices = system.devices.v.filter(device => isDeviceDeleted({ actions: plannedActions, device }));
+        const deletedDevicesPartitiongMap = Object.keys(originalDevices).reduce((acc, device) => {
+            if (originalDevices[device].type.v !== "partition") {
+                return acc;
+            }
+
+            const children = getDeviceChildren({ device, deviceData: originalDevices });
+
+            acc[device] = children.filter(child => deletedDevices.includes(child));
+            return acc;
+        }, {});
+
+        return Object.keys(deletedDevicesPartitiongMap)
+                .filter(device => deletedDevicesPartitiongMap[device].length > 0)
+                .map(device => {
+                    return `${device} (${deletedDevicesPartitiongMap[device].join(", ")})`;
+                })
+                .join(", ");
+    };
 
     const description = (
         <List isPlain>
@@ -217,10 +260,19 @@ export const StorageReviewNote = () => {
                     {cockpit.format(_("$0 will be deleted"), system["os-name"].v)}
                 </ListItem>
             ))}
+            {affectedSystems.map(system => (
+                <ListItem key={system["os-name"].v}>
+                    {cockpit.format(
+                        _("Deletion of certain partitions may prevent $0 from booting: $1"),
+                        system["os-name"].v,
+                        getDeletedDevicesText(system)
+                    )}
+                </ListItem>
+            ))}
         </List>
     );
 
-    if (deletedSystems.length === 0) {
+    if (deletedSystems.length === 0 && affectedSystems.length === 0) {
         return null;
     }
 

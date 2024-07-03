@@ -81,3 +81,8 @@ class Review(NetworkDBus):
 
     def check_deleted_system(self, os_name):
         self.browser.wait_in_text(f"#{self._step}-target-storage-note li", os_name)
+
+    def check_affected_system(self, os_name, partitions):
+        self.browser.wait_in_text(f"#{self._step}-target-storage-note li", f"Deletion of certain partitions may prevent {os_name}")
+        deleted_partitions = ', '.join([f'{device} ({", ".join(parts)})' for device, parts in partitions])
+        self.browser.wait_in_text(f"#{self._step}-target-storage-note li", deleted_partitions)
