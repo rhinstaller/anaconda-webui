@@ -69,9 +69,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-25 02:50+0000\n"
-"PO-Revision-Date: 2024-06-22 02:45+0000\n"
-"Last-Translator: Jarne Förster <fedora@mymailclient.de>\n"
+"POT-Creation-Date: 2024-07-02 02:50+0000\n"
+"PO-Revision-Date: 2024-07-01 02:50+0000\n"
+"Last-Translator: Dennis Koerner <dennis@bumblebeeman.dev>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/de/>\n"
 "Language: de\n"
@@ -103,11 +103,12 @@ msgstr "'$0' muss auf einem mit '$1' formatierten Gerät sein"
 msgid "About"
 msgstr "Über"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: src/components/review/StorageReview.jsx:116
+#: src/components/storage/ReclaimSpaceModal.jsx:115
+#: src/components/review/StorageReview.jsx:149
 msgid "Actions"
 msgstr "Aktionen"
 
@@ -117,7 +118,7 @@ msgstr "Einhängepunkt hinzufügen"
 
 #: src/components/storage/EncryptedDevices.jsx:154
 msgid "All devices using this passphrase will be unlocked"
-msgstr "Alle Geräte mit dieser Passphrase werden entschlüsselt"
+msgstr "Alle Geräte, welche diese Passphrase benutzen, werden entsperrt"
 
 #: src/manifest.json:0 org.cockpit-project.anaconda-webui.metainfo.xml:5
 msgid "Anaconda"
@@ -143,16 +144,20 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Anaconda-Projektseite"
 
-#: src/components/storage/InstallationScenario.jsx:212
+#: src/components/storage/InstallationScenario.jsx:233
 msgid "Apply mount point assignment and install"
-msgstr "Einhängepunkte anwenden und installieren"
+msgstr "Einhängepunkt-Zuweisungen anwenden und installieren"
 
 #: src/components/storage/InstallationDestination.jsx:218
 msgid "Applying new disk selection..."
 msgstr "Festplattenauswahl anwenden..."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:142
+msgid "Available free space: $0. Installation requires: $1."
+msgstr "Verfügbarer freier Speicher: $0. Die Installation benötigt: $1."
+
 #: src/components/AnacondaWizardFooter.jsx:90
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid "Back"
 msgstr "Zurück"
 
@@ -168,6 +173,7 @@ msgstr ""
 "Entwicklungszwecke verwenden möchten und bereit sind, Fehler oder Probleme "
 "zu melden, um diese Arbeit zu verbessern."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:153
 #: src/components/Error.jsx:260 src/components/review/Hostname.jsx:106
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -193,11 +199,11 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "Überprüfe Speichermedien-Konfiguration"
 
-#: src/components/localization/InstallationLanguage.jsx:304
+#: src/components/localization/InstallationLanguage.jsx:300
 msgid "Choose a language"
-msgstr "Wählen Sie eine Sprache aus."
+msgstr "Wählen Sie eine Sprache aus"
 
-#: src/components/localization/InstallationLanguage.jsx:313
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Chosen language: "
 msgstr "Gewählte Sprache "
 
@@ -232,7 +238,7 @@ msgstr "Speicher konfigurieren"
 msgid "Configure storage again"
 msgstr "Speicher erneut konfigurieren"
 
-#: src/components/storage/DiskEncryption.jsx:135
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:282
 msgid "Confirm passphrase"
 msgstr "Passphrase bestätigen"
@@ -249,7 +255,7 @@ msgstr "Installation fortsetzen"
 msgid "Continue with installation"
 msgstr "Installation fortsetzen"
 
-#: src/components/users/Accounts.jsx:364
+#: src/components/users/Accounts.jsx:356
 msgid "Create Account"
 msgstr "Konto erstellen"
 
@@ -263,7 +269,7 @@ msgstr "Kritischer Fehler"
 
 #: src/components/storage/InstallationDestination.jsx:222
 msgid "Current selections"
-msgstr "_Aktuelle Auswahl"
+msgstr "Aktuelle Auswahl"
 
 #: src/components/storage/MountPointMapping.jsx:246
 msgid "Custom"
@@ -278,7 +284,7 @@ msgid "Detected valid storage layout:"
 msgstr "Valide Speicher-Anordnung erkannt:"
 
 #: src/components/storage/MountPointMapping.jsx:561
-#: src/components/review/StorageReview.jsx:114
+#: src/components/review/StorageReview.jsx:147
 msgid "Device"
 msgstr "Gerät"
 
@@ -286,18 +292,18 @@ msgstr "Gerät"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Geräte müssen vor Zuweisung von Einhängepunkten entsperrt sein."
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: src/components/steps.js:18
 msgid "Disk configuration"
-msgstr "Speichermedien-Konfiguration"
+msgstr "Datenträger-Konfiguration"
 
-#: src/components/storage/DiskEncryption.jsx:191
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/storage/DiskEncryption.jsx:198
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
-msgstr "Verschlüsselung"
+msgstr "Datenträgerverschlüsselung"
 
 #: src/components/storage/MountPointMapping.jsx:329
 msgid "Duplicate device."
@@ -305,25 +311,25 @@ msgstr "Doppeltes Gerät."
 
 #: src/components/storage/MountPointMapping.jsx:252
 msgid "Duplicate mount point."
-msgstr "Doppelter Einhängepunkt."
+msgstr "Einhängepunkt duplizieren."
 
 #: src/components/users/Accounts.jsx:266
 msgid "Enable root account"
-msgstr "Root-Konto aktivieren"
+msgstr "Root-Benutzerkonto aktivieren"
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: src/components/storage/DiskEncryption.jsx:119
+#: src/components/storage/DiskEncryption.jsx:101
 msgid "Encrypt my data"
 msgstr "Meine Daten verschlüsseln"
 
-#: src/components/storage/DiskEncryption.jsx:192
+#: src/components/storage/DiskEncryption.jsx:199
 msgid "Encrypt the selected devices?"
 msgstr "Ausgewählte Geräte verschlüsseln?"
 
-#: src/components/review/StorageReview.jsx:117
+#: src/components/review/StorageReview.jsx:150
 msgid "Encrypted"
 msgstr "Verschlüsselt"
 
@@ -331,24 +337,24 @@ msgstr "Verschlüsselt"
 msgid "Encrypted devices are locked"
 msgstr "Verschlüsselte Geräte sind gesperrt"
 
-#: src/components/storage/DiskEncryption.jsx:145
+#: src/components/storage/DiskEncryption.jsx:127
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr "Verschlüsselung schützt ihre Daten und verhindert den Zugriff Dritter."
 
-#: src/components/storage/InstallationScenario.jsx:184
-#: src/components/storage/InstallationScenario.jsx:195
+#: src/components/storage/InstallationScenario.jsx:203
+#: src/components/storage/InstallationScenario.jsx:214
 msgid "Erase data and install"
-msgstr "Daten löschen und installieren"
+msgstr "Speichermedien löschen und installieren"
 
-#: src/components/storage/InstallationScenario.jsx:191
+#: src/components/storage/InstallationScenario.jsx:210
 msgid "Erase data and install?"
-msgstr "Daten löschen und Installation starten?"
+msgstr "Speichermedien löschen und Installation starten?"
 
-#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr ""
-"Das Löschen der Daten kann nicht rückgängig gemacht werden. Stelle sicher, "
-"dass es Backups gibt."
+"Das Löschen der Daten kann nicht rückgängig gemacht werden. Stellen Sie "
+"sicher, dass Sie über Backups verfügen."
 
 #: src/components/Error.jsx:248
 msgid "Error details"
@@ -363,13 +369,12 @@ msgid "Finalization"
 msgstr "Abschluss"
 
 #: src/components/installation/InstallationProgress.jsx:67
-#, fuzzy
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
 msgstr ""
-"Finalisieren: Die Systemkonfiguration ist abgeschlossen. Das Abschließen der "
-"Installation kann einige Augenblicke dauern."
+"Vervollständigen: Die Systemkonfiguration ist abgeschlossen. Das Abschließen "
+"der Installation kann einen Moment dauern."
 
 #: src/components/localization/InstallationLanguage.jsx:267
 msgid "Find a language"
@@ -377,7 +382,7 @@ msgstr "Finden Sie eine Sprache"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:456
 msgid "Free space requirements met"
-msgstr ""
+msgstr "Anforderungen an freien Speicherplatz erfüllt"
 
 #: src/components/users/Accounts.jsx:203
 msgid "Full name"
@@ -388,41 +393,35 @@ msgid "Full name cannot contain colon characters"
 msgstr "Der vollständige Name darf keine Doppelpunkte enthalten"
 
 #: src/components/Password.jsx:242
-#, fuzzy
 msgid "Hide confirmed password"
-msgstr "Passwort _bestätigen"
+msgstr "Bestätigtes Passwort verstecken"
 
 #: src/components/storage/EncryptedDevices.jsx:193
-#, fuzzy
 msgid "Hide passphrase"
-msgstr "Passwort _bestätigen"
+msgstr "Passphrase verstecken"
 
 #: src/components/Password.jsx:215
-#, fuzzy
 msgid "Hide password"
-msgstr "Passwort verstecken."
+msgstr "Passwort verstecken"
 
 #: src/components/review/Hostname.jsx:117
 #: src/components/review/Hostname.jsx:163
-#, fuzzy
-#| msgid "Host Name"
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: src/components/storage/InstallationScenario.jsx:400
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:422
 msgid "How would you like to install?"
-msgstr ""
-"\n"
-"Soll es dennoch verwendet werden?"
+msgstr "Wie möchten Sie installieren?"
 
 #: src/components/review/Hostname.jsx:140
 msgid "If empty, hostname will be transient and set by network information."
 msgstr ""
+"Falls nicht angegeben, wird der Rechnername vorübergehend durch "
+"Netzwerkinformationen festgelegt."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:499
 msgid "If you are configuring partitions the following are required:"
-msgstr ""
+msgstr "Wenn Sie Partitionen konfigurieren, sind Folgende erforderlich:"
 
 #: src/components/AnacondaHeader.jsx:79
 msgid ""
@@ -432,98 +431,91 @@ msgstr ""
 "dieses Programm."
 
 #: src/components/installation/InstallationProgress.jsx:191
-#, fuzzy
 msgid "In progress"
-msgstr "Im Gange"
+msgstr "In Arbeit"
 
 #: src/components/app.jsx:76
-#, fuzzy
-#| msgid "Installing."
 msgid "Initializing..."
-msgstr "Installieren."
+msgstr "Initialisierung ..."
 
-#: src/components/storage/InstallationScenario.jsx:198
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Install"
 msgstr "Installieren"
 
-#: src/components/storage/InstallationScenario.jsx:219
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:240
 msgid "Install on the custom mount points?"
-msgstr "Einhängepunkte manuell zuweisen"
+msgstr "Auf den benutzerdefinierten Einhängepunkten installieren?"
 
-#: src/components/storage/InstallationScenario.jsx:205
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:226
 msgid "Install on the free space?"
-msgstr "Installieren der Software"
+msgstr "Auf dem freien Speicherplatz installieren?"
 
-#: src/components/storage/InstallationScenario.jsx:233
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:254
 msgid "Install using the configured storage?"
-msgstr "Installieren der Software"
+msgstr "Mit dem konfigurierten Speicher installieren?"
 
 #: src/components/installation/InstallationProgress.jsx:156
 msgid "Installation failed"
 msgstr "Installation fehlgeschlagen"
 
-#: src/components/storage/InstallationMethod.jsx:164
-#, fuzzy
+#: src/components/storage/InstallationMethod.jsx:200
 msgid "Installation method"
-msgstr "Installation abgeschlossen"
+msgstr "Installationsmethode"
 
 #: src/components/installation/InstallationProgress.jsx:121
-#, fuzzy
 msgid "Installation of the system failed: $0"
-msgstr "Installation fehlgeschlagen"
+msgstr "Installation des Systems fehlgeschlagen: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:135
-#, fuzzy
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
-msgstr "Installation"
+msgstr "Installationstyp"
 
 #: src/components/installation/InstallationProgress.jsx:158
 msgid "Installing"
 msgstr "Installation wird ausgeführt"
 
 #: src/components/storage/InstallationDestination.jsx:424
-#, fuzzy
 msgid "Installing to $0 ($1)"
-msgstr "Installieren von {}"
+msgstr "Installieren nach $0 ($1)"
 
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid "Keep current disk layout and only install into available space."
 msgstr ""
+"Die aktuelle Datenträgeranordnung beibehalten und nur in den verfügbaren "
+"Speicherplatz installieren."
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Sprache"
 
+#: src/components/storage/ReclaimSpaceModal.jsx:112
+msgid "Location"
+msgstr "Ort"
+
 #: src/components/storage/EncryptedDevices.jsx:174
-#, fuzzy
 msgid "Locked devices"
-msgstr "um Geräte erneut einzulesen"
+msgstr "Gesperrte Geräte"
 
 #: src/components/Error.jsx:170
 msgid "Log"
-msgstr ""
+msgstr "Log"
 
-#: src/components/storage/MountPointMapping.jsx:747
-#, fuzzy
+#: src/components/storage/MountPointMapping.jsx:739
 msgid "Manual disk configuration"
-msgstr "Geräte-Konfiguration"
+msgstr "Manuelle Datenträgerkonfiguration"
 
-#: src/components/storage/MountPointMapping.jsx:748
-#, fuzzy
+#: src/components/storage/MountPointMapping.jsx:741
 msgid "Manual disk configuration: Mount point mapping"
-msgstr "Geräte-Konfiguration"
+msgstr "Manuelle Datenträgerkonfiguration: Zuordnung der Einhängepunkte"
 
 #: src/components/storage/HelpAutopartOptions.jsx:9
 msgid "Manually select storage locations for installation."
-msgstr ""
+msgstr "Manuell Speicherorte für die Installation auswählen."
 
 #: src/components/review/Hostname.jsx:137
 msgid "May contain letters, numbers, and dashes."
-msgstr ""
+msgstr "Kann Buchstaben, Zahlen und Bindestriche enthalten."
 
 #: src/components/Password.jsx:75
 msgid "Medium"
@@ -534,48 +526,53 @@ msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
 #: src/components/storage/ModifyStorage.jsx:55
-#, fuzzy
 msgid "Modify storage"
-msgstr "Speicher_belegung ändern"
+msgstr "Speicherkonfiguration ändern"
 
 #: src/components/storage/MountPointMapping.jsx:560
-#: src/components/review/StorageReview.jsx:113
+#: src/components/review/StorageReview.jsx:146
 msgid "Mount point"
 msgstr "Einhängepunkt"
 
-#: src/components/storage/InstallationScenario.jsx:223
+#: src/components/storage/InstallationScenario.jsx:244
 #: src/components/storage/MountPointMapping.jsx:558
-#, fuzzy
 msgid "Mount point assignment"
-msgstr "Einhängepunkt"
+msgstr "Zuweisung des Einhängepunkts"
 
 #: src/components/Password.jsx:50
-#, fuzzy
 msgid "Must be at least $0 characters"
-msgstr "Das Passwort muss aus mindestens sechs Zeichen bestehen."
+msgstr "Muss aus mindestens $0 Zeichen bestehen"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:111
+msgid "Name"
+msgstr "Name"
 
 #: src/components/Error.jsx:122
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
+"Netzwerk nicht verfügbar. Konfigurieren Sie das Netzwerk im oberen Menü, um "
+"das Problem zu melden."
 
 #: src/components/Error.jsx:123
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
+"Netzwerk nicht verfügbar. Konfigurieren Sie das Netzwerk, um das Problem zu "
+"melden."
 
 #: src/components/AnacondaWizardFooter.jsx:97
 msgid "Next"
-msgstr ""
+msgstr "Nächste"
 
 #: src/components/storage/InstallationDestination.jsx:471
 msgid "No additional disks detected"
 msgstr "Keine zusätzlichen Datenträger erkannt"
 
 #: src/components/storage/MountPointMapping.jsx:565
-#, fuzzy
+#: src/components/storage/ReclaimSpaceModal.jsx:117
 msgid "No devices"
-msgstr "Gerät hinzufügen"
+msgstr "Keine Geräte"
 
 #: src/components/storage/InstallationDestination.jsx:120
 #: src/components/localization/InstallationLanguage.jsx:192
@@ -583,24 +580,20 @@ msgid "No results found"
 msgstr "Keine Ergebnisse gefunden"
 
 #: src/components/storage/InstallationScenario.jsx:113
-#, fuzzy
 msgid "No usable devices on the selected disks."
-msgstr "Nicht genügend Speicherplatz auf den gewählten Speichermedien."
+msgstr "Keine verwendbaren Geräte auf den ausgewählten Datenträgern."
 
 #: src/components/storage/InstallationDestination.jsx:434
-#, fuzzy
 msgid "No usable disks detected"
-msgstr "Keine verwendbaren Datenträger ausgewählt."
+msgstr "Keine verwendbaren Datenträger erkannt"
 
-#: src/components/storage/InstallationScenario.jsx:76
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:78
 msgid "Not enough free space on the selected disks."
-msgstr "Nicht genügend Speicherplatz auf den gewählten Speichermedien."
+msgstr "Nicht genügend freier Speicherplatz auf dem gewählten Datenträger."
 
-#: src/components/storage/InstallationScenario.jsx:55
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:57
 msgid "Not enough space on selected disks."
-msgstr "Nicht genügend Speicherplatz auf den gewählten Speichermedien."
+msgstr "Nicht genügend Speicherplatz auf dem gewählten Datenträger."
 
 #: src/components/AnacondaHeader.jsx:73
 msgid ""
@@ -611,22 +604,23 @@ msgstr ""
 "Achtung: Dies ist eine Vorabversion zu Entwicklungs- und Testzwecken. Bitte "
 "NICHT benutzen für Produktivumgebungen und wichtige Arbeiten."
 
-#: src/components/storage/DiskEncryption.jsx:148
+#: src/components/storage/DiskEncryption.jsx:130
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
 msgstr ""
+"Nur neue Partitionen werden verschlüsselt. Existierende Partitionen bleiben "
+"unberührt."
 
-#: src/components/review/ReviewConfiguration.jsx:93
-#, fuzzy
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
-msgstr "anstehender Schritt"
+msgstr "Betriebssystem"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:531
 msgid "Partitions (advanced)"
-msgstr ""
+msgstr "Partitionen (fortgeschritten)"
 
-#: src/components/storage/DiskEncryption.jsx:132
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
 #: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:279
@@ -635,12 +629,11 @@ msgstr "Passphrase"
 
 #: src/components/storage/EncryptedDevices.jsx:135
 msgid "Passphrase did not match any locked device"
-msgstr ""
+msgstr "Passphrase stimmte bei keinem gesperrten Gerät überein"
 
 #: src/components/Password.jsx:256
-#, fuzzy
 msgid "Passphrases must match"
-msgstr "Die Passphrasen stimmen nicht überein."
+msgstr "Passphrasen müssen übereinstimmen"
 
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "Pending"
@@ -648,26 +641,23 @@ msgstr "Ausstehend"
 
 #: src/components/Error.jsx:86
 msgid "Please attach the log file $0 to the issue."
-msgstr ""
+msgstr "Bitte hängen Sie Logdatei $0 an das Problem an."
 
 #: src/components/HeaderKebab.jsx:72
 msgid "Powered by Anaconda"
-msgstr ""
+msgstr "Powered by Anaconda"
 
 #: src/components/AnacondaHeader.jsx:63
 msgid "Pre-release"
 msgstr "Vorabversion"
 
 #: src/components/Error.jsx:153
-#, fuzzy
 msgid "Preparing report"
-msgstr "Deployment von {} wird vorbereitet"
+msgstr "Bereite Bericht vor"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:434
-#, fuzzy
-#| msgid "Failed to proceed with the installation."
 msgid "Proceed with installation"
-msgstr "Installationsfortschritt fehlgeschlagen."
+msgstr "Installation fortsetzen"
 
 #: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:227
@@ -676,44 +666,41 @@ msgid "Quit"
 msgstr "Beenden"
 
 #: src/components/AnacondaWizardFooter.jsx:143
-#, fuzzy
 msgid "Quit installer?"
-msgstr "Installationsprogramm _beenden"
+msgstr "Installationsprogramm beenden?"
 
 #: src/components/storage/InstallationDestination.jsx:378
 msgid "Re-scan"
-msgstr ""
+msgstr "Erneut Scannen"
 
 #: src/components/app.jsx:141
-#, fuzzy
 msgid "Reading information about the OS failed."
-msgstr "Registrierung fehlgeschlagen."
+msgstr "Einlesen der Informationen zum Betriebssystem fehlgeschlagen."
 
 #: src/components/app.jsx:67
 msgid "Reading information about the computer failed."
-msgstr ""
+msgstr "Einlesen der Informationen zum Computer fehlgeschlagen."
 
 #: src/components/app.jsx:131
-#, fuzzy
 msgid "Reading installer configuration failed."
-msgstr "Die Neukonfiguration des Geräts ist fehlgeschlagen."
+msgstr "Einlesen der Konfiguration des Installationsprogramms fehlgeschlagen."
 
 #: src/components/AnacondaHeader.jsx:44
-#, fuzzy
 msgid "Reading installer version information failed."
-msgstr "Registrierung fehlgeschlagen."
+msgstr ""
+"Einlesen der Versionsinformationen des Installationsprogramms fehlgeschlagen."
 
 #: src/components/review/Hostname.jsx:55
 msgid ""
 "Real hostname can only contain characters, digits, dashes (not starting or "
 "ending a character) and dots"
 msgstr ""
+"Der tatsächliche Rechnername darf nur Buchstaben, Zahlen, Bindestriche "
+"(nicht mit einem Bindestrich beginnend oder endend) und Punkte enthalten"
 
 #: src/components/review/Hostname.jsx:51
-#, fuzzy
-#| msgid "Host name must be 64 or fewer characters in length."
 msgid "Real hostname must be 64 characters or less"
-msgstr "Der Hostname muss 64 oder weniger Zeichen aufweisen."
+msgstr "Der tatsächliche Rechnername darf maximal 64 Zeichen lang sein"
 
 #: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:227
@@ -722,17 +709,30 @@ msgid "Reboot"
 msgstr "Neustart"
 
 #: src/components/AnacondaWizardFooter.jsx:143
-#, fuzzy
 msgid "Reboot system?"
-msgstr "_System neustarten"
+msgstr "System neustarten?"
+
+#: src/components/storage/InstallationScenario.jsx:195
+msgid "Reclaim additional space"
+msgstr "Zusätzlichen Speicherplatz zurückgewinnen"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:101
+#: src/components/storage/ReclaimSpaceModal.jsx:109
+#: src/components/storage/ReclaimSpaceModal.jsx:150
+msgid "Reclaim space"
+msgstr "Speicherplatz zurückgewinnen"
+
+#: src/components/storage/InstallationScenario.jsx:195
+msgid "Reclaim space (required)"
+msgstr "Speicherplatz zurückgewinnen (notwendig)"
 
 #: src/components/storage/MountPointMapping.jsx:245
 msgid "Recommended"
-msgstr ""
+msgstr "Empfohlen"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:508
 msgid "Recommended partitions:"
-msgstr ""
+msgstr "Empfohlene Partitionen:"
 
 #: src/components/storage/MountPointMapping.jsx:349
 #: src/components/storage/MountPointMapping.jsx:562
@@ -749,13 +749,26 @@ msgid ""
 "systems. Make sure you have backed up your data."
 msgstr ""
 
+#: src/components/storage/ReclaimSpaceModal.jsx:87
+msgid "Remove existing filesystems to free up space for the installation."
+msgstr ""
+"Existierendes Dateisystem entfernen, um Speicherplatz für die Installation "
+"freizugeben."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:90
+msgid ""
+"Removing a filesystem will permanently delete all of the data it contains. "
+msgstr ""
+"Das Entfernen eines Dateisystems wird dauerhaft alle darin enthaltenen Daten "
+"löschen. "
+
 #: src/components/HeaderKebab.jsx:132
 msgid "Report Issue"
-msgstr ""
+msgstr "Fehler melden"
 
 #: src/components/Error.jsx:153 src/components/Error.jsx:271
 msgid "Report issue"
-msgstr ""
+msgstr "Fehler melden"
 
 #: src/components/Error.jsx:140
 msgid ""
@@ -764,99 +777,81 @@ msgid ""
 msgstr ""
 
 #: src/components/storage/MountPointMapping.jsx:244
-#, fuzzy
 msgid "Required"
-msgstr "Nicht erforderlich."
+msgstr "Erforderlich"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:520
-#, fuzzy
 msgid "Requirements"
-msgstr "Nicht erforderlich."
+msgstr "Voraussetzungen"
 
 #: src/components/storage/InstallationDestination.jsx:387
-#, fuzzy
 msgid "Rescan"
-msgstr "Wiederherstellung"
+msgstr "Rescan"
 
 #: src/components/storage/InstallationDestination.jsx:366
-#, fuzzy
 msgid "Rescanning of the disks failed."
-msgstr "Das erneute Scannen der Datenträger ist abgeschlossen."
+msgstr "Erneutes Scannen der Datenträger ist fehlgeschlagen."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:85
-#, fuzzy
 msgid "Return to installation"
-msgstr "Installation"
+msgstr "Zur Installation zurückkehren"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:418
-#, fuzzy
-#| msgid "Launch Blivet-gui storage editor"
 msgid "Return to storage editor"
-msgstr "Blivet-gui Speichermedien-Editor starten"
+msgstr "Zum Speicher-Editor zurückkehren"
 
-#: src/components/review/ReviewConfiguration.jsx:249
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Review and install"
 msgstr "Überprüfen und Installation starten"
 
 #: src/components/review/Hostname.jsx:104
-#, fuzzy
-#| msgctxt "GUI|Custom Partitioning|Container Dialog"
-#| msgid "_Save"
 msgid "Save"
-msgstr "_Speichern"
+msgstr "Speichern"
 
 #: src/components/installation/Feedback.jsx:38
 msgid "Scan the QR code with your phone or visit:"
-msgstr ""
+msgstr "Scannen Sie den QR-Code mit Ihrem Handy oder besuchen Sie:"
 
 #: src/components/storage/MountPointMapping.jsx:290
-#, fuzzy
 msgid "Select a device"
 msgstr "Gewähltes Speichermedium"
 
 #: src/components/storage/InstallationDestination.jsx:218
-#, fuzzy
 msgid "Select a disk"
-msgstr "Alle Speichermedien auswählen"
+msgstr "Einen Datenträger auswählen"
 
 #: src/components/storage/MountPointMapping.jsx:124
 msgid "Selected device's format '$0' cannot be reformatted."
-msgstr ""
+msgstr "Format '$0' des ausgewählten Geräts kann nicht neu formatiert werden."
 
 #: src/components/installation/Feedback.jsx:37
-#, fuzzy
 msgid "Send us feedback on your installation"
-msgstr "Installationsfortschritt fehlgeschlagen."
+msgstr "Senden Sie uns Feedback zu Ihrer Installation"
 
 #: src/components/review/Hostname.jsx:113
-#, fuzzy
-#| msgid "Set host name"
 msgid "Set custom hostname"
-msgstr "Name des Rechners festlegen"
+msgstr "Eigenen Rechnername festlegen"
 
 #: src/components/Password.jsx:242
-#, fuzzy
 msgid "Show confirmed password"
-msgstr "Passwort _bestätigen"
+msgstr "Zeige bestätigtes Passwort"
 
 #: src/components/storage/EncryptedDevices.jsx:193
-#, fuzzy
 msgid "Show passphrase"
-msgstr "Passwort _bestätigen"
+msgstr "Passphrase anzeigen"
 
 #: src/components/Password.jsx:215
-#, fuzzy
 msgid "Show password"
-msgstr "Passwort anzeigen."
+msgstr "Passwort anzeigen"
 
-#: src/components/review/StorageReview.jsx:115
+#: src/components/review/StorageReview.jsx:148
 msgid "Size"
-msgstr ""
+msgstr "Größe"
 
 #: src/components/storage/EncryptedDevices.jsx:87
 msgid "Skip"
-msgstr ""
+msgstr "Überspringen"
 
 #: src/components/installation/InstallationProgress.jsx:59
 msgid "Software installation"
@@ -872,16 +867,19 @@ msgstr ""
 
 #: src/components/storage/InstallationScenario.jsx:119
 msgid "Some devices use the same name: $0."
-msgstr ""
+msgstr "Eine Geräte benutzen denselben Namen: $0."
 
 #: src/components/storage/InstallationScenario.jsx:116
 msgid "Some required partitions are missing: $0"
-msgstr ""
+msgstr "Einige benötigte Partitionen fehlen: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:156
-#, fuzzy
+#: src/components/storage/ReclaimSpaceModal.jsx:114
+msgid "Space"
+msgstr "Platz"
+
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
-msgstr "Speicherplatz-Optionen"
+msgstr "Speicher"
 
 #: src/components/installation/InstallationProgress.jsx:54
 msgid "Storage configuration"
@@ -892,20 +890,18 @@ msgid "Storage configuration: Storage is currently being configured."
 msgstr "Speicherkonfiguration: Der Speicher wird derzeit konfiguriert."
 
 #: src/components/storage/HelpAutopartOptions.jsx:11
-#, fuzzy
-#| msgid "Reload storage configuration from disk."
 msgid "Storage is based on the configuration from 'Modify storage'."
-msgstr "Speicherkonfiguration von Festplatte neu laden."
+msgstr ""
+"Speicherkonfiguration basiert auf der Konfiguration aus 'Speicher "
+"bearbeiten'."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:102
-#, fuzzy
-#| msgid "Node login failed."
 msgid "Storage plugin failed"
-msgstr "Node-Anmeldung fehlgeschlagen."
+msgstr "Speicher-Plugin fehlgeschlagen"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:385
 msgid "Storage requirements not met"
-msgstr ""
+msgstr "Speicheranforderungen nicht erfüllt"
 
 #: src/components/Password.jsx:86
 msgid "Strong"
@@ -913,17 +909,15 @@ msgstr "Stark"
 
 #: src/components/installation/InstallationProgress.jsx:153
 msgid "Successfully installed"
-msgstr ""
+msgstr "Erfolgreich installiert"
 
 #: src/components/storage/EncryptedDevices.jsx:130
 msgid "Successfully unlocked $0."
-msgstr ""
+msgstr "Erfolgreich $0 entsperrt."
 
 #: src/components/users/Accounts.jsx:294
-#, fuzzy
-#| msgid "File System"
 msgid "System"
-msgstr "Dateisystem"
+msgstr "System"
 
 #: src/components/installation/InstallationProgress.jsx:64
 msgid "System configuration"
@@ -937,25 +931,25 @@ msgstr ""
 "Systemkonfiguration: Softwareinstallation abgeschlossen. Das System wird nun "
 "konfiguriert."
 
-#: src/components/localization/InstallationLanguage.jsx:315
+#: src/components/localization/InstallationLanguage.jsx:311
 msgid ""
 "The chosen language will be used for installation and in the installed "
 "software. "
 msgstr ""
+"Die ausgewählte Sprache wird für die Installation und die installierte "
+"Software genutzt. "
 
 #: src/components/storage/InstallationDestination.jsx:503
 msgid "The following disk is no longer available: $0"
 msgid_plural "The following disks are no longer available: $0"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Der folgende Datenträger ist nicht mehr verfügbar: $0"
+msgstr[1] "Die folgenden Datenträger sind nicht mehr verfügbar: $0"
 
 #: src/components/storage/InstallationDestination.jsx:486
-#, fuzzy
-#| msgid "The following mandatory spokes are not completed:"
 msgid "The following disk was detected: $0"
 msgid_plural "The following disks were detected: $0"
-msgstr[0] "Die folgenden obligatorischen Speichen sind nicht beendet:"
-msgstr[1] "Die folgenden obligatorischen Speichen sind nicht beendet:"
+msgstr[0] "Der folgende Datenträger wurde erkannt: $0"
+msgstr[1] "Die folgenden Datenträger wurden erkannt: $0"
 
 #: src/components/Error.jsx:268
 msgid ""
@@ -963,34 +957,33 @@ msgid ""
 "provide additional details."
 msgstr ""
 
-#: src/components/storage/InstallationScenario.jsx:57
+#: src/components/storage/InstallationScenario.jsx:59
 msgid "The installation needs $1 of disk space; "
-msgstr ""
+msgstr "Die Installation benötigt $1 freien Speicher "
 
-#: src/components/storage/InstallationScenario.jsx:204
+#: src/components/storage/InstallationScenario.jsx:225
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
 msgstr ""
+"Die Installation wird den verfügbaren freien Speicher auf Ihrem Gerät nutzen "
+"und keine Daten löschen."
 
-#: src/components/storage/InstallationScenario.jsx:218
-#: src/components/storage/InstallationScenario.jsx:232
+#: src/components/storage/InstallationScenario.jsx:239
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "The installation will use your configured partitioning layout."
-msgstr ""
+msgstr "Die Installation wird Ihr konfiguriertes Partitionslayout benutzen."
 
 #: src/components/Error.jsx:237
-#, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr ""
-"Die Installation kann nicht fortgesetzt werden und das System wird neu "
-"gestartet"
+"Die Installation kann durch einen kritischen Fehler nicht fortgesetzt werden."
 
 #: src/components/Error.jsx:236
-#, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr ""
-"Die Installation kann nicht fortgesetzt werden und das System wird neu "
-"gestartet"
+"Die Installation kann durch einen kritischen Fehler nicht fortgesetzt "
+"werden: $0"
 
 #: src/components/storage/DiskEncryption.jsx:49
 msgid ""
@@ -1000,7 +993,7 @@ msgstr ""
 "Die eingegebene Passphrase enthält Nicht-ASCII-Zeichen. Eventuell ist es "
 "nicht möglich das Tastaturlayout während der Eingabe anzupassen."
 
-#: src/components/storage/InstallationScenario.jsx:190
+#: src/components/storage/InstallationScenario.jsx:209
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -1009,17 +1002,17 @@ msgstr ""
 "gemacht werden. Sind Sie sicher, die Installation fortzusetzen?"
 
 #: src/components/storage/InstallationDestination.jsx:478
-#, fuzzy
 msgid "The usable disks have changed"
-msgstr "Keine verwendbaren Datenträger ausgewählt."
+msgstr "Die verwendbaren Datenträger haben sich geändert"
 
 #: src/components/users/Accounts.jsx:201
 msgid "This account will have administration priviledge with sudo."
 msgstr ""
+"Dieses Benutzerkonto wird über Administrationsrechte mit sudo verfügen."
 
 #: src/components/review/Hostname.jsx:71
 msgid "This hostname can't be submitted"
-msgstr ""
+msgstr "Dieser Rechnername kann nicht übermittelt werden"
 
 #: src/components/AnacondaHeader.jsx:67
 msgid "This is unstable, pre-release software"
@@ -1030,66 +1023,60 @@ msgid "This may take a moment"
 msgstr "Dies kann einen Moment dauern"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:379
-#, fuzzy
-#| msgid "This may take a moment"
 msgid "This will take a few moments"
-msgstr "Dies kann einen Moment dauern"
+msgstr "Dies wird einige Momente dauern"
 
 #: src/components/installation/InstallationProgress.jsx:171
-#, fuzzy
 msgid "To begin using $0, reboot your system."
-msgstr ""
-"Fedora wurde erfolgreich installiert. Bitte starten Sie zum Abschluß das "
-"System neu."
+msgstr "Starten Sie das System neu, um mit der Nutzung von $0 zu beginnen."
 
-#: src/components/storage/InstallationMethod.jsx:151
-#, fuzzy
+#: src/components/storage/InstallationMethod.jsx:167
 msgid "To continue, select the devices to install to."
-msgstr ""
-"Keine Speichermedien ausgewählt; bitte wählen Sie mindestens ein "
-"Installationsmedium."
+msgstr "Um fortzufahren, wählen die Speichermedien für die Installation aus."
 
-#: src/components/storage/InstallationScenario.jsx:210
-#: src/components/storage/InstallationScenario.jsx:224
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:231
+#: src/components/storage/InstallationScenario.jsx:245
+#: src/components/storage/InstallationScenario.jsx:259
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Um einen Verlust zu vermeiden, sollten Sie Ihre Daten sichern."
 
 #: src/components/storage/InstallationScenario.jsx:120
 msgid "To use this option, rename devices to have unique names."
 msgstr ""
+"Um diese Option zu benutzen, müssen Sie eindeutige Namen an die Geräte "
+"vergeben."
 
-#: src/components/storage/InstallationScenario.jsx:78
+#: src/components/storage/InstallationScenario.jsx:80
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
+"Um diese Option zu benutzen, entfernen Sie bestehende Partitionen oder "
+"ändern ihre Größe, um mindestens $0 freizugeben."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:113
+msgid "Type"
+msgstr "Typ"
 
 #: src/components/storage/EncryptedDevices.jsx:161
-#, fuzzy
 msgid "Unlock"
-msgstr "_Entsperren"
+msgstr "Entsperren"
 
 #: src/components/storage/EncryptedDevices.jsx:82
-#, fuzzy
 msgid "Unlock devices"
-msgstr "um Geräte erneut einzulesen"
+msgstr "Geräte entsperren"
 
 #: src/components/storage/EncryptedDevices.jsx:157
-#, fuzzy
 msgid "Unlock encrypted devices"
-msgstr "Fehler beim Entsperren des verschlüsselten Blockgeräts."
+msgstr "Entsperren des verschlüsselten Speichermediums"
 
-#: src/components/storage/InstallationScenario.jsx:237
-#, fuzzy
-#| msgid "Configuring storage"
+#: src/components/storage/InstallationScenario.jsx:258
 msgid "Use configured storage"
-msgstr "Speicher konfigurieren"
+msgstr "Konfigurierten Speicher nutzen"
 
-#: src/components/storage/InstallationScenario.jsx:209
-#, fuzzy
+#: src/components/storage/InstallationScenario.jsx:230
 msgid "Use free space for the installation"
-msgstr "Installationsfortschritt fehlgeschlagen."
+msgstr "Freien Speicherplatz für die Installation verwenden"
 
 #: src/components/users/Accounts.jsx:222
 msgid "User name"
@@ -1100,35 +1087,32 @@ msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
 msgstr ""
+"Der Benutzername darf nur Buchstaben von a-z, Zahlen, Bindestriche $0, "
+"Punkte $1 und Unterstriche $2 enthalten"
 
 #: src/components/users/Accounts.jsx:154
-#, fuzzy
-#| msgid "User name is reserved for system: %s"
 msgid "User name must not be a reserved word"
-msgstr "Benutzername ist reserviert für System: %s"
+msgstr "Der Benutzername darf kein reserviertes Wort sein"
 
 #: src/components/users/Accounts.jsx:151
-#, fuzzy
-#| msgid "Name must be shorter than 33 characters."
 msgid "User names must be shorter than 33 characters"
-msgstr "Der Name muss kürzer als 33 Zeichen sein."
+msgstr "Der Benutzername muss kürzer als 33 Zeichen sein"
 
 #: src/components/Password.jsx:64
 msgid "Weak"
 msgstr "Schwach"
 
-#: src/components/localization/InstallationLanguage.jsx:344
+#: src/components/localization/InstallationLanguage.jsx:342
 msgid "Welcome"
 msgstr "Willkommen"
 
-#: src/components/localization/InstallationLanguage.jsx:345
-#, fuzzy
+#: src/components/localization/InstallationLanguage.jsx:334
 msgid "Welcome to $0"
 msgstr "Willkommen bei $0"
 
-#: src/components/storage/InstallationMethod.jsx:165
+#: src/components/storage/InstallationMethod.jsx:193
 msgid "Welcome. Let's install $0 now."
-msgstr ""
+msgstr "Willkommen. Lassen Sie uns nun $0 installieren."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:526
 msgid ""
@@ -1138,7 +1122,7 @@ msgstr ""
 
 #: src/components/AnacondaWizardFooter.jsx:147
 msgid "Your progress will not be saved."
-msgstr ""
+msgstr "Ihr Fortschritt wird nicht gespeichert."
 
 #: src/components/installation/InstallationProgress.jsx:185
 msgid "completed step"
@@ -1148,35 +1132,39 @@ msgstr "Fertiger Schritt"
 msgid "current step"
 msgstr "Aktueller Schritt"
 
+#: src/components/storage/ReclaimSpaceModal.jsx:248
+#: src/components/storage/ReclaimSpaceModal.jsx:256
+#: src/components/review/StorageReview.jsx:93
+msgid "delete"
+msgstr "löschen"
+
 #: src/components/review/Hostname.jsx:97
 msgid "edit"
-msgstr ""
+msgstr "editieren"
 
 #: src/components/review/StorageReview.jsx:85
-#, fuzzy
-#| msgid "Encrypt"
 msgid "encrypt"
-msgstr "Verschlüsseln"
+msgstr "verschlüsseln"
 
 #: src/components/review/StorageReview.jsx:85
-#, fuzzy
-#| msgid "Encrypt"
 msgid "encrypted"
-msgstr "Verschlüsseln"
+msgstr "verschlüsselt"
 
 #: src/components/review/StorageReview.jsx:64
-#, fuzzy
 msgid "format as $0"
-msgstr "Neu formatieren"
+msgstr "formatieren als $0"
 
 #: src/components/review/StorageReview.jsx:65
-#, fuzzy
 msgid "mount"
-msgstr "Belegung hinzufügen"
+msgstr "einhängen"
 
 #: src/components/installation/InstallationProgress.jsx:179
 msgid "pending step"
 msgstr "anstehender Schritt"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:257
+msgid "undo"
+msgstr "rückgängig machen"
 
 #, fuzzy
 #~| msgid "Connection failed"
@@ -2318,9 +2306,6 @@ msgstr "anstehender Schritt"
 #~ msgid "Default spoke title"
 #~ msgstr "Standard-Speichen-Überschrift"
 
-#~ msgid "Delete"
-#~ msgstr "Löschen"
-
 #~ msgctxt "GUI|Reclaim Dialog"
 #~ msgid "Delete _all"
 #~ msgstr "_Alles löschen"
@@ -3273,9 +3258,6 @@ msgstr "anstehender Schritt"
 #~ msgid "Locales"
 #~ msgstr "Regionale Einstellungen"
 
-#~ msgid "Location"
-#~ msgstr "Ort"
-
 #~ msgid "Logical volume \"{}\" given in logvol command does not exist."
 #~ msgstr ""
 #~ "Der im logvol-Befehl angegebene logische Datenträger \"{}\" existiert "
@@ -3405,9 +3387,6 @@ msgstr "anstehender Schritt"
 #~ msgid "N_FS mount options:"
 #~ msgstr "N_FS-Einhänge-Optionen:"
 
-#~ msgid "Name"
-#~ msgstr "Name"
-
 #~ msgid "Name '$' is not allowed."
 #~ msgstr "Der Name '$' ist nicht erlaubt."
 
@@ -3480,9 +3459,6 @@ msgstr "anstehender Schritt"
 
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "Keine *.ISO-Dateien im Stammordner des Datenträgers gefunden"
-
-#~ msgid "No Space"
-#~ msgstr "Kein Platz"
 
 #~ msgid "No additional software to select."
 #~ msgstr "Keine zusätzliche Software zum Auswählen."
@@ -5398,9 +5374,6 @@ msgstr "anstehender Schritt"
 #~ "Es wurde versucht, die undefinierte Partition \"{}\" in der Spezifikation "
 #~ "der Volume-Gruppe zu verwenden"
 
-#~ msgid "Type"
-#~ msgstr "Typ"
-
 #~ msgid "Type here to search."
 #~ msgstr "Geben Sie hier Ihre Suchbegriffe ein."
 
@@ -6675,10 +6648,6 @@ msgstr "anstehender Schritt"
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Reboot System"
 #~ msgstr "_System neustarten"
-
-#~ msgctxt "GUI|Reclaim Dialog"
-#~ msgid "_Reclaim space"
-#~ msgstr "_Speicherplatz freigeben"
 
 #~ msgctxt "GUI|Storage|Need Space Dialog"
 #~ msgid "_Reclaim space"

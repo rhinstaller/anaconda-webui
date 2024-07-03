@@ -110,7 +110,7 @@ class Installer():
         if current_page == self.steps.INSTALLATION_METHOD:
             sleep(2)
 
-        self.browser.click("button:contains(Next)")
+        self.browser.click("#installation-next-btn")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
         return expected_page

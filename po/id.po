@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-25 02:50+0000\n"
+"POT-Creation-Date: 2024-07-02 02:50+0000\n"
 "PO-Revision-Date: 2024-05-21 02:47+0000\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.fedoraproject.org/projects/"
@@ -66,11 +66,12 @@ msgstr "'$0' harus berada pada peranti yang diformat ke '$1'"
 msgid "About"
 msgstr "Ihwal"
 
-#: src/components/review/ReviewConfiguration.jsx:117
+#: src/components/review/ReviewConfiguration.jsx:116
 msgid "Account"
 msgstr "Akun"
 
-#: src/components/review/StorageReview.jsx:116
+#: src/components/storage/ReclaimSpaceModal.jsx:115
+#: src/components/review/StorageReview.jsx:149
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -108,7 +109,7 @@ msgstr ""
 msgid "Anaconda project page"
 msgstr "Halaman proyek Anaconda"
 
-#: src/components/storage/InstallationScenario.jsx:212
+#: src/components/storage/InstallationScenario.jsx:233
 msgid "Apply mount point assignment and install"
 msgstr "Terapkan penugasan titik kait dan pasang"
 
@@ -116,8 +117,12 @@ msgstr "Terapkan penugasan titik kait dan pasang"
 msgid "Applying new disk selection..."
 msgstr "Menerapkan pilihan disk baru..."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:142
+msgid "Available free space: $0. Installation requires: $1."
+msgstr ""
+
 #: src/components/AnacondaWizardFooter.jsx:90
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid "Back"
 msgstr "Mundur"
 
@@ -133,6 +138,7 @@ msgstr ""
 "hanya untuk tujuan pengujian dan pengembangan dan Anda bersedia melaporkan "
 "sebarang kutu atau masalah untuk memajukan karya ini."
 
+#: src/components/storage/ReclaimSpaceModal.jsx:153
 #: src/components/Error.jsx:260 src/components/review/Hostname.jsx:106
 msgid "Cancel"
 msgstr "Batal"
@@ -158,11 +164,11 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "Memeriksa konfigurasi penyimpanan"
 
-#: src/components/localization/InstallationLanguage.jsx:304
+#: src/components/localization/InstallationLanguage.jsx:300
 msgid "Choose a language"
 msgstr "Pilih suatu bahasa"
 
-#: src/components/localization/InstallationLanguage.jsx:313
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Chosen language: "
 msgstr "Bahasa yang dipilih: "
 
@@ -197,7 +203,7 @@ msgstr "Konfigurasikan penyimpanan"
 msgid "Configure storage again"
 msgstr "Konfigurasikan penyimpanan lagi"
 
-#: src/components/storage/DiskEncryption.jsx:135
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:282
 msgid "Confirm passphrase"
 msgstr "Konfirmasi frasa sandi"
@@ -214,7 +220,7 @@ msgstr "Lanjutkan instalasi"
 msgid "Continue with installation"
 msgstr "Lanjutkan dengan instalasi"
 
-#: src/components/users/Accounts.jsx:364
+#: src/components/users/Accounts.jsx:356
 msgid "Create Account"
 msgstr "Buat Akun"
 
@@ -243,7 +249,7 @@ msgid "Detected valid storage layout:"
 msgstr "Tata letak penyimpanan valid yang terdeteksi:"
 
 #: src/components/storage/MountPointMapping.jsx:561
-#: src/components/review/StorageReview.jsx:114
+#: src/components/review/StorageReview.jsx:147
 msgid "Device"
 msgstr "Peranti"
 
@@ -251,7 +257,7 @@ msgstr "Peranti"
 msgid "Devices should be unlocked before assigning mount points."
 msgstr "Perangkat harus dibuka kuncinya sebelum menugaskan titik kait."
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
@@ -259,8 +265,8 @@ msgstr "Dinonaktifkan"
 msgid "Disk configuration"
 msgstr "Konfigurasi disk"
 
-#: src/components/storage/DiskEncryption.jsx:191
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/storage/DiskEncryption.jsx:198
+#: src/components/review/ReviewConfiguration.jsx:145
 msgid "Disk encryption"
 msgstr "Enkripsi disk"
 
@@ -276,19 +282,19 @@ msgstr "Titik kait duplikat."
 msgid "Enable root account"
 msgstr "Fungsikan akun root"
 
-#: src/components/review/ReviewConfiguration.jsx:149
+#: src/components/review/ReviewConfiguration.jsx:148
 msgid "Enabled"
 msgstr "Difungsikan"
 
-#: src/components/storage/DiskEncryption.jsx:119
+#: src/components/storage/DiskEncryption.jsx:101
 msgid "Encrypt my data"
 msgstr "Enkripsikan data saya"
 
-#: src/components/storage/DiskEncryption.jsx:192
+#: src/components/storage/DiskEncryption.jsx:199
 msgid "Encrypt the selected devices?"
 msgstr "Enkripsikan perangkat yang dipilih?"
 
-#: src/components/review/StorageReview.jsx:117
+#: src/components/review/StorageReview.jsx:150
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -298,22 +304,22 @@ msgstr "Enkrip"
 msgid "Encrypted devices are locked"
 msgstr "Perangkat terenkripsi itu terkunci"
 
-#: src/components/storage/DiskEncryption.jsx:145
+#: src/components/storage/DiskEncryption.jsx:127
 msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Enkripsi membantu mengamankan data Anda, untuk mencegah orang lain "
 "mengaksesnya."
 
-#: src/components/storage/InstallationScenario.jsx:184
-#: src/components/storage/InstallationScenario.jsx:195
+#: src/components/storage/InstallationScenario.jsx:203
+#: src/components/storage/InstallationScenario.jsx:214
 msgid "Erase data and install"
 msgstr "Hapus data dan pasang"
 
-#: src/components/storage/InstallationScenario.jsx:191
+#: src/components/storage/InstallationScenario.jsx:210
 msgid "Erase data and install?"
 msgstr "Hapus data dan pasang?"
 
-#: src/components/storage/InstallationScenario.jsx:196
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erasing the data cannot be undone. Be sure to have backups."
 msgstr "Menghapus data tidak dapat dibatalkan. Pastikan memiliki cadangan."
 
@@ -370,7 +376,7 @@ msgstr "Sembunyikan kata sandi"
 msgid "Hostname"
 msgstr "Nama host"
 
-#: src/components/storage/InstallationScenario.jsx:400
+#: src/components/storage/InstallationScenario.jsx:422
 msgid "How would you like to install?"
 msgstr "Bagaimana Anda ingin memasang?"
 
@@ -398,20 +404,20 @@ msgstr "Dalam progres"
 msgid "Initializing..."
 msgstr "Menginisialisasi..."
 
-#: src/components/storage/InstallationScenario.jsx:198
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Install"
 msgstr "Pasang"
 
-#: src/components/storage/InstallationScenario.jsx:219
+#: src/components/storage/InstallationScenario.jsx:240
 msgid "Install on the custom mount points?"
 msgstr "Pasang pada titik kait ubahan?"
 
-#: src/components/storage/InstallationScenario.jsx:205
+#: src/components/storage/InstallationScenario.jsx:226
 msgid "Install on the free space?"
 msgstr "Pasang pada ruang bebas?"
 
-#: src/components/storage/InstallationScenario.jsx:233
+#: src/components/storage/InstallationScenario.jsx:254
 msgid "Install using the configured storage?"
 msgstr "Pasang memakai penyimpanan yang dikonfigurasi?"
 
@@ -419,7 +425,7 @@ msgstr "Pasang memakai penyimpanan yang dikonfigurasi?"
 msgid "Installation failed"
 msgstr "Instalasi gagal"
 
-#: src/components/storage/InstallationMethod.jsx:164
+#: src/components/storage/InstallationMethod.jsx:200
 msgid "Installation method"
 msgstr "Metode instalasi"
 
@@ -427,7 +433,7 @@ msgstr "Metode instalasi"
 msgid "Installation of the system failed: $0"
 msgstr "Instalasi sistem gagal: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:134
 msgid "Installation type"
 msgstr "Tipe instalasi"
 
@@ -445,9 +451,13 @@ msgstr ""
 "Pertahankan tata letak disk saat ini dan instal hanya pada ruang yang "
 "tersedia."
 
-#: src/components/review/ReviewConfiguration.jsx:107
+#: src/components/review/ReviewConfiguration.jsx:106
 msgid "Language"
 msgstr "Bahasa"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:112
+msgid "Location"
+msgstr "Lokasi"
 
 #: src/components/storage/EncryptedDevices.jsx:174
 msgid "Locked devices"
@@ -457,11 +467,11 @@ msgstr "Perangkat yang terkunci"
 msgid "Log"
 msgstr "Log"
 
-#: src/components/storage/MountPointMapping.jsx:747
+#: src/components/storage/MountPointMapping.jsx:739
 msgid "Manual disk configuration"
 msgstr "Konfigurasi disk manual"
 
-#: src/components/storage/MountPointMapping.jsx:748
+#: src/components/storage/MountPointMapping.jsx:741
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Konfigurasi disk manual: Pemetaan titik kait"
 
@@ -487,11 +497,11 @@ msgid "Modify storage"
 msgstr "Ubah penyimpanan"
 
 #: src/components/storage/MountPointMapping.jsx:560
-#: src/components/review/StorageReview.jsx:113
+#: src/components/review/StorageReview.jsx:146
 msgid "Mount point"
 msgstr "Titik kait"
 
-#: src/components/storage/InstallationScenario.jsx:223
+#: src/components/storage/InstallationScenario.jsx:244
 #: src/components/storage/MountPointMapping.jsx:558
 msgid "Mount point assignment"
 msgstr "Penugasan titik kait"
@@ -499,6 +509,10 @@ msgstr "Penugasan titik kait"
 #: src/components/Password.jsx:50
 msgid "Must be at least $0 characters"
 msgstr "Mesti paling tidak $0 karakter"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:111
+msgid "Name"
+msgstr "Nama"
 
 #: src/components/Error.jsx:122
 msgid ""
@@ -522,6 +536,7 @@ msgid "No additional disks detected"
 msgstr "Tidak ada disk tambahan yang terdeteksi"
 
 #: src/components/storage/MountPointMapping.jsx:565
+#: src/components/storage/ReclaimSpaceModal.jsx:117
 msgid "No devices"
 msgstr "Tidak ada perangkat"
 
@@ -538,11 +553,11 @@ msgstr "Tidak ada perangkat yang dapat dipakai pada disk yang dipilih."
 msgid "No usable disks detected"
 msgstr "Tidak terdeteksi disk yang dapat dipakai"
 
-#: src/components/storage/InstallationScenario.jsx:76
+#: src/components/storage/InstallationScenario.jsx:78
 msgid "Not enough free space on the selected disks."
 msgstr "Tidak cukup ruang bebas pada disk yang dipilih."
 
-#: src/components/storage/InstallationScenario.jsx:55
+#: src/components/storage/InstallationScenario.jsx:57
 msgid "Not enough space on selected disks."
 msgstr "Tidak cukup ruang bebas pada disk yang dipilih."
 
@@ -556,7 +571,7 @@ msgstr ""
 "untuk tujuan pengembangan dan pengujian. JANGAN gunakan perangkat lunak ini "
 "untuk pekerjaan penting apa pun atau untuk lingkungan produksi."
 
-#: src/components/storage/DiskEncryption.jsx:148
+#: src/components/storage/DiskEncryption.jsx:130
 msgid ""
 "Only new partitions will be encrypted. Existing partitions will remain "
 "untouched."
@@ -564,7 +579,7 @@ msgstr ""
 "Hanya partisi-partisi baru yang akan dienkripsi. Partisi yang ada akan tetap "
 "tidak disentuh."
 
-#: src/components/review/ReviewConfiguration.jsx:93
+#: src/components/review/ReviewConfiguration.jsx:92
 msgid "Operating system"
 msgstr "Sistem operasi"
 
@@ -572,7 +587,7 @@ msgstr "Sistem operasi"
 msgid "Partitions (advanced)"
 msgstr "Partisi (tingkat lanjut)"
 
-#: src/components/storage/DiskEncryption.jsx:132
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
 #: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:279
@@ -663,6 +678,29 @@ msgstr "Boot ulang"
 msgid "Reboot system?"
 msgstr "Boot ulang sistem?"
 
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim additional space"
+msgstr "_Reklamasi ruang"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:101
+#: src/components/storage/ReclaimSpaceModal.jsx:109
+#: src/components/storage/ReclaimSpaceModal.jsx:150
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim space"
+msgstr "_Reklamasi ruang"
+
+#: src/components/storage/InstallationScenario.jsx:195
+#, fuzzy
+#| msgctxt "GUI|Reclaim Dialog"
+#| msgid "_Reclaim space"
+msgid "Reclaim space (required)"
+msgstr "_Reklamasi ruang"
+
 #: src/components/storage/MountPointMapping.jsx:245
 msgid "Recommended"
 msgstr "Direkomendasikan"
@@ -687,6 +725,17 @@ msgid ""
 msgstr ""
 "Buang semua partisi pada perangkat yang dipilih, termasuk sistem operasi "
 "yang ada. Pastikan Anda telah mencadangkan data Anda."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:87
+#, fuzzy
+#| msgid "Use free space for the installation"
+msgid "Remove existing filesystems to free up space for the installation."
+msgstr "Gunakan ruang bebas untuk instalasi"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:90
+msgid ""
+"Removing a filesystem will permanently delete all of the data it contains. "
+msgstr ""
 
 #: src/components/HeaderKebab.jsx:132
 msgid "Report Issue"
@@ -728,8 +777,8 @@ msgstr "Kembali ke instalasi"
 msgid "Return to storage editor"
 msgstr "Kembali ke penyunting penyimpanan"
 
-#: src/components/review/ReviewConfiguration.jsx:249
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Review and install"
 msgstr "Tinjau dan pasang"
 
@@ -773,7 +822,7 @@ msgstr "Tampilkan frasa sandi"
 msgid "Show password"
 msgstr "Tampilkan kata sandi"
 
-#: src/components/review/StorageReview.jsx:115
+#: src/components/review/StorageReview.jsx:148
 msgid "Size"
 msgstr ""
 
@@ -801,7 +850,13 @@ msgstr "Beberapa perangkat menggunakan nama yang sama: $0."
 msgid "Some required partitions are missing: $0"
 msgstr "Beberapa partisi yang diperlukan kurang: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:156
+#: src/components/storage/ReclaimSpaceModal.jsx:114
+#, fuzzy
+#| msgid "No Space"
+msgid "Space"
+msgstr "Tidak Ada Ruang"
+
+#: src/components/review/ReviewConfiguration.jsx:155
 msgid "Storage"
 msgstr "Penyimpanan"
 
@@ -853,7 +908,7 @@ msgstr ""
 "Konfigurasi sistem: Instalasi perangkat lunak selesai. Sistem kini sedang "
 "dikonfigurasi."
 
-#: src/components/localization/InstallationLanguage.jsx:315
+#: src/components/localization/InstallationLanguage.jsx:311
 msgid ""
 "The chosen language will be used for installation and in the installed "
 "software. "
@@ -879,11 +934,11 @@ msgstr ""
 "Log berikut akan dikirim ke sistem pelacakan masalah dimana Anda dapat "
 "memberikan rincian tambahan."
 
-#: src/components/storage/InstallationScenario.jsx:57
+#: src/components/storage/InstallationScenario.jsx:59
 msgid "The installation needs $1 of disk space; "
 msgstr "Instalasi membutuhkan ruang disk sebesar $1; "
 
-#: src/components/storage/InstallationScenario.jsx:204
+#: src/components/storage/InstallationScenario.jsx:225
 msgid ""
 "The installation will use the available space on your devices and will not "
 "erase any device data."
@@ -891,8 +946,8 @@ msgstr ""
 "Instalasi akan memakai ruang yang tersedia pada perangkat Anda dan tidak "
 "akan menghapus sebarang data perangkat."
 
-#: src/components/storage/InstallationScenario.jsx:218
-#: src/components/storage/InstallationScenario.jsx:232
+#: src/components/storage/InstallationScenario.jsx:239
+#: src/components/storage/InstallationScenario.jsx:253
 msgid "The installation will use your configured partitioning layout."
 msgstr ""
 "Instalasi akan memakai tata letak pemartisian yang Anda konfigurasikan."
@@ -913,7 +968,7 @@ msgstr ""
 "Frasa sandi yang Anda berikan mengandung karakter non ASCII. Anda mungkin "
 "tidak bisa beralih antar tata letak papan tik ketika mengetikkannya."
 
-#: src/components/storage/InstallationScenario.jsx:190
+#: src/components/storage/InstallationScenario.jsx:209
 msgid ""
 "The selected disks will be erased, this cannot be undone. Are you sure you "
 "want to continue with the installation?"
@@ -949,13 +1004,13 @@ msgstr "Ini akan makan waktu beberapa saat"
 msgid "To begin using $0, reboot your system."
 msgstr "Untuk mulai memakai $0, boot ulang sistem Anda."
 
-#: src/components/storage/InstallationMethod.jsx:151
+#: src/components/storage/InstallationMethod.jsx:167
 msgid "To continue, select the devices to install to."
 msgstr "Untuk melanjutkan, pilih perangkat untuk dipasangi."
 
-#: src/components/storage/InstallationScenario.jsx:210
-#: src/components/storage/InstallationScenario.jsx:224
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:231
+#: src/components/storage/InstallationScenario.jsx:245
+#: src/components/storage/InstallationScenario.jsx:259
 msgid "To prevent loss, make sure to backup your data."
 msgstr "Untuk mencegah kehilangan, pastikan membuat cadangan data Anda."
 
@@ -965,13 +1020,17 @@ msgstr ""
 "Untuk menggunakan opsi ini, ganti nama perangkat agar memiliki nama yang "
 "unik."
 
-#: src/components/storage/InstallationScenario.jsx:78
+#: src/components/storage/InstallationScenario.jsx:80
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
 "Untuk menggunakan opsi ini, ubah ukuran atau hapus partisi yang ada untuk "
 "mengosongkan setidaknya $0."
+
+#: src/components/storage/ReclaimSpaceModal.jsx:113
+msgid "Type"
+msgstr "Tipe"
 
 #: src/components/storage/EncryptedDevices.jsx:161
 msgid "Unlock"
@@ -985,11 +1044,11 @@ msgstr "Buka kunci perangkat"
 msgid "Unlock encrypted devices"
 msgstr "Buka kunci perangkat terenkripsi"
 
-#: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/InstallationScenario.jsx:258
 msgid "Use configured storage"
 msgstr "Gunakan penyimpanan yang dikonfigurasi"
 
-#: src/components/storage/InstallationScenario.jsx:209
+#: src/components/storage/InstallationScenario.jsx:230
 msgid "Use free space for the installation"
 msgstr "Gunakan ruang bebas untuk instalasi"
 
@@ -1017,15 +1076,15 @@ msgstr "Nama pengguna mesti kurang dari 33 karakter"
 msgid "Weak"
 msgstr "Lemah"
 
-#: src/components/localization/InstallationLanguage.jsx:344
+#: src/components/localization/InstallationLanguage.jsx:342
 msgid "Welcome"
 msgstr "Selamat Datang"
 
-#: src/components/localization/InstallationLanguage.jsx:345
+#: src/components/localization/InstallationLanguage.jsx:334
 msgid "Welcome to $0"
 msgstr "Selamat datang di $0"
 
-#: src/components/storage/InstallationMethod.jsx:165
+#: src/components/storage/InstallationMethod.jsx:193
 msgid "Welcome. Let's install $0 now."
 msgstr "Selamat datang! Mari memasang $0 sekarang."
 
@@ -1048,6 +1107,14 @@ msgstr "langkah yang telah lengkap"
 #: src/components/installation/InstallationProgress.jsx:190
 msgid "current step"
 msgstr "langkah kini"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:248
+#: src/components/storage/ReclaimSpaceModal.jsx:256
+#: src/components/review/StorageReview.jsx:93
+#, fuzzy
+#| msgid "Delete"
+msgid "delete"
+msgstr "Hapus"
 
 #: src/components/review/Hostname.jsx:97
 msgid "edit"
@@ -1076,6 +1143,10 @@ msgstr "kait"
 #: src/components/installation/InstallationProgress.jsx:179
 msgid "pending step"
 msgstr "langkah tertunda"
+
+#: src/components/storage/ReclaimSpaceModal.jsx:257
+msgid "undo"
+msgstr ""
 
 #~ msgid "Error was hit when going back from $0."
 #~ msgstr "Kesalahan dijumpai saat kembali dari $0."
@@ -2206,9 +2277,6 @@ msgstr "langkah tertunda"
 #~ msgid "Default spoke title"
 #~ msgstr "Judul spoke bawaan"
 
-#~ msgid "Delete"
-#~ msgstr "Hapus"
-
 #~ msgctxt "GUI|Reclaim Dialog"
 #~ msgid "Delete _all"
 #~ msgstr "Hapus semu_a"
@@ -3130,9 +3198,6 @@ msgstr "langkah tertunda"
 #~ msgid "Locales"
 #~ msgstr "Locale"
 
-#~ msgid "Location"
-#~ msgstr "Lokasi"
-
 #~ msgid "Logical volume \"{}\" given in logvol command does not exist."
 #~ msgstr "Volume lojik \"{}\" yang diberikan dalam perintah logvol tidak ada."
 
@@ -3258,9 +3323,6 @@ msgstr "langkah tertunda"
 #~ msgid "N_FS mount options:"
 #~ msgstr "Opsi mount N_FS:"
 
-#~ msgid "Name"
-#~ msgstr "Nama"
-
 #~ msgid "Name '$' is not allowed."
 #~ msgstr "Nama '$' tidak diizinkan."
 
@@ -3333,9 +3395,6 @@ msgstr "langkah tertunda"
 
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "Tidak ditemukan berkas *.iso dalam folder root peranti"
-
-#~ msgid "No Space"
-#~ msgstr "Tidak Ada Ruang"
 
 #~ msgid "No additional software to select."
 #~ msgstr "Tidak ada perangkat lunak tambahan untuk dipilih."
@@ -5205,9 +5264,6 @@ msgstr "langkah tertunda"
 #~ "Mencoba memakai partisi \"{}\" yang tidak terdefinisi dalam spesifikasi "
 #~ "Volume Group"
 
-#~ msgid "Type"
-#~ msgstr "Tipe"
-
 #~ msgid "Type here to search."
 #~ msgstr "Ketik di sini untuk mencari."
 
@@ -6463,10 +6519,6 @@ msgstr "langkah tertunda"
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Reboot System"
 #~ msgstr "_Boot Ulang Sistem"
-
-#~ msgctxt "GUI|Reclaim Dialog"
-#~ msgid "_Reclaim space"
-#~ msgstr "_Reklamasi ruang"
 
 #~ msgctxt "GUI|Storage|Need Space Dialog"
 #~ msgid "_Reclaim space"
