@@ -23,10 +23,10 @@ from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
 
+@nondestructive
 class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
     efi = False
 
-    @nondestructive
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         b = self.browser
@@ -114,7 +114,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint([(dev, True)])
         s.check_mountpoint_row_device_available(1, f"{dev}5", True, True)
 
-    @nondestructive
     def testNoRootMountPoint(self):
         b = self.browser
         m = self.machine
@@ -152,7 +151,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
-    @nondestructive
     def testMultipleDisks(self):
         b = self.browser
         m = self.machine
@@ -229,7 +227,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
             ignore=anacondalib.pixel_tests_ignore,
         )
 
-    @nondestructive
     def testEncryptedUnlock(self):
         b = self.browser
         m = self.machine
@@ -377,7 +374,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
 
         self._testEncryptedUnlock(b, m)
 
-    @nondestructive
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
         b = self.browser
@@ -476,7 +472,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB",  True, "xfs", True)
 
-    @nondestructive
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBtrfsSubvolumes(self):
         b = self.browser
@@ -634,7 +629,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
         s.wait_scenario_available("mount-point-mapping", False)
 
-    @nondestructive
     def testLVM(self):
         b = self.browser
         m = self.machine
@@ -720,7 +714,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", True, "ext4")
         r.check_disk_row(disk, "swap", "vda3, LVM", "902 MB", False)
 
-    @nondestructive
     def testUnusableFormats(self):
         b = self.browser
         m = self.machine
