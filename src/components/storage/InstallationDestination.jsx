@@ -55,6 +55,7 @@ import { debug } from "../../helpers/log.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { StorageContext, SystemTypeContext } from "../Common.jsx";
+import { useOriginalDevices } from "./Common.jsx";
 import { ModifyStorage } from "./ModifyStorage.jsx";
 
 import "./InstallationDestination.scss";
@@ -326,8 +327,8 @@ export const InstallationDestination = ({
     const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const { deviceTrees, diskSelection } = useContext(StorageContext);
-    const devices = deviceTrees[""].devices;
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 

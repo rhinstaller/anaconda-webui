@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import {
     getRequiredSpace
@@ -35,12 +35,14 @@ import {
 } from "../../apis/storage_disk_initialization.js";
 import {
     createPartitioning,
+    getDeviceTree,
     partitioningSetEncrypt,
     partitioningSetPassphrase,
 } from "../../apis/storage_partitioning.js";
 
 import { findDuplicatesInArray } from "../../helpers/utils.js";
 
+import { StorageContext } from "../Common.jsx";
 import { scenarios } from "./InstallationScenario.jsx";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
@@ -164,4 +166,55 @@ export const getNewPartitioning = async ({
     }
 
     return part;
+};
+
+export const useDeviceTree = () => {
+    const [deviceTreePath, setDeviceTreePath] = useState();
+    const { appliedPartitioning, deviceTrees } = useContext(StorageContext);
+
+    useEffect(() => {
+        const _getDeviceTree = async () => {
+            const _deviceTreePath = appliedPartitioning ? await getDeviceTree({ partitioning: appliedPartitioning }) : "";
+            setDeviceTreePath(_deviceTreePath);
+        };
+        _getDeviceTree();
+    }, [appliedPartitioning, deviceTrees]);
+
+    return deviceTrees[deviceTreePath];
+};
+
+export const useOriginalDeviceTree = () => {
+    const { deviceTrees } = useContext(StorageContext);
+
+    return deviceTrees[""];
+};
+
+export const usePlannedActions = () => {
+    const plannedDeviceTree = useDeviceTree();
+
+    return plannedDeviceTree ? plannedDeviceTree.actions : [];
+};
+
+export const usePlannedDevices = () => {
+    const plannedDeviceTree = useDeviceTree();
+
+    return plannedDeviceTree ? plannedDeviceTree.devices : {};
+};
+
+export const usePlannedMountPoints = () => {
+    const plannedDeviceTree = useDeviceTree();
+
+    return plannedDeviceTree ? plannedDeviceTree.mountPoints : [];
+};
+
+export const useOriginalExistingSystems = () => {
+    const originalDeviceTree = useOriginalDeviceTree();
+
+    return originalDeviceTree ? originalDeviceTree.existingSystems : [];
+};
+
+export const useOriginalDevices = () => {
+    const originalDeviceTree = useOriginalDeviceTree();
+
+    return originalDeviceTree ? originalDeviceTree.devices : {};
 };

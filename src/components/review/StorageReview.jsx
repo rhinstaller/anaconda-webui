@@ -16,14 +16,12 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
     List,
     ListItem,
     Stack,
 } from "@patternfly/react-core";
-
-import { getDeviceTree } from "../../apis/storage_partitioning.js";
 
 import {
     checkDeviceOnStorageType,
@@ -35,7 +33,16 @@ import {
 
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { StorageContext } from "../Common.jsx";
+import {
+    StorageContext,
+} from "../Common.jsx";
+import {
+    useOriginalDevices,
+    useOriginalExistingSystems,
+    usePlannedActions,
+    usePlannedDevices,
+    usePlannedMountPoints,
+} from "../storage/Common.jsx";
 import { ReviewDescriptionListItem } from "./Common";
 
 import "./StorageReview.scss";
@@ -61,44 +68,19 @@ export const StorageReview = () => {
     );
 };
 
-export const useDeviceTree = () => {
-    const [deviceTreePath, setDeviceTreePath] = useState();
-    const { appliedPartitioning, deviceTrees } = useContext(StorageContext);
-
-    useEffect(() => {
-        const _getDeviceTree = async () => {
-            const _deviceTreePath = appliedPartitioning ? await getDeviceTree({ partitioning: appliedPartitioning }) : "";
-            setDeviceTreePath(_deviceTreePath);
-        };
-        _getDeviceTree();
-    }, [appliedPartitioning, deviceTrees]);
-
-    return deviceTrees[deviceTreePath];
-};
-
-const usePlannedActions = () => {
-    const actualDeviceTree = useDeviceTree();
-
-    return actualDeviceTree ? actualDeviceTree.actions : [];
-};
-
-const useOriginalExistingSystems = () => {
-    const { deviceTrees } = useContext(StorageContext);
-
-    return deviceTrees[""] ? deviceTrees[""].existingSystems : [];
-};
-
 const DeviceRow = ({ disk }) => {
-    const { deviceTrees, partitioning } = useContext(StorageContext);
-    const actualDeviceTree = useDeviceTree();
+    const { partitioning } = useContext(StorageContext);
+    const originalDevices = useOriginalDevices();
+    const actions = usePlannedActions();
+    const mountPoints = usePlannedMountPoints();
+    const devices = usePlannedDevices();
 
-    if (actualDeviceTree === undefined) {
+    const requests = partitioning.requests;
+    const deviceData = devices?.[disk];
+
+    if (!deviceData) {
         return null;
     }
-
-    const { actions, devices, mountPoints } = actualDeviceTree;
-    const requests = partitioning.requests;
-    const deviceData = devices[disk];
 
     const getDeviceRow = ([mount, name]) => {
         const size = cockpit.format_bytes(devices[name].size.v);
@@ -172,7 +154,6 @@ const DeviceRow = ({ disk }) => {
     }
 
     // For deleted device information we need to take a look at the original device tree
-    const originalDevices = deviceTrees[""].devices;
     const actionRows = actions.filter(action => {
         // Show only delete actions for partitions to not overload the summary with deleted children
         if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
@@ -217,10 +198,9 @@ const isDeviceDeleted = ({ actions, device }) => (
 );
 
 export const StorageReviewNote = () => {
-    const { deviceTrees } = useContext(StorageContext);
     const plannedActions = usePlannedActions();
     const originalExistingSystems = useOriginalExistingSystems();
-    const originalDevices = deviceTrees[""].devices;
+    const originalDevices = useOriginalDevices();
 
     const deletedSystems = originalExistingSystems.filter(
         system => system.devices.v.every(device => isDeviceDeleted({ actions: plannedActions, device }))

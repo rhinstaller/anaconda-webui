@@ -68,7 +68,13 @@ import { getDeviceNameByPath } from "../../helpers/storage.js";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { StorageContext } from "../Common.jsx";
-import { useDiskFreeSpace, useDiskTotalSpace, useMountPointConstraints, useRequiredSize } from "./Common.jsx";
+import {
+    useDiskFreeSpace,
+    useDiskTotalSpace,
+    useMountPointConstraints,
+    useOriginalDevices,
+    useRequiredSize,
+} from "./Common.jsx";
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 
 import "./CockpitStorageIntegration.scss";
@@ -226,8 +232,8 @@ const CheckStorageDialog = ({
     setShowDialog,
     setShowStorage,
 }) => {
-    const { deviceTrees, diskSelection } = useContext(StorageContext);
-    const { devices } = deviceTrees[""];
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
 
     const [error, setError] = useState();
