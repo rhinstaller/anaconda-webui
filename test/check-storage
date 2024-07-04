@@ -23,7 +23,6 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase, StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from users import dbus_reset_users
 
 
 class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
@@ -240,14 +239,11 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         i = Installer(b, self.machine)
         s = Storage(b, self.machine)
 
-        self.addCleanup(s.dbus_reset_partitioning)
-
         # Read partitioning data before we do anything
         created_partitioning = s.dbus_get_created_partitioning()
 
         # Go to Review step
         i.open()
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # Read partitioning data after we went to Review step
@@ -357,7 +353,6 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
 
         i.next()
         s.check_encryption_selected(False)
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev, "/", "vda5, LVM", "8.59 GB", True, "xfs")
@@ -426,7 +421,6 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_modal_submit()
         s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
 
         r.check_disk_row(dev, parent="vda4", action="delete")
 
@@ -531,7 +525,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
             ignore=anacondalib.pixel_tests_ignore,
         )
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -669,7 +662,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_mountpoint(3, "/home")
         s.check_mountpoint_row(3, "/home", f"{dev2}1", False, "xfs")
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -764,7 +756,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
         s.check_mountpoint_row_format_type(1, "xfs")
 
-        self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev1, "/", "vda3", "", True, "xfs", True)
@@ -879,7 +870,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_reformat(2)
         s.check_mountpoint_row_reformat(2, True)
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
@@ -932,7 +922,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
         s.check_mountpoint_row_format_type(1, "xfs")
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (0x1af4)")
@@ -993,7 +982,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_reformat(2)
         s.check_mountpoint_row_reformat(2, True)
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -1154,7 +1142,6 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_reformat(2)
         s.check_mountpoint_row_reformat(2, True)
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -1270,7 +1257,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         s.set_partitioning("use-configured-storage")
 
-        self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, True)
@@ -1361,7 +1347,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         s.set_partitioning("use-configured-storage")
 
-        self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -1423,7 +1408,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
 
         s.set_partitioning("use-configured-storage")
 
-        self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -1512,7 +1496,6 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         s.check_mountpoint_row(2, "/boot", "vda2", True, "ext4")
         s.check_mountpoint_row(3, "/home", "home", False, "btrfs")
 
-        self.addCleanup(lambda: dbus_reset_users(m))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -1567,7 +1550,6 @@ class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
         s.select_mountpoint_row_device(3, f"{dev}2")
         s.check_mountpoint_row_format_type(3, "ext4")
 
-        self.addCleanup(lambda: dbus_reset_users(self.machine))
         i.reach(i.steps.REVIEW)
 
         # verify review screen
