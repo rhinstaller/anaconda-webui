@@ -37,6 +37,8 @@ import { HddIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
 
 import { removeDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
 
+import { getDeviceAncestors } from "../../helpers/storage.js";
+
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { StorageContext } from "../Common.jsx";
@@ -129,9 +131,15 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
     const devices = useOriginalDevices();
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks: diskSelection.selectedDisks });
     const requiredSize = useRequiredSize();
+    const isDeviceRemoved = device => (
+        unappliedActions[device].includes("remove")
+    );
+    const isDeviceParentRemoved = device => (
+        getDeviceAncestors(devices, device).some(isDeviceRemoved)
+    );
     const selectedSpaceToReclaim = (
         Object.keys(unappliedActions)
-                .filter(device => unappliedActions[device].includes("remove"))
+                .filter(device => isDeviceRemoved(device) && !isDeviceParentRemoved(device))
                 .reduce((acc, device) => acc + devices[device].total.v - devices[device].free.v, 0)
     );
     const status = (diskFreeSpace + selectedSpaceToReclaim) < requiredSize ? "warning" : "success";

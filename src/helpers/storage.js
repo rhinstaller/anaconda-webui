@@ -22,12 +22,11 @@
  * @returns {Array}
  */
 export const getDeviceAncestors = (deviceData, device) => {
-    // device ancestors including the device itself
     const ancestors = [];
     const deviceParents = deviceData[device]?.parents?.v || [];
 
-    ancestors.push(device);
     deviceParents.forEach(parent => {
+        ancestors.push(parent);
         ancestors.push(...getDeviceAncestors(deviceData, parent));
     });
 
