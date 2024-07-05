@@ -23,6 +23,7 @@ import {
     getDevices,
     getDiskFreeSpace,
     getDiskTotalSpace,
+    getExistingSystems,
     getFormatData,
     getMountPoints,
 } from "../apis/storage_devicetree.js";
@@ -53,6 +54,7 @@ export const getDevicesAction = () => {
             const devices = await getDevices();
             const deviceData = {};
             const mountPoints = await getMountPoints();
+            const existingSystems = await getExistingSystems();
             for (const device of devices) {
                 try {
                     const devData = await getDeviceData({ disk: device });
@@ -87,6 +89,7 @@ export const getDevicesAction = () => {
                     actions,
                     deviceNames: devices,
                     devices: deviceData,
+                    existingSystems,
                     mountPoints,
                 },
                 type: "GET_DEVICES_DATA"

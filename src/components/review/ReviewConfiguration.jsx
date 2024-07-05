@@ -19,8 +19,7 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Button,
-    DescriptionList, DescriptionListDescription,
-    DescriptionListGroup, DescriptionListTerm,
+    DescriptionList,
     Flex, FlexItem,
     HelperText, HelperTextItem,
     Modal, ModalVariant,
@@ -31,8 +30,9 @@ import {
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
+import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
-import { StorageReview } from "./StorageReview.jsx";
+import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 
@@ -87,38 +87,29 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
             <FlexItem>
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Operating system")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-operating-system"}>
-                                {osRelease.PRETTY_NAME}
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-operating-system`}
+                          term={_("Operating system")}
+                          description={osRelease.PRETTY_NAME}
+                        />
                     </ReviewDescriptionList>
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Language")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-system-language"}>
-                                {language ? language["native-name"].v : localizationData.language}
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-system-language`}
+                          term={_("Language")}
+                          description={language ? language["native-name"].v : localizationData.language}
+                        />
                     </ReviewDescriptionList>
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Account")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-system-account"}>
-                                {accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-system-account`}
+                          term={_("Account")}
+                          description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
+                        />
                     </ReviewDescriptionList>
                     {isBootIso &&
                     <ReviewDescriptionList>
@@ -129,37 +120,31 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
             <FlexItem>
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Installation type")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-system-mode"}>
-                                {scenarioLabel}
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-system-mode`}
+                          term={_("Installation type")}
+                          description={scenarioLabel}
+                        />
                     </ReviewDescriptionList>
                     {storageScenarioId !== "mount-point-mapping" &&
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Disk encryption")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-system-encrypt"}>
-                                {partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-system-encrypt`}
+                          term={_("Disk encryption")}
+                          description={partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
+                        />
                     </ReviewDescriptionList>}
                     <ReviewDescriptionList>
-                        <DescriptionListGroup>
-                            <DescriptionListTerm>
-                                {_("Storage")}
-                            </DescriptionListTerm>
-                            <DescriptionListDescription id={idPrefix + "-target-storage"}>
-                                <Stack hasGutter>
-                                    <StorageReview />
-                                </Stack>
-                            </DescriptionListDescription>
-                        </DescriptionListGroup>
+                        <ReviewDescriptionListItem
+                          id={`${idPrefix}-target-storage`}
+                          term={_("Storage")}
+                          description={
+                              <Stack hasGutter>
+                                  <StorageReview />
+                              </Stack>
+                          }
+                        />
+                        <StorageReviewNote />
                     </ReviewDescriptionList>
                 </ReviewDescriptionList>
             </FlexItem>

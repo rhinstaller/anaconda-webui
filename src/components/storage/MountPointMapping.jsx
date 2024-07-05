@@ -54,7 +54,7 @@ import { ListingTable } from "cockpit-components-table.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { StorageContext } from "../Common.jsx";
-import { getNewPartitioning, useMountPointConstraints } from "./Common.jsx";
+import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "./Common.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./MountPointMapping.scss";
@@ -609,8 +609,8 @@ const isUsableDevice = (devSpec, deviceData) => {
 };
 
 const useExistingPartitioning = () => {
-    const { deviceTrees, diskSelection, partitioning } = useContext(StorageContext);
-    const { devices } = deviceTrees[""];
+    const { diskSelection, partitioning } = useContext(StorageContext);
+    const devices = useOriginalDevices();
     const [usedPartitioning, setUsedPartitioning] = useState();
 
     const reusePartitioning = useMemo(() => {
@@ -670,8 +670,8 @@ const MountPointMapping = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { deviceTrees, diskSelection } = useContext(StorageContext);
-    const { devices } = deviceTrees[""];
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
 
     const [skipUnlock, setSkipUnlock] = useState(false);
     const lockedLUKSDevices = useMemo(
