@@ -181,11 +181,15 @@ bots: test/common
 live-vm: bots $(UPDATES_IMG)
 	./test/webui_testvm.py $(TEST_LIVE_OS)
 
-prepare-test-deps: bots test/common payload
+prepare-test-deps: bots test/common payload images
 
 .PHONY: payload
 payload: bots
 	bots/image-download $(PAYLOAD)
+
+.PHONY: images
+images: bots
+	bots/image-download $(TEST_OS) debian-stable
 
 $(UPDATES_IMG): bots
 	test/prepare-updates-img

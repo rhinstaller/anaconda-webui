@@ -165,7 +165,22 @@ class VirtInstallMachineCase(MachineCase):
         self.installation_finished = True
         p = Progress(self.browser)
         p.reboot()
+
+        # The installed machine does not need to skip the nologin check
+        os.environ["TEST_ALLOW_NOLOGIN"] = "false"
+        self.addCleanup(lambda: os.environ["TEST_ALLOW_NOLOGIN"] == "true")
         self.machine.wait_reboot()
+
+    def selectBootMenuEntry(self, entry):
+        grub_cfg = """
+        GRUB_DEFAULT=saved
+        GRUB_TIMEOUT=0
+        GRUB_HIDDEN_TIMEOUT=0
+        GRUB_HIDDEN_TIMEOUT_QUIET=true
+        """
+
+        self.write_file("/etc/default/grub", grub_cfg)
+        self.machine.execute(f"grub2-set-default {entry}")
 
     def tearDown(self):
         if not self.installation_finished:
