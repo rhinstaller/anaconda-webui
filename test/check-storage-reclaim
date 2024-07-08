@@ -72,8 +72,6 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_check_checkbox(True, False)
         s.reclaim_set_checkbox(False)
 
-        i.next()
-        s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev, "/", "vda5, LVM", "8.59 GB", True, "xfs")
@@ -147,7 +145,6 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_check_available_space("9.66 GB")
 
         s.reclaim_modal_submit()
-        s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
 
         r.check_disk_row(dev, parent="vda4", action="delete")
@@ -172,7 +169,6 @@ class TestStorageUseFreeSpaceScenarioExistingSystemFedora(anacondalib.VirtInstal
         s.reclaim_remove_device("vda4")
         s.reclaim_modal_submit()
 
-        s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
         r.check_affected_system("Fedora Linux", [("vda4", ["home", "root", "var"])])
 

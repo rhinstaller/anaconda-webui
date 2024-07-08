@@ -40,6 +40,7 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     efi = False
     disk_image = ""
+    disk_size = 15
     MachineCase.machine_class = VirtInstallMachine
 
     @classmethod
@@ -58,8 +59,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # Add installation target disk
         backing_file = None if not self.disk_image else os.path.join(BOTS_DIR, f"./images/{self.disk_image}")
-        size = None if backing_file else 15
-        self.add_disk(size, backing_file)
+        self.add_disk(self.disk_size, backing_file)
         # Select the disk as boot device
         subprocess.check_call([
             "virt-xml", "-c", "qemu:///session",
@@ -107,7 +107,7 @@ class VirtInstallMachineCase(MachineCase):
             "qemu-img", "create", "-f", "qcow2",
             *(["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []),
             image_path,
-            *([f"{size}G"] if size else [])
+            f"{size}G"
         ])
         return image_path
 
@@ -165,7 +165,22 @@ class VirtInstallMachineCase(MachineCase):
         self.installation_finished = True
         p = Progress(self.browser)
         p.reboot()
+
+        # The installed machine does not need to skip the nologin check
+        os.environ["TEST_ALLOW_NOLOGIN"] = "false"
+        self.addCleanup(lambda: os.environ["TEST_ALLOW_NOLOGIN"] == "true")
         self.machine.wait_reboot()
+
+    def selectBootMenuEntry(self, entry):
+        grub_cfg = """
+        GRUB_DEFAULT=saved
+        GRUB_TIMEOUT=0
+        GRUB_HIDDEN_TIMEOUT=0
+        GRUB_HIDDEN_TIMEOUT_QUIET=true
+        """
+
+        self.write_file("/etc/default/grub", grub_cfg)
+        self.machine.execute(f"grub2-set-default {entry}")
 
     def tearDown(self):
         if not self.installation_finished:
