@@ -139,6 +139,13 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_check_action_present("vda4", "delete", True)
         s.reclaim_check_available_space("9.66 GB")
 
+        # Check that deleting a parent disk which contains partitions marked for deletion
+        # correctly calculates the available space
+        s.reclaim_remove_device("vda (0x")
+        s.reclaim_check_available_space("16.1 GB")
+        s.reclaim_undo_action("vda (0x")
+        s.reclaim_check_available_space("9.66 GB")
+
         s.reclaim_modal_submit()
         s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)
