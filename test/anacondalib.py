@@ -40,6 +40,7 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     efi = False
     disk_image = ""
+    disk_size = 15
     MachineCase.machine_class = VirtInstallMachine
 
     @classmethod
@@ -58,8 +59,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # Add installation target disk
         backing_file = None if not self.disk_image else os.path.join(BOTS_DIR, f"./images/{self.disk_image}")
-        size = None if backing_file else 15
-        self.add_disk(size, backing_file)
+        self.add_disk(self.disk_size, backing_file)
         # Select the disk as boot device
         subprocess.check_call([
             "virt-xml", "-c", "qemu:///session",
@@ -107,7 +107,7 @@ class VirtInstallMachineCase(MachineCase):
             "qemu-img", "create", "-f", "qcow2",
             *(["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []),
             image_path,
-            *([f"{size}G"] if size else [])
+            f"{size}G"
         ])
         return image_path
 
