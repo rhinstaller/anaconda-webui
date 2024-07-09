@@ -189,7 +189,7 @@ payload: bots
 
 .PHONY: images
 images: bots
-	bots/image-download $(TEST_OS) debian-stable
+	bots/image-download $(TEST_OS) debian-stable ubuntu-stable
 
 $(UPDATES_IMG): bots
 	test/prepare-updates-img
