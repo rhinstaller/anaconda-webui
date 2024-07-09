@@ -191,7 +191,7 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row("vda", parent="vda2", action="shrink")
+        r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
 
 
 @nondestructive
@@ -215,6 +215,30 @@ class TestStorageUseFreeSpaceScenarioExistingSystemFedora(anacondalib.VirtInstal
 
         i.reach(i.steps.REVIEW)
         r.check_affected_system("Fedora Linux", [("vda4", ["home", "root", "var"])])
+
+@nondestructive
+class TestStorageUseFreeSpaceScenarioExistingSystemDebian(anacondalib.VirtInstallMachineCase, StorageCase):
+    disk_image = "debian-stable"
+
+    def testReclaimSpaceShrink(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_partitioning("use-free-space")
+        s.reclaim_set_checkbox(True)
+        i.next(True)
+
+        s.reclaim_shrink_device("vda1", "5", "10.6")
+        s.reclaim_modal_submit()
+
+        i.reach(i.steps.REVIEW)
+        r.check_disk_row("vda", parent="vda1", size="5.00 GB", action="resized from 10.6 GB", rowIndex=1)
+        r.check_affected_system("Debian", [("vda1", ["home", "root", "var"])])
 
 
 if __name__ == '__main__':
