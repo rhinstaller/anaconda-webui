@@ -18,7 +18,9 @@
 import anacondalib
 from installer import Installer
 from language import Language
+from password import Password
 from review import Review
+from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_iso
 
@@ -30,6 +32,8 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        s = Storage(b, m)
+        p = Password(b, s.encryption_id_prefix)
         r = Review(b, m)
 
         pretend_live_iso(self, i)
@@ -46,9 +50,6 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs")
 
-        # check encryption choice
-        r.check_encryption("Disabled")
-
         # check storage configuration
         r.check_storage_config("Erase data and install")
 
@@ -59,6 +60,25 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "review-step-basic",
+            ignore=anacondalib.pixel_tests_ignore,
+        )
+
+        i.reach_on_sidebar(i.steps.DISK_ENCRYPTION)
+        s.set_encryption_selected(True)
+        strong_password = "Rwce82ybF7dXtCzFumanchu!!!!!!!!"
+        p.set_password(strong_password)
+        p.set_password_confirm(strong_password)
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk("vda", "16.1 GB vda (0x1af4)")
+        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs", is_encrypted=True)
+
+        # Pixel test the review step with encrypted disk
+        b.assert_pixels(
+            "#app",
+            "review-step-basic-encrypted",
             ignore=anacondalib.pixel_tests_ignore,
         )
 

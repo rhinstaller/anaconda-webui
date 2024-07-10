@@ -28,7 +28,7 @@ import {
 } from "@patternfly/react-core";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { FooterContext, LanguageContext, OsReleaseContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
@@ -60,7 +60,6 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
-    const { partitioning, storageScenarioId } = useContext(StorageContext);
     const { label: scenarioLabel } = useScenario();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
@@ -126,14 +125,6 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
                           description={scenarioLabel}
                         />
                     </ReviewDescriptionList>
-                    {storageScenarioId !== "mount-point-mapping" &&
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-system-encrypt`}
-                          term={_("Disk encryption")}
-                          description={partitioning.method === "AUTOMATIC" && partitioning.requests[0].encrypted ? _("Enabled") : _("Disabled")}
-                        />
-                    </ReviewDescriptionList>}
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
                           id={`${idPrefix}-target-storage`}

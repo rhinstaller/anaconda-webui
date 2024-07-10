@@ -47,10 +47,6 @@ class Review(NetworkDBus):
         self.browser.wait_in_text(f"#{self._step}-target-system-account > .pf-v5-c-description-list__text", account)
 
     @log_step()
-    def check_encryption(self, state):
-        self.browser.wait_in_text(f"#{self._step}-target-system-encrypt > .pf-v5-c-description-list__text", state)
-
-    @log_step()
     def check_storage_config(self, scenario):
         self.browser.wait_in_text(f"#{self._step}-target-system-mode > .pf-v5-c-description-list__text", scenario)
 
