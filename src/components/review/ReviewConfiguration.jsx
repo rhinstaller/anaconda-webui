@@ -103,17 +103,19 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
                           description={language ? language["native-name"].v : localizationData.language}
                         />
                     </ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-system-account`}
-                          term={_("Account")}
-                          description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
-                        />
-                    </ReviewDescriptionList>
                     {isBootIso &&
-                    <ReviewDescriptionList>
-                        <HostnameRow />
-                    </ReviewDescriptionList>}
+                    <>
+                        <ReviewDescriptionList>
+                            <ReviewDescriptionListItem
+                              id={`${idPrefix}-target-system-account`}
+                              term={_("Account")}
+                              description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
+                            />
+                        </ReviewDescriptionList>
+                        <ReviewDescriptionList>
+                            <HostnameRow />
+                        </ReviewDescriptionList>
+                    </>}
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>
