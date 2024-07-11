@@ -174,6 +174,11 @@ class TestStorageUseFreeSpaceScenario(anacondalib.VirtInstallMachineCase, Storag
             # https://bugzilla.redhat.com/show_bug.cgi?id=962143
             s.reclaim_check_action_button_present(device, "shrink", True, True)
 
+        # Shrink a partition too much and expect a warning
+        s.reclaim_shrink_device("vda2", "0.100", "4.29")
+        s.reclaim_modal_submit_and_check_warning("Unable to schedule resizing of vda2")
+        s.reclaim_undo_action("vda2")
+
         # Shrink a partition
         s.reclaim_shrink_device("vda2", "1", "4.29")
         s.reclaim_check_available_space("3.30 GB")

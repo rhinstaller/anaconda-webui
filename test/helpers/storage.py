@@ -373,6 +373,10 @@ class StorageReclaimDialog():
                 f"button[aria-label='{action}']"
             )
 
+    def reclaim_modal_submit_and_check_warning(self, warning):
+        self.browser.click("button:contains('Reclaim space')")
+        self.browser.wait_in_text("#reclaim-space-modal .pf-v5-c-alert", warning)
+
     def reclaim_shrink_device(self, device, new_size, current_size, rowIndex=None):
         self.browser.click(
             "#reclaim-space-modal-table "

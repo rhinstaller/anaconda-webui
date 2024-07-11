@@ -41,6 +41,7 @@ import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/stora
 
 import { getDeviceAncestors, unitMultiplier } from "../../helpers/storage.js";
 
+import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { StorageContext } from "../Common.jsx";
@@ -54,6 +55,7 @@ const idPrefix = "reclaim-space-modal";
 export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
     const { diskSelection, partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
+    const [dialogError, setDialogError] = useState();
     const [onNextClicked, setOnNextClicked] = useState(false);
     const [unappliedActions, setUnappliedActions] = useState(
         Object.keys(devices).reduce((acc, device) => { acc[device] = []; return acc }, {})
@@ -68,17 +70,27 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
         for (const item of Object.entries(unappliedActions)) {
             const [device, actions] = item;
             for (const action of actions) {
-                if (action.type === "remove") {
-                    await removeDevice({
-                        deviceName: device,
-                        deviceTree: partitioning.deviceTree.path,
-                    });
-                } else if (action.type === "shrink") {
-                    await shrinkDevice({
-                        deviceName: device,
-                        deviceTree: partitioning.deviceTree.path,
-                        newSize: action.value,
-                    });
+                try {
+                    if (action.type === "remove") {
+                        await removeDevice({
+                            deviceName: device,
+                            deviceTree: partitioning.deviceTree.path,
+                        });
+                    } else if (action.type === "shrink") {
+                        await shrinkDevice({
+                            deviceName: device,
+                            deviceTree: partitioning.deviceTree.path,
+                            newSize: action.value,
+                        });
+                    }
+                } catch (error) {
+                    if (action.type === "remove") {
+                        setDialogError({ ...error, text: cockpit.format(_("Unable to schedule deletion of $0"), device) });
+                    } else if (action.type === "shrink") {
+                        setDialogError({ ...error, text: cockpit.format(_("Unable to schedule resizing of $0"), device) });
+                    }
+
+                    return;
                 }
             }
         }
@@ -119,21 +131,24 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
               <ReclaimFooter isFormDisabled={isFormDisabled} unappliedActions={unappliedActions} onReclaim={onReclaim} onClose={onClose} />
           }
         >
-            <Panel variant="bordered">
-                <ListingTable
-                  aria-label={_("Reclaim space")}
-                  columns={[
-                      { props: { width: 20 }, title: _("Name") },
-                      { props: { width: 20 }, title: _("Location") },
-                      { props: { width: 20 }, title: _("Type") },
-                      { props: { width: 20 }, title: _("Space") },
-                      { props: { width: 20 }, title: _("Actions") }
-                  ]}
-                  emptyCaption={_("No devices")}
-                  id={idPrefix + "-table"}
-                  rows={rows}
-                />
-            </Panel>
+            <Stack hasGutter>
+                {dialogError && <ModalError variant="warning" dialogError={dialogError.text} dialogErrorDetail={dialogError.message} />}
+                <Panel variant="bordered">
+                    <ListingTable
+                      aria-label={_("Reclaim space")}
+                      columns={[
+                          { props: { width: 20 }, title: _("Name") },
+                          { props: { width: 20 }, title: _("Location") },
+                          { props: { width: 20 }, title: _("Type") },
+                          { props: { width: 20 }, title: _("Space") },
+                          { props: { width: 20 }, title: _("Actions") }
+                      ]}
+                      emptyCaption={_("No devices")}
+                      id={idPrefix + "-table"}
+                      rows={rows}
+                    />
+                </Panel>
+            </Stack>
         </Modal>
     );
 };
