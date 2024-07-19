@@ -117,22 +117,36 @@ const DeviceRow = ({ disk }) => {
     };
 
     const getActionRow = action => {
-        const actionType = action["action-description"].v === "destroy device" ? _("delete") : action["action-description"].v;
+        const device = action["device-name"].v;
+        const actionType = action["action-type"].v;
+        const actionDescription = action["action-description"].v;
+
+        let sizeText = "";
+        let actionDescriptionText = actionDescription;
+
+        if (actionDescription === "destroy device") {
+            actionDescriptionText = _("delete");
+        } else if (actionDescription === "resize device") {
+            const prevSize = cockpit.format_bytes(originalDevices[device].size.v);
+            sizeText = cockpit.format_bytes(devices[device].size.v);
+
+            actionDescriptionText = cockpit.format(_("resized from $0"), prevSize);
+        }
 
         return (
             {
                 columns: [
                     { title: "" },
-                    { title: action["device-name"].v },
-                    { title: "" },
+                    { title: device },
+                    { title: sizeText },
                     {
-                        props: { className: idPrefix + "-table-column-action-" + action["action-type"].v },
-                        title: actionType,
+                        props: { className: idPrefix + "-table-column-action-" + actionType },
+                        title: actionDescriptionText,
                     },
                     { title: "" },
                 ],
                 props: {
-                    key: action["device-name"].v + action["action-type"].v,
+                    key: device + actionType,
                 },
             }
         );
@@ -156,7 +170,10 @@ const DeviceRow = ({ disk }) => {
     // For deleted device information we need to take a look at the original device tree
     const actionRows = actions.filter(action => {
         // Show only delete actions for partitions to not overload the summary with deleted children
-        if (action["action-description"].v !== "destroy device" || action["object-description"].v !== "partition") {
+        if (
+            !["destroy device", "resize device"].includes(action["action-description"].v) ||
+            action["object-description"].v !== "partition"
+        ) {
             return false;
         }
 
