@@ -17,6 +17,7 @@
 
 import anacondalib
 from installer import Installer
+from operating_systems import WindowsOS
 from progress import Progress
 from review import Review
 from storage import Storage
@@ -109,6 +110,28 @@ class TestExistingSystemDebian(anacondalib.VirtInstallMachineCase):
 
         self.install()
         self.verifyDualBoot()
+
+@nondestructive
+class TestExistingSystemWindows(anacondalib.VirtInstallMachineCase):
+    disk_size = 20
+
+    def setUp(self):
+        super().setUp()
+        WindowsOS(machine=self.machine, browser=self.browser).partition_disk()
+
+    def testScenarioEraseAll(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.REVIEW)
+
+        for device in ["vda1", "vda2", "vda3", "vda4"]:
+            r.check_disk_row("vda", parent=device, action="delete")
+
+        r.check_deleted_system("Windows")
 
 
 if __name__ == '__main__':
