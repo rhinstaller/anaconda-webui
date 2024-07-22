@@ -21,6 +21,7 @@ import { fmt_to_fragments as fmtToFragments } from "utils";
 import React, { useContext, useEffect, useState } from "react";
 import {
     ActionList,
+    Alert,
     Button,
     Flex,
     FlexItem,
@@ -35,7 +36,7 @@ import {
     Text,
     TextContent,
 } from "@patternfly/react-core";
-import { CompressArrowsAltIcon, HddIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
+import { CompressArrowsAltIcon, HddIcon, LockIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
 
@@ -45,7 +46,7 @@ import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { StorageContext } from "../Common.jsx";
-import { useDiskFreeSpace, useOriginalDevices, useRequiredSize } from "./Common.jsx";
+import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "./Common.jsx";
 
 import "./ReclaimSpaceModal.scss";
 
@@ -109,17 +110,20 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
     return (
         <Modal
           description={
-              <TextContent>
-                  <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
-                  <Text>{
-                      _(
-                          "Removing a filesystem will permanently delete all of the data it contains. " +
-                          "Resizing a partition can free up unused space, but is not risk-free. " +
-                          "Be sure to have backups of anything important before reclaiming space."
-                      )
-                  }
-                  </Text>
-              </TextContent>
+              <Stack hasGutter>
+                  <TextContent>
+                      <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
+                      <Text>{
+                          _(
+                              "Removing a filesystem will permanently delete all of the data it contains. " +
+                              "Resizing a partition can free up unused space, but is not risk-free. " +
+                              "Be sure to have backups of anything important before reclaiming space."
+                          )
+                      }
+                      </Text>
+                  </TextContent>
+                  <WindowsHint />
+              </Stack>
           }
           id={idPrefix}
           isOpen
@@ -239,6 +243,17 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
             classNames.push(idPrefix + "-device-leaf");
         }
     }
+
+    let deviceType = device.type.v;
+    if (device.formatData.type.v === "bitlocker") {
+        deviceType = (
+            <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+                <FlexItem>{deviceType}</FlexItem>
+                <FlexItem><LockIcon /></FlexItem>
+            </Flex>
+        );
+    }
+
     const size = level < 2 ? cockpit.format_bytes(device.total.v) : "";
     const deviceActions = (
         <DeviceActions
@@ -254,7 +269,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
             columns: [
                 { title: descriptionWithIcon },
                 { title: location },
-                { title: device.type.v },
+                { title: deviceType },
                 { title: size },
                 { title: deviceActions }
             ],
@@ -435,4 +450,22 @@ const ShrinkPopover = ({ device, isDisabled, onShrink }) => {
             {shrinkButton}
         </Popover>
     );
+};
+
+const WindowsHint = () => {
+    const devices = useOriginalDevices();
+    const originalExistingSystems = useOriginalExistingSystems();
+    const requiredSize = useRequiredSize();
+    const windows = originalExistingSystems.find(itm => itm["os-name"].v === "Windows");
+
+    if (windows?.devices.v.find(itm => devices[itm].formatData.type.v === "bitlocker")) {
+        return (
+            <Alert variant="warning" isInline title={_("Windows partitions with BitLocker encryption cannot be resized")}>
+                {cockpit.format(_(
+                    "Reboot into Windows to resize BitLocker-encrypted partitions. " +
+                    "Make at least $0 of free space available for installation."
+                ), cockpit.format_bytes(requiredSize))}
+            </Alert>
+        );
+    }
 };
