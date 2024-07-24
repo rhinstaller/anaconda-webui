@@ -186,3 +186,11 @@ class VirtInstallMachineCase(MachineCase):
         if not self.installation_finished:
             self.downloadLogs()
         super().tearDown()
+
+
+def test_plan(url):
+    def decorator(func):
+        func.test_plan_url = url
+        print(f"Test plan URL: {func.test_plan_url}")
+        return func
+    return decorator
