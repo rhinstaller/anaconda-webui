@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from password import Password
 from review import Review
@@ -24,7 +24,7 @@ from users import CREATE_ACCOUNT_ID_PREFIX, Users, create_user
 
 
 @nondestructive
-class TestUsers(anacondalib.VirtInstallMachineCase):
+class TestUsers(VirtInstallMachineCase):
     def setUp(self):
         super().setUp()
 
@@ -44,7 +44,7 @@ class TestUsers(anacondalib.VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "users-step-basic",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
         i.reach(i.steps.REVIEW)
 

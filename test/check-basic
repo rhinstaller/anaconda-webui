@@ -17,7 +17,7 @@
 
 import time
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from language import Language
 from review import Review
@@ -27,7 +27,7 @@ from utils import get_pretty_name, pretend_live_iso
 
 
 @nondestructive
-class TestBasic(anacondalib.VirtInstallMachineCase):
+class TestBasic(VirtInstallMachineCase):
 
     def testNavigation(self):
         b = self.browser

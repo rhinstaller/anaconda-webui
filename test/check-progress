@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -23,7 +23,7 @@ from testlib import test_main  # pylint: disable=import-error
 from utils import get_pretty_name
 
 
-class TestInstallationProgress(anacondalib.VirtInstallMachineCase):
+class TestInstallationProgress(VirtInstallMachineCase):
 
     def testBasic(self):
         # HACK Ignore some selinux errors

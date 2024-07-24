@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from password import Password
 from progress import Progress
@@ -24,7 +24,7 @@ from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
-class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
+class TestStorage(VirtInstallMachineCase, StorageHelpers):
     efi = False
 
     def set_valid_password(self, password_ui, password="abcdefgh"):
@@ -47,7 +47,7 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         b.assert_pixels(
             "#app",
             "storage-step-basic",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
         # This attaches a disk to the running VM
@@ -105,7 +105,7 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         b.assert_pixels(
             "#app",
             "storage-step-encrypt",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
         s.check_encryption_selected(False)
@@ -116,7 +116,7 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
         b.assert_pixels(
             "#app",
             "storage-step-password",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
         # No password set
@@ -306,7 +306,7 @@ class TestStorage(anacondalib.VirtInstallMachineCase, StorageHelpers):
 
 # TODO add next back test keeping the choice
 @nondestructive
-class TestStorageExtraDisks(anacondalib.VirtInstallMachineCase, StorageHelpers):
+class TestStorageExtraDisks(VirtInstallMachineCase, StorageHelpers):
     efi = False
 
     def testLocalDisksSyncNew(self):
