@@ -81,12 +81,12 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
     # Test moving back and forth between screens.
     # Disk initialization mode is applied to the backend in the test.
     # Partitioning is not applied to the backend in the test.
+    @nondestructive
     def testAutopartitioningEncrypted(self):
         b = self.browser
         i = Installer(b, self.machine)
         s = Storage(b, self.machine)
         p = Password(b, s.encryption_id_prefix)
-        pro = Progress(b)
 
         i.open()
         # Language selection
@@ -99,8 +99,8 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         i.next()
         # Disk Encryption
 
+        s.set_encryption_selected(False)
         i.check_next_disabled(False)
-        s.check_encryption_selected(False)
 
         b.assert_pixels(
             "#app",
@@ -168,14 +168,6 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         p.check_password(strong_password)
         p.check_pw_strength("strong")
         p.set_password_confirm(strong_password)
-
-        # Reboot and check installed system
-        i.reach(i.steps.REVIEW)
-        i.begin_installation()
-        pro.wait_done()
-        s.unlock_storage_on_boot(strong_password)
-        self.handleReboot()
-        s.check_post_install_encryption_enabled()
 
     # Test moving back after partitioning is applied,
     # the partitioning should be reset.
@@ -351,6 +343,35 @@ class TestStorageExtraDisks(VirtInstallMachineCase, StorageHelpers):
         i.back()
         for disk in ["vda", dev]:
             s.check_disk_selected(disk)
+
+class TestStorageGuided(VirtInstallMachineCase, StorageHelpers):
+    def testGuidedEncrypted(self):
+        b = self.browser
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Password(b, s.encryption_id_prefix)
+        pro = Progress(b)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Check the default mode
+        s.check_partitioning_selected("erase-all")
+
+        i.next()
+        # Disk Encryption
+        s.set_encryption_selected(True)
+        strong_password = "Rwce82ybF7dXtCzFumanchu!!!!!!!!"
+        p.set_password(strong_password)
+        p.set_password_confirm(strong_password)
+
+        # Reboot and check installed system
+        i.reach(i.steps.REVIEW)
+        i.begin_installation()
+        pro.wait_done()
+        s.unlock_storage_on_boot(strong_password)
+        self.handleReboot()
+        s.check_post_install_encryption_enabled()
 
 
 if __name__ == '__main__':
