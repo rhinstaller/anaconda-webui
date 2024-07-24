@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore, test_plan
 from installer import Installer
 from password import Password
@@ -22,6 +24,11 @@ from progress import Progress
 from storage import Storage
 from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import get_pretty_name
+
+TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorage(VirtInstallMachineCase, StorageHelpers):
@@ -230,6 +237,39 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         s.unlock_storage_on_boot(strong_password)
         self.handleReboot()
         s.check_post_install_encryption_enabled()
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_select")
+    def testGuidedMultiSelect(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Progress(b)
+
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/debian-stable"))
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.check_disk_selected("vda", True)
+        s.check_disk_selected("vdb", False)
+
+        i.reach(i.steps.REVIEW)
+        i.begin_installation()
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        m.reboot()
+        self.selectBootMenuEntry(2)
+        # FIXME: Debian will not boot unless we remove the vda disk
+        # pretty_name = get_pretty_name(m)
+        # self.assertIn("Debian GNU/Linux", pretty_name)
 
 
 if __name__ == '__main__':
