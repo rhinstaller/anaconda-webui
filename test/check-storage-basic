@@ -271,6 +271,33 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         # pretty_name = get_pretty_name(m)
         # self.assertIn("Debian GNU/Linux", pretty_name)
 
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_empty_all")
+    def testGuidedMultiEmptyAll(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Progress(b)
+
+        self.add_disk(15)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.check_disk_selected("vda", True)
+        s.select_disk("vdb", True)
+
+        i.reach(i.steps.REVIEW)
+        i.begin_installation()
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
 
 if __name__ == '__main__':
     test_main()
