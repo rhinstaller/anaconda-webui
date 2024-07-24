@@ -214,64 +214,120 @@ const isDeviceDeleted = ({ actions, device }) => (
     actions.find(action => action["device-name"].v === device && action["action-type"].v === "destroy")
 );
 
-export const StorageReviewNote = () => {
-    const plannedActions = usePlannedActions();
+/**
+ * @returns {boolean}   True is the device will be resized according to the actions
+ */
+const isDeviceResized = ({ actions, device }) => (
+    actions.find(action => action["device-name"].v === device && action["action-type"].v === "resize")
+);
+
+const DeletedSystems = () => {
     const originalExistingSystems = useOriginalExistingSystems();
-    const originalDevices = useOriginalDevices();
+    const plannedActions = usePlannedActions();
 
     const deletedSystems = originalExistingSystems.filter(
         system => system.devices.v.every(device => isDeviceDeleted({ actions: plannedActions, device }))
     );
-    const affectedSystems = originalExistingSystems.filter(
-        system => (
-            system.devices.v.some(device => isDeviceDeleted({ actions: plannedActions, device })) &&
-            !system.devices.v.every(device => isDeviceDeleted({ actions: plannedActions, device }))
-        )
+
+    return deletedSystems.map(system => (
+        <ListItem key={system["os-name"].v}>
+            {cockpit.format(_("$0 will be deleted"), system["os-name"].v)}
+        </ListItem>
+    ));
+};
+
+const AffectedSystems = ({ type }) => {
+    const originalExistingSystems = useOriginalExistingSystems();
+    const originalDevices = useOriginalDevices();
+    const plannedActions = usePlannedActions();
+
+    const check = device => (
+        type === "delete"
+            ? isDeviceDeleted({ actions: plannedActions, device })
+            : isDeviceResized({ actions: plannedActions, device })
     );
 
-    const getDeletedDevicesText = system => {
-        const deletedDevices = system.devices.v.filter(device => isDeviceDeleted({ actions: plannedActions, device }));
-        const deletedDevicesPartitiongMap = Object.keys(originalDevices).reduce((acc, device) => {
+    const affectedSystems = originalExistingSystems.filter(
+        system => {
+            const systemDevices = system.devices.v;
+
+            // If all partitions belonging to an OS are deleted the system is not handled
+            // as affected but as deleted
+            return (
+                systemDevices.some(check) &&
+                (type !== "delete" || !systemDevices.every(check))
+            );
+        }
+    );
+
+    const getAffectedDevicesText = system => {
+        const affectedDevices = system.devices.v.filter(check);
+        const affectedDevicesPartitiongMap = Object.keys(originalDevices).reduce((acc, device) => {
             if (originalDevices[device].type.v !== "partition") {
                 return acc;
             }
 
             const children = getDeviceChildren({ device, deviceData: originalDevices });
+            const affectedChildren = children.filter(child => affectedDevices.includes(child));
 
-            acc[device] = children.filter(child => deletedDevices.includes(child));
+            if (affectedDevices.includes(device) || affectedChildren.length) {
+                acc[device] = affectedChildren;
+            }
             return acc;
         }, {});
 
-        return Object.keys(deletedDevicesPartitiongMap)
-                .filter(device => deletedDevicesPartitiongMap[device].length > 0)
+        return Object.keys(affectedDevicesPartitiongMap)
                 .map(device => {
-                    return `${device} (${deletedDevicesPartitiongMap[device].join(", ")})`;
+                    if (affectedDevicesPartitiongMap[device].length === 0) {
+                        return device;
+                    }
+
+                    return `${device} (${affectedDevicesPartitiongMap[device].join(", ")})`;
                 })
                 .join(", ");
     };
 
-    const description = (
-        <List isPlain>
-            {deletedSystems.map(system => (
-                <ListItem key={system["os-name"].v}>
-                    {cockpit.format(_("$0 will be deleted"), system["os-name"].v)}
-                </ListItem>
-            ))}
-            {affectedSystems.map(system => (
-                <ListItem key={system["os-name"].v}>
-                    {cockpit.format(
-                        _("Deletion of certain partitions may prevent $0 from booting: $1"),
-                        system["os-name"].v,
-                        getDeletedDevicesText(system)
-                    )}
-                </ListItem>
-            ))}
-        </List>
+    const deleteText = system => cockpit.format(
+        _("Deletion of certain partitions may prevent $0 from booting: $1"),
+        system["os-name"].v,
+        getAffectedDevicesText(system)
     );
 
-    if (deletedSystems.length === 0 && affectedSystems.length === 0) {
-        return null;
-    }
+    const resizeText = system => cockpit.format(
+        _("Resizing the following partitions from $0: $1"),
+        system["os-name"].v,
+        getAffectedDevicesText(system)
+    );
+
+    return affectedSystems.map(system => (
+        <ListItem key={system["os-name"].v}>
+            {type === "delete" && deleteText(system)}
+            {type === "resize" && resizeText(system)}
+        </ListItem>
+    ));
+};
+
+export const StorageReviewNote = () => {
+    const originalExistingSystems = useOriginalExistingSystems();
+    const plannedActions = usePlannedActions();
+
+    const hasNote = (
+        originalExistingSystems.filter(
+            system => system.devices.v.some(device => (
+                isDeviceResized({ actions: plannedActions, device }) ||
+                isDeviceDeleted({ actions: plannedActions, device }))
+            )
+        ).length
+    );
+    if (!hasNote) return null;
+
+    const description = (
+        <List isPlain>
+            <DeletedSystems />
+            <AffectedSystems type="delete" />
+            <AffectedSystems type="resize" />
+        </List>
+    );
 
     return (
         <ReviewDescriptionListItem

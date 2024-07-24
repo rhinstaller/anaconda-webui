@@ -82,3 +82,8 @@ class Review(NetworkDBus):
         self.browser.wait_in_text(f"#{self._step}-target-storage-note li", f"Deletion of certain partitions may prevent {os_name}")
         deleted_partitions = ', '.join([f'{device} ({", ".join(parts)})' for device, parts in partitions])
         self.browser.wait_in_text(f"#{self._step}-target-storage-note li", deleted_partitions)
+
+    def check_resized_system(self, os_name, partitions):
+        self.browser.wait_in_text(f"#{self._step}-target-storage-note li", f"Resizing the following partitions from {os_name}")
+        resized_partitions = ', '.join(partitions)
+        self.browser.wait_in_text(f"#{self._step}-target-storage-note li", resized_partitions)
