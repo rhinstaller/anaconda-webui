@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -24,7 +24,7 @@ from testlib import nondestructive, skipImage, test_main  # pylint: disable=impo
 
 
 @nondestructive
-class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
+class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     efi = False
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
@@ -71,7 +71,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         b.assert_pixels(
             "#app",
             "mount-point-mapping-table",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
         i.reach(i.steps.REVIEW)
@@ -224,7 +224,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         b.assert_pixels(
             "#app",
             "review-multiple-disks",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
     def testEncryptedUnlock(self):
@@ -736,7 +736,7 @@ class TestStorageMountPoints(anacondalib.VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row_device_available(1, f"{dev}4", False)
 
 
-class TestStorageMountPointsEFI(anacondalib.VirtInstallMachineCase):
+class TestStorageMountPointsEFI(VirtInstallMachineCase):
     efi = True
 
     def testBasic(self):

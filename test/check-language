@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from language import Language
 from storage import Storage
@@ -23,7 +23,7 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestLanguage(anacondalib.VirtInstallMachineCase):
+class TestLanguage(VirtInstallMachineCase):
 
     def setUp(self):
         super().setUp()
@@ -125,7 +125,7 @@ class TestLanguage(anacondalib.VirtInstallMachineCase):
             "language-step-basic",
             # HACK pf-v5-c-menu__item-text is ignored because some of our CI infrastructure is
             # missing CJK and Cyrillic fonts..
-            ignore=[*anacondalib.pixel_tests_ignore, ".pf-v5-c-menu__item-text"],
+            ignore=[*pixel_tests_ignore, ".pf-v5-c-menu__item-text"],
         )
 
         b.wait_in_text("h2 + h3", "Wählen Sie eine Sprache aus")

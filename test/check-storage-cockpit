@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -23,7 +23,7 @@ from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
-class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageCase):
+class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     @nondestructive
     def testEncryptedUnlock(self):
         b = self.browser
@@ -52,7 +52,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         b.assert_pixels(
             "#app",
             "storage-editor",
-            ignore=[*anacondalib.pixel_tests_ignore, ".cockpit-storage-integration-requirements-hint"],
+            ignore=[*pixel_tests_ignore, ".cockpit-storage-integration-requirements-hint"],
         )
         b.switch_to_frame("cockpit-storage")
         self.confirm()
@@ -170,7 +170,7 @@ class TestStorageCockpitIntegration(anacondalib.VirtInstallMachineCase, StorageC
         b.assert_pixels(
             "#cockpit-storage-integration-check-storage-dialog",
             "cockpit-storage-integration-check-storage-dialog-LVM",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
         s.return_to_installation_confirm()
 

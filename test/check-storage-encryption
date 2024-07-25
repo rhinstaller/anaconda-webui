@@ -1,0 +1,150 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from installer import Installer
+from password import Password
+from storage import Storage
+from storagelib import StorageHelpers  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestStorageEncryption(VirtInstallMachineCase, StorageHelpers):
+
+    def set_valid_password(self, password_ui, password="abcdefgh"):
+        password_ui.set_password(password)
+        password_ui.set_password_confirm(password)
+
+    def testEncryptionPassword(self):
+        b = self.browser
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Password(b, s.encryption_id_prefix)
+
+        i.open()
+        # Language selection
+
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Check the default mode
+        s.check_partitioning_selected("erase-all")
+
+        i.next()
+        # Disk Encryption
+
+        s.set_encryption_selected(False)
+        i.check_next_disabled(False)
+
+        b.assert_pixels(
+            "#app",
+            "storage-step-encrypt",
+            ignore=pixel_tests_ignore,
+        )
+
+        s.check_encryption_selected(False)
+        encrypt = True
+        s.set_encryption_selected(encrypt)
+
+        # Disk Encryption / password screen
+        b.assert_pixels(
+            "#app",
+            "storage-step-password",
+            ignore=pixel_tests_ignore,
+        )
+
+        # No password set
+        p.check_pw_rule("length", "indeterminate")
+        p.check_pw_rule("match", "indeterminate")
+        i.check_next_disabled()
+
+        # Set pw which is too short
+        p.set_password("abcd")
+        p.check_pw_strength(None)
+        i.check_next_disabled()
+        p.check_pw_rule("length", "error")
+        p.check_pw_rule("match", "error")
+
+        # Make the pw 8 chars long
+        p.set_password("efgh", append=True, value_check=False)
+        i.check_next_disabled()
+        p.check_password("abcdefgh")
+        p.check_pw_rule("length", "success")
+        p.check_pw_rule("match", "error")
+        p.check_pw_strength("weak")
+
+        # Non-ASCII password
+        p.set_password(8 * "š")
+        p.check_password(8 * "š")
+        p.check_pw_rule("length", "success")
+        p.check_pw_rule("match", "error")
+        p.check_pw_rule("ascii", "warning")
+        p.check_pw_strength("weak")
+
+        # Valid ASCII password
+        p.set_password("abcdefgh")
+        p.check_password("abcdefgh")
+
+        # Set the password confirm
+        p.set_password_confirm("abcdefg")
+        p.check_pw_rule("match", "error")
+        p.set_password_confirm("abcdefgh")
+        p.check_pw_rule("match", "success")
+        p.check_pw_rule("length", "success")
+        p.check_pw_strength("weak")
+        p.check_password("abcdefgh")
+        p.check_password_confirm("abcdefgh")
+        i.check_next_disabled(disabled=False)
+
+        # Check setting strong password
+        strong_password = "Rwce82ybF7dXtCzFumanchu!!!!!!!!"
+        p.set_password(strong_password)
+        p.check_password(strong_password)
+        p.check_pw_strength("strong")
+        p.set_password_confirm(strong_password)
+
+    def testEncryptionPreserved(self):
+        """
+        Test that the encryption details are preserved when moving back and forth
+        between screens
+        """
+        b = self.browser
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Password(b, s.encryption_id_prefix)
+
+        i.open()
+        i.reach(i.steps.DISK_ENCRYPTION)
+        # Disk Encryption / password screen
+
+        encrypt = True
+        s.set_encryption_selected(encrypt)
+        s.check_encryption_selected(encrypt)
+
+        # Set valid password
+        self.set_valid_password(p)
+
+        # Verify that the password is saved when moving forward and back
+        i.next()
+        i.back()
+        s.check_encryption_selected(encrypt)
+        p.check_password("abcdefgh")
+        p.check_password_confirm("abcdefgh")
+
+
+if __name__ == '__main__':
+    test_main()

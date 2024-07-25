@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-import anacondalib
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from language import Language
 from password import Password
@@ -26,7 +26,7 @@ from utils import pretend_live_iso
 
 
 @nondestructive
-class TestReview(anacondalib.VirtInstallMachineCase):
+class TestReview(VirtInstallMachineCase):
 
     def testBasic(self):
         b = self.browser
@@ -60,7 +60,7 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "review-step-basic",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
         i.reach_on_sidebar(i.steps.DISK_ENCRYPTION)
@@ -79,7 +79,7 @@ class TestReview(anacondalib.VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "review-step-basic-encrypted",
-            ignore=anacondalib.pixel_tests_ignore,
+            ignore=pixel_tests_ignore,
         )
 
     def testNoConfirmation(self):
