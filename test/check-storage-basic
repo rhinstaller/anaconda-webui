@@ -238,6 +238,15 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         self.handleReboot()
         s.check_post_install_encryption_enabled()
 
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_luks = next(part for part in vda3["children"] if part["type"] == "crypt")
+        vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
     @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_select")
     def testGuidedMultiSelect(self):
         b = self.browser
@@ -264,6 +273,18 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         # Expect the new OS is the default grub entry
         pretty_name = get_pretty_name(m)
         self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vdb_mountpoints = [part["mountpoints"][0] for part in vdb["children"]]
+        self.assertEqual(vdb_mountpoints, [None] * len(vdb_mountpoints))
 
         m.reboot()
         self.selectBootMenuEntry(2)
@@ -297,6 +318,18 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         # Expect the new OS is the default grub entry
         pretty_name = get_pretty_name(m)
         self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vdb1 = next(part for part in vdb["children"] if part["name"] == "vdb1")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        vdb1_root = next(part for part in vdb1["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "15G")
+        self.assertEqual(vdb1_root["size"], "15G")
 
 
 if __name__ == '__main__':
