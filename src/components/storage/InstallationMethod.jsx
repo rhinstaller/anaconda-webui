@@ -64,13 +64,13 @@ const InstallationMethod = ({
           id={idPrefix + "-selector-form"}
           onSubmit={e => { e.preventDefault(); return false }}
         >
+            {showStorage &&
             <CockpitStorageIntegration
               dispatch={dispatch}
               isFormDisabled={isFormDisabled}
               onCritFail={onCritFail}
               setShowStorage={setShowStorage}
-              showStorage={showStorage}
-            />
+            />}
             <InstallationDestination
               isEfi={isEfi}
               dispatch={dispatch}

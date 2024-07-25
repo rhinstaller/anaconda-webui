@@ -110,15 +110,50 @@ export const useMaybeBackdrop = () => {
     return hasDialogOpen ? "cockpit-has-modal" : "";
 };
 
+const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmOpenModal, showConfirmation }) => {
+    return (
+        <Modal
+          isOpen={showConfirmation}
+          onClose={handleCancelOpenModal}
+          title={_("Modify storage")}
+          titleIconVariant="warning"
+          variant="small"
+          actions={[
+              <Button
+                id={idPrefix + "-enter-storage-confirm"}
+                key="confirm"
+                variant="warning"
+                onClick={handleConfirmOpenModal}>
+                  {_("Launch storage editor")}
+              </Button>,
+              <Button
+                id={idPrefix + "-enter-storage-cancel"}
+                key="cancel"
+                variant="link"
+                onClick={handleCancelOpenModal}>
+                  {_("Cancel")}
+              </Button>
+          ]}
+        >
+            <TextContent>
+                <Text>
+                    {_("The advanced storage editor lets you resize, delete, and create partitions. It can set up LVM and much more.")}
+                </Text>
+                <Text component="strong">{_("Any changes you make will immediately affect your storage.")}</Text>
+            </TextContent>
+        </Modal>
+    );
+};
+
 export const CockpitStorageIntegration = ({
     dispatch,
     isFormDisabled,
     onCritFail,
     scenarioAvailability,
     setShowStorage,
-    showStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
     const backdropClass = useMaybeBackdrop();
 
     useEffect(() => {
@@ -130,42 +165,59 @@ export const CockpitStorageIntegration = ({
         }
     }, [onCritFail]);
 
+    const handleConfirmOpenModal = () => {
+        setIsConfirmed(true);
+        setShowStorage(true);
+    };
+
+    const handleCancelOpenModal = () => {
+        setShowStorage(false);
+        setIsConfirmed(false);
+    };
+
     return (
-        <Modal
-          aria-label={_("Configure storage")}
-          className={backdropClass + " " + idPrefix + "-modal-page-section"}
-          footer={<ReturnToInstallationButton onAction={() => setShowDialog(true)} />}
-          hasNoBodyWrapper
-          isOpen={showStorage}
-          onClose={() => setShowDialog(true)}
-          showClose={false}
-          variant={ModalVariant.large}>
-            <Alert
-              isInline
-              title={_("Changes made here will immediately affect the system. There is no 'undo'.")}
-              variant="warning"
+        <>
+            <CockpitStorageConfirmationModal
+              handleCancelOpenModal={handleCancelOpenModal}
+              handleConfirmOpenModal={handleConfirmOpenModal}
+              showConfirmation={!isConfirmed}
             />
-            <Divider />
-            <div className={idPrefix + "-page-section-cockpit-storage"}>
-                <PageSection>
-                    <iframe
-                      src="/cockpit/@localhost/storage/index.html"
-                      name="cockpit-storage"
-                      id="cockpit-storage-frame"
-                      className={idPrefix + "-iframe-cockpit-storage"} />
-                </PageSection>
-                <ModifyStorageSideBar />
-            </div>
-            {showDialog &&
-            <CheckStorageDialog
-              dispatch={dispatch}
-              isFormDisabled={isFormDisabled}
-              onCritFail={onCritFail}
-              scenarioAvailability={scenarioAvailability}
-              setShowDialog={setShowDialog}
-              setShowStorage={setShowStorage}
-            />}
-        </Modal>
+            <Modal
+              aria-label={_("Configure storage")}
+              className={backdropClass + " " + idPrefix + "-modal-page-section"}
+              footer={<ReturnToInstallationButton onAction={() => setShowDialog(true)} />}
+              hasNoBodyWrapper
+              isOpen={isConfirmed}
+              onClose={() => setShowDialog(true)}
+              showClose={false}
+              variant={ModalVariant.large}>
+                <Alert
+                  isInline
+                  title={_("Changes made here will immediately affect the system. There is no 'undo'.")}
+                  variant="warning"
+                />
+                <Divider />
+                <div className={idPrefix + "-page-section-cockpit-storage"}>
+                    <PageSection>
+                        <iframe
+                          src="/cockpit/@localhost/storage/index.html"
+                          name="cockpit-storage"
+                          id="cockpit-storage-frame"
+                          className={idPrefix + "-iframe-cockpit-storage"} />
+                    </PageSection>
+                    <ModifyStorageSideBar />
+                </div>
+                {showDialog &&
+                    <CheckStorageDialog
+                      dispatch={dispatch}
+                      isFormDisabled={isFormDisabled}
+                      onCritFail={onCritFail}
+                      scenarioAvailability={scenarioAvailability}
+                      setShowDialog={setShowDialog}
+                      setShowStorage={setShowStorage}
+                    />}
+            </Modal>
+        </>
     );
 };
 
