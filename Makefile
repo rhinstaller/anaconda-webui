@@ -181,7 +181,7 @@ bots: test/common
 live-vm: bots $(UPDATES_IMG)
 	./test/webui_testvm.py $(TEST_LIVE_OS)
 
-prepare-test-deps: bots test/common payload images
+prepare-test-deps: bots test/common test/reference payload images
 
 .PHONY: payload
 payload: bots
@@ -197,12 +197,6 @@ $(UPDATES_IMG): bots
 create-updates.img: bots
 	-rm $(UPDATES_IMG)
 	make $(UPDATES_IMG)
-
-# test runs in kernel_t context and triggers massive amounts of SELinux
-# denials; SELinux gets disabled, but would still trigger unexpected messages
-# we create huge VMs, so we need to reduce parallelism on CI
-integration-test: prepare-test-deps test/reference $(UPDATES_IMG)
-	J=$$((TEST_JOBS/4)); [ $$J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --jobs $$J
 
 test/reference: test/common
 	test/common/pixel-tests pull
