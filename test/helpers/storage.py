@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
+import json
 import os
 import re
 import sys
@@ -234,6 +235,10 @@ class StorageUtils(StorageDestination):
 
     def set_partition_uuid(self, disk, partition, uuid):
         self.machine.execute(f"sfdisk --part-uuid {disk} {partition} {uuid}")
+
+    def get_lsblk_json(self):
+        lsblk = self.machine.execute("lsblk -J")
+        return json.loads(lsblk)
 
 
 class StorageDBus():

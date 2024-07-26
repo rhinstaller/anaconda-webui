@@ -15,13 +15,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+import os
+
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore, test_plan
 from installer import Installer
 from password import Password
 from progress import Progress
 from storage import Storage
 from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import get_pretty_name
+
+TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorage(VirtInstallMachineCase, StorageHelpers):
@@ -193,7 +200,16 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
             b.wait_in_text("#critical-error-bz-report-modal header", "The installer cannot continue due to a critical error: Storage plugin failed")
 
 
-class TestStorageGuided(VirtInstallMachineCase, StorageHelpers):
+class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
+    """
+    Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
+
+    These tests are based on the Fedora QA test plans for installation.
+
+    All tests below are destructive as they complete the installation process.
+    """
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_encrypted")
     def testGuidedEncrypted(self):
         b = self.browser
         i = Installer(b, self.machine)
@@ -221,6 +237,99 @@ class TestStorageGuided(VirtInstallMachineCase, StorageHelpers):
         s.unlock_storage_on_boot(strong_password)
         self.handleReboot()
         s.check_post_install_encryption_enabled()
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_luks = next(part for part in vda3["children"] if part["type"] == "crypt")
+        vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_select")
+    def testGuidedMultiSelect(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Progress(b)
+
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/debian-stable"))
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.check_disk_selected("vda", True)
+        s.check_disk_selected("vdb", False)
+
+        i.reach(i.steps.REVIEW)
+        i.begin_installation()
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vdb_mountpoints = [part["mountpoints"][0] for part in vdb["children"]]
+        self.assertEqual(vdb_mountpoints, [None] * len(vdb_mountpoints))
+
+        m.reboot()
+        self.selectBootMenuEntry(2)
+        # FIXME: Debian will not boot unless we remove the vda disk
+        # pretty_name = get_pretty_name(m)
+        # self.assertIn("Debian GNU/Linux", pretty_name)
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_empty_all")
+    def testGuidedMultiEmptyAll(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Progress(b)
+
+        self.add_disk(15)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.check_disk_selected("vda", True)
+        s.select_disk("vdb", True)
+
+        i.reach(i.steps.REVIEW)
+        i.begin_installation()
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vdb1 = next(part for part in vdb["children"] if part["name"] == "vdb1")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        vdb1_root = next(part for part in vdb1["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "15G")
+        self.assertEqual(vdb1_root["size"], "15G")
 
 
 if __name__ == '__main__':
