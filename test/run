@@ -1,8 +1,48 @@
 #! /bin/bash
+
 # This is the expected entry point for Cockpit CI; will be called without
-# arguments but with an appropriate $TEST_OS
+# arguments but with an appropriate $TEST_OS, and optionally $TEST_SCENARIO
+
+# Currently supported scenarios:
+#
+# expensive       - expensive tests (test which run a full installation)
+# other           - non-expensive tests
+
 
 set -eux
 
 make codecheck
-make integration-test
+make prepare-test-deps
+make create-updates.img
+
+RUN_OPTS=""
+ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
+
+RE_EXPENSIVE='FedoraPlans'
+
+# every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
+case "${TEST_SCENARIO:=}" in
+    *expensive*)
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"
+        ;;&
+    *other*)
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -Ev "$RE_EXPENSIVE")"
+        ;;&
+esac
+
+if [ -n "$TEST_SCENARIO" ] && [ -z "$RUN_OPTS" ]; then
+    echo "Unknown test scenario: $TEST_SCENARIO"
+    exit 1
+fi
+
+# test runs in kernel_t context and triggers massive amounts of SELinux
+# denials; SELinux gets disabled, but would still trigger unexpected messages
+# we create huge VMs, so we need to reduce parallelism on CI
+if [ -z "${TEST_JOBS-}" ]; then
+  TEST_JOBS=4
+fi
+if [ -z "${TEST_OS-}" ]; then
+  TEST_OS=fedora-rawhide-boot
+fi
+export TEST_JOBS TEST_OS
+J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS

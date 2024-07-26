@@ -188,9 +188,7 @@ class VirtInstallMachineCase(MachineCase):
         super().tearDown()
 
 
-def test_plan(url):
+def test_plan(_url):
     def decorator(func):
-        func.test_plan_url = url
-        print(f"Test plan URL: {func.test_plan_url}")
         return func
     return decorator
