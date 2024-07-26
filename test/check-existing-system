@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, test_plan
 from installer import Installer
 from operating_systems import WindowsOS
 from progress import Progress
 from review import Review
-from storage import Storage
+from storage import Storage, StorageUtils
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import get_pretty_name
 
@@ -44,7 +44,15 @@ class TestExistingSystemFedora(VirtInstallMachineCase):
 
         r.check_deleted_system("Fedora Linux")
 
-class TestExistingSystemDebian(VirtInstallMachineCase):
+class TestFedoraPlanUseFreeSpace(VirtInstallMachineCase):
+    """
+    Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
+
+    These tests are based on the Fedora QA test plans for installation.
+
+    All tests below are destructive as they complete the installation process.
+    """
+
     disk_image = "debian-stable"
     disk_size = 20
 
@@ -61,18 +69,46 @@ class TestExistingSystemDebian(VirtInstallMachineCase):
 
         self.handleReboot()
 
-    def verifyDualBoot(self):
+    def verifyDualBoot(self, root_one_size=None, root_two_size=None):
+        b = self.browser
         m = self.machine
+        s = StorageUtils(b, m)
 
         # Expect the new OS is the default grub entry
         pretty_name = get_pretty_name(m)
         self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+
+        vda2 = next(part for part in vda["children"] if part["name"] == "vda2")
+        self.assertEqual(vda2["mountpoints"], ["/boot"])
+
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], str(root_one_size) + "G")
+
         # Select second OS grub entry
         self.selectBootMenuEntry(2)
         m.reboot()
         pretty_name = get_pretty_name(m)
         self.assertIn("Debian GNU/Linux", pretty_name)
 
+        # Check that the pre-existing partitions are still present
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+
+        vda1 = next(part for part in vda["children"] if part["name"] == "vda1")
+        self.assertEqual(vda1["mountpoints"], ["/"])
+        self.assertEqual(vda1["size"], str(root_two_size) + "G")
+
+        vda15 = next(part for part in vda["children"] if part["name"] == "vda15")
+        self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_free_space")
     def testScenarioUseFreeSpace(self):
         b = self.browser
         m = self.machine
@@ -87,8 +123,9 @@ class TestExistingSystemDebian(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         self.install()
-        self.verifyDualBoot()
+        self.verifyDualBoot(root_one_size=9, root_two_size=9.9)
 
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_shrink")
     def testReclaimSpaceShrink(self):
         b = self.browser
         m = self.machine
@@ -111,7 +148,7 @@ class TestExistingSystemDebian(VirtInstallMachineCase):
         # r.check_resized_system("Debian", ["vda1"])
 
         self.install()
-        self.verifyDualBoot()
+        self.verifyDualBoot(root_one_size=14.2, root_two_size=4.7)
 
 @nondestructive
 class TestExistingSystemWindows(VirtInstallMachineCase):
