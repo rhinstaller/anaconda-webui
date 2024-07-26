@@ -199,7 +199,7 @@ class TestStorageUseFreeSpaceScenario(VirtInstallMachineCase, StorageCase):
         r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
 
 @nondestructive
-class TestReclaimLUKS(anacondalib.VirtInstallMachineCase, StorageCase):
+class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
 
     def testReclaimExt4onLUKS(self):
         # Shrinking LUKS partitions is not yet supported
