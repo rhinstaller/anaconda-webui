@@ -198,6 +198,39 @@ class TestStorageUseFreeSpaceScenario(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
 
+@nondestructive
+class TestReclaimLUKS(anacondalib.VirtInstallMachineCase, StorageCase):
+
+    def testReclaimExt4onLUKS(self):
+        # Shrinking LUKS partitions is not yet supported
+        # Deletion of locked partitions should be possible
+
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        s.partition_disk(disk, [("4GB", "ext4")])
+        m.execute(f"""
+        echo einszweidrei | cryptsetup luksFormat {disk}1
+        echo einszweidrei | cryptsetup luksOpen {disk}1 encrypted-vol
+        mkfs.ext4 -F /dev/mapper/encrypted-vol
+        cryptsetup luksClose encrypted-vol
+        """)
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("use-free-space")
+        s.reclaim_set_checkbox(True)
+        i.next(True)
+        s.reclaim_check_device_row("vda1", "", "partition", "4.29 GB", locked=True)
+        s.reclaim_check_action_button_present("vda1", "shrink", True, True)
+        s.reclaim_check_action_button_present("vda1", "delete", True)
+
 
 @nondestructive
 class TestStorageUseFreeSpaceScenarioExistingSystemFedora(VirtInstallMachineCase, StorageCase):

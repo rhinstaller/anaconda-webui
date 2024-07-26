@@ -214,6 +214,17 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
     );
 };
 
+/**
+ * @param {object}      device
+ * @returns {Boolean}   true if the device is locked (LUKS or bitlocker)
+ **/
+const isDeviceLocked = ({ device }) => {
+    return (
+        device.formatData.type.v === "bitlocker" ||
+        (device.formatData.type.v === "luks" && device.formatData.attrs.v.has_key !== "True")
+    );
+};
+
 const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedActions) => {
     const device = devices[disk];
     const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : disk;
@@ -245,9 +256,9 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     }
 
     let deviceType = device.type.v;
-    if (device.formatData.type.v === "bitlocker") {
+    if (isDeviceLocked({ device })) {
         deviceType = (
-            <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+            <Flex className={idPrefix + "-device-locked"} spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
                 <FlexItem>{deviceType}</FlexItem>
                 <FlexItem><LockIcon /></FlexItem>
             </Flex>
