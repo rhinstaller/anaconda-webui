@@ -318,6 +318,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.check_single_disk_destination("vda")
 
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
         s.check_constraint("/", True)
         s.check_constraint("biosboot", True)

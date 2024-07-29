@@ -106,6 +106,9 @@ class StorageDestination():
         else:
             self.browser.wait_visible(f"ul.cockpit-storage-integration-requirements-hint-list:nth-of-type(2) li:contains('{constraint}')")
 
+    def confirm_entering_cockpit_storage(self):
+        self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
+
     def return_to_installation(self):
         self.browser.click("#cockpit-storage-integration-return-to-installation-button")
 

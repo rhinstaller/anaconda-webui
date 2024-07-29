@@ -187,6 +187,7 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
         b._wait_present("iframe[name='cockpit-storage']")
         b.switch_to_frame("cockpit-storage")
