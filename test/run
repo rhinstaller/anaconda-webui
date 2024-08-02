@@ -28,12 +28,10 @@ case "${TEST_SCENARIO:=}" in
     *other*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -Ev "$RE_EXPENSIVE")"
         ;;&
+    *)
+        RUN_OPTS="$ALL_TESTS"
+        ;;&
 esac
-
-if [ -n "$TEST_SCENARIO" ] && [ -z "$RUN_OPTS" ]; then
-    echo "Unknown test scenario: $TEST_SCENARIO"
-    exit 1
-fi
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
