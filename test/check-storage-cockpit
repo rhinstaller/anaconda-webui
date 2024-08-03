@@ -39,6 +39,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_single_disk_destination("vda")
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
 
         frame = "iframe[name='cockpit-storage']"
@@ -101,6 +102,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_single_disk_destination("vda")
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
 
         frame = "iframe[name='cockpit-storage']"
@@ -188,6 +190,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_single_disk_destination("vda")
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
 
         frame = "iframe[name='cockpit-storage']"
@@ -261,6 +264,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_single_disk_destination("vda")
         s.modify_storage()
+        s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
 
         frame = "iframe[name='cockpit-storage']"
