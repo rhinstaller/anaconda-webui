@@ -15,10 +15,10 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Get the list of names of all the ancestors of the given device
+/* Get the list of IDs of all the ancestors of the given device
  * (including the device itself)
  * @param {Object} deviceData - The device data object
- * @param {string} device - The name of the device
+ * @param {string} device - The ID of the device
  * @returns {Array}
  */
 export const getDeviceAncestors = (deviceData, device) => {
@@ -33,9 +33,9 @@ export const getDeviceAncestors = (deviceData, device) => {
     return ancestors;
 };
 
-/* Get the list of names of all the descendants of the given device
+/* Get the list of IDs of all the descendants of the given device
  * (including the device itself)
- * @param {string} device - The name of the device
+ * @param {string} device - The ID of the device
  * @param {Object} deviceData - The device data object
  * @returns {Array}
  */
@@ -47,7 +47,7 @@ export const getDeviceChildren = ({ device, deviceData }) => {
     }, []);
 };
 
-/* Get the list of names of all LUKS devices
+/* Get the list of IDs of all LUKS devices
  * @param {Object} deviceData - The device data object
  * @param {Array} requests - The list of requests from a partitioning
  * @returns {Array}
@@ -71,7 +71,7 @@ export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
 
 /* Check if the requests array contains duplicate entries
  * @param {Array} requests - The list of requests from a partitioning
- * @param {string} fieldName - The name of the field to check for duplicates, ex: "mount-point"
+ * @param {string} fieldName - The ID of the field to check for duplicates, ex: "mount-point"
  * @returns {boolean}
  */
 export const hasDuplicateFields = (requests, fieldName) => {
@@ -97,13 +97,17 @@ export const isDuplicateRequestField = (requests, fieldName, fieldValue) => {
     return requests.filter((request) => request[fieldName] === fieldValue).length > 1;
 };
 
-export const getDeviceNameByPath = (deviceData, path) => {
+export const getDeviceByPath = (deviceData, path) => {
     return Object.keys(deviceData).find(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+};
+
+export const getDeviceByName = (deviceData, name) => {
+    return Object.keys(deviceData).find(d => deviceData[d].name?.v === name);
 };
 
 /* Check if a device has a LUKS encrypted parent
  * @param {Object} deviceData - The device data object
- * @param {string} device - The name of the device
+ * @param {string} device - The ID of the device
  * @returns {boolean}
  * */
 export const hasEncryptedAncestor = (deviceData, device) => {
@@ -120,9 +124,9 @@ export const hasEncryptedAncestor = (deviceData, device) => {
     }
 };
 
-/* Get the parent partitions names of a given device
+/* Get the parent partitions IDs of a given device
  * @param {Object} deviceData - The device data object
- * @param {string} device - The name of the device
+ * @param {string} device - The ID of the device
  * @returns {Array}
  * */
 export const getParentPartitions = (deviceData, device) => {
@@ -135,7 +139,7 @@ export const getParentPartitions = (deviceData, device) => {
 
 /* Check if a device has parents of a given type
  * @param {Object} deviceData - The device data object
- * @param {string} device - The name of the device
+ * @param {string} device - The ID of the device
  * @param {string} type - The type of the device to check for
  * @returns {boolean}
  * */

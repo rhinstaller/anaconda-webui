@@ -112,7 +112,7 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
         setInProgress(true);
         return Promise.allSettled(
             lockedLUKSDevices.map(device => (
-                unlockDevice({ deviceName: device, passphrase })
+                unlockDevice({ device, passphrase })
             ))
         ).then(
             res => {

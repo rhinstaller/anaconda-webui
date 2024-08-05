@@ -75,17 +75,17 @@ export const useDiskFreeSpace = ({ devices, selectedDisks }) => {
     return diskFreeSpace;
 };
 
-export const useDuplicateDeviceNames = ({ deviceNames }) => {
+export const useDuplicateDeviceNames = ({ devices }) => {
     const [duplicateDeviceNames, setDuplicateDeviceNames] = useState([]);
 
     useEffect(() => {
         const update = async () => {
-            const _duplicateDeviceNames = findDuplicatesInArray(deviceNames);
+            const _duplicateDeviceNames = findDuplicatesInArray(Object.keys(devices).map(device => devices[device].name.v));
 
             setDuplicateDeviceNames(_duplicateDeviceNames);
         };
         update();
-    }, [deviceNames]);
+    }, [devices]);
 
     return duplicateDeviceNames;
 };

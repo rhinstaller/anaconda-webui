@@ -23,7 +23,6 @@ export const storageInitialState = {
     deviceTrees: {
         "": {
             actions: [],
-            deviceNames: [],
             devices: {},
             mountPoints: {},
         },
@@ -128,7 +127,6 @@ export const storageReducer = (state = storageInitialState, action) => {
                 ...state.deviceTrees,
                 [state.appliedPartitioning ? state.partitioning.deviceTree.path : ""]: {
                     actions: action.payload.actions,
-                    deviceNames: action.payload.deviceNames,
                     devices: action.payload.devices,
                     existingSystems: action.payload.existingSystems,
                     mountPoints: action.payload.mountPoints,
