@@ -429,7 +429,7 @@ export const InstallationScenario = ({
     return (
         <>
             <Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>
-            <FormGroup isStack hasNoPaddingTop data-scenario={storageScenarioId}>
+            <FormGroup className={idPrefix + "-scenario-group"} isStack hasNoPaddingTop data-scenario={storageScenarioId}>
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
