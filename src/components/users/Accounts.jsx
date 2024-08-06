@@ -130,11 +130,11 @@ const CreateAccount = ({
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
 
     useEffect(() => {
-        debounce(300, () => setCheckUserName(userName))();
+        debounce(100, () => setCheckUserName(userName))();
     }, [userName, setCheckUserName]);
 
     useEffect(() => {
-        debounce(300, () => setCheckFullName(fullName))();
+        debounce(100, () => setCheckFullName(fullName))();
     }, [fullName, setCheckFullName]);
 
     useEffect(() => {
