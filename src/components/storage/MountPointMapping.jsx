@@ -260,7 +260,9 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
     const [isOpen, setIsOpen] = useState(false);
 
     const device = request["device-spec"];
+    const deviceName = device && deviceData[device].name.v;
     const options = devices.map(device => {
+        const deviceName = deviceData[device].name.v;
         const formatType = deviceData[device]?.formatData.type.v;
         const format = deviceData[device]?.formatData.description.v;
         const size = cockpit.format_bytes(deviceData[device]?.total.v);
@@ -274,11 +276,11 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
 
         return (
             <SelectOption
-              data-value={device}
+              data-value={deviceName}
               isDisabled={isDisabled}
               description={description}
               key={device}
-              value={device}
+              value={deviceName}
             />
         );
     });
@@ -288,11 +290,12 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
           hasPlaceholderStyle
           isOpen={isOpen}
           placeholderText={_("Select a device")}
-          selections={device ? [device] : []}
+          selections={deviceName ? [deviceName] : []}
           variant={SelectVariant.single}
           onToggle={(_event, val) => setIsOpen(val)}
           onSelect={(_, selection) => {
-              handleRequestChange({ deviceSpec: selection, mountPoint: request["mount-point"], requestIndex });
+              const deviceSpec = devices.find(d => deviceData[d].name.v === selection);
+              handleRequestChange({ deviceSpec, mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}
           onClear={() => {

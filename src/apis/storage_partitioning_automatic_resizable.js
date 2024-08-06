@@ -17,33 +17,33 @@
 import { DeviceTree } from "./storage_devicetree.js";
 
 /**
- * @param {string} deviceName   A device name
+ * @param {string} device       A device ID
  * @param {object} deviceTree   The device tree
  *
  * @returns {Promise}           Resolves or rejects the result of the operation
  */
-export const removeDevice = ({ deviceName, deviceTree }) => {
-    return new DeviceTree(deviceTree).callResizable("RemoveDevice", [deviceName]);
+export const removeDevice = ({ device, deviceTree }) => {
+    return new DeviceTree(deviceTree).callResizable("RemoveDevice", [device]);
 };
 
 /**
- * @param {string} deviceName   A device name
+ * @param {string} device       A device ID
  * @param {number} newSize      The new size of the device
  * @param {object} deviceTree   The device tree
  *
  * @returns {Promise}           Resolves or rejects the result of the operation
  */
-export const shrinkDevice = ({ deviceName, deviceTree, newSize }) => {
-    return new DeviceTree(deviceTree).callResizable("ShrinkDevice", [deviceName, newSize]);
+export const shrinkDevice = ({ device, deviceTree, newSize }) => {
+    return new DeviceTree(deviceTree).callResizable("ShrinkDevice", [device, newSize]);
 };
 
 /**
- * @param {string} deviceName   A device name
+ * @param {string} device       A device ID
  *
  * @returns {Promise}           Resolves or rejects the result of the operation
  *                              The result is a boolean indicating whether the device is shrinkable
  *                             or not
  */
-export const isDeviceShrinkable = ({ deviceName, deviceTree }) => {
-    return new DeviceTree(deviceTree).callResizable("IsDeviceShrinkable", [deviceName]);
+export const isDeviceShrinkable = ({ device, deviceTree }) => {
+    return new DeviceTree(deviceTree).callResizable("IsDeviceShrinkable", [device]);
 };

@@ -42,13 +42,13 @@ export class DeviceTree {
 }
 
 /**
- * @param {string} deviceName   A device name
+ * @param {string} device       A device ID
  * @param {string} password     A password
  *
  * @returns {Promise}           Resolves true if success otherwise false
  */
-export const unlockDevice = ({ deviceName, passphrase }) => {
-    return new DeviceTree().callHandler("UnlockDevice", [deviceName, passphrase]);
+export const unlockDevice = ({ device, passphrase }) => {
+    return new DeviceTree().callHandler("UnlockDevice", [device, passphrase]);
 };
 
 /**

@@ -63,7 +63,7 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
-import { getDeviceNameByPath } from "../../helpers/storage.js";
+import { getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
@@ -228,14 +228,16 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
         const partitioning = await createPartitioning({ method: "MANUAL" });
         const requests = await gatherRequests({ partitioning });
 
-        const addRequest = (devicePath, object, isSubVolume = false) => {
+        const addRequest = (device, object, isSubVolume = false) => {
             const { content, dir, subvolumes, type } = object;
             let deviceSpec;
             if (!isSubVolume) {
-                deviceSpec = getDeviceNameByPath(devices, devicePath);
-            } else if (devices[devicePath]) {
-                deviceSpec = devicePath;
+                deviceSpec = getDeviceByPath(devices, device);
             } else {
+                deviceSpec = getDeviceByName(devices, device);
+            }
+
+            if (!deviceSpec) {
                 return;
             }
 
@@ -360,14 +362,21 @@ const CheckStorageDialog = ({
 
         const devicesToUnlock = (
             Object.keys(cockpitPassphrases)
-                    .map(dev => ({
-                        deviceName: devices[dev] ? dev : getDeviceNameByPath(devices, dev),
-                        passphrase: cockpitPassphrases[dev]
-                    })))
-                .filter(({ deviceName }) => {
+                    .map(dev => {
+                        let device = getDeviceByName(devices, dev);
+                        if (!device) {
+                            device = getDeviceByPath(devices, dev);
+                        }
+
+                        return ({
+                            device,
+                            passphrase: cockpitPassphrases[dev]
+                        });
+                    }))
+                .filter(({ device }) => {
                     return (
-                        devices[deviceName].formatData.type.v === "luks" &&
-                            devices[deviceName].formatData.attrs.v.has_key !== "True"
+                        devices[device].formatData.type.v === "luks" &&
+                            devices[device].formatData.attrs.v.has_key !== "True"
                     );
                 });
 

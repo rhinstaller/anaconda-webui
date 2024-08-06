@@ -87,7 +87,6 @@ export const getDevicesAction = () => {
             return dispatch({
                 payload: {
                     actions,
-                    deviceNames: devices,
                     devices: deviceData,
                     existingSystems,
                     mountPoints,

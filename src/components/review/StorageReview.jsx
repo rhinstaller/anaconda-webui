@@ -82,20 +82,20 @@ const DeviceRow = ({ disk }) => {
         return null;
     }
 
-    const getDeviceRow = ([mount, name]) => {
-        const size = cockpit.format_bytes(devices[name].size.v);
-        const request = requests.find(request => request["device-spec"] === name);
-        const format = devices[name].formatData.type.v;
+    const getDeviceRow = ([mount, device]) => {
+        const size = cockpit.format_bytes(devices[device].size.v);
+        const request = requests.find(request => request["device-spec"] === device);
+        const format = devices[device].formatData.type.v;
         const action = (
             request === undefined || request.reformat
                 ? (format ? cockpit.format(_("format as $0"), format) : null)
                 : ((format === "biosboot") ? format : _("mount"))
         );
-        const parents = getParentPartitions(devices, name);
+        const parents = getParentPartitions(devices, device);
         const showMaybeType = () => {
-            if (checkDeviceOnStorageType(devices, name, "lvmvg")) {
+            if (checkDeviceOnStorageType(devices, device, "lvmvg")) {
                 return ", LVM";
-            } else if (checkDeviceOnStorageType(devices, name, "mdarray")) {
+            } else if (checkDeviceOnStorageType(devices, device, "mdarray")) {
                 return ", RAID";
             } else {
                 return "";
@@ -109,9 +109,9 @@ const DeviceRow = ({ disk }) => {
                     { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 20 },
                     { title: size, width: 20 },
                     { title: action, width: 20 },
-                    { title: hasEncryptedAncestor(devices, name) ? (!request || request.reformat ? _("encrypt") : _("encrypted")) : "", width: 20 },
+                    { title: hasEncryptedAncestor(devices, device) ? (!request || request.reformat ? _("encrypt") : _("encrypted")) : "", width: 20 },
                 ],
-                props: { key: name },
+                props: { key: device },
             }
         );
     };
@@ -177,7 +177,7 @@ const DeviceRow = ({ disk }) => {
             return false;
         }
 
-        const parents = getDeviceAncestors(originalDevices, action["device-name"].v);
+        const parents = getDeviceAncestors(originalDevices, action["device-id"].v);
 
         return parents.includes(disk);
     });
@@ -211,14 +211,14 @@ const DeviceRow = ({ disk }) => {
  * @returns {boolean}   True is the device will be deleted according to the actions
  */
 const isDeviceDeleted = ({ actions, device }) => (
-    actions.find(action => action["device-name"].v === device && action["action-type"].v === "destroy")
+    actions.find(action => action["device-id"].v === device && action["action-type"].v === "destroy")
 );
 
 /**
  * @returns {boolean}   True is the device will be resized according to the actions
  */
 const isDeviceResized = ({ actions, device }) => (
-    actions.find(action => action["device-name"].v === device && action["action-type"].v === "resize")
+    actions.find(action => action["device-id"].v === device && action["action-type"].v === "resize")
 );
 
 const DeletedSystems = () => {
@@ -271,18 +271,19 @@ const AffectedSystems = ({ type }) => {
             const affectedChildren = children.filter(child => affectedDevices.includes(child));
 
             if (affectedDevices.includes(device) || affectedChildren.length) {
-                acc[device] = affectedChildren;
+                acc[device] = affectedChildren.map(child => originalDevices[child].name.v);
             }
             return acc;
         }, {});
 
         return Object.keys(affectedDevicesPartitiongMap)
                 .map(device => {
+                    const deviceName = originalDevices[device].name.v;
                     if (affectedDevicesPartitiongMap[device].length === 0) {
-                        return device;
+                        return deviceName;
                     }
 
-                    return `${device} (${affectedDevicesPartitiongMap[device].join(", ")})`;
+                    return `${deviceName} (${affectedDevicesPartitiongMap[device].join(", ")})`;
                 })
                 .join(", ");
     };

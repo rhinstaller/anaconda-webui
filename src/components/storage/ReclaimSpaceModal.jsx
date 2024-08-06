@@ -74,12 +74,12 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                 try {
                     if (action.type === "remove") {
                         await removeDevice({
-                            deviceName: device,
+                            device,
                             deviceTree: partitioning.deviceTree.path,
                         });
                     } else if (action.type === "shrink") {
                         await shrinkDevice({
-                            deviceName: device,
+                            device,
                             deviceTree: partitioning.deviceTree.path,
                             newSize: action.value,
                         });
@@ -301,16 +301,17 @@ const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions })
         return null;
     }
 
+    const deviceId = device["device-id"].v;
     const parents = device.parents.v;
     const parentHasRemove = parents?.some((parent) => getDeviceActionOfType({ device: parent, type: "remove", unappliedActions }));
-    const hasBeenRemoved = parentHasRemove || getDeviceActionOfType({ device: device.name.v, type: "remove", unappliedActions });
-    const newDeviceSize = getDeviceActionOfType({ device: device.name.v, type: "shrink", unappliedActions })?.value;
-    const hasUnappliedActions = !parentHasRemove && unappliedActions[device.name.v].length > 0;
+    const hasBeenRemoved = parentHasRemove || getDeviceActionOfType({ device: deviceId, type: "remove", unappliedActions });
+    const newDeviceSize = getDeviceActionOfType({ device: deviceId, type: "shrink", unappliedActions })?.value;
+    const hasUnappliedActions = !parentHasRemove && unappliedActions[deviceId].length > 0;
 
     const onAction = (action, value = "") => {
         setUnappliedActions((prevUnappliedActions) => {
             const _unappliedActions = { ...prevUnappliedActions };
-            _unappliedActions[device.name.v].push({ type: action, value });
+            _unappliedActions[deviceId].push({ type: action, value });
 
             return _unappliedActions;
         });
@@ -318,7 +319,7 @@ const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions })
     const onUndo = () => {
         setUnappliedActions((prevUnappliedActions) => {
             const _unappliedActions = { ...prevUnappliedActions };
-            _unappliedActions[device.name.v].pop();
+            _unappliedActions[deviceId].pop();
 
             return _unappliedActions;
         });
@@ -385,21 +386,21 @@ const useIsDeviceShrinkable = ({ device }) => {
     useEffect(() => {
         const getIsShrinkable = async () => {
             const isShrinkable = await isDeviceShrinkable({
-                deviceName: device.name.v,
+                device,
                 deviceTree: partitioning.deviceTree.path,
             });
 
             setIsShrinkable(isShrinkable);
         };
         getIsShrinkable();
-    }, [device.name.v, partitioning.deviceTree.path]);
+    }, [device, partitioning.deviceTree.path]);
 
     return isShrinkable;
 };
 
 const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction }) => {
     const onShrink = value => onAction("shrink", value);
-    const isDeviceShrinkable = useIsDeviceShrinkable({ device });
+    const isDeviceShrinkable = useIsDeviceShrinkable({ device: device["device-id"].v });
     const shrinkButton = <ShrinkPopover device={device} isDisabled={!isDeviceShrinkable} onShrink={onShrink} />;
 
     if (hasBeenRemoved) {

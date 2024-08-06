@@ -291,14 +291,14 @@ const InstallationScenarioSelector = ({
     showStorage,
 }) => {
     const { diskSelection, partitioning } = useContext(StorageContext);
-    const { deviceNames, devices, mountPoints } = useOriginalDeviceTree();
+    const { devices, mountPoints } = useOriginalDeviceTree();
     const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
         scenarios.map((s) => [s.id, new AvailabilityState()])
     ));
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const duplicateDeviceNames = useDuplicateDeviceNames({ deviceNames });
+    const duplicateDeviceNames = useDuplicateDeviceNames({ devices });
     const mountPointConstraints = useMountPointConstraints();
     const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
