@@ -137,9 +137,13 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
         >
             <TextContent>
                 <Text>
-                    {_("The advanced storage editor lets you resize, delete, and create partitions. It can set up LVM and much more.")}
+                    {_("The storage editor lets you resize, delete, and create partitions. " +
+                        "It can set up LVM and much more. " +
+                        "It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
                 </Text>
-                <Text component="strong">{_("Any changes you make will immediately affect your storage.")}</Text>
+                <Text component="strong">
+                    {_("All changes made in the storage editor take effect immediately.")}
+                </Text>
             </TextContent>
         </Modal>
     );
