@@ -1,5 +1,6 @@
 import cockpit from "cockpit";
 
+import { Page as PageProgress } from "./installation/InstallationProgress.jsx";
 import { Page as PageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
 import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
 import { Page as PageDiskEncryption } from "./storage/DiskEncryption.jsx";
@@ -23,6 +24,7 @@ export const getSteps = (...args) => {
         },
         new PageAccounts(...args),
         new PageReviewConfiguration(...args),
+        new PageProgress(...args),
     ];
     return stepsOrder;
 };

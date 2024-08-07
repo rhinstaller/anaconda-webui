@@ -16,6 +16,8 @@
  */
 import cockpit from "cockpit";
 
+import { usePageLocation } from "hooks";
+
 import React, { useContext, useEffect, useState } from "react";
 import {
     PageSection,
@@ -28,7 +30,6 @@ import {
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
-import { InstallationProgress } from "./installation/InstallationProgress.jsx";
 import { getSteps } from "./steps.js";
 
 export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
@@ -38,10 +39,10 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
     // The Form should be marked as invalid when the user filled data
     // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
-    const [showWizard, setShowWizard] = useState(true);
     const [currentStepId, setCurrentStepId] = useState();
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const { path } = usePageLocation();
 
     useEffect(() => {
         if (!currentStepId) {
@@ -67,7 +68,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
             let stepProps = {
                 id: s.id,
                 isDisabled: isFormDisabled || isFetching,
-                isHidden: s.isHidden,
+                isHidden: s.isHidden || s.isFinal,
                 isVisited,
                 name: s.label,
                 stepNavItemProps: { id: s.id },
@@ -113,10 +114,11 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
         setCurrentStepId(newStep.id);
     };
 
-    if (!showWizard) {
+    const finalStep = stepsOrder[stepsOrder.length - 1];
+    if (path[0] === finalStep.id) {
         return (
             <PageSection variant={PageSectionVariants.light}>
-                <InstallationProgress onCritFail={onCritFail} />
+                <finalStep.component {...componentProps} />
             </PageSection>
         );
     }
@@ -143,7 +145,6 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
                 isFormValid,
                 setIsFormDisabled,
                 setIsFormValid,
-                setShowWizard,
             }}>
                 <Wizard
                   id="installation-wizard"

@@ -28,7 +28,7 @@ import {
 } from "@patternfly/react-core";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, LanguageContext, OsReleaseContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext, SystemTypeContext, UsersContext } from "../Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
@@ -195,7 +195,6 @@ const ReviewConfigurationFooterHelperText = () => {
 
 const CustomFooter = () => {
     const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
-    const { setShowWizard } = useContext(FooterContext);
     const { buttonLabel } = useScenario();
     const pageProps = new Page();
     const footerHelperText = <ReviewConfigurationFooterHelperText />;
@@ -205,7 +204,7 @@ const CustomFooter = () => {
             {nextWaitsConfirmation &&
             <ReviewConfigurationConfirmModal
               idPrefix={pageProps.id}
-              onNext={() => { setShowWizard(false); cockpit.location.go(["installation-progress"]) }}
+              onNext={() => cockpit.location.go(["installation-progress"])}
               setNextWaitsConfirmation={setNextWaitsConfirmation}
             />}
             <AnacondaWizardFooter
