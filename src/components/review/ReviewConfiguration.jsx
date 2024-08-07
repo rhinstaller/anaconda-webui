@@ -18,17 +18,18 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
-    Button,
+    Checkbox,
     DescriptionList,
     Flex, FlexItem,
-    HelperText, HelperTextItem,
-    Modal, ModalVariant,
     Stack,
     useWizardFooter,
 } from "@patternfly/react-core";
 
+import { getDeviceChildren } from "../../helpers/storage.js";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { LanguageContext, OsReleaseContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { useOriginalDevices, usePlannedActions } from "../storage/Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
@@ -37,6 +38,7 @@ import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
+const idPrefix = "installation-review";
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -56,19 +58,15 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
+const ReviewConfiguration = ({ setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { label: scenarioLabel } = useScenario();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
-    useEffect(() => {
-        setIsFormValid(true);
-    }, [setIsFormValid]);
-
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter />, []);
+    const getFooter = useMemo(() => <CustomFooter setIsFormValid={setIsFormValid} />, [setIsFormValid]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -145,82 +143,83 @@ const ReviewConfiguration = ({ idPrefix, setIsFormValid }) => {
     );
 };
 
-export const ReviewConfigurationConfirmModal = ({ idPrefix, onNext, setNextWaitsConfirmation }) => {
-    const { buttonLabel, buttonVariant, dialogTitleIconVariant, dialogWarning, dialogWarningTitle } = useScenario();
-    return (
-        <Modal
-          actions={[
-              <Button
-                id={idPrefix + "-disk-erase-confirm"}
-                key="confirm"
-                onClick={() => {
-                    setNextWaitsConfirmation(false);
-                    onNext();
-                }}
-                variant={buttonVariant}
-              >
-                  {buttonLabel}
-              </Button>,
-              <Button
-                key="cancel"
-                onClick={() => setNextWaitsConfirmation(false)}
-                variant="link">
-                  {_("Back")}
-              </Button>
-          ]}
-          isOpen
-          onClose={() => setNextWaitsConfirmation(false)}
-          title={dialogWarningTitle}
-          titleIconVariant={dialogTitleIconVariant}
-          variant={ModalVariant.small}
-        >
-            {dialogWarning}
-        </Modal>
-    );
+const useConfirmationCheckboxLabel = () => {
+    const [scenarioConfirmationLabel, setScenarioConfirmationLabel] = useState(null);
+    const originalDevices = useOriginalDevices();
+    const plannedActions = usePlannedActions();
+    const { diskSelection } = useContext(StorageContext);
+    const usableDisks = diskSelection.usableDisks;
+    const selectedDisks = diskSelection.selectedDisks;
+
+    const relevantDevices = selectedDisks
+            .map(disk => getDeviceChildren({ device: disk, deviceData: originalDevices }))
+            .flat(Infinity);
+    const deviceHasAction = (actionType, device) => plannedActions.find(action => action["device-id"].v === device && action["action-type"].v === actionType);
+    const deletedDevices = relevantDevices.filter(device => deviceHasAction("destroy", device));
+    const resizedDevices = relevantDevices.filter(device => deviceHasAction("resize", device));
+
+    const allDevicesDeleted = deletedDevices.length > 0 && deletedDevices.length === relevantDevices.length;
+    const someDevicesDeleted = deletedDevices.length > 0 && deletedDevices.length < relevantDevices.length;
+    const someDevicesResized = resizedDevices.length > 0;
+
+    useEffect(() => {
+        const allDevicesDeletedText = cockpit.ngettext(
+            _("I understand that all existing data will be erased"),
+            _("I understand that all existing data will be erased from the selected disks"),
+            usableDisks.length
+        );
+
+        const someDevicesDeletedText = _("I understand that some existing data will be erased");
+        const someDevicesResizedText = _("I understand that some partitions will be modified");
+
+        if (allDevicesDeleted) {
+            setScenarioConfirmationLabel(allDevicesDeletedText);
+        } else if (someDevicesDeleted) {
+            setScenarioConfirmationLabel(someDevicesDeletedText);
+        } else if (someDevicesResized) {
+            setScenarioConfirmationLabel(someDevicesResizedText);
+        } else {
+            setScenarioConfirmationLabel("");
+        }
+    }, [allDevicesDeleted, someDevicesDeleted, someDevicesResized, usableDisks.length]);
+
+    return scenarioConfirmationLabel;
 };
 
-const ReviewConfigurationFooterHelperText = () => {
-    const { screenWarning } = useScenario();
-
-    return (
-        <HelperText id="review-warning-text">
-            <HelperTextItem
-              variant="warning"
-              hasIcon>
-                {screenWarning}
-            </HelperTextItem>
-        </HelperText>
-    );
-};
-
-const CustomFooter = () => {
-    const [nextWaitsConfirmation, setNextWaitsConfirmation] = useState();
+const CustomFooter = ({ setIsFormValid }) => {
     const { buttonLabel } = useScenario();
-    const pageProps = new Page();
-    const footerHelperText = <ReviewConfigurationFooterHelperText />;
+    const scenarioConfirmationLabel = useConfirmationCheckboxLabel();
+    const installationIsClean = scenarioConfirmationLabel === "";
+    const [isConfirmed, setIsConfirmed] = useState(false);
+
+    const confirmationCheckbox = (
+        !installationIsClean &&
+        <Checkbox
+          id={idPrefix + "-next-confirmation-checkbox"}
+          label={scenarioConfirmationLabel}
+          isChecked={isConfirmed}
+          onChange={(_event, checked) => setIsConfirmed(checked)}
+        />
+    );
+
+    useEffect(() => {
+        setIsFormValid(isConfirmed || installationIsClean);
+    }, [setIsFormValid, isConfirmed, installationIsClean]);
 
     return (
-        <>
-            {nextWaitsConfirmation &&
-            <ReviewConfigurationConfirmModal
-              idPrefix={pageProps.id}
-              onNext={() => cockpit.location.go(["installation-progress"])}
-              setNextWaitsConfirmation={setNextWaitsConfirmation}
-            />}
-            <AnacondaWizardFooter
-              footerHelperText={footerHelperText}
-              nextButtonText={buttonLabel}
-              nextButtonVariant="warning"
-              onNext={() => nextWaitsConfirmation === undefined && setNextWaitsConfirmation(true)}
-            />
-        </>
+        <AnacondaWizardFooter
+          footerHelperText={confirmationCheckbox}
+          nextButtonText={buttonLabel}
+          nextButtonVariant={!installationIsClean ? "warning" : "primary"}
+          onNext={() => cockpit.location.go(["installation-progress"])}
+        />
     );
 };
 
 export class Page {
     constructor () {
         this.component = ReviewConfiguration;
-        this.id = "installation-review";
+        this.id = idPrefix;
         this.label = _("Review and install");
         this.title = _("Review and install");
     }

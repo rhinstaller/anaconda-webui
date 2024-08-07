@@ -82,16 +82,6 @@ class TestReview(VirtInstallMachineCase):
             ignore=pixel_tests_ignore,
         )
 
-    def testNoConfirmation(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-
-        i.open()
-
-        i.reach(i.steps.REVIEW)
-        i.begin_installation(should_fail=True, confirm_erase=False)
-
     def testUnknownLanguage(self):
         b = self.browser
         m = self.machine

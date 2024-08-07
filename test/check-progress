@@ -38,7 +38,7 @@ class TestInstallationProgress(VirtInstallMachineCase):
         i.open()
 
         i.reach(i.steps.REVIEW)
-        i.begin_installation()
+        i.begin_installation(needs_confirmation=False)
 
         with b.wait_timeout(300):
             b.wait_in_text("h2", "Installing")

@@ -61,16 +61,16 @@ class Installer():
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
 
     @log_step(snapshot_before=True)
-    def begin_installation(self, should_fail=False, confirm_erase=True, button_text='Erase data and install'):
+    def begin_installation(self, should_fail=False, needs_confirmation=True, button_text='Erase data and install'):
         current_page = self.get_current_page()
+
+        if needs_confirmation:
+            self.browser.wait_visible("#installation-next-btn[aria-disabled=true]")
+            self.browser.click(f"#{self.steps.REVIEW}-next-confirmation-checkbox")
+            self.browser.wait_visible("#installation-next-btn[aria-disabled=false]")
 
         self.browser.wait_text("#installation-next-btn", button_text)
         self.browser.click("#installation-next-btn")
-
-        if confirm_erase:
-            self.browser.click(f"#{self.steps.REVIEW}-disk-erase-confirm")
-        else:
-            self.browser.click(".pf-v5-c-modal-box button:contains(Back)")
 
         if should_fail:
             self.wait_current_page(current_page)
