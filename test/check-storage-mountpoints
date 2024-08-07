@@ -638,9 +638,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r = Review(b, m)
 
         vgname = "fedoravg"
-
-        self.addCleanup(m.execute, f"vgremove -y -ff {vgname}")
-
         disk = "/dev/vda"
         dev = "vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", None)])
