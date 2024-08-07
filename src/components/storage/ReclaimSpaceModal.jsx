@@ -70,6 +70,12 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
     const onReclaim = async () => {
         for (const item of Object.entries(unappliedActions)) {
             const [device, actions] = item;
+
+            // If device parent is removed we should not schedule any actions for this device
+            if (isDeviceParentRemoved(device, devices, unappliedActions)) {
+                continue;
+            }
+
             for (const action of actions) {
                 try {
                     if (action.type === "remove") {
@@ -157,26 +163,28 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
     );
 };
 
-const getReclaimableSpaceFromAction = ({ action, devices, unappliedActions }) => {
-    const isDeviceRemoved = device => (
-        unappliedActions[device].map(_action => _action.type).includes("remove")
-    );
-    const isDeviceResized = device => (
-        unappliedActions[device].map(_action => _action.type).includes("shrink")
-    );
-    const isDeviceParentRemoved = device => (
-        getDeviceAncestors(devices, device).some(isDeviceRemoved)
-    );
+const isDeviceRemoved = (device, unappliedActions) => (
+    unappliedActions[device].map(_action => _action.type).includes("remove")
+);
 
+const isDeviceResized = (device, unappliedActions) => (
+    unappliedActions[device].map(_action => _action.type).includes("shrink")
+);
+
+const isDeviceParentRemoved = (device, devices, unappliedActions) => (
+    getDeviceAncestors(devices, device).some(dev => isDeviceRemoved(dev, unappliedActions))
+);
+
+const getReclaimableSpaceFromAction = ({ action, devices, unappliedActions }) => {
     if (action === "remove") {
         return Object.keys(unappliedActions)
-                .filter(device => isDeviceRemoved(device) && !isDeviceParentRemoved(device))
+                .filter(device => isDeviceRemoved(device, unappliedActions) && !isDeviceParentRemoved(device, devices, unappliedActions))
                 .reduce((acc, device) => acc + devices[device].total.v - devices[device].free.v, 0);
     }
 
     if (action === "shrink") {
         return Object.keys(unappliedActions)
-                .filter(device => isDeviceResized(device) && !isDeviceParentRemoved(device))
+                .filter(device => isDeviceResized(device, unappliedActions) && !isDeviceParentRemoved(device, devices, unappliedActions))
                 .reduce((acc, device) => acc + unappliedActions[device].reduce((acc, action) => acc + devices[device].total.v - action.value, 0), 0);
     }
 };

@@ -133,6 +133,15 @@ class TestStorageUseFreeSpaceScenario(VirtInstallMachineCase, StorageCase):
 
         s.reclaim_check_available_space("1.03 MB")
 
+        # Check that actions for devices whose parents are marked for deletion are not sent to blivet
+        s.reclaim_remove_device("vda4")
+        s.reclaim_remove_device("vda (0x")
+        s.reclaim_modal_submit()
+
+        i.back()
+        s.reclaim_check_checkbox(True, True)
+        i.next(True)
+
         # Remove one partition and allocate enough space for the installation
         s.reclaim_remove_device("vda4")
         s.reclaim_check_action_present("vda4", "delete", True)
