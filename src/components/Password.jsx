@@ -137,11 +137,11 @@ export const PasswordFormFields = ({
     const [passwordStrength, setPasswordStrength] = useState("");
 
     useEffect(() => {
-        debounce(300, () => setCheckPassword(password))();
+        debounce(100, () => setCheckPassword(password))();
     }, [password, setCheckPassword]);
 
     useEffect(() => {
-        debounce(300, () => setCheckConfirmPassword(confirmPassword))();
+        debounce(100, () => setCheckConfirmPassword(confirmPassword))();
     }, [confirmPassword, setCheckConfirmPassword]);
 
     const ruleResults = useMemo(() => {
