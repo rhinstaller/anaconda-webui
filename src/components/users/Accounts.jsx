@@ -199,7 +199,7 @@ const CreateAccount = ({
             <FormSection
               title={_("Create account")}
             >
-                {_("This account will have administration priviledge with sudo.")}
+                {_("This account will have administration privilege with sudo.")}
                 <FormGroup
                   label={_("Full name")}
                   fieldId={idPrefix + "-full-name"}
