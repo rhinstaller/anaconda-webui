@@ -241,7 +241,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     const descriptionWithIcon = (
         isDisk
             ? (
-                <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+                <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
                     <FlexItem><HddIcon /></FlexItem>
                     <FlexItem>{description}</FlexItem>
                 </Flex>
