@@ -213,14 +213,10 @@ export const scenarios = [{
     check: checkEraseAll,
     default: true,
     detail: helpEraseAll,
-    dialogTitleIconVariant: "warning",
-    dialogWarning: _("The selected disks will be erased, this cannot be undone. Are you sure you want to continue with the installation?"),
-    dialogWarningTitle: _("Erase data and install?"),
     id: "erase-all",
     // CLEAR_PARTITIONS_ALL = 1
     initializationMode: 1,
     label: _("Erase data and install"),
-    screenWarning: _("Erasing the data cannot be undone. Be sure to have backups."),
 }, {
     action: ReclaimSpace,
     buttonLabel: _("Install"),
@@ -229,42 +225,30 @@ export const scenarios = [{
     check: checkUseFreeSpace,
     default: false,
     detail: helpUseFreeSpace,
-    dialogTitleIconVariant: "",
-    dialogWarning: _("The installation will use the available space on your devices and will not erase any device data."),
-    dialogWarningTitle: _("Install on the free space?"),
     id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
     label: _("Use free space for the installation"),
-    screenWarning: _("To prevent loss, make sure to backup your data."),
 }, {
     buttonLabel: _("Apply mount point assignment and install"),
     buttonVariant: "danger",
     check: checkMountPointMapping,
     default: false,
     detail: helpMountPointMapping,
-    dialogTitleIconVariant: "",
-    dialogWarning: _("The installation will use your configured partitioning layout."),
-    dialogWarningTitle: _("Install on the custom mount points?"),
     id: "mount-point-mapping",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
     label: _("Mount point assignment"),
-    screenWarning: _("To prevent loss, make sure to backup your data."),
 }, {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
     check: checkConfiguredStorage,
     default: false,
     detail: helpConfiguredStorage,
-    dialogTitleIconVariant: "",
-    dialogWarning: _("The installation will use your configured partitioning layout."),
-    dialogWarningTitle: _("Install using the configured storage?"),
     id: "use-configured-storage",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
     label: _("Use configured storage"),
-    screenWarning: _("To prevent loss, make sure to backup your data."),
 }
 ];
 

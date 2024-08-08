@@ -21,6 +21,7 @@ from anacondalib import VirtInstallMachineCase, pixel_tests_ignore, test_plan
 from installer import Installer
 from password import Password
 from progress import Progress
+from review import Review
 from storage import Storage
 from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -214,6 +215,7 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
     def testGuidedEncrypted(self):
         b = self.browser
         i = Installer(b, self.machine)
+        r = Review(b, self.machine)
         s = Storage(b, self.machine)
         p = Password(b, s.encryption_id_prefix)
         pro = Progress(b)
@@ -233,7 +235,8 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
 
         # Reboot and check installed system
         i.reach(i.steps.REVIEW)
-        i.begin_installation()
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
         pro.wait_done()
         s.unlock_storage_on_boot(strong_password)
         self.handleReboot()
@@ -252,8 +255,9 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
     def testGuidedMultiSelect(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, self.machine)
-        s = Storage(b, self.machine)
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
         p = Progress(b)
 
         self.add_disk(15, os.path.join(BOTS_DIR, "./images/debian-stable"))
@@ -266,7 +270,8 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         s.check_disk_selected("vdb", False)
 
         i.reach(i.steps.REVIEW)
-        i.begin_installation()
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
         p.wait_done()
 
         self.handleReboot()
@@ -298,6 +303,7 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         b = self.browser
         m = self.machine
         i = Installer(b, self.machine)
+        r = Review(b, m)
         s = Storage(b, self.machine)
         p = Progress(b)
 
@@ -311,7 +317,8 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
         s.select_disk("vdb", True)
 
         i.reach(i.steps.REVIEW)
-        i.begin_installation()
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
         p.wait_done()
 
         self.handleReboot()

@@ -262,6 +262,7 @@ class TestStorageUseFreeSpaceScenarioExistingSystemFedora(VirtInstallMachineCase
 
         i.reach(i.steps.REVIEW)
         r.check_affected_system("Fedora Linux", [("vda4", ["home", "root", "var"])])
+        r.check_some_erased_checkbox_label()
 
 
 if __name__ == '__main__':
