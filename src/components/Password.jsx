@@ -24,6 +24,7 @@ import {
     Button,
     FormGroup,
     FormHelperText,
+    FormSection,
     HelperText,
     HelperTextItem,
     InputGroup,
@@ -194,7 +195,7 @@ export const PasswordFormFields = ({
     }, [setIsValid, ruleResults, ruleConfirmMatches, passwordStrength, strengthLevels]);
 
     return (
-        <>
+        <FormSection>
             <FormGroup
               label={passwordLabel}
               labelInfo={rulesSatisfied(ruleResults) && passwordStrengthLabel(idPrefix, passwordStrength, strengthLevels)}
@@ -258,7 +259,7 @@ export const PasswordFormFields = ({
                     </HelperText>
                 </FormHelperText>
             </FormGroup>
-        </>
+        </FormSection>
     );
 };
 
