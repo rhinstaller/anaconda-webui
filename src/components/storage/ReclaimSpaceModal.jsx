@@ -236,7 +236,7 @@ const isDeviceLocked = ({ device }) => {
 
 const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedActions) => {
     const device = devices[disk];
-    const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : disk;
+    const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : device.name.v;
     const isDisk = device["is-disk"].v;
     const descriptionWithIcon = (
         isDisk
