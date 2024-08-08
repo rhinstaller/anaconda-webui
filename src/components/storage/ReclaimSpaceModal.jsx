@@ -156,6 +156,7 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                       emptyCaption={_("No devices")}
                       id={idPrefix + "-table"}
                       rows={rows}
+                      variant="compact"
                     />
                 </Panel>
             </Stack>
