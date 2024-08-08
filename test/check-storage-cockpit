@@ -92,9 +92,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r = Review(b, m)
 
         vgname = "fedoravg"
-
-        self.addCleanup(m.execute, f"vgremove -y -ff {vgname}")
-
         dev = "vda"
 
         i.open()
