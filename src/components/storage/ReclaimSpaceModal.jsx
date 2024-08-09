@@ -263,10 +263,23 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         }
     }
 
-    let deviceType = device.type.v;
+    let deviceType = device.formatData.type.v;
+    // FIXME: Ensure that the partition labels are human readable
+    // Related to: https://github.com/storaged-project/blivet/issues/1258
+    const partitionLabel = device.attrs.v["partition-label"];
+
+    if (partitionLabel) {
+        deviceType = deviceType ? cockpit.format("$0 ($1)", partitionLabel, deviceType) : partitionLabel;
+    }
+
     if (isDeviceLocked({ device })) {
         deviceType = (
-            <Flex className={idPrefix + "-device-locked"} spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+            <Flex
+              className={idPrefix + "-device-locked"}
+              spaceItems={{ default: "spaceItemsSm" }}
+              alignItems={{ default: "alignItemsCenter" }}
+              flexWrap={{ default: "nowrap" }}
+            >
                 <FlexItem>{deviceType}</FlexItem>
                 <FlexItem><LockIcon /></FlexItem>
             </Flex>
