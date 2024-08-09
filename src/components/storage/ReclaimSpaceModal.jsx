@@ -147,8 +147,8 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                     <ListingTable
                       aria-label={_("Reclaim space")}
                       columns={[
-                          { props: { width: 20 }, title: _("Name") },
                           { props: { width: 20 }, title: _("Location") },
+                          { props: { width: 20 }, title: _("Name") },
                           { props: { width: 20 }, title: _("Type") },
                           { props: { width: 20 }, title: _("Space") },
                           { props: { width: 20 }, title: _("Actions") }
@@ -236,19 +236,15 @@ const isDeviceLocked = ({ device }) => {
 
 const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedActions) => {
     const device = devices[disk];
-    const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : device.name.v;
     const isDisk = device["is-disk"].v;
-    const descriptionWithIcon = (
-        isDisk
-            ? (
-                <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
-                    <FlexItem><HddIcon /></FlexItem>
-                    <FlexItem>{description}</FlexItem>
-                </Flex>
-            )
-            : description
+    const isPartition = device.type.v === "partition";
+    const typeLabel = isPartition ? (device.misc.fsLabel || device.misc.partName) : "";
+    const diskDescription = (
+        <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
+            <FlexItem><HddIcon /></FlexItem>
+            <FlexItem>{cockpit.format("$0 ($1)", device.name.v, device.description.v)}</FlexItem>
+        </Flex>
     );
-    const location = device["is-disk"].v ? device.path.v : "";
     const classNames = [
         idPrefix + "-table-row",
         idPrefix + "-device-level-" + level,
@@ -264,10 +260,15 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         }
     }
 
-    let deviceType = device.type.v;
+    let deviceType = isDisk ? device.type.v : device.formatData.type.v;
     if (isDeviceLocked({ device })) {
         deviceType = (
-            <Flex className={idPrefix + "-device-locked"} spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+            <Flex
+              className={idPrefix + "-device-locked"}
+              spaceItems={{ default: "spaceItemsSm" }}
+              alignItems={{ default: "alignItemsCenter" }}
+              flexWrap={{ default: "nowrap" }}
+            >
                 <FlexItem>{deviceType}</FlexItem>
                 <FlexItem><LockIcon /></FlexItem>
             </Flex>
@@ -287,8 +288,8 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     return [
         {
             columns: [
-                { title: descriptionWithIcon },
-                { title: location },
+                { props: { colSpan: isDisk ? 2 : 1 }, title: isDisk ? diskDescription : (isPartition ? device.name.v : "") },
+                ...!isDisk ? [{ title: isPartition ? typeLabel : device.name.v }] : [],
                 { title: deviceType },
                 { title: size },
                 { title: deviceActions }

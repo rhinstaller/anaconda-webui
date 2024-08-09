@@ -113,11 +113,11 @@ class TestStorageUseFreeSpaceScenario(VirtInstallMachineCase, StorageCase):
         s.reclaim_check_available_space("1.03 MB")
 
         # Check that all partitions are present
-        s.reclaim_check_device_row("vda (0x", "/dev/vda", "disk", "16.1 GB")
-        s.reclaim_check_device_row("vda1", "", "partition", "1.05 MB")
-        s.reclaim_check_device_row("vda2", "", "partition", "4.29 GB")
-        s.reclaim_check_device_row("vda3", "", "partition", "5.37 GB")
-        s.reclaim_check_device_row("vda4", "", "partition", "6.44 GB")
+        s.reclaim_check_device_row("vda (0x", "", "disk", "16.1 GB")
+        s.reclaim_check_device_row("vda1", "", "biosboot", "1.05 MB")
+        s.reclaim_check_device_row("vda2", "", "ext4", "4.29 GB")
+        s.reclaim_check_device_row("vda3", "", "btrfs", "5.37 GB")
+        s.reclaim_check_device_row("vda4", "", "btrfs", "6.44 GB")
 
         # Check that deleting a disk will delete all contained partitions
         s.reclaim_remove_device("vda (0x")
@@ -236,7 +236,7 @@ class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
         s.set_partitioning("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
-        s.reclaim_check_device_row("vda1", "", "partition", "4.29 GB", locked=True)
+        s.reclaim_check_device_row("vda1", "", "luks", "4.29 GB", locked=True)
         s.reclaim_check_action_button_present("vda1", "shrink", True, True)
         s.reclaim_check_action_button_present("vda1", "delete", True)
 

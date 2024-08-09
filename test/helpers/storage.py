@@ -363,10 +363,11 @@ class StorageReclaimDialog():
     def __init__(self, browser):
         self.browser = browser
 
-    def reclaim_check_device_row(self, name, location="", deviceType=None, space=None, locked=False):
+    def reclaim_check_device_row(self, location, name=None, deviceType=None, space=None, locked=False):
         self.browser.wait_visible(
-            f"#reclaim-space-modal-table td[data-label=Name]:contains({name}) + "
-            f"td[data-label=Location]:contains({location}) + "
+            "#reclaim-space-modal-table "
+            f"td[data-label=Location]:contains({location}) + " +
+            (f"td[data-label=Name]:contains({name}) + " if deviceType != "disk" else "") +
             f"td[data-label=Type]:contains({deviceType}) + "
             f"td[data-label=Space]:contains({space})"
         )
