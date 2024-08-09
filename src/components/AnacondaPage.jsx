@@ -48,6 +48,7 @@ export const AnacondaPage = ({ children, isFormDisabled, setIsFormDisabled, step
             {title && <Title headingLevel="h2">{title}</Title>}
             {stepNotification?.step === step &&
                 <Alert
+                  id={step + "-step-notification"}
                   isInline
                   title={stepNotification.message}
                   variant="danger"
