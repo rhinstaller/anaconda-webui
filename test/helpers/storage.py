@@ -319,6 +319,14 @@ class StorageDBus():
             {DISK_INITIALIZATION_OBJECT_PATH} \
             {DISK_INITIALIZATION_INTERFACE} InitializationMode i -- {value}')
 
+    def get_btrfs_volume_ids(self, volume_name):
+        """Get device ids of all volumes with volume_name found."""
+        # The tool shows unspecified name as "none"
+        volume_name = volume_name or "none"
+        volume_ids = [f"BTRFS-{uuid.strip()}" for uuid in
+                      self.machine.execute(f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3").split('\n')[:-1]]
+        return volume_ids
+
 
 class StorageScenario():
     def __init__(self, browser, machine):
@@ -504,11 +512,14 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def select_mountpoint_row_mountpoint(self, row, mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
-    def select_mountpoint_row_device(self, row, device):
+    def select_mountpoint_row_device(self, row, device, device_id=None):
         selector = f"{self.table_row(row)} .pf-v5-c-select__toggle"
 
         self.browser.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
-        select_entry = f"{selector} + ul button[data-value='{device}']"
+        if device_id:
+            select_entry = f"{selector} + ul button[data-device-id='{device_id}']"
+        else:
+            select_entry = f"{selector} + ul button[data-device-name='{device}']"
         self.browser.click(select_entry)
         self.browser.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", device)
 

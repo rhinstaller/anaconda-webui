@@ -261,6 +261,7 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
 
     const device = request["device-spec"];
     const deviceName = device && deviceData[device].name.v;
+    const size = cockpit.format_bytes(deviceData[device]?.total.v);
     const options = devices.map(device => {
         const deviceName = deviceData[device].name.v;
         const formatType = deviceData[device]?.formatData.type.v;
@@ -276,11 +277,17 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
 
         return (
             <SelectOption
-              data-value={deviceName}
+              data-device-name={deviceName}
+              data-device-id={device}
               isDisabled={isDisabled}
               description={description}
               key={device}
-              value={deviceName}
+              value={{
+                  compareTo: function (value) { return value.device === this.device },
+                  device,
+                  deviceName,
+                  toString: function () { return this.deviceName },
+              }}
             />
         );
     });
@@ -290,11 +297,22 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
           hasPlaceholderStyle
           isOpen={isOpen}
           placeholderText={_("Select a device")}
-          selections={deviceName ? [deviceName] : []}
+          selections={device
+              ? [{
+                  compareTo: function (value) { return value.device === this.device },
+                  device,
+                  deviceName,
+                  hasUniqueName: Object.keys(deviceData).filter(dev => deviceData[dev].name.v === deviceName).length > 1,
+                  size,
+                  toString: function () {
+                      if (!this.hasUniqueName) { return this.deviceName } else { return cockpit.format("$0 ($1)", this.deviceName, this.size) }
+                  },
+              }]
+              : []}
           variant={SelectVariant.single}
           onToggle={(_event, val) => setIsOpen(val)}
           onSelect={(_, selection) => {
-              const deviceSpec = devices.find(d => deviceData[d].name.v === selection);
+              const deviceSpec = devices.find(d => d === selection.device);
               handleRequestChange({ deviceSpec, mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}

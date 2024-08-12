@@ -34,7 +34,6 @@ import { StorageReview } from "../review/StorageReview.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
-    useDuplicateDeviceNames,
     useMountPointConstraints,
     useOriginalDeviceTree,
     useRequiredSize,
@@ -106,7 +105,7 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
     return missingNonmountablePartitions;
 };
 
-const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, selectedDisks, usablePartitions }) => {
+const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePartitions }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
@@ -122,10 +121,6 @@ const checkMountPointMapping = ({ duplicateDeviceNames, mountPointConstraints, s
     } else if (missingNMParts.length) {
         availability.available = false;
         availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
-    } else if (duplicateDeviceNames.length) {
-        availability.available = false;
-        availability.reason = cockpit.format(_("Some devices use the same name: $0."), duplicateDeviceNames.join(", "));
-        availability.hint = _("To use this option, rename devices to have unique names.");
     }
     return availability;
 };
@@ -282,7 +277,6 @@ const InstallationScenarioSelector = ({
     ));
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const duplicateDeviceNames = useDuplicateDeviceNames({ devices });
     const mountPointConstraints = useMountPointConstraints();
     const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
@@ -301,7 +295,6 @@ const InstallationScenarioSelector = ({
                     devices,
                     diskFreeSpace,
                     diskTotalSpace,
-                    duplicateDeviceNames,
                     mountPointConstraints,
                     partitioning: partitioning.path,
                     requiredSize,
@@ -317,7 +310,6 @@ const InstallationScenarioSelector = ({
         devices,
         diskFreeSpace,
         diskTotalSpace,
-        duplicateDeviceNames,
         mountPointConstraints,
         partitioning.path,
         partitioning.storageScenarioId,

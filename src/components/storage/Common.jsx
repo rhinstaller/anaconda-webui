@@ -40,8 +40,6 @@ import {
     partitioningSetPassphrase,
 } from "../../apis/storage_partitioning.js";
 
-import { findDuplicatesInArray } from "../../helpers/utils.js";
-
 import { StorageContext } from "../Common.jsx";
 import { scenarios } from "./InstallationScenario.jsx";
 
@@ -73,21 +71,6 @@ export const useDiskFreeSpace = ({ devices, selectedDisks }) => {
     }, [selectedDisks, devices]);
 
     return diskFreeSpace;
-};
-
-export const useDuplicateDeviceNames = ({ devices }) => {
-    const [duplicateDeviceNames, setDuplicateDeviceNames] = useState([]);
-
-    useEffect(() => {
-        const update = async () => {
-            const _duplicateDeviceNames = findDuplicatesInArray(Object.keys(devices).map(device => devices[device].name.v));
-
-            setDuplicateDeviceNames(_duplicateDeviceNames);
-        };
-        update();
-    }, [devices]);
-
-    return duplicateDeviceNames;
 };
 
 export const useUsablePartitions = ({ devices, selectedDisks }) => {
