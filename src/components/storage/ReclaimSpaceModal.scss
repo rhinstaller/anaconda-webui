@@ -21,7 +21,7 @@
   }
 
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-0 {
-    border-block-start:  var(--pf-v5-c-table--border-width--base) solid var(--pf-v5-c-table--BorderColor);
+    border-block-start: var(--pf-v5-c-table--border-width--base) solid var(--pf-v5-c-table--BorderColor);
   }
 
   .reclaim-space-modal-device-action-delete {
@@ -32,6 +32,43 @@
   .reclaim-space-modal-device-action-shrink {
     font-size: var(--pf-v5-global--FontSize--sm);
     color: var(--pf-v5-global--warning-color--100);
+  }
+}
+
+// Make scrolling happen in the list instead of the dialog
+#reclaim-space-modal .pf-v5-c-modal-box__body {
+  // Stretch to fill the remaining area with content
+  display: flex;
+  flex-direction: column;
+
+  // Don't overflow here; overflow below
+  > .pf-v5-l-stack {
+    overflow: hidden;
+  }
+
+  .pf-v5-c-panel {
+    // Make the panel scroll (not the stack)
+    overflow: auto;
+    // Replace the border below with an actual border for the panel
+    border: var(--pf-v5-c-panel--before--BorderWidth) solid var(--pf-v5-c-panel--before--BorderColor);
+
+    // Hide the original border (as it doesn't work properly)
+    &::before {
+      display: none;
+    }
+  }
+
+  // Make the heading sticky
+  .pf-v5-c-table__thead {
+    // It needs to have background so when it overlaps, it's covering things up
+    background: var(--pf-v5-c-table--BackgroundColor);
+    // Re-add the outline
+    outline: 1px solid var(--pf-v5-c-table--BorderColor);
+    position: sticky;
+    top: 0;
+    // It should have z-index; since it's relative to the stacking overder,
+    // 1 is enough to be above
+    z-index: 1;
   }
 }
 
