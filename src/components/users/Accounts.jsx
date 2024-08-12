@@ -195,52 +195,54 @@ const CreateAccount = ({
     const fullNameValidated = getValidatedVariant(isFullNameValid);
 
     return (
-        <FormSection
-          title={_("Create account")}
-        >
-            {_("This account will have administration priviledge with sudo.")}
-            <FormGroup
-              label={_("Full name")}
-              fieldId={idPrefix + "-full-name"}
+        <>
+            <FormSection
+              title={_("Create account")}
             >
-                <TextInput
-                  id={idPrefix + "-full-name"}
-                  value={fullName}
-                  onChange={(_event, val) => setFullName(val)}
-                  validated={fullNameValidated}
-                />
-                {fullNameValidated === "error" &&
-                <FormHelperText>
-                    <HelperText>
-                        <HelperTextItem variant={fullNameValidated}>
-                            {fullNameInvalidHint}
-                        </HelperTextItem>
-                    </HelperText>
-                </FormHelperText>}
-            </FormGroup>
-            <FormGroup
-              label={_("User name")}
-              fieldId={idPrefix + "-user-name"}
-            >
-                <InputGroup id={idPrefix + "-user-name-input-group"}>
+                {_("This account will have administration privilege with sudo.")}
+                <FormGroup
+                  label={_("Full name")}
+                  fieldId={idPrefix + "-full-name"}
+                >
                     <TextInput
-                      id={idPrefix + "-user-name"}
-                      value={userName}
-                      onChange={(_event, val) => setUserName(val)}
-                      validated={userNameValidated}
+                      id={idPrefix + "-full-name"}
+                      value={fullName}
+                      onChange={(_event, val) => setFullName(val)}
+                      validated={fullNameValidated}
                     />
-                </InputGroup>
-                {userNameValidated === "error" &&
-                <FormHelperText>
-                    <HelperText>
-                        <HelperTextItem variant={userNameValidated}>
-                            {userNameInvalidHint}
-                        </HelperTextItem>
-                    </HelperText>
-                </FormHelperText>}
-            </FormGroup>
+                    {fullNameValidated === "error" &&
+                    <FormHelperText>
+                        <HelperText>
+                            <HelperTextItem variant={fullNameValidated}>
+                                {fullNameInvalidHint}
+                            </HelperTextItem>
+                        </HelperText>
+                    </FormHelperText>}
+                </FormGroup>
+                <FormGroup
+                  label={_("User name")}
+                  fieldId={idPrefix + "-user-name"}
+                >
+                    <InputGroup id={idPrefix + "-user-name-input-group"}>
+                        <TextInput
+                          id={idPrefix + "-user-name"}
+                          value={userName}
+                          onChange={(_event, val) => setUserName(val)}
+                          validated={userNameValidated}
+                        />
+                    </InputGroup>
+                    {userNameValidated === "error" &&
+                    <FormHelperText>
+                        <HelperText>
+                            <HelperTextItem variant={userNameValidated}>
+                                {userNameInvalidHint}
+                            </HelperTextItem>
+                        </HelperText>
+                    </FormHelperText>}
+                </FormGroup>
+            </FormSection>
             {passphraseForm}
-        </FormSection>
+        </>
     );
 };
 
