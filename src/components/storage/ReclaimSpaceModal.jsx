@@ -156,6 +156,7 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                       emptyCaption={_("No devices")}
                       id={idPrefix + "-table"}
                       rows={rows}
+                      variant="compact"
                     />
                 </Panel>
             </Stack>
@@ -235,12 +236,12 @@ const isDeviceLocked = ({ device }) => {
 
 const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedActions) => {
     const device = devices[disk];
-    const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : disk;
+    const description = device.description.v ? cockpit.format("$0 ($1)", disk, device.description.v) : device.name.v;
     const isDisk = device["is-disk"].v;
     const descriptionWithIcon = (
         isDisk
             ? (
-                <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
+                <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
                     <FlexItem><HddIcon /></FlexItem>
                     <FlexItem>{description}</FlexItem>
                 </Flex>
