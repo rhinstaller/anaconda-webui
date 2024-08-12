@@ -204,7 +204,7 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
 @nondestructive
 class TestMultipleDisks(VirtInstallMachineCase, StorageHelpers):
 
-    def testDiskSelectionLVM(self):
+    def _testDiskSelectionLVM(self, encrypted=False):
         """
         Test that the user can't select one PV when VG group spans across multiple disks
         """
@@ -219,13 +219,28 @@ class TestMultipleDisks(VirtInstallMachineCase, StorageHelpers):
         s.partition_disk("/dev/vda", [("10GB", "lvmpv")])
         s.partition_disk("/dev/vdb", [("10GB", "lvmpv")])
 
-        # Create VG on LUKS with the two available disks
-        m.execute("""
-        vgcreate -y vg /dev/vda1 /dev/vdb1
-        lvcreate -y -n lv -l 100%FREE vg
-        mkfs.ext4 -F /dev/vg/lv
-        vgchange -a n vg
-        """)
+        if encrypted:
+            # Create VG on LUKS with the two available disks
+            m.execute("""
+            echo einszwei | cryptsetup luksFormat /dev/vda1
+            echo einszwei | cryptsetup luksFormat /dev/vdb1
+            echo einszwei | cryptsetup luksOpen /dev/vda1 encrypted-vol-a
+            echo einszwei | cryptsetup luksOpen /dev/vdb1 encrypted-vol-b
+            vgcreate -y vg /dev/mapper/encrypted-vol-a /dev/mapper/encrypted-vol-b
+            lvcreate -y -n lv -l 100%FREE vg
+            mkfs.ext4 -F /dev/vg/lv
+            vgchange -a n vg
+            cryptsetup close encrypted-vol-a
+            cryptsetup close encrypted-vol-b
+            """)
+        else:
+            # Create VG with the two available disks
+            m.execute("""
+            vgcreate -y vg /dev/vda1 /dev/vdb1
+            lvcreate -y -n lv -l 100%FREE vg
+            mkfs.ext4 -F /dev/vg/lv
+            vgchange -a n vg
+            """)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -233,6 +248,12 @@ class TestMultipleDisks(VirtInstallMachineCase, StorageHelpers):
         i.reach(i.steps.DISK_ENCRYPTION)
         i.next(should_fail=True)
         b.wait_in_text("#disk-encryption-step-notification", "Selected disks vda contain volume group 'vg' that also uses further unselected disks")
+
+    def testDiskSelectionLVM(self):
+        self._testDiskSelectionLVM()
+
+    def testDiskSelectionLVMonLUKS(self):
+        self._testDiskSelectionLVM(encrypted=True)
 
 
 class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
