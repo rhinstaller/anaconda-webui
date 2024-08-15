@@ -641,38 +641,54 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.check_next_disabled(False)
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    def testUnsupportedStorageConfiguration(self):
-        # Prevent the user from performing an installation if multiple devices exist with the same name
+    def testDuplicateDeviceNames(self):
         # https://bugzilla.redhat.com/show_bug.cgi?id=2237878
-        # TODO: Make the test nondestructive
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-        _r = Review(b, m)  # noqa: F841
+        r = Review(b, m)
 
         disk = "/dev/vda"
-        tmp_mount = "/tmp/btrfs-mount-test"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "btrfs"), ("", "btrfs")])
-        m.execute(f"""
-        mkdir -p {tmp_mount}
-
-        mount {disk}2 {tmp_mount}
-        btrfs subvolume create {tmp_mount}/home
-        umount {tmp_mount}
-
-        mount {disk}3 {tmp_mount}
-        btrfs subvolume create {tmp_mount}/home
-        umount {tmp_mount}
-        rmdir {tmp_mount}
-        """)
-
+        btrfsname = "home"
+        s.partition_disk(
+            disk,
+            [
+                ("1MiB", "biosboot"),
+                ("1GB", "ext4"),
+                ("5GiB", "btrfs", "-f", "-L", "root"),
+                ("5GiB", "btrfs", "-f", "-L", btrfsname),
+                ("", "btrfs", "-f", "-L", btrfsname)
+            ]
+        )
         s.udevadm_settle()
+        btrfs_volume_ids = s.get_btrfs_volume_ids(btrfsname)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
-        s.wait_scenario_available("mount-point-mapping", False)
+
+        s.select_mountpoint([("vda", True)])
+
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, "vda2")
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(3, "/home/joe")
+        s.select_mountpoint_row_device(3, "home", device_id=btrfs_volume_ids[0])
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(4, "/home/alan")
+        s.select_mountpoint_row_device(4, "home", device_id=btrfs_volume_ids[1])
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        disk = "vda"
+        r.check_disk(disk, "16.1 GB vda (0x1af4)")
+
+        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs")
+        r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs")
+        r.check_disk_row(disk, "/home/alan", "vda5", "4.29 GB", False, "btrfs")
 
     def testLVM(self):
         b = self.browser

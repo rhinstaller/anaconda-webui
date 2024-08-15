@@ -15,14 +15,6 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Find duplicates in an array
- * @param {Array} array
- * @returns {Array} The duplicates
- */
-export const findDuplicatesInArray = (array) => {
-    return array.filter((item, index) => array.indexOf(item) !== index);
-};
-
 /* Check if the given arrays are equal
  * - works only with primitive values
  * @param {Array} array1
