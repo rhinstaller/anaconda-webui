@@ -157,17 +157,19 @@ export const CockpitStorageIntegration = ({
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
+    const [isIframeMounted, setIsIframeMounted] = useState(false);
     const [isConfirmed, setIsConfirmed] = useState(false);
     const backdropClass = useMaybeBackdrop();
+    const handleIframeLoad = () => setIsIframeMounted(true);
 
     useEffect(() => {
-        const iframe = document.getElementById("cockpit-storage-frame");
-        if (iframe) {
+        if (isIframeMounted) {
+            const iframe = document.getElementById("cockpit-storage-frame");
             iframe.contentWindow.addEventListener("error", exception => {
                 onCritFail({ context: _("Storage plugin failed"), isFrontend: true })(exception.error);
             });
         }
-    }, [onCritFail]);
+    }, [isIframeMounted, onCritFail]);
 
     const handleConfirmOpenModal = () => {
         setIsConfirmed(true);
@@ -207,6 +209,7 @@ export const CockpitStorageIntegration = ({
                           src="/cockpit/@localhost/storage/index.html"
                           name="cockpit-storage"
                           id="cockpit-storage-frame"
+                          onLoad={handleIframeLoad}
                           className={idPrefix + "-iframe-cockpit-storage"} />
                     </PageSection>
                     <ModifyStorageSideBar />
