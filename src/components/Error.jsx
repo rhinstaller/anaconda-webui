@@ -231,7 +231,7 @@ const quitButton = (isBootIso) => {
 
 export const CriticalError = ({ exception, isConnected, reportLinkURL }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const context = exception.backendException?.contextData?.context || exception.frontendException?.jsContext;
+    const context = exception.backendException?.contextData?.context || exception.frontendException?.contextData?.context;
     const description = context
         ? cockpit.format(_("The installer cannot continue due to a critical error: $0"), _(context))
         : _("The installer cannot continue due to a critical error.");
