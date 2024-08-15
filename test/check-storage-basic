@@ -32,9 +32,9 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
+@nondestructive
 class TestStorage(VirtInstallMachineCase, StorageHelpers):
 
-    @nondestructive
     def testLocalStandardDisks(self):
         b = self.browser
         i = Installer(b, self.machine)
@@ -93,7 +93,6 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         # Check clear selection of disks
         s.select_none_disks_and_check([dev, "vda"])
 
-    @nondestructive
     def testScenarioSelection(self):
         """
         Test that the use-free-space scenario is conditionally available
@@ -126,7 +125,6 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         i.back()
         s.check_partitioning_selected("use-free-space")
 
-    @nondestructive
     def testPartitioningObject(self):
         # Test which partitioning object ends up being the AppliedPartitioning
         # when we go back and forward the storage steps
@@ -174,7 +172,6 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         new_applied_partitioning = s.dbus_get_applied_partitioning()
         self.assertEqual(new_applied_partitioning, "")
 
-    @nondestructive
     def testCockpitJsErrorHandling(self):
         b = self.browser
         m = self.machine
