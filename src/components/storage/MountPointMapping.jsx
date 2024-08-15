@@ -264,10 +264,20 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
     const size = cockpit.format_bytes(deviceData[device]?.total.v);
     const options = devices.map(device => {
         const deviceName = deviceData[device].name.v;
+
+        const ancestors = getDeviceAncestors(deviceData, device);
+        const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
+        const typeLabel = deviceData[parentPartition]?.misc.fsLabel || deviceData[parentPartition]?.misc.partName;
+
         const formatType = deviceData[device]?.formatData.type.v;
         const format = deviceData[device]?.formatData.description.v;
         const size = cockpit.format_bytes(deviceData[device]?.total.v);
-        const description = cockpit.format("$0, $1", format, size);
+        const description = (
+            typeLabel && typeLabel !== deviceName
+                ? cockpit.format("$0 $1, used by $2", size, format, typeLabel)
+                : cockpit.format("$0 $1", size, format)
+        );
+
         const isLockedLUKS = lockedLUKSDevices.some(p => device.includes(p));
         /* Disable the following devices:
          * - Locked LUKS devices
