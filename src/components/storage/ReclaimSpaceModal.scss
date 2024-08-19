@@ -8,21 +8,11 @@
     }
   }
 
-  tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-1 {
-    td:first-child {
-      padding-inline-start: var(--pf-v5-global--spacer--xl);
-    }
-  }
-
-  tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-2 {
-    td:first-child {
-      padding-inline-start: var(--pf-v5-global--spacer--2xl);
-    }
-  }
-
-  tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-3 {
-    td:first-child {
-      padding-inline-start: var(--pf-v5-global--spacer--3xl);
+  @for $i from 1 through 10 {
+    tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-#{$i} {
+      td:nth-child(2) {
+        padding-inline-start: calc(var(--pf-v5-c-table--cell--PaddingLeft) + #{$i - 1} * var(--pf-v5-global--spacer--md));
+      }
     }
   }
 
