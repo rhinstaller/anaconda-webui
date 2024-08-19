@@ -1,0 +1,129 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from review import Review
+from storage import Storage
+from storagelib import StorageCase  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestStorageMountPointsRAID(VirtInstallMachineCase, StorageCase):
+
+    def testEncryptedUnlockRAIDonLUKS(self):
+        # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        # BIOS boot partition, /boot partition, / on RAID
+        disk = "/dev/vda"
+        dev = "vda"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
+        m.execute(f"""
+        echo einszweidrei | cryptsetup luksFormat {disk}3
+        echo einszweidrei | cryptsetup luksOpen {disk}3 encrypted-vol
+        echo einszweidrei | cryptsetup luksFormat {disk}4
+        echo einszweidrei | cryptsetup luksOpen {disk}4 encrypted-vol2
+        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 /dev/mapper/encrypted-vol /dev/mapper/encrypted-vol2
+        mkfs.xfs /dev/md/encryptedraid
+        """)
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        # select only vda and check that we don't try to unlock the LUKS partition on vdb
+        s.select_mountpoint([(dev, True)], encrypted=True)
+
+        s.unlock_all_encrypted()
+        s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
+        b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+
+        s.select_mountpoint_row_device(1, "encryptedraid")
+        s.check_mountpoint_row_format_type(1, "xfs")
+
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk(dev, "16.1 GB vda (0x1af4)")
+
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
+        r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
+
+    def testEncryptedUnlockLUKSonRAID(self):
+        # LUKS on RAID: partition -> RAID -> LUKS -> filesystem
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        # BIOS boot partition, /boot partition, / on RAID
+        disk = "/dev/vda"
+        dev = "vda"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
+        m.execute(f"""
+        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 {disk}3 {disk}4
+        echo einszweidrei | cryptsetup luksFormat /dev/md/encryptedraid
+        echo einszweidrei | cryptsetup luksOpen /dev/md/encryptedraid encrypted-vol
+        mkfs.xfs /dev/mapper/encrypted-vol
+        cryptsetup luksClose /dev/mapper/encrypted-vol
+        """)
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        # select only vda and check that we don't try to unlock the LUKS partition on vdb
+        s.select_mountpoint([(dev, True)], encrypted=True)
+
+        s.unlock_all_encrypted()
+        s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
+        b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+        s.select_mountpoint_row_reformat(2)
+        s.check_mountpoint_row_reformat(2, True)
+
+        s.check_mountpoint_row_mountpoint(1, "/")
+        selector = "#mount-point-mapping-table-row-1 .pf-v5-c-select__toggle"
+        b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
+        select_entry = f"{selector} + ul li:nth-of-type(2) button"
+        b.click(select_entry)
+        b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
+        s.check_mountpoint_row_format_type(1, "xfs")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk(dev, "16.1 GB vda (0x1af4)")
+        r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB",  True, "xfs", True)
+
+
+if __name__ == '__main__':
+    test_main()
