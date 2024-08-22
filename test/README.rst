@@ -14,7 +14,7 @@ To run the WebUI integration tests run the following from the root of the anacon
 (do NOT run the integration tests as root).
 
 OSTree based systems (SilverBlue etc.) can use toolbx.
-See `<../../../CONTRIBUTING.rst#setting-up-development-container>`_.
+See `<../HACKING.rst#setting-up-development-container>`_.
 
 Then download test dependencies::
 
