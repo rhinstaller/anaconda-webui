@@ -188,7 +188,7 @@ payload: bots
 images: bots
 	bots/image-download $(TEST_OS) debian-stable ubuntu-stable
 
-$(UPDATES_IMG): bots
+$(UPDATES_IMG): prepare-test-deps
 	test/prepare-updates-img
 
 create-updates.img: bots
