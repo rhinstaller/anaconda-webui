@@ -194,6 +194,7 @@ export class Page {
     constructor (isBootIso, storageScenarioId) {
         this.component = DiskEncryption;
         this.id = "disk-encryption";
+        // TODO hide for home-reuse
         this.isHidden = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId);
         this.label = _("Disk encryption");
         this.title = _("Encrypt the selected devices?");

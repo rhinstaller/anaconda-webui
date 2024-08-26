@@ -40,7 +40,7 @@ import {
     useRequiredSize,
     useUsablePartitions,
 } from "./Common.jsx";
-import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
+import { helpConfiguredStorage, helpEraseAll, helpHomeReuse, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 
 import "./InstallationScenario.scss";
 
@@ -123,6 +123,16 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
         availability.available = false;
         availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
     }
+    return availability;
+};
+
+// TODO implement
+const checkHomeReuse = ({ selectedDisks }) => {
+    const availability = new AvailabilityState();
+
+    availability.hidden = false;
+    availability.available = !!selectedDisks.length;
+
     return availability;
 };
 
@@ -235,6 +245,16 @@ export const scenarios = [{
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
     label: _("Mount point assignment"),
+}, {
+    buttonLabel: _("Reuse home partition and install"),
+    buttonVariant: "danger",
+    check: checkHomeReuse,
+    default: false,
+    detail: helpHomeReuse,
+    id: "home-reuse",
+    // CLEAR_PARTITIONS_NONE = 0
+    initializationMode: 0,
+    label: _("Reinstall with /home partition preserved"),
 }, {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
