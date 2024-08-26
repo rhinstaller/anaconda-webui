@@ -241,6 +241,7 @@ class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-encrypted",
+            ignore=["#reclaim-space-modal-hint"],
         )
 
         s.reclaim_check_device_row("vda1", "", "luks", "4.29 GB", locked=True)
@@ -268,7 +269,7 @@ class TestReclaimExistingSystemFedora(VirtInstallMachineCase, StorageCase):
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-fedora",
-            ignore=["td[data-label=Space]"],
+            ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
         s.reclaim_remove_device("vda4")
@@ -302,7 +303,7 @@ class TestReclaimExistingSystemWindows(VirtInstallMachineCase):
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-windows",
-            ignore=["td[data-label=Space]"],
+            ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
 

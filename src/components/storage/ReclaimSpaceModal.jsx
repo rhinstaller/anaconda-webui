@@ -203,11 +203,11 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
     return (
         <Stack hasGutter>
             <HelperText>
-                <HelperTextItem isDynamic variant={status}>
+                <HelperTextItem id={idPrefix + "-hint"} isDynamic variant={status}>
                     {fmtToFragments(
                         _("Available free space: $0. Installation requires: $1."),
                         <b id={idPrefix + "-hint-available-free-space"}>{cockpit.format_bytes(diskFreeSpace + selectedSpaceToReclaim)}</b>,
-                        <b>{cockpit.format_bytes(requiredSize)}</b>
+                        <b id={idPrefix + "-hint-required-free-space"}>{cockpit.format_bytes(requiredSize)}</b>
                     )}
                 </HelperTextItem>
             </HelperText>
