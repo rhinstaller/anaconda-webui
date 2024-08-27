@@ -110,8 +110,8 @@ install: $(DIST_TEST) po/LINGUAS
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
 	mkdir -p $(DESTDIR)/usr/share/metainfo/
 	cp org.cockpit-project.$(PACKAGE_NAME).metainfo.xml $(DESTDIR)/usr/share/metainfo/
-	mkdir -p $(DESTDIR)/usr/libexec
-	cp webui-desktop $(DESTDIR)/usr/libexec/
+	mkdir -p $(DESTDIR)/usr/libexec/anaconda
+	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
 
 # required for running integration tests;

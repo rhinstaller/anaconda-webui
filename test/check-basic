@@ -46,7 +46,7 @@ class TestBasic(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # Ensure that the 'actual' UI process is running/
-        self.assertIn("/usr/libexec/webui-desktop", m.execute("ps aux"))
+        self.assertIn("/usr/libexec/anaconda/webui-desktop", m.execute("ps aux"))
 
     def testSidebarNavigation(self):
         b = self.browser
