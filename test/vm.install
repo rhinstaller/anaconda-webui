@@ -57,7 +57,8 @@ def vm_install(image, verbose, quick):
         # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
         # from a different repo, then pull it from the anaconda-webui PR COPR repo
         if not scenario or not scenario.startswith("anaconda-webui-pr-"):
-            subprocess.run(["rm", "anaconda-webui-*.rpm anaconda-webui-*.tar.xz"])
+            files_to_clean = glob.glob("anaconda-webui-*.rpm") + glob.glob("anaconda-webui-*.tar.xz") + ["anaconda-webui.spec"]
+            subprocess.run(["rm", *files_to_clean])
             subprocess.run(["make", "srpm"])
             srpm = glob.glob("anaconda-webui*.src.rpm")[0]
             vm_srpm = os.path.join("/var/tmp/build/SRPMS", os.path.basename(srpm))
