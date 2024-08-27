@@ -37,40 +37,7 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
 
         disk = "/dev/vda"
         dev = "vda"
-        tmp_mount = "/tmp/home-reuse-mount-test"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
-        m.execute(f"""
-        mkdir -p {tmp_mount}
-
-        mount {disk}3 {tmp_mount}
-        btrfs subvolume create {tmp_mount}/root
-        btrfs subvolume create {tmp_mount}/home
-        btrfs subvolume create {tmp_mount}/unused
-        btrfs subvolume snapshot {tmp_mount}/root {tmp_mount}/snapshot1
-        umount {tmp_mount}
-
-        # Fake previous installation and mark partitions by files
-
-        mount -o subvol=root,compress=zstd:1 {disk}3 {tmp_mount}
-        touch {tmp_mount}/old_root_file
-        mkdir {tmp_mount}/etc
-        cat > {tmp_mount}/etc/fstab << EOF
-        {disk}3     /           btrfs   subvol=root,compress=zstd:1 0 0
-        {disk}2     /boot       ext4    defaults                    1 2
-        {disk}3     /home       btrfs   subvol=home,compress=zstd:1 0 0
-        EOF
-        umount {tmp_mount}
-
-        mount -o subvol=home,compress=zstd:1 {disk}3 {tmp_mount}
-        touch {tmp_mount}/old_home_file
-        umount {tmp_mount}
-
-        mount -o subvol=data,compress=zstd:1 {disk}3 {tmp_mount}
-        touch {tmp_mount}/old_data_file
-        umount {tmp_mount}
-
-        rmdir {tmp_mount}
-        """)
+        create_existing_default_installation(disk, s, m)
 
         s.udevadm_settle()
 
@@ -91,6 +58,92 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
                          action="reuse")
 
         # TODO pixel test
+
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testMultipleRoots(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self.add_disk(10)
+
+        disk1 = "/dev/vda"
+        dev1 = "vda"
+        create_existing_default_installation(disk1, s, m)
+
+        disk2 = "/dev/vdb"
+        dev2 = "vdb"
+        create_existing_default_installation(disk2, s, m)
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        # Select both disk and verify that home reuse is not available
+        # (multiple OSes found)
+        s.select_none_disks_and_check([dev1, dev2])
+        s.select_disks([(dev1, True), (dev2, True)])
+        s.wait_scenario_available("home-reuse", False)
+
+        # Select only single disk and verify that home reuse is available
+        # (single OS found)
+        s.select_none_disks_and_check([dev1, dev2])
+        s.select_disks([(dev1, False), (dev2, True)])
+        s.wait_scenario_available("home-reuse", True)
+
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk_row(dev2, parent=f"{dev2}2", action="delete")
+        r.check_disk_row(dev2, parent=f"{dev2}1", action="delete")
+        r.check_disk(dev2, f"10.7 GB {dev2} (0x1af4)")
+        r.check_disk_row(dev2, "/boot", f"{dev2}2", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev2, "/", f"{dev2}3", "9.66 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev2, "/home", f"{dev2}3", "9.66 GB", False, "btrfs", is_encrypted=False,
+                         action="reuse")
+
+
+def create_existing_default_installation(disk, storage, machine):
+    tmp_mount = "/tmp/home-reuse-mount-test"
+    storage.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
+    machine.execute(f"""
+    mkdir -p {tmp_mount}
+
+    mount {disk}3 {tmp_mount}
+    btrfs subvolume create {tmp_mount}/root
+    btrfs subvolume create {tmp_mount}/home
+    btrfs subvolume create {tmp_mount}/unused
+    btrfs subvolume snapshot {tmp_mount}/root {tmp_mount}/snapshot1
+    umount {tmp_mount}
+
+    # Fake previous installation and mark partitions by files
+
+    mount -o subvol=root,compress=zstd:1 {disk}3 {tmp_mount}
+    touch {tmp_mount}/old_root_file
+    mkdir {tmp_mount}/etc
+    cat > {tmp_mount}/etc/fstab << EOF
+    {disk}3     /           btrfs   subvol=root,compress=zstd:1 0 0
+    {disk}2     /boot       ext4    defaults                    1 2
+    {disk}3     /home       btrfs   subvol=home,compress=zstd:1 0 0
+    EOF
+    umount {tmp_mount}
+
+    mount -o subvol=home,compress=zstd:1 {disk}3 {tmp_mount}
+    touch {tmp_mount}/old_home_file
+    umount {tmp_mount}
+
+    mount -o subvol=data,compress=zstd:1 {disk}3 {tmp_mount}
+    touch {tmp_mount}/old_data_file
+    umount {tmp_mount}
+
+    rmdir {tmp_mount}
+    """)
+
 
 if __name__ == '__main__':
     test_main()

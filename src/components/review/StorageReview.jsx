@@ -88,10 +88,11 @@ const DeviceRow = ({ disk }) => {
         const request = requests.find(request => request["device-spec"] === device);
         const format = devices[device].formatData.type.v;
 
+        let action = null;
         if (reuseHomeRequest?.["reused-mount-points"].includes(mount)) {
             action = _("reuse");
-        } else if (request === undefined || request.reformat) {
-            action = format ? cockpit.format(_("format as $0"), format) : null;
+        } else if ((request === undefined || request.reformat) && format) {
+            action = cockpit.format(_("format as $0"), format);
         } else if (format === "biosboot") {
             action = format;
         } else {
