@@ -72,22 +72,6 @@ class VirtInstallMachine(VirtMachine):
 
         return http_updates_img_port
 
-    def _serve_payload(self):
-        payload_cached_path = os.path.realpath(self.payload_path)
-        payload_cached_dir = os.path.dirname(payload_cached_path)
-        payload_cached_name = os.path.basename(payload_cached_path)
-
-        http_payload_port = self._get_free_port()
-        self.http_payload_server = subprocess.Popen(["python3", "-m", "http.server", "-d", payload_cached_dir, str(http_payload_port)])
-        self._wait_http_server_running(http_payload_port)
-
-        return payload_cached_name, http_payload_port
-
-    def _write_interactive_defaults_ks(self):
-        payload_cached_name, http_payload_port = self._serve_payload()
-        content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
-        Machine.execute(self, f'echo \'{content}\' > /usr/share/anaconda/interactive-defaults.ks')
-
     def start(self):
         update_img_file = os.path.join(ROOT_DIR, "updates.img")
         if not os.path.exists(update_img_file):
@@ -152,9 +136,6 @@ class VirtInstallMachine(VirtMachine):
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
                 Machine.wait_boot(self, timeout_sec=300)
-
-                # Configure the payload in interactive-defaults.ks
-                self._write_interactive_defaults_ks()
 
                 for _ in range(30):
                     try:
