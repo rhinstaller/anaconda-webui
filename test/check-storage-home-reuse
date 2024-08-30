@@ -46,6 +46,9 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         s.set_partitioning("home-reuse")
+        # Reaching REVIEW from here does not work with encryption checkbox disabled
+        # as there is a callback unsetting it.
+        i.next()
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
@@ -96,6 +99,9 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         s.wait_scenario_available("home-reuse", True)
 
         s.set_partitioning("home-reuse")
+        # Reaching REVIEW from here does not work with encryption checkbox disabled
+        # as there is a callback unsetting it.
+        i.next()
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
@@ -170,6 +176,9 @@ class TestHomeReuseEFI(VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         s.set_partitioning("home-reuse")
+        # Reaching REVIEW from here does not work with encryption checkbox disabled
+        # as there is a callback unsetting it.
+        i.next()
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown

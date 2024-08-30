@@ -67,7 +67,7 @@ const DiskEncryption = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { partitioning } = useContext(StorageContext);
+    const { partitioning, storageScenarioId } = useContext(StorageContext);
     const request = partitioning?.requests?.[0];
     const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
     const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
@@ -99,7 +99,8 @@ const DiskEncryption = ({
         <Checkbox
           id={idPrefix + "-encrypt-devices"}
           label={_("Encrypt my data")}
-          isChecked={isEncrypted}
+          isChecked={storageScenarioId === "home-reuse" ? false : isEncrypted}
+          isDisabled={storageScenarioId === "home-reuse"}
           onChange={(_event, isEncrypted) => setIsEncrypted(isEncrypted)}
           body={content}
         />
