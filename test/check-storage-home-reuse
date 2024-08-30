@@ -108,9 +108,12 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
                          action="reuse")
 
 
-def create_existing_default_installation(disk, storage, machine):
+def create_existing_default_installation(disk, storage, machine, efi=False):
     tmp_mount = "/tmp/home-reuse-mount-test"
-    storage.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
+    if efi:
+        storage.partition_disk(disk, [("500MiB", "efi"), ("1GB", "ext4"), ("", "btrfs")])
+    else:
+        storage.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
     machine.execute(f"""
     mkdir -p {tmp_mount}
 
@@ -143,6 +146,41 @@ def create_existing_default_installation(disk, storage, machine):
 
     rmdir {tmp_mount}
     """)
+
+
+class TestHomeReuseEFI(VirtInstallMachineCase, StorageCase):
+    efi = True
+
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testBasic(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        disk = "/dev/vda"
+        dev = "vda"
+        create_existing_default_installation(disk, s, m, efi=True)
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk_row(dev, parent=f"{dev}2", action="delete")
+        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
+        r.check_disk_row(dev, "/boot", f"{dev}2", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/boot/efi", f"{dev}1", "524 MB", True, "efi", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "14.5 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}3", "14.5 GB", False, "btrfs", is_encrypted=False,
+                         action="reuse")
 
 
 if __name__ == '__main__':
