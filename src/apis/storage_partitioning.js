@@ -103,7 +103,7 @@ export const partitioningSetHomeReuse = async ({ partitioning }) => {
 
     request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
     request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
-    request["removed-mount-points"] = cockpit.variant("as", ["/boot", "biosboot"]);
+    request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
 
     await setPartitioningRequest({ partitioning, request });
 };

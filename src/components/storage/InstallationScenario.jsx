@@ -160,7 +160,6 @@ const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => 
     }
 
     // TODO checks:
-    // - unique bootloader (biosboot xor EFI ... given by mountPointConstraints) partition ... rather in backend?
     // - luks - partitions are unlocked - enforce? allow opt-out?
     // - size ?
     // - matching partitioning scheme? we support only btrfs now, set the scheme automatically in backend?
