@@ -77,7 +77,7 @@ po/LINGUAS:
 #
 all: $(DIST_TEST)
 
-dist_libexec_SCRIPTS = webui-desktop
+dist_libexec_SCRIPTS = webui-desktop firefox-ext
 # makes sure it gets built as part of `make` and `make dist`
 dist_noinst_DATA = \
 	$(DIST_TEST) \
@@ -108,10 +108,13 @@ install: $(DIST_TEST) po/LINGUAS
 	rm $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/index.css.LEGAL.txt
 	mkdir -p $(DESTDIR)/usr/share/anaconda
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
+	mkdir -p $(DESTDIR)/usr/share/applications
+	cp extlinks.desktop $(DESTDIR)/usr/share/applications/
 	mkdir -p $(DESTDIR)/usr/share/metainfo/
 	cp org.cockpit-project.$(PACKAGE_NAME).metainfo.xml $(DESTDIR)/usr/share/metainfo/
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
+	cp firefox-ext $(DESTDIR)/usr/libexec/anaconda
 	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/

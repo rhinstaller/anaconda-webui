@@ -37,6 +37,7 @@ Requires: firefox
 %if 0%{?fedora}
 Requires: fedora-logos
 %endif
+BuildRequires: desktop-file-utils
 
 %{NPM_PROVIDES}
 
@@ -52,6 +53,8 @@ Anaconda installer Web interface
 %install
 %make_install PREFIX=/usr
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
+
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/extlinks.desktop
 
 %check
 exit 0
@@ -82,7 +85,11 @@ exit 0
 %dir %{_datadir}/anaconda/firefox-theme/live/chrome
 %{_datadir}/anaconda/firefox-theme/live/user.js
 %{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
+%dir %{_datadir}/anaconda/firefox-theme/extlink
+%{_datadir}/anaconda/firefox-theme/extlink/user.js
 %{_libexecdir}/anaconda/webui-desktop
+%{_libexecdir}/anaconda/firefox-ext
+%{_datadir}/applications/extlinks.desktop
 %{_unitdir}/webui-cockpit-ws.service
 
 
