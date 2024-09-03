@@ -39,7 +39,7 @@ import {
 
 import { getAnacondaVersion } from "../helpers/product.js";
 
-import { OsReleaseContext } from "./Common.jsx";
+import { OsReleaseContext, SystemTypeContext } from "./Common.jsx";
 import { UserIssue } from "./Error.jsx";
 import { CockpitStorageIntegration, ModifyStorage } from "./storage/CockpitStorageIntegration.jsx";
 
@@ -76,6 +76,7 @@ const ProductName = () => {
 };
 
 const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const toggleModal = () => {
         setIsAboutModalOpen(!isModalOpen);
     };
@@ -95,8 +96,8 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
                   id="anaconda-page-button"
                   variant="link"
                   icon={<ExternalLinkAltIcon />}
-                  href="https://github.com/rhinstaller/anaconda"
-                  target="_blank"
+                  href={(isBootIso ? "https://" : "extlink://") + "github.com/rhinstaller/anaconda"}
+                  target={isBootIso ? "_blank" : ""}
                   component="a">
                     {_("Anaconda project page")}
                 </Button>
