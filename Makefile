@@ -186,7 +186,7 @@ payload: bots
 
 .PHONY: images
 images: bots
-	bots/image-download $(TEST_OS) debian-stable ubuntu-stable
+	bots/image-download $(TEST_OS) debian-stable ubuntu-stable fedora-41
 
 $(UPDATES_IMG): prepare-test-deps
 	test/prepare-updates-img
