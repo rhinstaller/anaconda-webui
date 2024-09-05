@@ -240,10 +240,10 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     const isPartition = device.type.v === "partition";
     const typeLabel = device.attrs?.v["partition-type-name"] || "";
     const diskDescription = (
-        <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
-            <FlexItem><HddIcon /></FlexItem>
-            <FlexItem>{cockpit.format("$0 ($1)", device.name.v, device.description.v)}</FlexItem>
-        </Flex>
+        <>
+            <HddIcon />
+            {cockpit.format("$0 ($1)", device.name.v, device.description.v)}
+        </>
     );
     const classNames = [
         idPrefix + "-table-row",
@@ -342,7 +342,7 @@ const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions })
     };
 
     return (
-        <Flex spaceItems={{ default: "spaceItemsXs" }}>
+        <Flex spaceItems={{ default: "spaceItemsXs" }} className="reclaim-actions">
             <DeviceActionShrink {...deviceActionProps} />
             <DeviceActionDelete {...deviceActionProps} />
             {hasUnappliedActions && <Button variant="plain" icon={<UndoIcon />} onClick={onUndo} aria-label={_("undo")} />}
