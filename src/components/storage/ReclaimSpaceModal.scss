@@ -1,18 +1,11 @@
+@import "global-variables";
+
 #reclaim-space-modal-table {
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-1,
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-2,
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-3 {
     td {
-      padding-top: var(--pf-v5-global--spacer--sm);
-      padding-bottom: var(--pf-v5-global--spacer--sm);
-    }
-  }
-
-  @for $i from 1 through 10 {
-    tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-#{$i} {
-      td:nth-child(2) {
-        padding-inline-start: calc(var(--pf-v5-c-table--cell--PaddingLeft) + #{$i - 1} * var(--pf-v5-global--spacer--md));
-      }
+      padding-block: var(--pf-v5-global--spacer--sm);
     }
   }
 
@@ -32,6 +25,95 @@
   .reclaim-space-modal-device-action-shrink {
     font-size: var(--pf-v5-global--FontSize--sm);
     color: var(--pf-v5-global--warning-color--100);
+  }
+
+  .pf-v5-c-table__td {
+    padding-block: var(--pf-v5-global--spacer--sm);
+    align-items: center;
+  }
+
+  .reclaim-actions {
+    // Actions should not have a gap
+    gap: 0;
+    // Actions should "eat into" TD padding so they're aligned appropriately
+    margin: calc(-1 * var(--pf-v5-global--spacer--xs)) calc(-1 * var(--pf-v5-global--spacer--sm));
+
+    // Fix the button size of actions
+    .pf-v5-c-button {
+      padding: var(--pf-v5-global--spacer--xs) var(--pf-v5-global--spacer--sm);
+    }
+  }
+
+  // Bind indent level variable to classes (start indenting on level 2)
+  @for $i from 1 through 10 {
+    .reclaim-space-modal-device-level-#{$i} {
+      --indent: #{$i - 1};
+    }
+  }
+
+  // Small sizes
+  @media (width < $pf-v5-global--breakpoint--md) {
+    // Indent the left for smaller sizes
+    .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) {
+      margin-inline-start: calc(
+        var(--indent) * var(--pf-v5-global--spacer--sm)
+      );
+    }
+
+    // Remove labels with no content on small sizes
+    td:empty {
+      display: none;
+    }
+
+    tr {
+      grid-template-columns: auto 1fr;
+    }
+
+    td {
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+    }
+  }
+
+  // Large sizes
+  @media (width >= $pf-v5-global--breakpoint--md) {
+    // Indent the left for larger sizes
+    .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) td:nth-child(2) {
+      padding-inline-start: calc(var(--pf-v5-c-table--cell--PaddingLeft) + var(--indent) * var(--pf-v5-global--spacer--md));
+    }
+
+    // Align columns to the right on larger screens
+    :is(th, td):nth-last-of-type(-n + 2) {
+      text-align: end;
+    }
+
+    // Also align the actions group to the right
+    .reclaim-actions {
+      justify-content: end;
+    }
+
+    // Set the disk icon size
+    td:first-of-type {
+      --icon-size: 1.5em;
+    }
+
+    // Adjust the disk size and make it align properly
+    .reclaim-space-modal-device-level-0 {
+      td:first-of-type .pf-v5-svg {
+        height: auto;
+        width: var(--icon-size);
+        margin-inline-end: var(--pf-v5-global--spacer--sm);
+        vertical-align: middle;
+      }
+    }
+
+    // Align non-icon text with the text that has an icon
+    .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) {
+      td:first-of-type {
+        padding-left: calc(var(--icon-size) + var(--pf-v5-global--spacer--sm) + var(--pf-v5-c-table--cell--PaddingLeft));
+      }
+    }
+
   }
 }
 
