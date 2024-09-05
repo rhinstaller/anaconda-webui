@@ -141,7 +141,7 @@ class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(True)
 
-        s.reclaim_shrink_device("vda1", "5", "10.6", rowIndex=3)
+        s.reclaim_shrink_device("vda1", "5", rowIndex=3)
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)
@@ -194,11 +194,12 @@ class TestExistingSystemUbuntu(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(True)
 
-        s.reclaim_shrink_device("vda1", "7", "11.3", rowIndex=3)
+        s.reclaim_shrink_device("vda1", "7", rowIndex=3)
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)
-        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.3 GB")
+        # Don't specify the exact original size as this might change with image refreshes
+        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from")
         r.check_resized_system("Ubuntu", ["vda1"])
 
 
