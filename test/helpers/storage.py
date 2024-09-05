@@ -399,14 +399,15 @@ class StorageReclaimDialog():
         self.browser.click("button:contains('Reclaim space')")
         self.browser.wait_in_text("#reclaim-space-modal .pf-v5-c-alert", warning)
 
-    def reclaim_shrink_device(self, device, new_size, current_size, rowIndex=None):
+    def reclaim_shrink_device(self, device, new_size, current_size=None, rowIndex=None):
         self.browser.click(
             "#reclaim-space-modal-table "
             f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
             f"tr:contains('{device}') button[aria-label='shrink']"
         )
         self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
-        self.browser.wait_val("#reclaim-space-modal-shrink-slider input", current_size)
+        if current_size is not None:
+            self.browser.wait_val("#reclaim-space-modal-shrink-slider input", current_size)
         # HACK: there is some race here which steals the focus from the input and selects the page text instead
         for _ in range(3):
             self.browser.focus('#reclaim-space-modal-shrink-slider input')
