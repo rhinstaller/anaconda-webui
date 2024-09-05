@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
@@ -22,12 +24,16 @@ from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
+TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
+
 
 @nondestructive
-class TestHomeReuse(VirtInstallMachineCase, StorageCase):
+class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
+    disk_image = "fedora-rawhide"
     efi = False
 
-    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -35,15 +41,13 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        disk = "/dev/vda"
-        dev = "vda"
-        create_existing_default_installation(disk, s, m)
-
-        s.udevadm_settle()
+        dev="vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
+
+        #s.wait_scenario_available("home-reuse", False)
 
         s.set_partitioning("home-reuse")
         # Reaching REVIEW from here does not work with encryption checkbox disabled
@@ -52,12 +56,12 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk_row(dev, parent=f"{dev}2", action="delete")
-        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
         r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
-        r.check_disk_row(dev, "/boot", f"{dev}2", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}3", "15.0 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}3", "15.0 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk_row(dev, parent=f"{dev}3", action="delete")
+        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="reuse")
 
         # TODO pixel test
@@ -70,32 +74,32 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        self.add_disk(10)
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/fedora-41"))
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/ubuntu-stable"))
 
-        disk1 = "/dev/vda"
-        dev1 = "vda"
-        create_existing_default_installation(disk1, s, m)
-
-        disk2 = "/dev/vdb"
-        dev2 = "vdb"
-        create_existing_default_installation(disk2, s, m)
+        dev_fedora1 = "vda"
+        dev_fedora2 = "vdb"
+        dev_ubuntu = "vdc"
 
         s.udevadm_settle()
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
-        # Select both disk and verify that home reuse is not available
-        # (multiple OSes found)
-        s.select_none_disks_and_check([dev1, dev2])
-        s.select_disks([(dev1, True), (dev2, True)])
+        # Select both Fedora disks and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])
         s.wait_scenario_available("home-reuse", False)
 
-        # Select only single disk and verify that home reuse is available
-        # (single OS found)
-        s.select_none_disks_and_check([dev1, dev2])
-        s.select_disks([(dev1, False), (dev2, True)])
+        # Select only single Ubuntu disk and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.wait_scenario_available("home-reuse", False)
+
+        # Select Ubuntu disk and Fedora disk and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.wait_scenario_available("home-reuse", False)
+
+        # Select only single Fedora disk and verify that home reuse is available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, False)])
         s.wait_scenario_available("home-reuse", True)
 
         s.set_partitioning("home-reuse")
@@ -105,59 +109,19 @@ class TestHomeReuse(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk_row(dev2, parent=f"{dev2}2", action="delete")
-        r.check_disk_row(dev2, parent=f"{dev2}1", action="delete")
-        r.check_disk(dev2, f"10.7 GB {dev2} (0x1af4)")
-        r.check_disk_row(dev2, "/boot", f"{dev2}2", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev2, "/", f"{dev2}3", "9.66 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev2, "/home", f"{dev2}3", "9.66 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (0x1af4)")
+        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
+        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
+        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "12.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="reuse")
 
 
-def create_existing_default_installation(disk, storage, machine, efi=False):
-    tmp_mount = "/tmp/home-reuse-mount-test"
-    if efi:
-        storage.partition_disk(disk, [("500MiB", "efi"), ("1GB", "ext4"), ("", "btrfs")])
-    else:
-        storage.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
-    machine.execute(f"""
-    mkdir -p {tmp_mount}
-
-    mount {disk}3 {tmp_mount}
-    btrfs subvolume create {tmp_mount}/root
-    btrfs subvolume create {tmp_mount}/home
-    btrfs subvolume create {tmp_mount}/unused
-    btrfs subvolume snapshot {tmp_mount}/root {tmp_mount}/snapshot1
-    umount {tmp_mount}
-
-    # Fake previous installation and mark partitions by files
-
-    mount -o subvol=root,compress=zstd:1 {disk}3 {tmp_mount}
-    touch {tmp_mount}/old_root_file
-    mkdir {tmp_mount}/etc
-    cat > {tmp_mount}/etc/fstab << EOF
-    {disk}3     /           btrfs   subvol=root,compress=zstd:1 0 0
-    {disk}2     /boot       ext4    defaults                    1 2
-    {disk}3     /home       btrfs   subvol=home,compress=zstd:1 0 0
-    EOF
-    umount {tmp_mount}
-
-    mount -o subvol=home,compress=zstd:1 {disk}3 {tmp_mount}
-    touch {tmp_mount}/old_home_file
-    umount {tmp_mount}
-
-    mount -o subvol=data,compress=zstd:1 {disk}3 {tmp_mount}
-    touch {tmp_mount}/old_data_file
-    umount {tmp_mount}
-
-    rmdir {tmp_mount}
-    """)
-
-
-class TestHomeReuseEFI(VirtInstallMachineCase, StorageCase):
+class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
+    disk_image = "fedora-rawhide"
     efi = True
 
-    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -165,11 +129,7 @@ class TestHomeReuseEFI(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        disk = "/dev/vda"
-        dev = "vda"
-        create_existing_default_installation(disk, s, m, efi=True)
-
-        s.udevadm_settle()
+        dev="vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -183,12 +143,12 @@ class TestHomeReuseEFI(VirtInstallMachineCase, StorageCase):
 
         # check selected disks are shown
         r.check_disk_row(dev, parent=f"{dev}2", action="delete")
-        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk_row(dev, parent=f"{dev}3", action="delete")
         r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
-        r.check_disk_row(dev, "/boot", f"{dev}2", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/boot/efi", f"{dev}1", "524 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}3", "14.5 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}3", "14.5 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="reuse")
 
 

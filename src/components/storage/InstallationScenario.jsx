@@ -145,17 +145,21 @@ const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => 
         return missingDisks.length === 0;
     };
 
-    // Check that exactly one Linux OS is present
+    // Check that exactly one Linux OS is present and it is Fedora Linux
     // (Stronger check for mountpoints uniqueness is in the backend
-    const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"] !== "Windows")
+    const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
             .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
     if (linuxSystems.length === 0) {
         availability.available = false;
-        availability.reason = _("No existing system found.");
+        availability.reason = _("No existing Linux system found.");
         return availability;
     } else if (linuxSystems.length > 1) {
         availability.available = false;
-        availability.reason = _("Multiple existing systems found.");
+        availability.reason = _("Multiple existing Linux systems found.");
+        return availability;
+    } else if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
+        availability.available = false;
+        availability.reason = _("No existing Fedora Linux system found.");
         return availability;
     }
 
