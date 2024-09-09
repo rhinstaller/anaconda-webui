@@ -79,7 +79,7 @@ export const getDevicesAction = () => {
                             partName: partName.trim(),
                         };
                     } catch (e) {
-                        console.warning("Failed to get partition label", e);
+                        console.warn("Failed to get partition label", e);
                         devData.misc = {
                             fsLabel: "",
                             partName: "",
