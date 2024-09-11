@@ -203,7 +203,7 @@ const addExceptionDataToReportURL = (url, exception) => {
 };
 
 const exceptionInfo = (exception, idPrefix) => {
-    const exceptionNamePrefix = exception.backendException?.name ? exception.backendMessage?.name + ": " : "";
+    const exceptionNamePrefix = exception.backendException?.name ? exception.backendException?.name + ": " : "";
     const backendMessage = exception.backendException?.message ? exception.backendException.message : "";
     const frontendMessage = exception.frontendException?.message ? exception.frontendException.message : "";
 
