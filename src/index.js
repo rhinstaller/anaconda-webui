@@ -23,7 +23,7 @@ import "cockpit-dark-theme";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import { Application } from "./components/app.jsx";
+import { ApplicationWithErrorBoundary } from "./components/app.jsx";
 
 import "./components/app.scss";
 import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
@@ -38,7 +38,7 @@ import "../pkg/lib/patternfly/patternfly-5-overrides.scss";
 
 document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(document.getElementById("app"));
-    root.render(<Application />);
+    root.render(<ApplicationWithErrorBoundary />);
     document.documentElement.setAttribute("dir", cockpit.language_direction);
 });
 

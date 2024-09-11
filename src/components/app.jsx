@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     Bullseye,
     Page, PageGroup,
@@ -24,7 +24,6 @@ import {
 
 import { clients } from "../apis";
 
-import { setCriticalErrorAction } from "../actions/miscellaneous-actions.js";
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
 import { readConf } from "../helpers/conf.js";
@@ -36,20 +35,22 @@ import { read_os_release as readOsRelease } from "os-release.js";
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
 import { MainContextWrapper } from "./Common.jsx";
-import { bugzillaPrefiledReportURL, CriticalError, useError } from "./Error.jsx";
+import { bugzillaPrefiledReportURL, ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const Application = () => {
-    const [state, dispatch] = useReducerWithThunk(reducer, initialState);
+export const ApplicationLoading = () => (
+    <Page>
+        <Bullseye>
+            <EmptyStatePanel loading title={_("Initializing...")} />
+        </Bullseye>
+    </Page>
+);
+
+export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
-    const criticalError = state?.error?.criticalError;
-    const criticalErrorFrontend = state?.error?.criticalErrorFrontend;
-    const onCritFail = useError({ dispatch });
     const address = useAddress();
-    const conf = useConf({ onCritFail });
-    const osRelease = useOsRelease({ onCritFail });
 
     useEffect(() => {
         if (!address) {
@@ -59,8 +60,6 @@ export const Application = () => {
         // Before unload ask the user for verification
         window.onbeforeunload = () => "";
 
-        dispatch(setCriticalErrorAction());
-
         Promise.all(clients.map(Client => new Client(address, dispatch).init()))
                 .then(() => {
                     setStoreInitialized(true);
@@ -68,59 +67,32 @@ export const Application = () => {
     }, [address, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!criticalError && (!address || !conf || !osRelease || !storeInitialized)) {
+    if (!address || !storeInitialized) {
         debug("Loading initial data...");
-        return (
-            <Page>
-                <Bullseye>
-                    <EmptyStatePanel loading title={_("Initializing...")} />
-                </Bullseye>
-            </Page>
-        );
+        return <ApplicationLoading />;
     }
 
     // On live media rebooting the system will actually shut it off
     const title = cockpit.format(_("$0 installation"), osRelease.PRETTY_NAME);
 
-    const bzReportURL = bugzillaPrefiledReportURL({
-        product: osRelease.REDHAT_BUGZILLA_PRODUCT,
-        version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
-    });
-
-    const page = (
-        <Page
-          data-debug={conf.Anaconda.debug}
-        >
-            {(criticalError || criticalErrorFrontend) &&
-            <CriticalError
-              exception={{ backendException: criticalError, frontendException: criticalErrorFrontend }}
-              isConnected={state.network.connected}
-              reportLinkURL={bzReportURL} />}
-            {!criticalErrorFrontend &&
-            <>
-                <PageGroup stickyOnBreakpoint={{ default: "top" }}>
-                    <AnacondaHeader
-                      title={title}
-                      reportLinkURL={bzReportURL}
-                      isConnected={state.network.connected}
-                      onCritFail={onCritFail}
-                    />
-                </PageGroup>
-                <AnacondaWizard
-                  isFetching={state.misc.isFetching}
-                  onCritFail={onCritFail}
-                  title={title}
-                  dispatch={dispatch}
-                  conf={conf}
-                />
-            </>}
-        </Page>
-    );
-
     return (
-        <MainContextWrapper state={state} osRelease={osRelease} conf={conf} address={address}>
-            {page}
-        </MainContextWrapper>
+        <>
+            <PageGroup
+              stickyOnBreakpoint={{ default: "top" }}>
+                <AnacondaHeader
+                  title={title}
+                  reportLinkURL={reportLinkURL}
+                  onCritFail={onCritFail}
+                />
+            </PageGroup>
+            <AnacondaWizard
+              isFetching={isFetching}
+              onCritFail={onCritFail}
+              title={title}
+              dispatch={dispatch}
+              conf={conf}
+            />
+        </>
     );
 };
 
@@ -165,4 +137,43 @@ const useAddress = () => {
     }, []);
 
     return address;
+};
+
+export const ApplicationWithErrorBoundary = () => {
+    const [state, dispatch] = useReducerWithThunk(reducer, initialState);
+    const [errorBeforeBoundary, setErrorBeforeBoundary] = useState();
+    const onCritFail = useCallback(
+        (context) => (exc) => setErrorBeforeBoundary({ contextData: { context }, ...exc }),
+        []
+    );
+    const conf = useConf({ onCritFail });
+    const osRelease = useOsRelease({ onCritFail });
+
+    if (!conf || !osRelease) {
+        return <ApplicationLoading />;
+    }
+
+    const bzReportURL = bugzillaPrefiledReportURL({
+        product: osRelease.REDHAT_BUGZILLA_PRODUCT,
+        version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
+    });
+
+    return (
+        <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
+            <Page data-debug={conf.Anaconda.debug}>
+                <ErrorBoundary
+                  backendException={errorBeforeBoundary}
+                  isNetworkConnected={state.network.connected}
+                  reportLinkURL={bzReportURL}>
+                    <Application
+                      dispatch={dispatch}
+                      isFetching={state.misc.isFetching}
+                      osRelease={osRelease}
+                      reportLinkURL={bzReportURL}
+                      state={state}
+                    />
+                </ErrorBoundary>
+            </Page>
+        </MainContextWrapper>
+    );
 };

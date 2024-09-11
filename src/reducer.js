@@ -49,12 +49,6 @@ export const networkInitialState = {
     connected: null
 };
 
-/* Initial state for the error store substate */
-export const errorInitialState = {
-    criticalErrorBackend: null,
-    criticalErrorFrontend: null
-};
-
 /* Intial state for the runtime store substate */
 export const runtimeInitialState = {
     connected: null
@@ -79,7 +73,6 @@ export const usersInitialState = {
 
 /* Initial state for the global store */
 export const initialState = {
-    error: errorInitialState,
     localization: localizationInitialState,
     misc: miscInitialState,
     network: networkInitialState,
@@ -109,7 +102,6 @@ export const useReducerWithThunk = (reducer, initialState) => {
 
 export const reducer = (state, action) => {
     return ({
-        error: errorReducer(state.error, action),
         localization: localizationReducer(state.localization, action),
         misc: miscReducer(state.misc, action),
         network: networkReducer(state.network, action),
@@ -171,16 +163,6 @@ export const networkReducer = (state = networkInitialState, action) => {
         return { ...state, connected: action.payload.connected };
     } else if (action.type === "GET_NETWORK_HOSTNAME") {
         return { ...state, hostname: action.payload.hostname };
-    } else {
-        return state;
-    }
-};
-
-const errorReducer = (state = errorInitialState, action) => {
-    if (action.type === "SET_CRITICAL_ERROR") {
-        return { ...state, criticalError: action.payload.criticalError };
-    } else if (action.type === "SET_CRITICAL_ERROR_FRONTEND") {
-        return { ...state, criticalErrorFrontend: action.payload.criticalErrorFrontend };
     } else {
         return state;
     }

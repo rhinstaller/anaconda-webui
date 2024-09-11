@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Flex,
     Label,
@@ -28,6 +28,7 @@ import { InfoCircleIcon } from "@patternfly/react-icons";
 
 import { getIsFinal } from "../apis/runtime";
 
+import { NetworkContext } from "./Common.jsx";
 import { HeaderKebab } from "./HeaderKebab.jsx";
 
 import "./AnacondaHeader.scss";
@@ -35,8 +36,10 @@ import "./AnacondaHeader.scss";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaHeader = ({ isConnected, onCritFail, reportLinkURL, title }) => {
+export const AnacondaHeader = ({ onCritFail, reportLinkURL, title }) => {
     const [beta, setBeta] = useState();
+    const network = useContext(NetworkContext);
+    const isConnected = network.connected;
 
     useEffect(() => {
         getIsFinal().then(
