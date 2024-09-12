@@ -226,7 +226,7 @@ class TestBasic(VirtInstallMachineCase):
         # to avoid crashing the test browser
         m.execute("journalctl --rotate; journalctl --vacuum-time=1s")
 
-        s.rescan_disks()
+        s.rescan_disks(expect_failure=True)
 
         b.wait_visible("#critical-error-bz-report-modal.pf-v5-c-modal-box")
         b.wait_in_text("#critical-error-bz-report-modal header", "Rescanning of the disks failed")

@@ -39,66 +39,36 @@ class StorageDestination():
         self.browser = browser
         self.machine = machine
 
-    @log_step()
-    def select_disk(self, disk, selected=True, is_single_disk=False):
-        if not self.browser.is_present(f".pf-v5-c-menu[aria-labelledby='{id_prefix}-disk-selector-title']"):
-            self.browser.click(f"#{id_prefix}-disk-selector-toggle > button")
-
-        if selected:
-            self.browser.click(f"#{id_prefix}-disk-selector-option-{disk}:not(.pf-m-selected)")
-        else:
-            self.browser.click(f"#{id_prefix}-disk-selector-option-{disk}.pf-m-selected")
-
-        if is_single_disk:
-            self.check_single_disk_destination(disk)
-        else:
-            self.check_disk_selected(disk, selected)
-
-    @log_step()
-    def select_none_disks_and_check(self, disks):
-        self.browser.click(f"#{id_prefix}-disk-selector-clear")
-        for disk in disks:
-            self.check_disk_selected(disk, False)
-
-    def check_single_disk_destination(self, disk, capacity=None):
-        self.browser.wait_in_text(f"#{id_prefix}-target-disk", disk)
-        if capacity:
-            self.browser.wait_in_text(f"#{id_prefix}-target-disk", capacity)
-
     @log_step(snapshot_before=True)
-    def check_disk_selected(self, disk, selected=True):
+    def check_disk_selected(self, disk, selected=True, size=None):
         if selected:
-            self.browser.wait_visible(f"#{id_prefix}-selector-form li.pf-v5-c-chip-group__list-item:contains('{disk}')")
+            self.browser.wait_visible(f"#{id_prefix}-target-disk-{disk}")
         else:
-            self.browser.wait_not_present(f"#{id_prefix}-selector-form li.pf-v5-c-chip-group__list-item:contains({disk})")
+            self.browser.wait_not_present(f"#{id_prefix}-target-disk-{disk}")
 
-    def get_disk_selected(self, disk):
-        return (
-            self.browser.is_present(f"#{id_prefix}-selector-form li.pf-v5-c-chip-group__list-item:contains({disk})") or
-            (self.browser.is_present(f"#{id_prefix}-target-disk") and
-             disk in self.browser.text(f"#{id_prefix}-target-disk"))
-        )
+        if size is not None:
+            self.browser.wait_in_text(f"#{id_prefix}-target-disk-{disk}", size)
 
     @log_step()
     def wait_no_disks(self):
         self.browser.wait_in_text("#next-helper-text",
                                   "To continue, select the devices to install to.")
 
-    @log_step()
-    def wait_no_disks_detected_not_present(self):
-        self.browser.wait_not_present("#no-disks-detected-alert")
-
-    def wait_disk_added(self, disk):
-        self.browser.wait_in_text("#disks-changed-alert", f"The following disk was detected: {disk}")
-
     @log_step(snapshots=True)
-    def rescan_disks(self):
+    def rescan_disks(self, expected_disks=None, expect_failure=False):
         b = self.browser
+        b.click(f"#{self._step}-change-destination-button")
         b.click(f"#{self._step}-rescan-disks")
         b.wait_visible(f"#{self._step}-rescan-disks.pf-m-disabled")
         # Default 15 seconds is not always enough for re-scanning disks
         with b.wait_timeout(30):
             b.wait_not_present(f"#{self._step}-rescan-disks.pf-m-disabled")
+
+        for disk in expected_disks or []:
+            b.wait_visible(f"#{self._step}-disk-selection-menu-item-{disk}")
+
+        if not expect_failure:
+            b.click(f"#{self._step}-change-destination-modal button:contains('Cancel')")
 
     def check_constraint(self, constraint, required=True):
         if required:
@@ -118,19 +88,6 @@ class StorageDestination():
 
     def modify_storage(self):
         self.browser.click(f"#{self._step}-modify-storage")
-
-    @log_step(snapshot_before=True)
-    def check_disk_visible(self, disk, visible=True):
-        if not self.browser.is_present(f".pf-v5-c-menu[aria-labelledby='{id_prefix}-disk-selector-title']"):
-            self.browser.click(f"#{id_prefix}-disk-selector-toggle > button")
-
-        if visible:
-            self.browser.wait_visible(f"#{id_prefix}-disk-selector-option-{disk}")
-        else:
-            self.browser.wait_not_present(f"#{id_prefix}-disk-selector-option-{disk}")
-
-        self.browser.click(f"#{id_prefix}-disk-selector-toggle > button")
-        self.browser.wait_not_present(f".pf-v5-c-menu[aria-labelledby='{id_prefix}-disk-selector-title']")
 
 
 class StorageEncryption():
@@ -492,10 +449,14 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def select_disks(self, disks):
         self.browser.wait(lambda: self.disks_loaded(disks))
 
-        for disk in disks:
-            current_selection = self.get_disk_selected(disk[0])
-            if current_selection != disk[1]:
-                self.select_disk(disk[0], disk[1], len(disks) == 1)
+        self.browser.click(f"#{id_prefix}-change-destination-button")
+
+        for (disk, selected) in disks:
+            self.browser.set_checked(f"#{id_prefix}-disk-selection-menu-item-{disk} input[type=checkbox]", selected)
+
+        self.browser.click(f"#{id_prefix}-change-destination-modal button:contains('Select')")
+        for (disk, selected) in disks:
+            self.check_disk_selected(disk, selected)
 
     def select_mountpoint(self, disks, encrypted=False):
         self.select_disks(disks)

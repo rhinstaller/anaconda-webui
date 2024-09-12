@@ -40,8 +40,7 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         # Check the auto-selected disk's details
-        s.wait_no_disks_detected_not_present()
-        s.check_single_disk_destination("vda", "16.1 GB")
+        s.check_disk_selected("vda", selected=True, size="16.1 GB")
 
         # Pixel test the storage step
         b.assert_pixels(
@@ -56,13 +55,7 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         # until the test clicks on the re-scan button
         dev = self.add_ram_disk(2)
         dev = dev.split("/")[-1]
-        s.rescan_disks()
-
-        s.check_disk_visible("vda")
-        s.check_disk_visible(dev)
-
-        # Check the newly added disk generated a notification
-        s.wait_disk_added(dev)
+        s.rescan_disks(["vda", dev])
 
         # Check that the disk selection persists when moving next and back
         s.check_disk_selected("vda", True)
@@ -73,21 +66,17 @@ class TestStorage(VirtInstallMachineCase, StorageHelpers):
         s.check_disk_selected(dev, False)
 
         # Try unselecting the single disk and expect and error
-        s.select_disk("vda", False)
+        s.select_disks([("vda", False), (dev, False)])
         s.wait_no_disks()
         # Check the next button is disabled if no disks are selected
         i.check_next_disabled()
 
         # Check that disk selection is kept on Next and Back
-        s.select_disk(dev, True)
-        s.select_disk("vda", True)
+        s.select_disks([(dev, True), ("vda", True)])
         i.next()
         i.back()
         for disk in ["vda", dev]:
             s.check_disk_selected(disk)
-
-        # Check clear selection of disks
-        s.select_none_disks_and_check([dev, "vda"])
 
     def testScenarioSelection(self):
         """
