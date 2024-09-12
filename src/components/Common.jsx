@@ -20,7 +20,6 @@ import { HelpIcon } from "@patternfly/react-icons";
 
 import { WithDialogs } from "dialogs.jsx";
 
-export const AddressContext = createContext("");
 export const FooterContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
@@ -79,14 +78,12 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
     );
 };
 
-export const MainContextWrapper = ({ address, children, conf, osRelease, state }) => {
+export const MainContextWrapper = ({ children, conf, osRelease, state }) => {
     return (
         <ModuleContextWrapper state={state}>
             <SystemInfoContextWrapper osRelease={osRelease} conf={conf}>
                 <WithDialogs>
-                    <AddressContext.Provider value={address}>
-                        {children}
-                    </AddressContext.Provider>
+                    {children}
                 </WithDialogs>
             </SystemInfoContextWrapper>
         </ModuleContextWrapper>
