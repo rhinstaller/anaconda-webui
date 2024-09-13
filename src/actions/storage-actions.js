@@ -66,20 +66,12 @@ export const getDevicesAction = () => {
 
                 // FIXME: https://github.com/storaged-project/blivet/issues/1258
                 // This is a workaround for the issue with missing partition label human readable strings in blivet
-                try {
-                    const partName = await cockpit.script(`udevadm info --query=property --name=${devData.path.v} | grep PARTNAME= | cut -d= -f2`);
-                    const fsLabel = await cockpit.script(`udevadm info --query=property --name=${devData.path.v} | grep ID_FS_LABEL= | cut -d= -f2`);
-                    devData.misc = {
-                        fsLabel: fsLabel.trim(),
-                        partName: partName.trim(),
-                    };
-                } catch (e) {
-                    console.warn("Failed to get partition label", e);
-                    devData.misc = {
-                        fsLabel: "",
-                        partName: "",
-                    };
-                }
+                const partName = await cockpit.script(`udevadm info --query=property --name=${devData.path.v} | grep PARTNAME= | cut -d= -f2`);
+                const fsLabel = await cockpit.script(`udevadm info --query=property --name=${devData.path.v} | grep ID_FS_LABEL= | cut -d= -f2`);
+                devData.misc = {
+                    fsLabel: fsLabel.trim(),
+                    partName: partName.trim(),
+                };
 
                 deviceData[device] = devData;
             } catch (error) {
