@@ -238,7 +238,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
     const device = devices[disk];
     const isDisk = device["is-disk"].v;
     const isPartition = device.type.v === "partition";
-    const typeLabel = isPartition ? (device.misc.fsLabel || device.misc.partName) : "";
+    const typeLabel = device.attrs?.v["partition-type-name"] || "";
     const diskDescription = (
         <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }} flexWrap={{ default: "nowrap" }}>
             <FlexItem><HddIcon /></FlexItem>

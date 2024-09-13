@@ -267,7 +267,7 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
 
         const ancestors = getDeviceAncestors(deviceData, device);
         const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
-        const typeLabel = deviceData[parentPartition]?.misc.fsLabel || deviceData[parentPartition]?.misc.partName;
+        const typeLabel = device[parentPartition]?.attrs?.v?.["partition-type-name"] || "";
 
         const formatType = deviceData[device]?.formatData.type.v;
         const format = deviceData[device]?.formatData.description.v;
