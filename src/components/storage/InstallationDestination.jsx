@@ -23,6 +23,7 @@ import {
     Flex,
     FlexItem,
     FormGroup,
+    FormSection,
     Menu,
     MenuContent,
     MenuItem,
@@ -279,16 +280,18 @@ export const InstallationDestination = ({
     const headingLevel = isBootIso ? "h2" : "h3";
 
     return (
-        <>
-            <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
-                <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
-                <ModifyStorage
-                  idPrefix={idPrefix}
-                  setShowStorage={setShowStorage}
-                />
-            </Flex>
+        <FormSection
+          title={
+              <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
+                  <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
+                  <ModifyStorage
+                    idPrefix={idPrefix}
+                    setShowStorage={setShowStorage}
+                  />
+              </Flex>
+          }>
             <FormGroup>
-                <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
+                <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
                     {diskSelection.selectedDisks.length === 0 && (
                         <FlexItem>
                             {_("No disks selected")}
@@ -315,10 +318,10 @@ export const InstallationDestination = ({
                             </FlexItem>
                         </Flex>
                     ))}
+                    <ChangeDestination dispatch={dispatch} idPrefix={idPrefix} onCritFail={onCritFail} />
                 </Flex>
             </FormGroup>
-            <ChangeDestination dispatch={dispatch} idPrefix={idPrefix} onCritFail={onCritFail} />
-        </>
+        </FormSection>
     );
 };
 
