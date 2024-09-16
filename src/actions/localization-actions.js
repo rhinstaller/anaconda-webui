@@ -24,66 +24,48 @@ import {
     getLocales,
 } from "../apis/localization.js";
 
-import { setCriticalErrorAction } from "./miscellaneous-actions.js";
-
 export const getLanguagesAction = () => {
     return async (dispatch) => {
-        try {
-            const languageIds = await getLanguages();
+        const languageIds = await getLanguages();
 
-            return Promise.all([
-                dispatch(getCommonLocalesAction()),
-                ...languageIds.map(language => dispatch(getLanguageDataAction({ language })))
-            ]);
-        } catch (error) {
-            dispatch(setCriticalErrorAction(error));
-        }
+        return Promise.all([
+            dispatch(getCommonLocalesAction()),
+            ...languageIds.map(language => dispatch(getLanguageDataAction({ language })))
+        ]);
     };
 };
 
 export const getLanguageDataAction = ({ language }) => {
     return async (dispatch) => {
-        try {
-            const localeIds = await getLocales({ lang: language });
-            const languageData = await getLanguageData({ lang: language });
-            const locales = await Promise.all(localeIds.map(async locale => await getLocaleData({ locale })));
+        const localeIds = await getLocales({ lang: language });
+        const languageData = await getLanguageData({ lang: language });
+        const locales = await Promise.all(localeIds.map(async locale => await getLocaleData({ locale })));
 
-            return dispatch({
-                payload: { languageData: { [language]: { languageData, locales } } },
-                type: "GET_LANGUAGE_DATA"
-            });
-        } catch (error) {
-            dispatch(setCriticalErrorAction(error));
-        }
+        return dispatch({
+            payload: { languageData: { [language]: { languageData, locales } } },
+            type: "GET_LANGUAGE_DATA"
+        });
     };
 };
 
 export const getLanguageAction = () => {
     return async (dispatch) => {
-        try {
-            const language = await getLanguage();
+        const language = await getLanguage();
 
-            return dispatch({
-                payload: { language },
-                type: "GET_LANGUAGE"
-            });
-        } catch (error) {
-            dispatch(setCriticalErrorAction(error));
-        }
+        return dispatch({
+            payload: { language },
+            type: "GET_LANGUAGE"
+        });
     };
 };
 
 export const getCommonLocalesAction = () => {
     return async (dispatch) => {
-        try {
-            const commonLocales = await getCommonLocales();
+        const commonLocales = await getCommonLocales();
 
-            return dispatch({
-                payload: { commonLocales },
-                type: "GET_COMMON_LOCALES"
-            });
-        } catch (error) {
-            dispatch(setCriticalErrorAction(error));
-        }
+        return dispatch({
+            payload: { commonLocales },
+            type: "GET_COMMON_LOCALES"
+        });
     };
 };

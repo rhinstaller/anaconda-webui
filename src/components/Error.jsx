@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { cloneElement, useContext, useEffect, useState } from "react";
 import {
     ActionList,
     Button,
@@ -36,8 +36,6 @@ import {
     TextVariants,
 } from "@patternfly/react-core";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
-
-import { setCriticalErrorAction, setCriticalErrorFrontendAction } from "../actions/miscellaneous-actions.js";
 
 import { exitGui } from "../helpers/exit.js";
 
@@ -203,7 +201,7 @@ const addExceptionDataToReportURL = (url, exception) => {
 };
 
 const exceptionInfo = (exception, idPrefix) => {
-    const exceptionNamePrefix = exception.backendException?.name ? exception.backendMessage?.name + ": " : "";
+    const exceptionNamePrefix = exception.backendException?.name ? exception.backendException?.name + ": " : "";
     const backendMessage = exception.backendException?.message ? exception.backendException.message : "";
     const frontendMessage = exception.frontendException?.message ? exception.frontendException.message : "";
 
@@ -229,7 +227,8 @@ const quitButton = (isBootIso) => {
     );
 };
 
-export const CriticalError = ({ exception, isConnected, reportLinkURL }) => {
+const CriticalError = ({ exception, isNetworkConnected, reportLinkURL }) => {
+    const isConnected = isNetworkConnected;
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const context = exception.backendException?.contextData?.context || exception.frontendException?.contextData?.context;
     const description = context
@@ -277,42 +276,66 @@ export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) 
     );
 };
 
-const errorHandlerWithContext = (contextData, handler) => {
-    return (exception) => {
-        exception.contextData = contextData;
-        handler(exception);
-    };
-};
+export class ErrorBoundary extends React.Component {
+    constructor (props) {
+        super(props);
+        // Allow providing initial exception to the ErrorBoundary constructor in case of a critical error
+        // that happens before the ErrorBoundary is mounted.
+        this.state = { backendException: props.backendException, hasError: props.backendException !== undefined };
+    }
 
-export const useError = ({ dispatch }) => {
-    useEffect(() => {
-        // Listen on JS errors
-        window.onerror = (message, url, line, col, errObj) => {
-            dispatch(setCriticalErrorFrontendAction(errObj));
+    // Add window.onerror and window.onunhandledrejection handlers
+    componentDidMount () {
+        window.onerror = (message, source, lineno, colno, error) => {
+            console.error("ErrorBoundary caught an error:", error);
+            this.setState({ frontendException: error, hasError: true });
+            return true;
         };
 
-        // Listen to JS errors from async operations
-        const handleUnhandledRejection = (event) => {
-            dispatch(setCriticalErrorFrontendAction(event.reason));
+        window.onunhandledrejection = (event) => {
+            console.error("ErrorBoundary caught an error:", event.reason);
+            this.setState({ frontendException: event.reason, hasError: true });
+            return true;
         };
-        window.addEventListener("unhandledrejection", handleUnhandledRejection);
-        return () => {
-            window.removeEventListener("unhandledrejection", handleUnhandledRejection);
-        };
-    }, [dispatch]);
+    }
 
-    const onCritFail = useCallback((contextData) => {
-        return errorHandlerWithContext(
-            contextData,
-            exc => {
-                if (contextData.isFrontend) {
-                    dispatch(setCriticalErrorFrontendAction(exc));
-                } else {
-                    dispatch(setCriticalErrorAction(exc));
-                }
+    static getDerivedStateFromError (error) {
+        if (error) {
+            return {
+                backendException: error,
+                hasError: true
+            };
+        }
+    }
+
+    componentDidCatch (error, info) {
+        console.error("ComponentDidCatch: ErrorBoundary caught an error:", error, info);
+    }
+
+    onCritFailBackend = (arg) => {
+        const { context, isFrontEnd } = arg || {};
+
+        return (error) => {
+            console.info("ErrorBoundary caught an error:", error, context);
+            if (isFrontEnd) {
+                this.setState({ frontendException: { ...error, contextData: { context } }, hasError: true });
+            } else {
+                this.setState({ backendException: { ...error, contextData: { context } }, hasError: true });
             }
-        );
-    }, [dispatch]);
+        };
+    };
 
-    return onCritFail;
-};
+    render () {
+        if (this.state.hasError) {
+            return (
+                <CriticalError
+                  exception={this.state}
+                  isNetworkConnected={this.props.isNetworkConnected}
+                  reportLinkURL={this.props.reportLinkURL}
+                />
+            );
+        }
+
+        return cloneElement(this.props.children, { onCritFail: this.onCritFailBackend });
+    }
+}
