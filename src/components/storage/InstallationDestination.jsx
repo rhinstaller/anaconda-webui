@@ -51,7 +51,6 @@ import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { StorageContext, SystemTypeContext } from "../Common.jsx";
 import { useOriginalDevices, useOriginalExistingSystems } from "./Common.jsx";
-import { ModifyStorage } from "./ModifyStorage.jsx";
 
 import "./InstallationDestination.scss";
 
@@ -239,7 +238,6 @@ export const InstallationDestination = ({
     idPrefix,
     onCritFail,
     setIsFormValid,
-    setShowStorage
 }) => {
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
@@ -281,15 +279,8 @@ export const InstallationDestination = ({
 
     return (
         <FormSection
-          title={
-              <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
-                  <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
-                  <ModifyStorage
-                    idPrefix={idPrefix}
-                    setShowStorage={setShowStorage}
-                  />
-              </Flex>
-          }>
+          title={<Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>}
+        >
             <FormGroup>
                 <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
                     {diskSelection.selectedDisks.length === 0 && (

@@ -87,7 +87,8 @@ class StorageDestination():
             self.browser.click("#cockpit-storage-integration-check-storage-dialog-continue")
 
     def modify_storage(self):
-        self.browser.click(f"#{self._step}-modify-storage")
+        self.browser.click("#toggle-kebab")
+        self.browser.click("#modify-storage")
 
 
 class StorageEncryption():

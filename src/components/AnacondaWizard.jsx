@@ -32,7 +32,7 @@ import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
 import { getSteps } from "./steps.js";
 
-export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
+export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, showStorage }) => {
     // The Form should be disabled while backend checks are in progress
     // or the page initialization is in progress
     const [isFormDisabled, setIsFormDisabled] = useState(false);
@@ -57,6 +57,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail }) => {
         onCritFail,
         setIsFormDisabled,
         setIsFormValid,
+        showStorage,
     };
 
     const stepsOrder = getSteps(isBootIso, storageScenarioId);
