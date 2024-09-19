@@ -21,6 +21,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
     Checkbox,
     FormGroup,
+    FormSection,
     Radio,
     Title,
 } from "@patternfly/react-core";
@@ -403,8 +404,9 @@ export const InstallationScenario = ({
     const { storageScenarioId } = useContext(StorageContext);
 
     return (
-        <>
-            <Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>
+        <FormSection
+          title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
+        >
             <FormGroup className={idPrefix + "-scenario-group"} isStack hasNoPaddingTop data-scenario={storageScenarioId}>
                 <InstallationScenarioSelector
                   dispatch={dispatch}
@@ -414,6 +416,6 @@ export const InstallationScenario = ({
                   showStorage={showStorage}
                 />
             </FormGroup>
-        </>
+        </FormSection>
     );
 };

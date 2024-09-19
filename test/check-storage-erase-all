@@ -141,10 +141,10 @@ class TestFedoraPlansEraseAll(VirtInstallMachineCase, StorageHelpers):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
+        s.rescan_disks(["vda", "vdb"])
 
         s.check_disk_selected("vda", True)
-        s.select_disk("vdb", True)
+        s.select_disks([("vdb", True), ("vda", True)])
 
         i.reach(i.steps.REVIEW)
         r.check_checkbox_not_present()

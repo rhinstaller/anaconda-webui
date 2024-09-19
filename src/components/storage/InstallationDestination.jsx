@@ -18,29 +18,21 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
-    Alert,
-    AlertActionCloseButton,
-    AlertGroup,
     Button,
-    Chip,
-    ChipGroup,
+    Divider,
     Flex,
     FlexItem,
     FormGroup,
-    MenuToggle,
-    Select,
-    SelectList,
-    SelectOption,
-    Spinner,
-    Text,
-    TextContent,
-    TextInputGroup,
-    TextInputGroupMain,
-    TextInputGroupUtilities,
-    TextVariants,
+    FormSection,
+    Menu,
+    MenuContent,
+    MenuItem,
+    MenuList,
+    Modal,
+    Stack,
     Title,
 } from "@patternfly/react-core";
-import { SyncAltIcon, TimesIcon } from "@patternfly/react-icons";
+import { SyncAltIcon } from "@patternfly/react-icons";
 
 import {
     runStorageTask,
@@ -52,10 +44,13 @@ import { resetPartitioning } from "../../apis/storage_partitioning.js";
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
+import { getDeviceChildren } from "../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
+import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
+
 import { StorageContext, SystemTypeContext } from "../Common.jsx";
-import { useOriginalDevices } from "./Common.jsx";
+import { useOriginalDevices, useOriginalExistingSystems } from "./Common.jsx";
 import { ModifyStorage } from "./ModifyStorage.jsx";
 
 import "./InstallationDestination.scss";
@@ -89,212 +84,139 @@ const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
     }
 };
 
-const LocalDisksSelect = ({ devices, diskSelection, idPrefix, isDisabled, setSelectedDisks }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [inputValue, setInputValue] = useState("");
-    const [focusedItemIndex, setFocusedItemIndex] = useState(null);
-    const [diskSelectionInProgress, setDiskSelectionInProgress] = useState(false);
-    const textInputRef = useRef();
-
-    useEffect(() => {
-        setDiskSelectionInProgress(false);
-    }, [diskSelection.selectedDisks]);
-
-    let selectOptions = diskSelection.usableDisks
-            .map(disk => ({
-                description: devices[disk]?.description.v,
-                name: disk,
-                size: cockpit.format_bytes(devices[disk]?.total.v),
-                value: disk,
-            }))
-            .filter(option =>
-                String(option.name)
-                        .toLowerCase()
-                        .includes(inputValue.toLowerCase()) ||
-                String(option.description)
-                        .toLowerCase()
-                        .includes(inputValue.toLowerCase())
-            );
-
-    if (selectOptions.length === 0) {
-        selectOptions = [
-            { children: _("No results found"), value: "no results" }
-        ];
-    }
-
-    const onSelect = (selectedDisk) => {
-        setDiskSelectionInProgress(true);
-
-        if (diskSelection.selectedDisks.includes(selectedDisk)) {
-            setSelectedDisks({ drives: diskSelection.selectedDisks.filter(disk => disk !== selectedDisk) });
-        } else {
-            setSelectedDisks({ drives: [...diskSelection.selectedDisks, selectedDisk] });
-        }
-        textInputRef.current?.focus();
-        setIsOpen(false);
-    };
-
-    const clearSelection = () => {
-        setSelectedDisks({ drives: [] });
-    };
-
-    const handleMenuArrowKeys = (key) => {
-        let indexToFocus;
-
-        if (isOpen) {
-            if (key === "ArrowUp") {
-                // When no index is set or at the first index, focus to the last, otherwise decrement focus index
-                if (focusedItemIndex === null || focusedItemIndex === 0) {
-                    indexToFocus = selectOptions.length - 1;
-                } else {
-                    indexToFocus = focusedItemIndex - 1;
-                }
-            }
-
-            if (key === "ArrowDown") {
-                // When no index is set or at the last index, focus to the first, otherwise increment focus index
-                if (focusedItemIndex === null || focusedItemIndex === selectOptions.length - 1) {
-                    indexToFocus = 0;
-                } else {
-                    indexToFocus = focusedItemIndex + 1;
-                }
-            }
-
-            setFocusedItemIndex(indexToFocus);
-        }
-    };
-
-    const onInputKeyDown = (event) => {
-        const enabledMenuItems = selectOptions.filter((menuItem) => !menuItem.isDisabled);
-        const [firstMenuItem] = enabledMenuItems;
-        const focusedItem = focusedItemIndex ? enabledMenuItems[focusedItemIndex] : firstMenuItem;
-
-        switch (event.key) {
-        // Select the first available option
-        case "Enter":
-            if (!isOpen) {
-                setIsOpen((prevIsOpen) => !prevIsOpen);
-            } else if (focusedItem.name !== "no results") {
-                onSelect(focusedItem.name);
-            }
-            break;
-        case "Tab":
-        case "Escape":
-            setIsOpen(false);
-            break;
-        case "ArrowUp":
-        case "ArrowDown":
-            event.preventDefault();
-            handleMenuArrowKeys(event.key);
-            break;
-        }
-    };
-
-    const onToggleClick = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const onTextInputChange = (_event, value) => {
-        setInputValue(value);
-    };
-
-    const toggle = (toggleRef) => (
-        <MenuToggle
-          id={idPrefix + "-toggle"}
-          variant="typeahead"
-          onClick={onToggleClick}
-          innerRef={toggleRef}
-          isExpanded={isOpen}
-          isDisabled={diskSelectionInProgress || isDisabled}
-          className={idPrefix}
-        >
-            <TextInputGroup isPlain>
-                <TextInputGroupMain
-                  value={inputValue}
-                  onClick={onToggleClick}
-                  onChange={onTextInputChange}
-                  onKeyDown={onInputKeyDown}
-                  autoComplete="off"
-                  innerRef={textInputRef}
-                  placeholder={!diskSelectionInProgress ? _("Select a disk") : _("Applying new disk selection...")}
-                  role="combobox"
-                  isExpanded={isOpen}
-                >
-                    <ChipGroup aria-label={_("Current selections")}>
-                        {diskSelection.selectedDisks.map((selection, index) => (
-                            <Chip
-                              key={index}
-                              onClick={(ev) => {
-                                  ev.stopPropagation();
-                                  onSelect(selection);
-                              }}
-                            >
-                                {selection}
-                            </Chip>
-                        ))}
-                    </ChipGroup>
-                </TextInputGroupMain>
-                <TextInputGroupUtilities>
-                    {diskSelection.selectedDisks.length > 0 && (
-                        <Button
-                          aria-label={_("Clear input value")}
-                          id={idPrefix + "-clear"}
-                          variant="plain"
-                          onClick={() => {
-                              setInputValue("");
-                              clearSelection();
-                              textInputRef?.current?.focus();
-                          }}
-                        >
-                            <TimesIcon aria-hidden />
-                        </Button>
-                    )}
-                    {diskSelectionInProgress && <Spinner size="lg" />}
-                </TextInputGroupUtilities>
-            </TextInputGroup>
-        </MenuToggle>
+const DeviceExistingInstallation = ({ device }) => {
+    const originalExistingSystems = useOriginalExistingSystems();
+    const devices = useOriginalDevices();
+    const children = getDeviceChildren({ device, deviceData: devices });
+    const existingSystemsOnDevice = originalExistingSystems.filter(
+        system => system.devices.v.some(device => children.includes(device))
     );
 
+    if (existingSystemsOnDevice.length === 0) {
+        return null;
+    }
+
     return (
-        <Select
-          aria-labelledby={idPrefix + "-title"}
-          isOpen={isOpen}
-          onOpenChange={() => setIsOpen(false)}
-          onSelect={(ev, selection) => onSelect(selection)}
-          selected={diskSelection.selectedDisks}
-          toggle={toggle}
-        >
-            <SelectList isAriaMultiselectable>
-                {selectOptions.map((option, index) => (
-                    <SelectOption
-                      isDisabled={option.value === "no results"}
-                      description={option.size}
-                      id={idPrefix + "-option-" + option.name}
-                      isFocused={focusedItemIndex === index}
-                      key={option.value}
-                      value={option.value}
-                    >
-                        {
-                            option.name
-                                ? cockpit.format("$0 ($1)", option.name, option.description)
-                                : option.children
-                        }
-                    </SelectOption>
-                ))}
-            </SelectList>
-        </Select>
+        cockpit.format(
+            _("Currently installed: $0"),
+            existingSystemsOnDevice.map(system => system["os-name"].v).join(", ")
+        )
     );
 };
 
-const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandler, setIsFormDisabled) => {
+const LocalDisksSelect = ({
+    dispatch,
+    idPrefix,
+    isRescanningDisks,
+    onCritFail,
+    setIsRescanningDisks,
+    setUnappliedSelection,
+    unappliedSelection,
+}) => {
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
+
+    const onSelect = (event, disk) => {
+        if (disk === "rescan") {
+            return;
+        }
+
+        const newSelection = unappliedSelection.includes(disk)
+            ? unappliedSelection.filter(selectedDisk => selectedDisk !== disk)
+            : unappliedSelection.concat(disk);
+
+        setUnappliedSelection(newSelection);
+    };
+
+    const rescanErrorHandler = onCritFail({
+        context: N_("Rescanning of the disks failed.")
+    });
+    const onClickRescan = () => rescanDisks(
+        setIsRescanningDisks,
+        dispatch,
+        rescanErrorHandler,
+    );
+
+    const rescanDisksButton = (
+        <Button
+          icon={<SyncAltIcon />}
+          className={idPrefix + "-disk-selection-rescan"}
+          id={idPrefix + "-rescan-disks"}
+          isDisabled={isRescanningDisks}
+          isInline
+          isLoading={isRescanningDisks}
+          onClick={onClickRescan}
+          variant="link"
+        >
+            {_("Rescan devices")}
+        </Button>
+    );
+
+    return (
+        <Stack className={idPrefix + "-disk-selection-stack"}>
+            {rescanDisksButton}
+            <Divider />
+            {diskSelection.usableDisks.length === 0 && (
+                <EmptyStatePanel paragraph={_("No disks available")} />
+            )}
+            {diskSelection.usableDisks.length > 0 &&
+            <>
+                <Menu
+                  isScrollable
+                  isPlain
+                  onSelect={onSelect}
+                  selected={unappliedSelection}
+                >
+                    <MenuContent>
+                        <MenuList>
+                            {diskSelection.usableDisks.map(disk => (
+                                <MenuItem
+                                  description={
+                                      <Flex spaceItems={{ default: "spaceItemsSm" }}>
+                                          <FlexItem>
+                                              {cockpit.format(
+                                                  _("$0 $1"),
+                                                  cockpit.format_bytes(devices[disk]?.total.v),
+                                                  devices[disk]?.type.v
+                                              )}
+                                          </FlexItem>
+                                          <FlexItem>
+                                              <DeviceExistingInstallation device={disk} />
+                                          </FlexItem>
+                                      </Flex>
+                                  }
+                                  hasCheckbox
+                                  id={idPrefix + "-disk-selection-menu-item-" + disk}
+                                  isDisabled={isRescanningDisks}
+                                  isSelected={unappliedSelection.includes(disk)}
+                                  itemId={disk}
+                                  key={disk}
+                                >
+                                    <Flex spaceItems={{ default: "spaceItemsSm" }}>
+                                        <FlexItem>
+                                            {cockpit.format(
+                                                _("$0 ($1)"),
+                                                devices[disk]?.description.v,
+                                                devices[disk]?.name.v
+                                            )}
+                                        </FlexItem>
+                                    </Flex>
+                                </MenuItem>
+                            ))}
+                        </MenuList>
+                    </MenuContent>
+                </Menu>
+            </>}
+        </Stack>
+    );
+};
+
+const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
     setIsRescanningDisks(true);
-    setIsFormDisabled(true);
-    refUsableDisks.current = undefined;
     scanDevicesWithTask()
             .then(task => {
                 return runStorageTask({
                     onFail: exc => {
-                        setIsFormDisabled(false);
                         setIsRescanningDisks(false);
                         errorHandler(exc);
                     },
@@ -304,7 +226,6 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
                                 dispatch(getDiskSelectionAction())
                             ]))
                             .finally(() => {
-                                setIsFormDisabled(false);
                                 setIsRescanningDisks(false);
                             })
                             .catch(errorHandler),
@@ -316,15 +237,10 @@ const rescanDisks = (setIsRescanningDisks, refUsableDisks, dispatch, errorHandle
 export const InstallationDestination = ({
     dispatch,
     idPrefix,
-    isEfi,
-    isFormDisabled,
     onCritFail,
-    setIsFormDisabled,
     setIsFormValid,
     setShowStorage
 }) => {
-    const [isRescanningDisks, setIsRescanningDisks] = useState(false);
-    const [equalDisksNotify, setEqualDisksNotify] = useState(false);
     const refUsableDisks = useRef();
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const { diskSelection } = useContext(StorageContext);
@@ -333,17 +249,16 @@ export const InstallationDestination = ({
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 
     useEffect(() => {
-        if (isRescanningDisks && refUsableDisks.current === undefined) {
-            refUsableDisks.current = diskSelection.usableDisks;
-            setEqualDisksNotify(true);
-        }
-    }, [isRescanningDisks, diskSelection.usableDisks]);
+        refUsableDisks.current = false;
+    }, [diskSelection.usableDisks]);
 
     useEffect(() => {
         // Select default disks for the partitioning on component mount
-        if (refUsableDisks.current !== undefined) {
+        if (refUsableDisks.current === true) {
             return;
         }
+
+        refUsableDisks.current = true;
 
         const defaultDisks = selectDefaultDisks({
             ignoredDisks: diskSelection.ignoredDisks,
@@ -362,161 +277,104 @@ export const InstallationDestination = ({
         setIsFormValid(selectedDisksCnt > 0);
     }, [selectedDisksCnt, setIsFormValid]);
 
-    const loading = !devices || diskSelection.usableDisks.some(disk => !devices[disk]);
-
-    const rescanErrorHandler = onCritFail({
-        context: N_("Rescanning of the disks failed.")
-    });
-    const onClickRescan = () => rescanDisks(
-        setIsRescanningDisks,
-        refUsableDisks,
-        dispatch,
-        rescanErrorHandler,
-        setIsFormDisabled,
-    );
-
-    const rescanDisksButton = (
-        <Button
-          aria-label={_("Re-scan")}
-          isDisabled={isRescanningDisks || loading || isFormDisabled}
-          isInline
-          id={idPrefix + "-rescan-disks"}
-          variant="link"
-          isLoading={isRescanningDisks}
-          icon={<SyncAltIcon />}
-          onClick={onClickRescan}
-        >
-            {_("Rescan")}
-        </Button>
-    );
-
-    const localDisksSelect = (
-        <LocalDisksSelect
-          idPrefix={idPrefix + "-disk-selector"}
-          devices={devices}
-          diskSelection={diskSelection}
-          setSelectedDisks={setSelectedDisks}
-          isDisabled={isRescanningDisks || loading || isFormDisabled}
-        />
-    );
-
     const headingLevel = isBootIso ? "h2" : "h3";
 
     return (
-        <>
-            <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
-            {!isRescanningDisks && diskSelection.usableDisks !== undefined && refUsableDisks.current !== undefined &&
-            <DisksChangedAlert
-              devices={devices}
-              equalDisksNotify={equalDisksNotify}
-              refUsableDisks={refUsableDisks}
-              setEqualDisksNotify={setEqualDisksNotify}
-              usableDisks={diskSelection.usableDisks}
-            />}
+        <FormSection
+          title={
+              <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
+                  <Title headingLevel={headingLevel} id={idPrefix + "-disk-selector-title"}>{_("Destination")}</Title>
+                  <ModifyStorage
+                    idPrefix={idPrefix}
+                    setShowStorage={setShowStorage}
+                  />
+              </Flex>
+          }>
             <FormGroup>
-                <Flex spaceItems={{ default: "spaceItemsMd" }} alignItems={{ default: "alignItemsCenter" }}>
-                    {(diskSelection.usableDisks.length > 1 || (diskSelection.usableDisks.length === 1 && diskSelection.selectedDisks.length === 0))
-                        ? localDisksSelect
-                        : (
-                            diskSelection.usableDisks.length === 1 && diskSelection.selectedDisks.length === 1
-                                ? (
-                                    <Flex id={idPrefix + "-target-disk"}>
-                                        <FlexItem>
-                                            {cockpit.format(
-                                                _("Installing to $0 ($1)"),
-                                                devices[diskSelection.selectedDisks[0]]?.description.v,
-                                                diskSelection.selectedDisks[0]
-                                            )}
-                                        </FlexItem>
-                                        <FlexItem className={idPrefix + "-target-disk-size"}>
-                                            {cockpit.format_bytes(devices[diskSelection.selectedDisks[0]]?.total.v)}
-                                        </FlexItem>
-                                    </Flex>
-                                )
-                                : _("No usable disks detected")
-                        )}
-                    {rescanDisksButton}
-                    <ModifyStorage
-                      idPrefix={idPrefix}
-                      onCritFail={onCritFail}
-                      onRescan={onClickRescan}
-                      isEfi={isEfi}
-                      dispatch={dispatch}
-                      setShowStorage={setShowStorage}
-                    />
+                <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
+                    {diskSelection.selectedDisks.length === 0 && (
+                        <FlexItem>
+                            {_("No disks selected")}
+                        </FlexItem>
+                    )}
+                    {diskSelection.selectedDisks.map(disk => (
+                        <Flex key={disk} id={idPrefix + "-target-disk-" + disk}>
+                            <FlexItem>
+                                {cockpit.format(
+                                    _("$0 ($1)"),
+                                    devices[disk]?.description.v,
+                                    devices[disk]?.name.v
+                                )}
+                            </FlexItem>
+                            <FlexItem className={idPrefix + "-target-disk-size"}>
+                                {cockpit.format(
+                                    _("$0 $1"),
+                                    cockpit.format_bytes(devices[disk]?.total.v),
+                                    devices[disk]?.type.v
+                                )}
+                            </FlexItem>
+                            <FlexItem className={idPrefix + "-target-disk-existing-os"}>
+                                <DeviceExistingInstallation device={disk} />
+                            </FlexItem>
+                        </Flex>
+                    ))}
+                    <ChangeDestination dispatch={dispatch} idPrefix={idPrefix} onCritFail={onCritFail} />
                 </Flex>
             </FormGroup>
-        </>
+        </FormSection>
     );
 };
 
-const DisksChangedAlert = ({
-    devices,
-    equalDisksNotify,
-    refUsableDisks,
-    setEqualDisksNotify,
-    usableDisks,
-}) => {
-    const [showChangedNotification, setShowChangedNotification] = useState(true);
-    const equalDisks = checkIfArraysAreEqual(refUsableDisks.current, usableDisks);
-    const disksAdded = usableDisks.filter(disk => !refUsableDisks.current.includes(disk));
-    const disksRemoved = (
-        refUsableDisks.current &&
-        refUsableDisks.current.filter(disk => !usableDisks.includes(disk))
-    );
+const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
+    const [isRescanningDisks, setIsRescanningDisks] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { diskSelection } = useContext(StorageContext);
+    const [unappliedSelection, setUnappliedSelection] = useState(diskSelection.selectedDisks);
+
+    const onSave = () => {
+        setSelectedDisks({ drives: unappliedSelection });
+        setIsModalOpen(false);
+    };
 
     return (
-        <AlertGroup isToast isLiveRegion>
-            {equalDisksNotify && equalDisks &&
-                <Alert
-                  id="no-disks-detected-alert"
-                  title={_("No additional disks detected")}
-                  variant="info"
-                  actionClose={<AlertActionCloseButton onClose={() => { setEqualDisksNotify(false) }} />}
-                />}
-            {showChangedNotification && !equalDisks &&
-                <Alert
-                  id="disks-changed-alert"
-                  title={_("The usable disks have changed")}
-                  variant="info"
-                  actionClose={<AlertActionCloseButton onClose={() => { setShowChangedNotification(false) }} />}>
-                    <TextContent>
-                        {disksAdded?.length > 0 &&
-                        <Text component={TextVariants.p}>
-                            {cockpit.format(
-                                cockpit.ngettext(
-                                    "The following disk was detected: $0",
-                                    "The following disks were detected: $0",
-                                    disksAdded.length
-                                ),
-                                disksAdded.map(disk => (
-                                    cockpit.format(
-                                        "$0 ($1)",
-                                        devices[disk].name.v,
-                                        devices[disk].description.v
-                                    ))
-                                ).join(", ")
-                            )}
-                        </Text>}
-                        {disksRemoved?.length > 0 &&
-                        <Text component={TextVariants.p}>
-                            {cockpit.format(
-                                cockpit.ngettext(
-                                    "The following disk is no longer available: $0",
-                                    "The following disks are no longer available: $0",
-                                    disksRemoved.length
-                                ),
-                                disksRemoved.map(disk => (
-                                    cockpit.format(
-                                        "$0 ($1)",
-                                        devices[disk].name.v,
-                                        devices[disk].description.v
-                                    ))
-                                ).join(", ")
-                            )}
-                        </Text>}
-                    </TextContent>
-                </Alert>}
-        </AlertGroup>
+        <>
+            <Button variant="link" id={idPrefix + "-change-destination-button"} isInline onClick={() => setIsModalOpen(true)}>
+                {_("Change destination")}
+            </Button>
+            {isModalOpen && (
+                <Modal
+                  id={idPrefix + "-change-destination-modal"}
+                  position="top" variant="small" isOpen onClose={() => setIsModalOpen(false)}
+                  title={_("Select destination")}
+                  footer={
+                      <>
+                          {diskSelection.usableDisks.length > 0 && (
+                              <>
+                                  <Button isDisabled={isRescanningDisks} variant="primary" onClick={onSave}>
+                                      {_("Select")}
+                                  </Button>
+                                  <Button isDisabled={isRescanningDisks} variant="link" onClick={() => setIsModalOpen(false)}>
+                                      {_("Cancel")}
+                                  </Button>
+                              </>)}
+                          {diskSelection.usableDisks.length === 0 && (
+                              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+                                  {_("Close")}
+                              </Button>
+                          )}
+                      </>
+                  }>
+                    <LocalDisksSelect
+                      dispatch={dispatch}
+                      idPrefix={idPrefix}
+                      isRescanningDisks={isRescanningDisks}
+                      unappliedSelection={unappliedSelection}
+                      onCritFail={onCritFail}
+                      setUnappliedSelection={setUnappliedSelection}
+                      setIsRescanningDisks={setIsRescanningDisks}
+                    />
+                </Modal>
+            )}
+        </>
     );
 };
