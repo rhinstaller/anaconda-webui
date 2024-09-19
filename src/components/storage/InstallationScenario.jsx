@@ -163,10 +163,24 @@ const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => 
         return availability;
     }
 
+    // Check that required autopartitioning scheme matches reused OS.
+    // Currently only btrfs scheme is supported.
+    // btrfs is enforced in partitioningSetHomeReuse, but in general we should rather
+    // use conf.Storage.default-scheme.
+    // Check just "/home". To be more generic we could check all reused devices (as the backend).
+    const reusedOS = linuxSystems[0];
+    const homeDevice = reusedOS["mount-points"].v["/home"];
+    const requiredType = "btrfs subvolume";
+    if (devices[homeDevice].type.v !== requiredType) {
+        availability.available = false;
+        availability.reason = _("No reusable existing Linux system found");
+        availability.hint = cockpit.format(_("Reused devices must have '$0' type"), requiredType);
+        return availability;
+    }
+
     // TODO checks:
     // - luks - partitions are unlocked - enforce? allow opt-out?
     // - size ?
-    // - matching partitioning scheme? we support only btrfs now, set the scheme automatically in backend?
     // - Windows system along (forbidden for now?)
 
     return availability;
