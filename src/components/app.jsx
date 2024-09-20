@@ -50,6 +50,7 @@ export const ApplicationLoading = () => (
 
 export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
+    const [showStorage, setShowStorage] = useState(false);
     const address = useAddress();
 
     useEffect(() => {
@@ -80,9 +81,12 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
             <PageGroup
               stickyOnBreakpoint={{ default: "top" }}>
                 <AnacondaHeader
+                  dispatch={dispatch}
                   title={title}
                   reportLinkURL={reportLinkURL}
                   onCritFail={onCritFail}
+                  showStorage={showStorage}
+                  setShowStorage={setShowStorage}
                 />
             </PageGroup>
             <AnacondaWizard
@@ -91,6 +95,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               title={title}
               dispatch={dispatch}
               conf={conf}
+              showStorage={showStorage}
             />
         </>
     );

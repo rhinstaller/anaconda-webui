@@ -25,6 +25,7 @@ import {
     Card,
     CardBody,
     Divider,
+    DropdownItem,
     Flex,
     FlexItem,
     HelperText,
@@ -67,7 +68,7 @@ import { getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { StorageContext } from "../Common.jsx";
+import { StorageContext, TargetSystemRootContext } from "../Common.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
@@ -151,7 +152,6 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
 
 export const CockpitStorageIntegration = ({
     dispatch,
-    isFormDisabled,
     onCritFail,
     scenarioAvailability,
     setShowStorage,
@@ -217,7 +217,6 @@ export const CockpitStorageIntegration = ({
                 {showDialog &&
                     <CheckStorageDialog
                       dispatch={dispatch}
-                      isFormDisabled={isFormDisabled}
                       onCritFail={onCritFail}
                       scenarioAvailability={scenarioAvailability}
                       setShowDialog={setShowDialog}
@@ -288,7 +287,6 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
 
 const CheckStorageDialog = ({
     dispatch,
-    isFormDisabled,
     onCritFail,
     setShowDialog,
     setShowStorage,
@@ -501,7 +499,6 @@ const CheckStorageDialog = ({
                           <>
                               <Button
                                 id={idPrefix + "-check-storage-dialog-continue"}
-                                isDisabled={isFormDisabled}
                                 variant="primary"
                                 onClick={goBackToInstallation}>
                                   {_("Continue")}
@@ -523,7 +520,6 @@ const CheckStorageDialog = ({
                               </Button>
                               <Button
                                 id={idPrefix + "-check-storage-dialog-continue"}
-                                isDisabled={isFormDisabled}
                                 variant="secondary"
                                 onClick={() => setShowStorage(false)}>
                                   {_("Proceed with installation")}
@@ -633,5 +629,31 @@ const ModifyStorageSideBar = () => {
                 </CardBody>
             </Card>
         </PageSection>
+    );
+};
+
+export const ModifyStorage = ({ setShowStorage }) => {
+    const targetSystemRoot = useContext(TargetSystemRootContext);
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
+    const selectedDevices = diskSelection.selectedDisks.map(disk => devices[disk].path.v);
+    const mountPointConstraints = useMountPointConstraints();
+    const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
+    const cockpitAnaconda = JSON.stringify({
+        available_devices: selectedDevices,
+        efi: isEfi,
+        mount_point_prefix: targetSystemRoot,
+    });
+
+    return (
+        <DropdownItem
+          id="modify-storage"
+          onClick={() => {
+              window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
+              setShowStorage(true);
+          }}
+        >
+            {_("Modify storage")}
+        </DropdownItem>
     );
 };

@@ -41,6 +41,7 @@ import { getAnacondaVersion } from "../helpers/product.js";
 
 import { OsReleaseContext } from "./Common.jsx";
 import { UserIssue } from "./Error.jsx";
+import { CockpitStorageIntegration, ModifyStorage } from "./storage/CockpitStorageIntegration.jsx";
 
 import "./HeaderKebab.scss";
 
@@ -104,7 +105,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
     );
 };
 
-export const HeaderKebab = ({ isConnected, reportLinkURL }) => {
+export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
@@ -125,6 +126,11 @@ export const HeaderKebab = ({ isConnected, reportLinkURL }) => {
     };
 
     const dropdownItems = [
+        <ModifyStorage
+          idPrefix="header-kebab"
+          key="modify-storage"
+          setShowStorage={setShowStorage}
+        />,
         <DropdownItem id="about-modal-dropdown-item-about" key="about" onClick={handleAboutModal}>
             {_("About")}
         </DropdownItem>,
@@ -165,6 +171,12 @@ export const HeaderKebab = ({ isConnected, reportLinkURL }) => {
                   setIsReportIssueOpen={setIsReportIssueOpen}
                   isConnected={isConnected}
                 />}
+            {showStorage &&
+            <CockpitStorageIntegration
+              dispatch={dispatch}
+              onCritFail={onCritFail}
+              setShowStorage={setShowStorage}
+            />}
         </>
     );
 };

@@ -29,7 +29,6 @@ import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { DialogsContext, FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
-import { CockpitStorageIntegration } from "./CockpitStorageIntegration.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
@@ -45,8 +44,8 @@ const InstallationMethod = ({
     onCritFail,
     setIsFormDisabled,
     setIsFormValid,
+    showStorage,
 }) => {
-    const [showStorage, setShowStorage] = useState(false);
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
 
     // Display custom footer
@@ -64,13 +63,6 @@ const InstallationMethod = ({
           id={idPrefix + "-selector-form"}
           onSubmit={e => { e.preventDefault(); return false }}
         >
-            {showStorage &&
-            <CockpitStorageIntegration
-              dispatch={dispatch}
-              isFormDisabled={isFormDisabled}
-              onCritFail={onCritFail}
-              setShowStorage={setShowStorage}
-            />}
             <InstallationDestination
               isEfi={isEfi}
               dispatch={dispatch}
@@ -78,7 +70,6 @@ const InstallationMethod = ({
               isFormDisabled={isFormDisabled}
               setIsFormValid={setIsFormValid}
               setIsFormDisabled={setIsFormDisabled}
-              setShowStorage={setShowStorage}
               onCritFail={onCritFail}
             />
             <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>

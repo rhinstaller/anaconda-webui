@@ -661,12 +661,17 @@ const useExistingPartitioning = () => {
                 return false;
             }
 
+            // Is the device usable?
+            if (devices[device].protected.v || devices[device].size.v === 0) {
+                return false;
+            }
+
             // All device's disks have to be in selected disks.
             return diskSelection.selectedDisks.some(disk => ancestors.includes(disk));
         });
 
-        const usedDevices = partitioning?.requests?.map(r => r["device-spec"]) || [];
-
+        // Disk devices are not allowed in the mount point assignment
+        const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []).filter(d => devices[d]?.type.v !== "disk");
         if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
             return true;
         }
