@@ -57,6 +57,9 @@ class Installer():
         if (scenario == 'use-configured-storage'):
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
             self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
+        elif (scenario == 'home-reuse'):
+            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
+            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
         else:
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
 
