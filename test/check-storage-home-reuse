@@ -37,7 +37,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     def testBasic(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
         r = Review(b, m)
 
@@ -49,6 +49,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
 
         s.set_partitioning("home-reuse")
         i.reach(i.steps.REVIEW)
+
 
         # check selected disks are shown
         r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
@@ -63,7 +64,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     def testMultipleRoots(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
         r = Review(b, m)
 
@@ -115,7 +116,7 @@ class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
     def testBasic(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
         r = Review(b, m)
 
