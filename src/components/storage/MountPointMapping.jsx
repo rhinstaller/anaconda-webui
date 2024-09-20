@@ -661,6 +661,11 @@ const useExistingPartitioning = () => {
                 return false;
             }
 
+            // Is the device usable?
+            if (devices[device].protected.v || devices[device].size.v === 0) {
+                return false;
+            }
+
             // All device's disks have to be in selected disks.
             return diskSelection.selectedDisks.some(disk => ancestors.includes(disk));
         });
