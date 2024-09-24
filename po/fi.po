@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-17 02:48+0000\n"
+"POT-Creation-Date: 2024-09-24 03:04+0000\n"
 "PO-Revision-Date: 2024-09-13 00:39+0000\n"
 "Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
 "memory@weblate.org>\n"
@@ -41,11 +41,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "X-Generator: Weblate 5.7.2\n"
 
-#: src/components/app.jsx:76
+#: src/components/storage/InstallationDestination.jsx:177
+#: src/components/storage/InstallationDestination.jsx:302
+msgid "$0 $1"
+msgstr ""
+
+#: src/components/storage/InstallationDestination.jsx:197
+#: src/components/storage/InstallationDestination.jsx:295
+msgid "$0 ($1)"
+msgstr ""
+
+#: src/components/app.jsx:77
 msgid "$0 installation"
 msgstr "$0 -asennus"
 
-#: src/components/HeaderKebab.jsx:71
+#: src/components/HeaderKebab.jsx:72
 msgid "$0 installer"
 msgstr "$0 -asennusohjelmas"
 
@@ -61,7 +71,7 @@ msgstr "Tiedostojärjestelmä $0 ei voi olla salatussa lohkolaitteessa"
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0':n on oltava laitteessa, joka on alustettu muotoon '$1'"
 
-#: src/components/HeaderKebab.jsx:129
+#: src/components/HeaderKebab.jsx:135
 msgid "About"
 msgstr "Aiheesta"
 
@@ -69,16 +79,16 @@ msgstr "Aiheesta"
 msgid "Account"
 msgstr "Tili"
 
-#: src/components/review/StorageReview.jsx:194
 #: src/components/storage/ReclaimSpaceModal.jsx:154
+#: src/components/review/StorageReview.jsx:194
 msgid "Actions"
 msgstr "Toimet"
 
-#: src/components/storage/MountPointMapping.jsx:606
+#: src/components/storage/MountPointMapping.jsx:616
 msgid "Add mount"
 msgstr "Lisää liitos"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:145
+#: src/components/storage/CockpitStorageIntegration.jsx:146
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
 "Kaikki tallennusmuokkaimeen tehdyt muutokset astuvat voimaan välittömästi."
@@ -107,17 +117,13 @@ msgstr ""
 "Anaconda on Fedoran, RHEL:n, CentOS:n ja muiden Linux-jakeluiden käyttämä "
 "käyttöjärjestelmän asennusohjelma."
 
-#: src/components/HeaderKebab.jsx:100
+#: src/components/HeaderKebab.jsx:101
 msgid "Anaconda project page"
 msgstr "Anaconda-projektin sivu"
 
-#: src/components/storage/InstallationScenario.jsx:228
+#: src/components/storage/InstallationScenario.jsx:229
 msgid "Apply mount point assignment and install"
 msgstr "Käytä kiinnityspisteiden määritystä ja asenna"
-
-#: src/components/storage/InstallationDestination.jsx:219
-msgid "Applying new disk selection..."
-msgstr "Otetaan uutta levyvalintaa käyttöön..."
 
 #: src/components/storage/ReclaimSpaceModal.jsx:208
 msgid "Available free space: $0. Installation requires: $1."
@@ -127,7 +133,7 @@ msgstr "Käytettävissä oleva vapaa tila: $0. Asennus vaatii: $1."
 msgid "Back"
 msgstr "Takaisin"
 
-#: src/components/AnacondaHeader.jsx:79
+#: src/components/AnacondaHeader.jsx:87
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
 "associated with pre-released software, that you intend to use this for "
@@ -139,15 +145,22 @@ msgstr ""
 "testaustarkoituksiin, ja olet halukas ilmoittamaan mahdollisista ongelmista "
 "parantaaksesi tätä ohjelmistoa."
 
-#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:259
-#: src/components/storage/CockpitStorageIntegration.jsx:134
+#: src/components/storage/CockpitStorageIntegration.jsx:135
+#: src/components/storage/InstallationDestination.jsx:348
 #: src/components/storage/ReclaimSpaceModal.jsx:219
+#: src/components/review/Hostname.jsx:106 src/components/Error.jsx:259
 msgid "Cancel"
 msgstr "Peru"
 
 #: src/components/review/Hostname.jsx:104
 msgid "Change"
 msgstr "Vaihda"
+
+#: src/components/storage/InstallationDestination.jsx:333
+#, fuzzy
+#| msgid "Destination"
+msgid "Change destination"
+msgstr "Kohde"
 
 #: src/components/review/Hostname.jsx:113
 msgid "Change hostname"
@@ -160,8 +173,8 @@ msgstr ""
 "Täällä tehdyt muutokset vaikuttavat välittömästi järjestelmään. \"Kumoa\" ei "
 "ole."
 
-#: src/components/storage/CockpitStorageIntegration.jsx:473
-#: src/components/storage/CockpitStorageIntegration.jsx:485
+#: src/components/storage/CockpitStorageIntegration.jsx:471
+#: src/components/storage/CockpitStorageIntegration.jsx:483
 #: src/components/storage/DiskEncryption.jsx:54
 msgid "Checking storage configuration"
 msgstr "Tarkistetaan tallennustilan asetuksia"
@@ -174,15 +187,12 @@ msgstr "Valitse kieli"
 msgid "Chosen language: "
 msgstr "Valittu kieli: "
 
-#: src/components/storage/InstallationDestination.jsx:240
-msgid "Clear input value"
-msgstr "Tyhjennä syöttöarvo"
-
 #: src/components/storage/EncryptedDevices.jsx:164
+#: src/components/storage/InstallationDestination.jsx:353
 msgid "Close"
 msgstr "Sulje"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:391
+#: src/components/storage/CockpitStorageIntegration.jsx:389
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -201,16 +211,16 @@ msgstr "Valmis"
 msgid "Configure storage"
 msgstr "Määritä tallennustila"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:522
+#: src/components/storage/CockpitStorageIntegration.jsx:519
 msgid "Configure storage again"
 msgstr "Määritä tallennustila uudelleen"
 
-#: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:284
 #: src/components/storage/DiskEncryption.jsx:117
+#: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:284
 msgid "Confirm passphrase"
 msgstr "Vahvista salalause"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:507
+#: src/components/storage/CockpitStorageIntegration.jsx:504
 msgid "Continue"
 msgstr "Jatka"
 
@@ -218,7 +228,7 @@ msgstr "Jatka"
 msgid "Continue installation"
 msgstr "Jatka asennusta"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:482
+#: src/components/storage/CockpitStorageIntegration.jsx:480
 msgid "Continue with installation"
 msgstr "Jatka asennuksella"
 
@@ -234,9 +244,11 @@ msgstr "Luo tili"
 msgid "Critical error"
 msgstr "Kriittinen virhe"
 
-#: src/components/storage/InstallationDestination.jsx:223
-msgid "Current selections"
-msgstr "Nykyiset valinnat"
+#: src/components/storage/InstallationDestination.jsx:100
+#, fuzzy
+#| msgid "Current host name:"
+msgid "Currently installed: $0"
+msgstr "Nykyinen konenimi:"
 
 #: src/components/storage/MountPointMapping.jsx:246
 msgid "Custom"
@@ -246,16 +258,16 @@ msgstr "Mukautettu"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Tiettyjen osioiden poistaminen voi estää $0:n käynnistymisen: $1"
 
-#: src/components/storage/InstallationDestination.jsx:407
+#: src/components/storage/InstallationDestination.jsx:282
 msgid "Destination"
 msgstr "Kohde"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:547
+#: src/components/storage/CockpitStorageIntegration.jsx:543
 msgid "Detected valid storage layout:"
 msgstr "Havaittu kelvollinen tallennusasettelu:"
 
+#: src/components/storage/MountPointMapping.jsx:592
 #: src/components/review/StorageReview.jsx:192
-#: src/components/storage/MountPointMapping.jsx:582
 msgid "Device"
 msgstr "Laite"
 
@@ -271,7 +283,7 @@ msgstr "Laitteen asetukset"
 msgid "Disk encryption"
 msgstr "Levyn salaus"
 
-#: src/components/storage/MountPointMapping.jsx:350
+#: src/components/storage/MountPointMapping.jsx:360
 msgid "Duplicate device."
 msgstr "Laitteen kaksoiskappale."
 
@@ -304,8 +316,8 @@ msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr ""
 "Salaus auttaa suojaamaan tietosi, jotta muut eivät pääse niihin käsiksi."
 
-#: src/components/storage/InstallationScenario.jsx:206
-#: src/components/storage/InstallationScenario.jsx:214
+#: src/components/storage/InstallationScenario.jsx:207
+#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erase data and install"
 msgstr "Tyhjennä levyt ja asenna"
 
@@ -313,7 +325,7 @@ msgstr "Tyhjennä levyt ja asenna"
 msgid "Error details"
 msgstr "Virheen tiedot"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:618
+#: src/components/storage/CockpitStorageIntegration.jsx:614
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora Linux vaatii vähintään $0 levytilaa."
 
@@ -333,7 +345,7 @@ msgstr ""
 msgid "Find a language"
 msgstr "Etsi kieli"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:551
+#: src/components/storage/CockpitStorageIntegration.jsx:547
 msgid "Free space requirements met"
 msgstr "Vapaan tilan vaatimukset täytetty"
 
@@ -362,7 +374,7 @@ msgstr "Piilota salasana"
 msgid "Hostname"
 msgstr "Koneen nimi"
 
-#: src/components/storage/InstallationScenario.jsx:407
+#: src/components/storage/InstallationScenario.jsx:408
 msgid "How would you like to install?"
 msgstr "Miten haluaisit asentaa?"
 
@@ -388,11 +400,11 @@ msgstr "Ymmärrän, että joitain osioita muutetaan"
 msgid "If empty, hostname will be transient and set by network information."
 msgstr "Jos tyhjänä, isäntänimi on ohimenevä ja verkon tietojen määräämä."
 
-#: src/components/storage/CockpitStorageIntegration.jsx:594
+#: src/components/storage/CockpitStorageIntegration.jsx:590
 msgid "If you are configuring partitions the following are required:"
 msgstr "Jos määrität osioita, seuraavat vaaditaan:"
 
-#: src/components/AnacondaHeader.jsx:82
+#: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Jos et ymmärrä tai hyväksy riskejä, poistu tästä ohjelmasta."
@@ -405,8 +417,8 @@ msgstr "Meneillään"
 msgid "Initializing..."
 msgstr "Alustetaan ..."
 
-#: src/components/storage/InstallationScenario.jsx:217
-#: src/components/storage/InstallationScenario.jsx:238
+#: src/components/storage/InstallationScenario.jsx:218
+#: src/components/storage/InstallationScenario.jsx:239
 msgid "Install"
 msgstr "Asenna"
 
@@ -414,7 +426,7 @@ msgstr "Asenna"
 msgid "Installation failed"
 msgstr "Asennus epäonnistui"
 
-#: src/components/storage/InstallationMethod.jsx:201
+#: src/components/storage/InstallationMethod.jsx:192
 msgid "Installation method"
 msgstr "Asennustapa"
 
@@ -430,10 +442,6 @@ msgstr "Asennustyyppi"
 msgid "Installing"
 msgstr "Asennetaan"
 
-#: src/components/storage/InstallationDestination.jsx:426
-msgid "Installing to $0 ($1)"
-msgstr "Asennetaan kohteeseen $0 ($1)"
-
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid "Keep current disk layout and only install into available space."
 msgstr "Säilytä nykyinen levyasettelu ja asenna vain vapaaseen tilaan."
@@ -442,7 +450,7 @@ msgstr "Säilytä nykyinen levyasettelu ja asenna vain vapaaseen tilaan."
 msgid "Language"
 msgstr "Kieli"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:127
+#: src/components/storage/CockpitStorageIntegration.jsx:128
 msgid "Launch storage editor"
 msgstr "Käynnistä tallennusmuokkain"
 
@@ -458,11 +466,11 @@ msgstr "Lukitut laitteet"
 msgid "Log"
 msgstr "Loki"
 
-#: src/components/storage/MountPointMapping.jsx:762
+#: src/components/storage/MountPointMapping.jsx:777
 msgid "Manual disk configuration"
 msgstr "Manuaalinen levyn konfigurointi"
 
-#: src/components/storage/MountPointMapping.jsx:764
+#: src/components/storage/MountPointMapping.jsx:779
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Manuaalinen levykonfigurointi: Liitospisteiden kartoitus"
 
@@ -483,18 +491,18 @@ msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Isäntälaitteen ja alalaitteen uudelleenmuotoilun valinta ei vastaa toisiaan."
 
-#: src/components/storage/CockpitStorageIntegration.jsx:118
-#: src/components/storage/ModifyStorage.jsx:56
+#: src/components/storage/CockpitStorageIntegration.jsx:119
+#: src/components/storage/CockpitStorageIntegration.jsx:656
 msgid "Modify storage"
 msgstr "Muokkaa tallennustilaa"
 
+#: src/components/storage/MountPointMapping.jsx:591
 #: src/components/review/StorageReview.jsx:191
-#: src/components/storage/MountPointMapping.jsx:581
 msgid "Mount point"
 msgstr "Liitospiste"
 
-#: src/components/storage/MountPointMapping.jsx:579
-#: src/components/storage/InstallationScenario.jsx:236
+#: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/MountPointMapping.jsx:589
 msgid "Mount point assignment"
 msgstr "Liitospisteen määrittely"
 
@@ -522,33 +530,34 @@ msgstr "Verkko ei ole käytettävissä. Määritä verkko ilmoittaaksesi viasta.
 msgid "Next"
 msgstr "Seuraava"
 
-#: src/components/storage/InstallationDestination.jsx:473
-msgid "No additional disks detected"
-msgstr "Ylimääräisiä levyjä ei havaittu"
-
-#: src/components/storage/MountPointMapping.jsx:586
+#: src/components/storage/MountPointMapping.jsx:596
 #: src/components/storage/ReclaimSpaceModal.jsx:156
 msgid "No devices"
 msgstr "Ei laiteita"
 
-#: src/components/storage/InstallationDestination.jsx:121
+#: src/components/storage/InstallationDestination.jsx:159
+#, fuzzy
+#| msgid "not available"
+msgid "No disks available"
+msgstr "Ei käytettävissä"
+
+#: src/components/storage/InstallationDestination.jsx:288
+msgid "No disks selected"
+msgstr "Yhtään levyä ei ole valittu"
+
 #: src/components/localization/InstallationLanguage.jsx:192
 msgid "No results found"
 msgstr "Tuloksia ei löytynyt"
 
-#: src/components/storage/InstallationScenario.jsx:120
+#: src/components/storage/InstallationScenario.jsx:121
 msgid "No usable devices on the selected disks."
 msgstr "Valituilla levyillä ei ole käyttökelpoisia laitteita."
 
-#: src/components/storage/InstallationDestination.jsx:436
-msgid "No usable disks detected"
-msgstr "Yhtään käyttökelpoista levyä ei löytynyt"
-
-#: src/components/storage/InstallationScenario.jsx:85
+#: src/components/storage/InstallationScenario.jsx:86
 msgid "Not enough free space on the selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
-#: src/components/storage/InstallationScenario.jsx:64
+#: src/components/storage/InstallationScenario.jsx:65
 msgid "Not enough space on selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
@@ -556,7 +565,7 @@ msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 msgid "Note"
 msgstr "Huomautus"
 
-#: src/components/AnacondaHeader.jsx:76
+#: src/components/AnacondaHeader.jsx:84
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
 "testing purposes only. Do NOT use this software for any critical work or for "
@@ -576,14 +585,14 @@ msgstr "Vain uudet osiot salataan. Olemassa olevat osiot säilyvät ennallaan."
 msgid "Operating system"
 msgstr "Käyttöjärjestelmä"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:626
+#: src/components/storage/CockpitStorageIntegration.jsx:622
 msgid "Partitions (advanced)"
 msgstr "Osiot (edistynyt)"
 
-#: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:281
+#: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
-#: src/components/storage/DiskEncryption.jsx:114
+#: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:281
 msgid "Passphrase"
 msgstr "Tunnuslause"
 
@@ -603,11 +612,11 @@ msgstr "Odottaa"
 msgid "Please attach the log file $0 to the issue."
 msgstr "Liitä ongelmaan lokitiedosto $0."
 
-#: src/components/HeaderKebab.jsx:72
+#: src/components/HeaderKebab.jsx:73
 msgid "Powered by Anaconda"
 msgstr "Pellin alla Anaconda"
 
-#: src/components/AnacondaHeader.jsx:66
+#: src/components/AnacondaHeader.jsx:74
 msgid "Pre-release"
 msgstr "Esijulkaisu"
 
@@ -615,13 +624,14 @@ msgstr "Esijulkaisu"
 msgid "Preparing report"
 msgstr "Raporttia valmistellaan"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:529
+#: src/components/storage/CockpitStorageIntegration.jsx:525
 msgid "Proceed with installation"
 msgstr "Jatka asentamista"
 
-#: src/components/installation/InstallationProgress.jsx:229
-#: src/components/Error.jsx:225 src/components/AnacondaWizardFooter.jsx:108
+#: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131
+#: src/components/installation/InstallationProgress.jsx:229
+#: src/components/Error.jsx:225
 msgid "Quit"
 msgstr "Lopeta"
 
@@ -629,19 +639,15 @@ msgstr "Lopeta"
 msgid "Quit installer?"
 msgstr "_Poistu asennusohjelmasta?"
 
-#: src/components/storage/InstallationDestination.jsx:380
-msgid "Re-scan"
-msgstr "Skannaa uudelleen"
-
-#: src/components/app.jsx:113
+#: src/components/app.jsx:118
 msgid "Reading information about the OS failed."
 msgstr "Käyttöjärjestelmää koskevien tietojen lukeminen epäonnistui."
 
-#: src/components/app.jsx:66
+#: src/components/app.jsx:67
 msgid "Reading information about the computer failed."
 msgstr "Tietokoneen tietojen lukeminen epäonnistui."
 
-#: src/components/app.jsx:103
+#: src/components/app.jsx:108
 msgid "Reading installer configuration failed."
 msgstr "Asennusohjelman asetusten lukeminen epäonnistui."
 
@@ -661,9 +667,10 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Oikea isäntänimi saa olla enintään 64 merkkiä pitkä"
 
-#: src/components/installation/InstallationProgress.jsx:229
-#: src/components/Error.jsx:225 src/components/AnacondaWizardFooter.jsx:108
+#: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131
+#: src/components/installation/InstallationProgress.jsx:229
+#: src/components/Error.jsx:225
 msgid "Reboot"
 msgstr "Käynnistä uudelleen"
 
@@ -677,7 +684,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "Käynnistä järjestelmä uudelleen?"
 
-#: src/components/storage/InstallationScenario.jsx:198
+#: src/components/storage/InstallationScenario.jsx:199
 msgid "Reclaim additional space"
 msgstr "Pyydä lisää tilaa takaisin"
 
@@ -687,7 +694,7 @@ msgstr "Pyydä lisää tilaa takaisin"
 msgid "Reclaim space"
 msgstr "Vapauta tilaa"
 
-#: src/components/storage/InstallationScenario.jsx:198
+#: src/components/storage/InstallationScenario.jsx:199
 msgid "Reclaim space (required)"
 msgstr "Pyydä tila takaisin (pakollinen)"
 
@@ -695,16 +702,16 @@ msgstr "Pyydä tila takaisin (pakollinen)"
 msgid "Recommended"
 msgstr "Suositeltu"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:603
+#: src/components/storage/CockpitStorageIntegration.jsx:599
 msgid "Recommended partitions:"
 msgstr "Suositellut osiot:"
 
-#: src/components/storage/MountPointMapping.jsx:370
-#: src/components/storage/MountPointMapping.jsx:583
+#: src/components/storage/MountPointMapping.jsx:380
+#: src/components/storage/MountPointMapping.jsx:593
 msgid "Reformat"
 msgstr "Alusta uudelleen"
 
-#: src/components/storage/MountPointMapping.jsx:397
+#: src/components/storage/MountPointMapping.jsx:407
 msgid "Remove"
 msgstr "Poista"
 
@@ -730,7 +737,7 @@ msgstr ""
 "Tiedostojärjestelmän poistaminen poistaa pysyvästi kaikki sen sisältämät "
 "tiedot. "
 
-#: src/components/HeaderKebab.jsx:132
+#: src/components/HeaderKebab.jsx:138
 msgid "Report Issue"
 msgstr "Ilmoita ongelmasta"
 
@@ -750,15 +757,17 @@ msgstr ""
 msgid "Required"
 msgstr "Vaaditaan"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:615
+#: src/components/storage/CockpitStorageIntegration.jsx:611
 msgid "Requirements"
 msgstr "Vaatimukset"
 
-#: src/components/storage/InstallationDestination.jsx:389
-msgid "Rescan"
-msgstr "Päivitä"
+#: src/components/storage/InstallationDestination.jsx:150
+#, fuzzy
+#| msgid "to rescan devices"
+msgid "Rescan devices"
+msgstr "tutki laitteet uudelleen"
 
-#: src/components/storage/InstallationDestination.jsx:368
+#: src/components/storage/InstallationDestination.jsx:131
 msgid "Rescanning of the disks failed."
 msgstr "Levyjen uudelleenskannaus epäonnistui."
 
@@ -770,11 +779,11 @@ msgstr "Muuta kokoa"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Seuraavien osioiden koon muuttaminen $0:sta: $1"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:91
+#: src/components/storage/CockpitStorageIntegration.jsx:92
 msgid "Return to installation"
 msgstr "Palaa asennukseen"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:513
+#: src/components/storage/CockpitStorageIntegration.jsx:510
 msgid "Return to storage editor"
 msgstr "Palaa tallennusmuokkaimeen"
 
@@ -791,13 +800,22 @@ msgstr "Tallenna"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Skannaa QR-koodi puhelimellasi tai käy:"
 
-#: src/components/storage/MountPointMapping.jsx:299
+#: src/components/storage/InstallationDestination.jsx:345
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Configure Dialog"
+#| msgid "_Select"
+msgid "Select"
+msgstr "_Valitse"
+
+#: src/components/storage/MountPointMapping.jsx:309
 msgid "Select a device"
 msgstr "Valitse laite"
 
-#: src/components/storage/InstallationDestination.jsx:219
-msgid "Select a disk"
-msgstr "Valitse levy"
+#: src/components/storage/InstallationDestination.jsx:339
+#, fuzzy
+#| msgid "Destination"
+msgid "Select destination"
+msgstr "Kohde"
 
 #: src/components/storage/MountPointMapping.jsx:124
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -843,7 +861,7 @@ msgstr ""
 "Ohjelmiston asennus: Tallennuskokoonpano on valmis. Ohjelmistoa asennetaan "
 "nyt laitteellesi."
 
-#: src/components/storage/InstallationScenario.jsx:123
+#: src/components/storage/InstallationScenario.jsx:124
 msgid "Some required partitions are missing: $0"
 msgstr "Jotkut pakolliset osiot puuttuvat: $0"
 
@@ -871,7 +889,7 @@ msgstr "Tallennus perustuu 'Muokkaa tallennustilaa':n kokoonpanoon."
 msgid "Storage plugin failed"
 msgstr "Tallennustilalaajennus epäonnistui"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:480
+#: src/components/storage/CockpitStorageIntegration.jsx:478
 msgid "Storage requirements not met"
 msgstr "Tallennustilavaatimukset eivät täyty"
 
@@ -909,18 +927,6 @@ msgid ""
 "software. "
 msgstr "Valittua kieltä käytetään asennuksessa ja asennetussa ohjelmistossa. "
 
-#: src/components/storage/InstallationDestination.jsx:505
-msgid "The following disk is no longer available: $0"
-msgid_plural "The following disks are no longer available: $0"
-msgstr[0] "Seuraava levy ei ole enää käytettävissä: $0"
-msgstr[1] "Seuraavat levyt eivät ole enää käytettävissä: $0"
-
-#: src/components/storage/InstallationDestination.jsx:488
-msgid "The following disk was detected: $0"
-msgid_plural "The following disks were detected: $0"
-msgstr[0] "Seuraava levy havaittiin: $0"
-msgstr[1] "Seuraavat levyt havaittiin: $0"
-
 #: src/components/Error.jsx:267
 msgid ""
 "The following log will be sent to the issue tracking system where you may "
@@ -929,7 +935,7 @@ msgstr ""
 "Seuraava loki lähetetään ongelmanseurantajärjestelmään, jossa voit antaa "
 "lisätietoja."
 
-#: src/components/storage/InstallationScenario.jsx:66
+#: src/components/storage/InstallationScenario.jsx:67
 msgid "The installation needs $1 of disk space; "
 msgstr "Asennus vaatii $1 levytilaa; "
 
@@ -949,14 +955,10 @@ msgstr ""
 "Antamasi salalause sisältää merkkejä, jotka eivät ole ASCII:ta. Jos "
 "näppäimistöasettelua vaihdetaan, kirjautuminen ei ehkä onnistu."
 
-#: src/components/storage/CockpitStorageIntegration.jsx:140
+#: src/components/storage/CockpitStorageIntegration.jsx:141
 msgid "The storage editor lets you resize, delete, and create partitions. "
 msgstr ""
 "Tallennusmuokkaimen avulla voit muuttaa kokoa, poistaa ja luoda osioita. "
-
-#: src/components/storage/InstallationDestination.jsx:480
-msgid "The usable disks have changed"
-msgstr "Käytettävissä olevat levyt ovat muuttuneet"
 
 #: src/components/users/Accounts.jsx:202
 msgid "This account will have administration privilege with sudo."
@@ -966,7 +968,7 @@ msgstr "Tällä tilillä on järjestelmänvalvojan oikeudet 'sudo':n kanssa."
 msgid "This hostname can't be submitted"
 msgstr "Tätä isäntänimeä ei voi lähettää"
 
-#: src/components/AnacondaHeader.jsx:70
+#: src/components/AnacondaHeader.jsx:78
 msgid "This is unstable, pre-release software"
 msgstr "Tämä on epävakaa esijulkaisuversio ohjelmistosta"
 
@@ -974,7 +976,7 @@ msgstr "Tämä on epävakaa esijulkaisuversio ohjelmistosta"
 msgid "This may take a moment"
 msgstr "Tämä saattaa kestää hetken"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:474
+#: src/components/storage/CockpitStorageIntegration.jsx:472
 msgid "This will take a few moments"
 msgstr "Tämä kestää hetken"
 
@@ -982,11 +984,11 @@ msgstr "Tämä kestää hetken"
 msgid "To begin using $0, reboot your system."
 msgstr "Aloita $0 käyttö käynnistämällä järjestelmä uudelleen."
 
-#: src/components/storage/InstallationMethod.jsx:168
+#: src/components/storage/InstallationMethod.jsx:159
 msgid "To continue, select the devices to install to."
 msgstr "Jatka valitsemalla laitteet, joihin haluat asentaa."
 
-#: src/components/storage/InstallationScenario.jsx:87
+#: src/components/storage/InstallationScenario.jsx:88
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
@@ -1018,11 +1020,11 @@ msgstr "Avaa laite"
 msgid "Unlock encrypted devices"
 msgstr "Avaa salatut laitteet"
 
-#: src/components/storage/InstallationScenario.jsx:246
+#: src/components/storage/InstallationScenario.jsx:247
 msgid "Use configured storage"
 msgstr "Käytä määritettyä tallennustilaa"
 
-#: src/components/storage/InstallationScenario.jsx:226
+#: src/components/storage/InstallationScenario.jsx:227
 msgid "Use free space for the installation"
 msgstr "Käytä vapaata tilaa asennukseen"
 
@@ -1058,7 +1060,7 @@ msgstr "Tervetuloa"
 msgid "Welcome to $0"
 msgstr "Tervetuloa $0an"
 
-#: src/components/storage/InstallationMethod.jsx:194
+#: src/components/storage/InstallationMethod.jsx:185
 msgid "Welcome. Let's install $0 now."
 msgstr "Tervetuloa. Asennataan nyt $0."
 
@@ -1066,7 +1068,7 @@ msgstr "Tervetuloa. Asennataan nyt $0."
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "BitLocker-salauksella olevien Windows-osioiden kokoa ei voi muuttaa"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:621
+#: src/components/storage/CockpitStorageIntegration.jsx:617
 msgid ""
 "You can either free up enough space here and let the installer handle the "
 "rest or manually set up partitions."
@@ -1086,9 +1088,9 @@ msgstr "suoritettu vaihe"
 msgid "current step"
 msgstr "nykyinen vaihe"
 
-#: src/components/review/StorageReview.jsx:128
 #: src/components/storage/ReclaimSpaceModal.jsx:354
 #: src/components/storage/ReclaimSpaceModal.jsx:367
+#: src/components/review/StorageReview.jsx:128
 msgid "delete"
 msgstr "poista"
 
@@ -1132,6 +1134,46 @@ msgstr "kutista $0:een"
 #: src/components/storage/ReclaimSpaceModal.jsx:348
 msgid "undo"
 msgstr "kumoa"
+
+#~ msgid "Applying new disk selection..."
+#~ msgstr "Otetaan uutta levyvalintaa käyttöön..."
+
+#~ msgid "Clear input value"
+#~ msgstr "Tyhjennä syöttöarvo"
+
+#~ msgid "Current selections"
+#~ msgstr "Nykyiset valinnat"
+
+#~ msgid "Installing to $0 ($1)"
+#~ msgstr "Asennetaan kohteeseen $0 ($1)"
+
+#~ msgid "No additional disks detected"
+#~ msgstr "Ylimääräisiä levyjä ei havaittu"
+
+#~ msgid "No usable disks detected"
+#~ msgstr "Yhtään käyttökelpoista levyä ei löytynyt"
+
+#~ msgid "Re-scan"
+#~ msgstr "Skannaa uudelleen"
+
+#~ msgid "Rescan"
+#~ msgstr "Päivitä"
+
+#~ msgid "Select a disk"
+#~ msgstr "Valitse levy"
+
+#~ msgid "The following disk is no longer available: $0"
+#~ msgid_plural "The following disks are no longer available: $0"
+#~ msgstr[0] "Seuraava levy ei ole enää käytettävissä: $0"
+#~ msgstr[1] "Seuraavat levyt eivät ole enää käytettävissä: $0"
+
+#~ msgid "The following disk was detected: $0"
+#~ msgid_plural "The following disks were detected: $0"
+#~ msgstr[0] "Seuraava levy havaittiin: $0"
+#~ msgstr[1] "Seuraavat levyt havaittiin: $0"
+
+#~ msgid "The usable disks have changed"
+#~ msgstr "Käytettävissä olevat levyt ovat muuttuneet"
 
 #~ msgid "Erase data and install?"
 #~ msgstr "Tyhjennetäänkö levyt ja asennetaanko?"
@@ -2249,9 +2291,6 @@ msgstr "kumoa"
 
 #~ msgid "Creating users"
 #~ msgstr "Tehdään käyttäjiä"
-
-#~ msgid "Current host name:"
-#~ msgstr "Nykyinen konenimi:"
 
 #, python-format
 #~ msgid "Current host name: %s\n"
@@ -3454,9 +3493,6 @@ msgstr "kumoa"
 #~ msgstr ""
 #~ "Levyjä ei löytynyt. Sammuta tietokone, liitä ainakin yksi levy ja "
 #~ "käynnistä kone uudelleen asennuksen jatkamiseksi."
-
-#~ msgid "No disks selected"
-#~ msgstr "Yhtään levyä ei ole valittu"
 
 #~ msgid "No disks selected."
 #~ msgstr "Yhtään levyä ei ole valittu."
@@ -6607,10 +6643,6 @@ msgstr "kumoa"
 #~ msgid "_Sector size:"
 #~ msgstr "_Sektorin koko:"
 
-#~ msgctxt "GUI|Custom Partitioning|Configure Dialog"
-#~ msgid "_Select"
-#~ msgstr "_Valitse"
-
 #~ msgctxt "GUI|Network|Wireless"
 #~ msgid "_Select network"
 #~ msgstr "_Valitse verkko"
@@ -6831,9 +6863,6 @@ msgstr "kumoa"
 #~ msgid "none"
 #~ msgstr "ei mikään"
 
-#~ msgid "not available"
-#~ msgstr "Ei käytettävissä"
-
 #~ msgid "not configured"
 #~ msgstr "ei määritetty"
 
@@ -6873,9 +6902,6 @@ msgstr "kumoa"
 
 #~ msgid "to go back to region list"
 #~ msgstr "mennäkseen takaisin alueluetteloon"
-
-#~ msgid "to rescan devices"
-#~ msgstr "tutki laitteet uudelleen"
 
 #~ msgid "to return to language list"
 #~ msgstr "palataksesi kielivalikkoon"
