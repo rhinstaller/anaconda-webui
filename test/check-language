@@ -141,6 +141,12 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_locale("he_IL")
         b.wait_attr("html", "dir", "rtl")
 
+        # Expect language direction to be set to LTR when switching to EN_US from RTL language
+        # as this has special handling
+        l.select_locale("en_US")
+        l.check_selected_locale("en_US")
+        b.wait_attr("html", "dir", "ltr")
+
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
         b.wait_attr("html", "dir", "ltr")
