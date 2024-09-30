@@ -130,6 +130,7 @@ export const useMountPointConstraints = () => {
 };
 
 export const getNewPartitioning = async ({
+    autopartScheme,
     currentPartitioning,
     method = "AUTOMATIC",
     storageScenarioId,
@@ -145,7 +146,7 @@ export const getNewPartitioning = async ({
     const part = await createPartitioning({ method });
 
     if (storageScenarioId === "home-reuse") {
-        await partitioningSetHomeReuse({ partitioning: part });
+        await partitioningSetHomeReuse({ partitioning: part, scheme: autopartScheme });
     }
 
     if (currentPartitioning?.method === method &&

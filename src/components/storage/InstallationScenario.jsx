@@ -33,7 +33,12 @@ import {
     getDeviceAncestors,
 } from "../../helpers/storage.js";
 
-import { DialogsContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import {
+    DialogsContext,
+    StorageContext,
+    StorageDefaultsContext,
+    SystemTypeContext
+} from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import {
     useDiskFreeSpace,
@@ -130,7 +135,7 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
     return availability;
 };
 
-const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => {
+const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, selectedDisks }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
@@ -164,17 +169,21 @@ const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => 
     }
 
     // Check that required autopartitioning scheme matches reused OS.
-    // Currently only btrfs scheme is supported.
-    // btrfs is enforced in partitioningSetHomeReuse, but in general we should rather
-    // use conf.Storage.default-scheme.
     // Check just "/home". To be more generic we could check all reused devices (as the backend).
     const reusedOS = linuxSystems[0];
     const homeDevice = reusedOS["mount-points"].v["/home"];
-    const requiredType = "btrfs subvolume";
-    if (devices[homeDevice].type.v !== requiredType) {
+    const homeDeviceType = devices[homeDevice].type.v;
+    const requiredSchemeTypes = {
+        BTRFS: "btrfs subvolume",
+        LVM: "lvmlv",
+        LVM_THINP: "lvmthinlv",
+        PLAIN: "partition",
+    };
+    if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
         availability.available = false;
         availability.reason = _("No reusable existing Linux system found");
-        availability.hint = cockpit.format(_("Reused devices must have '$0' type"), requiredType);
+        availability.hint = cockpit.format(_("Reused devices must have '$0' type"),
+                                           requiredSchemeTypes[autopartScheme]);
         return availability;
     }
 
@@ -353,6 +362,7 @@ const InstallationScenarioSelector = ({
     const requiredSize = useRequiredSize();
     const { storageScenarioId } = useContext(StorageContext);
     const originalExistingSystems = useOriginalExistingSystems();
+    const { defaultScheme } = useContext(StorageDefaultsContext);
 
     useEffect(() => {
         if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
@@ -364,6 +374,7 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
+                    autopartScheme: defaultScheme,
                     devices,
                     diskFreeSpace,
                     diskTotalSpace,
@@ -380,6 +391,7 @@ const InstallationScenarioSelector = ({
             return newAvailability;
         });
     }, [
+        defaultScheme,
         devices,
         diskFreeSpace,
         diskTotalSpace,
