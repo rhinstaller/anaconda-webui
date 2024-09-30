@@ -31,7 +31,13 @@ import {
 } from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { DialogsContext, FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import {
+    DialogsContext,
+    FooterContext,
+    OsReleaseContext,
+    StorageContext,
+    StorageDefaultsContext,
+} from "../Common.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
@@ -98,6 +104,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const nextRef = useRef();
     const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { defaultScheme } = useContext(StorageDefaultsContext);
     const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
 
     useEffect(() => {
@@ -112,7 +119,12 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
         } else {
-            const part = await getNewPartitioning({ currentPartitioning: partitioning, method, storageScenarioId });
+            const part = await getNewPartitioning({
+                autopartScheme: defaultScheme,
+                currentPartitioning: partitioning,
+                method,
+                storageScenarioId,
+            });
             setNewPartitioning(part);
 
             const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
