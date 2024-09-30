@@ -36,6 +36,16 @@ def addRpms(updates, add_rpms):
 
 def createUpdatesImage(cwd, updates):
     os.chdir(updates)
+    # FIXME: hotfix for issue with missing file - remove when new Wayland native
+    #        Anaconda is on Fedora Rawhide
+    if not os.path.exists("usr/lib64/python3.13/site-packages/pyanaconda/ui/tui/spokes/askvnc.py"):
+        try:
+            os.makedirs("usr/lib64/python3.13/site-packages/pyanaconda/ui/tui/spokes")
+        except FileExistsError:
+            pass
+        with open("usr/lib64/python3.13/site-packages/pyanaconda/ui/tui/spokes/askvnc.py", "w") as f:
+            f.close()
+
     os.system("find . | cpio -c -o | gzip -9cv > %s/updates.img" % (cwd,))
     sys.stdout.write("updates.img ready\n")
 

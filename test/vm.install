@@ -41,6 +41,13 @@ def vm_install(image, verbose, quick):
         # Make sure builder can build packages if required, /var/tmp/build needs to be owned by builder
         machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
 
+        # FIXME: remove when Anaconda migrated to Wayland native is present in Fedora Rawhide
+        machine.execute(
+            "dnf download --destdir /var/tmp/build/ systemd-devel python3-pam mesa-dri-drivers openssl llvm-libs",
+            stdout=sys.stdout,
+            timeout=300
+        )
+
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
         packages_to_download = missing_packages
