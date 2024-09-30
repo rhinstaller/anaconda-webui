@@ -25,6 +25,7 @@ export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
 export const RuntimeContext = createContext(null);
 export const StorageContext = createContext(null);
+export const StorageDefaultsContext = createContext(null);
 export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
 export const UsersContext = createContext(null);
@@ -66,13 +67,16 @@ const ModuleContextWrapper = ({ children, state }) => {
 
 const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
     const systemType = conf?.["Installation System"].type;
+    const defaultScheme = conf?.Storage.default_scheme;
 
     return (
         <OsReleaseContext.Provider value={osRelease}>
             <SystemTypeContext.Provider value={systemType}>
-                <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                    {children}
-                </TargetSystemRootContext.Provider>
+                <StorageDefaultsContext.Provider value={{ defaultScheme }}>
+                    <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
+                        {children}
+                    </TargetSystemRootContext.Provider>
+                </StorageDefaultsContext.Provider>
             </SystemTypeContext.Provider>
         </OsReleaseContext.Provider>
     );

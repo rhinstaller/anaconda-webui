@@ -23,6 +23,7 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
+from utils import pretend_default_scheme
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -40,6 +41,8 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
         r = Review(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
 
         dev="vda"
 
@@ -76,6 +79,8 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         dev_ubuntu = "vdc"
 
         s.udevadm_settle()
+
+        pretend_default_scheme(self, "BTRFS")
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -119,6 +124,8 @@ class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
         i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
         r = Review(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
 
         dev="vda"
 

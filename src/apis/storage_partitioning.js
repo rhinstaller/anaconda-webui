@@ -97,22 +97,21 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
 
 /**
  * @param {string} partitioning     DBus path to a partitioning
+ * @param {string} scheme           autopartitioning scheme
  */
-export const partitioningSetHomeReuse = async ({ partitioning }) => {
+export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
     const request = await getPartitioningRequest({ partitioning });
 
-    // In general default scheme defined in conf.Storage.default-scheme would be used
-    // Only btrfs (AUTOPART_TYPE_BTRFS) autopartitioning scheme is supported now
-    request["partitioning-scheme"] = cockpit.variant("i", 1);
-    // These settings work also for AUTOPART_TYPE_LVM, AUTOPART_TYPE_LVM_THINP schemes
-    request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
     request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
-    request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
-
-    // Settings for AUTOPART_TYPE_PLAIN
-    // request["partitioning-scheme"] = cockpit.variant("i", 0);
-    // request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
-    // request["removed-mount-points"] = cockpit.variant("as", ["/", "/boot", "bootloader"]);
+    if (scheme === "PLAIN") {
+        // "/" will be reallocated by autopartitioning
+        request["removed-mount-points"] = cockpit.variant("as", ["/", "/boot", "bootloader"]);
+    } else {
+        // "LVM", "BTRFS", "LVM_THINP"
+        // "/" can't be reallocated by autopartitioing as it is sharing container device with /home
+        request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
+        request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
+    }
 
     await setPartitioningRequest({ partitioning, request });
 };
