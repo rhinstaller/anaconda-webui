@@ -102,6 +102,14 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
 export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
     const request = await getPartitioningRequest({ partitioning });
 
+    const configurationSchemeToDBus = {
+        BTRFS: cockpit.variant("i", 1),
+        LVM: cockpit.variant("i", 2),
+        LVM_THINP: cockpit.variant("i", 3),
+        PLAIN: cockpit.variant("i", 0),
+    };
+    request["partitioning-scheme"] = configurationSchemeToDBus?.[scheme];
+
     request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
     if (scheme === "PLAIN") {
         // "/" will be reallocated by autopartitioning
