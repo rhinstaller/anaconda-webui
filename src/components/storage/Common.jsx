@@ -37,6 +37,7 @@ import {
     createPartitioning,
     getDeviceTree,
     partitioningSetEncrypt,
+    partitioningSetHomeReuse,
     partitioningSetPassphrase,
 } from "../../apis/storage_partitioning.js";
 
@@ -143,7 +144,14 @@ export const getNewPartitioning = async ({
 
     const part = await createPartitioning({ method });
 
-    if (currentPartitioning?.method === method && method === "AUTOMATIC" && currentPartitioning.requests[0].encrypted) {
+    if (storageScenarioId === "home-reuse") {
+        await partitioningSetHomeReuse({ partitioning: part });
+    }
+
+    if (currentPartitioning?.method === method &&
+        method === "AUTOMATIC" &&
+        storageScenarioId !== "home-reuse" &&
+        currentPartitioning.requests[0].encrypted) {
         await partitioningSetEncrypt({ encrypt: true, partitioning: part });
         await partitioningSetPassphrase({ partitioning: part, passphrase: currentPartitioning.requests[0].passphrase });
     }

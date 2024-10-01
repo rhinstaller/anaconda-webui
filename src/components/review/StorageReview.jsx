@@ -77,6 +77,7 @@ const DeviceRow = ({ disk }) => {
 
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
+    const reuseHomeRequest = requests.find(request => request["reused-mount-points"]);
 
     if (!deviceData) {
         return null;
@@ -86,11 +87,18 @@ const DeviceRow = ({ disk }) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         const format = devices[device].formatData.type.v;
-        const action = (
-            request === undefined || request.reformat
-                ? (format ? cockpit.format(_("format as $0"), format) : null)
-                : ((format === "biosboot") ? format : _("mount"))
-        );
+
+        let action = null;
+        if (reuseHomeRequest?.["reused-mount-points"].includes(mount)) {
+            action = _("mount");
+        } else if ((request === undefined || request.reformat) && format) {
+            action = cockpit.format(_("format as $0"), format);
+        } else if (format === "biosboot") {
+            action = format;
+        } else {
+            action = _("mount");
+        }
+
         const parents = getParentPartitions(devices, device);
         const showMaybeType = () => {
             if (checkDeviceOnStorageType(devices, device, "lvmvg")) {
