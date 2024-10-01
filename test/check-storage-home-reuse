@@ -1,0 +1,94 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from review import Review
+from storage import Storage
+from storagelib import StorageCase  # pylint: disable=import-error
+from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestHomeReuse(VirtInstallMachineCase, StorageCase):
+    efi = False
+
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testBasic(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        disk = "/dev/vda"
+        dev = "vda"
+        tmp_mount = "/tmp/home-reuse-mount-test"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
+        m.execute(f"""
+        mkdir -p {tmp_mount}
+
+        mount {disk}3 {tmp_mount}
+        btrfs subvolume create {tmp_mount}/root
+        btrfs subvolume create {tmp_mount}/home
+        btrfs subvolume create {tmp_mount}/unused
+        btrfs subvolume snapshot {tmp_mount}/root {tmp_mount}/snapshot1
+        umount {tmp_mount}
+
+        # Fake previous installation and mark partitions by files
+
+        mount -o subvol=root,compress=zstd:1 {disk}3 {tmp_mount}
+        touch {tmp_mount}/old_root_file
+        mkdir {tmp_mount}/etc
+        cat > {tmp_mount}/etc/fstab << EOF
+        {disk}3     /           btrfs   subvol=root,compress=zstd:1 0 0
+        {disk}2     /boot       ext4    defaults                    1 2
+        {disk}3     /home       btrfs   subvol=home,compress=zstd:1 0 0
+        EOF
+        umount {tmp_mount}
+
+        mount -o subvol=home,compress=zstd:1 {disk}3 {tmp_mount}
+        touch {tmp_mount}/old_home_file
+        umount {tmp_mount}
+
+        mount -o subvol=data,compress=zstd:1 {disk}3 {tmp_mount}
+        touch {tmp_mount}/old_data_file
+        umount {tmp_mount}
+
+        rmdir {tmp_mount}
+        """)
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk_row(dev, parent=f"{dev}2", action="delete")
+        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
+        r.check_disk_row(dev, "/boot", f"{dev}2", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "15.0 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}3", "15.0 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+
+if __name__ == '__main__':
+    test_main()
