@@ -29,6 +29,9 @@ import {
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
+import {
+    getDeviceAncestors,
+} from "../../helpers/storage.js";
 
 import { DialogsContext, StorageContext, SystemTypeContext } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
@@ -37,6 +40,7 @@ import {
     useDiskTotalSpace,
     useMountPointConstraints,
     useOriginalDeviceTree,
+    useOriginalExistingSystems,
     useRequiredSize,
     useUsablePartitions,
 } from "./Common.jsx";
@@ -126,12 +130,41 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
     return availability;
 };
 
-// TODO implement
-const checkHomeReuse = ({ selectedDisks }) => {
+const checkHomeReuse = ({ devices, originalExistingSystems, selectedDisks }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
     availability.available = !!selectedDisks.length;
+
+    const isCompleteOSOnDisks = (osData, disks) => {
+        const osDisks = osData.devices.v.map(deviceId => getDeviceAncestors(devices, deviceId))
+                .reduce((disks, ancestors) => disks.concat(ancestors))
+                .filter(dev => devices[dev].type.v === "disk")
+                .reduce((uniqueDisks, disk) => uniqueDisks.includes(disk) ? uniqueDisks : [...uniqueDisks, disk], []);
+        const missingDisks = osDisks.filter(disk => !disks.includes(disk));
+        return missingDisks.length === 0;
+    };
+
+    // Check that exactly one Linux OS is present
+    // (Stronger check for mountpoints uniqueness is in the backend
+    const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"] !== "Windows")
+            .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
+    if (linuxSystems.length === 0) {
+        availability.available = false;
+        availability.reason = _("No existing system found.");
+        return availability;
+    } else if (linuxSystems.length > 1) {
+        availability.available = false;
+        availability.reason = _("Multiple existing systems found.");
+        return availability;
+    }
+
+    // TODO checks:
+    // - unique bootloader (biosboot xor EFI ... given by mountPointConstraints) partition ... rather in backend?
+    // - luks - partitions are unlocked - enforce? allow opt-out?
+    // - size ?
+    // - matching partitioning scheme? we support only btrfs now, set the scheme automatically in backend?
+    // - Windows system along (forbidden for now?)
 
     return availability;
 };
@@ -302,6 +335,7 @@ const InstallationScenarioSelector = ({
     const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
     const { storageScenarioId } = useContext(StorageContext);
+    const originalExistingSystems = useOriginalExistingSystems();
 
     useEffect(() => {
         if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
@@ -317,6 +351,7 @@ const InstallationScenarioSelector = ({
                     diskFreeSpace,
                     diskTotalSpace,
                     mountPointConstraints,
+                    originalExistingSystems,
                     partitioning: partitioning.path,
                     requiredSize,
                     selectedDisks,
@@ -332,6 +367,7 @@ const InstallationScenarioSelector = ({
         diskFreeSpace,
         diskTotalSpace,
         mountPointConstraints,
+        originalExistingSystems,
         partitioning.path,
         partitioning.storageScenarioId,
         requiredSize,
