@@ -189,12 +189,16 @@ const InstallationMethodFooterHelper = () => {
 const usePageInit = () => {
     const { setIsFormDisabled } = useContext(FooterContext);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const pageHasMounted = useRef(false);
+    // Always reset the partitioning when entering the installation destination page
     // If the last partitioning applied was from the cockpit storage integration
     // we should not reset it, as this option does apply the partitioning onNext
-    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning;
+    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
+        appliedPartitioning &&
+        pageHasMounted.current !== true;
 
     useEffect(() => {
-        // Always reset the partitioning when entering the installation destination page
+        pageHasMounted.current = true;
         if (needsReset) {
             resetPartitioning();
         } else {
