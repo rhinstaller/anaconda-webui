@@ -96,6 +96,19 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
 };
 
 /**
+ * @param {string} partitioning     DBus path to a partitioning
+ */
+export const partitioningSetHomeReuse = async ({ partitioning }) => {
+    const request = await getPartitioningRequest({ partitioning });
+
+    request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
+    request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
+    request["removed-mount-points"] = cockpit.variant("as", ["/boot", "biosboot"]);
+
+    await setPartitioningRequest({ partitioning, request });
+};
+
+/**
  * @returns {Promise}           The request of automatic partitioning
  */
 export const getPartitioningRequest = ({ partitioning }) => {
