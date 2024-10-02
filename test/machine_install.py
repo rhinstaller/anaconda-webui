@@ -147,7 +147,7 @@ class VirtInstallMachine(VirtMachine):
                 f"{boot_arg} "
                 f"--name {self.label} "
                 f"--os-variant=detect=on "
-                "--memory 4096 "
+                "--memory 6144 "
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
