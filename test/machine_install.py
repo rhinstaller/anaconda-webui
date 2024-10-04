@@ -44,6 +44,7 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 class VirtInstallMachine(VirtMachine):
     efi = False
     http_payload_server = None
+    http_updates_img_server = None
 
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
@@ -93,30 +94,30 @@ class VirtInstallMachine(VirtMachine):
         if not os.path.exists(update_img_file):
             raise FileNotFoundError("Missing updates.img file")
 
-        self.http_updates_img_port = self._serve_updates_img()
-
         self.payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
-
-        iso_path = f"{os.getcwd()}/bots/images/{self.image}"
         extra_args = ""
         if self.is_live():
+            iso_path = f"{os.getcwd()}/bots/images/{self.image}"
+
             # Live install ISO has different directory structure inside
             # that doesn't follow the standard distribution tree directory structure.
             location = f"{iso_path},kernel=images/pxeboot/vmlinuz,initrd=images/pxeboot/initrd.img"
 
             # Live install ISO will not start automatically without providing correct
             # kernel arguments to load the LiveOS/squashfs.img file as that's where everything is stored.
-            volume_id = self.get_volume_id(iso_path)
+            volume_id = self.get_volume_id(self.iso_path)
             extra_args = f"root=live:CDLABEL={volume_id} rd.live.image quiet rhgb"
-        elif self.is_eln():
-            # FIXME: Remove this once https://gitlab.com/libosinfo/osinfo-db/-/merge_requests/674 is released
-            # and version is present in the task container
-            location = f"{iso_path},kernel=images/pxeboot/vmlinuz,initrd=images/pxeboot/initrd.img"
+
+            self.http_updates_img_port = self._serve_updates_img()
+
         else:
-            location = f"{iso_path}"
+            self.iso_path = f"{os.getcwd()}/test/images/{self.label}.iso"
+            self._execute(f"mkksiso --skip-mkefiboot -u {update_img_file} bots/images/fedora-rawhide-boot {self.iso_path}")
+
+            location = f"{self.iso_path}"
 
         if self.efi:
             boot_arg = "--boot uefi "
@@ -135,8 +136,7 @@ class VirtInstallMachine(VirtMachine):
                 "--memory 4096 "
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
-                "--extra-args "
-                f"'inst.sshd inst.webui.remote inst.webui inst.updates=http://10.0.2.2:{self.http_updates_img_port}/updates.img' "
+                "--extra-args \'inst.sshd inst.webui.remote inst.webui\' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
@@ -182,6 +182,10 @@ class VirtInstallMachine(VirtMachine):
         if self.http_payload_server:
             self.http_payload_server.kill()
 
+        # Delete the generated ISO
+        if self.iso_path:
+            self._execute(f"rm -f {self.iso_path}")
+
     # pylint: disable=arguments-differ  # this fails locally if you have bots checked out
     def wait_poweroff(self):
         for _ in range(10):
@@ -197,11 +201,10 @@ class VirtInstallMachine(VirtMachine):
     def is_live(self):
         return "live" in self.image
 
-    def is_eln(self):
-        return "eln" in self.image
-
     def get_volume_id(self, iso_path):
-        return subprocess.check_output(fr"isoinfo -d -i {iso_path} |  grep -oP 'Volume id: \K.*'", shell=True).decode(sys.stdout.encoding).strip()
+        return subprocess.check_output(
+            fr"isoinfo -d -i {self.iso_path} |  grep -oP 'Volume id: \K.*'", shell=True
+        ).decode(sys.stdout.encoding).strip()
 
 
 class VirtInstallEFIMachine(VirtInstallMachine):
