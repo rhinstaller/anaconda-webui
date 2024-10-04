@@ -20,6 +20,7 @@ import socket
 import subprocess
 import sys
 import time
+from tempfile import TemporaryDirectory
 
 WEBUI_TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(WEBUI_TEST_DIR)
@@ -83,10 +84,20 @@ class VirtInstallMachine(VirtMachine):
 
         return payload_cached_name, http_payload_port
 
-    def _write_interactive_defaults_ks(self):
+    def _write_interactive_defaults_ks(self, updates_image):
         payload_cached_name, http_payload_port = self._serve_payload()
         content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
-        Machine.execute(self, f'echo \'{content}\' > /usr/share/anaconda/interactive-defaults.ks')
+        defaults_path = "usr/share/anaconda/"
+        print("Adding interactive defaults to updates.img")
+        with TemporaryDirectory() as tmp_dir:
+            os.makedirs(f"{tmp_dir}/{defaults_path}")
+            # unpack initrd to the temporary directory
+            os.system(f"cd {tmp_dir} && gzip -dc {updates_image} | cpio -idu")
+            # add new interactive-defaults.ks (have to be available at start of the installer)
+            with open(f"{tmp_dir}/{defaults_path}/interactive-defaults.ks", "wt", encoding="utf-8") as f:
+                f.write(content)
+            # pack the updates.img again and replace the original one
+            os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image}")
 
     def start(self):
         update_img_file = os.path.join(ROOT_DIR, "updates.img")
@@ -117,6 +128,10 @@ class VirtInstallMachine(VirtMachine):
             location = f"{iso_path},kernel=images/pxeboot/vmlinuz,initrd=images/pxeboot/initrd.img"
         else:
             location = f"{iso_path}"
+
+        if not self.is_live():
+            # Configure the payload in interactive-defaults.ks
+            self._write_interactive_defaults_ks(update_img_file)
 
         if self.efi:
             boot_arg = "--boot uefi "
@@ -152,9 +167,6 @@ class VirtInstallMachine(VirtMachine):
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
                 Machine.wait_boot(self, timeout_sec=300)
-
-                # Configure the payload in interactive-defaults.ks
-                self._write_interactive_defaults_ks()
 
                 for _ in range(30):
                     try:
