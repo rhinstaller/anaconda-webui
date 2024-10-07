@@ -12,11 +12,11 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2-lvm2 udisks2-btrfs"
+missing_packages = "cockpit-ws cockpit-bridge fedora-logos"
 # Install missing firefox dependencies.
 # Resolving all dependencies with dnf download is possible,
 # but it packs to many packages to updates.img
-missing_packages_incl_deps = "firefox"
+missing_packages_incl_deps = "firefox udisks2-lvm2 udisks2-btrfs"
 
 from machine.machine_core import machine_virtual
 
