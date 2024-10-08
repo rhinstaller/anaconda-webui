@@ -43,6 +43,21 @@ class VirtInstallMachineCase(MachineCase):
     disk_size = 15
     MachineCase.machine_class = VirtInstallMachine
 
+    @property
+    def temp_dir(self):
+        """Get temp directory for libvirt resources
+
+        We need to set the directory based on the fact if the test is started in the toolbx
+        """
+        # toolbox compatibility: /tmp is shared with the host, but may be too small for big overlays (tmpfs!)
+        # $HOME is shared, but we don't want to put our junk there (NFS, backups)
+        # /var/tmp is not shared with the host but the right place; just in case session libvirtd is already
+        # running, use the shared path so that the daemon can actually see our overlay.
+        # But this only makes sense if the host also has /run/host set up (toolbox ships a tmpfiles.d)
+        if os.path.exists("/run/host/var/tmp") and os.path.exists("/run/host/run/host"):
+            return "/run/host/var/tmp"
+        return "/var/tmp"
+
     @classmethod
     def setUpClass(cls):
         VirtInstallMachine.efi = cls.efi
@@ -102,7 +117,7 @@ class VirtInstallMachineCase(MachineCase):
 
     def _create_disk_image(self, size, image_path=None, backing_file=None):
         if not image_path:
-            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}", dir="/var/tmp")
+            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}", dir=self.temp_dir)
         subprocess.check_call([
             "qemu-img", "create", "-f", "qcow2",
             *(["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []),
