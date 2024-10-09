@@ -96,6 +96,35 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
 };
 
 /**
+ * @param {string} partitioning     DBus path to a partitioning
+ * @param {string} scheme           autopartitioning scheme
+ */
+export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
+    const request = await getPartitioningRequest({ partitioning });
+
+    const configurationSchemeToDBus = {
+        BTRFS: cockpit.variant("i", 1),
+        LVM: cockpit.variant("i", 2),
+        LVM_THINP: cockpit.variant("i", 3),
+        PLAIN: cockpit.variant("i", 0),
+    };
+    request["partitioning-scheme"] = configurationSchemeToDBus?.[scheme];
+
+    request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
+    if (scheme === "PLAIN") {
+        // "/" will be reallocated by autopartitioning
+        request["removed-mount-points"] = cockpit.variant("as", ["/", "/boot", "bootloader"]);
+    } else {
+        // "LVM", "BTRFS", "LVM_THINP"
+        // "/" can't be reallocated by autopartitioing as it is sharing container device with /home
+        request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
+        request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
+    }
+
+    await setPartitioningRequest({ partitioning, request });
+};
+
+/**
  * @returns {Promise}           The request of automatic partitioning
  */
 export const getPartitioningRequest = ({ partitioning }) => {
