@@ -192,7 +192,7 @@ $(UPDATES_IMG): prepare-test-deps
 	test/prepare-updates-img
 
 create-updates.img: bots
-	-rm $(UPDATES_IMG)
+	-rm *updates.img
 	make $(UPDATES_IMG)
 
 test/reference: test/common
