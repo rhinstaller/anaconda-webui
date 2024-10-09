@@ -84,7 +84,7 @@ class VirtInstallMachine(VirtMachine):
 
         return payload_cached_name, http_payload_port
 
-    def _write_interactive_defaults_ks(self, updates_image):
+    def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
         payload_cached_name, http_payload_port = self._serve_payload()
         content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
         defaults_path = "usr/share/anaconda/"
@@ -97,19 +97,23 @@ class VirtInstallMachine(VirtMachine):
             with open(f"{tmp_dir}/{defaults_path}/interactive-defaults.ks", "wt", encoding="utf-8") as f:
                 f.write(content)
             # pack the updates.img again and replace the original one
-            os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image}")
+            os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
     def start(self):
-        update_img_file = os.path.join(ROOT_DIR, "updates.img")
-        if not os.path.exists(update_img_file):
-            raise FileNotFoundError("Missing updates.img file")
-
-        self.http_updates_img_port = self._serve_updates_img()
-
         self.payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
+        update_img_global_file = os.path.join(ROOT_DIR, "updates.img")
+        update_img_file = os.path.join(ROOT_DIR, self.label + "-updates.img")
+        if not os.path.exists(update_img_global_file):
+            raise FileNotFoundError("Missing updates.img file")
+
+        if not self.is_live():
+            # Configure the payload in interactive-defaults.ks
+            self._write_interactive_defaults_ks(update_img_global_file, update_img_file)
+
+        self.http_updates_img_port = self._serve_updates_img()
 
         iso_path = f"{os.getcwd()}/bots/images/{self.image}"
         extra_args = ""
@@ -129,10 +133,6 @@ class VirtInstallMachine(VirtMachine):
         else:
             location = f"{iso_path}"
 
-        if not self.is_live():
-            # Configure the payload in interactive-defaults.ks
-            self._write_interactive_defaults_ks(update_img_file)
-
         if self.efi:
             boot_arg = "--boot uefi "
         else:
@@ -151,7 +151,7 @@ class VirtInstallMachine(VirtMachine):
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote inst.webui inst.updates=http://10.0.2.2:{self.http_updates_img_port}/updates.img' "
+                f"'inst.sshd inst.webui.remote inst.webui inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
