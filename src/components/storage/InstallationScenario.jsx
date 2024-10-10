@@ -29,18 +29,27 @@ import {
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
+import {
+    getDeviceAncestors,
+} from "../../helpers/storage.js";
 
-import { DialogsContext, StorageContext, SystemTypeContext } from "../Common.jsx";
+import {
+    DialogsContext,
+    StorageContext,
+    StorageDefaultsContext,
+    SystemTypeContext
+} from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
     useMountPointConstraints,
     useOriginalDeviceTree,
+    useOriginalExistingSystems,
     useRequiredSize,
     useUsablePartitions,
 } from "./Common.jsx";
-import { helpConfiguredStorage, helpEraseAll, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
+import { helpConfiguredStorage, helpEraseAll, helpHomeReuse, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 
 import "./InstallationScenario.scss";
 
@@ -123,6 +132,66 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
         availability.available = false;
         availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
     }
+    return availability;
+};
+
+const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, selectedDisks }) => {
+    const availability = new AvailabilityState();
+
+    availability.hidden = false;
+    availability.available = !!selectedDisks.length;
+
+    const isCompleteOSOnDisks = (osData, disks) => {
+        const osDisks = osData.devices.v.map(deviceId => getDeviceAncestors(devices, deviceId))
+                .reduce((disks, ancestors) => disks.concat(ancestors))
+                .filter(dev => devices[dev].type.v === "disk")
+                .reduce((uniqueDisks, disk) => uniqueDisks.includes(disk) ? uniqueDisks : [...uniqueDisks, disk], []);
+        const missingDisks = osDisks.filter(disk => !disks.includes(disk));
+        return missingDisks.length === 0;
+    };
+
+    // Check that exactly one Linux OS is present and it is Fedora Linux
+    // (Stronger check for mountpoints uniqueness is in the backend
+    const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
+            .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
+    if (linuxSystems.length === 0) {
+        availability.available = false;
+        availability.reason = _("No existing Linux system found.");
+        return availability;
+    } else if (linuxSystems.length > 1) {
+        availability.available = false;
+        availability.reason = _("Multiple existing Linux systems found.");
+        return availability;
+    } else if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
+        availability.available = false;
+        availability.reason = _("No existing Fedora Linux system found.");
+        return availability;
+    }
+
+    // Check that required autopartitioning scheme matches reused OS.
+    // Check just "/home". To be more generic we could check all reused devices (as the backend).
+    const reusedOS = linuxSystems[0];
+    const homeDevice = reusedOS["mount-points"].v["/home"];
+    const homeDeviceType = devices[homeDevice].type.v;
+    const requiredSchemeTypes = {
+        BTRFS: "btrfs subvolume",
+        LVM: "lvmlv",
+        LVM_THINP: "lvmthinlv",
+        PLAIN: "partition",
+    };
+    if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
+        availability.available = false;
+        availability.reason = _("No reusable existing Linux system found");
+        availability.hint = cockpit.format(_("Reused devices must have '$0' type"),
+                                           requiredSchemeTypes[autopartScheme]);
+        return availability;
+    }
+
+    // TODO checks:
+    // - luks - partitions are unlocked - enforce? allow opt-out?
+    // - size ?
+    // - Windows system along (forbidden for now?)
+
     return availability;
 };
 
@@ -236,6 +305,16 @@ export const scenarios = [{
     initializationMode: 0,
     label: _("Mount point assignment"),
 }, {
+    buttonLabel: _("Reuse home partition and install"),
+    buttonVariant: "danger",
+    check: checkHomeReuse,
+    default: false,
+    detail: helpHomeReuse,
+    id: "home-reuse",
+    // CLEAR_PARTITIONS_NONE = 0
+    initializationMode: 0,
+    label: _("Reinstall with /home partition preserved"),
+}, {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
     check: checkConfiguredStorage,
@@ -282,6 +361,8 @@ const InstallationScenarioSelector = ({
     const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
     const { storageScenarioId } = useContext(StorageContext);
+    const originalExistingSystems = useOriginalExistingSystems();
+    const { defaultScheme } = useContext(StorageDefaultsContext);
 
     useEffect(() => {
         if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
@@ -293,10 +374,12 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
+                    autopartScheme: defaultScheme,
                     devices,
                     diskFreeSpace,
                     diskTotalSpace,
                     mountPointConstraints,
+                    originalExistingSystems,
                     partitioning: partitioning.path,
                     requiredSize,
                     selectedDisks,
@@ -308,10 +391,12 @@ const InstallationScenarioSelector = ({
             return newAvailability;
         });
     }, [
+        defaultScheme,
         devices,
         diskFreeSpace,
         diskTotalSpace,
         mountPointConstraints,
+        originalExistingSystems,
         partitioning.path,
         partitioning.storageScenarioId,
         requiredSize,
