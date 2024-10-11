@@ -175,6 +175,7 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
         }
     }
 
+    debug(`home reuse: Default scheme is ${autopartScheme}.`);
     if (reusedOS) {
         // Check that required autopartitioning scheme matches reused OS.
         // Check just "/home". To be more generic we could check all reused devices (as the backend).
