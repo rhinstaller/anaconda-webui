@@ -63,6 +63,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
+
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testMultipleRoots(self):
         b = self.browser
@@ -87,18 +88,19 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
 
         # Select both Fedora disks and verify that home reuse is not available
         s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])
-        s.wait_scenario_available("home-reuse", False)
+        s.wait_scenario_visible("home-reuse", False)
 
         # Select only single Ubuntu disk and verify that home reuse is not available
         s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_ubuntu, True)])
-        s.wait_scenario_available("home-reuse", False)
+        s.wait_scenario_visible("home-reuse", False)
 
         # Select Ubuntu disk and Fedora disk and verify that home reuse is not available
         s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, True)])
-        s.wait_scenario_available("home-reuse", False)
+        s.wait_scenario_visible("home-reuse", False)
 
         # Select only single Fedora disk and verify that home reuse is available
         s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, False)])
+        s.wait_scenario_visible("home-reuse", True)
         s.wait_scenario_available("home-reuse", True)
 
         s.set_partitioning("home-reuse")
