@@ -11,16 +11,18 @@ import { Page as PageAccounts } from "./users/Accounts.jsx";
 const _ = cockpit.gettext;
 
 export const getSteps = (...args) => {
+    const diskConfigurationSteps = [
+        new PageMountPointMapping(...args),
+        new PageDiskEncryption(...args),
+    ];
     const stepsOrder = [
         new PageInstallationLanguage(...args),
         new PageInstallationMethod(...args),
         {
             id: "disk-configuration",
+            isHidden: diskConfigurationSteps.every(step => step.isHidden),
             label: _("Disk configuration"),
-            steps: [
-                new PageMountPointMapping(...args),
-                new PageDiskEncryption(...args),
-            ]
+            steps: diskConfigurationSteps,
         },
         new PageAccounts(...args),
         new PageReviewConfiguration(...args),
