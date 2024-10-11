@@ -137,6 +137,7 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
 
 const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, selectedDisks }) => {
     const availability = new AvailabilityState();
+    let reusedOS = null;
 
     availability.hidden = false;
     availability.available = !!selectedDisks.length;
@@ -156,35 +157,37 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
             .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
     if (linuxSystems.length === 0) {
         availability.available = false;
-        availability.reason = _("No existing Linux system found.");
-        return availability;
+        availability.hidden = true;
+        debug("home reuse: No existing Linux system found.");
     } else if (linuxSystems.length > 1) {
         availability.available = false;
-        availability.reason = _("Multiple existing Linux systems found.");
-        return availability;
-    } else if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
-        availability.available = false;
-        availability.reason = _("No existing Fedora Linux system found.");
-        return availability;
+        availability.hidden = true;
+        debug("home reuse: Multiple existing Linux systems found.");
+    } else {
+        reusedOS = linuxSystems[0];
+        if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
+            availability.available = false;
+            availability.hidden = true;
+            debug("home reuse: No existing Fedora Linux system found.");
+        }
     }
 
-    // Check that required autopartitioning scheme matches reused OS.
-    // Check just "/home". To be more generic we could check all reused devices (as the backend).
-    const reusedOS = linuxSystems[0];
-    const homeDevice = reusedOS["mount-points"].v["/home"];
-    const homeDeviceType = devices[homeDevice].type.v;
-    const requiredSchemeTypes = {
-        BTRFS: "btrfs subvolume",
-        LVM: "lvmlv",
-        LVM_THINP: "lvmthinlv",
-        PLAIN: "partition",
-    };
-    if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
-        availability.available = false;
-        availability.reason = _("No reusable existing Linux system found");
-        availability.hint = cockpit.format(_("Reused devices must have '$0' type"),
-                                           requiredSchemeTypes[autopartScheme]);
-        return availability;
+    if (reusedOS) {
+        // Check that required autopartitioning scheme matches reused OS.
+        // Check just "/home". To be more generic we could check all reused devices (as the backend).
+        const homeDevice = reusedOS["mount-points"].v["/home"];
+        const homeDeviceType = devices[homeDevice]?.type.v;
+        const requiredSchemeTypes = {
+            BTRFS: "btrfs subvolume",
+            LVM: "lvmlv",
+            LVM_THINP: "lvmthinlv",
+            PLAIN: "partition",
+        };
+        if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
+            availability.available = false;
+            availability.hidden = true;
+            debug(`home reuse: No reusable existing Linux system found, reused devices must have ${requiredSchemeTypes[autopartScheme]} type`);
+        }
     }
 
     // TODO checks:
@@ -273,6 +276,16 @@ const ReclaimSpace = ({ availability }) => {
 };
 
 export const scenarios = [{
+    buttonLabel: _("Reinstall Fedora"),
+    buttonVariant: "danger",
+    check: checkHomeReuse,
+    default: false,
+    detail: helpHomeReuse,
+    id: "home-reuse",
+    // CLEAR_PARTITIONS_NONE = 0
+    initializationMode: 0,
+    label: _("Reinstall Fedora"),
+}, {
     buttonLabel: _("Erase data and install"),
     buttonVariant: "danger",
     check: checkEraseAll,
@@ -304,16 +317,6 @@ export const scenarios = [{
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
     label: _("Mount point assignment"),
-}, {
-    buttonLabel: _("Reuse home partition and install"),
-    buttonVariant: "danger",
-    check: checkHomeReuse,
-    default: false,
-    detail: helpHomeReuse,
-    id: "home-reuse",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
-    label: _("Reinstall with /home partition preserved"),
 }, {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
