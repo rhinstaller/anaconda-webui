@@ -51,7 +51,7 @@ class TestReview(VirtInstallMachineCase):
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs")
 
         # check storage configuration
-        r.check_storage_config("Erase data and install")
+        r.check_storage_config("Use entire disk")
 
         # check hostname is not visible for Live ISO
         r.check_hostname_not_present()
