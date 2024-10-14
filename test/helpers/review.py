@@ -67,11 +67,11 @@ class Review(NetworkDBus, StorageDBus):
         self.browser.wait_visible(
             f"{prefix} table[aria-label={disk}] "
             f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
-            f"td:contains('{mount_point}') + "
             f"td:contains('{parent}') + "
             f"td:contains('{size}') + "
             f"td:contains('{action}') + "
-            f"td:contains('{encrypt_text}')"
+            f"td:contains('{encrypt_text}') + "
+            f"td:contains('{mount_point}')"
         )
 
     def check_disk_row_not_present(self, disk, mount):

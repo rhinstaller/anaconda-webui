@@ -105,11 +105,11 @@ const DeviceRow = ({ disk }) => {
         return (
             {
                 columns: [
-                    { title: mount, with: 20 },
                     { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 20 },
                     { title: size, width: 20 },
                     { title: action, width: 20 },
                     { title: hasEncryptedAncestor(devices, device) ? (!request || request.reformat ? _("encrypt") : _("encrypted")) : "", width: 20 },
+                    { title: mount, with: 20 },
                 ],
                 props: { key: device },
             }
@@ -136,13 +136,13 @@ const DeviceRow = ({ disk }) => {
         return (
             {
                 columns: [
-                    { title: "" },
                     { title: device },
                     { title: sizeText },
                     {
                         props: { className: idPrefix + "-table-column-action-" + actionType },
                         title: actionDescriptionText,
                     },
+                    { title: "" },
                     { title: "" },
                 ],
                 props: {
@@ -188,11 +188,11 @@ const DeviceRow = ({ disk }) => {
               aria-label={_("Device tree for $0", disk)}
               className={"pf-m-no-border-rows " + idPrefix + "-table"}
               columns={[
-                  { props: { screenReaderText: _("Mount point") } },
                   { props: { screenReaderText: _("Device") } },
                   { props: { screenReaderText: _("Size") } },
                   { props: { screenReaderText: _("Actions") } },
-                  { props: { screenReaderText: _("Encrypted") } }
+                  { props: { screenReaderText: _("Encrypted") } },
+                  { props: { screenReaderText: _("Mount point") } },
               ]}
               gridBreakPoint=""
               id={idPrefix + "-table-" + disk}
