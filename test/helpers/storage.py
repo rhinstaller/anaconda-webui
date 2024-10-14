@@ -477,13 +477,13 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
     def select_mountpoint_row_device(self, row, device, device_id=None):
-        selector = f"{self.table_row(row)} .pf-v5-c-select__toggle"
+        selector = f"{self.table_row(row)}"
 
-        self.browser.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
+        self.browser.click(f"{selector}-device-select-toggle:not([disabled]):not([aria-disabled=true])")
         if device_id:
-            select_entry = f"{selector} + ul button[data-device-id='{device_id}']"
+            select_entry = f"{selector} ul button[data-device-id='{device_id}']"
         else:
-            select_entry = f"{selector} + ul button[data-device-name='{device}']"
+            select_entry = f"{selector} ul button[data-device-name='{device}']"
         self.browser.click(select_entry)
         self.browser.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", device)
 

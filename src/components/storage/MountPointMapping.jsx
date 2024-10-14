@@ -31,6 +31,7 @@ import {
 } from "@patternfly/react-core";
 import {
     Select,
+    SelectGroup,
     SelectOption,
     SelectVariant
 } from "@patternfly/react-core/deprecated";
@@ -262,10 +263,13 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
     const device = request["device-spec"];
     const deviceName = device && deviceData[device].name.v;
     const size = cockpit.format_bytes(deviceData[device]?.total.v);
-    const options = devices.map(device => {
+    const optionGroups = {};
+
+    for (const device of devices) {
         const deviceName = deviceData[device].name.v;
 
         const ancestors = getDeviceAncestors(deviceData, device);
+        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "disk");
         const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
         const typeLabel = device[parentPartition]?.attrs?.v?.["partition-type-name"] || "";
 
@@ -285,7 +289,7 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
          */
         const isDisabled = isLockedLUKS || (formatType === "swap" && isRequiredMountPoint);
 
-        return (
+        const node = (
             <SelectOption
               data-device-name={deviceName}
               data-device-id={device}
@@ -300,11 +304,17 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
               }}
             />
         );
-    });
+        if (optionGroups[parentDisk]) {
+            optionGroups[parentDisk].push(node);
+        } else {
+            optionGroups[parentDisk] = [node];
+        }
+    }
 
     return (
         <Select
           hasPlaceholderStyle
+          isGrouped={Object.keys(optionGroups).length > 1}
           isOpen={isOpen}
           placeholderText={_("Select a device")}
           selections={device
@@ -332,7 +342,25 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
           }}
           toggleId={idPrefix + "-select-toggle"}
         >
-            {options}
+            {Object.keys(optionGroups).map(disk => {
+                if (Object.keys(optionGroups).length === 1) {
+                    return optionGroups[disk];
+                }
+
+                const groupLabel = (
+                    cockpit.format(
+                        _("$0 ($1)"),
+                        deviceData[disk]?.description.v,
+                        deviceData[disk]?.name.v
+                    )
+                );
+
+                return (
+                    <SelectGroup label={groupLabel} key={disk}>
+                        {optionGroups[disk]}
+                    </SelectGroup>
+                );
+            })}
         </Select>
     );
 };
