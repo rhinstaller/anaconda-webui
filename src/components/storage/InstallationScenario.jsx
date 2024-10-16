@@ -212,7 +212,7 @@ export const scenarios = [{
     id: "erase-all",
     // CLEAR_PARTITIONS_ALL = 1
     initializationMode: 1,
-    label: _("Erase data and install"),
+    label: _("Use entire disk"),
 }, {
     action: ReclaimSpace,
     buttonLabel: _("Install"),
@@ -224,7 +224,7 @@ export const scenarios = [{
     id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    label: _("Use free space for the installation"),
+    label: _("Share disk with other operating system"),
 }, {
     buttonLabel: _("Apply mount point assignment and install"),
     buttonVariant: "danger",

@@ -226,7 +226,7 @@ const InstallationProgress = ({ onCritFail }) => {
               }
               secondary={
                   status === "success" &&
-                  <Button onClick={exitGui}>{isBootIso ? _("Reboot") : _("Quit")}</Button>
+                  <Button onClick={exitGui}>{isBootIso ? _("Reboot to installed system") : _("Exit to live desktop")}</Button>
               }
               title={title}
               headingLevel="h2"

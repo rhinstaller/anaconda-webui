@@ -116,7 +116,7 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
         <Modal
           isOpen={showConfirmation}
           onClose={handleCancelOpenModal}
-          title={_("Modify storage")}
+          title={_("Storage editor")}
           titleIconVariant="warning"
           variant="small"
           actions={[
@@ -653,7 +653,7 @@ export const ModifyStorage = ({ setShowStorage }) => {
               setShowStorage(true);
           }}
         >
-            {_("Modify storage")}
+            {_("Launch storage editor")}
         </DropdownItem>
     );
 };

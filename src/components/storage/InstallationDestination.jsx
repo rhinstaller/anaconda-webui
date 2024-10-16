@@ -138,7 +138,7 @@ const LocalDisksSelect = ({
 
     const rescanDisksButton = (
         <Button
-          icon={<SyncAltIcon />}
+          icon={!isRescanningDisks && <SyncAltIcon />}
           className={idPrefix + "-disk-selection-rescan"}
           id={idPrefix + "-rescan-disks"}
           isDisabled={isRescanningDisks}
