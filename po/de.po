@@ -69,7 +69,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-15 03:06+0000\n"
+"POT-Creation-Date: 2024-10-22 03:06+0000\n"
 "PO-Revision-Date: 2024-09-05 02:49+0000\n"
 "Last-Translator: Jarne Förster <fedora@mymailclient.de>\n"
 "Language-Team: German <https://translate.fedoraproject.org/projects/anaconda-"
@@ -86,6 +86,7 @@ msgstr ""
 msgid "$0 $1"
 msgstr ""
 
+#: src/components/storage/MountPointMapping.jsx:352
 #: src/components/storage/InstallationDestination.jsx:197
 #: src/components/storage/InstallationDestination.jsx:295
 msgid "$0 ($1)"
@@ -103,13 +104,13 @@ msgstr "$0 Installationsprogramm"
 msgid "$0 will be deleted"
 msgstr "$0 wird gelöscht"
 
-#: src/components/storage/MountPointMapping.jsx:205
+#: src/components/storage/MountPointMapping.jsx:206
 msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgstr ""
 "Das \"$0\" Dateisystem kann nicht auf einem verschlüsselten Datenträger "
 "liegen"
 
-#: src/components/storage/MountPointMapping.jsx:199
+#: src/components/storage/MountPointMapping.jsx:200
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' muss auf einem mit '$1' formatierten Gerät sein"
 
@@ -121,12 +122,12 @@ msgstr "Über"
 msgid "Account"
 msgstr "Benutzerkonto"
 
+#: src/components/review/StorageReview.jsx:193
 #: src/components/storage/ReclaimSpaceModal.jsx:154
-#: src/components/review/StorageReview.jsx:194
 msgid "Actions"
 msgstr "Aktionen"
 
-#: src/components/storage/MountPointMapping.jsx:616
+#: src/components/storage/MountPointMapping.jsx:644
 msgid "Add mount"
 msgstr "Einhängepunkt hinzufügen"
 
@@ -168,6 +169,11 @@ msgstr "Anaconda-Projektseite"
 msgid "Apply mount point assignment and install"
 msgstr "Einhängepunkt-Zuweisungen anwenden und installieren"
 
+#: src/components/storage/HelpAutopartOptions.jsx:9
+msgid ""
+"Assign partitions to mount points. Useful for pre-configured custom layouts."
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:208
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Verfügbarer freier Speicher: $0. Die Installation benötigt: $1."
@@ -188,11 +194,11 @@ msgstr ""
 "Entwicklungszwecke verwenden möchten und bereit sind, Fehler oder Probleme "
 "zu melden, um diese Arbeit zu verbessern."
 
-#: src/components/Error.jsx:259
-#: src/components/storage/ReclaimSpaceModal.jsx:219
+#: src/components/review/Hostname.jsx:106
 #: src/components/storage/CockpitStorageIntegration.jsx:135
 #: src/components/storage/InstallationDestination.jsx:348
-#: src/components/review/Hostname.jsx:106
+#: src/components/storage/ReclaimSpaceModal.jsx:219
+#: src/components/Error.jsx:259
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -231,8 +237,8 @@ msgstr "Wählen Sie eine Sprache aus"
 msgid "Chosen language: "
 msgstr "Gewählte Sprache "
 
-#: src/components/storage/InstallationDestination.jsx:353
 #: src/components/storage/EncryptedDevices.jsx:164
+#: src/components/storage/InstallationDestination.jsx:353
 msgid "Close"
 msgstr "Schließen"
 
@@ -259,8 +265,8 @@ msgstr "Speicher konfigurieren"
 msgid "Configure storage again"
 msgstr "Speicher erneut konfigurieren"
 
-#: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:284
 #: src/components/storage/DiskEncryption.jsx:117
+#: src/components/users/Accounts.jsx:183 src/components/users/Accounts.jsx:284
 msgid "Confirm passphrase"
 msgstr "Passphrase bestätigen"
 
@@ -294,7 +300,7 @@ msgstr "Kritischer Fehler"
 msgid "Currently installed: $0"
 msgstr "Aktueller Hostname:"
 
-#: src/components/storage/MountPointMapping.jsx:246
+#: src/components/storage/MountPointMapping.jsx:247
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
@@ -311,8 +317,8 @@ msgstr "Ziel"
 msgid "Detected valid storage layout:"
 msgstr "Valide Speicher-Anordnung erkannt:"
 
-#: src/components/storage/MountPointMapping.jsx:592
-#: src/components/review/StorageReview.jsx:192
+#: src/components/review/StorageReview.jsx:191
+#: src/components/storage/MountPointMapping.jsx:620
 msgid "Device"
 msgstr "Gerät"
 
@@ -328,11 +334,11 @@ msgstr "Datenträger-Konfiguration"
 msgid "Disk encryption"
 msgstr "Datenträgerverschlüsselung"
 
-#: src/components/storage/MountPointMapping.jsx:360
+#: src/components/storage/MountPointMapping.jsx:388
 msgid "Duplicate device."
 msgstr "Doppeltes Gerät."
 
-#: src/components/storage/MountPointMapping.jsx:252
+#: src/components/storage/MountPointMapping.jsx:253
 msgid "Duplicate mount point."
 msgstr "Einhängepunkt duplizieren."
 
@@ -348,7 +354,7 @@ msgstr "Meine Daten verschlüsseln"
 msgid "Encrypt the selected devices?"
 msgstr "Ausgewählte Geräte verschlüsseln?"
 
-#: src/components/review/StorageReview.jsx:195
+#: src/components/review/StorageReview.jsx:194
 msgid "Encrypted"
 msgstr "Verschlüsselt"
 
@@ -361,13 +367,16 @@ msgid "Encryption helps secure your data, to prevent others from accessing it."
 msgstr "Verschlüsselung schützt ihre Daten und verhindert den Zugriff Dritter."
 
 #: src/components/storage/InstallationScenario.jsx:207
-#: src/components/storage/InstallationScenario.jsx:215
 msgid "Erase data and install"
 msgstr "Speichermedien löschen und installieren"
 
 #: src/components/Error.jsx:247
 msgid "Error details"
 msgstr "Fehlerdetails"
+
+#: src/components/installation/InstallationProgress.jsx:229
+msgid "Exit to live desktop"
+msgstr ""
 
 #: src/components/storage/CockpitStorageIntegration.jsx:614
 msgid "Fedora linux requires at least $0 of disk space."
@@ -493,7 +502,11 @@ msgid "Installing"
 msgstr "Installation wird ausgeführt"
 
 #: src/components/storage/HelpAutopartOptions.jsx:7
-msgid "Keep current disk layout and only install into available space."
+#, fuzzy
+#| msgid "Keep current disk layout and only install into available space."
+msgid ""
+"Keep current disk layout and use available space, to dual-boot with another "
+"OS."
 msgstr ""
 "Die aktuelle Datenträgeranordnung beibehalten und nur in den verfügbaren "
 "Speicherplatz installieren."
@@ -503,6 +516,7 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:128
+#: src/components/storage/CockpitStorageIntegration.jsx:656
 msgid "Launch storage editor"
 msgstr "Speicher-Editor starten"
 
@@ -518,17 +532,13 @@ msgstr "Gesperrte Geräte"
 msgid "Log"
 msgstr "Log"
 
-#: src/components/storage/MountPointMapping.jsx:777
+#: src/components/storage/MountPointMapping.jsx:805
 msgid "Manual disk configuration"
 msgstr "Manuelle Datenträgerkonfiguration"
 
-#: src/components/storage/MountPointMapping.jsx:779
+#: src/components/storage/MountPointMapping.jsx:807
 msgid "Manual disk configuration: Mount point mapping"
 msgstr "Manuelle Datenträgerkonfiguration: Zuordnung der Einhängepunkte"
-
-#: src/components/storage/HelpAutopartOptions.jsx:9
-msgid "Manually select storage locations for installation."
-msgstr "Manuell Speicherorte für die Installation auswählen."
 
 #: src/components/review/Hostname.jsx:137
 msgid "May contain letters, numbers, and dashes."
@@ -538,25 +548,20 @@ msgstr "Kann Buchstaben, Zahlen und Bindestriche enthalten."
 msgid "Medium"
 msgstr "Mittel"
 
-#: src/components/storage/MountPointMapping.jsx:141
+#: src/components/storage/MountPointMapping.jsx:142
 #, fuzzy
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Unstimmigkeit zwischen übergeordnetem Gerät und der Auswahl der "
 "Neuformatierung des untergeordneten Geräts"
 
-#: src/components/storage/CockpitStorageIntegration.jsx:119
-#: src/components/storage/CockpitStorageIntegration.jsx:656
-msgid "Modify storage"
-msgstr "Speicherkonfiguration ändern"
-
-#: src/components/storage/MountPointMapping.jsx:591
-#: src/components/review/StorageReview.jsx:191
+#: src/components/review/StorageReview.jsx:195
+#: src/components/storage/MountPointMapping.jsx:619
 msgid "Mount point"
 msgstr "Einhängepunkt"
 
-#: src/components/storage/MountPointMapping.jsx:589
 #: src/components/storage/InstallationScenario.jsx:237
+#: src/components/storage/MountPointMapping.jsx:617
 msgid "Mount point assignment"
 msgstr "Zuweisung des Einhängepunkts"
 
@@ -586,8 +591,8 @@ msgstr ""
 msgid "Next"
 msgstr "Nächste"
 
+#: src/components/storage/MountPointMapping.jsx:624
 #: src/components/storage/ReclaimSpaceModal.jsx:156
-#: src/components/storage/MountPointMapping.jsx:596
 msgid "No devices"
 msgstr "Keine Geräte"
 
@@ -646,10 +651,10 @@ msgstr "Betriebssystem"
 msgid "Partitions (advanced)"
 msgstr "Partitionen (fortgeschritten)"
 
-#: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:281
 #: src/components/storage/DiskEncryption.jsx:114
 #: src/components/storage/EncryptedDevices.jsx:177
 #: src/components/storage/EncryptedDevices.jsx:184
+#: src/components/users/Accounts.jsx:180 src/components/users/Accounts.jsx:281
 msgid "Passphrase"
 msgstr "Passphrase"
 
@@ -687,7 +692,6 @@ msgstr "Installation fortsetzen"
 
 #: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:225
-#: src/components/installation/InstallationProgress.jsx:229
 msgid "Quit"
 msgstr "Beenden"
 
@@ -726,7 +730,6 @@ msgstr "Der tatsächliche Rechnername darf maximal 64 Zeichen lang sein"
 
 #: src/components/AnacondaWizardFooter.jsx:108
 #: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:225
-#: src/components/installation/InstallationProgress.jsx:229
 msgid "Reboot"
 msgstr "Neustart"
 
@@ -739,6 +742,12 @@ msgstr ""
 #: src/components/AnacondaWizardFooter.jsx:143
 msgid "Reboot system?"
 msgstr "System neustarten?"
+
+#: src/components/installation/InstallationProgress.jsx:229
+#, fuzzy
+#| msgid "/boot file system"
+msgid "Reboot to installed system"
+msgstr "/boot Dateisystem"
 
 #: src/components/storage/InstallationScenario.jsx:199
 msgid "Reclaim additional space"
@@ -754,7 +763,7 @@ msgstr "Speicherplatz zurückgewinnen"
 msgid "Reclaim space (required)"
 msgstr "Speicherplatz zurückgewinnen (notwendig)"
 
-#: src/components/storage/MountPointMapping.jsx:245
+#: src/components/storage/MountPointMapping.jsx:246
 msgid "Recommended"
 msgstr "Empfohlen"
 
@@ -762,12 +771,12 @@ msgstr "Empfohlen"
 msgid "Recommended partitions:"
 msgstr "Empfohlene Partitionen:"
 
-#: src/components/storage/MountPointMapping.jsx:380
-#: src/components/storage/MountPointMapping.jsx:593
+#: src/components/storage/MountPointMapping.jsx:408
+#: src/components/storage/MountPointMapping.jsx:621
 msgid "Reformat"
 msgstr "Neu formatieren"
 
-#: src/components/storage/MountPointMapping.jsx:407
+#: src/components/storage/MountPointMapping.jsx:435
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -807,7 +816,7 @@ msgid ""
 "edit the attached log to remove any sensitive information."
 msgstr ""
 
-#: src/components/storage/MountPointMapping.jsx:244
+#: src/components/storage/MountPointMapping.jsx:245
 msgid "Required"
 msgstr "Erforderlich"
 
@@ -864,7 +873,7 @@ msgstr "Scannen Sie den QR-Code mit Ihrem Handy oder besuchen Sie:"
 msgid "Select"
 msgstr "_Auswählen"
 
-#: src/components/storage/MountPointMapping.jsx:309
+#: src/components/storage/MountPointMapping.jsx:319
 msgid "Select a device"
 msgstr "Gewähltes Speichermedium"
 
@@ -874,7 +883,7 @@ msgstr "Gewähltes Speichermedium"
 msgid "Select destination"
 msgstr "Ziel"
 
-#: src/components/storage/MountPointMapping.jsx:124
+#: src/components/storage/MountPointMapping.jsx:125
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Format '$0' des ausgewählten Geräts kann nicht neu formatiert werden."
 
@@ -885,6 +894,10 @@ msgstr "Senden Sie uns Feedback zu Ihrer Installation"
 #: src/components/review/Hostname.jsx:113
 msgid "Set custom hostname"
 msgstr "Eigenen Rechnername festlegen"
+
+#: src/components/storage/InstallationScenario.jsx:227
+msgid "Share disk with other operating system"
+msgstr ""
 
 #: src/components/Password.jsx:243
 msgid "Show confirmed password"
@@ -898,7 +911,7 @@ msgstr "Passphrase anzeigen"
 msgid "Show password"
 msgstr "Passwort anzeigen"
 
-#: src/components/review/StorageReview.jsx:193
+#: src/components/review/StorageReview.jsx:192
 msgid "Size"
 msgstr "Größe"
 
@@ -937,6 +950,12 @@ msgstr "Speicher Konfiguration"
 #: src/components/installation/InstallationProgress.jsx:52
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Speicherkonfiguration: Der Speicher wird derzeit konfiguriert."
+
+#: src/components/storage/CockpitStorageIntegration.jsx:119
+#, fuzzy
+#| msgid "Launch storage editor"
+msgid "Storage editor"
+msgstr "Speicher-Editor starten"
 
 #: src/components/storage/HelpAutopartOptions.jsx:11
 msgid "Storage is based on the configuration from 'Modify storage'."
@@ -1095,9 +1114,11 @@ msgstr "Entsperren des verschlüsselten Speichermediums"
 msgid "Use configured storage"
 msgstr "Konfigurierten Speicher nutzen"
 
-#: src/components/storage/InstallationScenario.jsx:227
-msgid "Use free space for the installation"
-msgstr "Freien Speicherplatz für die Installation verwenden"
+#: src/components/storage/InstallationScenario.jsx:215
+#, fuzzy
+#| msgid "Selected disks"
+msgid "Use entire disk"
+msgstr "Ausgewählte Speichermedien"
 
 #: src/components/users/Accounts.jsx:223
 msgid "User name"
@@ -1157,9 +1178,9 @@ msgstr "Fertiger Schritt"
 msgid "current step"
 msgstr "Aktueller Schritt"
 
+#: src/components/review/StorageReview.jsx:128
 #: src/components/storage/ReclaimSpaceModal.jsx:354
 #: src/components/storage/ReclaimSpaceModal.jsx:367
-#: src/components/review/StorageReview.jsx:128
 msgid "delete"
 msgstr "löschen"
 
@@ -1167,11 +1188,11 @@ msgstr "löschen"
 msgid "edit"
 msgstr "editieren"
 
-#: src/components/review/StorageReview.jsx:112
+#: src/components/review/StorageReview.jsx:111
 msgid "encrypt"
 msgstr "verschlüsseln"
 
-#: src/components/review/StorageReview.jsx:112
+#: src/components/review/StorageReview.jsx:111
 msgid "encrypted"
 msgstr "verschlüsselt"
 
@@ -1205,6 +1226,15 @@ msgstr ""
 #: src/components/storage/ReclaimSpaceModal.jsx:348
 msgid "undo"
 msgstr "rückgängig machen"
+
+#~ msgid "Manually select storage locations for installation."
+#~ msgstr "Manuell Speicherorte für die Installation auswählen."
+
+#~ msgid "Modify storage"
+#~ msgstr "Speicherkonfiguration ändern"
+
+#~ msgid "Use free space for the installation"
+#~ msgstr "Freien Speicherplatz für die Installation verwenden"
 
 #~ msgid "Applying new disk selection..."
 #~ msgstr "Festplattenauswahl anwenden..."
@@ -1654,9 +1684,6 @@ msgstr "rückgängig machen"
 
 #~ msgid "/boot cannot be of type \"lvmlv\" on s390x"
 #~ msgstr "/boot darf nicht vom Typ \"lvmlv\" auf s390x sein"
-
-#~ msgid "/boot file system"
-#~ msgstr "/boot Dateisystem"
 
 #, python-brace-format
 #~ msgid "/boot/efi must be on a device of type {type} or {another}"
@@ -4513,9 +4540,6 @@ msgstr "rückgängig machen"
 
 #~ msgid "Selected Layouts"
 #~ msgstr "Gewählte Belegung"
-
-#~ msgid "Selected disks"
-#~ msgstr "Ausgewählte Speichermedien"
 
 #~ msgid ""
 #~ "Selected disks {} contain volume group '{}' that also uses further "
