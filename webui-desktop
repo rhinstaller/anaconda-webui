@@ -104,6 +104,12 @@ exec > >(systemd-cat -t anaconda) 2>&1
 # Cleanup function
 cleanup() {
     set +e
+    if [[ "$WEBUI_REMOTE" == "1" ]]
+    then
+        echo "Warning: BROWSER died unexpectedly. Not doing further cleanup as we might be connecting remotely."
+        wait $WS_PID
+    fi
+
     kill $WS_PID
     wait $WS_PID
     kill $B_PID
