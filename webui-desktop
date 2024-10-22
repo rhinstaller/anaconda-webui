@@ -64,59 +64,65 @@ case "$1" in
         ;;
 esac
 
-# prepare empty firefox profile dir with theme based on the passed profile id
-FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
-FIREFOX_PROFILE_PATH="/tmp/anaconda-firefox-profile"
-
-# make sure the profile directory exists and is empty
-if [ -d ${FIREFOX_PROFILE_PATH} ]
-then
-    echo "Cleaning up existing Anaconda Firefox profile directory."
-    rm -rf ${FIREFOX_PROFILE_PATH}
-fi
-mkdir -p ${FIREFOX_PROFILE_PATH}
-
-# populate the profile directory with our custom Firefox theme
-# - theme id is passed as the second argument of this script
-THEME_PATH="${FIREFOX_THEME_DIR}/${THEME_ID}"
-
-cp -a "${THEME_PATH}/." ${FIREFOX_PROFILE_PATH}
-
-# FIXME: is this hardcoded resolution necessary ?
-BROWSER="/usr/bin/firefox --new-instance --window-size 1024,768 --profile ${FIREFOX_PROFILE_PATH}"
-
-# start browser in a temporary home dir, so that it does not interfere with your real one
-BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
-
 WEBUI_ADDRESS="127.0.0.1"
 if [[ "$WEBUI_REMOTE" == "1" ]]
 then
     WEBUI_ADDRESS="0.0.0.0"
 fi
 
-echo "WEBUI_ADDRESS=$WEBUI_ADDRESS\nXDG_CONFIG_DIRS=$BROWSER_HOME" > /tmp/webui-cockpit-ws.env
+echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
 systemctl start webui-cockpit-ws
+
+if [[ "$WEBUI_REMOTE" == "1" ]]
+then
+    /bin/sleep infinity &
+    BLOCK_ON_PID=$!
+else
+    # prepare empty firefox profile dir with theme based on the passed profile id
+    FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
+    FIREFOX_PROFILE_PATH="/tmp/anaconda-firefox-profile"
+
+    # make sure the profile directory exists and is empty
+    if [ -d ${FIREFOX_PROFILE_PATH} ]
+    then
+        echo "Cleaning up existing Anaconda Firefox profile directory."
+        rm -rf ${FIREFOX_PROFILE_PATH}
+    fi
+    mkdir -p ${FIREFOX_PROFILE_PATH}
+
+    # populate the profile directory with our custom Firefox theme
+    # - theme id is passed as the second argument of this script
+    THEME_PATH="${FIREFOX_THEME_DIR}/${THEME_ID}"
+
+    cp -a "${THEME_PATH}/." ${FIREFOX_PROFILE_PATH}
+
+    # FIXME: is this hardcoded resolution necessary ?
+    BROWSER="/usr/bin/firefox --new-instance --window-size 1024,768 --profile ${FIREFOX_PROFILE_PATH}"
+
+    # start browser in a temporary home dir, so that it does not interfere with your real one
+    BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
+
+    # if we have netcat, use it for waiting until ws is up
+    if type nc >/dev/null 2>&1; then
+        for _ in `seq 10`; do
+            nc -z "$WEBUI_ADDRESS" 80 && break
+            sleep 0.5;
+        done
+    else
+        # otherwise, just wait a bit
+        sleep 3
+    fi
+
+    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
+    BLOCK_ON_PID=$!
+fi
 
 # Cleanup function
 cleanup() {
     set +e
-    kill $B_PID
-    rm -rf $BROWSER_HOME
+    kill $BLOCK_ON_PID
+    [[ -n $BROWSER_HOME ]] && rm -rf $BROWSER_HOME
 }
 trap 'cleanup' EXIT INT QUIT PIPE
 
-# if we have netcat, use it for waiting until ws is up
-if type nc >/dev/null 2>&1; then
-    for _ in `seq 10`; do
-        nc -z "$WEBUI_ADDRESS" 80 && break
-        sleep 0.5;
-    done
-else
-    # otherwise, just wait a bit
-    sleep 3
-fi
-
-HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
-B_PID=$!
-
-wait $B_PID
+wait $BLOCK_ON_PID
