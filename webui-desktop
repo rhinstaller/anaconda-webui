@@ -106,7 +106,7 @@ cleanup() {
     set +e
     kill $WS_PID
     wait $WS_PID
-    kill $B_PID
+    kill $BLOCK_ON_PID
     rm -rf $BROWSER_HOME
 }
 trap 'cleanup' EXIT INT QUIT PIPE
@@ -122,7 +122,14 @@ else
     sleep 3
 fi
 
-HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
-B_PID=$!
+# FIXME: This is a workaround for main loop in backend relying on the presence of a blocked process here
+if [[ "$WEBUI_REMOTE" == "1" ]]
+then
+    /bin/sleep infinity &
+    BLOCK_ON_PID=$!
+else
+    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
+    BLOCK_ON_PID=$!
+fi
 
-wait $B_PID
+wait $BLOCK_ON_PID
