@@ -58,9 +58,6 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
             return;
         }
 
-        // Before unload ask the user for verification
-        window.onbeforeunload = () => "";
-
         Promise.all(clients.map(Client => new Client(address, dispatch).init()))
                 .then(() => {
                     setStoreInitialized(true);
@@ -153,6 +150,7 @@ export const ApplicationWithErrorBoundary = () => {
     );
     const conf = useConf({ onCritFail });
     const osRelease = useOsRelease({ onCritFail });
+    const isBootIso = conf?.["Installation System"].type === "BOOT_ISO";
 
     if (!conf || !osRelease) {
         return <ApplicationLoading />;
@@ -161,7 +159,7 @@ export const ApplicationWithErrorBoundary = () => {
     const bzReportURL = bugzillaPrefiledReportURL({
         product: osRelease.REDHAT_BUGZILLA_PRODUCT,
         version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
-    });
+    }, isBootIso);
 
     return (
         <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
