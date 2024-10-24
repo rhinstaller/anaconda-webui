@@ -94,19 +94,27 @@ then
     WEBUI_ADDRESS="0.0.0.0"
 fi
 
+# start the bridge
+coproc cockpit-bridge
+exec 4<&${COPROC[0]}- 5>&${COPROC[1]}- ; COCKPIT_BRIDGE_OUT=4 COCKPIT_BRIDGE_IN=5
+
 # forward parent stdin and stdout (from bridge) to cockpit-ws
 # it pretty well does not matter which port we use in our own namespace, so use standard http
 # disable /etc/cockpit/
-XDG_CONFIG_DIRS="$BROWSER_HOME" COCKPIT_SUPERUSER="pkexec" /usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --no-tls --local-session=cockpit-bridge &
+COCKPIT_DEBUG=all XDG_CONFIG_DIRS="$BROWSER_HOME" COCKPIT_SUPERUSER="pkexec" /usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --no-tls --local-session=- \
+    <&${COCKPIT_BRIDGE_OUT} 2>&1 | tee >(systemd-cat -t cockpit-ws) >&${COCKPIT_BRIDGE_IN} &
+
 WS_PID=$!
-exec > >(systemd-cat -t anaconda) 2>&1
+# ... and stop using that stdin/out for everything else
+exec 0</dev/null
+exec 1>&2
 
 # Cleanup function
 cleanup() {
     set +e
     kill $WS_PID
     wait $WS_PID
-    kill $B_PID
+    kill $BLOCK_ON_PID
     rm -rf $BROWSER_HOME
 }
 trap 'cleanup' EXIT INT QUIT PIPE
@@ -122,7 +130,14 @@ else
     sleep 3
 fi
 
-HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
-B_PID=$!
+# FIXME: This is a workaround for main loop in backend relying on the presence of a blocked process here
+if [[ "$WEBUI_REMOTE" == "1" ]]
+then
+    /bin/sleep infinity &
+    BLOCK_ON_PID=$!
+else
+    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
+    BLOCK_ON_PID=$!
+fi
 
-wait $B_PID
+wait $BLOCK_ON_PID
