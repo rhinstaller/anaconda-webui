@@ -25,10 +25,19 @@ import {
     useWizardFooter,
 } from "@patternfly/react-core";
 
-import { resetPartitioning } from "../../apis/storage_partitioning.js";
+import {
+    applyStorage,
+    resetPartitioning,
+} from "../../apis/storage_partitioning.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { DialogsContext, FooterContext, OsReleaseContext, StorageContext } from "../Common.jsx";
+import {
+    DialogsContext,
+    FooterContext,
+    OsReleaseContext,
+    StorageContext,
+    StorageDefaultsContext,
+} from "../Common.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
@@ -44,6 +53,7 @@ const InstallationMethod = ({
     onCritFail,
     setIsFormDisabled,
     setIsFormValid,
+    setStepNotification,
     showStorage,
 }) => {
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
@@ -53,8 +63,9 @@ const InstallationMethod = ({
         <CustomFooter
           isFormDisabled={isFormDisabled}
           isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked}
+          setStepNotification={setStepNotification}
         />
-    ), [isFormDisabled, isReclaimSpaceCheckboxChecked]);
+    ), [isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification]);
     useWizardFooter(getFooter);
 
     return (
@@ -86,13 +97,14 @@ const InstallationMethod = ({
     );
 };
 
-const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
+const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification }) => {
     const [isReclaimSpaceModalOpen, setIsReclaimSpaceModalOpen] = useState(false);
     const [isNextClicked, setIsNextClicked] = useState(false);
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const nextRef = useRef();
     const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { defaultScheme } = useContext(StorageDefaultsContext);
     const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
 
     useEffect(() => {
@@ -102,12 +114,17 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
         }
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
-    const onNext = async () => {
+    const onNext = async ({ setIsFormDisabled }) => {
         if (method === "MANUAL") {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
         } else {
-            const part = await getNewPartitioning({ currentPartitioning: partitioning, method, storageScenarioId });
+            const part = await getNewPartitioning({
+                autopartScheme: defaultScheme,
+                currentPartitioning: partitioning,
+                method,
+                storageScenarioId,
+            });
             setNewPartitioning(part);
 
             const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
@@ -115,8 +132,27 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked }) => {
 
             if (willShowReclaimSpaceModal) {
                 setIsReclaimSpaceModalOpen(true);
-            } else {
+            } else if (storageScenarioId !== "home-reuse") {
                 setIsNextClicked(true);
+            } else {
+                setIsFormDisabled(true);
+                const step = new Page().id;
+                await applyStorage({
+                    onFail: ex => {
+                        console.error(ex);
+                        setIsFormDisabled(false);
+                        setStepNotification({ step, ...ex });
+                    },
+                    onSuccess: () => {
+                        goToNextStep();
+
+                        // Reset the state after the onNext call. Otherwise,
+                        // React will try to render the current step again.
+                        setIsFormDisabled(false);
+                        setStepNotification();
+                    },
+                    partitioning: part,
+                });
             }
         }
     };
@@ -165,12 +201,16 @@ const InstallationMethodFooterHelper = () => {
 const usePageInit = () => {
     const { setIsFormDisabled } = useContext(FooterContext);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const pageHasMounted = useRef(false);
+    // Always reset the partitioning when entering the installation destination page
     // If the last partitioning applied was from the cockpit storage integration
     // we should not reset it, as this option does apply the partitioning onNext
-    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" && appliedPartitioning;
+    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
+        appliedPartitioning &&
+        pageHasMounted.current !== true;
 
     useEffect(() => {
-        // Always reset the partitioning when entering the installation destination page
+        pageHasMounted.current = true;
         if (needsReset) {
             resetPartitioning();
         } else {
