@@ -94,12 +94,20 @@ then
     WEBUI_ADDRESS="0.0.0.0"
 fi
 
+# start the bridge
+coproc cockpit-bridge
+exec 4<&${COPROC[0]}- 5>&${COPROC[1]}- ; COCKPIT_BRIDGE_OUT=4 COCKPIT_BRIDGE_IN=5
+
 # forward parent stdin and stdout (from bridge) to cockpit-ws
 # it pretty well does not matter which port we use in our own namespace, so use standard http
 # disable /etc/cockpit/
-XDG_CONFIG_DIRS="$BROWSER_HOME" COCKPIT_SUPERUSER="pkexec" /usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --no-tls --local-session=cockpit-bridge &
+XDG_CONFIG_DIRS="$BROWSER_HOME" COCKPIT_SUPERUSER="pkexec" /usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --no-tls --local-session=- \
+    <&${COCKPIT_BRIDGE_OUT} >&${COCKPIT_BRIDGE_IN} &
+
 WS_PID=$!
-exec > >(systemd-cat -t anaconda) 2>&1
+# ... and stop using that stdin/out for everything else
+exec 0</dev/null
+exec 1>&2
 
 # Cleanup function
 cleanup() {
