@@ -31,6 +31,9 @@ def pretend_live_iso(test, installer):
     test.restore_file('/run/anaconda/anaconda.conf')
     test.machine.execute("sed -i 's/type = BOOT_ISO/type = LIVE_OS/g' /run/anaconda/anaconda.conf")
 
+def pretend_default_scheme(test, scheme):
+    test.restore_file('/run/anaconda/anaconda.conf')
+    test.machine.execute(f"sed -i 's/default_scheme =.*/default_scheme = {scheme}/g' /run/anaconda/anaconda.conf")
 
 def get_pretty_name(machine):
     return machine.execute("cat /etc/os-release | grep PRETTY_NAME | cut -d '\"' -f 2 | tr -d '\n'")
