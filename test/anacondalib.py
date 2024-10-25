@@ -69,6 +69,7 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetUsers)
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
+            self.addCleanup(self.resetMisc)
 
         super().setUp()
 
@@ -149,6 +150,12 @@ class VirtInstallMachineCase(MachineCase):
         # CLEAR_PARTITIONS_DEFAULT = -1
         s.dbus_set_initialization_mode(-1)
         s.dbus_scan_devices()
+
+    def resetMisc(self):
+        # Restart cockpit-ws/cockpit-bridge to avoid crashes in the next test
+        m = self.machine
+
+        m.execute("systemctl restart webui-cockpit-ws.service")
 
     def downloadLogs(self):
         if not self.ext_logging:

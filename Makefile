@@ -113,6 +113,8 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
+	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 
 # required for running integration tests;
 TEST_NPMS = \
