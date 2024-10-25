@@ -10,6 +10,8 @@ BuildArch:      noarch
 BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
+# Needed for the unitdir macro
+BuildRequires: systemd-rpm-macros
 
 %global anacondacorever 0
 
@@ -19,6 +21,8 @@ BuildRequires:  gettext
 
 %global cockpitver 275
 %global cockpitstorver 311
+
+%define _unitdir /usr/lib/systemd/system
 
 Requires: cockpit-storaged >= %{cockpitstorver}
 Requires: cockpit-bridge >= %{cockpitver}
@@ -79,6 +83,7 @@ exit 0
 %{_datadir}/anaconda/firefox-theme/live/user.js
 %{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
 %{_libexecdir}/anaconda/webui-desktop
+%{_unitdir}/webui-cockpit-ws.service
 
 
 # The changelog is automatically generated and merged

@@ -151,7 +151,7 @@ class VirtInstallMachine(VirtMachine):
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote inst.webui inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
+                f"'inst.sshd inst.webui.remote inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
