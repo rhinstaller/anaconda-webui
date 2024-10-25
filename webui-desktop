@@ -80,7 +80,37 @@ then
 else
     # prepare empty firefox profile dir with theme based on the passed profile id
     FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
-    FIREFOX_PROFILE_PATH="/tmp/anaconda-firefox-profile"
+
+    # PKEXEC_UID is the uid for "gnome-initial-setup" or "liveuser"
+    # depending on how the installer gets started.
+    #
+    # It's unset on non-live-images, so we just use the current user then (root)
+    if [ -n "${PKEXEC_UID:-}" ]; then
+      # If PKEXEC_UID is set, use the user associated with it
+      INSTALLER_USER=$(id -n -u "${PKEXEC_UID}")
+    else
+      # Try to find another user who is not root and has /usr/bin/bash as their shell
+      INSTALLER_USER=$(grep '/usr/bin/bash' /etc/passwd | grep -v '^root' | cut -d: -f1 | head -n 1)
+
+      # If no such user is found, use the current user running the script
+      if [ -z "${INSTALLER_USER:-}" ]; then
+        INSTALLER_USER=$(id -un)
+      fi
+    fi
+
+    # Get the home directory of the selected user
+    HOME_DIR=$(grep "^$INSTALLER_USER:" /etc/passwd | cut -d: -f6)
+
+    # Check if the home directory exists, otherwise create it
+    if [ ! -d "$HOME_DIR" ]; then
+      echo "The home directory $HOME_DIR does not exist. Creating it."
+      mkdir -p "$HOME_DIR"
+      chown "$INSTALLER_USER" "$HOME_DIR"
+    else
+      echo "Home directory $HOME_DIR already exists."
+    fi
+
+    FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR}/anaconda/firefox-profile"
 
     # make sure the profile directory exists and is empty
     if [ -d ${FIREFOX_PROFILE_PATH} ]
@@ -88,16 +118,16 @@ else
         echo "Cleaning up existing Anaconda Firefox profile directory."
         rm -rf ${FIREFOX_PROFILE_PATH}
     fi
-    mkdir -p ${FIREFOX_PROFILE_PATH}
+    pkexec --user "${INSTALLER_USER}" mkdir -p ${FIREFOX_PROFILE_PATH}
 
     # populate the profile directory with our custom Firefox theme
     # - theme id is passed as the second argument of this script
     THEME_PATH="${FIREFOX_THEME_DIR}/${THEME_ID}"
 
-    cp -a "${THEME_PATH}/." ${FIREFOX_PROFILE_PATH}
+    pkexec --user "${INSTALLER_USER}" cp -a "${THEME_PATH}/." ${FIREFOX_PROFILE_PATH}
 
     # FIXME: is this hardcoded resolution necessary ?
-    BROWSER="/usr/bin/firefox --new-instance --window-size 1024,768 --profile ${FIREFOX_PROFILE_PATH}"
+    BROWSER=(/usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
 
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
@@ -113,7 +143,10 @@ else
         sleep 3
     fi
 
-    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client $BROWSER http://"$WEBUI_ADDRESS""$URL_PATH" &
+    readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" systemctl --user show-environment)
+
+    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client \
+    pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
     BLOCK_ON_PID=$!
 fi
 
