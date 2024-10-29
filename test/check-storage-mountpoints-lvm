@@ -29,7 +29,7 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase, StorageCase):
     def testLVM(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="mount-point-mapping")
         s = Storage(b, m)
         r = Review(b, m)
 

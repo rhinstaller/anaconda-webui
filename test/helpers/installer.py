@@ -24,27 +24,26 @@ class InstallerSteps(UserDict):
     WELCOME = "installation-language"
     INSTALLATION_METHOD = "installation-method"
     CUSTOM_MOUNT_POINT = "mount-point-mapping"
-    DISK_CONFIGURATION = "disk-configuration"
-    DISK_ENCRYPTION = "disk-encryption"
+    STORAGE_CONFIGURATION = "storage-configuration"
     ACCOUNTS = "accounts"
     REVIEW = "installation-review"
     PROGRESS = "installation-progress"
 
     _steps_jump = {}
     _steps_jump[WELCOME] = [INSTALLATION_METHOD]
-    _steps_jump[DISK_ENCRYPTION] = [ACCOUNTS]
+    _steps_jump[STORAGE_CONFIGURATION] = [ACCOUNTS]
     _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
     _steps_jump[ACCOUNTS] = [REVIEW]
     _steps_jump[REVIEW] = [PROGRESS]
     _steps_jump[PROGRESS] = []
 
     _parent_steps = {}
-    _parent_steps[DISK_ENCRYPTION] = DISK_CONFIGURATION
-    _parent_steps[CUSTOM_MOUNT_POINT] = DISK_CONFIGURATION
+    _parent_steps[STORAGE_CONFIGURATION] = INSTALLATION_METHOD
+    _parent_steps[CUSTOM_MOUNT_POINT] = STORAGE_CONFIGURATION
 
     _steps_callbacks = {}
     _steps_callbacks[ACCOUNTS] = create_user
-    _steps_callbacks[DISK_ENCRYPTION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
+    _steps_callbacks[STORAGE_CONFIGURATION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
 
 
 class Installer():
@@ -54,14 +53,17 @@ class Installer():
         self.steps = InstallerSteps()
         self.hidden_steps = hidden_steps or []
 
+        if (scenario == "mount-point-mapping"):
+            self.STORAGE_CONFIGURATION = "storage-configuration-manual"
+
         if (scenario == 'use-configured-storage'):
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
-            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
+            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.STORAGE_CONFIGURATION])
         elif (scenario == 'home-reuse'):
             self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
-            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
+            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.STORAGE_CONFIGURATION])
         else:
-            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
+            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.STORAGE_CONFIGURATION, self.steps.CUSTOM_MOUNT_POINT]
 
     @log_step(snapshot_before=True)
     def begin_installation(self, should_fail=False, needs_confirmation=True, button_text='Erase data and install'):
