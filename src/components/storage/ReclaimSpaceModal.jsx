@@ -40,7 +40,7 @@ import { CompressArrowsAltIcon, HddIcon, LockIcon, TrashIcon, UndoIcon } from "@
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
 
-import { getDeviceAncestors, unitMultiplier } from "../../helpers/storage.js";
+import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../helpers/storage.js";
 
 import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
@@ -260,7 +260,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         }
     }
 
-    let deviceType = isDisk ? device.type.v : device.formatData.type.v;
+    let deviceType = getDeviceTypeInfo(device);
     if (isDeviceLocked({ device })) {
         deviceType = (
             <Flex
