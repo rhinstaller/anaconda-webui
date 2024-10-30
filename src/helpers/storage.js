@@ -151,6 +151,16 @@ export const checkDeviceOnStorageType = (deviceData, device, type) => {
     return deviceData[device].parents.v?.some(parent => checkDeviceOnStorageType(deviceData, parent, type));
 };
 
+export const getDeviceTypeInfo = (device) => {
+    const deviceType = device.type.v;
+    const deviceFormatType = device.formatData.type.v;
+
+    if (deviceType === "partition") {
+        return deviceFormatType;
+    }
+    return deviceType;
+};
+
 /* Match the units to their respective sizes */
 export const unitMultiplier = {
     B: 1,

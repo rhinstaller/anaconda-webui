@@ -126,8 +126,8 @@ const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePa
             .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
 
     if (!hasFilesystems) {
-        availability.available = false;
-        availability.reason = _("No usable devices on the selected disks.");
+        // No usable devices on the selected disks: hide the scenario to reduce UI clutter
+        availability.hidden = true;
     } else if (missingNMParts.length) {
         availability.available = false;
         availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
