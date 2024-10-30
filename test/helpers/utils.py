@@ -27,7 +27,7 @@ def add_public_key(machine):
 
 
 def pretend_live_iso(test, installer):
-    installer.hidden_steps.extend([installer.steps.ACCOUNTS, installer.steps.WELCOME])
+    installer.steps.hidden_steps.extend([installer.steps.ACCOUNTS, installer.steps.WELCOME])
     test.restore_file('/run/anaconda/anaconda.conf')
     test.machine.execute("sed -i 's/type = BOOT_ISO/type = LIVE_OS/g' /run/anaconda/anaconda.conf")
 
