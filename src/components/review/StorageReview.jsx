@@ -86,7 +86,12 @@ const DeviceRow = ({ disk }) => {
     const getDeviceRow = ([mount, device]) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
-        const format = devices[device].formatData.type.v;
+        let format = devices[device].formatData.type.v;
+
+        // If the format is btrfs, we want to show the type of the device (aka btrfs subvolume)
+        if (format === "btrfs") {
+            format = devices[device].type.v;
+        }
 
         let action = null;
         if (reuseHomeRequest?.["reused-mount-points"].includes(mount)) {
