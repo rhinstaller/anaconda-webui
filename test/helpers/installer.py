@@ -24,44 +24,65 @@ class InstallerSteps(UserDict):
     WELCOME = "installation-language"
     INSTALLATION_METHOD = "installation-method"
     CUSTOM_MOUNT_POINT = "mount-point-mapping"
-    DISK_CONFIGURATION = "disk-configuration"
-    DISK_ENCRYPTION = "disk-encryption"
+    STORAGE_CONFIGURATION = "storage-configuration"
     ACCOUNTS = "accounts"
     REVIEW = "installation-review"
     PROGRESS = "installation-progress"
 
-    _steps_jump = {}
-    _steps_jump[WELCOME] = [INSTALLATION_METHOD]
-    _steps_jump[DISK_ENCRYPTION] = [ACCOUNTS]
-    _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
-    _steps_jump[ACCOUNTS] = [REVIEW]
-    _steps_jump[REVIEW] = [PROGRESS]
-    _steps_jump[PROGRESS] = []
+    def __init__(self, hidden_steps=None, scenario=None):
+        super().__init__()
 
-    _parent_steps = {}
-    _parent_steps[DISK_ENCRYPTION] = DISK_CONFIGURATION
-    _parent_steps[CUSTOM_MOUNT_POINT] = DISK_CONFIGURATION
+        if (scenario == "mount-point-mapping"):
+            self.STORAGE_CONFIGURATION = "storage-configuration-manual"
 
-    _steps_callbacks = {}
-    _steps_callbacks[ACCOUNTS] = create_user
-    _steps_callbacks[DISK_ENCRYPTION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
+        WELCOME = self.WELCOME
+        INSTALLATION_METHOD = self.INSTALLATION_METHOD
+        STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
+        CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
+        ACCOUNTS = self.ACCOUNTS
+        REVIEW = self.REVIEW
+        PROGRESS = self.PROGRESS
+
+        _steps_jump = {}
+        _steps_jump[WELCOME] = [INSTALLATION_METHOD]
+        _steps_jump[STORAGE_CONFIGURATION] = [ACCOUNTS]
+        _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
+        _steps_jump[ACCOUNTS] = [REVIEW]
+        _steps_jump[REVIEW] = [PROGRESS]
+        _steps_jump[PROGRESS] = []
+
+        _hidden_steps = hidden_steps or []
+
+        if (scenario == 'use-configured-storage'):
+            _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
+            _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
+        elif (scenario == 'home-reuse'):
+            _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
+            _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
+        else:
+            _steps_jump[INSTALLATION_METHOD] = [STORAGE_CONFIGURATION, CUSTOM_MOUNT_POINT]
+
+        self._steps_jump = _steps_jump
+        self.hidden_steps = _hidden_steps
+
+        _parent_steps = {}
+        _parent_steps[CUSTOM_MOUNT_POINT] = STORAGE_CONFIGURATION
+
+        self._parent_steps = _parent_steps
+
+        _steps_callbacks = {}
+        _steps_callbacks[ACCOUNTS] = create_user
+        _steps_callbacks[STORAGE_CONFIGURATION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
+
+        self._steps_callbacks = _steps_callbacks
 
 
 class Installer():
     def __init__(self, browser, machine, hidden_steps=None, scenario=None):
         self.browser = browser
         self.machine = machine
-        self.steps = InstallerSteps()
-        self.hidden_steps = hidden_steps or []
+        self.steps = InstallerSteps(hidden_steps, scenario)
 
-        if (scenario == 'use-configured-storage'):
-            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
-            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
-        elif (scenario == 'home-reuse'):
-            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.ACCOUNTS]
-            self.hidden_steps.extend([self.steps.CUSTOM_MOUNT_POINT, self.steps.DISK_ENCRYPTION])
-        else:
-            self.steps._steps_jump[self.steps.INSTALLATION_METHOD] = [self.steps.DISK_ENCRYPTION, self.steps.CUSTOM_MOUNT_POINT]
 
     @log_step(snapshot_before=True)
     def begin_installation(self, should_fail=False, needs_confirmation=True, button_text='Erase data and install'):
@@ -95,7 +116,7 @@ class Installer():
 
         while self.get_current_page() != target_page:
             next_page = path.pop()
-            if next_page not in self.hidden_steps:
+            if next_page not in self.steps.hidden_steps:
                 self.next(next_page=next_page)
                 if next_page in self.steps._steps_callbacks:
                     self.steps._steps_callbacks[next_page](self.browser, self.machine)
@@ -106,7 +127,7 @@ class Installer():
         # If not explicitly specified, get the first item for next page from the steps dict
         if not next_page:
             next_page = self.steps._steps_jump[current_page][0]
-            while next_page in self.hidden_steps:
+            while next_page in self.steps.hidden_steps:
                 next_page = self.steps._steps_jump[next_page][0]
 
         # Wait for a disk to be pre-selected before clicking 'Next'.
@@ -149,7 +170,7 @@ class Installer():
         else:
             if not previous_page:
                 previous_page = self._previous_pages(current_page)[0]
-                while previous_page in self.hidden_steps:
+                while previous_page in self.steps.hidden_steps:
                     previous_page = self._previous_pages(previous_page)[0]
 
             self.wait_current_page(previous_page)
@@ -157,7 +178,7 @@ class Installer():
     @log_step()
     def open(self, step=None):
         step = step or self.steps.WELCOME
-        while step in self.hidden_steps:
+        while step in self.steps.hidden_steps:
             step = self.steps._steps_jump[step][0]
         self.browser.open(f"/cockpit/@localhost/anaconda-webui/index.html#/{step}")
         self.wait_current_page(step)

@@ -213,9 +213,12 @@ class TestMultipleDisks(VirtInstallMachineCase, StorageHelpers):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
-        i.reach(i.steps.DISK_ENCRYPTION)
+        i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
-        b.wait_in_text("#disk-encryption-step-notification", "Selected disks vda contain volume group 'vg' that also uses further unselected disks")
+        b.wait_in_text(
+            "#storage-configuration-step-notification",
+            "Selected disks vda contain volume group 'vg' that also uses further unselected disks"
+        )
 
 
 if __name__ == '__main__':

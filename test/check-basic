@@ -65,16 +65,13 @@ class TestBasic(VirtInstallMachineCase):
         # Test going back
         steps = [
             i.steps.ACCOUNTS,
-            i.steps.DISK_CONFIGURATION,
-            i.steps.DISK_ENCRYPTION,
-            i.steps.DISK_CONFIGURATION,
+            i.steps.STORAGE_CONFIGURATION,
             i.steps.INSTALLATION_METHOD,
-            i.steps.WELCOME,
             i.steps.WELCOME,
         ]
 
         for step in steps:
-            if step not in i.hidden_steps:
+            if step not in i.steps.hidden_steps:
                 i.click_step_on_sidebar(step)
 
         i.reach(i.steps.REVIEW)
@@ -83,7 +80,7 @@ class TestBasic(VirtInstallMachineCase):
         i.reach_on_sidebar(i.steps.WELCOME)
         for step in [
             i.steps.ACCOUNTS,
-            i.steps.DISK_CONFIGURATION,
+            i.steps.STORAGE_CONFIGURATION,
             i.steps.INSTALLATION_METHOD,
             i.steps.REVIEW,
         ]:

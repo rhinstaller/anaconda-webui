@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     Checkbox,
     EmptyState,
@@ -25,22 +25,21 @@ import {
     EmptyStateHeader,
     EmptyStateIcon,
     Form,
+    FormSection,
     Spinner,
     Text,
     TextContent,
     TextVariants,
-    useWizardFooter,
+    Title,
 } from "@patternfly/react-core";
 
-import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
-
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, RuntimeContext, StorageContext } from "../Common.jsx";
+import { RuntimeContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./DiskEncryption.scss";
 
 const _ = cockpit.gettext;
+const idPrefix = "disk-encryption";
 
 const ruleAscii = {
     check: (policy, password) => password.length > 0 && /^[\x20-\x7F]*$/.test(password),
@@ -62,34 +61,15 @@ const CheckDisksSpinner = (
     </EmptyState>
 );
 
-const DiskEncryption = ({
-    idPrefix,
+export const DiskEncryption = ({
+    isEncrypted,
+    password,
+    setIsEncrypted,
     setIsFormValid,
-    setStepNotification,
+    setPassword,
 }) => {
-    const { partitioning } = useContext(StorageContext);
-    const request = partitioning?.requests?.[0];
-    const [confirmPassword, setConfirmPassword] = useState(request?.passphrase || "");
-    const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
-    const [password, setPassword] = useState(request?.passphrase || "");
+    const [confirmPassword, setConfirmPassword] = useState(password);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
-
-    // Display custom footer
-    const getFooter = useMemo(
-        () =>
-            <CustomFooter
-              encrypt={isEncrypted}
-              encryptPassword={password}
-              partitioning={partitioning.path}
-              setStepNotification={setStepNotification}
-            />,
-        [isEncrypted, password, partitioning.path, setStepNotification]
-    );
-    useWizardFooter(getFooter);
-
-    useEffect(() => {
-        setIsFormValid(!isEncrypted);
-    }, [setIsFormValid, isEncrypted]);
 
     if (password === undefined) {
         return CheckDisksSpinner;
@@ -121,82 +101,17 @@ const DiskEncryption = ({
     );
 
     return (
-        <>
-            <TextContent>
-                <Text component={TextVariants.p}>
-                    {_("Encryption helps secure your data, to prevent others from accessing it.")}
-                </Text>
-                <Text component={TextVariants.p}>
-                    {_("Only new partitions will be encrypted. Existing partitions will remain untouched.")}
-                </Text>
-            </TextContent>
-            <Form>
+        <Form onSubmit={e => { e.preventDefault(); return false }}>
+            <FormSection
+              title={<Title headingLevel="h3">{_("Encryption")}</Title>}
+            >
+                <TextContent>
+                    <Text component={TextVariants.p}>
+                        {_("Secure your data using disk-based encryption. Only applies to new partitions")}
+                    </Text>
+                </TextContent>
                 {encryptedDevicesCheckbox(isEncrypted ? passphraseForm : null)}
-            </Form>
-        </>
+            </FormSection>
+        </Form>
     );
 };
-
-const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotification }) => {
-    const step = new Page().id;
-    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
-        setIsFormDisabled(true);
-        return applyStorage({
-            encrypt,
-            encryptPassword,
-            onFail: ex => {
-                setIsFormDisabled(false);
-                setStepNotification({ step, ...ex });
-            },
-            onSuccess: () => {
-                goToNextStep();
-
-                // Reset the state after the onNext call. Otherwise,
-                // React will try to render the current step again.
-                setIsFormDisabled(false);
-                setStepNotification();
-            },
-            partitioning,
-        });
-    };
-
-    return <AnacondaWizardFooter onNext={onNext} />;
-};
-
-const usePageInit = () => {
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
-    const { setIsFormDisabled } = useContext(FooterContext);
-    // Reset the partitioning before applying the new one, because in the 'use-free-space' case
-    // the remaining space is not calculated correctly if the partitioning is not reset.
-    // FIXME: https://issues.redhat.com/browse/INSTALLER-3982
-    // This is a workaround, as reseting the partitioning just before the 'applyStorage'
-    // call results in a deadlock.
-    const needsReset = appliedPartitioning && appliedPartitioning !== partitioning.path;
-
-    useEffect(() => {
-        const _resetPartitioning = async () => {
-            await resetPartitioning();
-        };
-
-        if (needsReset) {
-            _resetPartitioning();
-        }
-    }, [needsReset]);
-
-    useEffect(() => {
-        if (!needsReset) {
-            setIsFormDisabled(false);
-        }
-    }, [needsReset, setIsFormDisabled]);
-};
-
-export class Page {
-    constructor (isBootIso, storageScenarioId) {
-        this.component = DiskEncryption;
-        this.id = "disk-encryption";
-        this.isHidden = ["mount-point-mapping", "use-configured-storage", "home-reuse"].includes(storageScenarioId);
-        this.label = _("Disk encryption");
-        this.title = _("Encrypt the selected devices?");
-        this.usePageInit = usePageInit;
-    }
-}
