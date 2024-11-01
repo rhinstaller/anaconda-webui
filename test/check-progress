@@ -61,6 +61,10 @@ class TestInstallationProgress(VirtInstallMachineCase):
             ignore=[".logo", "#betanag-icon"],
         )
 
+        # Check that at this stage 'Modify Storage' is not available
+        b.click("#toggle-kebab")
+        b.wait_visible("li.pf-m-disabled #modify-storage")
+
         self.handleReboot()
 
 

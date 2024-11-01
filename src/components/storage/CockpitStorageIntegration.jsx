@@ -69,6 +69,7 @@ import { getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { StorageContext, TargetSystemRootContext } from "../Common.jsx";
+import { getSteps } from "../steps.js";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
@@ -634,7 +635,7 @@ const ModifyStorageSideBar = () => {
     );
 };
 
-export const ModifyStorage = ({ setShowStorage }) => {
+export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
     const targetSystemRoot = useContext(TargetSystemRootContext);
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
@@ -646,10 +647,16 @@ export const ModifyStorage = ({ setShowStorage }) => {
         efi: isEfi,
         mount_point_prefix: targetSystemRoot,
     });
+    const isDisabled = useMemo(() => {
+        const steps = getSteps();
+        const currentStep = steps.find(step => step.id === currentStepId);
+        return currentStep?.isFinal;
+    }, [currentStepId]);
 
     return (
         <DropdownItem
           id="modify-storage"
+          isDisabled={isDisabled}
           onClick={() => {
               window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
               setShowStorage(true);

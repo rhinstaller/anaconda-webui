@@ -106,7 +106,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
     );
 };
 
-export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
+export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
@@ -128,7 +128,7 @@ export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, 
 
     const dropdownItems = [
         <ModifyStorage
-          idPrefix="header-kebab"
+          currentStepId={currentStepId}
           key="modify-storage"
           setShowStorage={setShowStorage}
         />,
