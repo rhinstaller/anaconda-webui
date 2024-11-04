@@ -354,11 +354,7 @@ const CheckStorageDialog = ({
         const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
 
         dispatch(setStorageScenarioAction(mode));
-
-        if (!useConfiguredStorage && checkStep === "prepare-partitioning") {
-            setCheckStep();
-        }
-    }, [useConfiguredStorage, checkStep, dispatch]);
+    }, [useConfiguredStorage, dispatch]);
 
     useEffect(() => {
         if (checkStep !== "luks") {
@@ -408,6 +404,12 @@ const CheckStorageDialog = ({
         // If the required devices needed for manual partitioning are set up,
         // and prepare the partitioning
         if (checkStep !== "prepare-partitioning") {
+            return;
+        }
+
+        // If "Use configured storage" is not available, skip Manual partitioning creation
+        if (!useConfiguredStorage) {
+            setCheckStep();
             return;
         }
 
