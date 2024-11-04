@@ -42,3 +42,9 @@ user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("toolkit.telemetry.unified", false);
 user_pref("trailhead.firstrun.didSeeAboutWelcome", true);
+
+// Don't show `Allow this site to open the PROTOCOL link with APPLICATION` dialog
+user_pref("security.external_protocol_requires_permission", false);
+
+// Don't show the `This site is trying to open a popup` dialog
+user_pref("dom.disable_open_during_load", false);

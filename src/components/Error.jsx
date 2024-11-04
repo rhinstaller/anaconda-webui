@@ -45,7 +45,7 @@ import "./Error.scss";
 
 const _ = cockpit.gettext;
 
-export const bugzillaPrefiledReportURL = (productQueryData) => {
+export const bugzillaPrefiledReportURL = (productQueryData, isBootIso) => {
     const baseURL = "https://bugzilla.redhat.com";
     const queryData = {
         ...productQueryData,
@@ -55,7 +55,11 @@ export const bugzillaPrefiledReportURL = (productQueryData) => {
     const reportURL = new URL(baseURL);
     reportURL.pathname = "enter_bug.cgi";
     Object.keys(queryData).map(query => reportURL.searchParams.append(query, queryData[query]));
-    return reportURL.href;
+    if (isBootIso) {
+        return reportURL.href;
+    } else {
+        return reportURL.href.replace("https", "extlink");
+    }
 };
 
 const ensureMaximumReportURLLength = (reportURL) => {
@@ -99,6 +103,7 @@ export const BZReportModal = ({
 }) => {
     const [logContent, setLogContent] = useState();
     const [preparingReport, setPreparingReport] = useState(false);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
         cockpit.spawn(["journalctl", "-a"])
@@ -109,14 +114,20 @@ export const BZReportModal = ({
         reportURL = ensureMaximumReportURLLength(reportURL);
         reportURL = addLogAttachmentCommentToReportURL(reportURL, logFile);
         setPreparingReport(true);
+
+        const openPage = (
+            isBootIso
+                ? () => window.open(reportURL)
+                : () => window.location.replace(reportURL, "_blank", "noopener,noreferer")
+        );
+
         cockpit
                 .file(logFile)
                 .replace(logContent)
                 .always(() => setPreparingReport(false))
-                .then(() => window.open(reportURL, "_blank", "noopener,noreferer"));
+                .then(openPage);
     };
 
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
     const networkHelperMessageBootIso = _("Network not available. Configure the network to report the issue.");
 
@@ -146,7 +157,7 @@ export const BZReportModal = ({
                             isLoading={preparingReport}
                             isDisabled={logContent === undefined || preparingReport || !isConnected}
                             icon={<ExternalLinkAltIcon />}
-                            onClick={() => openBZIssue(reportLinkURL, logFile, logContent)}
+                            onClick={() => { openBZIssue(reportLinkURL, logFile, logContent); return false }}
                             component="a">
                               {preparingReport ? _("Preparing report") : _("Report issue")}
                           </Button>

@@ -5,11 +5,6 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 // We want to use :has()
 user_pref("layout.css.has-selector.enabled", true);
 
-// New windows, not tabs
-user_pref("browser.link.open_newwindow", 2);
-user_pref("browser.link.open_newwindow.restriction", 1);
-user_pref("browser.link.open_newwindow.override.external", 2);
-
 // Dev stuff (for easier UI adusting with ctrl+shift+alt+i)
 user_pref("browser.aboutConfig.showWarning", false);
 user_pref("devtools.chrome.enabled", true);
@@ -42,3 +37,9 @@ user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("toolkit.telemetry.unified", false);
 user_pref("trailhead.firstrun.didSeeAboutWelcome", true);
+
+// Don't show `Allow this site to open the PROTOCOL link with APPLICATION` dialog
+user_pref("security.external_protocol_requires_permission", false);
+
+// Don't show the `This site is trying to open a popup` dialog
+user_pref("dom.disable_open_during_load", false);
