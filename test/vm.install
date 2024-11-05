@@ -70,10 +70,7 @@ def vm_install(image, verbose, quick):
         # unless we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
         if not scenario or not scenario.startswith("anaconda-pr-"):
             # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
-            # download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
-            # FIXME: don't get latest anaconda-[core, tui] packages through updates.img till the wayland
-            # migration patches are in the rawhide boot.iso
-            pass
+            download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
         else:
             anaconda_pr = scenario.split("-")[-1]
             # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
