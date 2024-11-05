@@ -77,7 +77,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        r.check_disk(dev, "16.1 GB vda (0x1af4)")
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
         r.check_disk_row(dev, "/", "vda3", "10.7 GB", True, "btrfs")
@@ -210,12 +210,12 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (0x1af4)")
+        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(disk, "/", "vda3", "15.0 GB", True, "xfs")
 
         disk = "vdb"
-        r.check_disk(disk, "10.7 GB vdb (0x1af4)")
+        r.check_disk(disk, "10.7 GB vdb (Virtio Block Device)")
         r.check_disk_row(disk, "/home", "vdb1", "10.7 GB", False)
 
         b.assert_pixels(
@@ -415,7 +415,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (0x1af4)")
+        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs")
@@ -483,7 +483,7 @@ class TestStorageMountPointsEFI(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        r.check_disk(dev, "16.1 GB vda (0x1af4)")
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
