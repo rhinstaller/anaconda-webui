@@ -114,21 +114,21 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
         s.reclaim_check_available_space("1.03 MB")
 
         # Check that all partitions are present
-        s.reclaim_check_device_row("vda (0x", "", "disk", "16.1 GB")
+        s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
         s.reclaim_check_device_row("vda1", "", "biosboot", "1.05 MB")
         s.reclaim_check_device_row("vda2", "", "ext4", "4.29 GB")
         s.reclaim_check_device_row("vda3", "", "btrfs", "5.37 GB")
         s.reclaim_check_device_row("vda4", "", "btrfs", "6.44 GB")
 
         # Check that deleting a disk will delete all contained partitions
-        s.reclaim_remove_device("vda (0x")
+        s.reclaim_remove_device("vda (Virtio")
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete")
 
         s.reclaim_check_available_space("16.1 GB")
 
         # Undo disk device deletion
-        s.reclaim_undo_action("vda (0x")
+        s.reclaim_undo_action("vda (Virtio")
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete", False)
 
@@ -136,7 +136,7 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
 
         # Check that actions for devices whose parents are marked for deletion are not sent to blivet
         s.reclaim_remove_device("vda4")
-        s.reclaim_remove_device("vda (0x")
+        s.reclaim_remove_device("vda (Virtio")
         s.reclaim_modal_submit()
 
         i.back()
@@ -150,9 +150,9 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
 
         # Check that deleting a parent disk which contains partitions marked for deletion
         # correctly calculates the available space
-        s.reclaim_remove_device("vda (0x")
+        s.reclaim_remove_device("vda (Virtio")
         s.reclaim_check_available_space("16.1 GB")
-        s.reclaim_undo_action("vda (0x")
+        s.reclaim_undo_action("vda (Virtio")
         s.reclaim_check_available_space("6.44 GB")
 
         s.reclaim_modal_submit()
@@ -175,7 +175,7 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
         s.reclaim_check_available_space("1.03 MB")
 
         # Check that shrinking action is only available for partitions
-        s.reclaim_check_action_button_present("vda (0x", "shrink", False)
+        s.reclaim_check_action_button_present("vda (Virtio", "shrink", False)
         for device in ["vda2"]:
             s.reclaim_check_action_button_present(device, "shrink", True)
 

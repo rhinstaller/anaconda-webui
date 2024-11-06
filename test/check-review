@@ -46,7 +46,7 @@ class TestReview(VirtInstallMachineCase):
         r.check_language("English (United States)")
 
         # check selected disks are shown
-        r.check_disk("vda", "16.1 GB vda (0x1af4)")
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs")
 
@@ -71,7 +71,7 @@ class TestReview(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk("vda", "16.1 GB vda (0x1af4)")
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs", is_encrypted=True)
 

@@ -56,7 +56,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
 
 
         # check selected disks are shown
-        r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
+        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}3", action="delete")
         r.check_disk_row(dev, parent=f"{dev}1", action="delete")
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
@@ -108,7 +108,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (0x1af4)")
+        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (Virtio Block Device)")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
         r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", "1.07 GB", True, "xfs", is_encrypted=False)
@@ -142,7 +142,7 @@ class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
         # check selected disks are shown
         r.check_disk_row(dev, parent=f"{dev}2", action="delete")
         r.check_disk_row(dev, parent=f"{dev}3", action="delete")
-        r.check_disk(dev, f"16.1 GB {dev} (0x1af4)")
+        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
