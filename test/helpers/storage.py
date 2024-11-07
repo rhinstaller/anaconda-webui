@@ -639,49 +639,6 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"{main_selector}:contains({device})")
         self.toggle_mountpoint_row_device(row)
 
-    def unlock_device(self, passphrase, encrypted_devices=None, successfully_unlocked_devices=None):
-        if encrypted_devices is None:
-            encrypted_devices = []
-        if successfully_unlocked_devices is None:
-            successfully_unlocked_devices = []
-        # FIXME: https://github.com/patternfly/patternfly-react/issues/9512
-        b = self.browser
-        for device in encrypted_devices:
-            b.wait_in_text(
-                "#unlock-device-dialog-luks-devices",
-                device,
-            )
-        b.set_input_text("#unlock-device-dialog-luks-passphrase[type=password]", passphrase)
-        b.click("#unlock-device-dialog-submit-btn")
-        # Wait for the dialog to either close or stop being in progress
-        with b.wait_timeout(30):
-            if successfully_unlocked_devices == encrypted_devices:
-                b.wait_not_present("#unlock-device-dialog")
-                return
-            else:
-                b.wait_visible("#unlock-device-dialog-submit-btn:not([disabled])")
-
-        # The devices that were successfully unlocked should not not be present
-        # in the 'Locked devices' form field
-        for device in successfully_unlocked_devices:
-            b.wait_not_present(f"#unlock-device-dialog-luks-devices:contains({device})")
-
-        # The locked devices should be present in the 'Locked devices' form field
-        for device in list(set(encrypted_devices) - set(successfully_unlocked_devices)):
-            b.wait_visible(f"#unlock-device-dialog-luks-devices:contains({device})")
-
-        # The devices that were successfully unlocked should appear in the info alert
-        if len(successfully_unlocked_devices) > 0:
-            b.wait_in_text(
-                "#unlock-device-dialog .pf-v5-c-alert.pf-m-info",
-                f"Successfully unlocked {', '.join(successfully_unlocked_devices)}."
-            )
-
-        # If the user did not unlock any device after submiting the form expect a warning
-        if successfully_unlocked_devices == []:
-            fail_text = "Passphrase did not match any locked device"
-            b.wait_in_text("#unlock-device-dialog .pf-v5-c-helper-text", fail_text)
-
     def select_mountpoint_row_reformat(self, row, selected=True):
         self.browser.set_checked(f"{self.table_row(row)} td[data-label='Reformat'] input", selected)
 
@@ -698,12 +655,6 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         rows = self.browser.call_js_func("ph_count", '#mount-point-mapping-table tbody tr')
         self.browser.click("button:contains('Add mount')")
         self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {rows + 1}")
-
-    def unlock_all_encrypted(self):
-        self.browser.click("#mount-point-mapping-unlock-devices-btn")
-
-    def unlock_all_encrypted_skip(self):
-        self.browser.click("button:contains('Skip')")
 
     def wait_mountpoint_table_column_helper(self, row, column, text=None, present=True):
         if present:

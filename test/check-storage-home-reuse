@@ -116,6 +116,86 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
+    def move_standard_fedora_disk_to_encrypted(self, encrypted_disk, new_disk, password):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk = encrypted_disk
+        dev = encrypted_disk.split("/")[-1]
+        dev_fedora = new_disk
+
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1MiB", "efi"), ("1GiB", "ext4"), ("", None)])
+
+        # Create standard encrypted btrfs layout in the empty disk and copy the data from the fedora
+        # disk to emulate the Fedora encrypted layout
+        # Then eject the fedora disk
+        self.machine.execute(f"""
+        set -xe
+
+        # Create encrypted btrfs layout
+        echo {password} | cryptsetup luksFormat {disk}4
+        echo {password} | cryptsetup luksOpen {disk}4 crypt
+        mkfs.btrfs /dev/mapper/crypt
+        mount /dev/mapper/crypt /mnt
+        btrfs subvolume create /mnt/root
+        btrfs subvolume create /mnt/home
+
+        # Copy data from the first disk / to the new disk
+        mkdir -p /mnt-fedora
+        mount /dev/{dev_fedora}4 /mnt-fedora
+        cp -a /mnt-fedora/* /mnt/
+
+        # Adjust /etc/fstab to contain the new device UUIDS
+        echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
+        echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
+        echo "UUID=$(blkid -s UUID -o value /dev/{dev}3) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
+
+        umount /mnt-fedora
+        umount /mnt
+        cryptsetup close crypt
+
+        # Do the same for /boot
+        mount /dev/{dev}3 /mnt
+        mount /dev/{dev_fedora}3 /mnt-fedora
+        cp -a /mnt-fedora/* /mnt/
+
+        umount /mnt-fedora
+        umount /mnt
+        """)
+
+    def testHomeReuseFedoraEncrypted(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
+
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/fedora-41"))
+        self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
+
+        s.udevadm_settle()
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+        s.select_disks([("vda", True), ("vdb", False)])
+
+        s.unlock_all_encrypted()
+        s.unlock_device("einszwei", ["vda4"], ["vda4"])
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        dev = "vda"
+        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
+        r.check_disk_row(dev, parent=f"{dev}3", action="delete")
+        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
+        r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
+
 
 class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
