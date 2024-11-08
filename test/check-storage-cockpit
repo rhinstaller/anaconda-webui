@@ -207,7 +207,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
 
-        self.click_card_row("Storage", name="/")
+        self.click_card_row("Storage", name="top-level")
 
         b.click(self.card_button("btrfs subvolume", "Mount"))
         self.dialog({"mount_point": tmp_mount})
@@ -281,7 +281,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
 
-        self.click_card_row("Storage", name="/")
+        self.click_card_row("Storage", name="top-level")
 
         b.click(self.card_button("btrfs subvolume", "Mount"))
         self.dialog({"mount_point": tmp_mount})
