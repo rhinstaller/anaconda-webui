@@ -16,6 +16,8 @@
  */
 import cockpit from "cockpit";
 
+import { usePageLocation } from "hooks";
+
 import React, { useCallback, useEffect, useState } from "react";
 import {
     Bullseye,
@@ -51,7 +53,15 @@ export const ApplicationLoading = () => (
 export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [showStorage, setShowStorage] = useState(false);
+    const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress();
+    const { path } = usePageLocation();
+
+    useEffect(() => {
+        if (path[0] !== currentStepId) {
+            setCurrentStepId(path[0]);
+        }
+    }, [path, currentStepId]);
 
     useEffect(() => {
         if (!address) {
@@ -81,6 +91,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
             <PageGroup
               stickyOnBreakpoint={{ default: "top" }}>
                 <AnacondaHeader
+                  currentStepId={currentStepId}
                   dispatch={dispatch}
                   title={title}
                   reportLinkURL={reportLinkURL}
@@ -90,6 +101,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
                 />
             </PageGroup>
             <AnacondaWizard
+              currentStepId={currentStepId}
               isFetching={isFetching}
               onCritFail={onCritFail}
               title={title}

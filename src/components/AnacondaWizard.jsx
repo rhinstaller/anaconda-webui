@@ -18,7 +18,7 @@ import cockpit from "cockpit";
 
 import { usePageLocation } from "hooks";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     PageSection,
     PageSectionTypes,
@@ -32,24 +32,16 @@ import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
 import { getSteps } from "./steps.js";
 
-export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, showStorage }) => {
+export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail, showStorage }) => {
     // The Form should be disabled while backend checks are in progress
     // or the page initialization is in progress
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     // The Form should be marked as invalid when the user filled data
     // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
-    const [currentStepId, setCurrentStepId] = useState();
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const { path } = usePageLocation();
-
-    useEffect(() => {
-        if (!currentStepId) {
-            return;
-        }
-        cockpit.location.go([currentStepId]);
-    }, [currentStepId]);
 
     const componentProps = {
         dispatch,
@@ -112,7 +104,7 @@ export const AnacondaWizard = ({ dispatch, isFetching, onCritFail, showStorage }
             setIsFormDisabled(true);
         }
 
-        setCurrentStepId(newStep.id);
+        cockpit.location.go([newStep.id]);
     };
 
     const finalStep = stepsOrder[stepsOrder.length - 1];
