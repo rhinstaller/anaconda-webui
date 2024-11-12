@@ -147,8 +147,7 @@ class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_some_resized_checkbox_label()
         r.check_disk_row("vda", parent="vda1", size="5.00 GB", action="resized from 10.6 GB")
-        # FIXME: uncomment when https://github.com/storaged-project/blivet/pull/1256 is released
-        # r.check_resized_system("Debian", ["vda1"])
+        r.check_resized_system("Debian", ["vda1"])
 
         self.install(needs_confirmation=True)
         self.verifyDualBoot(root_one_size=14.2, root_two_size=4.7)
