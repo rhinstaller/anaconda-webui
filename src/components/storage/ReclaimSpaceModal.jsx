@@ -36,7 +36,14 @@ import {
     Text,
     TextContent,
 } from "@patternfly/react-core";
-import { CompressArrowsAltIcon, HddIcon, LockIcon, TrashIcon, UndoIcon } from "@patternfly/react-icons";
+import {
+    CompressArrowsAltIcon,
+    HddIcon,
+    LockIcon,
+    OutlinedQuestionCircleIcon,
+    TrashIcon,
+    UndoIcon
+} from "@patternfly/react-icons";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
 
@@ -234,11 +241,41 @@ const isDeviceLocked = ({ device }) => {
     );
 };
 
+const ExtendedPartitionType = ({ deviceName }) => (
+    <Flex
+      alignItems={{ default: "alignItemsCenter" }}
+      className="extended-partition-type"
+      flexWrap={{ default: "nowrap" }}
+      spaceItems={{ default: "spaceItemsSm" }}
+    >
+        <FlexItem>
+            {_("extended partition")}
+        </FlexItem>
+        <FlexItem>
+            <Popover
+              aria-label={_("Extended partition")}
+              bodyContent={
+                  fmtToFragments(
+                      _("$0 is an MBR extended partition that contains logical partitions. Removing all logical partitions will also automatically remove the extended partition."),
+                      <b>{deviceName}</b>
+                  )
+              }
+              headerContent={_("Extended partition")}
+              position="top"
+            >
+                <OutlinedQuestionCircleIcon />
+            </Popover>
+        </FlexItem>
+    </Flex>
+);
+
 const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedActions) => {
     const device = devices[disk];
     const isDisk = device["is-disk"].v;
     const isPartition = device.type.v === "partition";
     const typeLabel = device.attrs?.v["partition-type-name"] || "";
+    // Disable the remove action for partitions without children witch are not lead nodes
+    const isExtendedPartition = device.attrs?.v.isleaf === "False" && device.children.v.length === 0;
     const diskDescription = (
         <>
             <HddIcon />
@@ -250,14 +287,10 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         idPrefix + "-device-level-" + level,
     ];
 
-    if (!device.children.v.length) {
-        const parentDevice = device.parents.v[0] ? devices[device.parents.v[0]] : undefined;
-        const siblings = parentDevice?.children.v;
-        const isLastChild = !siblings || siblings.findIndex((child) => child === disk) === siblings.length - 1;
+    const isLastChild = device.attrs?.v.isleaf === "True";
 
-        if (isLastChild) {
-            classNames.push(idPrefix + "-device-leaf");
-        }
+    if (isLastChild) {
+        classNames.push(idPrefix + "-device-leaf");
     }
 
     let deviceType = getDeviceTypeInfo(device);
@@ -275,10 +308,17 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         );
     }
 
-    const size = level < 2 ? cockpit.format_bytes(device.total.v) : "";
+    if (isExtendedPartition) {
+        deviceType = (
+            <ExtendedPartitionType deviceName={device.name.v} />
+        );
+    }
+
+    const size = level < 2 && !isExtendedPartition ? cockpit.format_bytes(device.total.v) : "";
     const deviceActions = (
         <DeviceActions
           device={device}
+          isExtendedPartition={isExtendedPartition}
           level={level}
           unappliedActions={unappliedActions}
           setUnappliedActions={setUnappliedActions}
@@ -304,10 +344,10 @@ const getDeviceActionOfType = ({ device, type, unappliedActions }) => {
     return unappliedActions[device].find(action => action.type === type);
 };
 
-const DeviceActions = ({ device, level, setUnappliedActions, unappliedActions }) => {
-    // Only show actions for disks and the first level of partitions
+const DeviceActions = ({ device, isExtendedPartition, level, setUnappliedActions, unappliedActions }) => {
+    // Only show actions for disks and the first level of partitions, or not extended
     // This is to simplify the feature for the first iteration
-    if (level > 1) {
+    if (level > 1 || isExtendedPartition) {
         return null;
     }
 
