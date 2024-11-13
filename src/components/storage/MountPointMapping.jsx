@@ -203,7 +203,7 @@ const isDeviceMountPointInvalid = (deviceData, mountPointConstraints, request) =
     if (constrainedMountPointData && !constrainedMountPointData["encryption-allowed"].v &&
         deviceData[device].type.v === "luks/dm-crypt") {
         return [true,
-            cockpit.format(_("'$0' filesystem cannot be on an ecnrypted block device"),
+            cockpit.format(_("'$0' filesystem cannot be on an encrypted block device"),
                            request["mount-point"])];
     }
 
