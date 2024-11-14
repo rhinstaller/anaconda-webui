@@ -189,8 +189,8 @@ class VirtInstallMachineCase(MachineCase):
         p.reboot()
 
         # The installed machine does not need to skip the nologin check
-        os.environ["TEST_ALLOW_NOLOGIN"] = "false"
-        self.addCleanup(lambda: os.environ["TEST_ALLOW_NOLOGIN"] == "true")
+        del os.environ["TEST_ALLOW_NOLOGIN"]
+        self.addCleanup(lambda: os.environ.__setitem__("TEST_ALLOW_NOLOGIN", "1"))
         self.machine.wait_reboot()
 
     def selectBootMenuEntry(self, entry):

@@ -44,7 +44,7 @@ class TestExistingSystemFedora(VirtInstallMachineCase):
 
         r.check_deleted_system("Fedora Linux")
 
-class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
+class _TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
     """
     Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
 
@@ -66,6 +66,15 @@ class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
         i.begin_installation(button_text="Install", needs_confirmation=needs_confirmation)
         with b.wait_timeout(300):
             p.wait_done()
+
+        # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
+        # This should be removed from the test
+        if self.efi:
+            # Add efibootmgr entry for the second OS
+            distro_name = self.disk_image.split("-")[0]
+            m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
+            # Select the Fedora grub entry for first boot
+            m.execute("efibootmgr -n 0001")
 
         self.handleReboot()
 
@@ -106,7 +115,11 @@ class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
         self.assertEqual(vda1["size"], str(root_two_size) + "G")
 
         vda15 = next(part for part in vda["children"] if part["name"] == "vda15")
-        self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
+        # TODO: add explanation why the /efi mountpoint is present when legacy boot is used
+        if self.efi:
+            self.assertEqual(vda15["mountpoints"], ["/boot/efi"])
+        else:
+            self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
 
     @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_free_space")
     def testScenarioUseFreeSpace(self):
@@ -151,6 +164,12 @@ class TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
 
         self.install(needs_confirmation=True)
         self.verifyDualBoot(root_one_size=14.2, root_two_size=4.7)
+
+class TestFedoraPlansUseFreeSpaceBIOS(_TestFedoraPlansUseFreeSpace):
+    efi = False
+
+class TestFedoraPlansUseFreeSpaceUEFI(_TestFedoraPlansUseFreeSpace):
+    efi = True
 
 @nondestructive
 class TestExistingSystemWindows(VirtInstallMachineCase):
