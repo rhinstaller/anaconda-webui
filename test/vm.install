@@ -13,6 +13,8 @@ BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
 missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi"
+# FIXME: Remove grub2-common once it is available in the default rawhide boot.iso
+missing_packages_including_deps = "grub2-common"
 
 from machine.machine_core import machine_virtual
 
@@ -82,6 +84,9 @@ def vm_install(image, verbose, quick):
         # Then we can enable this only for the various scenarios above
         if packages_to_download is not None:
             machine.execute(f"dnf download --destdir /var/tmp/build/ {packages_to_download}", stdout=sys.stdout, timeout=300)
+
+        if missing_packages_including_deps is not None:
+            machine.execute(f"dnf download --resolve --destdir /var/tmp/build/ {missing_packages_including_deps}", stdout=sys.stdout, timeout=300)
 
         # download rpms
         vm_rpms = machine.execute("find /var/tmp/build -name '*.rpm' -not -name '*.src.rpm'").strip().split()
