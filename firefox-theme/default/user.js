@@ -48,3 +48,6 @@ user_pref("security.external_protocol_requires_permission", false);
 
 // Don't show the `This site is trying to open a popup` dialog
 user_pref("dom.disable_open_during_load", false);
+
+// Disable built in Password Manager / Password Generation
+user_pref("signon.generation.enabled", false);
