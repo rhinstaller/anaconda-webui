@@ -32,6 +32,11 @@ export const storageInitialState = {
         selectedDisks: [],
         usableDisks: []
     },
+    luks: {
+        confirmPassphrase: "",
+        encrypted: false,
+        passphrase: "",
+    },
     mountPoints: {},
     partitioning: {},
     storageScenarioId: null,
@@ -141,6 +146,21 @@ export const storageReducer = (state = storageInitialState, action) => {
         return { ...state, appliedPartitioning: action.payload.appliedPartitioning };
     } else if (action.type === "SET_STORAGE_SCENARIO") {
         return { ...state, storageScenarioId: action.payload.scenario };
+    } else if (action.type === "SET_LUKS_ENCRYPTION_DATA") {
+        const newLuksState = {
+            ...state.luks,
+            ...action.payload,
+        };
+
+        if (action.payload.encrypted === false) {
+            newLuksState.passphrase = "";
+            newLuksState.confirmPassphrase = "";
+        }
+
+        return {
+            ...state,
+            luks: newLuksState,
+        };
     } else {
         return state;
     }

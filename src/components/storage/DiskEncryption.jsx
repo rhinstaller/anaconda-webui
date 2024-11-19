@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
     Checkbox,
     EmptyState,
@@ -33,7 +33,11 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import { RuntimeContext } from "../Common.jsx";
+import {
+    setLuksEncryptionDataAction
+} from "../../actions/storage-actions.js";
+
+import { RuntimeContext, StorageContext } from "../Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./DiskEncryption.scss";
@@ -61,17 +65,11 @@ const CheckDisksSpinner = (
     </EmptyState>
 );
 
-export const DiskEncryption = ({
-    isEncrypted,
-    password,
-    setIsEncrypted,
-    setIsFormValid,
-    setPassword,
-}) => {
-    const [confirmPassword, setConfirmPassword] = useState(password);
+export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
+    const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
 
-    if (password === undefined) {
+    if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
     }
 
@@ -79,8 +77,10 @@ export const DiskEncryption = ({
         <Checkbox
           id={idPrefix + "-encrypt-devices"}
           label={_("Encrypt my data")}
-          isChecked={isEncrypted}
-          onChange={(_event, isEncrypted) => setIsEncrypted(isEncrypted)}
+          isChecked={luks.encrypted}
+          onChange={(_event, isEncrypted) => {
+              dispatch(setLuksEncryptionDataAction({ encrypted: isEncrypted }));
+          }}
           body={content}
         />
     );
@@ -89,11 +89,11 @@ export const DiskEncryption = ({
         <PasswordFormFields
           idPrefix={idPrefix}
           policy={luksPolicy}
-          password={password}
-          setPassword={setPassword}
+          password={luks.passphrase}
+          setPassword={(value) => dispatch(setLuksEncryptionDataAction({ passphrase: value }))}
           passwordLabel={_("Passphrase")}
-          confirmPassword={confirmPassword}
-          setConfirmPassword={setConfirmPassword}
+          confirmPassword={luks.confirmPassphrase}
+          setConfirmPassword={(value) => dispatch(setLuksEncryptionDataAction({ confirmPassphrase: value }))}
           confirmPasswordLabel={_("Confirm passphrase")}
           rules={[ruleLength, ruleAscii]}
           setIsValid={setIsFormValid}
@@ -110,7 +110,7 @@ export const DiskEncryption = ({
                         {_("Secure your data using disk-based encryption. Only applies to new partitions")}
                     </Text>
                 </TextContent>
-                {encryptedDevicesCheckbox(isEncrypted ? passphraseForm : null)}
+                {encryptedDevicesCheckbox(luks.encrypted ? passphraseForm : null)}
             </FormSection>
         </Form>
     );

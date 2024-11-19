@@ -17,10 +17,12 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useWizardFooter } from "@patternfly/react-core";
 
 import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
+
+import { setLuksEncryptionDataAction } from "../../actions/storage-actions.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { FooterContext, StorageContext } from "../Common.jsx";
@@ -28,48 +30,44 @@ import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const _ = cockpit.gettext;
 
-const StorageConfiguration = ({ idPrefix, setIsFormValid, setStepNotification }) => {
-    const { partitioning } = useContext(StorageContext);
-    const request = partitioning?.requests?.[0];
-    const [isEncrypted, setIsEncrypted] = useState(request?.encrypted);
-    const [password, setPassword] = useState(request?.passphrase || "");
+const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification }) => {
+    const { luks, partitioning } = useContext(StorageContext);
 
     // Display custom footer
     const getFooter = useMemo(
         () =>
             <CustomFooter
-              encrypt={isEncrypted}
-              encryptPassword={password}
+              luks={luks}
               partitioning={partitioning.path}
               setStepNotification={setStepNotification}
             />,
-        [isEncrypted, password, partitioning.path, setStepNotification]
+        [luks, partitioning.path, setStepNotification]
     );
+
     useWizardFooter(getFooter);
 
     useEffect(() => {
-        setIsFormValid(!isEncrypted);
-    }, [setIsFormValid, isEncrypted]);
+        setIsFormValid(!luks.encrypted);
+    }, [setIsFormValid, luks.encrypted]);
 
     return (
         <DiskEncryption
-          idPrefix={idPrefix}
-          isEncrypted={isEncrypted}
-          password={password}
-          setIsEncrypted={setIsEncrypted}
+          dispatch={dispatch}
+          isEncrypted={luks.encrypted}
+          password={luks.passphrase}
+          setIsEncrypted={(value) => dispatch(setLuksEncryptionDataAction({ encrypted: value }))}
           setIsFormValid={setIsFormValid}
-          setPassword={setPassword}
+          setPassword={(value) => dispatch(setLuksEncryptionDataAction({ passphrase: value }))}
         />
     );
 };
 
-const CustomFooter = ({ encrypt, encryptPassword, partitioning, setStepNotification }) => {
+const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
     const step = new Page().id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         setIsFormDisabled(true);
         return applyStorage({
-            encrypt,
-            encryptPassword,
+            luks,
             onFail: ex => {
                 setIsFormDisabled(false);
                 setStepNotification({ step, ...ex });

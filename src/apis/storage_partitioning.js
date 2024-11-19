@@ -241,12 +241,12 @@ export const gatherRequests = ({ partitioning }) => {
     ).then(res => res[0]);
 };
 
-export const applyStorage = async ({ encrypt, encryptPassword, onFail, onSuccess, partitioning }) => {
-    if (encrypt !== undefined) {
-        await partitioningSetEncrypt({ encrypt, partitioning });
+export const applyStorage = async ({ luks, onFail, onSuccess, partitioning }) => {
+    if (luks?.encrypted !== undefined) {
+        await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
     }
-    if (encryptPassword) {
-        await partitioningSetPassphrase({ partitioning, passphrase: encryptPassword });
+    if (luks?.passphrase) {
+        await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
     }
 
     const tasks = await partitioningConfigureWithTask({ partitioning });

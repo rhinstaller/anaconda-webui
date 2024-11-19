@@ -152,3 +152,10 @@ export const setStorageScenarioAction = (scenario) => {
         type: "SET_STORAGE_SCENARIO",
     };
 };
+
+export const setLuksEncryptionDataAction = (payload) => {
+    return {
+        payload,
+        type: "SET_LUKS_ENCRYPTION_DATA",
+    };
+};
