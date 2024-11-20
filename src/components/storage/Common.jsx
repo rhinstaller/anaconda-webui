@@ -41,6 +41,8 @@ import {
     partitioningSetPassphrase,
 } from "../../apis/storage_partitioning.js";
 
+import { getDeviceAncestors } from "../../helpers/storage.js";
+
 import { StorageContext } from "../Common.jsx";
 import { scenarios } from "./InstallationScenario.jsx";
 
@@ -78,11 +80,15 @@ export const useUsablePartitions = ({ devices, selectedDisks }) => {
     const [usablePartitions, setUsablePartitions] = useState();
 
     useEffect(() => {
-        const _usablePartitions = Object.values(devices).filter(device =>
-            (device.formatData?.type.v === "biosboot" ||
+        const _usablePartitions = Object.values(devices).filter(device => {
+            const ancestors = getDeviceAncestors(devices, device["device-id"].v);
+
+            return (
+                device.formatData?.type.v === "biosboot" ||
              device.formatData?.mountable.v ||
              device.formatData?.type.v === "luks") &&
-            selectedDisks.includes(device.parents?.v[0]));
+             ancestors.some(ancestor => selectedDisks.includes(ancestor));
+        });
 
         setUsablePartitions(_usablePartitions);
     }, [selectedDisks, devices]);
