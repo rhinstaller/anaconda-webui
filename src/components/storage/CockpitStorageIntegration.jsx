@@ -39,6 +39,7 @@ import {
     Text,
     TextContent,
     Title,
+    Tooltip,
 } from "@patternfly/react-core";
 import { ArrowLeftIcon } from "@patternfly/react-icons";
 
@@ -69,7 +70,6 @@ import { getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { StorageContext, TargetSystemRootContext } from "../Common.jsx";
-import { getSteps } from "../steps.js";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
@@ -647,16 +647,12 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         efi: isEfi,
         mount_point_prefix: targetSystemRoot,
     });
-    const isDisabled = useMemo(() => {
-        const steps = getSteps();
-        const currentStep = steps.find(step => step.id === currentStepId);
-        return currentStep?.isFinal;
-    }, [currentStepId]);
-
-    return (
+    // Allow to modify storage only when we are in the scenario selection page
+    const isDisabled = currentStepId !== "installation-method";
+    const item = (
         <DropdownItem
           id="modify-storage"
-          isDisabled={isDisabled}
+          isAriaDisabled={isDisabled}
           onClick={() => {
               window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
               setShowStorage(true);
@@ -665,4 +661,18 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
             {_("Launch storage editor")}
         </DropdownItem>
     );
+
+    if (!isDisabled) {
+        return item;
+    } else {
+        return (
+            <Tooltip
+              id="modify-storage-tooltip"
+              content={_("Storage editor is available only in the `Installation method` step.")}>
+                <span>
+                    {item}
+                </span>
+            </Tooltip>
+        );
+    }
 };
