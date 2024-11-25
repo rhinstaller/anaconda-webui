@@ -1,0 +1,38 @@
+@use "standard.scss" as *;
+
+:root {
+  /*
+  Brand colors
+  */
+  --brand-primary: rgb(138, 42, 226);
+  --brand-secondary: rgb(0, 71, 171);
+  --brand-text: white;
+
+  /*
+  Space between the logo and text; default is 0.5em, which is half a character wide
+  --logo-gap: 0.5em;
+  */
+
+  /*
+  Size of the logo
+  */
+  --logo-height: 3rem;
+  --logo-width: 3rem;
+
+  /*
+  In case the logo needs a dropshadow or something similar, you can add
+  a filter here; 'none' also works as an option
+  */
+  --logo-filter: drop-shadow(0 0 6px rgba(0 0 0 / 0.5));
+
+  /*
+  The actual logo SVG.
+
+  First, optimize the SVG with SVGO; there's a web-based version
+  called SVGOMG at https://jakearchibald.github.io/svgomg/
+
+  Then, encode using URI encoding (not base64) and use as a
+  background. There's a useful tool at https://svgencode.com/
+  */
+  --logo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 500 500'%3E%3Cpath fill='url(%23a)' d='M0 100C0 45 45 0 100 0h150a250 250 0 0 1 0 500A250 250 0 0 1 0 250Z'/%3E%3Cpath fill='%23fff' fill-opacity='.5' fill-rule='evenodd' d='M128 0h64v128h134c56 0 102 46 102 102 0 109-89 198-198 198-56 0-102-46-102-102V192H0v-64h128zm64 192v134c0 21 17 38 38 38 74 0 134-60 134-134 0-21-17-38-38-38Z' clip-rule='evenodd'/%3E%3Cpath fill='%23fff' fill-opacity='.7' d='M192 60c0-17-13-30-30-30h-4c-17 0-30 13-30 30v68H60c-17 0-30 13-30 30v4c0 17 13 30 30 30h68v68c0 17 13 30 30 30h4c17 0 30-13 30-30v-68h68c17 0 30-13 30-30v-4c0-17-13-30-30-30h-68z'/%3E%3Cpath fill='%23fff' d='M263 156c3 2 3 6 0 8l-21 12c-4 2-8 0-8-4v-24c0-4 4-6 8-4zm-99 107c-2 3-6 3-8 0l-12-21c-2-4 0-8 4-8h24c4 0 6 4 4 8zm-8-205c2-4 6-4 8 0l12 21c2 3 0 7-4 7h-24c-4 0-6-4-4-7zM58 164c-4-2-4-6 0-8l21-12c3-2 7 0 7 4v24c0 4-4 6-7 4z'/%3E%3Cdefs%3E%3ClinearGradient id='a' x1='50' x2='550' y1='50' y2='550' gradientTransform='translate(-50 -50)' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='.1' stop-color='%230047AB'/%3E%3Cstop offset='.7' stop-color='%238A2BE2'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
+}
