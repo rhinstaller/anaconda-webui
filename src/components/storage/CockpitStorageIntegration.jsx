@@ -64,7 +64,7 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
-import { getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
+import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
@@ -639,11 +639,14 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
     const targetSystemRoot = useContext(TargetSystemRootContext);
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
-    const selectedDevices = diskSelection.selectedDisks.map(disk => devices[disk].path.v);
+    const availableDevices = [
+        ...diskSelection.selectedDisks,
+        ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
+    ];
     const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
     const cockpitAnaconda = JSON.stringify({
-        available_devices: selectedDevices,
+        available_devices: availableDevices.map(device => devices[device].path.v),
         efi: isEfi,
         mount_point_prefix: targetSystemRoot,
     });

@@ -26,6 +26,7 @@ sys.path.append(os.path.join(TEST_DIR, "common"))
 sys.path.insert(0, os.path.join(TEST_DIR, "helpers"))
 sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
 
+from installer import Installer
 from language import Language
 from machine_install import VirtInstallMachine
 from progress import Progress
@@ -203,6 +204,28 @@ class VirtInstallMachineCase(MachineCase):
 
         self.write_file("/etc/default/grub", grub_cfg)
         self.machine.execute(f"grub2-set-default {entry}")
+
+    def install(self, needs_confirmation, button_text="Install"):
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        p = Progress(b)
+
+        i.begin_installation(button_text=button_text, needs_confirmation=needs_confirmation)
+        with b.wait_timeout(300):
+            p.wait_done()
+
+        # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
+        # This should be removed from the test
+        if self.efi:
+            # Add efibootmgr entry for the second OS
+            distro_name = self.disk_image.split("-")[0]
+            m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
+            # Select the Fedora grub entry for first boot
+            m.execute("efibootmgr -n 0001")
+
+        self.handleReboot()
 
     def tearDown(self):
         if not self.installation_finished:

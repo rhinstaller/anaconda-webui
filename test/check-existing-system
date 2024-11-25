@@ -18,7 +18,6 @@
 from anacondalib import VirtInstallMachineCase, test_plan
 from installer import Installer
 from operating_systems import WindowsOS
-from progress import Progress
 from review import Review
 from storage import Storage, StorageUtils
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -55,28 +54,6 @@ class _TestFedoraPlansUseFreeSpace(VirtInstallMachineCase):
 
     disk_image = "debian-stable"
     disk_size = 20
-
-    def install(self, needs_confirmation):
-        b = self.browser
-        m = self.machine
-
-        i = Installer(b, m)
-        p = Progress(b)
-
-        i.begin_installation(button_text="Install", needs_confirmation=needs_confirmation)
-        with b.wait_timeout(300):
-            p.wait_done()
-
-        # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
-        # This should be removed from the test
-        if self.efi:
-            # Add efibootmgr entry for the second OS
-            distro_name = self.disk_image.split("-")[0]
-            m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
-            # Select the Fedora grub entry for first boot
-            m.execute("efibootmgr -n 0001")
-
-        self.handleReboot()
 
     def verifyDualBoot(self, root_one_size=None, root_two_size=None):
         b = self.browser
