@@ -1,0 +1,131 @@
+/***
+Standard base theme for customizing the heading
+***/
+
+/* Override the top header */
+.pf-v5-c-page__main-group > .pf-v5-c-page__main-section:first-child {
+  /* If there's no primary, default to black */
+  --_primary: var(--brand-primary, white);
+  /* If there's no secondary, default to a second instance of primary */
+  --_secondary: var(--brand-secondary, var(--_primary));
+  /* If there's no text color, default to white */
+  --_text: var(--brand-text, black);
+  /* Gradient angle is horizontal by default */
+  --_gradient-angle: var(--gradient-angle, 90deg);
+  /* Where the gradient starts fading; can be in px, %, rem, or other units */
+  --_gradient-start: var(--gradient-start, 0%);
+  /* Where the gradient stops fading; can be in px, %, rem, or other units */
+  --_gradient-stop: var(--gradient-stop, 100%);
+  /* Set logo height default to 3em */
+  --_logo-height: var(--logo-height, 3rem);
+  /* Set logo height default to 3em */
+  --_logo-width: var(--logo-width, 3rem);
+
+  /* If there's a background-custom variable use it, otherwise gradient */
+	background: var(--background-custom, linear-gradient(var(--_gradient-angle), var(--_primary) var(--_gradient-start), var(--_secondary) var(--_gradient-stop)));
+
+  .pf-v5-c-content {
+    --pf-v5-c-content--Color: var(--_text);
+  }
+
+  /* Hide the included logo section; this will be handled by a ::before */
+  .logo {
+    display: none;
+  }
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: var(--logo-gap, 0.5em);
+
+    &::before {
+      /*
+      First, optimize the SVG with SVGO; there's a web-based version
+      called SVGOMG at https://jakearchibald.github.io/svgomg/
+
+      Then, encode using URI encoding (not base64) and use as a
+      background. There's a useful tool at https://svgencode.com/ for
+      this; choose the "background" method.
+
+      Use the value you get to set --logo in your disto customization
+      file, as a CSS variable. The CSS here will do the rest.
+      */
+      background: var(--logo) center no-repeat;
+
+      /*
+      Make the logo visible and have it fill the space vertically,
+      preserving apsect ratio
+      */
+      content: '';
+      display: inline-block;
+      height: var(--_logo-height);
+      width: var(--_logo-width);
+      min-width: var(--logo-width);
+      filter: var(--logo-filter, none);
+    }
+  }
+
+  #toggle-kebab {
+    /* Use a local text color, assigned to brand text color */
+    --_kebab-color: var(--_text);
+
+    /* Same, but slightly transparent */
+    --_kebab-color-hover: color-mix(var(--_text) 80%, transparent);
+
+    path {
+      fill: var(--_kebab-color);
+    }
+
+    /* Redefine the text color when hovering */
+    &:hover {
+      --_kebab-color: var(var(--_kebab-color-hover));
+    }
+  }
+}
+
+/*
+Fedora Remix badge
+*/
+
+:where(:root) {
+  --remix-height: 32px;
+  --remix-color: #949494;
+  --remix-color-dark: #4c4c4c;
+
+  --remix-logo: var(--remix, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 71.43 36'%3E%3Cpath fill='%23151515' d='M1.5 4.62v12.96c0 1.6 2.43 1.6 2.43 0V8.93h2.5c.58 0 1.07-.42 1.07-1.1 0-.68-.53-1.09-1.08-1.09h-2.5V4.75c0-1.28 1-2.34 3.01-2.31.7 0 .95.18 1.2.33 1.4.92 2.74-1.21 1.28-2.03A4.9 4.9 0 0 0 6.68 0C3.54 0 1.52 2.39 1.5 4.62ZM33.26.23c-.76-.04-1.32.7-1.2 1.42v5.52a6.5 6.5 0 0 0-8.53.36 6.44 6.44 0 0 0-1.03 8.1 6.57 6.57 0 0 0 5.64 3.12 6.38 6.38 0 0 0 3.91-1.53c-.1.71.44 1.47 1.2 1.42.76.04 1.34-.7 1.22-1.42-.01-5.3.01-10.61-.01-15.92A1.2 1.2 0 0 0 33.25.23Zm-5.27 7.93a4.1 4.1 0 0 1 4.06 4.04 4.06 4.06 0 0 1-8.1.3 4.07 4.07 0 0 1 4.04-4.34zm36.27-2.47a6.2 6.2 0 0 0-3.72 1.11c-1.31.95.1 2.92 1.42 1.98.6-.43 1.05-.66 2.3-.66 1.56.03 2.81.62 2.81 1.78-.83.53-4.47.97-6.42 2.08-1.95 1.1-1.84 2.5-1.84 3.41 0 2 2.1 3.34 3.92 3.34 1.81 0 2.59-.38 4.37-1.6v.35c-.06 1.67 2.48 1.67 2.43 0v-7.15c0-2.97-2.12-4.6-5.27-4.64zm2.9 6.6-.01 1.8c-.01.94-.6 1.38-1.22 1.74-.62.36-1.89.68-2.62.72-.84.02-1.96-.17-2.02-1.17 0-.6.3-.97.78-1.4 1.13-.84 2.67-1.13 5.09-1.69zM52.2 5.72c-1.05 0-1.23.87-1.22 1.22v10.54c-.03.69.53 1.25 1.24 1.25.7 0 1.27-.56 1.24-1.25 0 0 .02-3.92 0-6.43A2.83 2.83 0 0 1 56.2 8c.52 0 .95.29 1.36.27.63-.02 1.14-.44 1.14-1.17-.02-1.18-1.47-1.34-2.54-1.32a5.49 5.49 0 0 0-2.75.81s-.16-.87-1.21-.87zm-9.58-.09A6.63 6.57 0 0 0 36 12.21a6.63 6.57 0 0 0 6.63 6.57 6.63 6.57 0 0 0 6.63-6.57 6.63 6.57 0 0 0-6.63-6.58zm0 2.47a4.14 4.11 0 0 1 4.15 4.1 4.14 4.11 0 0 1-4.15 4.12 4.14 4.11 0 0 1-4.14-4.11 4.14 4.11 0 0 1 4.14-4.11zM12.26 6.19a6.25 6.25 0 0 0-4 5.95c0 2.9 2.04 6.67 6.27 6.7 2.84.01 4.26-1.05 5.03-1.77a1.2 1.2 0 1 0-1.66-1.76c-.57.54-1.41 1.34-3.8 1.07a3.8 3.8 0 0 1-2.5-1.58l7.84-3.33c.6-.27.87-.96.62-1.57-1.4-2.75-3.88-5.23-7.8-3.71zm4.92 3.62-6.53 2.79c-.46-1.74 1.45-3.79 2.49-4.17a3.36 3.36 0 0 1 4.04 1.38zM6.94 22.13A6.92 6.92 0 0 0 0 29.06C0 32.91 3.1 36 6.94 36H64.5c3.84 0 6.93-3.1 6.93-6.94a6.91 6.91 0 0 0-6.93-6.93zm2.6 3.33c.6 0 .69.5.69.5a3.1 3.1 0 0 1 1.55-.46c.6-.02 1.42.08 1.43.74 0 .42-.3.65-.64.66-.24.01-.47-.15-.77-.15-.4 0-1.56.3-1.55 1.72.02 1.42 0 3.63 0 3.63.02.38-.3.7-.7.7a.69.69 0 0 1-.7-.7v-5.95c0-.2.1-.69.7-.69zm12.61.02c1.54-.07 2.58 1.08 3.21 2.33a.67.67 0 0 1-.35.87l-4.37 1.86c.2.36.82.82 1.4.88 1.33.15 1.8-.3 2.12-.6a.67.67 0 1 1 .92.99c-.42.4-1.22 1-2.8.98-2.36-.01-3.5-2.1-3.5-3.73a3.5 3.5 0 0 1 3.37-3.58zm27.78 0c.44.11.66.32.66.63v6.04c0 .36-.22.59-.67.66h-.04c-.37 0-.6-.23-.68-.69v-5.88c.05-.5.3-.76.73-.76zm12.38.15c.45.1.67.32.67.63v.15c0 .15-.31.59-.93 1.31l-1.22 1.53c1.44 1.72 2.15 2.64 2.15 2.77v.15c0 .35-.22.57-.66.64h-.03c-.27 0-.54-.21-.82-.64l-1.5-1.86a44.16 44.16 0 0 1-1.97 2.4.67.67 0 0 1-.36.1h-.02c-.38 0-.6-.23-.67-.7 0-.2.33-.66.99-1.4l1.14-1.48-2.07-2.6-.07-.3c.1-.46.33-.7.7-.7.27 0 .58.27.93.8.73.88 1.2 1.46 1.4 1.73.23-.28.86-1.05 1.87-2.33a.9.9 0 0 1 .47-.2zm-29.9 0c.34 0 .56.16.65.45.37-.3.9-.44 1.58-.44.92 0 1.66.34 2.22 1.02.19-.36.73-.67 1.62-.94l.6-.08c1.1 0 1.99.53 2.63 1.59.21.44.32.87.32 1.27v3.7c0 .32-.22.53-.65.61h-.06c-.44-.07-.65-.3-.65-.67v-3.58c0-.72-.38-1.21-1.14-1.49l-.3-.04h-.24c-.6 0-1.05.35-1.37 1.05a1.5 1.5 0 0 0-.06.38v3.68c-.08.45-.3.67-.67.67h-.05c-.43-.07-.65-.3-.65-.64v-3.05c0-.78-.1-1.26-.29-1.44a1.48 1.48 0 0 0-1.24-.65h-.07c-.7 0-1.18.37-1.46 1.12-.05.18-.07.42-.07.73v3.29c0 .35-.22.57-.65.64h-.04c-.36 0-.59-.22-.67-.67V26.4c.05-.5.28-.76.72-.76zm-10.25 1.24c-.22 0-.44.04-.66.12-.58.21-1.65 1.35-1.39 2.32l3.64-1.55a1.84 1.84 0 0 0-1.59-.89Z'/%3E%3C/svg%3E"));
+}
+
+.pf-v5-c-wizard__footer {
+  &::after {
+    /*
+    First, optimize the SVG with SVGO; there's a web-based version
+    called SVGOMG at https://jakearchibald.github.io/svgomg/
+
+    Then, encode using URI encoding (not base64) and use as a
+    background. There's a useful tool at https://svgencode.com/ for
+    this; choose the "background" method.
+
+    Use the value you get to set --logo in your disto customization
+    file, as a CSS variable. The CSS here will do the rest.
+    */
+    background: var(--remix, var(--remix-color));
+
+    mask: var(--remix, var(--remix-logo)) center right no-repeat;
+
+    /*
+    Make the logo visible and have it fill the space vertically,
+    preserving apsect ratio
+    */
+    content: '';
+    display: block;
+    height: var(--remix-height);
+    /* Difference between PF button height (36px) and the graphic */
+    margin-block-start: calc((36px - var(--remix-height)) / 2);
+    pointer-events: none;
+    flex: auto;
+  }
+
+  .pf-v5-theme-dark & {
+    --remix-color: var(--remix-color-dark);
+  }
+}
