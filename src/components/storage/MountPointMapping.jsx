@@ -56,7 +56,6 @@ import { ListingTable } from "cockpit-components-table.jsx";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { StorageContext } from "../Common.jsx";
 import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "./Common.jsx";
-import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./MountPointMapping.scss";
 
@@ -539,14 +538,13 @@ const getNewRequestProps = ({ deviceSpec, mountPoint, reformat, requests }) => {
 };
 
 const RequestsTable = ({
-    deviceData,
     idPrefix,
-    lockedLUKSDevices,
     setIsFormValid,
     setStepNotification,
 }) => {
     const mountPointConstraints = useMountPointConstraints();
-    const { partitioning } = useContext(StorageContext);
+    const { diskSelection, partitioning } = useContext(StorageContext);
+    const deviceData = useOriginalDevices();
     const requests = partitioning?.requests;
     const reusePartitioning = useExistingPartitioning();
     const [unappliedRequests, setUnappliedRequests] = useState();
@@ -554,6 +552,10 @@ const RequestsTable = ({
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
     const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
+    const lockedLUKSDevices = useMemo(
+        () => getLockedLUKSDevices(diskSelection.selectedDisks, deviceData),
+        [deviceData, diskSelection.selectedDisks]
+    );
 
     // Add the required mount points to the initial requests
     useEffect(() => {
@@ -729,47 +731,20 @@ const useExistingPartitioning = () => {
 };
 
 const MountPointMapping = ({
-    dispatch,
     idPrefix,
     setIsFormValid,
     setStepNotification,
 }) => {
-    const { diskSelection } = useContext(StorageContext);
-    const devices = useOriginalDevices();
-
-    const [skipUnlock, setSkipUnlock] = useState(false);
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
-        [devices, diskSelection.selectedDisks]
-    );
-
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter setStepNotification={setStepNotification} />, [setStepNotification]);
     useWizardFooter(getFooter);
 
-    const showLuksUnlock = lockedLUKSDevices?.length > 0 && !skipUnlock;
-
     return (
-        <>
-            {showLuksUnlock &&
-            (
-                <EncryptedDevices
-                  dispatch={dispatch}
-                  idPrefix={idPrefix}
-                  lockedLUKSDevices={lockedLUKSDevices}
-                  setSkipUnlock={setSkipUnlock}
-                />
-            )}
-            {!showLuksUnlock && (
-                <RequestsTable
-                  deviceData={devices}
-                  idPrefix={idPrefix + "-table"}
-                  lockedLUKSDevices={lockedLUKSDevices}
-                  setStepNotification={setStepNotification}
-                  setIsFormValid={setIsFormValid}
-                />
-            )}
-        </>
+        <RequestsTable
+          idPrefix={idPrefix + "-table"}
+          setStepNotification={setStepNotification}
+          setIsFormValid={setIsFormValid}
+        />
     );
 };
 

@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
     Checkbox,
     FormGroup,
@@ -31,6 +31,7 @@ import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 import { debug } from "../../helpers/log.js";
 import {
     getDeviceAncestors,
+    getLockedLUKSDevices,
 } from "../../helpers/storage.js";
 
 import {
@@ -44,11 +45,13 @@ import {
     useDiskFreeSpace,
     useDiskTotalSpace,
     useMountPointConstraints,
+    useOriginalDevices,
     useOriginalDeviceTree,
     useOriginalExistingSystems,
     useRequiredSize,
     useUsablePartitions,
 } from "./Common.jsx";
+import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { helpConfiguredStorage, helpEraseAll, helpHomeReuse, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 
 import "./InstallationScenario.scss";
@@ -489,13 +492,29 @@ export const InstallationScenario = ({
 }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const headingLevel = isBootIso ? "h2" : "h3";
-    const { storageScenarioId } = useContext(StorageContext);
+    const { diskSelection, storageScenarioId } = useContext(StorageContext);
+    const devices = useOriginalDevices();
+
+    const lockedLUKSDevices = useMemo(
+        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
+        [devices, diskSelection.selectedDisks]
+    );
+
+    const showLuksUnlock = lockedLUKSDevices?.length > 0;
 
     return (
         <FormSection
           title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
         >
-            <FormGroup className={idPrefix + "-scenario-group"} isStack hasNoPaddingTop data-scenario={storageScenarioId}>
+            <FormGroup className={idPrefix + "-scenario-group"} isStack data-scenario={storageScenarioId}>
+                {showLuksUnlock &&
+                (
+                    <EncryptedDevices
+                      dispatch={dispatch}
+                      idPrefix={idPrefix}
+                      lockedLUKSDevices={lockedLUKSDevices}
+                    />
+                )}
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
