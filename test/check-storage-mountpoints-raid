@@ -53,11 +53,11 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
-        s.select_mountpoint([(dev, True)], encrypted=True)
-
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+
+        s.select_mountpoint([(dev, True)])
 
         s.select_mountpoint_row_device(1, "encryptedraid")
         s.check_mountpoint_row_format_type(1, "xfs")
@@ -100,11 +100,11 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase, StorageCase):
         s.rescan_disks()
 
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
-        s.select_mountpoint([(dev, True)], encrypted=True)
-
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+
+        s.select_mountpoint([(dev, True)])
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
