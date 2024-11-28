@@ -35,6 +35,7 @@ import {
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 
 import {
+    findExistingSystems,
     unlockDevice,
 } from "../../apis/storage_devicetree.js";
 
@@ -105,7 +106,14 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
             res => {
                 if (res.every(r => r.status === "fulfilled")) {
                     if (res.every(r => r.value)) {
-                        onClose();
+                        // Refresh the list of existing systems after unlocking the devices
+                        findExistingSystems({
+                            onFail: exc => setDialogWarning(exc.message),
+                            onSuccess: () => {
+                                onClose();
+                                dispatch(getDevicesAction());
+                            },
+                        });
                     } else {
                         const unlockedDevs = res.reduce((acc, r, i) => {
                             if (r.value) {
