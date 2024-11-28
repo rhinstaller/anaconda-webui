@@ -208,6 +208,75 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
 
+    def testExtendedPartitionEFI(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        # Configure disk layout with a logical Btrfs partition
+        disk = "/dev/vda"
+        s.partition_disk(
+            disk,
+            [
+                ("512MB", "efi"),
+                ("2GB", "swap"),
+                ("8GB", "ext4"),
+                ("", "extended"),
+                ("2.5GB", "logical"),
+            ],
+            is_efi=True
+        )
+
+        # Create subvolumes for the logical Btrfs partition
+        m.execute(f"""
+        mkfs.btrfs -f -L BTRFS {disk}5
+        mount {disk}5 /mnt
+        btrfs subvolume create /mnt/@subvol1
+        btrfs subvolume create /mnt/@subvol2
+        umount /mnt
+        """)
+
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("use-free-space")
+        s.reclaim_set_checkbox(True)
+        i.next(True)
+
+        s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
+        s.reclaim_check_device_row("vda1", "", "vfat", "512 MB")
+        s.reclaim_check_device_row("vda2", "", "swap", "2.00 GB")
+        s.reclaim_check_device_row("vda3", "", "ext4", "8.00 GB")
+        s.reclaim_check_device_row("vda4", "", "extended partition", "")
+        s.reclaim_check_device_row("vda5", "", "btrfs", "2.50 GB")
+        s.reclaim_check_device_row("", "BTRFS", "btrfs volume", "")
+        s.reclaim_check_device_row("", "@subvol1", "btrfs subvolume", "")
+        s.reclaim_check_device_row("", "@subvol2", "btrfs subvolume", "")
+
+        # Remove only the logical Btrfs partition (vda5)
+        s.reclaim_remove_device("vda5")
+        s.reclaim_check_action_present("vda5", "delete", True)
+
+        # Add a pixel test for the reclaim space dialog
+        b.assert_pixels(
+            "#reclaim-space-modal",
+            "reclaim-space-modal-logical-btrfs-layout",
+            ignore=["#reclaim-space-modal-hint"],
+        )
+
+        s.reclaim_modal_submit()
+
+        # Verify that the selected partitions are marked for deletion on the review screen
+        i.reach(i.steps.REVIEW)
+        for device in ["vda5", "vda4"]:
+            r.check_disk_row("vda", parent=device, action="delete")
+
+
 @nondestructive
 class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
 

@@ -147,44 +147,125 @@ class StorageUtils(StorageDestination):
         self.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
-    def partition_disk(self, disk, partitions_params):
-        command = f"sgdisk --zap-all {disk}"
+    def partition_disk(self, disk, partitions_params, is_efi=False):
+        if is_efi:
+            # EFI: Use sfdisk and set MBR
+            command = f"wipefs -a {disk}"
+            command += f"\necho 'label: dos' | sfdisk {disk}"
 
-        for i, params in enumerate(partitions_params):
-            sgdisk = ["sgdisk", f"--new=0:0{':+' + params[0] if params[0] != '' else ':0'}"]
+            partition_commands = []
 
-            if params[1] == "biosboot":
-                sgdisk.append("--typecode=0:ef02")
-            if params[1] == "efi":
-                sgdisk.append("--typecode=0:ef00")
+            for params in partitions_params:
+                size = params[0]
+                fstype = params[1]
 
-            sgdisk.append(disk)
+                # Prepare the size string
+                size_str = f"size={size}" if size else ""
 
-            command += f"\n{' '.join(sgdisk)}"
+                # Determine the type code
+                type_code = {
+                    "efi": "ef",
+                    "swap": "82",
+                    "lvmpv": "8e",
+                    "ext4": "83",
+                    "btrfs": "83",
+                    "logical": "83",
+                    "extended": "extended"
+                }.get(fstype, "83")
 
-            if params[1] not in ("biosboot", None):
-                if params[1] == "lvmpv":
-                    mkfs = ["pvcreate"]
+                # Build the sfdisk line without redundant commas
+                partition_line_elements = []
+                if size_str:
+                    partition_line_elements.append(size_str)
+                if type_code:
+                    partition_line_elements.append(f"type={type_code}")
+                partition_line = ', '.join(partition_line_elements)
+                partition_commands.append(partition_line)
+
+            # Prepare the sfdisk script
+            sfdisk_script = '\n'.join(partition_commands)
+            command += f"\necho -e '{sfdisk_script}' | sfdisk {disk}"
+
+            # Format the partitions
+            partition_number = 1
+            logical_partition_number = 5  # Logical partitions start from 5
+
+            for params in partitions_params:
+                fstype = params[1]
+
+                # Skip formatting for extended partitions
+                if fstype == "extended":
+                    continue
+
+                # Determine the partition number (logical or primary)
+                if fstype == "logical":
+                    device_number = logical_partition_number
+                    logical_partition_number += 1
                 else:
-                    if params[1] == "efi":
-                        fs = "vfat"
+                    device_number = partition_number
+                    partition_number += 1
+
+                # Construct the device name
+                if "nvme" in disk:
+                    device = f"{disk}p{device_number}"
+                else:
+                    device = f"{disk}{device_number}"
+
+                # Format the partition
+                if fstype == "swap":
+                    mkfs = f"mkswap {device}"
+                elif fstype == "lvmpv":
+                    mkfs = f"pvcreate {device}"
+                elif fstype == "efi":
+                    mkfs = f"mkfs.vfat {device}"
+                elif fstype == "logical":
+                    mkfs = f"mkfs.btrfs {device}"
+                else:
+                    fs = fstype
+                    mkfs = f"mkfs.{fs} {device}"
+
+                command += f"\n{mkfs}"
+
+        else:
+            # Non-EFI: Use sgdisk and set GPT
+            command = f"sgdisk --zap-all {disk}"
+
+            for i, params in enumerate(partitions_params):
+                sgdisk = ["sgdisk", f"--new=0:0{':+' + params[0] if params[0] != '' else ':0'}"]
+
+                if params[1] == "biosboot":
+                    sgdisk.append("--typecode=0:ef02")
+                if params[1] == "efi":
+                    sgdisk.append("--typecode=0:ef00")
+
+                sgdisk.append(disk)
+
+                command += f"\n{' '.join(sgdisk)}"
+
+                if params[1] not in ("biosboot", None):
+                    if params[1] == "lvmpv":
+                        mkfs = ["pvcreate"]
                     else:
-                        fs = params[1]
-                    mkfs = [f"mkfs.{fs}"]
+                        if params[1] == "efi":
+                            fs = "vfat"
+                        else:
+                            fs = params[1]
+                        mkfs = [f"mkfs.{fs}"]
 
-                # force flag
-                if params[1] in ["xfs", "btrfs", "lvmpv"]:
-                    mkfs.append("-f")
-                elif params[1] in ["ext4", "etx3", "ext2", "ntfs"]:
-                    mkfs.append("-F")
+                    # force flag
+                    if params[1] in ["xfs", "btrfs", "lvmpv"]:
+                        mkfs.append("-f")
+                    elif params[1] in ["ext4", "etx3", "ext2", "ntfs"]:
+                        mkfs.append("-F")
 
-                # additional mkfs flags
-                if len(params) > 2:
-                    mkfs += params[2:]
+                    # additional mkfs flags
+                    if len(params) > 2:
+                        mkfs += params[2:]
 
-                mkfs.append(f"{disk}{i + 1}")
-                command += f"\n{' '.join(mkfs)}"
+                    mkfs.append(f"{disk}{i + 1}")
+                    command += f"\n{' '.join(mkfs)}"
 
+        # Execute the commands
         self.machine.execute(command)
 
     def udevadm_settle(self):
