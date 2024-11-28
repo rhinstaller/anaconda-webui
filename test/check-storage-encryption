@@ -145,6 +145,13 @@ class TestStorageEncryption(VirtInstallMachineCase, StorageHelpers):
         p.check_password("abcdefgh")
         p.check_password_confirm("abcdefgh")
 
+        # Verify that the password is saved when moving backward and forward
+        i.back()
+        i.next()
+        s.check_encryption_selected(encrypt)
+        p.check_password("abcdefgh")
+        p.check_password_confirm("abcdefgh")
+
 
 if __name__ == '__main__':
     test_main()
