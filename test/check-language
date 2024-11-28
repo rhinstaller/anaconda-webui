@@ -101,13 +101,13 @@ class TestLanguage(VirtInstallMachineCase):
         # Check that the language menu shows all menu entries when clicking the toggle button
         l.locale_option_visible('en_US')
         l.locale_option_visible('de_DE')
-        l.locale_option_visible('cs_CZ')
+        l.locale_option_visible('cs_CZ', is_common=False)
 
         # Check filtering on English names
         l.input_locale_search('cze')
         l.locale_option_visible('en_US', False)
         l.locale_option_visible('de_DE', False)
-        l.locale_option_visible('cs_CZ')
+        l.locale_option_visible('cs_CZ', is_common=False)
 
         # Check filtering on native names
         l.input_locale_search('Deutsch')
@@ -139,7 +139,7 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Expect language direction to be set to RTL for selected languages
         l.select_locale("he_IL", False)
-        l.check_selected_locale("he_IL")
+        l.check_selected_locale("he_IL", is_common=False)
         b.wait_attr("html", "dir", "rtl")
 
         # Expect language direction to be set to LTR when switching to EN_US from RTL language
