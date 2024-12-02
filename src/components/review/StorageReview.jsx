@@ -77,7 +77,7 @@ const DeviceRow = ({ disk }) => {
 
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
-    const reuseHomeRequest = requests.find(request => request["reused-mount-points"]);
+    const reusedMountPoints = requests.find(request => request["reused-mount-points"])?.["reused-mount-points"];
 
     if (!deviceData) {
         return null;
@@ -87,6 +87,7 @@ const DeviceRow = ({ disk }) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         let format = devices[device].formatData.type.v;
+        const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount)) || request?.reformat;
 
         // If the format is btrfs, we want to show the type of the device (aka btrfs subvolume)
         if (format === "btrfs") {
@@ -94,9 +95,7 @@ const DeviceRow = ({ disk }) => {
         }
 
         let action = null;
-        if (reuseHomeRequest?.["reused-mount-points"].includes(mount)) {
-            action = _("mount");
-        } else if ((request === undefined || request.reformat) && format) {
+        if (isReformattedMountPoint && format) {
             action = cockpit.format(_("format as $0"), format);
         } else if (format === "biosboot") {
             action = format;
@@ -121,7 +120,7 @@ const DeviceRow = ({ disk }) => {
                     { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 20 },
                     { title: size, width: 20 },
                     { title: action, width: 20 },
-                    { title: hasEncryptedAncestor(devices, device) ? (!request || request.reformat ? _("encrypt") : _("encrypted")) : "", width: 20 },
+                    { title: hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "", width: 20 },
                     { title: mount, with: 20 },
                 ],
                 props: { key: device },

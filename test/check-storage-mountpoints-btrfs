@@ -177,11 +177,12 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase, StorageCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
-        s.select_mountpoint([(dev, True)], encrypted=True)
 
         # Unlock the LUKS device
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["vda3"], ["vda3"])
+
+        s.select_mountpoint([(dev, True)])
 
         # Select the mountpoints
         s.select_mountpoint_row_device(1, "root")

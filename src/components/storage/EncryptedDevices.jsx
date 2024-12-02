@@ -21,8 +21,8 @@ import React, { useState } from "react";
 import {
     ActionList,
     ActionListItem,
+    Alert,
     Button,
-    Divider,
     Flex,
     FlexItem,
     Form,
@@ -30,18 +30,17 @@ import {
     InputGroup,
     InputGroupItem,
     Modal,
-    Stack,
-    StackItem, TextInput,
+    TextInput,
 } from "@patternfly/react-core";
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 
 import {
+    findExistingSystems,
     unlockDevice,
 } from "../../apis/storage_devicetree.js";
 
 import { getDevicesAction } from "../../actions/storage-actions.js";
 
-import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { FormHelper } from "cockpit-components-form-helper.jsx";
 import { InlineNotification } from "cockpit-components-inline-notification.jsx";
 
@@ -60,37 +59,26 @@ const LuksDevices = ({ id, lockedLUKSDevices }) => {
     );
 };
 
-export const EncryptedDevices = ({ dispatch, idPrefix, lockedLUKSDevices, setSkipUnlock }) => {
+export const EncryptedDevices = ({ dispatch, idPrefix, lockedLUKSDevices }) => {
     const [showUnlockDialog, setShowUnlockDialog] = useState(false);
     return (
         <>
-            <Divider />
-            <EmptyStatePanel
-              title={_("Encrypted devices are locked")}
-              paragraph={
-                  <Stack hasGutter className={idPrefix + "-empty-state-body"}>
-                      <StackItem>{_("Devices should be unlocked before assigning mount points.")}</StackItem>
-                      <StackItem>
-                          <LuksDevices lockedLUKSDevices={lockedLUKSDevices} />
-                      </StackItem>
-                  </Stack>
-              }
-              secondary={
+            <Alert
+              isInline
+              title={_("Destination is encrypted")}
+              variant="warning"
+              actionLinks={
                   <ActionList>
                       <ActionListItem>
                           <Button id={idPrefix + "-unlock-devices-btn"} variant="primary" onClick={() => setShowUnlockDialog(true)}>
-                              {_("Unlock devices")}
-                          </Button>
-                      </ActionListItem>
-                      <ActionListItem>
-                          <Button variant="secondary" onClick={() => setSkipUnlock(true)}>
-                              {_("Skip")}
+                              {_("Unlock")}
                           </Button>
                       </ActionListItem>
                   </ActionList>
               }
-            />
-            <Divider />
+            >
+                {_("Unlock LUKS-encrypted partitions to keep existing data and show more installation methods.")}
+            </Alert>
             {showUnlockDialog &&
             <UnlockDialog
               dispatch={dispatch}
@@ -118,7 +106,14 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
             res => {
                 if (res.every(r => r.status === "fulfilled")) {
                     if (res.every(r => r.value)) {
-                        onClose();
+                        // Refresh the list of existing systems after unlocking the devices
+                        findExistingSystems({
+                            onFail: exc => setDialogWarning(exc.message),
+                            onSuccess: () => {
+                                onClose();
+                                dispatch(getDevicesAction());
+                            },
+                        });
                     } else {
                         const unlockedDevs = res.reduce((acc, r, i) => {
                             if (r.value) {

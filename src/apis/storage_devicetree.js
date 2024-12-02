@@ -16,7 +16,10 @@
  */
 import { _callClient } from "./helpers.js";
 
-import { StorageClient } from "./storage.js";
+import {
+    runStorageTask,
+    StorageClient,
+} from "./storage.js";
 
 const INTERFACE_NAME_VIEWER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Viewer";
 const INTERFACE_NAME_HANDLER = "org.fedoraproject.Anaconda.Modules.Storage.DeviceTree.Handler";
@@ -136,4 +139,17 @@ export const getActions = () => {
  */
 export const getMountPoints = () => {
     return new DeviceTree().callViewer("GetMountPoints", []);
+};
+
+export const findExistingSystems = async ({ onFail, onSuccess }) => {
+    const tasks = await new StorageClient().client.call(
+        OBJECT_PATH,
+        INTERFACE_NAME_HANDLER,
+        "FindExistingSystemsWithTask", []
+    );
+    return runStorageTask({
+        onFail,
+        onSuccess,
+        task: tasks[0],
+    });
 };

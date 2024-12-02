@@ -256,18 +256,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.rescan_disks()
 
-        s.select_mountpoint([(dev1, True)], encrypted=True)
-
         s.unlock_all_encrypted()
         s.unlock_device("1234", ["vda2", "vda3", "vda4"], [])
         b.click("#unlock-device-dialog-close-btn")
-
-        # The 'Skip' button closes the dialog
-        s.unlock_all_encrypted_skip()
-        b.wait_not_present("button:contains(Unlock)")
-
-        i.back()
-        i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
 
         s.unlock_all_encrypted()
         s.unlock_device("einszwei", ["vda2", "vda3", "vda4"], ["vda2"])
@@ -277,6 +268,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # The 'Unlock' dialog closes when all LUKS devices are unlocked
         s.unlock_device("einszweidreivier", ["vda4"], ["vda4"])
+
+        s.select_mountpoint([(dev1, True)])
         b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
         self._testEncryptedUnlock(b, m)
