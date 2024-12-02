@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, test_plan
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -123,76 +123,6 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase, StorageCase):
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB",  True, "xfs", True)
-
-class TestFedoraPlansMountPointsRAID(VirtInstallMachineCase, StorageCase):
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_mount_point_assignment_raid")
-    def testLVMOnRAID(self):
-        """
-        Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
-        - Partition 1: biosboot (1M)
-        - Partition 2: RAID1 for /boot (xfs)
-        - Partition 3: RAID1 for LVM (ext4 for /).
-        """
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        s = Storage(b, m)
-
-        self.add_disk(15)
-
-        disk1 = "/dev/vda"
-        disk2 = "/dev/vdb"
-        dev1 = disk1.split("/")[-1]
-        dev2 = disk2.split("/")[-1]
-        raid_name = "raid1"
-
-        s.partition_disk(disk1, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
-        s.partition_disk(disk2, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
-
-        m.execute(f"""
-        set -ex
-
-        # RAID1 on partition level for /boot and /
-        mdadm --create --run {raid_name}-boot --level=raid1 --raid-devices=2 {disk1}2 {disk2}2
-        mdadm --create --run {raid_name}-root --level=raid1 --raid-devices=2 {disk1}3 {disk2}3
-
-        # Plain ext4 for /boot
-        mkfs.xfs /dev/md/{raid_name}-boot
-
-        # LVM for /
-        pvcreate /dev/md/{raid_name}-root
-        vgcreate vol-group /dev/md/{raid_name}-root
-        lvcreate -n root -L 1G vol-group
-        mkfs.ext4 -F /dev/vol-group/root
-
-        """)
-        s.udevadm_settle()
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
-
-        s.select_mountpoint([(dev1, True), (dev2, True)])
-        s.select_mountpoint_row_device(1, "vol-group-root")
-        s.select_mountpoint_row_device(2, raid_name + "-boot")
-
-        i.reach(i.steps.REVIEW)
-        self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
-
-        lsblk = s.get_lsblk_json()
-        block_devs = lsblk["blockdevices"]
-
-        for disk in ["vda", "vdb"]:
-            disk_data = next(dev for dev in block_devs if dev["name"] == disk)
-
-            disk_part_2 = next(part for part in disk_data["children"] if part["name"] == f"{disk}2")
-            md_part_2 = next(part for part in disk_part_2["children"] if part["type"] == "raid1")
-            self.assertEqual(md_part_2["mountpoints"], ["/boot"])
-
-            disk_part_3 = next(part for part in disk_data["children"] if part["name"] == f"{disk}3")
-            md_part_3 = next(part for part in disk_part_3["children"] if part["type"] == "raid1")
-            vol_group = next(part for part in md_part_3["children"] if part["type"] == "lvm")
-            self.assertEqual(vol_group["mountpoints"], ["/"])
 
 
 if __name__ == '__main__':

@@ -1,0 +1,174 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import os
+
+from anacondalib import VirtInstallMachineCase, test_plan
+from installer import Installer
+from password import Password
+from progress import Progress
+from review import Review
+from storage import Storage
+from storagelib import StorageHelpers  # pylint: disable=import-error
+from testlib import test_main  # pylint: disable=import-error
+from utils import get_pretty_name
+
+TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
+
+
+class TestStorageEraseAll_E2E(VirtInstallMachineCase, StorageHelpers):
+    """
+    Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
+
+    These tests are based on the Fedora QA test plans for installation.
+
+    All tests below are destructive as they complete the installation process.
+    """
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_encrypted")
+    def testGuidedEncrypted(self):
+        b = self.browser
+        i = Installer(b, self.machine)
+        r = Review(b, self.machine)
+        s = Storage(b, self.machine)
+        p = Password(b, s.encryption_id_prefix)
+        pro = Progress(b)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Check the default mode
+        s.check_partitioning_selected("erase-all")
+
+        i.next()
+        # Disk Encryption
+        s.set_encryption_selected(True)
+        strong_password = "Rwce82ybF7dXtCzFumanchu!!!!!!!!"
+        p.set_password(strong_password)
+        p.set_password_confirm(strong_password)
+
+        # Reboot and check installed system
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
+        pro.wait_done()
+        s.unlock_storage_on_boot(strong_password)
+        self.handleReboot()
+        s.check_post_install_encryption_enabled()
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_luks = next(part for part in vda3["children"] if part["type"] == "crypt")
+        vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_select")
+    def testGuidedMultiSelect(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+        p = Progress(b)
+
+        self.add_disk(15, os.path.join(BOTS_DIR, "./images/debian-stable"))
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.check_disk_selected("vda", True)
+        s.check_disk_selected("vdb", False)
+
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "14G")
+
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vdb_mountpoints = [part["mountpoints"][0] for part in vdb["children"]]
+        self.assertEqual(vdb_mountpoints, [None] * len(vdb_mountpoints))
+
+        m.reboot()
+        self.selectBootMenuEntry(2)
+        # FIXME: Debian will not boot unless we remove the vda disk
+        # pretty_name = get_pretty_name(m)
+        # self.assertIn("Debian GNU/Linux", pretty_name)
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_empty_all")
+    def testGuidedMultiEmptyAll(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, self.machine)
+        r = Review(b, m)
+        s = Storage(b, self.machine)
+        p = Progress(b)
+
+        self.add_disk(15)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks(["vda", "vdb"])
+
+        s.check_disk_selected("vda", True)
+        s.select_disks([("vdb", True), ("vda", True)])
+
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+        i.begin_installation(needs_confirmation=False)
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vdb1 = next(part for part in vdb["children"] if part["name"] == "vdb1")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        vdb1_root = next(part for part in vdb1["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], "15G")
+        self.assertEqual(vdb1_root["size"], "15G")
+
+
+if __name__ == '__main__':
+    test_main()

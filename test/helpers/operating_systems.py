@@ -13,7 +13,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from storage import Storage
+from anacondalib import VirtInstallMachineCase
+from storage import Storage, StorageUtils
+from utils import get_pretty_name
 
 
  # ruff: noqa: E501
@@ -42,3 +44,48 @@ sector-size: 512
 
         self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
         s.dbus_scan_devices()
+
+
+class DualBootHelper_E2E(VirtInstallMachineCase):
+    def verifyDualBootDebian(self, root_one_size=None, root_two_size=None):
+        b = self.browser
+        m = self.machine
+        s = StorageUtils(b, m)
+
+        # Expect the new OS is the default grub entry
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+        # Check that the expected partition layout is created on the selected device
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+
+        vda2 = next(part for part in vda["children"] if part["name"] == "vda2")
+        self.assertEqual(vda2["mountpoints"], ["/boot"])
+
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
+        self.assertEqual(vda3_root["size"], str(root_one_size) + "G")
+
+        # Select second OS grub entry
+        self.selectBootMenuEntry(2)
+        m.reboot()
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Debian GNU/Linux", pretty_name)
+
+        # Check that the pre-existing partitions are still present
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+
+        vda1 = next(part for part in vda["children"] if part["name"] == "vda1")
+        self.assertEqual(vda1["mountpoints"], ["/"])
+        self.assertEqual(vda1["size"], str(root_two_size) + "G")
+
+        vda15 = next(part for part in vda["children"] if part["name"] == "vda15")
+        # TODO: add explanation why the /efi mountpoint is present when legacy boot is used
+        if self.efi:
+            self.assertEqual(vda15["mountpoints"], ["/boot/efi"])
+        else:
+            self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
