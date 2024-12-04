@@ -25,6 +25,10 @@ from step_logger import log_step
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization"
 
+BOSS_SERVICE = "org.fedoraproject.Anaconda.Boss"
+BOSS_INTERFACE = BOSS_SERVICE
+BOSS_OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss"
+
 
 class Language():
     def __init__(self, browser, machine):
@@ -72,3 +76,10 @@ class Language():
             {LOCALIZATION_OBJECT_PATH} \
             org.freedesktop.DBus.Properties.Get \
             string:"{LOCALIZATION_INTERFACE}" string:"Language"')
+
+    def dbus_set_locale(self, value):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {BOSS_SERVICE} \
+            {BOSS_OBJECT_PATH} \
+            {BOSS_INTERFACE} SetLocale s "{value}"')
