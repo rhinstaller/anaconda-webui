@@ -39,6 +39,9 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 
 
 class VirtInstallMachineCase(MachineCase):
+    # The boot modes in which the test should run
+    boot_modes = ["bios"]
+    # The boot mode of the current machine
     efi = False
     disk_image = ""
     disk_size = 15
@@ -65,6 +68,11 @@ class VirtInstallMachineCase(MachineCase):
         cls.ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
     def setUp(self):
+        if self.efi and "efi" not in self.boot_modes:
+            self.skipTest("Skipping for EFI boot mode")
+        elif not self.efi and "bios" not in self.boot_modes:
+            self.skipTest("Skipping for BIOS boot mode")
+
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
             self.addCleanup(self.resetUsers)
@@ -237,4 +245,19 @@ class VirtInstallMachineCase(MachineCase):
 def test_plan(_url):
     def decorator(func):
         return func
+    return decorator
+
+def run_boot(*modes):
+    """
+    Decorator to run tests only on specific boot modes ('bios', 'efi').
+    The classes have self.efi = True/False set.
+    We need to skip the test if self.efi is True but 'efi' is not in the modes list.
+
+    The absence of the decorator is equivalent to run_boot("bios").
+
+    :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
+    """
+    def decorator(cls):
+        cls.boot_modes = modes
+        return cls
     return decorator
