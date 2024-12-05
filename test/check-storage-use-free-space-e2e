@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, test_plan
+from installer import Installer
+from operating_systems import DualBootHelper_E2E
+from review import Review
+from storage import Storage
+from testlib import test_main  # pylint: disable=import-error
+
+
+class BaseTestUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
+    """
+    Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
+
+    These tests are based on the Fedora QA test plans for installation.
+
+    All tests below are destructive as they complete the installation process.
+    """
+
+    disk_image = "debian-stable"
+    disk_size = 20
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_free_space")
+    def testScenarioUseFreeSpace(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_partitioning("use-free-space")
+        i.next()
+        s.check_encryption_selected(False)
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+
+        self.install(needs_confirmation=False)
+        self.verifyDualBootDebian(root_one_size=9, root_two_size=9.9)
+
+class TestUseFreeSpaceBIOS_E2E(BaseTestUseFreeSpace_E2E):
+    efi = False
+
+class TestUseFreeSpaceUEFI_E2E(BaseTestUseFreeSpace_E2E):
+    efi = True
+
+
+if __name__ == '__main__':
+    test_main()

@@ -261,3 +261,30 @@ Cockpit's CI
 WebUI tests when running in CI they use Cockpit's infrastructure.
 For information on the internals of Cockpit's CI see
 `cockpituous documentation <https://github.com/cockpit-project/cockpituous/tree/main/tasks#readme>`_.
+
+Test Naming Conventions
+-----------------------
+
+The following points outline the naming conventions for the test classes / method in our test suite.
+
+#. End the class names for end-to-end tests with the suffix ``_E2E``.
+
+   Example: ``TestStorageUseFreeSpace_E2E``
+
+#. Classes related to EFI or BIOS testing should include ``EFI`` or ``BIOS``
+   in their name  to clearly indicate the platform type.
+
+   Example:
+
+   * Test for EFI-based installation: ``TestStorageReclaimEFI_E2E``
+   * Test for BIOS-based installation: ``TestStorageReclaimBIOS_E2E``
+
+#. Test class names should follow the camel case version of the corresponding test file name.
+
+   Example:
+
+   * Test file: ``check-storage-use-free-space-e2e``
+   * Test class name: ``TestStorageUseFreeSpace_E2E``
+
+#. Base test classes, from which EFI and BIOS-specific test cases will derive,
+   should use the naming convention: ``BaseTest${NameOfTheFileCamel}``.

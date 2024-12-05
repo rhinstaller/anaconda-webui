@@ -471,7 +471,7 @@ class StorageReclaimDialog():
                 "#reclaim-space-modal-table "
                 f"tr:contains('{device}') "
                 f"button[aria-label='{action}']"
-                f"{disabled and ':disabled' or ':not(:disabled)'}"
+                f"{':disabled' if disabled else ':not(:disabled)'}"
             )
         else:
             self.browser.wait_not_present(

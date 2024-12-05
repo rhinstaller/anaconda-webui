@@ -28,7 +28,7 @@ from testlib import (
 
 
 @nondestructive
-class TestReclaim(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimSpace(VirtInstallMachineCase, StorageCase):
     def setup_partitions(self, s, i):
         disk = "/dev/vda"
         btrfsname = "btrfstest"
@@ -278,7 +278,7 @@ class TestReclaim(VirtInstallMachineCase, StorageCase):
 
 
 @nondestructive
-class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase, StorageCase):
 
     def testReclaimExt4onLUKS(self):
         # Shrinking LUKS partitions is not yet supported
@@ -319,7 +319,7 @@ class TestReclaimLUKS(VirtInstallMachineCase, StorageCase):
 
 
 @nondestructive
-class TestReclaimExistingSystemFedora(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
 
     def testDeletePartition(self):
@@ -350,7 +350,7 @@ class TestReclaimExistingSystemFedora(VirtInstallMachineCase, StorageCase):
 
 
 @nondestructive
-class TestReclaimExistingSystemWindows(VirtInstallMachineCase):
+class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
     disk_size = 20
 
     def setUp(self):
@@ -374,6 +374,32 @@ class TestReclaimExistingSystemWindows(VirtInstallMachineCase):
             "reclaim-space-modal-windows",
             ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
+
+
+class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
+    disk_image = "ubuntu-stable"
+
+    @nondestructive
+    def testReclaimSpaceShrink(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_partitioning("use-free-space")
+        s.reclaim_set_checkbox(True)
+        i.next(True)
+
+        s.reclaim_shrink_device("vda1", "7", rowIndex=3)
+        s.reclaim_modal_submit()
+
+        i.reach(i.steps.REVIEW)
+        # Don't specify the exact original size as this might change with image refreshes
+        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from")
+        r.check_resized_system("Ubuntu", ["vda1"])
 
 
 if __name__ == '__main__':

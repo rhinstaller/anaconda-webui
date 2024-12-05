@@ -1,0 +1,107 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2024 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import os
+
+from anacondalib import VirtInstallMachineCase, test_plan
+from installer import Installer
+from progress import Progress
+from storage import Storage
+from storagelib import StorageCase  # pylint: disable=import-error
+from testlib import test_main  # pylint: disable=import-error
+from utils import pretend_default_scheme
+
+TEST_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.dirname(TEST_DIR)
+BOTS_DIR = f'{ROOT_DIR}/bots'
+
+
+class TestStorageHomeReuse_E2E(VirtInstallMachineCase, StorageCase):
+    disk_image = "fedora-rawhide"
+    efi = False
+
+    def install(self, needs_confirmation):
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        p = Progress(b)
+
+        i.begin_installation(button_text="Reinstall Fedora", needs_confirmation=needs_confirmation)
+        with b.wait_timeout(300):
+            p.wait_done()
+
+        self.handleReboot()
+
+    def verifyHomeReuse(self, root_file, home_file):
+        # root_file shouldn't exist, home_file should exist
+        m = self.machine
+
+        home_preserved = m.execute(f"if [ -e /home/{home_file} ] ; then echo pass ; fi")
+        assert home_preserved
+        root_formatted = m.execute(f"if [ ! -e /{root_file} ] ; then echo pass ; fi")
+        assert root_formatted
+
+    def verifyHomeMountOpts(self, opts):
+        m = self.machine
+
+        opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
+        assert opts_found == opts
+
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_custom_btrfs_preserve_home")
+    def testBasic(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
+
+        disk = "/dev/vda"
+
+        old_root_file = "old_root_file"
+        old_home_file = "old_home_file"
+
+        home_mount_options = m.execute(f"""
+        # Mark existing root by a file
+        mkdir /m
+        mount -o subvol=root,compress=zstd:1 {disk}4 /m
+        grep /home /m/etc/fstab | tr -s ' ' | cut -d ' ' -f 4
+        touch /m/{old_root_file}
+        umount /m
+        # Mark existing home by a file
+        mount -o subvol=home,compress=zstd:1 {disk}4 /m
+        touch /m/{old_home_file}
+        umount /m
+        rmdir /m
+        """)
+        s.udevadm_settle()
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        self.install(needs_confirmation=True)
+        self.verifyHomeReuse(old_root_file, old_home_file)
+        self.verifyHomeMountOpts(home_mount_options)
+
+
+if __name__ == '__main__':
+    test_main()

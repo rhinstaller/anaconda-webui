@@ -17,9 +17,8 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, test_plan
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
-from progress import Progress
 from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
@@ -32,7 +31,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 @nondestructive
-class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
+class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
     efi = False
 
@@ -197,7 +196,7 @@ class TestHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
 
 
-class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
+class TestStorageHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
     efi = True
 
@@ -229,77 +228,6 @@ class TestHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
-class TestFedoraPlansHomeReuseReboot(VirtInstallMachineCase, StorageCase):
-    disk_image = "fedora-rawhide"
-    efi = False
-
-    def install(self, needs_confirmation):
-        b = self.browser
-        m = self.machine
-
-        i = Installer(b, m)
-        p = Progress(b)
-
-        i.begin_installation(button_text="Reinstall Fedora", needs_confirmation=needs_confirmation)
-        with b.wait_timeout(300):
-            p.wait_done()
-
-        self.handleReboot()
-
-    def verifyHomeReuse(self, root_file, home_file):
-        # root_file shouldn't exist, home_file should exist
-        m = self.machine
-
-        home_preserved = m.execute(f"if [ -e /home/{home_file} ] ; then echo pass ; fi")
-        assert home_preserved
-        root_formatted = m.execute(f"if [ ! -e /{root_file} ] ; then echo pass ; fi")
-        assert root_formatted
-
-    def verifyHomeMountOpts(self, opts):
-        m = self.machine
-
-        opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
-        assert opts_found == opts
-
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_custom_btrfs_preserve_home")
-    def testBasic(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-
-        pretend_default_scheme(self, "BTRFS")
-
-        disk = "/dev/vda"
-
-        old_root_file = "old_root_file"
-        old_home_file = "old_home_file"
-
-        home_mount_options = m.execute(f"""
-        # Mark existing root by a file
-        mkdir /m
-        mount -o subvol=root,compress=zstd:1 {disk}4 /m
-        grep /home /m/etc/fstab | tr -s ' ' | cut -d ' ' -f 4
-        touch /m/{old_root_file}
-        umount /m
-        # Mark existing home by a file
-        mount -o subvol=home,compress=zstd:1 {disk}4 /m
-        touch /m/{old_home_file}
-        umount /m
-        rmdir /m
-        """)
-        s.udevadm_settle()
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
-
-        s.set_partitioning("home-reuse")
-        i.reach(i.steps.REVIEW)
-
-        self.install(needs_confirmation=True)
-        self.verifyHomeReuse(old_root_file, old_home_file)
-        self.verifyHomeMountOpts(home_mount_options)
 
 if __name__ == '__main__':
     test_main()
