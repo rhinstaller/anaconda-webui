@@ -41,10 +41,9 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["bios"]
-    # The boot mode of the current machine
-    efi = False
     disk_image = ""
     disk_size = 15
+    efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     MachineCase.machine_class = VirtInstallMachine
 
     @property
@@ -64,11 +63,13 @@ class VirtInstallMachineCase(MachineCase):
 
     @classmethod
     def setUpClass(cls):
-        VirtInstallMachine.efi = cls.efi
         cls.ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
     def setUp(self):
-        if self.efi and "efi" not in self.boot_modes:
+        method = getattr(self, self._testMethodName)
+        boot_modes = getattr(method, "boot_modes", [])
+
+        if self.efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
         elif not self.efi and "bios" not in self.boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
@@ -257,7 +258,7 @@ def run_boot(*modes):
 
     :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
     """
-    def decorator(cls):
-        cls.boot_modes = modes
-        return cls
+    def decorator(func):
+        func.boot_modes = list(modes)
+        return func
     return decorator

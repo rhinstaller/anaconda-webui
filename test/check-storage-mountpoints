@@ -29,7 +29,8 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-class BaseTestStorageMountPoints(VirtInstallMachineCase, StorageCase):
+@nondestructive
+class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @run_boot("bios", "efi")
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
@@ -454,16 +455,6 @@ class BaseTestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # unformatted and unmountable devices should not be available
         s.check_mountpoint_row_device_available(1, f"{dev}3", False)
         s.check_mountpoint_row_device_available(1, f"{dev}4", False)
-
-
-@nondestructive
-class TestStorageMountPointsBIOS(BaseTestStorageMountPoints):
-    efi = False
-
-
-@nondestructive
-class TestStorageMountPointsEFI(BaseTestStorageMountPoints):
-    efi = True
 
 
 if __name__ == '__main__':

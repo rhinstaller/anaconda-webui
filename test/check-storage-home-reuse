@@ -31,7 +31,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 @nondestructive
-class BaseTestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
+class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
 
     @run_boot("bios", "efi")
@@ -199,15 +199,6 @@ class BaseTestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
-
-
-class TestStorageHomeReuseFedoraBIOS(BaseTestStorageHomeReuseFedora):
-    disk_image = "fedora-rawhide"
-    efi = False
-
-class TestStorageHomeReuseFedoraEFI(BaseTestStorageHomeReuseFedora):
-    disk_image = "fedora-rawhide"
-    efi = True
 
 
 if __name__ == '__main__':

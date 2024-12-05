@@ -23,7 +23,7 @@ from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 
 
-class BaseTestUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
+class TestUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
     """
     Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
 
@@ -54,12 +54,6 @@ class BaseTestUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
         self.install(needs_confirmation=False)
         self.verifyDualBootDebian(root_one_size=9, root_two_size=9.9)
-
-class TestUseFreeSpaceBIOS_E2E(BaseTestUseFreeSpace_E2E):
-    efi = False
-
-class TestUseFreeSpaceUEFI_E2E(BaseTestUseFreeSpace_E2E):
-    efi = True
 
 
 if __name__ == '__main__':

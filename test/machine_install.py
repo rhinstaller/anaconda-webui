@@ -43,7 +43,7 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
 
 class VirtInstallMachine(VirtMachine):
-    efi = False
+    efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     http_payload_server = None
 
     def _execute(self, cmd):
@@ -214,7 +214,3 @@ class VirtInstallMachine(VirtMachine):
 
     def get_volume_id(self, iso_path):
         return subprocess.check_output(fr"isoinfo -d -i {iso_path} |  grep -oP 'Volume id: \K.*'", shell=True).decode(sys.stdout.encoding).strip()
-
-
-class VirtInstallEFIMachine(VirtInstallMachine):
-    efi = True

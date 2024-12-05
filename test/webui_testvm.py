@@ -16,10 +16,11 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
+import os
 import signal
 import subprocess
 
-from machine_install import VirtInstallEFIMachine, VirtInstallMachine
+from machine_install import VirtInstallMachine
 
 
 def cmd_cli():
@@ -31,9 +32,8 @@ def cmd_cli():
     args = parser.parse_args()
 
     if args.efi:
-        machine = VirtInstallEFIMachine(image=args.image)
-    else:
-        machine = VirtInstallMachine(image=args.image)
+        os.environ["TEST_FIRMWARE"] = "efi"
+    machine = VirtInstallMachine(image=args.image)
     try:
         machine.start()
 

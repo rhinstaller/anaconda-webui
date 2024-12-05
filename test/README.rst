@@ -210,9 +210,17 @@ You can set these environment variables to configure the test suite::
     TEST_OS    The OS to run the tests in.  Currently supported values:
                   "fedora-rawhide-boot"
 
-    TEST_SCENARIO There are two supported non-default scenarios:
+    TEST_SCENARIO These are the supported scenarios:
                      `cockpit-pr-N`: to install the cockpit packages from its pull request #N
                      `anaconda-pr-N`: to install the anaconda packages from its pull request #N
+                     `expensive`: to run the tests that are destructive and therefore expensive to run
+                     `other`: to run the tests that are not covered by the other scenarios
+                     `efi`: to run the tests that are specific to EFI boot`
+
+                  The `efi` scenario can be used in combination with other scenarios.
+                  For example, `TEST_SCENARIO=expensive/efi` will run the expensive tests that are
+                  specific to EFI boot.
+
                   The packages are installed from the automatic packit COPR.
 
     TEST_BROWSER  What browser should be used for testing. Currently supported values:
@@ -225,6 +233,11 @@ You can set these environment variables to configure the test suite::
 
     TEST_AUDIT_NO_SELINUX  Ignore unexpected journal messages related to selinux audit.
                            Can be useful when running tests locally.
+
+    TEST_FIRMWARE  The firmware to run the tests against. Currently supported values:
+                     "bios"
+                     "efi"
+                  "bios" is the default.
 
 Debugging tests
 ---------------
@@ -271,14 +284,6 @@ The following points outline the naming conventions for the test classes / metho
 
    Example: ``TestStorageUseFreeSpace_E2E``
 
-#. Classes related to EFI or BIOS testing should include ``EFI`` or ``BIOS``
-   in their name  to clearly indicate the platform type.
-
-   Example:
-
-   * Test for EFI-based installation: ``TestStorageReclaimEFI_E2E``
-   * Test for BIOS-based installation: ``TestStorageReclaimBIOS_E2E``
-
 #. Test class names should follow the camel case version of the corresponding test file name.
 
    Example:
@@ -286,5 +291,10 @@ The following points outline the naming conventions for the test classes / metho
    * Test file: ``check-storage-use-free-space-e2e``
    * Test class name: ``TestStorageUseFreeSpace_E2E``
 
-#. Base test classes, from which EFI and BIOS-specific test cases will derive,
-   should use the naming convention: ``BaseTest${NameOfTheFileCamel}``.
+#. Test cases related to EFI or BIOS testing should be decorated with ``run_boot``
+   decorator to indicate the firmware they should be tested against.
+
+   Example::
+
+    @run_boot("bios", "efi")
+    def testBasic(self):
