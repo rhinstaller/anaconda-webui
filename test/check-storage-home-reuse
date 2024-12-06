@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -33,8 +33,8 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 @nondestructive
 class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
-    efi = False
 
+    @run_boot("bios", "efi")
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -53,11 +53,16 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         s.set_partitioning("home-reuse")
         i.reach(i.steps.REVIEW)
 
-
         # check selected disks are shown
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}3", action="delete")
-        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        if self.is_efi:
+            r.check_disk_row(dev, parent=f"{dev}2", action="delete")
+        else:
+            r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+
+        if self.is_efi:
+            r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
@@ -194,39 +199,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
-
-
-class TestStorageHomeReuseFedoraEFI(VirtInstallMachineCase, StorageCase):
-    disk_image = "fedora-rawhide"
-    efi = True
-
-    def testBasic(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-        r = Review(b, m)
-
-        pretend_default_scheme(self, "BTRFS")
-
-        dev="vda"
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
-
-        s.set_partitioning("home-reuse")
-        i.reach(i.steps.REVIEW)
-
-        # check selected disks are shown
-        r.check_disk_row(dev, parent=f"{dev}2", action="delete")
-        r.check_disk_row(dev, parent=f"{dev}3", action="delete")
-        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
-        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
-                         action="mount")
 
 
 if __name__ == '__main__':

@@ -43,7 +43,6 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
 
 class VirtInstallMachine(VirtMachine):
-    efi = False
     http_payload_server = None
 
     def _execute(self, cmd):
@@ -100,6 +99,8 @@ class VirtInstallMachine(VirtMachine):
             os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
     def start(self):
+        self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+
         self.payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
@@ -133,7 +134,7 @@ class VirtInstallMachine(VirtMachine):
         else:
             location = f"{iso_path}"
 
-        if self.efi:
+        if self.is_efi:
             boot_arg = "--boot uefi "
         else:
             boot_arg = ""
@@ -214,7 +215,3 @@ class VirtInstallMachine(VirtMachine):
 
     def get_volume_id(self, iso_path):
         return subprocess.check_output(fr"isoinfo -d -i {iso_path} |  grep -oP 'Volume id: \K.*'", shell=True).decode(sys.stdout.encoding).strip()
-
-
-class VirtInstallEFIMachine(VirtInstallMachine):
-    efi = True

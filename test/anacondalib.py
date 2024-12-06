@@ -39,9 +39,11 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 
 
 class VirtInstallMachineCase(MachineCase):
-    efi = False
+    # The boot modes in which the test should run
+    boot_modes = ["bios"]
     disk_image = ""
     disk_size = 15
+    is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     MachineCase.machine_class = VirtInstallMachine
 
     @property
@@ -61,10 +63,17 @@ class VirtInstallMachineCase(MachineCase):
 
     @classmethod
     def setUpClass(cls):
-        VirtInstallMachine.efi = cls.efi
         cls.ext_logging = bool(int(os.environ.get('EXTENDED_LOGGING', '0')))
 
     def setUp(self):
+        method = getattr(self, self._testMethodName)
+        boot_modes = getattr(method, "boot_modes", [])
+
+        if self.is_efi and "efi" not in boot_modes:
+            self.skipTest("Skipping for EFI boot mode")
+        elif not self.is_efi and "bios" not in self.boot_modes:
+            self.skipTest("Skipping for BIOS boot mode")
+
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
             self.addCleanup(self.resetUsers)
@@ -219,7 +228,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
         # This should be removed from the test
-        if self.efi:
+        if self.is_efi:
             # Add efibootmgr entry for the second OS
             distro_name = self.disk_image.split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
@@ -236,5 +245,20 @@ class VirtInstallMachineCase(MachineCase):
 
 def test_plan(_url):
     def decorator(func):
+        return func
+    return decorator
+
+def run_boot(*modes):
+    """
+    Decorator to run tests only on specific boot modes ('bios', 'efi').
+    The VirtMachine has self.is_efi = True/False set.
+    We need to skip the test if self.is_efi is True but 'efi' is not in the modes list.
+
+    The absence of the decorator is equivalent to run_boot("bios").
+
+    :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
+    """
+    def decorator(func):
+        func.boot_modes = list(modes)
         return func
     return decorator
