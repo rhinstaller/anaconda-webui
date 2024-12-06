@@ -14,7 +14,7 @@ user_pref("devtools.inspector.showUserAgentStyles", true);
 // Don't have any startup page
 user_pref("browser.startup.page", 0);
 user_pref("browser.startup.homepage", "about:blank");
-user_pref("browser.startup.homepage_override.once", {});
+user_pref("browser.startup.homepage_override.once", "");
 
 // Hide the bookmarks
 user_pref("browser.toolbars.bookmarks.visibility", "never");
