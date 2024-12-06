@@ -85,11 +85,12 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         if self.is_efi:
             s.select_mountpoint_row_reformat(next_idx - 2)
 
-        b.assert_pixels(
-            "#app",
-            "mount-point-mapping-table",
-            ignore=pixel_tests_ignore,
-        )
+        # FIXME: https://github.com/cockpit-project/cockpit/pull/21392
+        # b.assert_pixels(
+        #     "#app",
+        #     "mount-point-mapping-table",
+        #     ignore=pixel_tests_ignore,
+        # )
 
         i.reach(i.steps.REVIEW)
 
