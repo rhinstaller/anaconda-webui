@@ -34,6 +34,22 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
 
+    def setUp(self):
+        super().setUp()
+
+        if self._testMethodName == "testHidden":
+            return
+
+        # Remove the /var subvolume from the default btrfs layout
+        # as /var/ is not default mount point in Fedora which results in
+        # the 'Reinstall Fedora' option to get hidden
+        self.machine.execute("""
+            mount /dev/vda4 /mnt;
+            btrfs subvolume delete /mnt/var/lib/machines;
+            btrfs subvolume delete /mnt/var;
+            umount /mnt
+        """)
+
     @run_boot("bios", "efi")
     def testBasic(self):
         b = self.browser
@@ -68,6 +84,21 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
+    def testHidden(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        # The `Re-install Fedora` scenario should not be available
+        # when unexpected mount points are present
+        s.wait_scenario_visible("home-reuse", False)
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testMultipleRoots(self):
