@@ -56,12 +56,12 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
         # check selected disks are shown
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}3", action="delete")
-        if self.efi:
+        if self.is_efi:
             r.check_disk_row(dev, parent=f"{dev}2", action="delete")
         else:
             r.check_disk_row(dev, parent=f"{dev}1", action="delete")
 
-        if self.efi:
+        if self.is_efi:
             r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)

@@ -59,7 +59,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         next_idx = 2
 
         def select_boot_mountpoints(next_idx=next_idx):
-            if self.efi:
+            if self.is_efi:
                 s.select_mountpoint_row_device(next_idx, f"{dev}2")
                 s.check_mountpoint_row_format_type(next_idx, "EFI System Partition")
                 next_idx += 1
@@ -82,7 +82,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Toggle reformat option
         s.select_mountpoint_row_reformat(next_idx - 1)
 
-        if self.efi:
+        if self.is_efi:
             s.select_mountpoint_row_reformat(next_idx - 2)
 
         b.assert_pixels(
@@ -97,7 +97,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk(dev, "16.1 GB vdb (Virtio Block Device)")
 
         next_idx = 2
-        if self.efi:
+        if self.is_efi:
             r.check_disk_row(dev, "/boot/efi", f"vdb{next_idx}", "105 MB", True, "efi")
         next_idx += 1
         r.check_disk_row(dev, "/boot", f"vdb{next_idx}", "1.05 GB", True, "ext4")

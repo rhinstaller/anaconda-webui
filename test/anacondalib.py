@@ -43,7 +43,7 @@ class VirtInstallMachineCase(MachineCase):
     boot_modes = ["bios"]
     disk_image = ""
     disk_size = 15
-    efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+    is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     MachineCase.machine_class = VirtInstallMachine
 
     @property
@@ -69,9 +69,9 @@ class VirtInstallMachineCase(MachineCase):
         method = getattr(self, self._testMethodName)
         boot_modes = getattr(method, "boot_modes", [])
 
-        if self.efi and "efi" not in boot_modes:
+        if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
-        elif not self.efi and "bios" not in self.boot_modes:
+        elif not self.is_efi and "bios" not in self.boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
 
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
@@ -228,7 +228,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
         # This should be removed from the test
-        if self.efi:
+        if self.is_efi:
             # Add efibootmgr entry for the second OS
             distro_name = self.disk_image.split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
@@ -251,8 +251,8 @@ def test_plan(_url):
 def run_boot(*modes):
     """
     Decorator to run tests only on specific boot modes ('bios', 'efi').
-    The classes have self.efi = True/False set.
-    We need to skip the test if self.efi is True but 'efi' is not in the modes list.
+    The VirtMachine has self.is_efi = True/False set.
+    We need to skip the test if self.is_efi is True but 'efi' is not in the modes list.
 
     The absence of the decorator is equivalent to run_boot("bios").
 
