@@ -95,20 +95,16 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
             });
 };
 
-/**
- * @param {string} partitioning     DBus path to a partitioning
- * @param {string} scheme           autopartitioning scheme
- */
-export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
-    const request = await getPartitioningRequest({ partitioning });
-
+export const getAutopartReuseDBusRequest = (scheme) => {
     const configurationSchemeToDBus = {
         BTRFS: cockpit.variant("i", 1),
         LVM: cockpit.variant("i", 2),
         LVM_THINP: cockpit.variant("i", 3),
         PLAIN: cockpit.variant("i", 0),
     };
-    request["partitioning-scheme"] = configurationSchemeToDBus?.[scheme];
+    const request = {
+        "partitioning-scheme": configurationSchemeToDBus?.[scheme],
+    };
 
     request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
     if (scheme === "PLAIN") {
@@ -120,6 +116,17 @@ export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
         request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
         request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
     }
+    return request;
+};
+
+/**
+ * @param {string} partitioning     DBus path to a partitioning
+ * @param {string} scheme           autopartitioning scheme
+ */
+export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
+    const autopartRequest = await getPartitioningRequest({ partitioning });
+    const reuseRequest = getAutopartReuseDBusRequest(scheme);
+    const request = { ...autopartRequest, ...reuseRequest };
 
     await setPartitioningRequest({ partitioning, request });
 };

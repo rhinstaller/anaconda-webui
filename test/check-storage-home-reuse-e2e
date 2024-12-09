@@ -33,6 +33,19 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 class TestStorageHomeReuse_E2E(VirtInstallMachineCase, StorageCase):
     disk_image = "fedora-rawhide"
 
+    def setUp(self):
+        super().setUp()
+
+        # Remove the /var subvolume from the default btrfs layout
+        # as /var/ is not default mount point in Fedora which results in
+        # the 'Reinstall Fedora' option to get hidden
+        self.machine.execute("""
+            mount /dev/vda4 /mnt;
+            btrfs subvolume delete /mnt/var/lib/machines;
+            btrfs subvolume delete /mnt/var;
+            umount /mnt
+        """)
+
     def install(self, needs_confirmation):
         b = self.browser
         m = self.machine

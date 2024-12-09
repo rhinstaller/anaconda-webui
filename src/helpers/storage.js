@@ -170,3 +170,5 @@ export const unitMultiplier = {
     GB: 1000000000,
     TB: 1000000000000,
 };
+
+export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];

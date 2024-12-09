@@ -26,10 +26,13 @@ import {
     Title,
 } from "@patternfly/react-core";
 
+import { getAutopartReuseDBusRequest } from "../../apis/storage_partitioning.js";
+
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
 import {
+    bootloaderTypes,
     getDeviceAncestors,
     getLockedLUKSDevices,
 } from "../../helpers/storage.js";
@@ -154,6 +157,19 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
         return missingDisks.length === 0;
     };
 
+    const getUnknownMountPoints = (scheme, existingOS) => {
+        const reuseRequest = getAutopartReuseDBusRequest(scheme);
+        const isBootloader = (device) => bootloaderTypes.includes(devices[device].formatData.type.v);
+        const existingMountPoints = Object.entries(existingOS["mount-points"].v)
+                .map(([mountPoint, device]) => isBootloader(device) ? "bootloader" : mountPoint);
+
+        const managedMountPoints = reuseRequest["reformatted-mount-points"].v
+                .concat(reuseRequest["reused-mount-points"].v, reuseRequest["removed-mount-points"].v);
+
+        const unknownMountPoints = existingMountPoints.filter(i => !managedMountPoints.includes(i));
+        return unknownMountPoints;
+    };
+
     // Check that exactly one Linux OS is present and it is Fedora Linux
     // (Stronger check for mountpoints uniqueness is in the backend
     const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
@@ -175,6 +191,7 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
         }
     }
 
+    debug(`home reuse: Default scheme is ${autopartScheme}.`);
     if (reusedOS) {
         // Check that required autopartitioning scheme matches reused OS.
         // Check just "/home". To be more generic we could check all reused devices (as the backend).
@@ -190,6 +207,17 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
             availability.available = false;
             availability.hidden = true;
             debug(`home reuse: No reusable existing Linux system found, reused devices must have ${requiredSchemeTypes[autopartScheme]} type`);
+        }
+    }
+
+    if (reusedOS) {
+        // Check that existing system does not have mountpoints unexpected
+        // by the required autopartitioning scheme
+        const unknownMountPoints = getUnknownMountPoints(autopartScheme, reusedOS);
+        if (unknownMountPoints.length > 0) {
+            availability.available = false;
+            availability.hidden = true;
+            console.info(`home reuse: Unknown existing mountpoints found ${unknownMountPoints}`);
         }
     }
 
