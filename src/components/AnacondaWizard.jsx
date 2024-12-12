@@ -29,7 +29,7 @@ import {
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
+import { FooterContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "./Common.jsx";
 import { getSteps } from "./steps.js";
 
 export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail, showStorage }) => {
@@ -41,6 +41,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const [isFormValid, setIsFormValid] = useState(false);
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
 
     const componentProps = {
@@ -52,7 +53,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
         showStorage,
     };
 
-    const stepsOrder = getSteps(isBootIso, storageScenarioId);
+    const stepsOrder = getSteps(userInterfaceConfig, isBootIso, storageScenarioId);
     const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
 
     const createSteps = (stepsOrder, componentProps) => {
@@ -75,8 +76,9 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                           setIsFormDisabled={setIsFormDisabled}
                           step={s.id}
                           title={s.title}
+                          isFirstScreen={s.isFirstScreen}
                           usePageInit={s.usePageInit}>
-                            <s.component {...componentProps} />
+                            <s.component {...componentProps} isFirstScreen={s.isFirstScreen} />
                         </AnacondaPage>
                     ),
                     ...stepProps

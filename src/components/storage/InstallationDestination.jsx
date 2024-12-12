@@ -49,7 +49,7 @@ import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { StorageContext, SystemTypeContext } from "../Common.jsx";
+import { StorageContext } from "../Common.jsx";
 import { useOriginalDevices, useOriginalExistingSystems } from "./Common.jsx";
 
 import "./InstallationDestination.scss";
@@ -236,11 +236,11 @@ const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
 export const InstallationDestination = ({
     dispatch,
     idPrefix,
+    isFirstScreen,
     onCritFail,
     setIsFormValid,
 }) => {
     const refUsableDisks = useRef();
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
 
@@ -275,7 +275,7 @@ export const InstallationDestination = ({
         setIsFormValid(selectedDisksCnt > 0);
     }, [selectedDisksCnt, setIsFormValid]);
 
-    const headingLevel = isBootIso ? "h2" : "h3";
+    const headingLevel = isFirstScreen ? "h3" : "h2";
 
     return (
         <FormSection
