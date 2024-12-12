@@ -45,7 +45,7 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { LanguageContext, OsReleaseContext } from "../../contexts/Common.jsx";
+import { LanguageContext } from "../../contexts/Common.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -326,17 +326,10 @@ const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification })
     );
 };
 
-const PageTitle = () => {
-    const osRelease = useContext(OsReleaseContext);
-    return cockpit.format(_("Welcome to $0"), osRelease.NAME);
-};
-
 export class Page {
-    constructor (isBootIso) {
+    constructor () {
         this.component = InstallationLanguage;
         this.id = "installation-language";
-        this.isHidden = !isBootIso;
         this.label = _("Welcome");
-        this.title = <PageTitle />;
     }
 }

@@ -27,7 +27,7 @@ import {
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
-import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../../contexts/Common.jsx";
+import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UserInterfaceContext, UsersContext } from "../../contexts/Common.jsx";
 
 import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
 
@@ -65,6 +65,8 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { label: scenarioLabel } = useScenario();
+    const userInterfaceConfig = useContext(UserInterfaceContext);
+    const hiddenScreens = userInterfaceConfig.hidden_screens || [];
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     // Display custom footer
@@ -103,19 +105,18 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                           description={language ? language["native-name"].v : localizationData.language}
                         />
                     </ReviewDescriptionList>
-                    {isBootIso &&
-                    <>
+                    {!hiddenScreens.includes("accounts") &&
                         <ReviewDescriptionList>
                             <ReviewDescriptionListItem
                               id={`${idPrefix}-target-system-account`}
                               term={_("Account")}
                               description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
                             />
-                        </ReviewDescriptionList>
+                        </ReviewDescriptionList>}
+                    {isBootIso &&
                         <ReviewDescriptionList>
                             <HostnameRow />
-                        </ReviewDescriptionList>
-                    </>}
+                        </ReviewDescriptionList>}
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>

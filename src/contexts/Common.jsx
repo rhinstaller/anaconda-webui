@@ -29,6 +29,7 @@ export const StorageDefaultsContext = createContext(null);
 export const SystemTypeContext = createContext(null);
 export const TargetSystemRootContext = createContext(null);
 export const UsersContext = createContext(null);
+export const UserInterfaceContext = createContext(null);
 export const NetworkContext = createContext(null);
 export const DialogsContext = createContext(null);
 
@@ -74,7 +75,9 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
             <SystemTypeContext.Provider value={systemType}>
                 <StorageDefaultsContext.Provider value={{ defaultScheme }}>
                     <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                        {children}
+                        <UserInterfaceContext.Provider value={conf["User Interface"]}>
+                            {children}
+                        </UserInterfaceContext.Provider>
                     </TargetSystemRootContext.Provider>
                 </StorageDefaultsContext.Provider>
             </SystemTypeContext.Provider>
