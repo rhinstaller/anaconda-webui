@@ -47,7 +47,7 @@ import { debug } from "../../helpers/log.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
-import { StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../contexts/Common.jsx";
 
 import { useOriginalDevices, useOriginalExistingSystems } from "../../hooks/Storage.jsx";
 
@@ -237,11 +237,11 @@ const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
 export const InstallationDestination = ({
     dispatch,
     idPrefix,
+    isFirstScreen,
     onCritFail,
     setIsFormValid,
 }) => {
     const refUsableDisks = useRef();
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
 
@@ -276,7 +276,7 @@ export const InstallationDestination = ({
         setIsFormValid(selectedDisksCnt > 0);
     }, [selectedDisksCnt, setIsFormValid]);
 
-    const headingLevel = isBootIso ? "h2" : "h3";
+    const headingLevel = isFirstScreen ? "h3" : "h2";
 
     return (
         <FormSection
