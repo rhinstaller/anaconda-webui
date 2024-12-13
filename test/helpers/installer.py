@@ -21,13 +21,13 @@ from users import create_user
 
 
 class InstallerSteps(UserDict):
-    WELCOME = "installation-language"
-    INSTALLATION_METHOD = "installation-method"
+    WELCOME = "language"
+    INSTALLATION_METHOD = "method"
     CUSTOM_MOUNT_POINT = "mount-point-mapping"
     STORAGE_CONFIGURATION = "storage-configuration"
     ACCOUNTS = "accounts"
-    REVIEW = "installation-review"
-    PROGRESS = "installation-progress"
+    REVIEW = "review"
+    PROGRESS = "progress"
 
     def __init__(self, hidden_steps=None, scenario=None):
         super().__init__()
@@ -89,12 +89,12 @@ class Installer():
         current_page = self.get_current_page()
 
         if needs_confirmation:
-            self.browser.wait_visible("#installation-next-btn[aria-disabled=true]")
+            self.browser.wait_visible("#next-btn[aria-disabled=true]")
             self.browser.click(f"#{self.steps.REVIEW}-next-confirmation-checkbox")
-            self.browser.wait_visible("#installation-next-btn[aria-disabled=false]")
+            self.browser.wait_visible("#next-btn[aria-disabled=false]")
 
-        self.browser.wait_text("#installation-next-btn", button_text)
-        self.browser.click("#installation-next-btn")
+        self.browser.wait_text("#next-btn", button_text)
+        self.browser.click("#next-btn")
 
         if should_fail:
             self.wait_current_page(current_page)
@@ -135,7 +135,7 @@ class Installer():
         if current_page == self.steps.INSTALLATION_METHOD:
             sleep(2)
 
-        self.browser.click("#installation-next-btn")
+        self.browser.click("#next-btn")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
         return expected_page
@@ -148,7 +148,7 @@ class Installer():
         :type disabled: bool, optional
         """
         value = "false" if disabled else "true"
-        self.browser.wait_visible(f"#installation-next-btn:not([aria-disabled={value}]")
+        self.browser.wait_visible(f"#next-btn:not([aria-disabled={value}]")
 
     def check_sidebar_step_disabled(self, step, disabled=True):
         """Check if a sidebar step is disabled.
@@ -199,7 +199,7 @@ class Installer():
 
     @log_step(snapshot_after=True)
     def wait_current_page(self, page):
-        self.browser.wait_not_present("#installation-destination-next-spinner")
+        self.browser.wait_not_present("#destination-next-spinner")
         self.browser.wait_js_cond(f'window.location.hash === "#/{page}"')
 
         if page == self.steps.PROGRESS:
