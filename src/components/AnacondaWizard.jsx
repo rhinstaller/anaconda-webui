@@ -140,7 +140,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 setIsFormValid,
             }}>
                 <Wizard
-                  id="installation-wizard"
+                  id="wizard"
                   isVisitRequired
                   startIndex={startIndex}
                   footer={<AnacondaWizardFooter {...footerProps} />}

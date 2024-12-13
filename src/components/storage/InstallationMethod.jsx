@@ -228,7 +228,7 @@ const PageTitle = () => {
 export class Page {
     constructor (isBootIso) {
         this.component = InstallationMethod;
-        this.id = "installation-method";
+        this.id = "method";
         this.label = _("Installation method");
         this.title = !isBootIso ? <PageTitle /> : null;
         this.usePageInit = usePageInit;

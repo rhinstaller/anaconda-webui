@@ -38,7 +38,7 @@ import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
-const idPrefix = "installation-review";
+const idPrefix = "review";
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -211,7 +211,7 @@ const CustomFooter = ({ setIsFormValid }) => {
           footerHelperText={confirmationCheckbox}
           nextButtonText={buttonLabel}
           nextButtonVariant={!installationIsClean ? "warning" : "primary"}
-          onNext={() => cockpit.location.go(["installation-progress"])}
+          onNext={() => cockpit.location.go(["progress"])}
         />
     );
 };
