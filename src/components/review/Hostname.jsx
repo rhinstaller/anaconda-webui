@@ -38,7 +38,7 @@ import { setHostname } from "../../apis/network.js";
 import { NetworkContext } from "../Common.jsx";
 
 const _ = cockpit.gettext;
-const idPrefix = "installation-review";
+const idPrefix = "review";
 
 const ChangeHostname = ({ initHostname }) => {
     const [currentHostname, setCurrentHostname] = useState(initHostname);
