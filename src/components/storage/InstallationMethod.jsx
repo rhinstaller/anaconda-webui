@@ -34,7 +34,6 @@ import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import {
     DialogsContext,
     FooterContext,
-    OsReleaseContext,
     StorageContext,
     StorageDefaultsContext,
 } from "../Common.jsx";
@@ -49,6 +48,7 @@ const InstallationMethod = ({
     dispatch,
     idPrefix,
     isEfi,
+    isFirstScreen,
     isFormDisabled,
     onCritFail,
     setIsFormDisabled,
@@ -78,6 +78,7 @@ const InstallationMethod = ({
               isEfi={isEfi}
               dispatch={dispatch}
               idPrefix={idPrefix}
+              isFirstScreen={isFirstScreen}
               isFormDisabled={isFormDisabled}
               setIsFormValid={setIsFormValid}
               setIsFormDisabled={setIsFormDisabled}
@@ -87,6 +88,7 @@ const InstallationMethod = ({
                 <InstallationScenario
                   dispatch={dispatch}
                   idPrefix={idPrefix}
+                  isFirstScreen={isFirstScreen}
                   isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
                   setIsFormValid={setIsFormValid}
@@ -219,18 +221,11 @@ const usePageInit = () => {
     }, [needsReset, setIsFormDisabled]);
 };
 
-const PageTitle = () => {
-    const osRelease = useContext(OsReleaseContext);
-
-    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT);
-};
-
 export class Page {
-    constructor (isBootIso) {
+    constructor () {
         this.component = InstallationMethod;
-        this.id = "installation-method";
+        this.id = "method";
         this.label = _("Installation method");
-        this.title = !isBootIso ? <PageTitle /> : null;
         this.usePageInit = usePageInit;
     }
 }

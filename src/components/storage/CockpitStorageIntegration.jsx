@@ -87,7 +87,7 @@ const idPrefix = "cockpit-storage-integration";
 const ReturnToInstallationButton = ({ onAction }) => (
     <Button
       icon={<ArrowLeftIcon />}
-      id={idPrefix + "-return-to-installation-button"}
+      id={idPrefix + "-return-to-button"}
       variant="secondary"
       onClick={onAction}>
         {_("Return to installation")}
@@ -651,7 +651,7 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         mount_point_prefix: targetSystemRoot,
     });
     // Allow to modify storage only when we are in the scenario selection page
-    const isDisabled = currentStepId !== "installation-method";
+    const isDisabled = currentStepId !== "method";
     const item = (
         <DropdownItem
           id="modify-storage"

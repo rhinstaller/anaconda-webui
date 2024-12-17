@@ -83,21 +83,21 @@ export const AnacondaWizardFooter = ({
                 {footerHelperText}
                 <ActionList>
                     <Button
-                      id="installation-back-btn"
+                      id="back-btn"
                       variant="secondary"
                       isDisabled={isFirstScreen || isFormDisabled}
                       onClick={() => onBack()}>
                         {_("Back")}
                     </Button>
                     <Button
-                      id="installation-next-btn"
+                      id="next-btn"
                       variant={nextButtonVariant || "primary"}
                       isDisabled={!isFormValid || isFormDisabled}
                       onClick={onNextButtonClicked}>
                         {nextButtonText || _("Next")}
                     </Button>
                     <Button
-                      id="installation-quit-btn"
+                      id="quit-btn"
                       isDisabled={isFormDisabled}
                       style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
                       variant="link"
@@ -118,10 +118,10 @@ export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation
 
     return (
         <Modal
-          id="installation-quit-confirm-dialog"
+          id="quit-confirm-dialog"
           actions={[
               <Button
-                id="installation-quit-confirm-btn"
+                id="quit-confirm-btn"
                 key="confirm"
                 onClick={() => {
                     exitGui();
@@ -131,7 +131,7 @@ export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation
                   {isBootIso ? _("Reboot") : _("Quit")}
               </Button>,
               <Button
-                id="installation-quit-confirm-cancel-btn"
+                id="quit-confirm-cancel-btn"
                 key="cancel"
                 onClick={() => setQuitWaitsConfirmation(false)}
                 variant="secondary">

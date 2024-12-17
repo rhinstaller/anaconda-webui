@@ -45,7 +45,7 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { LanguageContext, OsReleaseContext } from "../Common.jsx";
+import { LanguageContext } from "../Common.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -256,7 +256,7 @@ class LanguageSelector extends React.Component {
 
         return (
             <>
-                <TextInputGroup className="installation-language-search">
+                <TextInputGroup className={this.props.idPrefix + "-search"}>
                     <TextInputGroupMain
                       icon={<SearchIcon />}
                       value={this.state.search}
@@ -276,8 +276,8 @@ class LanguageSelector extends React.Component {
                     )}
                 </TextInputGroup>
                 <Menu
-                  className="installation-language-menu"
-                  id={this.props.idPrefix + "-language-menu"}
+                  className={this.props.idPrefix + "-menu"}
+                  id={this.props.idPrefix + "-menu"}
                   isScrollable
                   isPlain
                   onSelect={handleOnSelect}
@@ -326,17 +326,10 @@ const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification })
     );
 };
 
-const PageTitle = () => {
-    const osRelease = useContext(OsReleaseContext);
-    return cockpit.format(_("Welcome to $0"), osRelease.NAME);
-};
-
 export class Page {
-    constructor (isBootIso) {
+    constructor () {
         this.component = InstallationLanguage;
-        this.id = "installation-language";
-        this.isHidden = !isBootIso;
+        this.id = "language";
         this.label = _("Welcome");
-        this.title = <PageTitle />;
     }
 }

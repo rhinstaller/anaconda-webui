@@ -28,7 +28,7 @@ import {
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UserInterfaceContext, UsersContext } from "../Common.jsx";
 import { useOriginalDevices, usePlannedActions } from "../storage/Common.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
@@ -38,7 +38,7 @@ import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
-const idPrefix = "installation-review";
+const idPrefix = "review";
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -63,6 +63,8 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { label: scenarioLabel } = useScenario();
+    const userInterfaceConfig = useContext(UserInterfaceContext);
+    const hiddenScreens = userInterfaceConfig.hidden_screens || [];
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     // Display custom footer
@@ -101,19 +103,18 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                           description={language ? language["native-name"].v : localizationData.language}
                         />
                     </ReviewDescriptionList>
-                    {isBootIso &&
-                    <>
+                    {!hiddenScreens.includes("accounts") &&
                         <ReviewDescriptionList>
                             <ReviewDescriptionListItem
                               id={`${idPrefix}-target-system-account`}
                               term={_("Account")}
                               description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
                             />
-                        </ReviewDescriptionList>
+                        </ReviewDescriptionList>}
+                    {isBootIso &&
                         <ReviewDescriptionList>
                             <HostnameRow />
-                        </ReviewDescriptionList>
-                    </>}
+                        </ReviewDescriptionList>}
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>
@@ -211,7 +212,7 @@ const CustomFooter = ({ setIsFormValid }) => {
           footerHelperText={confirmationCheckbox}
           nextButtonText={buttonLabel}
           nextButtonVariant={!installationIsClean ? "warning" : "primary"}
-          onNext={() => cockpit.location.go(["installation-progress"])}
+          onNext={() => cockpit.location.go(["progress"])}
         />
     );
 };
