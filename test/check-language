@@ -18,6 +18,7 @@
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from language import Language
+from review import Review
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
@@ -100,13 +101,13 @@ class TestLanguage(VirtInstallMachineCase):
         # Check that the language menu shows all menu entries when clicking the toggle button
         l.locale_option_visible('en_US')
         l.locale_option_visible('de_DE')
-        l.locale_option_visible('cs_CZ')
+        l.locale_option_visible('cs_CZ', is_common=False)
 
         # Check filtering on English names
         l.input_locale_search('cze')
         l.locale_option_visible('en_US', False)
         l.locale_option_visible('de_DE', False)
-        l.locale_option_visible('cs_CZ')
+        l.locale_option_visible('cs_CZ', is_common=False)
 
         # Check filtering on native names
         l.input_locale_search('Deutsch')
@@ -138,7 +139,7 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Expect language direction to be set to RTL for selected languages
         l.select_locale("he_IL", False)
-        l.check_selected_locale("he_IL")
+        l.check_selected_locale("he_IL", is_common=False)
         b.wait_attr("html", "dir", "rtl")
 
         # Expect language direction to be set to LTR when switching to EN_US from RTL language
@@ -150,6 +151,22 @@ class TestLanguage(VirtInstallMachineCase):
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
         b.wait_attr("html", "dir", "ltr")
+
+    def testUnknownLanguage(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        l = Language(b, m)
+        r = Review(b, m)
+
+        i.open()
+        # Set language to Macedonian that is now in the installer translated languages
+        # Go to review page after it
+        l.dbus_set_language("mk_MK.UTF-8")
+        i.reach(i.steps.REVIEW)
+
+        # test the macedonian language selected
+        r.check_language("mk_MK.UTF-8")
 
 
 if __name__ == '__main__':
