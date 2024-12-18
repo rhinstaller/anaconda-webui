@@ -45,6 +45,7 @@ export const storageInitialState = {
 /* Initial state for the localization store substate */
 export const localizationInitialState = {
     commonLocales: [],
+    keyboardLayouts: [],
     language: "",
     languages: {}
 };
@@ -173,6 +174,8 @@ export const localizationReducer = (state = localizationInitialState, action) =>
         return { ...state, commonLocales: action.payload.commonLocales };
     } else if (action.type === "GET_LANGUAGE") {
         return { ...state, language: action.payload.language };
+    } else if (action.type === "GET_KEYBOARD_LAYOUTS") {
+        return { ...state, keyboardLayouts: action.payload.keyboardLayouts };
     } else {
         return state;
     }
