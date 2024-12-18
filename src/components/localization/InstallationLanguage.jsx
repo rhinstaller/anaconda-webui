@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Button,
     Form,
@@ -36,6 +36,7 @@ import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
 
 import { setLocale } from "../../apis/boss.js";
 import {
+    setKeyboardLayout,
     setLanguage,
 } from "../../apis/localization.js";
 
@@ -46,6 +47,8 @@ import {
 } from "../../helpers/language.js";
 
 import { LanguageContext } from "../../contexts/Common.jsx";
+
+import { KeyboardSelector } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -295,7 +298,13 @@ class LanguageSelector extends React.Component {
 }
 
 const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
-    const { commonLocales, language, languages } = useContext(LanguageContext);
+    const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
+    const [keyboard, setKeyboard] = useState("");
+
+    const handleSetKeyboard = (value) => {
+        setKeyboard(value);
+        setKeyboardLayout(value);
+    };
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -303,13 +312,9 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
 
     return (
         <>
-            <Title
-              headingLevel="h3"
-            >
-                {_("Choose a language")}
-            </Title>
-            <Form>
-                <FormGroup>
+            <Title headingLevel="h3">{_("Choose Language and Keyboard")}</Title>
+            <Form className="anaconda-screen-selectors-container">
+                <FormGroup label={_("Language")}>
                     <LanguageSelector
                       id="language-selector"
                       languages={languages}
@@ -318,6 +323,16 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                       setIsFormValid={setIsFormValid}
                       setStepNotification={setStepNotification}
                       reRenderApp={setLanguage}
+                    />
+                </FormGroup>
+
+                <FormGroup label={_("Keyboard")} fieldId={`${SCREEN_ID}-keyboard-layouts`}>
+                    <KeyboardSelector
+                      id="keyboard-selector"
+                      idPrefix={SCREEN_ID}
+                      keyboards={keyboardLayouts}
+                      selectedKeyboard={keyboard}
+                      setKeyboard={handleSetKeyboard}
                     />
                 </FormGroup>
             </Form>
