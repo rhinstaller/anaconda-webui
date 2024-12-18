@@ -1,13 +1,34 @@
-.installation-language-menu.pf-v5-c-menu.pf-m-scrollable {
+.installation-selectors-container {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: var(--pf-v5-global--spacer--lg);
+    column-gap: var(--pf-v5-global--spacer--md);
+}
+
+.installation-selectors-container .pf-v5-c-form__group {
+    display: contents;
+}
+
+.installation-selectors-container label {
+    grid-column: 1;
+    font-weight: 600;
+    text-align: left;
+}
+
+.installation-selectors-container .pf-v5-c-form__group-control {
+    grid-column: 2;
     max-width: 400px;
+}
+
+.installation-language-menu.pf-v5-c-menu.pf-m-scrollable {
     // heading: 84, footer: 44, content (about from header): 158, necessary padding underneath: 8px,
+    // keyboardSelector: 60
     // 50px magic number
-    --pf-v5-c-menu__content--MaxHeight: calc(100vh - 84px - 44px - 158px - 8px - 50px);
+    --pf-v5-c-menu__content--MaxHeight: calc(100vh - 84px - 44px - 158px - 8px - 60px - 50px);
 }
 
 .installation-language-search {
     margin-bottom: var(--pf-v5-global--spacer--sm);
-    max-width: 400px;
 }
 
 .installation-language-menu {
@@ -22,8 +43,6 @@ it would also need this fix, so this is definitely a fix for PF
 overrides, not a local fix.
 */
 #installation-language-language-menu {
-  // Oddly, the spacing here isn't consistent with the reference on the website;
-  // it should be balanced on the top and bottom, not all just on the top
   .pf-v5-c-menu__group-title {
     padding-block: var(--pf-v5-global--spacer--sm);
 
