@@ -30,7 +30,6 @@ import {
     TextInputGroup,
     TextInputGroupMain,
     TextInputGroupUtilities,
-    Title,
 } from "@patternfly/react-core";
 import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
 
@@ -46,6 +45,8 @@ import {
 } from "../../helpers/language.js";
 
 import { LanguageContext } from "../../contexts/Common.jsx";
+
+import { KeyboardSelector } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -295,7 +296,7 @@ class LanguageSelector extends React.Component {
 }
 
 const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
-    const { commonLocales, language, languages } = useContext(LanguageContext);
+    const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -303,13 +304,8 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
 
     return (
         <>
-            <Title
-              headingLevel="h3"
-            >
-                {_("Choose a language")}
-            </Title>
-            <Form>
-                <FormGroup>
+            <Form className="anaconda-screen-selectors-container" isHorizontal>
+                <FormGroup label={_("Language")}>
                     <LanguageSelector
                       id="language-selector"
                       languages={languages}
@@ -320,6 +316,15 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                       reRenderApp={setLanguage}
                     />
                 </FormGroup>
+
+                {keyboardLayouts.length > 0 && (
+                    <FormGroup label={_("Keyboard")} fieldId={`${SCREEN_ID}-keyboard-layouts`}>
+                        <KeyboardSelector
+                          id="keyboard-selector"
+                          idPrefix={SCREEN_ID}
+                        />
+                    </FormGroup>
+                )}
             </Form>
         </>
     );

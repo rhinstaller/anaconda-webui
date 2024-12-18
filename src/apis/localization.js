@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import { getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 
 import { debug } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
@@ -62,18 +62,25 @@ export class LocalizationClient {
     }
 
     async initData () {
+        const language = await getLanguage();
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
+        await this.dispatch(getKeyboardLayoutsAction({ language }));
     }
 
     startEventMonitor () {
         this.client.subscribe(
             { },
-            (path, iface, signal, args) => {
+            async (path, iface, signal, args) => {
                 switch (signal) {
+                case "CompositorSelectedLayoutChanged":
+                    await this.dispatch(getKeyboardLayoutsAction({ language: await getLanguage() }));
+                    break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
-                        this.dispatch(getLanguageAction());
+                        await this.dispatch(getLanguageAction());
+                        const language = await getLanguage();
+                        await this.dispatch(getKeyboardLayoutsAction({ language }));
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -138,4 +145,34 @@ export const getLocaleData = ({ locale }) => {
  */
 export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
+};
+
+export const getCompositorSelectedLayout = () => {
+    return callClient("GetCompositorSelectedLayout");
+};
+
+export const getConfiguredLayouts = () => {
+    return callClient("GetConfiguredLayouts");
+};
+
+export const setCompositorLayouts = ({ layouts }) => {
+    return callClient("SetCompositorLayouts", [layouts, []]);
+};
+
+/**
+ * @param {string} lang         Locale id
+ *
+ * @returns {Promise}           Resolves a list of locale keyboards
+ */
+export const getLocaleKeyboardLayouts = async ({ locale }) => {
+    // FIXME: Remove this try-catch when the method is available in the backend
+    // in all supported versions
+    let keyboards;
+
+    try {
+        keyboards = await callClient("GetLocaleKeyboardLayouts", [locale]);
+    } catch (e) {
+        keyboards = [];
+    }
+    return keyboards;
 };
