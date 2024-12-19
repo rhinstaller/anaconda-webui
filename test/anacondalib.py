@@ -151,6 +151,7 @@ class VirtInstallMachineCase(MachineCase):
         lang = Language(b, m)
         lang.dbus_set_language("en_US.UTF-8")
         lang.dbus_set_locale("en_US.UTF-8")
+        lang.dbus_set_compositor_layouts(["us"])
 
     def resetUsers(self):
         m = self.machine
