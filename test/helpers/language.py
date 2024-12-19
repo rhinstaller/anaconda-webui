@@ -85,3 +85,27 @@ class Language():
             {BOSS_SERVICE} \
             {BOSS_OBJECT_PATH} \
             {BOSS_INTERFACE} SetLocale s "{value}"')
+
+    def select_keyboard_layout(self, layout):
+        self.browser.select_from_dropdown(".anaconda-screen-selectors-container select", layout)
+
+    def check_selected_keyboard(self, layout):
+        self.browser.wait_val(".anaconda-screen-selectors-container select", layout)
+
+    def check_selected_keyboard_on_device(self, expected_layout, expected_variant=None):
+        result = self.machine.execute("localectl status")
+        layout = None
+        variant = None
+
+        for line in result.splitlines():
+            if "X11 Layout" in line:
+                layout = line.split(":")[-1].strip()
+            if "X11 Model" in line:
+                variant = line.split(":")[-1].strip()
+
+        assert layout == expected_layout, f"Expected layout '{expected_layout}', but got '{layout}'"
+
+        if expected_variant:
+            assert variant == expected_variant, f"Expected variant '{expected_variant}', but got '{variant}'"
+        else:
+            assert not variant, f"Expected no variant, but got '{variant}'"

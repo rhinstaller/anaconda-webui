@@ -1,0 +1,208 @@
+#!/bin/bash
+# run static code checks like eslint, mypy, ruff, vulture.
+
+set -eu
+
+# requires: pyproject.toml
+# requires: containers/flatpak/test/ruff.toml
+# requires: pkg/ruff.toml
+# requires: test/common/ruff.toml
+# requires: test/example/ruff.toml
+# requires: test/verify/ruff.toml
+# requires: tools/vulture_suppressions/ruff.toml
+
+# we consider any function named test_* to be a test case
+# each test is considered to succeed if it exits with no output
+# exit with status 77 is a skip, with the message in the output
+# otherwise, any output is a failure, even if exit status is 0
+
+# note: `set -e` is not active during the tests.
+
+find_scripts() {
+    # Helper to find all scripts in the tree
+    (
+        # Any non-binary file which contains a given shebang
+        git grep --cached -lIz '^#!.*'"$1"
+        shift
+        # Any file matching the provided globs
+        git ls-files -z "$@"
+    ) | sort -z | uniq -z
+}
+
+find_python_files() {
+    find_scripts 'python3' '*.py'
+}
+
+test_ruff() {
+    command -v ruff >/dev/null || skip 'no ruff'
+    find_python_files | xargs -r -0 ruff check --quiet --no-cache
+}
+
+if [ "${WITH_PARTIAL_TREE:-0}" = 0 ]; then
+    test_mypy() {
+        command -v mypy >/dev/null || skip 'no mypy'
+        for file in $(cat test/mypy-deps 2>/dev/null || true); do
+            test -e "${file}" || skip "no ${file}"
+        done
+        find_python_files | xargs -r -0 mypy --no-error-summary
+    }
+
+    test_vulture() {
+        # vulture to find unused variables/functions
+        command -v vulture >/dev/null || skip 'no vulture'
+        find_python_files | xargs -r -0 vulture
+    }
+fi
+
+
+test_js_translatable_strings() {
+    # Translatable strings must be marked with _(""), not _('')
+
+    ! git grep -n -E "(gettext|_)\(['\`]" -- {src,pkg}/'*'.{js,jsx}
+}
+
+if [ "${WITH_PARTIAL_TREE:-0}" = 0 ]; then
+    test_eslint() {
+        test -x node_modules/.bin/eslint -a -x /usr/bin/node || skip 'no eslint'
+        find_scripts 'node' '*.[jt]s' '*.[jt]sx' | xargs -0 node_modules/.bin/eslint
+    }
+
+    test_typescript() {
+        test -x node_modules/.bin/tsc -a -x /usr/bin/node || skip 'no tsc'
+        # Only display tsc output if it contains errors about something other than node_modules/,
+        # and pkg/lib for non-cockpit projects
+        [ -d pkg/base1 ] || ignore="pkg/lib|"
+        # https://github.com/microsoft/TypeScript/issues/30511
+        if node_modules/.bin/tsc --checkJs false --pretty false | grep -Eqv "^(node_modules|${ignore:-} )"; then
+            node_modules/.bin/tsc ${FORCE_COLOR:+--pretty true} --checkJs false
+        fi
+    }
+fi
+
+test_stylelint() {
+    test -x node_modules/.bin/stylelint -a -x /usr/bin/node || skip 'no stylelint'
+    git ls-files -z '*.css' '*.scss' | xargs -r -0 node_modules/.bin/stylelint
+}
+
+test_no_translatable_attr() {
+    # Use of translatable attribute in HTML: should be 'translate' instead
+
+    ! git grep -n 'translatable=["'\'']yes' -- pkg doc
+}
+
+test_unsafe_security_policy() {
+    # It's dangerous to have 'unsafe-inline' or 'unsafe-eval' in our
+    # content-security-policy entries.
+
+    git grep -lIz -E 'content-security-policy.*(\*|unsafe)' 'pkg/*/manifest.json' | while read -d '' filename; do
+        if test ! -f "$(dirname ${filename})/content-security-policy.override"; then
+            echo "${filename} contains unsafe content security policy"
+        fi
+    done
+}
+
+test_json_verify() {
+    # Check JSON files for validity: exclude top-level configs (which are extended json)
+    git ls-files -z '*/*.json' | xargs -r -0 python3 -c "
+import argparse
+import json
+
+parser = argparse.ArgumentParser()
+parser.add_argument('files', nargs='+', type=argparse.FileType(encoding='utf-8'))
+args = parser.parse_args()
+
+for file in args.files:
+    try:
+        json.load(file)
+    except ValueError as exc:  # both JSONDecodeError and UnicodeError
+        print(f'{file.name}: {exc}')
+"
+}
+
+test_html_verify() {
+    # Check all HTML files for syntactic validity
+
+    git ls-files -z 'pkg/*.html' | while read -d '' filename; do
+        if ! python3 -c "import xml.etree.ElementTree as ET; ET.parse('${filename}')"; then
+            echo "${filename} contains invalid XML"
+        fi
+    done
+}
+
+test_include_config_h() {
+    # Every C file should #include "config.h" at the top
+
+    git ls-files -cz '*.c' | while read -d '' filename; do
+        if sed -n '/^#include "config.h"$/q1; /^\s*#/q;' "${filename}"; then
+            printf '%s: #include "config.h" is not the first line\n' "${filename}"
+        fi
+    done
+}
+
+### end of tests.  start of machinery.
+
+skip() {
+    printf "%s\n" "$*"
+    exit 77
+}
+
+main() {
+    if [ $# = 0 ]; then
+        tap=''
+    elif [ $# = 1 -a "$1" = "--tap" ]; then
+        tap='1'
+    else
+        printf "usage: %s [--tap]\n" "$0" >&2
+        exit 1
+    fi
+
+    cd "${0%/*}/.."
+    if [ ! -e .git ]; then
+        echo '1..0 # SKIP not in a git checkout'
+        exit 0
+    fi
+
+    if test -t 1; then
+        FORCE_COLOR=1
+    fi
+
+    exit_status=0
+    counter=0
+
+    tests=($(compgen -A function 'test_'))
+    [ -n "${tap}" ] && printf "1..%d\n" "${#tests[@]}"
+
+    for test_function in "${tests[@]}"; do
+        path="/static-code/$(echo ${test_function} | tr '_' '-')"
+        counter=$((counter + 1))
+        fail=''
+        skip=''
+
+        # run the test, capturing its output and exit status
+        output="$(${test_function} 2>&1)" && test_status=0 || test_status=$?
+
+        if [ "${test_status}" = 77 ]; then
+            if [ -z "${tap}" ]; then
+                printf >&2 "WARNING: skipping %s: %s\n" "${path}" "${output}"
+            fi
+            skip=" # SKIP ${output}"
+            output=''
+        elif [ "${test_status}" != 0 -o -n "${output}" ]; then
+            exit_status=1
+            fail=1
+        fi
+
+        # Only print output on failures or --tap mode
+        [ -n "${tap}" -o -n "${fail}" ] || continue
+
+        # excluding the plan, this is the only output that we ever generate
+        printf "%s %d %s%s\n" "${fail:+not }ok" "${counter}" "${path}" "${skip}"
+        if [ -n "${output}" ]; then
+            printf "%s\n" "${output}" | sed -e 's/^/# /'
+        fi
+    done
+
+    exit "${exit_status}"
+}
+
+main "$@"
