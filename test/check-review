@@ -74,6 +74,9 @@ class TestReview(VirtInstallMachineCase):
         r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs", is_encrypted=True)
 
+        # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
+        b.mouse("#app", "mouseenter")
+
         # Pixel test the review step with encrypted disk
         b.assert_pixels(
             "#app",
