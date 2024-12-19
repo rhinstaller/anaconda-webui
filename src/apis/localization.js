@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import { getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 
 import { debug } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
@@ -62,18 +62,24 @@ export class LocalizationClient {
     }
 
     async initData () {
-        await this.dispatch(getLanguageAction());
+        const language = await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
+        if (language) {
+            await this.dispatch(getKeyboardLayoutsAction({ language }));
+        }
     }
 
     startEventMonitor () {
         this.client.subscribe(
             { },
-            (path, iface, signal, args) => {
+            async (path, iface, signal, args) => {
                 switch (signal) {
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
-                        this.dispatch(getLanguageAction());
+                        const language = await this.dispatch(getLanguageAction());
+                        if (language) {
+                            await this.dispatch(getKeyboardLayoutsAction({ language }));
+                        }
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -138,4 +144,110 @@ export const getLocaleData = ({ locale }) => {
  */
 export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
+};
+
+const normalizeLanguage = (lang) => {
+    const parts = lang.split(".")[0].split("_");
+    return parts.length > 1 ? parts[1].toLowerCase() : parts[0];
+};
+
+/**
+ * Sets the system keyboard layout and variant.
+ * @param {string} keyboardValue - A string in the format "layoutId:variantId"
+ */
+export const setKeyboardLayout = async (keyboardValue) => {
+    const [layoutId, variantId] = keyboardValue.split(":");
+
+    try {
+        const command = ["localectl", "set-x11-keymap", layoutId];
+        if (variantId && variantId !== "default") {
+            command.push(variantId);
+        }
+
+        await cockpit.spawn(command);
+    } catch (error) {
+        console.error(`Failed to set keyboard layout (${layoutId}, ${variantId}):`, error);
+        throw error;
+    }
+};
+
+/**
+ * @param {string} lang         Language id
+ * @returns {Promise}           Resolves a list of keyboard layouts for the specified language
+ *                              in format {description:, id:}
+ */
+export const getKeyboardLayoutsForLanguage = async (lang) => {
+    const normalizedLang = normalizeLanguage(lang);
+    const filePath = "/usr/share/X11/xkb/rules/evdev.lst";
+
+    try {
+        const content = await cockpit.file(filePath).read();
+        const lines = content.trim().split("\n");
+
+        const layouts = [];
+        const layoutMap = new Map();
+        let inVariantSection = false;
+
+        // Parse the base layout ids and store them in a map
+        for (const line of lines) {
+            if (line.startsWith("! layout")) {
+                inVariantSection = false;
+                continue;
+            } else if (line.startsWith("! variant")) {
+                inVariantSection = true;
+                continue;
+            } else if (line.startsWith("! ")) {
+                inVariantSection = false;
+            }
+
+            if (!inVariantSection) {
+                const parts = line.trim().split(/\s+/);
+                if (parts.length >= 2) {
+                    const layoutId = parts[0];
+                    const layoutName = parts.slice(1).join(" ")
+                            .trim();
+                    layoutMap.set(layoutId, layoutName);
+                }
+            }
+        }
+
+        // Parse the variant section and associate with layout ids
+        inVariantSection = false;
+        for (const line of lines) {
+            if (line.startsWith("! variant")) {
+                inVariantSection = true;
+                continue;
+            } else if (line.startsWith("! ")) {
+                inVariantSection = false;
+            }
+
+            if (inVariantSection) {
+                const parts = line.trim().split(/\s+/);
+                if (parts[1] && parts[1].startsWith(`${normalizedLang}:`)) {
+                    const variantId = parts[0];
+                    const description = parts.slice(1).join(" ")
+                            .replace(`${normalizedLang}:`, "")
+                            .trim();
+
+                    // Find the base layout id associated with this variant
+                    const baseLayoutId = Array.from(layoutMap.keys()).find(layoutId =>
+                        parts[1].startsWith(`${normalizedLang}:`) && parts[1].includes(layoutId)
+                    );
+
+                    layouts.push({
+                        description,
+                        layoutId: baseLayoutId || "unknown",
+                        variantId,
+                    });
+                }
+            }
+        }
+
+        return layouts.length > 0
+            ? layouts
+            : [{ description: "Default US layout", layoutId: "us", variantId: "us" }];
+    } catch (error) {
+        console.error(`Failed to process keyboard layouts for language ${lang}:`, error);
+        throw error;
+    }
 };
