@@ -50,6 +50,9 @@ class TestStorageEncryption(VirtInstallMachineCase, StorageHelpers):
         s.set_encryption_selected(False)
         i.check_next_disabled(False)
 
+        # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
+        b.mouse("#app", "mouseenter")
+
         b.assert_pixels(
             "#app",
             "storage-step-encrypt",
@@ -59,6 +62,9 @@ class TestStorageEncryption(VirtInstallMachineCase, StorageHelpers):
         s.check_encryption_selected(False)
         encrypt = True
         s.set_encryption_selected(encrypt)
+
+        # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
+        b.mouse("#app", "mouseenter")
 
         # Disk Encryption / password screen
         b.assert_pixels(
