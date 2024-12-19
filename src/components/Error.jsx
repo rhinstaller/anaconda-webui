@@ -37,7 +37,7 @@ import {
 } from "@patternfly/react-core";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
-import { exitGui } from "../helpers/exit.js";
+import { quit } from "../apis/boss.js";
 
 import { SystemTypeContext } from "./Common.jsx";
 
@@ -232,7 +232,7 @@ const exceptionInfo = (exception, idPrefix) => {
 
 const quitButton = (isBootIso) => {
     return (
-        <Button variant="secondary" onClick={exitGui} key="reboot">
+        <Button variant="secondary" onClick={quit} key="reboot">
             {isBootIso ? _("Reboot") : _("Quit")}
         </Button>
     );

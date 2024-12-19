@@ -32,9 +32,8 @@ import {
     PendingIcon
 } from "@patternfly/react-icons";
 
-import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getSteps, installWithTasks, quit } from "../../apis/boss.js";
 
-import { exitGui } from "../../helpers/exit.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
@@ -226,7 +225,7 @@ const InstallationProgress = ({ onCritFail }) => {
               }
               secondary={
                   status === "success" &&
-                  <Button onClick={exitGui}>{isBootIso ? _("Reboot to installed system") : _("Exit to live desktop")}</Button>
+                  <Button onClick={quit}>{isBootIso ? _("Reboot to installed system") : _("Exit to live desktop")}</Button>
               }
               title={title}
               headingLevel="h2"

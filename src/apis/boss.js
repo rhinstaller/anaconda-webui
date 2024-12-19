@@ -81,3 +81,7 @@ export const installWithTasks = () => {
 export const setLocale = ({ locale }) => {
     return callClient("SetLocale", [locale]);
 };
+
+export const quit = () => {
+    return callClient("Quit", []);
+}

@@ -27,8 +27,7 @@ import {
     WizardFooterWrapper
 } from "@patternfly/react-core";
 
-import { exitGui } from "../helpers/exit.js";
-
+import { quit } from "../apis/boss.js";
 import { FooterContext, SystemTypeContext } from "./Common.jsx";
 
 const _ = cockpit.gettext;
@@ -77,7 +76,6 @@ export const AnacondaWizardFooter = ({
                 {extraActions}
                 {quitWaitsConfirmation &&
                     <QuitInstallationConfirmModal
-                      exitGui={exitGui}
                       setQuitWaitsConfirmation={setQuitWaitsConfirmation}
                     />}
                 {footerHelperText}
@@ -113,7 +111,7 @@ export const AnacondaWizardFooter = ({
     );
 };
 
-export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation }) => {
+export const QuitInstallationConfirmModal = ({ setQuitWaitsConfirmation }) => {
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     return (
@@ -123,9 +121,7 @@ export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation
               <Button
                 id="installation-quit-confirm-btn"
                 key="confirm"
-                onClick={() => {
-                    exitGui();
-                }}
+                onClick={quit}
                 variant="danger"
               >
                   {isBootIso ? _("Reboot") : _("Quit")}
