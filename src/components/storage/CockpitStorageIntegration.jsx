@@ -69,8 +69,6 @@ import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../help
 
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
-import { EmptyStatePanel } from "cockpit-components-empty-state";
-
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
@@ -78,6 +76,9 @@ import {
     useOriginalDevices,
     useRequiredSize,
 } from "../../hooks/Storage.jsx";
+
+import { EmptyStatePanel } from "cockpit-components-empty-state";
+
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 
 import "./CockpitStorageIntegration.scss";

@@ -39,6 +39,7 @@ import {
 } from "../../contexts/Common.jsx";
 
 import { getNewPartitioning } from "../../hooks/Storage.jsx";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";

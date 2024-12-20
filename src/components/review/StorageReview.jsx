@@ -35,8 +35,6 @@ import {
     StorageContext,
 } from "../../contexts/Common.jsx";
 
-import { ListingTable } from "cockpit-components-table.jsx";
-
 import {
     useOriginalDevices,
     useOriginalExistingSystems,
@@ -44,6 +42,9 @@ import {
     usePlannedDevices,
     usePlannedMountPoints,
 } from "../../hooks/Storage.jsx";
+
+import { ListingTable } from "cockpit-components-table.jsx";
+
 import { ReviewDescriptionListItem } from "./Common";
 
 import "./StorageReview.scss";

@@ -30,6 +30,7 @@ import { getDeviceChildren } from "../../helpers/storage.js";
 import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../../contexts/Common.jsx";
 
 import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { useScenario } from "../storage/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
