@@ -52,10 +52,11 @@ import {
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
+import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../hooks/Storage.jsx";
+
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../hooks/Storage.jsx";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 
 import "./MountPointMapping.scss";
