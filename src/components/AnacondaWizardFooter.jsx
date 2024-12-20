@@ -29,7 +29,7 @@ import {
 
 import { exitGui } from "../helpers/exit.js";
 
-import { FooterContext, SystemTypeContext } from "./Common.jsx";
+import { FooterContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 

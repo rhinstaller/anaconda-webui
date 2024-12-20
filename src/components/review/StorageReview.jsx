@@ -35,7 +35,7 @@ import { ListingTable } from "cockpit-components-table.jsx";
 
 import {
     StorageContext,
-} from "../Common.jsx";
+} from "../../contexts/Common.jsx";
 import {
     useOriginalDevices,
     useOriginalExistingSystems,

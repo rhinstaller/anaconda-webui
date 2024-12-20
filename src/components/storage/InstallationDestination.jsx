@@ -49,7 +49,7 @@ import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { StorageContext, SystemTypeContext } from "../Common.jsx";
+import { StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 import { useOriginalDevices, useOriginalExistingSystems } from "./Common.jsx";
 
 import "./InstallationDestination.scss";
