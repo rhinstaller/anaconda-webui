@@ -49,10 +49,11 @@ import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/stora
 
 import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../helpers/storage.js";
 
+import { StorageContext } from "../../contexts/Common.jsx";
+
 import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { StorageContext } from "../../contexts/Common.jsx";
 import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "./Common.jsx";
 
 import "./ReclaimSpaceModal.scss";

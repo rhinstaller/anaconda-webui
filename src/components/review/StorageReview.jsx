@@ -31,11 +31,12 @@ import {
     hasEncryptedAncestor,
 } from "../../helpers/storage.js";
 
-import { ListingTable } from "cockpit-components-table.jsx";
-
 import {
     StorageContext,
 } from "../../contexts/Common.jsx";
+
+import { ListingTable } from "cockpit-components-table.jsx";
+
 import {
     useOriginalDevices,
     useOriginalExistingSystems,

@@ -23,8 +23,9 @@ import {
     TextContent,
 } from "@patternfly/react-core";
 
-import feedbackQRcode from "../../../images/qr-code-feedback.svg";
 import { SystemTypeContext } from "../../contexts/Common.jsx";
+
+import feedbackQRcode from "../../../images/qr-code-feedback.svg";
 
 import "./Feedback.scss";
 

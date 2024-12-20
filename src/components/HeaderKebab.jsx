@@ -40,6 +40,7 @@ import {
 import { getAnacondaVersion } from "../helpers/product.js";
 
 import { OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
+
 import { UserIssue } from "./Error.jsx";
 import { CockpitStorageIntegration, ModifyStorage } from "./storage/CockpitStorageIntegration.jsx";
 

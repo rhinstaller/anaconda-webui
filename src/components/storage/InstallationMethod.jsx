@@ -30,7 +30,6 @@ import {
     resetPartitioning,
 } from "../../apis/storage_partitioning.js";
 
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import {
     DialogsContext,
     FooterContext,
@@ -38,6 +37,8 @@ import {
     StorageContext,
     StorageDefaultsContext,
 } from "../../contexts/Common.jsx";
+
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";
