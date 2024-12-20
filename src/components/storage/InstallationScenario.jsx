@@ -44,7 +44,6 @@ import {
     SystemTypeContext
 } from "../../contexts/Common.jsx";
 
-import { StorageReview } from "../review/StorageReview.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
@@ -54,7 +53,8 @@ import {
     useOriginalExistingSystems,
     useRequiredSize,
     useUsablePartitions,
-} from "./Common.jsx";
+} from "../../hooks/Storage.jsx";
+import { StorageReview } from "../review/StorageReview.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { helpConfiguredStorage, helpEraseAll, helpHomeReuse, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
 

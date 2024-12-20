@@ -51,7 +51,7 @@ import { StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { useOriginalDevices, useOriginalExistingSystems } from "./Common.jsx";
+import { useOriginalDevices, useOriginalExistingSystems } from "../../hooks/Storage.jsx";
 
 import "./InstallationDestination.scss";
 

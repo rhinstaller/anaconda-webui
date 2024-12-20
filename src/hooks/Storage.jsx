@@ -18,34 +18,34 @@ import { useContext, useEffect, useState } from "react";
 
 import {
     getRequiredSpace
-} from "../../apis/payloads.js";
+} from "../apis/payloads.js";
 import {
     setBootloaderDrive,
-} from "../../apis/storage_bootloader.js";
+} from "../apis/storage_bootloader.js";
 import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatTypeData,
     getMountPointConstraints,
     getRequiredDeviceSize,
-} from "../../apis/storage_devicetree.js";
+} from "../apis/storage_devicetree.js";
 import {
     setInitializationMode,
     setInitializeLabelsEnabled,
-} from "../../apis/storage_disk_initialization.js";
+} from "../apis/storage_disk_initialization.js";
 import {
     createPartitioning,
     getDeviceTree,
     partitioningSetEncrypt,
     partitioningSetHomeReuse,
     partitioningSetPassphrase,
-} from "../../apis/storage_partitioning.js";
+} from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors } from "../../helpers/storage.js";
+import { getDeviceAncestors } from "../helpers/storage.js";
 
-import { StorageContext } from "../../contexts/Common.jsx";
+import { scenarios } from "../components/storage/InstallationScenario.jsx";
 
-import { scenarios } from "./InstallationScenario.jsx";
+import { StorageContext } from "../contexts/Common.jsx";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();

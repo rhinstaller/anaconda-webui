@@ -54,7 +54,7 @@ import { StorageContext } from "../../contexts/Common.jsx";
 import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "./Common.jsx";
+import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "../../hooks/Storage.jsx";
 
 import "./ReclaimSpaceModal.scss";
 
