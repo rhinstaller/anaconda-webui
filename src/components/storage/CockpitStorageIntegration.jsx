@@ -67,9 +67,10 @@ import { getDevicesAction, setStorageScenarioAction } from "../../actions/storag
 
 import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
 
+import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
+
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,

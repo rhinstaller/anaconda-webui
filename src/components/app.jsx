@@ -31,12 +31,13 @@ import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 import { readConf } from "../helpers/conf.js";
 import { debug } from "../helpers/log.js";
 
+import { MainContextWrapper } from "../contexts/Common.jsx";
+
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 import { read_os_release as readOsRelease } from "os-release.js";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { MainContextWrapper } from "../contexts/Common.jsx";
 import { bugzillaPrefiledReportURL, ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;

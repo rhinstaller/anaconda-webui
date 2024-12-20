@@ -44,6 +44,7 @@ import {
 import { getDeviceAncestors } from "../../helpers/storage.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
+
 import { scenarios } from "./InstallationScenario.jsx";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
