@@ -36,7 +36,7 @@ import { read_os_release as readOsRelease } from "os-release.js";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { MainContextWrapper } from "./Common.jsx";
+import { MainContextWrapper } from "../contexts/Common.jsx";
 import { bugzillaPrefiledReportURL, ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;

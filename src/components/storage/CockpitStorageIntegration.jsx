@@ -69,7 +69,7 @@ import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../help
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { StorageContext, TargetSystemRootContext } from "../Common.jsx";
+import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,

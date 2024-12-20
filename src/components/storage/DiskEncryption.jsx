@@ -37,7 +37,7 @@ import {
     setLuksEncryptionDataAction
 } from "../../actions/storage-actions.js";
 
-import { RuntimeContext, StorageContext } from "../Common.jsx";
+import { RuntimeContext, StorageContext } from "../../contexts/Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./DiskEncryption.scss";

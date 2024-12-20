@@ -47,7 +47,7 @@ import {
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { RuntimeContext, UsersContext } from "../Common.jsx";
+import { RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./Accounts.scss";

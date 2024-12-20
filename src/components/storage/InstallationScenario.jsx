@@ -42,7 +42,7 @@ import {
     StorageContext,
     StorageDefaultsContext,
     SystemTypeContext
-} from "../Common.jsx";
+} from "../../contexts/Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import {
     useDiskFreeSpace,

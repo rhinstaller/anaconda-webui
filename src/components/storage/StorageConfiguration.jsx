@@ -25,7 +25,7 @@ import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning
 import { setLuksEncryptionDataAction } from "../../actions/storage-actions.js";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { FooterContext, StorageContext } from "../Common.jsx";
+import { FooterContext, StorageContext } from "../../contexts/Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const _ = cockpit.gettext;

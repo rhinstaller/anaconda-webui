@@ -38,7 +38,7 @@ import { exitGui } from "../../helpers/exit.js";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
+import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 import { Feedback } from "./Feedback.jsx";
 
 import "./InstallationProgress.scss";

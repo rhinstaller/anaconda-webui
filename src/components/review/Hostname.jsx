@@ -35,7 +35,7 @@ import {
 
 import { setHostname } from "../../apis/network.js";
 
-import { NetworkContext } from "../Common.jsx";
+import { NetworkContext } from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 const idPrefix = "installation-review";

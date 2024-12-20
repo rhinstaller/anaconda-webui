@@ -37,7 +37,7 @@ import {
     OsReleaseContext,
     StorageContext,
     StorageDefaultsContext,
-} from "../Common.jsx";
+} from "../../contexts/Common.jsx";
 import { getNewPartitioning } from "./Common.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario, scenarios } from "./InstallationScenario.jsx";

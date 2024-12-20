@@ -29,7 +29,7 @@ import {
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { FooterContext, StorageContext, SystemTypeContext } from "./Common.jsx";
+import { FooterContext, StorageContext, SystemTypeContext } from "../contexts/Common.jsx";
 import { getSteps } from "./steps.js";
 
 export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail, showStorage }) => {
