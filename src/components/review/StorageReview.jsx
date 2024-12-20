@@ -43,7 +43,7 @@ import {
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
-} from "../storage/Common.jsx";
+} from "../../hooks/Storage.jsx";
 import { ReviewDescriptionListItem } from "./Common";
 
 import "./StorageReview.scss";

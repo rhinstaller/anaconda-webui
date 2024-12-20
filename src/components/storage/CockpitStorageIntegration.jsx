@@ -77,7 +77,7 @@ import {
     useMountPointConstraints,
     useOriginalDevices,
     useRequiredSize,
-} from "./Common.jsx";
+} from "../../hooks/Storage.jsx";
 import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
 
 import "./CockpitStorageIntegration.scss";
