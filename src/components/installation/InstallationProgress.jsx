@@ -36,9 +36,10 @@ import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
 
 import { exitGui } from "../../helpers/exit.js";
 
+import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
+
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
-import { OsReleaseContext, SystemTypeContext } from "../Common.jsx";
 import { Feedback } from "./Feedback.jsx";
 
 import "./InstallationProgress.scss";

@@ -28,7 +28,8 @@ import { InfoCircleIcon } from "@patternfly/react-icons";
 
 import { getIsFinal } from "../apis/runtime";
 
-import { NetworkContext } from "./Common.jsx";
+import { NetworkContext } from "../contexts/Common.jsx";
+
 import { HeaderKebab } from "./HeaderKebab.jsx";
 
 import "./AnacondaHeader.scss";
