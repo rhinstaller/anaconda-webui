@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-17 03:23+0000\n"
+"POT-Creation-Date: 2024-12-20 03:04+0000\n"
 "PO-Revision-Date: 2024-12-03 11:29+0000\n"
 "Last-Translator: Luna Jernberg <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/"
@@ -97,6 +97,12 @@ msgstr "Åtgärder"
 #: src/components/storage/MountPointMapping.jsx:646
 msgid "Add mount"
 msgstr "Lägg till montering"
+
+#: src/components/localization/InstallationLanguage.jsx:186
+#, fuzzy
+#| msgid "Available languages"
+msgid "Additional languages"
+msgstr "Tillgängliga språk"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:147
 msgid "All changes made in the storage editor take effect immediately."
@@ -194,13 +200,15 @@ msgstr ""
 msgid "Checking storage configuration"
 msgstr "Kontrollerar lagringskonfiguration"
 
-#: src/components/localization/InstallationLanguage.jsx:306
+#: src/components/localization/InstallationLanguage.jsx:309
 msgid "Choose a language"
 msgstr "Välj ett språk"
 
-#: src/components/localization/InstallationLanguage.jsx:315
-msgid "Chosen language: "
-msgstr "Valt språk: "
+#: src/components/localization/InstallationLanguage.jsx:271
+#, fuzzy
+#| msgid "Clear input value"
+msgid "Clear search input"
+msgstr "Rensa inmatningsvärde"
 
 #: src/components/storage/InstallationDestination.jsx:353
 #: src/components/storage/EncryptedDevices.jsx:159
@@ -211,10 +219,6 @@ msgstr "Stäng"
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr "Cockpitlagring gav inte lösenfrasen för att låsa upp krypterad enhet."
-
-#: src/components/localization/InstallationLanguage.jsx:149
-msgid "Common languages"
-msgstr "Vanliga språk"
 
 #: src/components/installation/InstallationProgress.jsx:186
 msgid "Completed"
@@ -342,10 +346,6 @@ msgid ""
 msgstr ""
 "Slutför: Systemkonfigurationen är klar. Den slutförande installationen kan "
 "ta en stund."
-
-#: src/components/localization/InstallationLanguage.jsx:273
-msgid "Find a language"
-msgstr "Hitta ett språk"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:550
 msgid "Free space requirements met"
@@ -546,7 +546,7 @@ msgstr "Inga diskar tillgängliga"
 msgid "No disks selected"
 msgstr "Inga diskar valda"
 
-#: src/components/localization/InstallationLanguage.jsx:192
+#: src/components/localization/InstallationLanguage.jsx:204
 msgid "No results found"
 msgstr "Inga resultat funna"
 
@@ -799,6 +799,12 @@ msgstr "Spara"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Skanna QR-koden med din telefon eller besök:"
 
+#: src/components/localization/InstallationLanguage.jsx:264
+#, fuzzy
+#| msgid "Choose a language"
+msgid "Search for a language"
+msgstr "Välj ett språk"
+
 #: src/components/storage/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
@@ -918,6 +924,12 @@ msgstr "Framgångsrikt installerat"
 msgid "Successfully unlocked $0."
 msgstr "$0 har låsts upp framgångsrikt."
 
+#: src/components/localization/InstallationLanguage.jsx:161
+#, fuzzy
+#| msgid "Choose a language"
+msgid "Suggested languages"
+msgstr "Välj ett språk"
+
 #: src/components/users/Accounts.jsx:296
 msgid "System"
 msgstr "System"
@@ -933,14 +945,6 @@ msgid ""
 msgstr ""
 "Systemkonfiguration: Programvaruinstallationen är klar. Systemet håller nu "
 "på att konfigureras."
-
-#: src/components/localization/InstallationLanguage.jsx:317
-msgid ""
-"The chosen language will be used for installation and in the installed "
-"software. "
-msgstr ""
-"Det valda språket kommer att användas för installationen och i den "
-"installerade programvaran. "
 
 #: src/components/Error.jsx:278
 msgid ""
@@ -1074,11 +1078,11 @@ msgstr "Användarnamn måste vara kortare än 33 tecken"
 msgid "Weak"
 msgstr "Svagt"
 
-#: src/components/localization/InstallationLanguage.jsx:348
+#: src/components/localization/InstallationLanguage.jsx:339
 msgid "Welcome"
 msgstr "Välkommen"
 
-#: src/components/localization/InstallationLanguage.jsx:340
+#: src/components/localization/InstallationLanguage.jsx:331
 msgid "Welcome to $0"
 msgstr "Välkommen till $0"
 
@@ -1163,6 +1167,22 @@ msgstr "krymp till $0"
 msgid "undo"
 msgstr "ångra"
 
+#~ msgid "Chosen language: "
+#~ msgstr "Valt språk: "
+
+#~ msgid "Common languages"
+#~ msgstr "Vanliga språk"
+
+#~ msgid "Find a language"
+#~ msgstr "Hitta ett språk"
+
+#~ msgid ""
+#~ "The chosen language will be used for installation and in the installed "
+#~ "software. "
+#~ msgstr ""
+#~ "Det valda språket kommer att användas för installationen och i den "
+#~ "installerade programvaran. "
+
 #~ msgid "Devices should be unlocked before assigning mount points."
 #~ msgstr "Enheter bör låsas upp innan monteringspunkter tilldelas."
 
@@ -1211,9 +1231,6 @@ msgstr "ångra"
 
 #~ msgid "Applying new disk selection..."
 #~ msgstr "Tillämpar nytt diskval..."
-
-#~ msgid "Clear input value"
-#~ msgstr "Rensa inmatningsvärde"
 
 #~ msgid "Current selections"
 #~ msgstr "Nuvarande val"
@@ -2019,9 +2036,6 @@ msgstr "ångra"
 
 #~ msgid "Available Layouts"
 #~ msgstr "Tillgängliga layouter"
-
-#~ msgid "Available languages"
-#~ msgstr "Tillgängliga språk"
 
 #~ msgid "Available locales"
 #~ msgstr "Tillgängliga lokaler"
