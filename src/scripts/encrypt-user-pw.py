@@ -1,6 +1,7 @@
-import crypt
 import sys
 from random import SystemRandom as sr
+
+import crypt_r  # type: ignore[import]
 
 
 # Using the function from pyanaconda/core/users.py
@@ -20,16 +21,16 @@ def crypt_password(password):
 
     # and try to compute the password hash using our yescrypt setting
     try:
-        cryptpw = crypt.crypt(password, setting)
+        cryptpw = crypt_r.crypt(password, setting)
 
     # Fallback to sha512crypt, if yescrypt is not supported
     except OSError:
         sys.stderr.write("yescrypt is not supported, falling back to sha512crypt\n")
         try:
-            cryptpw = crypt.crypt(password, crypt.METHOD_SHA512)
+            cryptpw = crypt_r.crypt(password, crypt_r.METHOD_SHA512)
         except OSError as exc:
             raise RuntimeError(
-                f"Unable to encrypt password: unsupported algorithm {crypt.METHOD_SHA512}"
+                f"Unable to encrypt password: unsupported algorithm {crypt_r.METHOD_SHA512}"
             ) from exc
 
     return cryptpw
