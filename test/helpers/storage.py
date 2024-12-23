@@ -30,12 +30,12 @@ DISK_INITIALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Storage.Disk
 STORAGE_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage"
 DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DiskInitialization"
 
-id_prefix = "installation-method"
+id_prefix = "method"
 
 
 class StorageDestination():
     def __init__(self, browser, machine):
-        self._step = "installation-method"
+        self._step = id_prefix
         self.browser = browser
         self.machine = machine
 
@@ -80,7 +80,7 @@ class StorageDestination():
         self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
 
     def return_to_installation(self):
-        self.browser.click("#cockpit-storage-integration-return-to-installation-button")
+        self.browser.click("#cockpit-storage-integration-return-to-button")
 
     def return_to_installation_confirm(self):
         with self.browser.wait_timeout(30):
@@ -161,7 +161,7 @@ class StorageEncryption():
             b.wait_in_text("#unlock-device-dialog .pf-v5-c-helper-text", fail_text)
 
     def unlock_all_encrypted(self):
-        self.browser.click("#installation-method-unlock-devices-btn")
+        self.browser.click(f"#{id_prefix}-unlock-devices-btn")
 
 
 class StorageUtils(StorageDestination):

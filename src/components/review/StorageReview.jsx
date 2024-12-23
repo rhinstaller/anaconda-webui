@@ -344,7 +344,7 @@ export const StorageReviewNote = () => {
 
     return (
         <ReviewDescriptionListItem
-          id="installation-review-target-storage-note"
+          id="review-target-storage-note"
           term={_("Note")}
           description={description}
         />

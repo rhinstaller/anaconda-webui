@@ -41,7 +41,6 @@ import {
     DialogsContext,
     StorageContext,
     StorageDefaultsContext,
-    SystemTypeContext
 } from "../Common.jsx";
 import { StorageReview } from "../review/StorageReview.jsx";
 import {
@@ -514,12 +513,12 @@ const InstallationScenarioSelector = ({
 export const InstallationScenario = ({
     dispatch,
     idPrefix,
+    isFirstScreen,
     isFormDisabled,
     setIsFormValid,
     showStorage,
 }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-    const headingLevel = isBootIso ? "h2" : "h3";
+    const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
     const devices = useOriginalDevices();
 
