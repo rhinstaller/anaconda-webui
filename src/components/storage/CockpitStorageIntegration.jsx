@@ -79,7 +79,8 @@ import {
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { checkConfiguredStorage, checkUseFreeSpace } from "./InstallationScenario.jsx";
+import { checkConfiguredStorage } from "./scenarios/UseConfiguredStorage.jsx";
+import { checkUseFreeSpace } from "./scenarios/UseFreeSpace.jsx";
 
 import "./CockpitStorageIntegration.scss";
 
