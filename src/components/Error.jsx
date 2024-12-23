@@ -39,7 +39,7 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { exitGui } from "../helpers/exit.js";
 
-import { SystemTypeContext } from "./Common.jsx";
+import { SystemTypeContext } from "../contexts/Common.jsx";
 
 import "./Error.scss";
 

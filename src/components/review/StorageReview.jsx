@@ -31,18 +31,20 @@ import {
     hasEncryptedAncestor,
 } from "../../helpers/storage.js";
 
-import { ListingTable } from "cockpit-components-table.jsx";
-
 import {
     StorageContext,
-} from "../Common.jsx";
+} from "../../contexts/Common.jsx";
+
 import {
     useOriginalDevices,
     useOriginalExistingSystems,
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
-} from "../storage/Common.jsx";
+} from "../../hooks/Storage.jsx";
+
+import { ListingTable } from "cockpit-components-table.jsx";
+
 import { ReviewDescriptionListItem } from "./Common";
 
 import "./StorageReview.scss";

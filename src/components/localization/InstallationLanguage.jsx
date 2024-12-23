@@ -45,7 +45,7 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { LanguageContext, OsReleaseContext } from "../Common.jsx";
+import { LanguageContext, OsReleaseContext } from "../../contexts/Common.jsx";
 
 import "./InstallationLanguage.scss";
 
