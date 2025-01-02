@@ -20,7 +20,7 @@ export const getSteps = (userInterfaceConfig, ...args) => {
         new PageInstallationMethod(...args),
         new PageStorageConfiguration(...args),
         {
-            id: "storage-configuration-manual",
+            id: "anaconda-screen-storage-configuration-manual",
             isHidden: mountPointMappingStep.isHidden,
             label: _("Storage configuration"),
             steps: [mountPointMappingStep],

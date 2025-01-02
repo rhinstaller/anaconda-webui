@@ -23,6 +23,7 @@ HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
+from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -30,24 +31,23 @@ DISK_INITIALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Storage.Disk
 STORAGE_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage"
 DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DiskInitialization"
 
-id_prefix = "installation-method"
-
 
 class StorageDestination():
     def __init__(self, browser, machine):
-        self._step = "installation-method"
+        self._step = INSTALLATION_METHOD
+
         self.browser = browser
         self.machine = machine
 
     @log_step(snapshot_before=True)
     def check_disk_selected(self, disk, selected=True, size=None):
         if selected:
-            self.browser.wait_visible(f"#{id_prefix}-target-disk-{disk}")
+            self.browser.wait_visible(f"#{self._step}-target-disk-{disk}")
         else:
-            self.browser.wait_not_present(f"#{id_prefix}-target-disk-{disk}")
+            self.browser.wait_not_present(f"#{self._step}-target-disk-{disk}")
 
         if size is not None:
-            self.browser.wait_in_text(f"#{id_prefix}-target-disk-{disk}", size)
+            self.browser.wait_in_text(f"#{self._step}-target-disk-{disk}", size)
 
     @log_step()
     def wait_no_disks(self):
@@ -80,7 +80,7 @@ class StorageDestination():
         self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
 
     def return_to_installation(self):
-        self.browser.click("#cockpit-storage-integration-return-to-installation-button")
+        self.browser.click("#cockpit-storage-integration-return-to-installer-button")
 
     def return_to_installation_confirm(self):
         with self.browser.wait_timeout(30):
@@ -161,7 +161,7 @@ class StorageEncryption():
             b.wait_in_text("#unlock-device-dialog .pf-v5-c-helper-text", fail_text)
 
     def unlock_all_encrypted(self):
-        self.browser.click("#installation-method-unlock-devices-btn")
+        self.browser.click(f"#{self._step}-unlock-devices-btn")
 
 
 class StorageUtils(StorageDestination):
@@ -419,7 +419,7 @@ class StorageScenario():
         self.browser = browser
 
     def _partitioning_selector(self, scenario):
-        return f"#{id_prefix}-scenario-" + scenario
+        return f"#{self._step}-scenario-" + scenario
 
     def wait_scenario_visible(self, scenario, visible=True):
         if visible:
@@ -551,8 +551,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         StorageDBus.__init__(self, machine)
         StorageDestination.__init__(self, browser, machine)
 
+        self._step = CUSTOM_MOUNT_POINT
+
     def table_row(self, row):
-        return f"#mount-point-mapping-table-row-{row}"
+        return f"#{self._step}-table-row-{row}"
 
     def disks_loaded(self, disks):
         usable_disks = self.dbus_get_usable_disks()
@@ -577,12 +579,12 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def select_disks(self, disks):
         self.browser.wait(lambda: self.disks_loaded(disks))
 
-        self.browser.click(f"#{id_prefix}-change-destination-button")
+        self.browser.click(f"#{self._step}-change-destination-button")
 
         for (disk, selected) in disks:
-            self.browser.set_checked(f"#{id_prefix}-disk-selection-menu-item-{disk} input[type=checkbox]", selected)
+            self.browser.set_checked(f"#{self._step}-disk-selection-menu-item-{disk} input[type=checkbox]", selected)
 
-        self.browser.click(f"#{id_prefix}-change-destination-modal button:contains('Select')")
+        self.browser.click(f"#{self._step}-change-destination-modal button:contains('Select')")
         for (disk, selected) in disks:
             self.check_disk_selected(disk, selected)
 
@@ -592,10 +594,10 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.set_partitioning("mount-point-mapping")
 
         self.browser.click("button:contains(Next)")
-        self.browser.wait_js_cond('window.location.hash === "#/mount-point-mapping"')
+        self.browser.wait_js_cond(f'window.location.hash === "#/{self._step}"')
 
         with self.browser.wait_timeout(30):
-            self.browser.wait_visible("#mount-point-mapping-table")
+            self.browser.wait_visible(f"#{self._step}-point-mapping-table")
 
     def select_mountpoint_row_mountpoint(self, row, mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
@@ -643,24 +645,24 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_checked(f"{self.table_row(row)} td[data-label='Reformat'] input", selected)
 
     def remove_mountpoint_row(self, row, initial_count):
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {initial_count}")
         self.browser.click(f"{self.table_row(row)} button[aria-label='Remove']")
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count - 1}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {initial_count - 1}")
 
     def check_mountpoint_row_reformat(self, row, checked):
         checked_selector = "input:checked" if checked else "input:not(:checked)"
         self.browser.wait_visible(f"{self.table_row(row)} td[data-label='Reformat'] {checked_selector}")
 
     def add_mountpoint_row(self):
-        rows = self.browser.call_js_func("ph_count", '#mount-point-mapping-table tbody tr')
+        rows = self.browser.call_js_func("ph_count", f'#{self._step}-table tbody tr')
         self.browser.click("button:contains('Add mount')")
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {rows + 1}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {rows + 1}")
 
     def wait_mountpoint_table_column_helper(self, row, column, text=None, present=True):
         if present:
-            self.browser.wait_in_text(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error", text)
+            self.browser.wait_in_text(f"#{self._step}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error", text)
         else:
-            self.browser.wait_not_present(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
+            self.browser.wait_not_present(f"#{self._step}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
 
 
 class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):

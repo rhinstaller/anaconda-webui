@@ -354,7 +354,7 @@ const CustomFooter = () => {
 export class Page {
     constructor () {
         this.component = Accounts;
-        this.id = "accounts";
+        this.id = "anaconda-screen-accounts";
         this.label = _("Create Account");
     }
 }

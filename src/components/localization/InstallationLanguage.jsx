@@ -50,6 +50,7 @@ import { LanguageContext } from "../../contexts/Common.jsx";
 import "./InstallationLanguage.scss";
 
 const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-language";
 
 const getLanguageEnglishName = lang => lang["english-name"].v;
 const getLanguageNativeName = lang => lang["native-name"].v;
@@ -82,7 +83,6 @@ class LanguageSelector extends React.Component {
 
     renderOptions (filter) {
         const { commonLocales, languages } = this.props;
-        const idPrefix = this.props.idPrefix;
 
         const filtered = [];
         const filterLow = filter.toLowerCase();
@@ -114,7 +114,7 @@ class LanguageSelector extends React.Component {
 
             return (
                 <MenuItem
-                  id={`${idPrefix}-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
+                  id={`${SCREEN_ID}-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
                   isSelected={isSelected}
                   key={`${prefix}-${getLocaleId(locale)}`}
                   itemId={getLocaleId(locale)}
@@ -159,7 +159,7 @@ class LanguageSelector extends React.Component {
                 <React.Fragment key="group-common-languages">
                     <MenuGroup
                       label={_("Suggested languages")}
-                      id={idPrefix + "-common-languages"}
+                      id={SCREEN_ID + "-common-languages"}
                       labelHeadingLevel="h3"
                     >
                         {suggestedItems}
@@ -184,7 +184,7 @@ class LanguageSelector extends React.Component {
             filtered.push(
                 <MenuGroup
                   label={_("Additional languages")}
-                  id={`${idPrefix}-additional-languages`}
+                  id={`${SCREEN_ID}-additional-languages`}
                   labelHeadingLevel="h3"
                   key="group-additional-languages"
                 >
@@ -197,7 +197,7 @@ class LanguageSelector extends React.Component {
         if (filter && filtered.length === 0) {
             return [
                 <MenuItem
-                  id={`${idPrefix}-search-no-result`}
+                  id={`${SCREEN_ID}-search-no-result`}
                   isDisabled
                   key="no-result"
                 >
@@ -256,7 +256,7 @@ class LanguageSelector extends React.Component {
 
         return (
             <>
-                <TextInputGroup className="installation-language-search">
+                <TextInputGroup className="anaconda-screen-language-search">
                     <TextInputGroupMain
                       icon={<SearchIcon />}
                       value={this.state.search}
@@ -276,8 +276,8 @@ class LanguageSelector extends React.Component {
                     )}
                 </TextInputGroup>
                 <Menu
-                  className="installation-language-menu"
-                  id={this.props.idPrefix + "-language-menu"}
+                  className="anaconda-screen-language-menu"
+                  id={SCREEN_ID + "-language-menu"}
                   isScrollable
                   isPlain
                   onSelect={handleOnSelect}
@@ -294,7 +294,7 @@ class LanguageSelector extends React.Component {
     }
 }
 
-const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification }) => {
+const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
     const { commonLocales, language, languages } = useContext(LanguageContext);
 
     useEffect(() => {
@@ -312,7 +312,6 @@ const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification })
                 <FormGroup>
                     <LanguageSelector
                       id="language-selector"
-                      idPrefix={idPrefix}
                       languages={languages}
                       commonLocales={commonLocales}
                       language={language}
@@ -329,7 +328,7 @@ const InstallationLanguage = ({ idPrefix, setIsFormValid, setStepNotification })
 export class Page {
     constructor () {
         this.component = InstallationLanguage;
-        this.id = "installation-language";
+        this.id = SCREEN_ID;
         this.label = _("Welcome");
     }
 }
