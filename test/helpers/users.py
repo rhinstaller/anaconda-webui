@@ -21,13 +21,15 @@ sys.path.append(HELPERS_DIR)
 
 from password import Password
 from step_logger import log_step
+from steps import ACCOUNTS
 
 USERS_SERVICE = "org.fedoraproject.Anaconda.Modules.Users"
 USERS_INTERFACE = USERS_SERVICE
 USERS_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users"
 
-CREATE_ACCOUNT_ID_PREFIX = "accounts-create-account"
-ROOT_ACCOUNT_ID_PREFIX = "accounts-root-account"
+ACCOUNTS_SCREEN = ACCOUNTS
+CREATE_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-create-account"
+ROOT_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-root-account"
 
 
 class UsersDBus():
@@ -78,27 +80,27 @@ class Users(UsersDBus):
 
     @log_step(snapshot_before=True)
     def set_user_name(self, user_name, append=False, value_check=True):
-        sel = "#accounts-create-account-user-name"
+        sel = f"#{ACCOUNTS_SCREEN}-create-account-user-name"
         self.browser.set_input_text(sel, user_name, append=append, value_check=value_check)
 
     @log_step(snapshot_before=True)
     def check_user_name(self, user_name):
-        sel = "#accounts-create-account-user-name"
+        sel = f"#{ACCOUNTS_SCREEN}-create-account-user-name"
         self.browser.wait_val(sel, user_name)
 
     @log_step(snapshot_before=True)
     def set_full_name(self, full_name, append=False, value_check=True):
-        sel = "#accounts-create-account-full-name"
+        sel = f"#{ACCOUNTS_SCREEN}-create-account-full-name"
         self.browser.set_input_text(sel, full_name, append=append, value_check=value_check)
 
     @log_step(snapshot_before=True)
     def check_full_name(self, full_name):
-        sel = "#accounts-create-account-full-name"
+        sel = f"#{ACCOUNTS_SCREEN}-create-account-full-name"
         self.browser.wait_val(sel, full_name)
 
     @log_step(snapshot_before=True)
     def enable_root_account(self, enable):
-        sel = "#accounts-root-account-enable-root-account"
+        sel = f"#{ACCOUNTS_SCREEN}-root-account-enable-root-account"
         self.browser.set_checked(sel, enable)
 
     def set_valid_root_password(self, valid=True):

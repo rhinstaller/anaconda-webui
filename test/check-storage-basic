@@ -215,7 +215,7 @@ class TestMultipleDisks(VirtInstallMachineCase):
         i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
         b.wait_in_text(
-            "#storage-configuration-step-notification",
+            "#anaconda-screen-storage-configuration-step-notification",
             "Selected disks vda contain volume group 'vg' that also uses further unselected disks"
         )
 

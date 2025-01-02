@@ -54,7 +54,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
-        b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+        b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
         s.select_mountpoint([(dev, True)])
 
@@ -101,7 +101,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
-        b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+        b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
         s.select_mountpoint([(dev, True)])
 
@@ -111,7 +111,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.check_mountpoint_row_reformat(2, True)
 
         s.check_mountpoint_row_mountpoint(1, "/")
-        selector = "#mount-point-mapping-table-row-1 .pf-v5-c-select__toggle"
+        selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v5-c-select__toggle"
         b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
         select_entry = f"{selector} + ul li:nth-of-type(2) button"
         b.click(select_entry)

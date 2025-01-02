@@ -654,7 +654,7 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         mount_point_prefix: targetSystemRoot,
     });
     // Allow to modify storage only when we are in the scenario selection page
-    const isDisabled = currentStepId !== "installation-method";
+    const isDisabled = currentStepId !== "anaconda-screen-method";
     const item = (
         <DropdownItem
           id="modify-storage"

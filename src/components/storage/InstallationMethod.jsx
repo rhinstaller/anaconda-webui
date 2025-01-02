@@ -227,7 +227,7 @@ const usePageInit = () => {
 export class Page {
     constructor () {
         this.component = InstallationMethod;
-        this.id = "installation-method";
+        this.id = "anaconda-screen-method";
         this.label = _("Installation method");
         this.usePageInit = usePageInit;
     }

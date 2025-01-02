@@ -291,7 +291,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.unlock_device("einszweidreivier", ["vda4"], ["vda4"])
 
         s.select_mountpoint([(dev1, True)])
-        b.wait_not_present("#mount-point-mapping-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
+        b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
         self._testEncryptedUnlock(b, m)
 
@@ -306,7 +306,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_device(2, "vda5")
 
         s.check_mountpoint_row_mountpoint(1, "/")
-        selector = "#mount-point-mapping-table-row-1 .pf-v5-c-select__toggle"
+        selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v5-c-select__toggle"
         b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
         select_entry = f"{selector} + ul li:nth-of-type(3) button"
         b.click(select_entry)
