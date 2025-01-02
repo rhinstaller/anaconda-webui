@@ -43,9 +43,9 @@ import {
 
 import { getDeviceAncestors } from "../helpers/storage.js";
 
-import { scenarios } from "../components/storage/InstallationScenario.jsx";
-
 import { StorageContext } from "../contexts/Common.jsx";
+
+import { scenarios } from "../components/storage/scenarios/index.js";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();

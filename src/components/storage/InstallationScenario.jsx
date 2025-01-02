@@ -19,26 +19,21 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
-    Checkbox,
     FormGroup,
     FormSection,
     Radio,
     Title,
 } from "@patternfly/react-core";
 
-import { getAutopartReuseDBusRequest } from "../../apis/storage_partitioning.js";
-
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
 import { debug } from "../../helpers/log.js";
 import {
-    bootloaderTypes,
-    getDeviceAncestors,
     getLockedLUKSDevices,
 } from "../../helpers/storage.js";
+import { AvailabilityState } from "./scenarios/helpers.js";
 
 import {
-    DialogsContext,
     StorageContext,
     StorageDefaultsContext,
     SystemTypeContext
@@ -55,313 +50,12 @@ import {
     useUsablePartitions,
 } from "../../hooks/Storage.jsx";
 
-import { StorageReview } from "../review/StorageReview.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
-import { helpConfiguredStorage, helpEraseAll, helpHomeReuse, helpMountPointMapping, helpUseFreeSpace } from "./HelpAutopartOptions.jsx";
+import { scenarios } from "./scenarios/index.js";
 
 import "./InstallationScenario.scss";
 
 const _ = cockpit.gettext;
-
-function AvailabilityState (available = false, hidden = true, reason = null, hint = null, enforceAction = false) {
-    this.available = available;
-    this.enforceAction = enforceAction;
-    this.hidden = hidden;
-    this.reason = reason;
-    this.hint = hint;
-}
-
-const checkEraseAll = ({ diskTotalSpace, requiredSize, selectedDisks }) => {
-    const availability = new AvailabilityState();
-
-    availability.available = !!selectedDisks.length;
-    availability.hidden = false;
-
-    if (diskTotalSpace < requiredSize) {
-        availability.available = false;
-        availability.reason = _("Not enough space on selected disks.");
-        availability.hint = cockpit.format(_(
-            "The installation needs $1 of disk space; " +
-            "however, the capacity of the selected disks is only $0."
-        ), cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
-    }
-
-    return availability;
-};
-
-export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks }) => {
-    const availability = new AvailabilityState();
-
-    availability.hidden = false;
-    availability.available = !!selectedDisks.length;
-
-    if (diskFreeSpace > 0 && diskTotalSpace > 0) {
-        availability.hidden = diskFreeSpace === diskTotalSpace;
-    }
-    if (diskFreeSpace < requiredSize) {
-        availability.enforceAction = true;
-        availability.reason = _("Not enough free space on the selected disks.");
-        availability.hint = cockpit.format(
-            _("To use this option, resize or remove existing partitions to free up at least $0."),
-            cockpit.format_bytes(requiredSize)
-        );
-    }
-    return availability;
-};
-
-const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraints) => {
-    const existingNonmountablePartitions = usablePartitions
-            .filter(device => !device.formatData.mountable.v)
-            .map(device => device.formatData.type.v);
-
-    const missingNonmountablePartitions = mountPointConstraints.filter(constraint =>
-        constraint.required.v &&
-        !constraint["mount-point"].v &&
-        !existingNonmountablePartitions.includes(constraint["required-filesystem-type"].v))
-            .map(constraint => constraint.description);
-
-    return missingNonmountablePartitions;
-};
-
-const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePartitions }) => {
-    const availability = new AvailabilityState();
-
-    availability.hidden = false;
-    availability.available = !!selectedDisks.length;
-
-    const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
-    const hasFilesystems = usablePartitions
-            .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
-
-    if (!hasFilesystems) {
-        // No usable devices on the selected disks: hide the scenario to reduce UI clutter
-        availability.hidden = true;
-    } else if (missingNMParts.length) {
-        availability.available = false;
-        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
-    }
-    return availability;
-};
-
-const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, selectedDisks }) => {
-    const availability = new AvailabilityState();
-    let reusedOS = null;
-
-    availability.hidden = false;
-    availability.available = !!selectedDisks.length;
-
-    const isCompleteOSOnDisks = (osData, disks) => {
-        const osDisks = osData.devices.v.map(deviceId => getDeviceAncestors(devices, deviceId))
-                .reduce((disks, ancestors) => disks.concat(ancestors))
-                .filter(dev => devices[dev].type.v === "disk")
-                .reduce((uniqueDisks, disk) => uniqueDisks.includes(disk) ? uniqueDisks : [...uniqueDisks, disk], []);
-        const missingDisks = osDisks.filter(disk => !disks.includes(disk));
-        return missingDisks.length === 0;
-    };
-
-    const getUnknownMountPoints = (scheme, existingOS) => {
-        const reuseRequest = getAutopartReuseDBusRequest(scheme);
-        const isBootloader = (device) => bootloaderTypes.includes(devices[device].formatData.type.v);
-        const existingMountPoints = Object.entries(existingOS["mount-points"].v)
-                .map(([mountPoint, device]) => isBootloader(device) ? "bootloader" : mountPoint);
-
-        const managedMountPoints = reuseRequest["reformatted-mount-points"].v
-                .concat(reuseRequest["reused-mount-points"].v, reuseRequest["removed-mount-points"].v);
-
-        const unknownMountPoints = existingMountPoints.filter(i => !managedMountPoints.includes(i));
-        return unknownMountPoints;
-    };
-
-    // Check that exactly one Linux OS is present and it is Fedora Linux
-    // (Stronger check for mountpoints uniqueness is in the backend
-    const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
-            .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
-    if (linuxSystems.length === 0) {
-        availability.available = false;
-        availability.hidden = true;
-        debug("home reuse: No existing Linux system found.");
-    } else if (linuxSystems.length > 1) {
-        availability.available = false;
-        availability.hidden = true;
-        debug("home reuse: Multiple existing Linux systems found.");
-    } else {
-        reusedOS = linuxSystems[0];
-        if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
-            availability.available = false;
-            availability.hidden = true;
-            debug("home reuse: No existing Fedora Linux system found.");
-        }
-    }
-
-    debug(`home reuse: Default scheme is ${autopartScheme}.`);
-    if (reusedOS) {
-        // Check that required autopartitioning scheme matches reused OS.
-        // Check just "/home". To be more generic we could check all reused devices (as the backend).
-        const homeDevice = reusedOS["mount-points"].v["/home"];
-        const homeDeviceType = devices[homeDevice]?.type.v;
-        const requiredSchemeTypes = {
-            BTRFS: "btrfs subvolume",
-            LVM: "lvmlv",
-            LVM_THINP: "lvmthinlv",
-            PLAIN: "partition",
-        };
-        if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
-            availability.available = false;
-            availability.hidden = true;
-            debug(`home reuse: No reusable existing Linux system found, reused devices must have ${requiredSchemeTypes[autopartScheme]} type`);
-        }
-    }
-
-    if (reusedOS) {
-        // Check that existing system does not have mountpoints unexpected
-        // by the required autopartitioning scheme
-        const unknownMountPoints = getUnknownMountPoints(autopartScheme, reusedOS);
-        if (unknownMountPoints.length > 0) {
-            availability.available = false;
-            availability.hidden = true;
-            console.info(`home reuse: Unknown existing mountpoints found ${unknownMountPoints}`);
-        }
-    }
-
-    // TODO checks:
-    // - luks - partitions are unlocked - enforce? allow opt-out?
-    // - size ?
-    // - Windows system along (forbidden for now?)
-
-    return availability;
-};
-
-export const checkConfiguredStorage = ({
-    devices,
-    mountPointConstraints,
-    newMountPoints,
-    partitioning,
-    storageScenarioId,
-}) => {
-    const availability = new AvailabilityState();
-
-    const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
-    availability.hidden = partitioning === undefined || !currentPartitioningMatches;
-
-    availability.available = (
-        newMountPoints === undefined ||
-        (
-            mountPointConstraints
-                    ?.filter(m => m.required.v)
-                    .every(m => {
-                        const allDirs = [];
-                        const getNestedDirs = (object) => {
-                            if (!object) {
-                                return;
-                            }
-                            const { content, dir, subvolumes } = object;
-
-                            if (dir) {
-                                allDirs.push(dir);
-                            }
-                            if (content) {
-                                getNestedDirs(content);
-                            }
-                            if (subvolumes) {
-                                Object.keys(subvolumes).forEach(sv => getNestedDirs(subvolumes[sv]));
-                            }
-                        };
-
-                        if (m["mount-point"].v) {
-                            Object.keys(newMountPoints).forEach(key => getNestedDirs(newMountPoints[key]));
-
-                            return allDirs.includes(m["mount-point"].v);
-                        }
-
-                        if (m["required-filesystem-type"].v === "biosboot") {
-                            const biosboot = Object.keys(devices).find(d => devices[d].formatData.type.v === "biosboot");
-
-                            return biosboot !== undefined;
-                        }
-
-                        return false;
-                    })
-        )
-    );
-
-    availability.review = <StorageReview />;
-
-    return availability;
-};
-
-const ReclaimSpace = ({ availability }) => {
-    const { isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked } = useContext(DialogsContext);
-
-    useEffect(() => {
-        setIsReclaimSpaceCheckboxChecked(availability.enforceAction);
-    }, [availability.enforceAction, setIsReclaimSpaceCheckboxChecked]);
-
-    return (
-        <Checkbox
-          id="reclaim-space-checkbox"
-          isChecked={isReclaimSpaceCheckboxChecked}
-          isDisabled={availability.enforceAction}
-          label={!availability.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
-          name="reclaim-space"
-          onChange={(_, value) => setIsReclaimSpaceCheckboxChecked(value)}
-        />
-    );
-};
-
-export const scenarios = [{
-    buttonLabel: _("Reinstall Fedora"),
-    buttonVariant: "danger",
-    check: checkHomeReuse,
-    default: false,
-    detail: helpHomeReuse,
-    id: "home-reuse",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
-    label: _("Reinstall Fedora"),
-}, {
-    buttonLabel: _("Erase data and install"),
-    buttonVariant: "danger",
-    check: checkEraseAll,
-    default: true,
-    detail: helpEraseAll,
-    id: "erase-all",
-    // CLEAR_PARTITIONS_ALL = 1
-    initializationMode: 1,
-    label: _("Use entire disk"),
-}, {
-    action: ReclaimSpace,
-    buttonLabel: _("Install"),
-    buttonVariant: "primary",
-    canReclaimSpace: true,
-    check: checkUseFreeSpace,
-    default: false,
-    detail: helpUseFreeSpace,
-    id: "use-free-space",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
-    label: _("Share disk with other operating system"),
-}, {
-    buttonLabel: _("Apply mount point assignment and install"),
-    buttonVariant: "danger",
-    check: checkMountPointMapping,
-    default: false,
-    detail: helpMountPointMapping,
-    id: "mount-point-mapping",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
-    label: _("Mount point assignment"),
-}, {
-    buttonLabel: _("Install"),
-    buttonVariant: "danger",
-    check: checkConfiguredStorage,
-    default: false,
-    detail: helpConfiguredStorage,
-    id: "use-configured-storage",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
-    label: _("Use configured storage"),
-}
-];
 
 export const useScenario = () => {
     const { storageScenarioId } = useContext(StorageContext);
