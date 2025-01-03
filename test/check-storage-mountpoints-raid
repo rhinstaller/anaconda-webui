@@ -19,12 +19,11 @@ from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
-from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestStorageMountPointsRAID(VirtInstallMachineCase, StorageCase):
+class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem

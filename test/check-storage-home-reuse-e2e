@@ -21,7 +21,6 @@ from anacondalib import VirtInstallMachineCase, test_plan
 from installer import Installer
 from progress import Progress
 from storage import Storage
-from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import test_main  # pylint: disable=import-error
 from utils import pretend_default_scheme
 
@@ -30,7 +29,7 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-class TestStorageHomeReuse_E2E(VirtInstallMachineCase, StorageCase):
+class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
     disk_image = "fedora-rawhide"
 
     def setUp(self):

@@ -20,7 +20,6 @@ from installer import Installer
 from operating_systems import WindowsOS
 from review import Review
 from storage import Storage
-from storagelib import StorageCase
 from testlib import (
     nondestructive,
     test_main,
@@ -28,7 +27,7 @@ from testlib import (
 
 
 @nondestructive
-class TestStorageReclaimSpace(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimSpace(VirtInstallMachineCase):
     def setup_partitions(self, s, i):
         disk = "/dev/vda"
         btrfsname = "btrfstest"
@@ -278,7 +277,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase, StorageCase):
 
 
 @nondestructive
-class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
 
     def testReclaimExt4onLUKS(self):
         # Shrinking LUKS partitions is not yet supported
@@ -319,7 +318,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase, StorageCase):
 
 
 @nondestructive
-class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase, StorageCase):
+class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
     disk_image = "fedora-rawhide"
 
     def testDeletePartition(self):
