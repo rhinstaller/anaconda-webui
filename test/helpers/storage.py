@@ -270,7 +270,7 @@ class StorageEncryption():
         self.browser.click("#installation-method-unlock-devices-btn")
 
 
-class StorageUtils(StorageDestination):
+class StorageUtils():
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
@@ -296,7 +296,8 @@ class StorageUtils(StorageDestination):
     def add_basic_partitioning(self, target="vda", size="1GiB"):
         # Add a partition for "Use free space" scenario to be present
         self.machine.execute(f"sgdisk --new=0:0:+{size} /dev/{target}")
-        self.rescan_disks()
+        storage_screen = StorageDestination(self.browser, self.machine)
+        storage_screen.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
     def partition_disk(self, disk, partitions_params, is_efi=False):
