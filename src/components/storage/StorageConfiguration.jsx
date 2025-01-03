@@ -118,7 +118,7 @@ const usePageInit = () => {
 export class Page {
     constructor (isBootIso, storageScenarioId) {
         this.component = StorageConfiguration;
-        this.id = "storage-configuration";
+        this.id = "anaconda-screen-storage-configuration";
         this.isHidden = ["mount-point-mapping", "use-configured-storage", "home-reuse"].includes(storageScenarioId);
         this.label = _("Storage configuration");
         this.title = _("Storage configuration");

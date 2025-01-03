@@ -54,7 +54,7 @@ const ruleAscii = {
 };
 
 const CheckDisksSpinner = (
-    <EmptyState id="installation-destination-next-spinner">
+    <EmptyState id={idPrefix + "-next-spinner"}>
         <EmptyStateHeader titleText={<>{_("Checking storage configuration")}</>} icon={<EmptyStateIcon icon={Spinner} />} headingLevel="h4" />
         <EmptyStateFooter>
             <TextContent>

@@ -23,6 +23,7 @@ HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
+from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -30,24 +31,129 @@ DISK_INITIALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Storage.Disk
 STORAGE_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage"
 DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/DiskInitialization"
 
-id_prefix = "installation-method"
+
+class StorageDBus():
+    def __init__(self, machine):
+        self.machine = machine
+        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
+
+    def dbus_scan_devices(self):
+        task = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH} \
+            {STORAGE_INTERFACE} ScanDevicesWithTask')
+        task = task.splitlines()[-1].split()[-1]
+
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {task} \
+            org.fedoraproject.Anaconda.Task Start')
+
+    def dbus_get_usable_disks(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH}/DiskSelection \
+            {STORAGE_INTERFACE}.DiskSelection GetUsableDisks')
+
+        return re.findall('"([^"]*)"', ret)
+
+    def dbus_reset_selected_disks(self):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH}/DiskSelection \
+            {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 0')
+
+    def dbus_reset_partitioning(self):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH} \
+            {STORAGE_INTERFACE} ResetPartitioning')
+
+    def dbus_create_partitioning(self, method="MANUAL"):
+        return self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH} \
+            {STORAGE_INTERFACE} CreatePartitioning s {method}')
+
+    def dbus_get_applied_partitioning(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property  \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH} \
+            {STORAGE_INTERFACE} AppliedPartitioning')
+
+        return ret.split('s ')[1].strip().strip('"')
+
+    def dbus_get_created_partitioning(self):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property  \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH} \
+            {STORAGE_INTERFACE} CreatedPartitioning')
+
+        res = ret[ret.find("[") + 1:ret.rfind("]")].split()
+        return [item.strip('"') for item in res]
+
+    def dbus_set_initialization_mode(self, value):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {STORAGE_SERVICE} \
+            {DISK_INITIALIZATION_OBJECT_PATH} \
+            {DISK_INITIALIZATION_INTERFACE} InitializationMode i -- {value}')
+
+    def get_btrfs_volume_ids(self, volume_name):
+        """Get device ids of all volumes with volume_name found."""
+        # The tool shows unspecified name as "none"
+        volume_name = volume_name or "none"
+        volume_ids = [f"BTRFS-{uuid.strip()}" for uuid in
+                      self.machine.execute(f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3").split('\n')[:-1]]
+        return volume_ids
 
 
 class StorageDestination():
     def __init__(self, browser, machine):
-        self._step = "installation-method"
+        self._step = INSTALLATION_METHOD
+
         self.browser = browser
         self.machine = machine
+
+    def disks_loaded(self, disks):
+        storage_dbus = StorageDBus(self.machine)
+        usable_disks = storage_dbus.dbus_get_usable_disks()
+        for disk in usable_disks:
+            disks_dict = dict(disks)
+            if disk not in disks_dict:
+                return False
+
+        return True
+
+    def select_disks(self, disks):
+        self.browser.wait(lambda: self.disks_loaded(disks))
+
+        self.browser.click(f"#{self._step}-change-destination-button")
+
+        for (disk, selected) in disks:
+            self.browser.set_checked(f"#{self._step}-disk-selection-menu-item-{disk} input[type=checkbox]", selected)
+
+        self.browser.click(f"#{self._step}-change-destination-modal button:contains('Select')")
+        for (disk, selected) in disks:
+            self.check_disk_selected(disk, selected)
 
     @log_step(snapshot_before=True)
     def check_disk_selected(self, disk, selected=True, size=None):
         if selected:
-            self.browser.wait_visible(f"#{id_prefix}-target-disk-{disk}")
+            self.browser.wait_visible(f"#{self._step}-target-disk-{disk}")
         else:
-            self.browser.wait_not_present(f"#{id_prefix}-target-disk-{disk}")
+            self.browser.wait_not_present(f"#{self._step}-target-disk-{disk}")
 
         if size is not None:
-            self.browser.wait_in_text(f"#{id_prefix}-target-disk-{disk}", size)
+            self.browser.wait_in_text(f"#{self._step}-target-disk-{disk}", size)
 
     @log_step()
     def wait_no_disks(self):
@@ -80,7 +186,7 @@ class StorageDestination():
         self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
 
     def return_to_installation(self):
-        self.browser.click("#cockpit-storage-integration-return-to-installation-button")
+        self.browser.click("#cockpit-storage-integration-return-to-installer-button")
 
     def return_to_installation_confirm(self):
         with self.browser.wait_timeout(30):
@@ -161,7 +267,7 @@ class StorageEncryption():
             b.wait_in_text("#unlock-device-dialog .pf-v5-c-helper-text", fail_text)
 
     def unlock_all_encrypted(self):
-        self.browser.click("#installation-method-unlock-devices-btn")
+        self.browser.click(f"#{self._step}-unlock-devices-btn")
 
 
 class StorageUtils(StorageDestination):
@@ -329,97 +435,15 @@ class StorageUtils(StorageDestination):
         return json.loads(lsblk)
 
 
-class StorageDBus():
-    def __init__(self, machine):
-        self.machine = machine
-        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
-
-    def dbus_scan_devices(self):
-        task = self.machine.execute(f'busctl --address="{self._bus_address}" \
-            call \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH} \
-            {STORAGE_INTERFACE} ScanDevicesWithTask')
-        task = task.splitlines()[-1].split()[-1]
-
-        self.machine.execute(f'busctl --address="{self._bus_address}" \
-            call \
-            {STORAGE_SERVICE} \
-            {task} \
-            org.fedoraproject.Anaconda.Task Start')
-
-    def dbus_get_usable_disks(self):
-        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
-            call \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH}/DiskSelection \
-            {STORAGE_INTERFACE}.DiskSelection GetUsableDisks')
-
-        return re.findall('"([^"]*)"', ret)
-
-    def dbus_reset_selected_disks(self):
-        self.machine.execute(f'busctl --address="{self._bus_address}" \
-            set-property \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH}/DiskSelection \
-            {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 0')
-
-    def dbus_reset_partitioning(self):
-        self.machine.execute(f'busctl --address="{self._bus_address}" \
-            call \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH} \
-            {STORAGE_INTERFACE} ResetPartitioning')
-
-    def dbus_create_partitioning(self, method="MANUAL"):
-        return self.machine.execute(f'busctl --address="{self._bus_address}" \
-            call \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH} \
-            {STORAGE_INTERFACE} CreatePartitioning s {method}')
-
-    def dbus_get_applied_partitioning(self):
-        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
-            get-property  \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH} \
-            {STORAGE_INTERFACE} AppliedPartitioning')
-
-        return ret.split('s ')[1].strip().strip('"')
-
-    def dbus_get_created_partitioning(self):
-        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
-            get-property  \
-            {STORAGE_SERVICE} \
-            {STORAGE_OBJECT_PATH} \
-            {STORAGE_INTERFACE} CreatedPartitioning')
-
-        res = ret[ret.find("[") + 1:ret.rfind("]")].split()
-        return [item.strip('"') for item in res]
-
-    def dbus_set_initialization_mode(self, value):
-        self.machine.execute(f'busctl --address="{self._bus_address}" \
-            set-property \
-            {STORAGE_SERVICE} \
-            {DISK_INITIALIZATION_OBJECT_PATH} \
-            {DISK_INITIALIZATION_INTERFACE} InitializationMode i -- {value}')
-
-    def get_btrfs_volume_ids(self, volume_name):
-        """Get device ids of all volumes with volume_name found."""
-        # The tool shows unspecified name as "none"
-        volume_name = volume_name or "none"
-        volume_ids = [f"BTRFS-{uuid.strip()}" for uuid in
-                      self.machine.execute(f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3").split('\n')[:-1]]
-        return volume_ids
-
-
 class StorageScenario():
     def __init__(self, browser, machine):
+        self._step = INSTALLATION_METHOD
+
         self.machine = machine
         self.browser = browser
 
     def _partitioning_selector(self, scenario):
-        return f"#{id_prefix}-scenario-" + scenario
+        return f"#{self._step}-scenario-" + scenario
 
     def wait_scenario_visible(self, scenario, visible=True):
         if visible:
@@ -543,25 +567,14 @@ class StorageReclaimDialog():
         self.browser.wait_not_present("#reclaim-space-modal")
 
 
-class StorageMountPointMapping(StorageDBus, StorageDestination):
+class StorageMountPointMapping():
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
-
-        StorageDBus.__init__(self, machine)
-        StorageDestination.__init__(self, browser, machine)
+        self._step = CUSTOM_MOUNT_POINT
 
     def table_row(self, row):
-        return f"#mount-point-mapping-table-row-{row}"
-
-    def disks_loaded(self, disks):
-        usable_disks = self.dbus_get_usable_disks()
-        for disk in usable_disks:
-            disks_dict = dict(disks)
-            if disk not in disks_dict:
-                return False
-
-        return True
+        return f"#{self._step}-table-row-{row}"
 
     def check_mountpoint_row(self, row, mountpoint=None, device=None, reformat=None, format_type=None):
         if mountpoint:
@@ -574,28 +587,18 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         if format_type:
             self.check_mountpoint_row_format_type(row, format_type)
 
-    def select_disks(self, disks):
-        self.browser.wait(lambda: self.disks_loaded(disks))
-
-        self.browser.click(f"#{id_prefix}-change-destination-button")
-
-        for (disk, selected) in disks:
-            self.browser.set_checked(f"#{id_prefix}-disk-selection-menu-item-{disk} input[type=checkbox]", selected)
-
-        self.browser.click(f"#{id_prefix}-change-destination-modal button:contains('Select')")
-        for (disk, selected) in disks:
-            self.check_disk_selected(disk, selected)
-
     def select_mountpoint(self, disks):
-        self.select_disks(disks)
+        storage_screen = StorageDestination(self.browser, self.machine)
+        storage_screen.select_disks(disks)
 
-        self.set_partitioning("mount-point-mapping")
+        storage_scenario = StorageScenario(self.browser, self.machine)
+        storage_scenario.set_partitioning("mount-point-mapping")
 
         self.browser.click("button:contains(Next)")
-        self.browser.wait_js_cond('window.location.hash === "#/mount-point-mapping"')
+        self.browser.wait_js_cond(f'window.location.hash === "#/{self._step}"')
 
         with self.browser.wait_timeout(30):
-            self.browser.wait_visible("#mount-point-mapping-table")
+            self.browser.wait_visible(f"#{self._step}-table")
 
     def select_mountpoint_row_mountpoint(self, row, mountpoint):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
@@ -643,30 +646,47 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_checked(f"{self.table_row(row)} td[data-label='Reformat'] input", selected)
 
     def remove_mountpoint_row(self, row, initial_count):
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {initial_count}")
         self.browser.click(f"{self.table_row(row)} button[aria-label='Remove']")
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {initial_count - 1}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {initial_count - 1}")
 
     def check_mountpoint_row_reformat(self, row, checked):
         checked_selector = "input:checked" if checked else "input:not(:checked)"
         self.browser.wait_visible(f"{self.table_row(row)} td[data-label='Reformat'] {checked_selector}")
 
     def add_mountpoint_row(self):
-        rows = self.browser.call_js_func("ph_count", '#mount-point-mapping-table tbody tr')
+        rows = self.browser.call_js_func("ph_count", f'#{self._step}-table tbody tr')
         self.browser.click("button:contains('Add mount')")
-        self.browser.wait_js_cond(f"ph_count('#mount-point-mapping-table tbody tr') == {rows + 1}")
+        self.browser.wait_js_cond(f"ph_count('#{self._step}-table tbody tr') == {rows + 1}")
 
     def wait_mountpoint_table_column_helper(self, row, column, text=None, present=True):
         if present:
-            self.browser.wait_in_text(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error", text)
+            self.browser.wait_in_text(f"#{self._step}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error", text)
         else:
-            self.browser.wait_not_present(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
+            self.browser.wait_not_present(f"#{self._step}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
 
 
-class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):
+class Storage():
     def __init__(self, browser, machine):
-        StorageEncryption.__init__(self, browser, machine)
-        StorageMountPointMapping.__init__(self, browser, machine)
-        StorageScenario.__init__(self, browser, machine)
-        StorageReclaimDialog.__init__(self, browser)
-        StorageUtils.__init__(self, browser, machine)
+        self.storage_encryption = StorageEncryption(browser, machine)
+        self.storage_destination = StorageDestination(browser, machine)
+        self.storage_scenario = StorageScenario(browser, machine)
+        self.storage_utils = StorageUtils(browser, machine)
+        self.storage_reclaim_dialog = StorageReclaimDialog(browser)
+        self.storage_mountpoint_mapping = StorageMountPointMapping(browser, machine)
+        self.storage_dbus = StorageDBus(machine)
+
+    def __getattr__(self, name):
+        for child in [
+                self.storage_encryption,
+                self.storage_destination,
+                self.storage_scenario,
+                self.storage_utils,
+                self.storage_reclaim_dialog,
+                self.storage_mountpoint_mapping,
+                self.storage_dbus
+            ]:
+            if hasattr(child, name):
+                return getattr(child, name)
+
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")

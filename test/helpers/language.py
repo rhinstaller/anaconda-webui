@@ -19,8 +19,8 @@ import sys
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
-from installer import InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
+from steps import LANGUAGE
 
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization"
@@ -34,7 +34,7 @@ class Language():
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
-        self._step = InstallerSteps.WELCOME
+        self._step = LANGUAGE
         self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
 
     @log_step()

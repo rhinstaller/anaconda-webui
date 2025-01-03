@@ -46,27 +46,27 @@ import "./InstallationProgress.scss";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
-const idPrefix = "installation-progress";
+const SCREEN_ID = "anaconda-screen-progress";
 
 const progressSteps = [
     {
         description: _("Storage configuration: Storage is currently being configured."),
-        id: "installation-progress-step-storage",
+        id: SCREEN_ID + "-step-storage",
         title: _("Storage configuration"),
     },
     {
         description: _("Software installation: Storage configuration complete. The software is now being installed onto your device."),
-        id: "installation-progress-step-payload",
+        id: SCREEN_ID + "-step-payload",
         title: _("Software installation"),
     },
     {
         description: _("System configuration: Software installation complete. The system is now being configured."),
-        id: "installation-progress-step-configuration",
+        id: SCREEN_ID + "-step-configuration",
         title: _("System configuration"),
     },
     {
         description: _("Finalizing: The system configuration is complete. Finalizing installation may take a few moments."),
-        id: "installation-progress-step-boot-loader",
+        id: SCREEN_ID + "-step-boot-loader",
         title: _("Finalization"),
     },
 ];
@@ -160,7 +160,7 @@ const InstallationProgress = ({ onCritFail }) => {
     }
 
     return (
-        <Flex direction={{ default: "column" }} className={idPrefix + "-status " + idPrefix + "-status-" + status}>
+        <Flex direction={{ default: "column" }} className={SCREEN_ID + "-status " + SCREEN_ID + "-status-" + status}>
             <EmptyStatePanel
               icon={icon}
               loading={!icon}
@@ -200,7 +200,7 @@ const InstallationProgress = ({ onCritFail }) => {
                                       return (
                                           <ProgressStep
                                             aria-label={ariaLabel}
-                                            id={idPrefix + "-step-" + index}
+                                            id={SCREEN_ID + "-step-" + index}
                                             isCurrent={index === currentProgressStep}
                                             icon={phaseIcon}
                                             titleId={progressStep.id}
@@ -240,7 +240,7 @@ const InstallationProgress = ({ onCritFail }) => {
 export class Page {
     constructor () {
         this.component = InstallationProgress;
-        this.id = "installation-progress";
+        this.id = SCREEN_ID;
         this.isFinal = true;
     }
 }

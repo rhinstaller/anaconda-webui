@@ -19,16 +19,15 @@ import sys
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
-from installer import InstallerSteps  # pylint: disable=import-error
 from step_logger import log_step
+from steps import PROGRESS
 from testlib import wait
 
 
 class Progress():
     def __init__(self, browser):
         self.browser = browser
-        self.steps = InstallerSteps()
-        self._reboot_selector = ".installation-progress-status-success button:contains('Reboot')"
+        self._reboot_selector = f".{PROGRESS}-status-success button:contains('Reboot')"
 
     @log_step(snapshot_after=True)
     def wait_done(self, timeout=1200):

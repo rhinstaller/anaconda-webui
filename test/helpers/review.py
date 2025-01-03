@@ -19,16 +19,16 @@ import sys
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
-from installer import InstallerSteps  # pylint: disable=import-error
 from network import NetworkDBus
 from step_logger import log_step
+from steps import REVIEW
 from storage import StorageDBus
 
 
 class Review(NetworkDBus, StorageDBus):
     def __init__(self, browser, machine):
         self.browser = browser
-        self._step = InstallerSteps.REVIEW
+        self._step = REVIEW
 
         NetworkDBus.__init__(self, machine)
         StorageDBus.__init__(self, machine)
