@@ -21,7 +21,6 @@ from anacondalib import VirtInstallMachineCase, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
-from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import pretend_default_scheme
 
@@ -31,7 +30,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 @nondestructive
-class TestStorageHomeReuseFedora(VirtInstallMachineCase, StorageCase):
+class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     disk_image = "fedora-rawhide"
 
     def setUp(self):

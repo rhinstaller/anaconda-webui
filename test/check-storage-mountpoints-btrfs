@@ -19,12 +19,11 @@ from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
-from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestStorageMountPointsBtrfs (VirtInstallMachineCase, StorageCase):
+class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBtrfsSubvolumes(self):
         b = self.browser

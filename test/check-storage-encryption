@@ -19,12 +19,11 @@ from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from password import Password
 from storage import Storage
-from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestStorageEncryption(VirtInstallMachineCase, StorageHelpers):
+class TestStorageEncryption(VirtInstallMachineCase):
 
     def set_valid_password(self, password_ui, password="abcdefgh"):
         password_ui.set_password(password)
