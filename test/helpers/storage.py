@@ -663,10 +663,27 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"#mount-point-mapping-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
 
 
-class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):
+class Storage():
     def __init__(self, browser, machine):
-        StorageEncryption.__init__(self, browser, machine)
-        StorageMountPointMapping.__init__(self, browser, machine)
-        StorageScenario.__init__(self, browser, machine)
-        StorageReclaimDialog.__init__(self, browser)
-        StorageUtils.__init__(self, browser, machine)
+        self.storage_dbus = StorageDBus(machine)
+        self.storage_destination = StorageDestination(browser, machine)
+        self.storage_encryption = StorageEncryption(browser, machine)
+        self.storage_mountpoint_mapping = StorageMountPointMapping(browser, machine)
+        self.storage_reclaim_dialog = StorageReclaimDialog(browser)
+        self.storage_scenario = StorageScenario(browser, machine)
+        self.storage_utils = StorageUtils(browser, machine)
+
+    def __getattr__(self, name):
+        for child in [
+                self.storage_dbus,
+                self.storage_destination,
+                self.storage_encryption,
+                self.storage_mountpoint_mapping,
+                self.storage_reclaim_dialog,
+                self.storage_scenario,
+                self.storage_utils,
+                ]:
+            if hasattr(child, name):
+                return getattr(child, name)
+
+        raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
