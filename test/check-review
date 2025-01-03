@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from network import NetworkDBus
 from password import Password
 from review import Review
 from storage import Storage
@@ -89,10 +90,11 @@ class TestReview(VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         r = Review(b, m)
+        network_bus = NetworkDBus(m)
 
         i.open()
 
-        self.addCleanup(r.dbus_reset_hostname)
+        self.addCleanup(network_bus.dbus_reset_hostname)
         i.reach(i.steps.REVIEW)
 
         # Save hostname in modal - variant for empty hostname
@@ -110,7 +112,7 @@ class TestReview(VirtInstallMachineCase):
         b.click("button:contains('Change')")
         r.check_hostname("")
 
-        hostname = r.dbus_get_hostname()
+        hostname = network_bus.dbus_get_hostname()
         self.assertIn('s ""\n', hostname)
 
         # Change hostname in modal - variant for changing hostname
@@ -120,7 +122,7 @@ class TestReview(VirtInstallMachineCase):
         b.click("button:contains('Save')")
         r.check_hostname("test123")
 
-        hostname = r.dbus_get_hostname()
+        hostname = network_bus.dbus_get_hostname()
         self.assertIn('s "test123"\n', hostname)
 
 

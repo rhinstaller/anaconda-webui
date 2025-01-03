@@ -20,18 +20,15 @@ HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
 from installer import InstallerSteps  # pylint: disable=import-error
-from network import NetworkDBus
 from step_logger import log_step
 from storage import StorageDBus
 
 
-class Review(NetworkDBus, StorageDBus):
+class Review():
     def __init__(self, browser, machine):
         self.browser = browser
+        self.machine = machine
         self._step = InstallerSteps.REVIEW
-
-        NetworkDBus.__init__(self, machine)
-        StorageDBus.__init__(self, machine)
 
     @log_step()
     def check_hostname(self, hostname):
@@ -91,7 +88,8 @@ class Review(NetworkDBus, StorageDBus):
         self.browser.wait_in_text(f"#{self._step}-target-storage-note li", resized_partitions)
 
     def check_all_erased_checkbox_label(self):
-        usable_disks = self.dbus_get_usable_disks()
+        storage_dbus = StorageDBus(self.machine)
+        usable_disks = storage_dbus.dbus_get_usable_disks()
         expected_text = "I understand that all existing data will be erased"
         if len(usable_disks) > 1:
             expected_text = "I understand that all existing data will be erased from the selected disks"

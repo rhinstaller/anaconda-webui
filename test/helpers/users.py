@@ -70,11 +70,9 @@ class UsersDBus():
         return ret.split()[1].strip() == "true"
 
 
-class Users(UsersDBus):
+class UsersScreen():
     def __init__(self, browser, machine):
         self.browser = browser
-
-        UsersDBus.__init__(self, machine)
 
     @log_step(snapshot_before=True)
     def set_user_name(self, user_name, append=False, value_check=True):
@@ -116,3 +114,16 @@ def create_user(browser, machine):
     p.set_password(password)
     p.set_password_confirm(password)
     u.set_user_name("tester")
+
+
+class Users():
+    def __init__(self, browser, machine):
+        self.dbus = UsersDBus(machine)
+        self.screen = UsersScreen(browser, machine)
+
+    def __getattr__(self, name):
+        for child in [self.dbus, self.screen]:
+            if hasattr(child, name):
+                return getattr(child, name)
+
+        raise AttributeError(f"{self.__class__.__name__} object has no attribute '{name}'")
