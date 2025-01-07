@@ -19,12 +19,11 @@ from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
-from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestStorageMountPointsLVM(VirtInstallMachineCase, StorageCase):
+class TestStorageMountPointsLVM(VirtInstallMachineCase):
 
     def testLVM(self):
         b = self.browser

@@ -23,7 +23,6 @@ from password import Password
 from progress import Progress
 from review import Review
 from storage import Storage
-from storagelib import StorageHelpers  # pylint: disable=import-error
 from testlib import test_main  # pylint: disable=import-error
 from utils import get_pretty_name
 
@@ -32,7 +31,7 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-class TestStorageEraseAll_E2E(VirtInstallMachineCase, StorageHelpers):
+class TestStorageEraseAll_E2E(VirtInstallMachineCase):
     """
     Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
 
