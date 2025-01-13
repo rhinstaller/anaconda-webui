@@ -54,7 +54,7 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         r.check_some_resized_checkbox_label()
-        r.check_disk_row("vda", parent="vda1", size="5.00 GB", action="resized from 10.6 GB")
+        r.check_disk_row("vda", parent="vda1", size="5.00 GB", action="resized from 11.7 GB")
         r.check_resized_system("Debian", ["vda1"])
 
         self.install(needs_confirmation=True)
