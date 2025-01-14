@@ -38,7 +38,7 @@ import { setHostname } from "../../apis/network.js";
 import { NetworkContext } from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
-const idPrefix = "installation-review";
+const SCREEN_ID = "anaconda-screen-review";
 
 const ChangeHostname = ({ initHostname }) => {
     const [currentHostname, setCurrentHostname] = useState(initHostname);
@@ -162,7 +162,7 @@ export const HostnameRow = () => {
             <DescriptionListTerm>
                 {_("Hostname")}
             </DescriptionListTerm>
-            <DescriptionListDescription id={idPrefix + "-target-system-hostname"}>
+            <DescriptionListDescription id={SCREEN_ID + "-target-system-hostname"}>
                 <Flex
                   spaceItems={{ default: "spaceItemsMd" }}
                   alignItems={{ default: "alignItemsCenter" }}>

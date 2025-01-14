@@ -62,6 +62,7 @@ import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import "./MountPointMapping.scss";
 
 const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-mount-point-mapping";
 
 /* Filter out the partitioning requests array to contain only:
  * - rows with required mount points
@@ -230,14 +231,14 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
                 {((isRequiredMountPoint || isRecommendedMountPoint) && !duplicatedMountPoint) || swapMountpoint
                     ? (
                         <FlexItem
-                          className="mount-point-mapping__mountpoint-text"
+                          className={idPrefix + "__mountpoint-text"}
                           id={idPrefix}
                         >
                             {mountpoint || request["format-type"]}
                         </FlexItem>
                     )
                     : <TextInput
-                        className="mount-point-mapping__mountpoint-text"
+                        className={idPrefix + "__mountpoint-text"}
                         id={idPrefix}
                         onBlur={() => handleRequestChange({ deviceSpec: request["device-spec"], mountPoint: mountPointText, requestIndex })}
                         onChange={(_event, val) => setMountPointText(val)}
@@ -733,7 +734,6 @@ const useExistingPartitioning = () => {
 };
 
 const MountPointMapping = ({
-    idPrefix,
     setIsFormValid,
     setStepNotification,
 }) => {
@@ -743,7 +743,7 @@ const MountPointMapping = ({
 
     return (
         <RequestsTable
-          idPrefix={idPrefix + "-table"}
+          idPrefix={SCREEN_ID + "-table"}
           setStepNotification={setStepNotification}
           setIsFormValid={setIsFormValid}
         />
@@ -778,7 +778,7 @@ const CustomFooter = ({ setStepNotification }) => {
 export class Page {
     constructor (isBootIso, storageScenarioId) {
         this.component = MountPointMapping;
-        this.id = "mount-point-mapping";
+        this.id = SCREEN_ID;
         this.label = _("Manual disk configuration");
         this.isHidden = storageScenarioId !== "mount-point-mapping";
         this.title = _("Manual disk configuration: Mount point mapping");

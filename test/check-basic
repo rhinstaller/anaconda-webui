@@ -67,7 +67,7 @@ class TestBasic(VirtInstallMachineCase):
             i.steps.ACCOUNTS,
             i.steps.STORAGE_CONFIGURATION,
             i.steps.INSTALLATION_METHOD,
-            i.steps.WELCOME,
+            i.steps.LANGUAGE,
         ]
 
         for step in steps:
@@ -77,7 +77,7 @@ class TestBasic(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # Check disabling of later steps when going back
-        i.reach_on_sidebar(i.steps.WELCOME)
+        i.reach_on_sidebar(i.steps.LANGUAGE)
         for step in [
             i.steps.ACCOUNTS,
             i.steps.STORAGE_CONFIGURATION,

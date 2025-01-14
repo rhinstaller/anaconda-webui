@@ -15,36 +15,37 @@
 from collections import UserDict
 from time import sleep
 
+import steps
 from step_logger import log_step
 from storage import StorageEncryption
 from users import create_user
 
 
 class InstallerSteps(UserDict):
-    WELCOME = "installation-language"
-    INSTALLATION_METHOD = "installation-method"
-    CUSTOM_MOUNT_POINT = "mount-point-mapping"
-    STORAGE_CONFIGURATION = "storage-configuration"
-    ACCOUNTS = "accounts"
-    REVIEW = "installation-review"
-    PROGRESS = "installation-progress"
+    ACCOUNTS = steps.ACCOUNTS
+    CUSTOM_MOUNT_POINT = steps.CUSTOM_MOUNT_POINT
+    INSTALLATION_METHOD = steps.INSTALLATION_METHOD
+    LANGUAGE = steps.LANGUAGE
+    PROGRESS = steps.PROGRESS
+    REVIEW = steps.REVIEW
+    STORAGE_CONFIGURATION = steps.STORAGE_CONFIGURATION
 
     def __init__(self, hidden_steps=None, scenario=None):
         super().__init__()
 
         if (scenario == "mount-point-mapping"):
-            self.STORAGE_CONFIGURATION = "storage-configuration-manual"
+            self.STORAGE_CONFIGURATION = "anaconda-screen-storage-configuration-manual"
 
-        WELCOME = self.WELCOME
-        INSTALLATION_METHOD = self.INSTALLATION_METHOD
-        STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
-        CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
         ACCOUNTS = self.ACCOUNTS
-        REVIEW = self.REVIEW
+        CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
+        INSTALLATION_METHOD = self.INSTALLATION_METHOD
+        LANGUAGE = self.LANGUAGE
         PROGRESS = self.PROGRESS
+        REVIEW = self.REVIEW
+        STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
 
         _steps_jump = {}
-        _steps_jump[WELCOME] = [INSTALLATION_METHOD]
+        _steps_jump[LANGUAGE] = [INSTALLATION_METHOD]
         _steps_jump[STORAGE_CONFIGURATION] = [ACCOUNTS]
         _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
         _steps_jump[ACCOUNTS] = [REVIEW]
@@ -177,7 +178,7 @@ class Installer():
 
     @log_step()
     def open(self, step=None):
-        step = step or self.steps.WELCOME
+        step = step or self.steps.LANGUAGE
         while step in self.steps.hidden_steps:
             step = self.steps._steps_jump[step][0]
         self.browser.open(f"/cockpit/@localhost/anaconda-webui/index.html#/{step}")
@@ -199,7 +200,7 @@ class Installer():
 
     @log_step(snapshot_after=True)
     def wait_current_page(self, page):
-        self.browser.wait_not_present("#installation-destination-next-spinner")
+        self.browser.wait_not_present("#disk-encryption-next-spinner")
         self.browser.wait_js_cond(f'window.location.hash === "#/{page}"')
 
         if page == self.steps.PROGRESS:

@@ -27,7 +27,7 @@ import {
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
-import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UsersContext } from "../../contexts/Common.jsx";
+import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UserInterfaceContext, UsersContext } from "../../contexts/Common.jsx";
 
 import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
 
@@ -40,7 +40,7 @@ import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
-const idPrefix = "installation-review";
+const SCREEN_ID = "anaconda-screen-review";
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -65,6 +65,8 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { label: scenarioLabel } = useScenario();
+    const userInterfaceConfig = useContext(UserInterfaceContext);
+    const hiddenScreens = userInterfaceConfig.hidden_screens || [];
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     // Display custom footer
@@ -87,7 +89,7 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-operating-system`}
+                          id={`${SCREEN_ID}-target-operating-system`}
                           term={_("Operating system")}
                           description={osRelease.PRETTY_NAME}
                         />
@@ -98,38 +100,37 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-system-language`}
+                          id={`${SCREEN_ID}-target-system-language`}
                           term={_("Language")}
                           description={language ? language["native-name"].v : localizationData.language}
                         />
                     </ReviewDescriptionList>
-                    {isBootIso &&
-                    <>
+                    {!hiddenScreens.includes("anaconda-screen-accounts") &&
                         <ReviewDescriptionList>
                             <ReviewDescriptionListItem
-                              id={`${idPrefix}-target-system-account`}
+                              id={`${SCREEN_ID}-target-system-account`}
                               term={_("Account")}
                               description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
                             />
-                        </ReviewDescriptionList>
+                        </ReviewDescriptionList>}
+                    {isBootIso &&
                         <ReviewDescriptionList>
                             <HostnameRow />
-                        </ReviewDescriptionList>
-                    </>}
+                        </ReviewDescriptionList>}
                 </ReviewDescriptionList>
             </FlexItem>
             <FlexItem>
                 <ReviewDescriptionList>
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-system-mode`}
+                          id={`${SCREEN_ID}-target-system-mode`}
                           term={_("Installation type")}
                           description={scenarioLabel}
                         />
                     </ReviewDescriptionList>
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
-                          id={`${idPrefix}-target-storage`}
+                          id={`${SCREEN_ID}-target-storage`}
                           term={_("Storage")}
                           description={
                               <Stack hasGutter>
@@ -197,7 +198,7 @@ const CustomFooter = ({ setIsFormValid }) => {
     const confirmationCheckbox = (
         !installationIsClean &&
         <Checkbox
-          id={idPrefix + "-next-confirmation-checkbox"}
+          id={SCREEN_ID + "-next-confirmation-checkbox"}
           label={scenarioConfirmationLabel}
           isChecked={isConfirmed}
           onChange={(_event, checked) => setIsConfirmed(checked)}
@@ -213,7 +214,7 @@ const CustomFooter = ({ setIsFormValid }) => {
           footerHelperText={confirmationCheckbox}
           nextButtonText={buttonLabel}
           nextButtonVariant={!installationIsClean ? "warning" : "primary"}
-          onNext={() => cockpit.location.go(["installation-progress"])}
+          onNext={() => cockpit.location.go(["anaconda-screen-progress"])}
         />
     );
 };
@@ -221,7 +222,7 @@ const CustomFooter = ({ setIsFormValid }) => {
 export class Page {
     constructor () {
         this.component = ReviewConfiguration;
-        this.id = idPrefix;
+        this.id = SCREEN_ID;
         this.label = _("Review and install");
         this.title = _("Review and install");
     }

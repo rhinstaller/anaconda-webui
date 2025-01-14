@@ -352,11 +352,9 @@ const CustomFooter = () => {
 };
 
 export class Page {
-    constructor (isBootIso) {
+    constructor () {
         this.component = Accounts;
-        this.id = "accounts";
-        this.isHidden = !isBootIso;
+        this.id = "anaconda-screen-accounts";
         this.label = _("Create Account");
-        this.title = null;
     }
 }

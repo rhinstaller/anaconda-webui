@@ -14,10 +14,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React, { cloneElement, useEffect, useRef, useState } from "react";
+import cockpit from "cockpit";
+
+import React, { cloneElement, useContext, useEffect, useRef, useState } from "react";
 import { Alert, Stack, Title } from "@patternfly/react-core";
 
-export const AnacondaPage = ({ children, isFormDisabled, setIsFormDisabled, step, title, usePageInit }) => {
+import { OsReleaseContext } from "../contexts/Common.jsx";
+
+const _ = cockpit.gettext;
+
+export const AnacondaPage = ({
+    children,
+    isFirstScreen,
+    isFormDisabled,
+    setIsFormDisabled,
+    step,
+    title,
+    usePageInit,
+}) => {
     const [stepNotification, setStepNotification] = useState();
     const [showPage, setShowPage] = useState(!isFormDisabled);
     const showPageRef = useRef(showPage);
@@ -43,9 +57,11 @@ export const AnacondaPage = ({ children, isFormDisabled, setIsFormDisabled, step
         return null;
     }
 
+    const titleElem = isFirstScreen ? <InitialPageTitle /> : title;
+
     return (
         <Stack hasGutter>
-            {title && <Title headingLevel="h2">{title}</Title>}
+            {titleElem && <Title headingLevel="h2">{titleElem}</Title>}
             {stepNotification?.step === step &&
                 <Alert
                   id={step + "-step-notification"}
@@ -56,4 +72,10 @@ export const AnacondaPage = ({ children, isFormDisabled, setIsFormDisabled, step
             {cloneElement(children, { idPrefix: step, setStepNotification })}
         </Stack>
     );
+};
+
+const InitialPageTitle = () => {
+    const osRelease = useContext(OsReleaseContext);
+
+    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT);
 };
