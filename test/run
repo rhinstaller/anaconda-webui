@@ -7,6 +7,7 @@
 #
 # expensive       - expensive tests (test which run a full installation)
 # other           - non-expensive tests
+# compose-{compose-id} - run tests on a specific compose
 
 
 set -eux
@@ -21,6 +22,9 @@ RE_EXPENSIVE='E2E'
 
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
+    *compose-*)
+        RUN_OPTS="$ALL_TESTS"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
+        ;;
     *efi*) RUN_OPTS="$ALL_TESTS"; export TEST_FIRMWARE="efi" ;;&
     *expensive*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"
