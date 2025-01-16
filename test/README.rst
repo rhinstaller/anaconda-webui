@@ -218,18 +218,7 @@ You can set these environment variables to configure the test suite::
                   This will download the ISO and any extra packages from the specified compose instead
                   of the Cockpit image server.
 
-    TEST_SCENARIO These are the supported scenarios:
-                     `cockpit-pr-N`: to install the cockpit packages from its pull request #N
-                     `anaconda-pr-N`: to install the anaconda packages from its pull request #N
-                     `expensive`: to run the tests that are destructive and therefore expensive to run
-                     `other`: to run the tests that are not covered by the other scenarios
-                     `efi`: to run the tests that are specific to EFI boot`
-
-                  The `efi` scenario can be used in combination with other scenarios.
-                  For example, `TEST_SCENARIO=expensive/efi` will run the expensive tests that are
-                  specific to EFI boot.
-
-                  The packages are installed from the automatic packit COPR.
+    TEST_SCENARIO A list of currently supported scenarios can be found in the `test/run` file.
 
     TEST_BROWSER  What browser should be used for testing. Currently supported values:
                      "chromium"
