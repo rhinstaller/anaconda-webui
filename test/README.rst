@@ -210,6 +210,14 @@ You can set these environment variables to configure the test suite::
     TEST_OS    The OS to run the tests in.  Currently supported values:
                   "fedora-rawhide-boot"
 
+               This will download the ISO from the Cockpit image server unless TEST_COMPOSE is set.
+
+    TEST_COMPOSE  The compose to run the tests against. To be specified is the compose ID, e.g.
+                     "Fedora-Rawhide-20250116.n.0"
+
+                  This will download the ISO and any extra packages from the specified compose instead
+                  of the Cockpit image server.
+
     TEST_SCENARIO These are the supported scenarios:
                      `cockpit-pr-N`: to install the cockpit packages from its pull request #N
                      `anaconda-pr-N`: to install the anaconda packages from its pull request #N

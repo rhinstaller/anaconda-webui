@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -xeu
+
+TEST_OS="$1"
+TEST_COMPOSE="$2"
+BASE_OS="${TEST_OS/\-boot/}"
+RELEASE="${BASE_OS/fedora-/}"
+
+# Check if file already exists
+if [ -f test/images/"$TEST_COMPOSE".iso ]; then
+    echo "$TEST_COMPOSE.iso already exists"
+    exit 0
+fi
+
+# Construct ISO URL from the compose directory
+ISO_FOLDER="https://kojipkgs.fedoraproject.org/compose/${RELEASE}/${TEST_COMPOSE}/compose/Everything/x86_64/iso/"
+
+if ! curl -L --silent --fail --output /dev/null --head -- "$ISO_FOLDER"; then
+    echo "Specified compose $TEST_COMPOSE does not exist"
+    exit 1
+fi
+
+ISO=$(curl -L --silent ${ISO_FOLDER} | grep -oP 'href="\K[^"]+' | grep -E '\.iso' | head -n1 | tr -d '\n')
+URL="$ISO_FOLDER/$ISO"
+
+pushd test/images
+curl -L "$URL" -o "$TEST_COMPOSE".iso
+popd
