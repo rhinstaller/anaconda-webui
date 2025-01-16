@@ -46,3 +46,6 @@ user_pref("dom.disable_open_during_load", false);
 
 // Disable built in Password Manager / Password Generation
 user_pref("signon.generation.enabled", false);
+
+// Allow overriding Firefox shortcuts from page JS
+user_pref("permissions.default.shortcuts", "1");
