@@ -1,0 +1,21 @@
+name: nightly
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  # can be run manually on https://github.com/rhinstaller/anaconda-webui/actions
+  workflow_dispatch:
+jobs:
+  trigger:
+    permissions:
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Trigger the latest compose scenario
+        run: |
+          mkdir -p ~/.config/cockpit-dev
+          echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
+          export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
+          make test-compose
