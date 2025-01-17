@@ -18,4 +18,10 @@ jobs:
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
           export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
+
+          # FIXME: Uncomment once bfe0973d2520fa155ff6bc673818a098f2a94154 reaches rawhide
+          # Run the tests that correspond to anaconda-webui version used in the latest compose
+          # LATEST_COMPOSE_A_PACKAGES = https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/compose/Everything/x86_64/os/Packages/a/
+          # ANACONDA_WEBUI_TAG=$(curl -s $LATEST_COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+          # git reset --hard $ANACONDA_WEBUI_TAG
           make test-compose
