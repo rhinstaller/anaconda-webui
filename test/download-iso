@@ -14,7 +14,7 @@ if [ -f test/images/"$TEST_COMPOSE".iso ]; then
 fi
 
 # Construct ISO URL from the compose directory
-ISO_FOLDER="https://kojipkgs.fedoraproject.org/compose/${RELEASE}/${TEST_COMPOSE}/compose/Everything/x86_64/iso/"
+ISO_FOLDER="https://kojipkgs.fedoraproject.org/compose/${RELEASE}/${TEST_COMPOSE}/compose/Server/x86_64/iso/"
 
 if ! curl -L --silent --fail --output /dev/null --head -- "$ISO_FOLDER"; then
     echo "Specified compose $TEST_COMPOSE does not exist"
