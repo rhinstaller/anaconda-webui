@@ -40,6 +40,11 @@ esac
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
 make create-updates.img
 
+# If TEST_COMPOSE is defined prepare the test report
+if [ -n "${TEST_COMPOSE-}" ]; then
+  test/prepare-report
+fi
+
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
 # we create huge VMs, so we need to reduce parallelism on CI
