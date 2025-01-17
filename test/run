@@ -13,7 +13,7 @@
 set -eux
 
 make codecheck
-make create-updates.img
+make bots
 
 RUN_OPTS=""
 ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
@@ -36,6 +36,9 @@ case "${TEST_SCENARIO:=}" in
         RUN_OPTS="$ALL_TESTS"
         ;;
 esac
+
+# We need to know if a TEST_COMPOSE is specified before we start downloading the test images
+make create-updates.img
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
