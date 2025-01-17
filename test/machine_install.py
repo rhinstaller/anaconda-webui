@@ -116,7 +116,12 @@ class VirtInstallMachine(VirtMachine):
 
         self.http_updates_img_port = self._serve_updates_img()
 
-        iso_path = f"{os.getcwd()}/bots/images/{self.image}"
+        # If custom compose if specified for fetching the image then use that
+        # else get the image from the bots directory
+        if compose := os.environ.get("TEST_COMPOSE"):
+            iso_path = f"{os.getcwd()}/test/images/{compose}.iso"
+        else:
+            iso_path = f"{os.getcwd()}/bots/images/{self.image}"
         extra_args = ""
         if self.is_live():
             # Live install ISO has different directory structure inside

@@ -26,7 +26,7 @@ def download_from_copr(copr_repo, packages, machine):
     )
 
 
-def vm_install(image, verbose, quick):
+def vm_install(image, compose, verbose, quick):
     subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), image])
     machine = machine_virtual.VirtMachine(image=image)
     try:
@@ -36,6 +36,14 @@ def vm_install(image, verbose, quick):
         scenario = os.environ.get("TEST_SCENARIO")
         # Make sure builder can build packages if required, /var/tmp/build needs to be owned by builder
         machine.execute("su builder -c 'mkdir -p /var/tmp/build/SRPMS'")
+
+        # If compose is specified enable the custom compose repository and disable the existing ones
+        if compose:
+            machine.execute("sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/*.repo")
+
+            version = image.split("-")[-1]
+            repo_url = f"https://kojipkgs.fedoraproject.org/compose/{version}/{compose}/compose/Everything/x86_64/os/"
+            machine.execute(f"dnf -y config-manager addrepo --set=baseurl={repo_url}")
 
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
@@ -47,9 +55,17 @@ def vm_install(image, verbose, quick):
         else:
             packages_to_download += " cockpit-storaged"
 
-        # Build anaconda-webui from SRPM unless we are testing a anaconda-webui PR scenario
-        # from a different repo, then pull it from the anaconda-webui PR COPR repo
-        if not scenario or not scenario.startswith("anaconda-webui-pr-"):
+        if scenario and scenario.startswith("anaconda-webui-pr-"):
+            # If we are testing a anaconda-webui PR scenario from a different repository
+            # then pull it from the anaconda-webui PR COPR repo
+            anaconda_webui_pr = scenario.split("-")[-1]
+            # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui", machine)
+        elif compose:
+            # If we are testing a custom compose download the anaconda-webui from the compose
+            machine.execute("dnf download --destdir /var/tmp/build/ anaconda-webui", stdout=sys.stdout, timeout=300)
+        else:
+            # Build anaconda-webui from SRPM otherwise
             files_to_clean = glob.glob("anaconda-webui-*.rpm") + glob.glob("anaconda-webui-*.tar.xz") + ["anaconda-webui.spec"]
             subprocess.run(["rm", *files_to_clean])
             subprocess.run(["make", "srpm"])
@@ -61,20 +77,19 @@ def vm_install(image, verbose, quick):
             mock_opts = ("--verbose" if verbose else "") + (" --nocheck" if quick else "")
             machine.execute("su builder -c 'mock --no-clean --disablerepo=* --offline --resultdir /var/tmp/build "
                             f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
-        else:
-            anaconda_webui_pr = scenario.split("-")[-1]
-            # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
-            download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui", machine)
 
-        # Pull anaconda-core from the COPR repo packit builds from master branch
-        # unless we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
-        if not scenario or not scenario.startswith("anaconda-pr-"):
-            # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
-            download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
-        else:
+        if compose:
+            # If we are testing a custom compose do *not* download the anaconda packages, they are in the ISO already
+            pass
+        elif scenario and scenario.startswith("anaconda-pr-"):
+            # If we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
             anaconda_pr = scenario.split("-")[-1]
             # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/rhinstaller-anaconda-{anaconda_pr}", "anaconda-core anaconda-tui", machine)
+        else:
+            # Pull anaconda-core from the COPR repo packit builds from master branch
+            # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
 
         # Download missing dependencies rpms
         # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
@@ -105,9 +120,10 @@ def main():
     parser.add_argument('--quick', '-q', action='store_true')
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--image', default='fedora-rawhide')
+    parser.add_argument('--compose', default='')
     args = parser.parse_args()
 
-    vm_install(args.image, args.verbose, args.quick)
+    vm_install(args.image, args.compose, args.verbose, args.quick)
 
 
 main()

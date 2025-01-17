@@ -4,9 +4,10 @@ set -eu
 
 TEST_RPMS="${TEST_RPMS:-""}"
 BUILD_RPMS_IMAGE="${TEST_OS/\-boot/}"
+COMPOSE_ID="${TEST_COMPOSE:-""}"
 
 # Prepare tmp/rpms folder with anaconda-webui missing dependencies
-test/vm.install -v --image=$BUILD_RPMS_IMAGE
+test/vm.install -v --image=$BUILD_RPMS_IMAGE --compose=$COMPOSE_ID
 
 # Copy the extra RPMs to the /tmp/rpms directory
 for i in ${TEST_RPMS//,/ }; do
