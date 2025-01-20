@@ -40,7 +40,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
     All tests below are destructive as they complete the installation process.
     """
 
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_encrypted")
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_encrypted")
     def testGuidedEncrypted(self):
         b = self.browser
         i = Installer(b, self.machine)
@@ -80,7 +80,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
         self.assertEqual(vda3_root["size"], "14G")
 
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_select")
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_multi_select")
     def testGuidedMultiSelect(self):
         b = self.browser
         m = self.machine
