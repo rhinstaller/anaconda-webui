@@ -73,7 +73,7 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
         assert opts_found == opts
 
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_partitioning_custom_btrfs_preserve_home")
+    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_custom_btrfs_preserve_home")
     def testBasic(self):
         b = self.browser
         m = self.machine
