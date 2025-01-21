@@ -70,7 +70,8 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        test_plan = getattr(method, "test_plan", "")
+        openqa_test = getattr(method, "openqa_test", "")
+        wikictms_section = getattr(method, "wikictms_section", "")
         boot_modes = getattr(method, "boot_modes", [])
 
         if self.is_efi and "efi" not in boot_modes:
@@ -85,7 +86,8 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
 
-        self.test_plan = test_plan
+        self.wikictms_section = wikictms_section
+        self.openqa_test = openqa_test
 
         super().setUp()
 
@@ -256,7 +258,8 @@ class VirtInstallMachineCase(MachineCase):
                 "firmware": firmware,
                 "status": status,
                 "error": error,
-                "openqa_test": self.test_plan
+                "openqa_test": self.openqa_test,
+                "wikictms_section": self.wikictms_section
             }
             data["tests"].append(new_entry)
             f.seek(0)
@@ -273,9 +276,10 @@ class VirtInstallMachineCase(MachineCase):
         super().tearDown()
 
 
-def test_plan(_url):
+def test_plan(_url, _section):
     def decorator(func):
-        func.test_plan = _url
+        func.openqa_test = _url
+        func.wikictms_section = _section
         return func
     return decorator
 

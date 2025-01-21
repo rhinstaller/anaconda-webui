@@ -22,7 +22,10 @@ from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_mount_point_assignment_raid")
+    @test_plan(
+        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_mount_point_assignment_raid",
+        "Custom storage configuation"
+    )
     def testLVMOnRAID(self):
         """
         Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
