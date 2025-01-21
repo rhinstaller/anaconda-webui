@@ -35,7 +35,10 @@ class TestUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
     disk_image = "debian-stable"
     disk_size = 20
 
-    @test_plan("https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_free_space")
+    @test_plan(
+        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_free_space",
+        "Guided storage configuration"
+    )
     @run_boot("bios", "efi")
     def testScenarioUseFreeSpace(self):
         b = self.browser
