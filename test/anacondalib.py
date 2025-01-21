@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
+import json
 import os
 import subprocess
 import sys
@@ -44,7 +45,9 @@ class VirtInstallMachineCase(MachineCase):
     disk_image = ""
     disk_size = 15
     is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+    is_compose = bool(os.environ.get("TEST_COMPOSE", None))
     MachineCase.machine_class = VirtInstallMachine
+    report_file = os.path.join(TEST_DIR, "report.json")
 
     @property
     def temp_dir(self):
@@ -67,6 +70,7 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
+        test_plan = getattr(method, "test_plan", "")
         boot_modes = getattr(method, "boot_modes", [])
 
         if self.is_efi and "efi" not in boot_modes:
@@ -80,6 +84,8 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
+
+        self.test_plan = test_plan
 
         super().setUp()
 
@@ -237,14 +243,39 @@ class VirtInstallMachineCase(MachineCase):
 
         self.handleReboot()
 
+    def appendResultsToReport(self):
+        with open(self.report_file, "r+") as f:
+            test_name = f"{self.__class__.__name__}.{self._testMethodName}"
+            firmware = "uefi" if self.is_efi else "bios"
+            error = super().getError()
+            status = "fail" if error else "pass"
+            # Add the new entry in the "tests" array in the JSON report file
+            data = json.load(f)
+            new_entry = {
+                "test_name": test_name,
+                "firmware": firmware,
+                "status": status,
+                "error": error,
+                "openqa_test": self.test_plan
+            }
+            data["tests"].append(new_entry)
+            f.seek(0)
+            json.dump(data, f, indent=4)
+            f.truncate()
+
     def tearDown(self):
         if not self.installation_finished:
             self.downloadLogs()
+
+        if self.is_compose:
+            self.appendResultsToReport()
+
         super().tearDown()
 
 
 def test_plan(_url):
     def decorator(func):
+        func.test_plan = _url
         return func
     return decorator
 
