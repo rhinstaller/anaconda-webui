@@ -21,9 +21,26 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import pretend_live_iso
 
 
 class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
+    @nondestructive
+    def testBasicLiveISO(self):
+        # Test that the 'Modify storage' button is available on the first page
+        # https://bugzilla.redhat.com/show_bug.cgi?id=2336488
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+
+        pretend_live_iso(self, i)
+
+        i.open()
+        s.check_disk_selected("vda")
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+
     @nondestructive
     def testEncryptedUnlock(self):
         b = self.browser
