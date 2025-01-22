@@ -65,7 +65,13 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
-import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
+import {
+    getDeviceAncestors,
+    getDeviceByName,
+    getDeviceByPath,
+    getDeviceChildren,
+    getUsableDevicesManualPartitioning,
+} from "../../helpers/storage.js";
 
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
@@ -231,27 +237,47 @@ export const CockpitStorageIntegration = ({
     );
 };
 
-export const preparePartitioning = async ({ devices, newMountPoints }) => {
+export const preparePartitioning = async ({ devices, newMountPoints, selectedDisks }) => {
     try {
         await setBootloaderDrive({ drive: "" });
 
         const partitioning = await createPartitioning({ method: "MANUAL" });
         const requests = await gatherRequests({ partitioning });
+        const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
 
-        const addRequest = (device, object, isSubVolume = false) => {
+        const addRequest = (device, object, isSubVolume = false, parent = undefined) => {
             const { content, dir, subvolumes, type } = object;
             let deviceSpec;
             if (!isSubVolume) {
                 deviceSpec = getDeviceByPath(devices, device);
             } else {
-                deviceSpec = getDeviceByName(devices, device);
+                if (device === "/" && parent) {
+                    /* It's possible that the user mounts the top-level volume
+                     * Example newMountPoints object from Cockpit Storage:
+                     * {
+                     * ...
+                     * "/dev/vda3": {
+                     *     "type": "filesystem",
+                     *     "subvolumes": {
+                     *         "/": {
+                     *             "dir": "/"
+                     *         }
+                     *     }
+                     * },
+                     * ...
+                     * }
+                     */
+                    deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })[0];
+                } else {
+                    deviceSpec = getDeviceByName(devices, device);
+                }
             }
 
             if (!deviceSpec) {
                 return;
             }
 
-            if (deviceSpec && (dir || type === "swap")) {
+            if (usableDevices.includes(deviceSpec) && (dir || type === "swap")) {
                 const existingRequestIndex = (
                     requests.findIndex(request => request["device-spec"].v === deviceSpec)
                 );
@@ -269,7 +295,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
                     });
                 }
             } else if (subvolumes) {
-                Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true));
+                Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true, deviceSpec));
             } else if (type === "crypto") {
                 const clearTextDevice = devices[deviceSpec].children.v[0];
                 const clearTextDevicePath = devices[clearTextDevice].path.v;
@@ -421,7 +447,7 @@ const CheckStorageDialog = ({
             // CLEAR_PARTITIONS_NONE = 0
             try {
                 await setInitializationMode({ mode: 0 });
-                const partitioning = await preparePartitioning({ devices, newMountPoints });
+                const partitioning = await preparePartitioning({ devices, newMountPoints, selectedDisks });
 
                 applyStorage({
                     onFail: exc => {
@@ -438,7 +464,7 @@ const CheckStorageDialog = ({
         };
 
         applyNewPartitioning();
-    }, [devices, checkStep, newMountPoints, useConfiguredStorage]);
+    }, [devices, checkStep, newMountPoints, selectedDisks, useConfiguredStorage]);
 
     useEffect(() => {
         if (checkStep !== "rescan" || useConfiguredStorage === undefined) {

@@ -98,7 +98,9 @@ export const isDuplicateRequestField = (requests, fieldName, fieldValue) => {
 };
 
 export const getDeviceByPath = (deviceData, path) => {
-    return Object.keys(deviceData).find(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+    const devices = Object.keys(deviceData).filter(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+    // If multiple devices can have the same path, pick the ancestor device
+    return devices.find(device => !getDeviceAncestors(deviceData, device).some(ancestor => devices.includes(ancestor)));
 };
 
 export const getDeviceByName = (deviceData, name) => {
@@ -172,3 +174,35 @@ export const unitMultiplier = {
 };
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
+
+export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) => {
+    // Calculate usable devices for partitioning by replicating the logic in the backend
+    // FIXME: Create a backend API for that
+    // https://github.com/rhinstaller/anaconda/blob/f79f019e22c87dc388dbcc637a7a5612a3c223a7/pyanaconda/modules/storage/partitioning/manual/manual_module.py#L127
+    const usableDevices = Object.keys(devices).filter(device => {
+        const children = devices[device].children.v;
+        const ancestors = getDeviceAncestors(devices, device);
+
+        if (
+            children.length > 0 &&
+                devices[device].type.v !== "btrfs subvolume"
+        ) {
+            return false;
+        }
+
+        // We don't want to allow to use snapshots in mount point assignment.
+        if (devices[device].type.v === "btrfs snapshot") {
+            return false;
+        }
+
+        // Is the device usable?
+        if (devices[device].protected.v || devices[device].size.v === 0) {
+            return false;
+        }
+
+        // All device's disks have to be in selected disks.
+        return selectedDisks.some(disk => ancestors.includes(disk));
+    });
+
+    return usableDevices;
+};

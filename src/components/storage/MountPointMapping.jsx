@@ -46,6 +46,7 @@ import {
     getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
+    getUsableDevicesManualPartitioning,
     hasDuplicateFields,
     isDuplicateRequestField,
 } from "../../helpers/storage.js";
@@ -674,34 +675,12 @@ const isUsableDevice = (devSpec, deviceData) => {
 
 const useExistingPartitioning = () => {
     const { diskSelection, partitioning } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
     const devices = useOriginalDevices();
     const [usedPartitioning, setUsedPartitioning] = useState();
 
     const reusePartitioning = useMemo(() => {
-        // Calculate usable devices for partitioning by replicating the logic in the backend
-        // FIXME: Create a backend API for that
-        // https://github.com/rhinstaller/anaconda/blob/f79f019e22c87dc388dbcc637a7a5612a3c223a7/pyanaconda/modules/storage/partitioning/manual/manual_module.py#L127
-        const usableDevices = Object.keys(devices).filter(device => {
-            const children = devices[device].children.v;
-            const ancestors = getDeviceAncestors(devices, device);
-
-            if (children.length > 0 && devices[device].type.v !== "btrfs subvolume") {
-                return false;
-            }
-
-            // We don't want to allow to use snapshots in mount point assignment.
-            if (devices[device].type.v === "btrfs snapshot") {
-                return false;
-            }
-
-            // Is the device usable?
-            if (devices[device].protected.v || devices[device].size.v === 0) {
-                return false;
-            }
-
-            // All device's disks have to be in selected disks.
-            return diskSelection.selectedDisks.some(disk => ancestors.includes(disk));
-        });
+        const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
 
         // Disk devices are not allowed in the mount point assignment
         const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []).filter(d => devices[d]?.type.v !== "disk");
@@ -709,7 +688,7 @@ const useExistingPartitioning = () => {
             return true;
         }
         return false;
-    }, [devices, diskSelection.selectedDisks, partitioning.requests]);
+    }, [devices, selectedDisks, partitioning.requests]);
 
     useEffect(() => {
         const _setPartitioningPath = async () => {
