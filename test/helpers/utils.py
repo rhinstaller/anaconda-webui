@@ -30,7 +30,7 @@ def pretend_live_iso(test, installer):
     installer.steps.hidden_steps.extend([installer.steps.ACCOUNTS, installer.steps.LANGUAGE])
     test.restore_file('/run/anaconda/anaconda.conf')
     test.machine.execute("sed -i 's/type = BOOT_ISO/type = LIVE_OS/g' /run/anaconda/anaconda.conf")
-    test.machine.execute("sed -i '/[anaconda]/a hidden_screens = anaconda-screen-language anaconda-screen-accounts' /run/anaconda/anaconda.conf")
+    test.machine.execute("sed -i '/[anaconda]/a hidden_webui_pages = anaconda-screen-language anaconda-screen-accounts' /run/anaconda/anaconda.conf")
 
 def pretend_default_scheme(test, scheme):
     test.restore_file('/run/anaconda/anaconda.conf')
