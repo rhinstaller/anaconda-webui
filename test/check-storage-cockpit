@@ -44,6 +44,19 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_frame("cockpit-storage")
         b._wait_present("#storage.ct-page-fill")
 
+    def cockpitCreateBootloaderPartitions(self):
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 100, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
     @nondestructive
     def testBasicLiveISO(self):
         # Test that the 'Modify storage' button is available on the first page
@@ -72,15 +85,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({
@@ -107,7 +112,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, True)
+        r.check_disk_row(dev, "/", "vda3", "14.9 GB", False, None, True)
 
     @nondestructive
     def testLVM(self):
@@ -121,15 +126,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_devices_dropdown("Create LVM2 volume group")
         self.dialog({"name": vgname, "disks": {dev: True}})
@@ -198,15 +195,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         tmp_mount = "/btrfs-mount-test"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
@@ -261,15 +250,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         tmp_mount = "/btrfs-mount-test"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
@@ -318,8 +299,8 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "15.0 GB", True, "btrfs")
-        r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
+        r.check_disk_row(dev, "/", "vda3", "14.9 GB", True, "btrfs")
+        r.check_disk_row(dev, "/home", "vda3", "14.9 GB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
