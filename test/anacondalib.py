@@ -248,17 +248,20 @@ class VirtInstallMachineCase(MachineCase):
     def appendResultsToReport(self):
         with open(self.report_file, "r+") as f:
             test_name = f"{self.__class__.__name__}.{self._testMethodName}"
-            firmware = "uefi" if self.is_efi else "bios"
+            firmware = "UEFI" if self.is_efi else "BIOS"
+            arch = "x86_64"
             error = super().getError()
             status = "fail" if error else "pass"
             # Add the new entry in the "tests" array in the JSON report file
             data = json.load(f)
             new_entry = {
+                "arch": arch,
                 "test_name": test_name,
                 "firmware": firmware,
+                "env": f"{arch} {firmware}",
                 "status": status,
                 "error": error,
-                "openqa_test": self.openqa_test,
+                "openqa_test": self.openqa_test.split("/")[-1],
                 "wikictms_section": self.wikictms_section
             }
             data["tests"].append(new_entry)
