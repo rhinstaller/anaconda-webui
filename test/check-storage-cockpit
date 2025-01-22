@@ -25,6 +25,18 @@ from utils import pretend_live_iso
 
 
 class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
+    def reachCockpitStorage(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.wait_scenario_visible("use-configured-storage", False)
+        s.check_disk_selected("vda")
+        s.enter_cockpit_storage()
+
     @nondestructive
     def testBasicLiveISO(self):
         # Test that the 'Modify storage' button is available on the first page
@@ -51,11 +63,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         dev = "vda"
 
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.wait_scenario_visible("use-configured-storage", False)
-        s.check_disk_selected("vda")
-        s.enter_cockpit_storage()
+        self.reachCockpitStorage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -127,11 +135,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         vgname = "fedoravg"
         dev = "vda"
 
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.wait_scenario_visible("use-configured-storage", False)
-        s.check_disk_selected("vda")
-        s.enter_cockpit_storage()
+        self.reachCockpitStorage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -309,11 +313,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         tmp_mount = "/btrfs-mount-test"
 
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.wait_scenario_visible("use-configured-storage", False)
-        s.check_disk_selected("vda")
-        s.enter_cockpit_storage()
+        self.reachCockpitStorage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -372,11 +372,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         tmp_mount = "/btrfs-mount-test"
 
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.wait_scenario_visible("use-configured-storage", False)
-        s.check_disk_selected("vda")
-        s.enter_cockpit_storage()
+        self.reachCockpitStorage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
