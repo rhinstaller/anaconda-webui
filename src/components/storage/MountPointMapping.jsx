@@ -685,7 +685,7 @@ const useExistingPartitioning = () => {
             const children = devices[device].children.v;
             const ancestors = getDeviceAncestors(devices, device);
 
-            if (children.length > 0 && devices[device].type.v !== "btrfs subvolume") {
+            if (children.length > 0 && !["btrfs volume", "btrfs subvolume"].includes(devices[device].type.v)) {
                 return false;
             }
 
