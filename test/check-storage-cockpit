@@ -37,6 +37,19 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.check_disk_selected("vda")
         s.enter_cockpit_storage()
 
+    def cockpitCreateBootloaderPartitions(self):
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
     @nondestructive
     def testBasicLiveISO(self):
         # Test that the 'Modify storage' button is available on the first page
@@ -64,15 +77,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({
@@ -136,15 +141,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_devices_dropdown("Create LVM2 volume group")
         self.dialog({"name": vgname, "disks": {dev: True}})
@@ -271,14 +268,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.check_disk_selected("vda")
         s.enter_cockpit_storage()
 
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs", "mount_point": "/"})
@@ -314,15 +304,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         tmp_mount = "/btrfs-mount-test"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
@@ -373,15 +355,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         tmp_mount = "/btrfs-mount-test"
 
         self.reachCockpitStorage()
-
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs"})
