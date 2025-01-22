@@ -14,7 +14,7 @@ const _ = cockpit.gettext;
 
 export const getSteps = (userInterfaceConfig, ...args) => {
     const mountPointMappingStep = new PageMountPointMapping(...args);
-    const hiddenScreens = userInterfaceConfig.hidden_screens || [];
+    const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
         new PageInstallationLanguage(...args),
         new PageInstallationMethod(...args),
@@ -33,7 +33,7 @@ export const getSteps = (userInterfaceConfig, ...args) => {
     /* Screens can be hidden in two ways:
      * 1. Dynamically: Controlled by the 'Page.isHidden' method in individual components,
      *    e.g., see 'MountPointMapping.jsx'.
-     * 2. Statically: Configured via the 'hidden_screens' key in the 'anaconda.conf'
+     * 2. Statically: Configured via the 'hidden_webui_pages' key in the 'anaconda.conf'
      *    For example, the 'Account Creation' screen is hidden in the 'Workstation' ISO
      *    because this step is handled by the 'Gnome Initial Setup' tool during the first boot.
      */
