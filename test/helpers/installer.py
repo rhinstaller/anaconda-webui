@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 from collections import UserDict
-from time import sleep
 
 import steps
 from step_logger import log_step
@@ -130,11 +129,6 @@ class Installer():
             next_page = self.steps._steps_jump[current_page][0]
             while next_page in self.steps.hidden_steps:
                 next_page = self.steps._steps_jump[next_page][0]
-
-        # Wait for a disk to be pre-selected before clicking 'Next'.
-        # FIXME: Find a better way.
-        if current_page == self.steps.INSTALLATION_METHOD:
-            sleep(2)
 
         self.browser.click("#installation-next-btn")
         expected_page = current_page if should_fail else next_page
