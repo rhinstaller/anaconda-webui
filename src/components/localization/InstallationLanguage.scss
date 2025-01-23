@@ -1,13 +1,34 @@
-.anaconda-screen-language-menu.pf-v5-c-menu.pf-m-scrollable {
+.anaconda-screen-selectors-container {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    row-gap: var(--pf-v5-global--spacer--lg);
+    column-gap: var(--pf-v5-global--spacer--md);
+}
+
+.anaconda-screen-selectors-container .pf-v5-c-form__group {
+    display: contents;
+}
+
+.anaconda-screen-selectors-container label {
+    grid-column: 1;
+    font-weight: 600;
+    text-align: left;
+}
+
+.anaconda-screen-selectors-container .pf-v5-c-form__group-control {
+    grid-column: 2;
     max-width: 400px;
+}
+
+.anaconda-screen-language-menu.pf-v5-c-menu.pf-m-scrollable {
     // heading: 84, footer: 44, content (about from header): 158, necessary padding underneath: 8px,
+    // keyboardSelector: 60
     // 50px magic number
-    --pf-v5-c-menu__content--MaxHeight: calc(100vh - 84px - 44px - 158px - 8px - 50px);
+    --pf-v5-c-menu__content--MaxHeight: calc(100vh - 84px - 44px - 158px - 8px - 60px - 50px);
 }
 
 .anaconda-screen-language-search {
     margin-bottom: var(--pf-v5-global--spacer--sm);
-    max-width: 400px;
 }
 
 .anaconda-screen-language-menu {

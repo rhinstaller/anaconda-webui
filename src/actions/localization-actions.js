@@ -21,6 +21,7 @@ import {
     getLanguageData,
     getLanguages,
     getLocaleData,
+    getLocaleKeyboardLayouts,
     getLocales,
 } from "../apis/localization.js";
 
@@ -51,11 +52,11 @@ export const getLanguageDataAction = ({ language }) => {
 export const getLanguageAction = () => {
     return async (dispatch) => {
         const language = await getLanguage();
-
-        return dispatch({
+        dispatch({
             payload: { language },
             type: "GET_LANGUAGE"
         });
+        return language;
     };
 };
 
@@ -66,6 +67,17 @@ export const getCommonLocalesAction = () => {
         return dispatch({
             payload: { commonLocales },
             type: "GET_COMMON_LOCALES"
+        });
+    };
+};
+
+export const getKeyboardLayoutsAction = ({ language }) => {
+    return async (dispatch) => {
+        const keyboardLayouts = await getLocaleKeyboardLayouts(language);
+
+        dispatch({
+            payload: { keyboardLayouts },
+            type: "GET_KEYBOARD_LAYOUTS"
         });
     };
 };
