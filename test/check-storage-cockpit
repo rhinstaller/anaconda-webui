@@ -34,7 +34,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
 
-        pretend_live_iso(self, i)
+        pretend_live_iso(self, i, m)
 
         i.open()
         s.check_disk_selected("vda")

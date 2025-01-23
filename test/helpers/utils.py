@@ -26,11 +26,15 @@ def add_public_key(machine):
     machine.write(authorized_keys, public_key, perm="0600")
 
 
-def pretend_live_iso(test, installer):
-    installer.steps.hidden_steps.extend([installer.steps.ACCOUNTS, installer.steps.LANGUAGE])
+def pretend_live_iso(test, installer, machine):
+    hidden_screens = machine.execute("cat /etc/anaconda/profile.d/fedora-workstation.conf  | grep anaconda-screen").split('\n')
+    hidden_screens = [x.strip() for x in hidden_screens]
+
+    installer.steps.hidden_steps.extend(hidden_screens)
+
     test.restore_file('/run/anaconda/anaconda.conf')
     test.machine.execute("sed -i 's/type = BOOT_ISO/type = LIVE_OS/g' /run/anaconda/anaconda.conf")
-    test.machine.execute("sed -i '/[anaconda]/a hidden_webui_pages = anaconda-screen-language anaconda-screen-accounts' /run/anaconda/anaconda.conf")
+    test.machine.execute(f"sed -i '/[anaconda]/a hidden_webui_pages = {" ".join(hidden_screens)}' /run/anaconda/anaconda.conf")
 
 def pretend_default_scheme(test, scheme):
     test.restore_file('/run/anaconda/anaconda.conf')

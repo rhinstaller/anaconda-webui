@@ -35,7 +35,7 @@ class TestReview(VirtInstallMachineCase):
         p = Password(b, s.encryption_id_prefix)
         r = Review(b, m)
 
-        pretend_live_iso(self, i)
+        pretend_live_iso(self, i, m)
         i.open()
         # After clicking 'Next' on the storage step, partitioning is done, thus changing the available space on the disk
         # Since this is a non-destructive test we need to make sure the we reset partitioning to how it was before the test started

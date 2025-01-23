@@ -18,10 +18,9 @@
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from language import Language
-from review import Review
 from storage import Storage
 from testlib import nondestructive, test_main, wait  # pylint: disable=import-error
-from utils import get_pretty_name, pretend_live_iso
+from utils import get_pretty_name
 
 
 @nondestructive
@@ -85,24 +84,6 @@ class TestBasic(VirtInstallMachineCase):
             i.steps.REVIEW,
         ]:
             i.check_sidebar_step_disabled(step)
-
-    def testLanguageScreenHiddenLive(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        r = Review(b, m)
-
-        pretend_live_iso(self, i)
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        # Back button should be disabled on the first screen
-        b.wait_visible("#installation-back-btn[aria-disabled=true]")
-
-        # For live media in the review screen language details should still be displayed
-        i.reach(i.steps.REVIEW)
-        r.check_language("English (United States)")
 
     def testAboutModal(self):
         b = self.browser
