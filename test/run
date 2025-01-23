@@ -37,6 +37,13 @@ case "${TEST_SCENARIO:=}" in
         ;;
 esac
 
+# If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
+if [ -n "${TEST_COMPOSE-}" ]; then
+    COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/rawhide/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
+    ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+    git checkout $ANACONDA_WEBUI_TAG
+fi
+
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
 make create-updates.img
 

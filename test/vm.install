@@ -61,11 +61,9 @@ def vm_install(image, compose, verbose, quick):
             anaconda_webui_pr = scenario.split("-")[-1]
             # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui", machine)
-        # FIXME: Revert once bfe0973d2520fa155ff6bc673818a098f2a94154 reaches rawhide
-        # Then change the nightly action to git checkout the tag that Anaconda-webui was built from for the compose
-        # elif compose:
-        #     # If we are testing a custom compose download the anaconda-webui from the compose
-        #     machine.execute("dnf download --destdir /var/tmp/build/ anaconda-webui", stdout=sys.stdout, timeout=300)
+        elif compose:
+             # If we are testing a custom compose download the anaconda-webui from the compose
+             machine.execute("dnf download --destdir /var/tmp/build/ anaconda-webui", stdout=sys.stdout, timeout=300)
         else:
             # Build anaconda-webui from SRPM otherwise
             files_to_clean = glob.glob("anaconda-webui-*.rpm") + glob.glob("anaconda-webui-*.tar.xz") + ["anaconda-webui.spec"]
