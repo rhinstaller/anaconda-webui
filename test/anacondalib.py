@@ -70,7 +70,8 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        test_plan = getattr(method, "test_plan", "")
+        openqa_test = getattr(method, "openqa_test", "")
+        wikictms_section = getattr(method, "wikictms_section", "")
         boot_modes = getattr(method, "boot_modes", [])
 
         if self.is_efi and "efi" not in boot_modes:
@@ -85,7 +86,8 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
 
-        self.test_plan = test_plan
+        self.wikictms_section = wikictms_section
+        self.openqa_test = openqa_test
 
         super().setUp()
 
@@ -246,17 +248,21 @@ class VirtInstallMachineCase(MachineCase):
     def appendResultsToReport(self):
         with open(self.report_file, "r+") as f:
             test_name = f"{self.__class__.__name__}.{self._testMethodName}"
-            firmware = "uefi" if self.is_efi else "bios"
+            firmware = "UEFI" if self.is_efi else "BIOS"
+            arch = "x86_64"
             error = super().getError()
             status = "fail" if error else "pass"
             # Add the new entry in the "tests" array in the JSON report file
             data = json.load(f)
             new_entry = {
+                "arch": arch,
                 "test_name": test_name,
                 "firmware": firmware,
+                "env": f"{arch} {firmware}",
                 "status": status,
                 "error": error,
-                "openqa_test": self.test_plan
+                "openqa_test": self.openqa_test.split("/")[-1],
+                "wikictms_section": self.wikictms_section
             }
             data["tests"].append(new_entry)
             f.seek(0)
@@ -273,9 +279,10 @@ class VirtInstallMachineCase(MachineCase):
         super().tearDown()
 
 
-def test_plan(_url):
+def test_plan(url, section):
     def decorator(func):
-        func.test_plan = _url
+        func.openqa_test = url
+        func.wikictms_section = section
         return func
     return decorator
 
