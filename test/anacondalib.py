@@ -279,10 +279,10 @@ class VirtInstallMachineCase(MachineCase):
         super().tearDown()
 
 
-def test_plan(_url, _section):
+def test_plan(url, section):
     def decorator(func):
-        func.openqa_test = _url
-        func.wikictms_section = _section
+        func.openqa_test = url
+        func.wikictms_section = section
         return func
     return decorator
 
