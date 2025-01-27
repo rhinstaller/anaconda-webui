@@ -98,7 +98,9 @@ export const isDuplicateRequestField = (requests, fieldName, fieldValue) => {
 };
 
 export const getDeviceByPath = (deviceData, path) => {
-    return Object.keys(deviceData).find(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+    const devices = Object.keys(deviceData).filter(d => deviceData[d].path?.v === path || deviceData[d].links?.v.includes(path));
+    // Multiple devices can have the same path, so find the ancestor device
+    return devices.find(device => !getDeviceAncestors(deviceData, device).some(ancestor => devices.includes(ancestor)));
 };
 
 export const getDeviceByName = (deviceData, name) => {

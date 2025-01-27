@@ -65,7 +65,7 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
-import { getDeviceAncestors, getDeviceByName, getDeviceByPath } from "../../helpers/storage.js";
+import { getDeviceAncestors, getDeviceByName, getDeviceByPath, getDeviceChildren } from "../../helpers/storage.js";
 
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
@@ -238,15 +238,33 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
         const partitioning = await createPartitioning({ method: "MANUAL" });
         const requests = await gatherRequests({ partitioning });
 
-        const addRequest = (device, object, isSubVolume = false) => {
+        const addRequest = (device, object, isSubVolume = false, parent = undefined) => {
             const { content, dir, subvolumes, type } = object;
             let deviceSpec;
             if (!isSubVolume) {
                 deviceSpec = getDeviceByPath(devices, device);
             } else {
-                deviceSpec = getDeviceByName(devices, device);
+                if (device === "/" && parent) {
+                    /* It's possible that the user mounts the top-level volume
+                     * Example newMountPoints object from Cockpit Storage:
+                     * {
+                     * ...
+                     * "/dev/vda3": {
+                     *     "type": "filesystem",
+                     *     "subvolumes": {
+                     *         "/": {
+                     *             "dir": "/"
+                     *         }
+                     *     }
+                     * },
+                     * ...
+                     * }
+                     */
+                    deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })[0];
+                } else {
+                    deviceSpec = getDeviceByName(devices, device);
+                }
             }
-
             if (!deviceSpec) {
                 return;
             }
@@ -269,7 +287,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
                     });
                 }
             } else if (subvolumes) {
-                Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true));
+                Object.keys(subvolumes).forEach(subvolume => addRequest(subvolume, subvolumes[subvolume], true, deviceSpec));
             } else if (type === "crypto") {
                 const clearTextDevice = devices[deviceSpec].children.v[0];
                 const clearTextDevicePath = devices[clearTextDevice].path.v;
