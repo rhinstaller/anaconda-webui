@@ -37,6 +37,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         pretend_live_iso(self, i, m)
 
         i.open()
+        i.next()
         s.check_disk_selected("vda")
         s.modify_storage()
         s.confirm_entering_cockpit_storage()
