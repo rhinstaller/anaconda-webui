@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import { getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 
 import { debug } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
@@ -62,18 +62,22 @@ export class LocalizationClient {
     }
 
     async initData () {
+        const language = await getLanguage();
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
+        await this.dispatch(getKeyboardLayoutsAction({ language }));
     }
 
     startEventMonitor () {
         this.client.subscribe(
             { },
-            (path, iface, signal, args) => {
+            async (path, iface, signal, args) => {
                 switch (signal) {
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
-                        this.dispatch(getLanguageAction());
+                        await this.dispatch(getLanguageAction());
+                        const language = await getLanguage();
+                        await this.dispatch(getKeyboardLayoutsAction({ language }));
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -138,4 +142,20 @@ export const getLocaleData = ({ locale }) => {
  */
 export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
+};
+
+/**
+ * @param {string} layout        Keyboard layout id
+ */
+export const setKeyboardLayout = ({ layout }) => {
+    return setProperty("SetCompositorSelectedLayout", cockpit.variant("s", layout));
+};
+
+/**
+ * @param {string} lang         Locale id
+ *
+ * @returns {Promise}           Resolves a list of locale keyboards
+ */
+export const getLocaleKeyboardLayouts = ({ locale }) => {
+    return callClient("GetLocaleKeyboardLayouts", [locale]);
 };
