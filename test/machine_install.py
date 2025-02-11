@@ -100,8 +100,9 @@ class VirtInstallMachine(VirtMachine):
 
     def start(self):
         self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+        self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
 
-        self.payload_path = os.path.join(BOTS_DIR, "./images/fedora-rawhide-anaconda-payload")
+        self.payload_path = os.path.join(BOTS_DIR, f"./images/{self.os}-anaconda-payload")
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
