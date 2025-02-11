@@ -18,6 +18,7 @@ jobs:
         run: |
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
+          mkdir -p ~/.openidc
           echo "${{ secrets.WIKITCMS }}" >> ~/.openidc/oidc_wikitcms.json
           export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
           make test-compose
