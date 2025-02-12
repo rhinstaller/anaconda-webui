@@ -24,6 +24,7 @@ sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
 from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD
+from testlib import Error
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -81,8 +82,15 @@ class StorageDestination():
         self.browser.click("#cockpit-storage-integration-return-to-installation-button")
 
     def return_to_installation_confirm(self):
-        with self.browser.wait_timeout(30):
+        # FIXME: testBtrfsTopLevelVolume fails sometimes on CI without this workaround
+        try:
+            with self.browser.wait_timeout(30):
+                self.browser.click("#cockpit-storage-integration-check-storage-dialog-continue")
+                self.browser.wait_not_present("#cockpit-storage-integration-check-storage-dialog")
+        except Error:
+            # Retry the click in case the dialog is still present
             self.browser.click("#cockpit-storage-integration-check-storage-dialog-continue")
+            self.browser.wait_not_present("#cockpit-storage-integration-check-storage-dialog")
 
     def modify_storage(self):
         self.browser.click("#toggle-kebab")
