@@ -34,7 +34,13 @@ endif
 TAR_ARGS = --sort=name --mtime "@$(shell git show --no-patch --format='%at')" --mode=go=rX,u+rw,a-s --numeric-owner --owner=0 --group=0
 
 # Anaconda specific variables
+ifeq ($(TEST_OS),)
 PAYLOAD=fedora-rawhide-anaconda-payload
+else
+VARIANT=$(shell echo $(TEST_OS) | sed 's/-boot//')
+PAYLOAD=$(VARIANT)-anaconda-payload
+endif
+
 GITHUB_BASE=rhinstaller/anaconda-webui
 UPDATES_IMG=updates.img
 TEST_LIVE_OS=fedora-rawhide-live-boot
@@ -191,7 +197,7 @@ payload: bots
 .PHONY: images
 images: bots
 	# Download cloud images
-	bots/image-download debian-stable ubuntu-stable fedora-41
+	bots/image-download debian-stable ubuntu-stable fedora-41 fedora-42 fedora-rawhide
 	# Downoad ISO images: if a compose if specified download from
 	# the compose otherwise download the ISO from Cockpit image server
 	if [ -n "$(TEST_COMPOSE)" ]; then \
