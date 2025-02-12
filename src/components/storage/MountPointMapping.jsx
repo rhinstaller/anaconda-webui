@@ -624,7 +624,7 @@ const RequestsTable = ({
                   { props: { width: 30 }, title: _("Mount point") },
                   { props: { width: 40 }, title: _("Device") },
                   { props: { width: 20 }, title: _("Reformat") },
-                  { props: { width: 10 }, title: "" },
+                  { props: { "aria-label": _("Remove"), width: 10 }, title: "" },
               ]}
               emptyCaption={_("No devices")}
               id={idPrefix}
