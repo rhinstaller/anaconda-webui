@@ -61,6 +61,10 @@ fi
 if [ -z "${TEST_OS-}" ]; then
   TEST_OS=fedora-rawhide-boot
 fi
+
+# Allow wiki-reporting even if test suite partially failed
+set +e
+
 export TEST_JOBS TEST_OS
 J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
 
