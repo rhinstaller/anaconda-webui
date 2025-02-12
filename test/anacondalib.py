@@ -76,7 +76,7 @@ class VirtInstallMachineCase(MachineCase):
 
         if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
-        elif not self.is_efi and "bios" not in self.boot_modes:
+        elif not self.is_efi and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
 
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
