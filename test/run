@@ -69,5 +69,5 @@ export TEST_JOBS TEST_OS
 J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
 
 if [ -n "${TEST_COMPOSE-}" ]; then
-    test/wiki-report "test/report.json"
+    test/wiki-report.py "test/report.json"
 fi
