@@ -41,7 +41,14 @@ esac
 if [ -n "${TEST_COMPOSE-}" ]; then
     COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/rawhide/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+
+    # FIXME: Keep test/wiki-report.py from the current commit
+    # This is a workaround till test/wiki-report is part of the releases we are testing
+    cp test/wiki-report.py /tmp/wiki-report.py
+
     git checkout $ANACONDA_WEBUI_TAG
+
+    cp /tmp/wiki-report.py test/wiki-report.py
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
