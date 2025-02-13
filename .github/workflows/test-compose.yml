@@ -1,9 +1,12 @@
-name: nightly
+name: test-compose
 on:
   schedule:
     - cron: '0 1 * * *'
   # can be run manually on https://github.com/rhinstaller/anaconda-webui/actions
   workflow_dispatch:
+    inputs:
+      compose_id:
+        description: 'Compose ID to test'
 jobs:
   trigger:
     environment: 'fedora-wiki'
@@ -20,5 +23,9 @@ jobs:
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
           mkdir -p ~/.openidc
           echo "${{ secrets.WIKITCMS }}" >> ~/.openidc/oidc_wikitcms.json
-          export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
+          if [ -z "${{ github.event.inputs.compose_id }}" ]; then
+            export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
+          else
+            export TEST_COMPOSE=${{ github.event.inputs.compose_id }}
+          fi
           make test-compose
