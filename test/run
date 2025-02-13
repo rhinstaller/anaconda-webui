@@ -42,13 +42,18 @@ if [ -n "${TEST_COMPOSE-}" ]; then
     COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/rawhide/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
 
-    # FIXME: Keep test/wiki-report.py from the current commit
-    # This is a workaround till test/wiki-report is part of the releases we are testing
-    cp test/wiki-report.py /tmp/wiki-report.py
+    # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
+    # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
+    git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
 
-    git checkout $ANACONDA_WEBUI_TAG
+    # FIXME: Cherry-pick 325e09cba86bcb404dc62a7c82717c6e2f86f958 because test_plans decorator has changed in the meantime
+    git show  325e09cba86bcb404dc62a7c82717c6e2f86f958 -- test/check* | git apply -
 
-    cp /tmp/wiki-report.py test/wiki-report.py
+    # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
+    echo "FIXME" > test/reference-image
+
+    # Commit the changes to the repo
+    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
