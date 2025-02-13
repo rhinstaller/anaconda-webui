@@ -72,11 +72,11 @@ class VirtInstallMachineCase(MachineCase):
         method = getattr(self, self._testMethodName)
         openqa_test = getattr(method, "openqa_test", "")
         wikictms_section = getattr(method, "wikictms_section", "")
-        boot_modes = getattr(method, "boot_modes", [])
+        boot_modes = getattr(method, "boot_modes", ["bios"])
 
         if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
-        elif not self.is_efi and "bios" not in self.boot_modes:
+        elif not self.is_efi and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
 
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
