@@ -83,6 +83,15 @@ J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/ru
 exit_code=$?
 
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
+    # Copy the wiki token to the correct location
+    if [ ! -f "$COCKPIT_FEDORA_WIKI_TOKEN" ]; then
+        echo "The wiki token file does not exist"
+        exit 1
+    fi
+
+    mkdir -p ~/.openidc
+    cp $COCKPIT_FEDORA_WIKI_TOKEN ~/.openidc/oidc_wikitcms.json
+
     test/wiki-report.py "test/report.json"
 fi
 
