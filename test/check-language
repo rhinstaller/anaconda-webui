@@ -45,7 +45,7 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Expect the backend set language to be preselected and the WebUI translated
         lang.check_selected_locale("de_DE")
-        b.wait_in_text("h2 + h3", "Wählen Sie eine Sprache aus")
+        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
 
     def testBackendTranslations(self):
         b = self.browser
@@ -129,7 +129,7 @@ class TestLanguage(VirtInstallMachineCase):
             ignore=[*pixel_tests_ignore, ".pf-v5-c-menu__item-text"],
         )
 
-        b.wait_in_text("h2 + h3", "Wählen Sie eine Sprache aus")
+        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
         # TODO: Add checks for plural translations when these are present
 
         # Check that the language is updated in the backend
