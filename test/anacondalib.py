@@ -45,7 +45,7 @@ class VirtInstallMachineCase(MachineCase):
     disk_image = ""
     disk_size = 15
     is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
-    is_compose = bool(os.environ.get("TEST_COMPOSE", None))
+    report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
 
@@ -273,7 +273,7 @@ class VirtInstallMachineCase(MachineCase):
         if not self.installation_finished:
             self.downloadLogs()
 
-        if self.is_compose:
+        if self.report_to_wiki:
             self.appendResultsToReport()
 
         super().tearDown()

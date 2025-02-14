@@ -15,6 +15,7 @@ set -eux
 make codecheck
 make bots
 
+TESTING_BRANCH=$(git branch --show-current)
 RUN_OPTS=""
 ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
 
@@ -59,8 +60,8 @@ fi
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
 make create-updates.img
 
-# If TEST_COMPOSE is defined prepare the test report
-if [ -n "${TEST_COMPOSE-}" ]; then
+# If TEST_COMPOSE is defined and we are testing main branch prepare the test report
+if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
   test/prepare-report
 fi
 
@@ -81,7 +82,7 @@ export TEST_JOBS TEST_OS
 J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
 exit_code=$?
 
-if [ -n "${TEST_COMPOSE-}" ]; then
+if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
     test/wiki-report.py "test/report.json"
 fi
 
