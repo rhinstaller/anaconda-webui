@@ -15,17 +15,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, test_plan
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
-    @test_plan(
-        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_mount_point_assignment_raid",
-        "Custom storage configuation"
-    )
     def testLVMOnRAID(self):
         """
         Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:

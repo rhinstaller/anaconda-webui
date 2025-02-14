@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, test_plan
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -73,10 +73,6 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
         assert opts_found == opts
 
-    @test_plan(
-        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_preserve_home",
-        "Guided storage home reuse"
-    )
     def testBasic(self):
         b = self.browser
         m = self.machine

@@ -43,12 +43,28 @@ class WikiReport:
         # TODO: Remove 'Fedora 42' hardcoded values.
         passed_testcases = set()
 
+        testmap = json.load(open("./test/wiki-testmap.json", "r"))
+
         for testcase in self.report["tests"]:
             # Skip testcases that don't have an openqa test associated with them
-            if not testcase["openqa_test"]:
+            # Check testmap urls for the testcases
+            # testmap is a list of dictionaries, each with a "testname" and "fedora-wiki-testcase" and section and milestone keys
+            # If the testname in the testmap matches the openqa_test in the report, we can use the fedora-wiki-testcase
+            # and section and milestone to report the result to the wiki
+            if testcase["test_name"] not in [test["testname"] for test in testmap]:
+                logger.warning("test %s not in testmap, skipping", testcase["openqa_test"])
                 continue
 
+            fedora_testcase = next(
+                [test for test in testmap if test["testname"] == testcase["test_name"]],
+                None
+            )
+            fedora_wiki_testcase = fedora_testcase["fedora-wiki-testcase"]
+            milestone = fedora_testcase["milestone"]
+            section = fedora_testcase["section"]
+
             if testcase["status"] == "pass":
+
                 passed_testcases.add(
                     ResTuple(
                         bot=True,
@@ -56,12 +72,12 @@ class WikiReport:
                         compose=self.compose,
                         dist="Fedora",
                         env=testcase["env"],
-                        milestone="Rawhide",
+                        milestone=milestone,
                         release="42",
                         user="anaconda-bot",
-                        section=testcase["wikictms_section"],
+                        section=section,
                         status="pass",
-                        testcase=testcase["openqa_test"],
+                        testcase=fedora_wiki_testcase,
                         testname=testcase["test_name"],
                         testtype="Installation",
                     )
