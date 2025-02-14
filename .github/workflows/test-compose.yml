@@ -21,8 +21,6 @@ jobs:
         run: |
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
-          mkdir -p ~/.openidc
-          echo "${{ secrets.WIKITCMS }}" >> ~/.openidc/oidc_wikitcms.json
           if [ -z "${{ github.event.inputs.compose_id }}" ]; then
             export TEST_COMPOSE=$(curl -s https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID)
           else
