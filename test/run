@@ -15,7 +15,12 @@ set -eux
 make codecheck
 make bots
 
-TESTING_BRANCH=$(git branch --show-current)
+if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ]; then
+    TESTING_BRANCH=main
+else
+    TESTING_BRANCH=$(git rev-parse HEAD)
+fi
+
 RUN_OPTS=""
 ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
 
