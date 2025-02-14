@@ -78,7 +78,6 @@ class WikiReport:
                         section=section,
                         status="pass",
                         testcase=fedora_wiki_testcase,
-                        testname=testcase["test_name"],
                         testtype="Installation",
                     )
                 )
