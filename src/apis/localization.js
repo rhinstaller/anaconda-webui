@@ -73,6 +73,9 @@ export class LocalizationClient {
             { },
             async (path, iface, signal, args) => {
                 switch (signal) {
+                case "CompositorSelectedLayoutChanged":
+                    await this.dispatch(getKeyboardLayoutsAction({ language: await getLanguage() }));
+                    break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
@@ -144,11 +147,12 @@ export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
 };
 
-/**
- * @param {string} layout        Keyboard layout id
- */
-export const setKeyboardLayout = ({ layout }) => {
-    return setProperty("SetCompositorSelectedLayout", cockpit.variant("s", layout));
+export const getCompositorSelectedLayout = () => {
+    return callClient("GetCompositorSelectedLayout");
+};
+
+export const setCompositorSelectedLayout = ({ layout }) => {
+    return callClient("SetCompositorSelectedLayout", [layout]);
 };
 
 /**

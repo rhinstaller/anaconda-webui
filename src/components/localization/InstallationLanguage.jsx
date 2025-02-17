@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import {
     Button,
     Form,
@@ -35,7 +35,6 @@ import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
 
 import { setLocale } from "../../apis/boss.js";
 import {
-    setKeyboardLayout,
     setLanguage,
 } from "../../apis/localization.js";
 
@@ -298,12 +297,6 @@ class LanguageSelector extends React.Component {
 
 const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
     const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
-    const [keyboard, setKeyboard] = useState("");
-
-    const handleSetKeyboard = (value) => {
-        setKeyboard(value);
-        setKeyboardLayout(value);
-    };
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -329,9 +322,6 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                         <KeyboardSelector
                           id="keyboard-selector"
                           idPrefix={SCREEN_ID}
-                          keyboards={keyboardLayouts}
-                          selectedKeyboard={keyboard}
-                          setKeyboard={handleSetKeyboard}
                         />
                     </FormGroup>
                 )}

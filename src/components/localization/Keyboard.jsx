@@ -17,12 +17,19 @@
 
 import cockpit from "cockpit";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { FormSelect, FormSelectOption } from "@patternfly/react-core";
+
+import { LanguageContext } from "../../contexts/Common.jsx";
+import { setCompositorSelectedLayout } from "../../apis/localization.js";
 
 const _ = cockpit.gettext;
 
-export const KeyboardSelector = ({ idPrefix, keyboards, selectedKeyboard, setKeyboard }) => {
+export const KeyboardSelector = ({ idPrefix }) => {
+    const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
+    const keyboards = keyboardLayouts;
+    const selectedKeyboard = compositorSelectedLayout;
+
     useEffect(() => {
         // Ensure the selected keyboard is valid or reset to the default layout
         if (keyboards.length > 0) {
@@ -33,14 +40,14 @@ export const KeyboardSelector = ({ idPrefix, keyboards, selectedKeyboard, setKey
 
             // Reset to default if current selection is invalid
             if (!isKeyboardValid) {
-                setKeyboard(keyboards[0]["layout-id"]?.v); // Default layout without variant
+                setCompositorSelectedLayout({ layout: keyboards[0]["layout-id"]?.v }); // Default layout without variant
             }
         }
-    }, [keyboards, selectedKeyboard, setKeyboard]);
+    }, [keyboards, selectedKeyboard, setCompositorSelectedLayout]);
 
     const handleChange = (event) => {
         const { value } = event.target;
-        setKeyboard(value);
+        setCompositorSelectedLayout({ layout: value });
     };
 
     const selectedValue =

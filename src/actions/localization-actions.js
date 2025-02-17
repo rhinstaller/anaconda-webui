@@ -17,6 +17,7 @@
 
 import {
     getCommonLocales,
+    getCompositorSelectedLayout,
     getLanguage,
     getLanguageData,
     getLanguages,
@@ -74,9 +75,10 @@ export const getCommonLocalesAction = () => {
 export const getKeyboardLayoutsAction = ({ language }) => {
     return async (dispatch) => {
         const keyboardLayouts = await getLocaleKeyboardLayouts({ locale: language });
+        const compositorSelectedLayout = await getCompositorSelectedLayout();
 
         dispatch({
-            payload: { keyboardLayouts },
+            payload: { keyboardLayouts, compositorSelectedLayout },
             type: "GET_KEYBOARD_LAYOUTS"
         });
     };
