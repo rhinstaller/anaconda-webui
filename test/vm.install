@@ -42,6 +42,9 @@ def vm_install(image, compose, verbose, quick):
             machine.execute("sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/*.repo")
 
             version = image.split("-")[-1]
+            # TODO: remove this once we have released Fedora 42
+            if version == "42":
+                version = "branched"
             repo_url = f"https://kojipkgs.fedoraproject.org/compose/{version}/{compose}/compose/Everything/x86_64/os/"
             machine.execute(f"dnf -y config-manager addrepo --set=baseurl={repo_url}")
 

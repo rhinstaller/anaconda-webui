@@ -27,9 +27,26 @@ COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 # stamp file to check if/when npm install ran
 NODE_MODULES_TEST=package-lock.json
 APPSTREAMFILE=org.cockpit-project.$(PACKAGE_NAME).metainfo.xml
+
 ifeq ($(TEST_OS),)
-TEST_OS=fedora-rawhide-boot
+    ifdef TEST_COMPOSE
+        ifneq ($(findstring Rawhide,$(TEST_COMPOSE)),)
+            TEST_OS=fedora-rawhide-boot
+        else
+            TEST_OS=fedora-$(word 2,$(subst -, ,$(TEST_COMPOSE)))-boot
+        endif
+    else
+        TEST_OS=fedora-rawhide-boot
+    endif
 endif
+
+BASE_OS=$(word 1,$(subst -, ,$(TEST_OS)))
+RELEASE=$(word 2,$(subst -, ,$(TEST_OS)))
+# TODO: remove this once we have released Fedora 42
+ifeq ($(RELEASE),42)
+	RELEASE=branched
+endif
+
 # common arguments for tar, mostly to make the generated tarballs reproducible
 TAR_ARGS = --sort=name --mtime "@$(shell git show --no-patch --format='%at')" --mode=go=rX,u+rw,a-s --numeric-owner --owner=0 --group=0
 
@@ -201,7 +218,7 @@ images: bots
 	# Downoad ISO images: if a compose if specified download from
 	# the compose otherwise download the ISO from Cockpit image server
 	if [ -n "$(TEST_COMPOSE)" ]; then \
-		test/download-iso "$(TEST_OS)" "$(TEST_COMPOSE)"; \
+		test/download-iso "$(TEST_OS)" "$(TEST_COMPOSE)" "$(RELEASE)"; \
 	else \
 		bots/image-download "$(TEST_OS)"; \
 	fi
