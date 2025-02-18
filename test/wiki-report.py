@@ -55,7 +55,7 @@ class WikiReport:
                 continue
 
             fedora_testcase = next(
-                [test for test in testmap if test["testname"] == testcase["test_name"]],
+                (test for test in testmap if test["testname"] == testcase["test_name"]),
                 None
             )
             fedora_wiki_testcase = fedora_testcase["fedora-wiki-testcase"]
