@@ -40,7 +40,6 @@ class WikiReport:
         self.wiki_hostname = "stg.fedoraproject.org"
 
     def get_passed_testcases(self):
-        # TODO: Remove 'Fedora 42' hardcoded values.
         passed_testcases = set()
 
         testmap = json.load(open("./test/wiki-testmap.json", "r"))
