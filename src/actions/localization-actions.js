@@ -17,10 +17,12 @@
 
 import {
     getCommonLocales,
+    getCompositorSelectedLayout,
     getLanguage,
     getLanguageData,
     getLanguages,
     getLocaleData,
+    getLocaleKeyboardLayouts,
     getLocales,
 } from "../apis/localization.js";
 
@@ -66,6 +68,18 @@ export const getCommonLocalesAction = () => {
         return dispatch({
             payload: { commonLocales },
             type: "GET_COMMON_LOCALES"
+        });
+    };
+};
+
+export const getKeyboardLayoutsAction = ({ language }) => {
+    return async (dispatch) => {
+        const keyboardLayouts = await getLocaleKeyboardLayouts({ locale: language });
+        const compositorSelectedLayout = await getCompositorSelectedLayout();
+
+        dispatch({
+            payload: { compositorSelectedLayout, keyboardLayouts },
+            type: "GET_KEYBOARD_LAYOUTS"
         });
     };
 };

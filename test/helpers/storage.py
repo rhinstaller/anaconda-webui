@@ -21,6 +21,10 @@ import time
 
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
+BOTS_DIR = f'{HELPERS_DIR}/../../bots'
+sys.path.append(BOTS_DIR)
+
+
 
 from step_logger import log_step
 from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD

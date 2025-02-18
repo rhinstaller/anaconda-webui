@@ -22,6 +22,7 @@ sys.path.append(HELPERS_DIR)
 from step_logger import log_step
 from steps import LANGUAGE
 
+LOCALIZATION_SERVICE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization"
 
@@ -85,3 +86,34 @@ class Language():
             {BOSS_SERVICE} \
             {BOSS_OBJECT_PATH} \
             {BOSS_INTERFACE} SetLocale s "{value}"')
+
+    def dbus_set_compositor_layouts(self, layouts):
+        self.machine.execute(f"busctl --address='{self._bus_address}' \
+            call \
+            {LOCALIZATION_SERVICE} \
+            {LOCALIZATION_OBJECT_PATH} \
+            {LOCALIZATION_INTERFACE} SetCompositorLayouts asas 1 '{layouts[0]}' 0")
+
+    def select_keyboard_layout(self, layout):
+        self.browser.select_from_dropdown(".anaconda-screen-selectors-container select", layout)
+
+    def check_selected_keyboard(self, layout):
+        self.browser.wait_val(".anaconda-screen-selectors-container select", layout)
+
+    def check_selected_keyboard_on_device(self, expected_layout, expected_variant=None):
+        result = self.machine.execute("localectl status")
+        layout = None
+        variant = None
+
+        for line in result.splitlines():
+            if "X11 Layout" in line:
+                layout = line.split(":")[-1].strip()
+            if "X11 Variant" in line:
+                variant = line.split(":")[-1].strip()
+
+        assert layout == expected_layout, f"Expected layout '{expected_layout}', but got '{layout}'"
+
+        if expected_variant:
+            assert variant == expected_variant, f"Expected variant '{expected_variant}', but got '{variant}'"
+        else:
+            assert not variant, f"Expected no variant, but got '{variant}'"
