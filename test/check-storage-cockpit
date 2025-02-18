@@ -166,7 +166,8 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         def checkStorageReview(prefix=""):
             disk = "vda"
-            r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+            with b.wait_timeout(30):
+                r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
             r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False, prefix=prefix)
