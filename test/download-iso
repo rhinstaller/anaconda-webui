@@ -4,8 +4,7 @@ set -xeu
 
 TEST_OS="$1"
 TEST_COMPOSE="$2"
-BASE_OS="${TEST_OS/\-boot/}"
-RELEASE="${BASE_OS/fedora-/}"
+RELEASE="$3"
 
 # Check if file already exists
 if [ -f test/images/"$TEST_COMPOSE".iso ]; then
