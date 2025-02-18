@@ -52,9 +52,6 @@ if [ -n "${TEST_COMPOSE-}" ]; then
     # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
     git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
 
-    # FIXME: Cherry-pick 325e09cba86bcb404dc62a7c82717c6e2f86f958 because test_plans decorator has changed in the meantime
-    git show  325e09cba86bcb404dc62a7c82717c6e2f86f958 -- test/check* | git apply -
-
     # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
     echo "FIXME" > test/reference-image
 

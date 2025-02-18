@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, test_plan
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from password import Password
 from progress import Progress
@@ -32,18 +32,6 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageEraseAll_E2E(VirtInstallMachineCase):
-    """
-    Test Fedora plans: https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test
-
-    These tests are based on the Fedora QA test plans for installation.
-
-    All tests below are destructive as they complete the installation process.
-    """
-
-    @test_plan(
-        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_encrypted",
-        "Guided storage configuration"
-    )
     def testGuidedEncrypted(self):
         b = self.browser
         i = Installer(b, self.machine)
@@ -83,10 +71,6 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
         self.assertEqual(vda3_root["size"], "14G")
 
-    @test_plan(
-        "https://fedoraproject.org/wiki/QA:Testcase_webui_partitioning_guided_multi_select",
-        "Guided storage configuration"
-    )
     def testGuidedMultiSelect(self):
         b = self.browser
         m = self.machine
@@ -133,10 +117,6 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         # pretty_name = get_pretty_name(m)
         # self.assertIn("Debian GNU/Linux", pretty_name)
 
-    @test_plan(
-        "https://fedoraproject.org/wiki/QA:Testcase_partitioning_guided_multi_empty_all",
-        "Guided storage configuration"
-    )
     def testGuidedMultiEmptyAll(self):
         b = self.browser
         m = self.machine
