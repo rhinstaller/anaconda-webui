@@ -151,7 +151,10 @@ class VirtInstallMachineCase(MachineCase):
         lang = Language(b, m)
         lang.dbus_set_language("en_US.UTF-8")
         lang.dbus_set_locale("en_US.UTF-8")
-        lang.dbus_set_compositor_layouts(["us"])
+        # FIXME: dbus_set_compositor_layouts is not available in the fedora composes yet
+        # Check it's availability before calling it
+        if hasattr(lang, "dbus_set_compositor_layouts"):
+            lang.dbus_set_compositor_layouts(["us"])
 
     def resetUsers(self):
         m = self.machine
