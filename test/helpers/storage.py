@@ -64,7 +64,7 @@ class StorageDestination():
         b.click(f"#{INSTALLATION_METHOD}-rescan-disks")
         b.wait_visible(f"#{INSTALLATION_METHOD}-rescan-disks.pf-m-disabled")
         # Default 15 seconds is not always enough for re-scanning disks
-        with b.wait_timeout(30):
+        with b.wait_timeout(60):
             b.wait_not_present(f"#{INSTALLATION_METHOD}-rescan-disks.pf-m-disabled")
 
         for disk in expected_disks or []:

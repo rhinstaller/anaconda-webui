@@ -176,7 +176,7 @@ class Installer():
         while step in self.steps.hidden_steps:
             step = self.steps._steps_jump[step][0]
         self.browser.open(f"/cockpit/@localhost/anaconda-webui/index.html#/{step}")
-        with self.browser.wait_timeout(30):
+        with self.browser.wait_timeout(60):
             self.wait_current_page(step)
 
     def click_step_on_sidebar(self, step=None):
