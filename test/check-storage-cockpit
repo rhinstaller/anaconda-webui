@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -408,6 +408,64 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
+    @nondestructive
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    def testRAIDonDisks(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self.addCleanup(m.execute, "mdadm --zero-superblock /dev/vda /dev/vdb /dev/vdc")
+        self.addCleanup(m.execute, "mdadm --stop /dev/md/SOMERAID")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb, and vdc
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Create biosboot, /boot and / partitions on the RAID device
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 5), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+        self.click_dropdown(self.card_row("Storage", 6), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.click_dropdown(self.card_row("Storage", 7), "Create partition")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.set_partitioning("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        def checkStorageReview(prefix=""):
+            disk = "MDRAID-SOMERAID"
+            with b.wait_timeout(30):
+                r.check_disk(disk, "48.3 GB MDRAID-SOMERAID (MDRAID set (stripe))")
+            r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "/", "SOMERAID3, RAID", "47.2 GB", False, prefix=prefix)
+
+        # verify review screen
+        checkStorageReview()
 
 
 if __name__ == '__main__':
