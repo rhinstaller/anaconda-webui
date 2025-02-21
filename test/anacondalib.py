@@ -42,8 +42,7 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["bios"]
-    disk_image = ""
-    disk_size = 15
+    disk_images = [("", 15)]
     is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
@@ -91,9 +90,11 @@ class VirtInstallMachineCase(MachineCase):
 
         super().setUp()
 
-        # Add installation target disk
-        backing_file = None if not self.disk_image else os.path.join(BOTS_DIR, f"./images/{self.disk_image}")
-        self.add_disk(self.disk_size, backing_file)
+        # Add installation target disks
+        for disk, size in self.disk_images:
+            backing_file = None if not disk else os.path.join(BOTS_DIR, f"./images/{disk}")
+            self.add_disk(size, backing_file)
+
         # Select the disk as boot device
         subprocess.check_call([
             "virt-xml", "-c", "qemu:///session",
@@ -245,7 +246,7 @@ class VirtInstallMachineCase(MachineCase):
         # This should be removed from the test
         if self.is_efi:
             # Add efibootmgr entry for the second OS
-            distro_name = self.disk_image.split("-")[0]
+            distro_name = self.disk_images[0][0].split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
             # Select the Fedora grub entry for first boot
             m.execute("efibootmgr -n 0001")

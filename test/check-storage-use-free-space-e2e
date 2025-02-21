@@ -24,8 +24,7 @@ from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
-    disk_image = "debian-stable"
-    disk_size = 20
+    disk_images = [("debian-stable", 20)]
 
     @run_boot("bios", "efi")
     def testScenarioUseFreeSpace(self):

@@ -24,7 +24,7 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 @nondestructive
 class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
-    disk_image = "fedora-rawhide"
+    disk_images = [("fedora-rawhide", 15)]
 
     def testBasic(self):
         b = self.browser
@@ -44,7 +44,7 @@ class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageEraseAll_Windows(VirtInstallMachineCase):
-    disk_size = 20
+    disk_images = [("", 20)]
 
     def setUp(self):
         super().setUp()

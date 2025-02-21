@@ -319,7 +319,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
-    disk_image = "fedora-rawhide"
+    disk_images = [("fedora-rawhide", 15)]
 
     def testDeletePartition(self):
         b = self.browser
@@ -350,7 +350,7 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
-    disk_size = 20
+    disk_images = [("", 20)]
 
     def setUp(self):
         super().setUp()
@@ -376,7 +376,7 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
 
 class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
-    disk_image = "ubuntu-stable"
+    disk_images = [("ubuntu-stable", 15)]
 
     @nondestructive
     def testReclaimSpaceShrink(self):

@@ -31,7 +31,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 @nondestructive
 class TestStorageHomeReuseFedora(VirtInstallMachineCase):
-    disk_image = "fedora-rawhide"
+    disk_images = [("fedora-rawhide", 15)]
 
     def setUp(self):
         super().setUp()
@@ -99,57 +99,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         # when unexpected mount points are present
         s.wait_scenario_visible("home-reuse", False)
 
-    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    def testMultipleRoots(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-        r = Review(b, m)
-
-        self.add_disk(15, os.path.join(BOTS_DIR, "./images/fedora-41"))
-        self.add_disk(15, os.path.join(BOTS_DIR, "./images/ubuntu-stable"))
-
-        dev_fedora1 = "vda"
-        dev_fedora2 = "vdb"
-        dev_ubuntu = "vdc"
-
-        s.udevadm_settle()
-
-        pretend_default_scheme(self, "BTRFS")
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        # Select both Fedora disks and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])
-        s.wait_scenario_visible("home-reuse", False)
-
-        # Select only single Ubuntu disk and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_ubuntu, True)])
-        s.wait_scenario_visible("home-reuse", False)
-
-        # Select Ubuntu disk and Fedora disk and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, True)])
-        s.wait_scenario_visible("home-reuse", False)
-
-        # Select only single Fedora disk and verify that home reuse is available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, False)])
-        s.wait_scenario_visible("home-reuse", True)
-        s.wait_scenario_available("home-reuse", True)
-
-        s.set_partitioning("home-reuse")
-        i.reach(i.steps.REVIEW)
-
-        # check selected disks are shown
-        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (Virtio Block Device)")
-        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
-        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
-        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "12.8 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
-                         action="mount")
-
     def move_standard_fedora_disk_to_encrypted(self, encrypted_disk, new_disk, password):
         b = self.browser
         m = self.machine
@@ -198,6 +147,13 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         umount /mnt
         """)
 
+@nondestructive
+class TestStorageHomeReuseFedoraEncrypted(TestStorageHomeReuseFedora):
+    disk_images = [("fedora-rawhide", 15), ("fedora-41", 15)]
+
+    def setUp(self):
+        super().setUp()
+
     def testHomeReuseFedoraEncrypted(self):
         b = self.browser
         m = self.machine
@@ -206,8 +162,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r = Review(b, m)
 
         pretend_default_scheme(self, "BTRFS")
-
-        self.add_disk(15, os.path.join(BOTS_DIR, "./images/fedora-41"))
         self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
 
         s.udevadm_settle()
@@ -229,6 +183,62 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
+
+@nondestructive
+class TestStorageHomeReuseMultipleDisks(TestStorageHomeReuseFedora):
+    disk_images = [("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)]
+
+    def setUp(self):
+        super().setUp()
+
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testMultipleRoots(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev_fedora1 = "vda"
+        dev_fedora2 = "vdb"
+        dev_ubuntu = "vdc"
+
+        s.udevadm_settle()
+
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.rescan_disks()
+
+        # Select both Fedora disks and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])
+        s.wait_scenario_visible("home-reuse", False)
+
+        # Select only single Ubuntu disk and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.wait_scenario_visible("home-reuse", False)
+
+        # Select Ubuntu disk and Fedora disk and verify that home reuse is not available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.wait_scenario_visible("home-reuse", False)
+
+        # Select only single Fedora disk and verify that home reuse is available
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, False)])
+        s.wait_scenario_visible("home-reuse", True)
+        s.wait_scenario_available("home-reuse", True)
+
+        s.set_partitioning("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (Virtio Block Device)")
+        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
+        r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
+        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "12.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
 
 
 if __name__ == '__main__':
