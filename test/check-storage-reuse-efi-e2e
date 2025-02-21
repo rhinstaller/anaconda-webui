@@ -1,0 +1,58 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, disk_images, run_boot
+from installer import Installer
+from operating_systems import DualBootHelperFedora_E2E
+from review import Review
+from storage import Storage
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestUseFreeSpace_FedoraDualBoot_E2E(DualBootHelperFedora_E2E, VirtInstallMachineCase):
+    """
+    Installs Fedora alongside an existing Fedora using 'Use free space' and checks both boot.
+    """
+
+    @disk_images([("fedora-rawhide", 15)])
+    @run_boot("bios", "efi")
+    def test_use_free_space_dual_fedora(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_partitioning("use-free-space")
+        i.next()
+        s.check_encryption_selected(False)
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+
+        self.install(needs_confirmation=False)
+
+        # Specify numeric values if needed, or None to skip exact size checks
+        root_one_size = None
+        root_two_size = None
+
+        self.verifyDualBootFedora(new_root_size=root_one_size, old_root_size=root_two_size)
+
+
+if __name__ == "__main__":
+    test_main()
