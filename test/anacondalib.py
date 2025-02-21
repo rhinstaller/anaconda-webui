@@ -42,7 +42,6 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["bios"]
-    disk_images = [("", 15)]
     is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
@@ -72,6 +71,7 @@ class VirtInstallMachineCase(MachineCase):
         openqa_test = getattr(method, "openqa_test", "")
         wikictms_section = getattr(method, "wikictms_section", "")
         boot_modes = getattr(method, "boot_modes", ["bios"])
+        self.disk_images = getattr(method, "disk_images", [("", 15)])
 
         if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
@@ -306,5 +306,17 @@ def run_boot(*modes):
     """
     def decorator(func):
         func.boot_modes = list(modes)
+        return func
+    return decorator
+
+def disk_images(disks):
+    """
+    Decorator to add installation target disks to the test.
+
+    :param disks: List of tuples with disk image OS to be used as backing file and size in GB.
+    If the disk image OS is not provided an empty disk will be created.
+    """
+    def decorator(func):
+        func.disk_images = list(disks)
         return func
     return decorator

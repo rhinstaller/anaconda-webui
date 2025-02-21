@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -30,7 +30,6 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
-    disk_images = [("fedora-rawhide", 15)]
 
     def setUp(self):
         super().setUp()
@@ -73,6 +72,7 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
         assert opts_found == opts
 
+    @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
         b = self.browser
         m = self.machine

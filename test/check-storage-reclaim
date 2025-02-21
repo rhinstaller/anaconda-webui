@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from operating_systems import WindowsOS
 from review import Review
@@ -319,8 +319,8 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
-    disk_images = [("fedora-rawhide", 15)]
 
+    @disk_images([("fedora-rawhide", 15)])
     def testDeletePartition(self):
         b = self.browser
         m = self.machine
@@ -350,12 +350,12 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
-    disk_images = [("", 20)]
 
     def setUp(self):
         super().setUp()
         WindowsOS(machine=self.machine, browser=self.browser).partition_disk()
 
+    @disk_images([("", 20)])
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -376,8 +376,8 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
 
 class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
-    disk_images = [("ubuntu-stable", 15)]
 
+    @disk_images([("ubuntu-stable", 15)])
     @nondestructive
     def testReclaimSpaceShrink(self):
         b = self.browser

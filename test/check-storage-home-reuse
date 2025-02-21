@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -31,7 +31,6 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 @nondestructive
 class TestStorageHomeReuseFedora(VirtInstallMachineCase):
-    disk_images = [("fedora-rawhide", 15)]
 
     def setUp(self):
         super().setUp()
@@ -50,6 +49,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         """)
 
     @run_boot("bios", "efi")
+    @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -83,6 +83,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
+    @disk_images([("fedora-rawhide", 15)])
     def testHidden(self):
         b = self.browser
         m = self.machine
@@ -147,13 +148,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         umount /mnt
         """)
 
-@nondestructive
-class TestStorageHomeReuseFedoraEncrypted(TestStorageHomeReuseFedora):
-    disk_images = [("fedora-rawhide", 15), ("fedora-41", 15)]
-
-    def setUp(self):
-        super().setUp()
-
+    @disk_images([("fedora-rawhide", 15), ("fedora-41", 15)])
     def testHomeReuseFedoraEncrypted(self):
         b = self.browser
         m = self.machine
@@ -184,13 +179,7 @@ class TestStorageHomeReuseFedoraEncrypted(TestStorageHomeReuseFedora):
         r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
 
-@nondestructive
-class TestStorageHomeReuseMultipleDisks(TestStorageHomeReuseFedora):
-    disk_images = [("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)]
-
-    def setUp(self):
-        super().setUp()
-
+    @disk_images([("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testMultipleRoots(self):
         b = self.browser

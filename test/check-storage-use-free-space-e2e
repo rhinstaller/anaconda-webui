@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from operating_systems import DualBootHelper_E2E
 from review import Review
@@ -24,8 +24,8 @@ from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
-    disk_images = [("debian-stable", 20)]
 
+    @disk_images([("debian-stable", 20)])
     @run_boot("bios", "efi")
     def testScenarioUseFreeSpace(self):
         b = self.browser
