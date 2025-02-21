@@ -42,7 +42,7 @@ sector-size: 512
         self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
 
 
-class DualBootHelper_E2E(VirtInstallMachineCase):
+class DualBootHelperDebian(VirtInstallMachineCase):
     def verifyDualBootDebian(self, root_one_size=None, root_two_size=None):
         b = self.browser
         m = self.machine
@@ -85,3 +85,65 @@ class DualBootHelper_E2E(VirtInstallMachineCase):
             self.assertEqual(vda15["mountpoints"], ["/boot/efi"])
         else:
             self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
+
+
+class DualBootHelperFedora(VirtInstallMachineCase):
+    """
+    Helper for Fedora-Fedora dual boot verification.
+    """
+
+    def find_partition_with_mount(self, blockdevs, mountpoint="/"):
+        """
+        Returns a device dict from lsblk -J where 'mountpoints' contains the specified mountpoint.
+        """
+        queue = list(blockdevs)
+        while queue:
+            dev = queue.pop(0)
+            mounts = dev.get("mountpoints") or []
+            if mountpoint in mounts:
+                return dev
+            children = dev.get("children") or []
+            queue.extend(children)
+        return None
+
+    def check_boot_entry(self, entry_index, check_size=None):
+        """
+        Selects a GRUB entry by index, reboots, checks that PRETTY_NAME contains 'Fedora'.
+        If check_size is provided, verifies the root partition size.
+        """
+        self.selectBootMenuEntry(entry_index)
+        self.machine.reboot()
+        name = get_pretty_name(self.machine)
+        self.assertIn("Fedora", name, f"GRUB entry #{entry_index} did not boot a Fedora system.")
+
+        if check_size is not None:
+            b = self.browser
+            m = self.machine
+            s = StorageUtils(b, m)
+            lsblk_data = s.get_lsblk_json()["blockdevices"]
+            root_dev = self.find_partition_with_mount(lsblk_data, "/")
+            self.assertIsNotNone(root_dev, f"No root partition found for GRUB entry #{entry_index}.")
+            expected_str = f"{check_size}G"
+            self.assertEqual(
+                root_dev["size"], expected_str,
+                f"Entry #{entry_index} expected size {expected_str}, got {root_dev['size']}."
+            )
+
+    def verifyDualBootFedora(self, new_root_size=None, old_root_size=None):
+        """
+        1) GRUB entry #1: new Fedora (normal, default)
+        3) GRUB entry #3: old Fedora (normal)
+        """
+        # New Fedora (normal) is already booted by default after installation
+        if new_root_size is not None:
+            self.check_boot_entry(1, check_size=new_root_size)
+        else:
+            # Just confirm it's Fedora
+            name = get_pretty_name(self.machine)
+            self.assertIn("Fedora", name)
+
+        # Old Fedora (normal)
+        if old_root_size is not None:
+            self.check_boot_entry(2, check_size=old_root_size)
+        else:
+            self.check_boot_entry(2)
