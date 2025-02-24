@@ -374,6 +374,13 @@ class StorageDBus():
             {STORAGE_OBJECT_PATH}/DiskSelection \
             {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 0')
 
+    def dbus_set_selected_disk(self, disk):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH}/DiskSelection \
+            {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 1 {disk}')
+
     def dbus_reset_partitioning(self):
         self.machine.execute(f'busctl --address="{self._bus_address}" \
             call \

@@ -105,6 +105,9 @@ class VirtInstallMachineCase(MachineCase):
         s = Storage(b, m)
         s.dbus_scan_devices()
 
+        # Set the first disk as the installation target
+        s.dbus_set_selected_disk("vda")
+
         self.resetLanguage()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
