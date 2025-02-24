@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -186,6 +186,7 @@ class TestStorage(VirtInstallMachineCase):
 @nondestructive
 class TestStorageMultipleDisks(VirtInstallMachineCase):
 
+    @disk_images([("", 15), ("", 15)])
     def testDiskSelectionLVM(self):
         """
         Test that the user can't select one PV when VG group spans across multiple disks
@@ -195,8 +196,6 @@ class TestStorageMultipleDisks(VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
-
-        self.add_disk(15)
 
         s.partition_disk("/dev/vda", [("10GB", "lvmpv")])
         s.partition_disk("/dev/vdb", [("10GB", "lvmpv")])

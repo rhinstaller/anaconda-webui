@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from password import Password
 from progress import Progress
@@ -71,6 +71,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
         self.assertEqual(vda3_root["size"], "14G")
 
+    @disk_images([("", 15), ("debian-stable", 15)])
     def testGuidedMultiSelect(self):
         b = self.browser
         m = self.machine
@@ -79,11 +80,8 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         r = Review(b, m)
         p = Progress(b)
 
-        self.add_disk(15, os.path.join(BOTS_DIR, "./images/debian-stable"))
-
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.check_disk_selected("vda", True)
         s.check_disk_selected("vdb", False)
@@ -117,6 +115,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         # pretty_name = get_pretty_name(m)
         # self.assertIn("Debian GNU/Linux", pretty_name)
 
+    @disk_images([("", 15), ("", 15)])
     def testGuidedMultiEmptyAll(self):
         b = self.browser
         m = self.machine
@@ -125,11 +124,8 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         s = Storage(b, self.machine)
         p = Progress(b)
 
-        self.add_disk(15)
-
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks(["vda", "vdb"])
 
         s.check_disk_selected("vda", True)
         s.select_disks([("vdb", True), ("vda", True)])

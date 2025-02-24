@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -32,6 +32,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 @nondestructive
 class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @run_boot("bios", "efi")
+    @disk_images([("", 15), ("fedora-41", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         b = self.browser
@@ -39,15 +40,10 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i = Installer(b, m)
         s = Storage(b, m)
         r = Review(b, m)
-
-        self.add_disk(15, os.path.join(BOTS_DIR, "./images/fedora-41"))
         dev = "vdb"
-
-        s.udevadm_settle()
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.select_mountpoint([("vda", False), ("vdb", True)])
 
@@ -172,14 +168,13 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
+    @disk_images([("", 15), ("", 10)])
     def testMultipleDisks(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
         r = Review(b, m)
-
-        self.add_disk(10)
 
         # BIOS boot partition, /boot partition, /
         disk1 = "/dev/vda"
