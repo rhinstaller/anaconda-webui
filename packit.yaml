@@ -37,3 +37,11 @@ jobs:
     trigger: release
     dist_git_branches:
       - fedora-development
+
+  - job: koji_build
+    trigger: commit
+    sidetag_group: anaconda-releases
+    dependents:
+      - anaconda
+    dist_git_branches:
+      - fedora-development
