@@ -56,6 +56,7 @@ import {
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
+import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
 import {
     applyStorage,
     createPartitioning,
@@ -324,6 +325,7 @@ const CheckStorageDialog = ({
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDevices = diskSelection.usableDevices;
 
     const [error, setError] = useState();
     const [checkStep, setCheckStep] = useState("rescan");
@@ -416,7 +418,7 @@ const CheckStorageDialog = ({
         }
 
         if (devicesToUnlock.length === 0) {
-            setCheckStep("prepare-partitioning");
+            setCheckStep("mdarray");
             return;
         }
 
@@ -429,6 +431,24 @@ const CheckStorageDialog = ({
                     dispatch(getDevicesAction());
                 });
     }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, devices, onCritFail, setError]);
+
+    useEffect(() => {
+        if (checkStep !== "mdarray") {
+            return;
+        }
+
+        // If the user created MD arrays we need to select them as Selected Disks
+        const selectedMDarrays = selectedDisks.map(disk => {
+            const mdArray = devices[disk].children.v.filter(child => devices[child].type.v === "mdarray");
+            return mdArray.length > 0 ? mdArray[0] : disk;
+        });
+
+        if (selectedMDarrays.find(mdArray => selectedDisks.indexOf(mdArray) === -1)) {
+            setSelectedDisks({ drives: selectedMDarrays.filter((disk, index) => selectedMDarrays.indexOf(disk) === index) });
+        } else {
+            setCheckStep("prepare-partitioning");
+        }
+    }, [checkStep, devices, usableDevices, selectedDisks]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
