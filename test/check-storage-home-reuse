@@ -31,13 +31,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 @nondestructive
 class TestStorageHomeReuseFedora(VirtInstallMachineCase):
-
-    def setUp(self):
-        super().setUp()
-
-        if self._testMethodName == "testHidden":
-            return
-
+    def _remove_unknown_mountpoints(self):
         # Remove the /var subvolume from the default btrfs layout
         # as /var/ is not default mount point in Fedora which results in
         # the 'Reinstall Fedora' option to get hidden
@@ -47,6 +41,9 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
             btrfs subvolume delete /mnt/var;
             umount /mnt
         """)
+
+    def _testBasic_partition_disk(self):
+        self._remove_unknown_mountpoints()
 
     @run_boot("bios", "efi")
     @disk_images([("fedora-rawhide", 15)])
@@ -58,12 +55,10 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r = Review(b, m)
 
         pretend_default_scheme(self, "BTRFS")
-
         dev="vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.set_partitioning("home-reuse")
         i.reach(i.steps.REVIEW)
@@ -94,7 +89,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         # The `Re-install Fedora` scenario should not be available
         # when unexpected mount points are present
@@ -148,6 +142,10 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         umount /mnt
         """)
 
+    def _testHomeReuseFedoraEncrypted_partition_disk(self):
+        self._remove_unknown_mountpoints()
+        self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
+
     @disk_images([("fedora-rawhide", 15), ("fedora-41", 15)])
     def testHomeReuseFedoraEncrypted(self):
         b = self.browser
@@ -157,12 +155,9 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r = Review(b, m)
 
         pretend_default_scheme(self, "BTRFS")
-        self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
 
-        s.udevadm_settle()
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
         s.select_disks([("vda", True), ("vdb", False)])
 
         s.unlock_all_encrypted()
@@ -179,6 +174,9 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
 
+    def _testMultipleRoots_partition_disk(self):
+        self._remove_unknown_mountpoints()
+
     @disk_images([("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testMultipleRoots(self):
@@ -192,13 +190,10 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         dev_fedora2 = "vdb"
         dev_ubuntu = "vdc"
 
-        s.udevadm_settle()
-
         pretend_default_scheme(self, "BTRFS")
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         # Select both Fedora disks and verify that home reuse is not available
         s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])

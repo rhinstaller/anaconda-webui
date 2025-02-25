@@ -131,22 +131,25 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint([("vda", False), ("vdb", True)])
         s.check_mountpoint_row_device_available(1, f"{dev}5", True, True)
 
+    def _testNoRootMountPoint_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # BIOS boot /boot on ext4 / on xfs /home on btrfs
+        disk = "/dev/vda"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
+
     def testNoRootMountPoint(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
 
-        # BIOS boot /boot on ext4 / on xfs /home on btrfs
-        disk = "/dev/vda"
-        dev = "vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
-        s.udevadm_settle()
-
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
+        dev = "vda"
         s.select_mountpoint([(dev, True)])
 
         # verify gathered requests
@@ -168,6 +171,19 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
+    def _testMultipleDisks_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # BIOS boot partition, /boot partition, /
+        disk1 = "/dev/vda"
+        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GB", "xfs"), ("", "xfs")])
+
+        # /dev/vdb1 /home partition
+        disk2 = "/dev/vdb"
+        s.partition_disk(disk2, [("", "xfs")])
+
     @disk_images([("", 15), ("", 10)])
     def testMultipleDisks(self):
         b = self.browser
@@ -176,21 +192,11 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        # BIOS boot partition, /boot partition, /
-        disk1 = "/dev/vda"
         dev1 = "vda"
-        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GB", "xfs"), ("", "xfs")])
-
-        # /dev/vdb1 /home partition
-        disk2 = "/dev/vdb"
         dev2 = "vdb"
-        s.partition_disk(disk2, [("", "xfs")])
-        s.udevadm_settle()
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-
-        s.rescan_disks()
 
         # Select only vdb disk and verify that mount point assignment is
         # not available (missing biosboot)
@@ -240,14 +246,12 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             ignore=pixel_tests_ignore,
         )
 
-    def testEncryptedUnlock(self):
+    def _testEncryptedUnlock_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
 
         disk1 = "/dev/vda"
-        dev1 = "vda"
         s.partition_disk(
             disk1,
             [("1MiB", "biosboot"), ("1GB", "xfs"), ("1GB", "xfs"), ("1GB", "xfs"), ("", "xfs")]
@@ -266,11 +270,16 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         mkfs.xfs -f /dev/mapper/encrypted-vol2
         cryptsetup luksClose encrypted-vol2
         """)
-        s.udevadm_settle()
+
+    def testEncryptedUnlock(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        dev1 = "vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.unlock_all_encrypted()
         s.unlock_device("1234", ["vda2", "vda3", "vda4"], [])
@@ -381,14 +390,10 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         self._testEncryptedUnlock(b, m)
 
-    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    def testDuplicateDeviceNames(self):
-        # https://bugzilla.redhat.com/show_bug.cgi?id=2237878
+    def _testDuplicateDeviceNames_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b, m)
 
         disk = "/dev/vda"
         btrfsname = "home"
@@ -402,12 +407,21 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
                 ("", "btrfs", "-f", "-L", btrfsname)
             ]
         )
-        s.udevadm_settle()
+
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testDuplicateDeviceNames(self):
+        # https://bugzilla.redhat.com/show_bug.cgi?id=2237878
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        btrfsname = "home"
         btrfs_volume_ids = s.get_btrfs_volume_ids(btrfsname)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.select_mountpoint([("vda", True)])
 
@@ -431,16 +445,21 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs")
         r.check_disk_row(disk, "/home/alan", "vda5", "4.29 GB", False, "btrfs")
 
+    def _testUnusableFormats_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
+
     def testUnusableFormats(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         s = Storage(b, m)
 
-        disk = "/dev/vda"
         dev = "vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
-        s.udevadm_settle()
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
