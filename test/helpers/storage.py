@@ -28,7 +28,7 @@ sys.path.append(BOTS_DIR)
 
 from step_logger import log_step
 from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD
-from testlib import Error
+from testlib import Error, wait
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -358,6 +358,17 @@ class StorageDBus():
             {STORAGE_SERVICE} \
             {task} \
             org.fedoraproject.Anaconda.Task Start')
+
+        wait(lambda: self.dbus_get_task_status(task) == "false", tries=20, delay=6)
+
+    def dbus_get_task_status(self, task):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property \
+            {STORAGE_SERVICE} \
+            {task} \
+            org.fedoraproject.Anaconda.Task IsRunning')
+
+        return ret.split('b ')[1].strip().strip('"')
 
     def dbus_get_usable_disks(self):
         ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
