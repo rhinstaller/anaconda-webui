@@ -327,6 +327,7 @@ class StorageUtils(StorageDestination):
     def udevadm_settle(self):
         # Workaround to not have any empty mountpoint labels
         self.machine.execute("""
+        systemctl restart systemd-udevd
         udevadm trigger
         udevadm settle --timeout=120
         """)
