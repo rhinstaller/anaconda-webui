@@ -32,7 +32,7 @@ from language import Language
 from machine_install import VirtInstallMachine
 from progress import Progress
 from storage import Storage
-from testlib import MachineCase  # pylint: disable=import-error
+from testlib import Error, MachineCase, wait  # pylint: disable=import-error
 from users import Users
 from utils import add_public_key
 
