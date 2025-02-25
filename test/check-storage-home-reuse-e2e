@@ -30,10 +30,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
-
-    def setUp(self):
-        super().setUp()
-
+    def _remove_unknown_mountpoints(self):
         # Remove the /var subvolume from the default btrfs layout
         # as /var/ is not default mount point in Fedora which results in
         # the 'Reinstall Fedora' option to get hidden
@@ -72,21 +69,14 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         opts_found = m.execute("grep /home /etc/fstab | tr -s ' ' | cut -d ' ' -f 4")
         assert opts_found == opts
 
-    @disk_images([("fedora-rawhide", 15)])
-    def testBasic(self):
-        b = self.browser
+    def _testBasic_partition_disk(self):
         m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-
-        pretend_default_scheme(self, "BTRFS")
-
         disk = "/dev/vda"
 
         old_root_file = "old_root_file"
         old_home_file = "old_home_file"
 
-        home_mount_options = m.execute(f"""
+        self.home_mount_options = m.execute(f"""
         # Mark existing root by a file
         mkdir /m
         mount -o subvol=root,compress=zstd:1 {disk}4 /m
@@ -99,18 +89,30 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         umount /m
         rmdir /m
         """)
-        s.udevadm_settle()
+
+        self._remove_unknown_mountpoints()
+
+    @disk_images([("fedora-rawhide", 15)])
+    def testBasic(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+
+        old_root_file = "old_root_file"
+        old_home_file = "old_home_file"
+
+        pretend_default_scheme(self, "BTRFS")
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.set_partitioning("home-reuse")
         i.reach(i.steps.REVIEW)
 
         self.install(needs_confirmation=True)
         self.verifyHomeReuse(old_root_file, old_home_file)
-        self.verifyHomeMountOpts(home_mount_options)
+        self.verifyHomeMountOpts(self.home_mount_options)
 
 
 if __name__ == '__main__':

@@ -24,16 +24,12 @@ from testlib import nondestructive, skipImage, test_main  # pylint: disable=impo
 
 @nondestructive
 class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
-    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    def testBtrfsSubvolumes(self):
+    def _testBtrfsSubvolumes_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b, m)
 
         disk = "/dev/vda"
-        dev = "vda"
         tmp_mount = "/tmp/btrfs-mount-test"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
         m.execute(f"""
@@ -47,11 +43,19 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         rmdir {tmp_mount}
         """)
 
-        s.udevadm_settle()
+    @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    def testBtrfsSubvolumes(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        disk = "/dev/vda"
+        dev = "vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.select_mountpoint([(dev, True)])
 
@@ -147,15 +151,12 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         i.check_next_disabled(False)
 
-    def testEncryptedUnlockBTRFSonLUKS(self):
+    def _testEncryptedUnlockBTRFSonLUKS_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b, m)
 
         disk = "/dev/vda"
-        dev = "vda"
         tmp_mount = "/tmp/btrfs-mount-test"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
         m.execute(f"""
@@ -171,11 +172,18 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         umount {tmp_mount}
         rmdir {tmp_mount}
         """)
-        s.udevadm_settle()
+
+    def testEncryptedUnlockBTRFSonLUKS(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev = "vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         # Unlock the LUKS device
         s.unlock_all_encrypted()
