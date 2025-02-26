@@ -31,7 +31,10 @@ case "${TEST_SCENARIO:=}" in
     *compose-*)
         RUN_OPTS="$ALL_TESTS"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
         ;;
-    *efi*) RUN_OPTS="$ALL_TESTS"; export TEST_FIRMWARE="efi" ;;&
+    *efi*)
+        RUN_OPTS="$ALL_TESTS";
+        export TEST_FIRMWARE="efi"
+        ;;
     *expensive*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"
         ;;
