@@ -17,12 +17,12 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
-import { FormSelect, FormSelectOption } from "@patternfly/react-core";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Flex, FormSelect, FormSelectOption, Text } from "@patternfly/react-core";
 
-import { setCompositorLayouts } from "../../apis/localization.js";
+import { getCompositorSelectedLayout, setCompositorLayouts } from "../../apis/localization.js";
 
-import { LanguageContext } from "../../contexts/Common.jsx";
+import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -62,5 +62,39 @@ export const KeyboardSelector = ({ idPrefix }) => {
                 />
             ))}
         </FormSelect>
+    );
+};
+
+export const KeyboardGnome = () => {
+    const [compositorSelectedLayout, setCompositorSelectedLayout] = useState(null);
+
+    useEffect(() => {
+        const onFocus = () => getCompositorSelectedLayout().then(setCompositorSelectedLayout);
+
+        onFocus();
+
+        window.addEventListener("focus", onFocus);
+        return () => window.removeEventListener("focus", onFocus);
+    }, []);
+
+    return (
+        <Flex alignItems="center" flexWrap={{ default: "nowrap" }}>
+            <Text>{compositorSelectedLayout || _("Unknown layout")}</Text>
+            <Button
+              variant="link"
+              component="a"
+              onClick={() => cockpit.spawn(["gnome-control-center", "region"])}
+            >
+                {_("Change system keyboard layout")}
+            </Button>
+        </Flex>
+    );
+};
+
+export const Keyboard = ({ idPrefix }) => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
+    return (
+        isBootIso ? <KeyboardSelector idPrefix={idPrefix} /> : <KeyboardGnome />
     );
 };
