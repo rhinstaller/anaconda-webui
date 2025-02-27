@@ -83,7 +83,8 @@ export const KeyboardGnome = () => {
             <Button
               variant="link"
               component="a"
-              onClick={() => cockpit.spawn(["gnome-control-center", "region"])}
+              rel="noreferrer"
+              href="anaconda-gnome-control-center://region"
             >
                 {_("Change system keyboard layout")}
             </Button>

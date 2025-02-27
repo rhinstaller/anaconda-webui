@@ -133,6 +133,7 @@ install: $(DIST_TEST) po/LINGUAS
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp extlinks.desktop $(DESTDIR)/usr/share/applications/
+	cp anaconda-gnome-control-center.desktop $(DESTDIR)/usr/share/applications/
 	mkdir -p $(DESTDIR)/usr/share/metainfo/
 	cp org.cockpit-project.$(PACKAGE_NAME).metainfo.xml $(DESTDIR)/usr/share/metainfo/
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
