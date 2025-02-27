@@ -46,7 +46,7 @@ import {
 
 import { LanguageContext } from "../../contexts/Common.jsx";
 
-import { KeyboardSelector } from "./Keyboard.jsx";
+import { Keyboard } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -319,10 +319,7 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
 
                 {keyboardLayouts.length > 0 && (
                     <FormGroup label={_("Keyboard")} fieldId={`${SCREEN_ID}-keyboard-layouts`}>
-                        <KeyboardSelector
-                          id="keyboard-selector"
-                          idPrefix={SCREEN_ID}
-                        />
+                        <Keyboard idPrefix={SCREEN_ID} />
                     </FormGroup>
                 )}
             </Form>
