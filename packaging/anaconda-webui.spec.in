@@ -55,6 +55,7 @@ Anaconda installer Web interface
 appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/metainfo/*
 
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/extlinks.desktop
+desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/anaconda-gnome-control-center.desktop
 
 %check
 exit 0
@@ -90,6 +91,7 @@ exit 0
 %{_libexecdir}/anaconda/webui-desktop
 %{_libexecdir}/anaconda/firefox-ext
 %{_datadir}/applications/extlinks.desktop
+%{_datadir}/applications/anaconda-gnome-control-center.desktop
 %{_unitdir}/webui-cockpit-ws.service
 
 

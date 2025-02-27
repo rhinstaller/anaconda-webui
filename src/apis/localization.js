@@ -159,6 +159,30 @@ export const setCompositorLayouts = ({ layouts }) => {
     return callClient("SetCompositorLayouts", [layouts, []]);
 };
 
+export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
+    const task = await callClient("GetKeyboardConfigurationWithTask");
+
+    const taskProxy = new LocalizationClient().client.proxy(
+        "org.fedoraproject.Anaconda.Task",
+        task
+    );
+
+    const getTaskResult = async () => {
+        const result = await taskProxy.GetResult();
+        return onSuccess(result.v);
+    };
+
+    const addEventListeners = () => {
+        taskProxy.addEventListener("Stopped", () => taskProxy.Finish().catch(onFail));
+        taskProxy.addEventListener("Succeeded", getTaskResult);
+    };
+
+    taskProxy.wait(() => {
+        addEventListeners();
+        taskProxy.Start().catch(onFail);
+    });
+};
+
 /**
  * @param {string} lang         Locale id
  *

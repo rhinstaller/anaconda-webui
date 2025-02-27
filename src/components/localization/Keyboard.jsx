@@ -17,12 +17,15 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
-import { FormSelect, FormSelectOption } from "@patternfly/react-core";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Button, Flex, FormSelect, FormSelectOption, Text } from "@patternfly/react-core";
 
-import { setCompositorLayouts } from "../../apis/localization.js";
+import {
+    getKeyboardConfiguration,
+    setCompositorLayouts,
+} from "../../apis/localization.js";
 
-import { LanguageContext } from "../../contexts/Common.jsx";
+import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -62,5 +65,81 @@ export const KeyboardSelector = ({ idPrefix }) => {
                 />
             ))}
         </FormSelect>
+    );
+};
+
+export const KeyboardGnome = ({ setIsFormValid }) => {
+    const [keyboardAlert, setKeyboardAlert] = useState();
+    const [vconsoleLayout, setVconsoleLayout] = useState();
+    const [xlayouts, setXlayouts] = useState([]);
+
+    useEffect(() => {
+        const onFail = ex => {
+            setIsFormValid(false);
+            setKeyboardAlert(ex.message);
+            setVconsoleLayout();
+            setXlayouts([]);
+        };
+        const onSuccess = (res) => {
+            const vconsole = res[1];
+            const xlayouts = res[0];
+
+            setVconsoleLayout(vconsole);
+            setXlayouts(xlayouts);
+
+            setIsFormValid(xlayouts.length === 1);
+            if (xlayouts.length > 1) {
+                setKeyboardAlert(_("More than one layout detected. Remove additional layouts to proceed"));
+            } else {
+                setKeyboardAlert();
+            }
+        };
+        const onFocus = () => {
+            getKeyboardConfiguration({ onFail, onSuccess });
+        };
+        onFocus();
+
+        window.addEventListener("focus", onFocus);
+        return () => window.removeEventListener("focus", onFocus);
+    }, [setIsFormValid]);
+
+    const layout = (
+        xlayouts?.length === 1
+            ? vconsoleLayout
+            : xlayouts.length === 0
+                ? _("Unusable layout")
+                : cockpit.format(_("$0 layouts detected"), xlayouts.length)
+    );
+
+    return (
+        <>
+            <Flex alignItems="center" flexWrap={{ default: "nowrap" }}>
+                <Text>{layout}</Text>
+                <Button
+                  variant="link"
+                  component="a"
+                  href="anaconda-gnome-control-center://keyboard"
+                >
+                    {_("Change system keyboard layout")}
+                </Button>
+            </Flex>
+            {keyboardAlert &&
+            <Alert
+              isInline
+              isPlain
+              title={keyboardAlert}
+              variant="danger"
+            />}
+        </>
+    );
+};
+
+export const Keyboard = ({ idPrefix, setIsFormValid }) => {
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+
+    return (
+        isBootIso
+            ? <KeyboardSelector idPrefix={idPrefix} />
+            : <KeyboardGnome setIsFormValid={setIsFormValid} />
     );
 };

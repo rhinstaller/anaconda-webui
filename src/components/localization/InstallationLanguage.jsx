@@ -44,9 +44,9 @@ import {
     setLangCookie
 } from "../../helpers/language.js";
 
-import { LanguageContext } from "../../contexts/Common.jsx";
+import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
-import { KeyboardSelector } from "./Keyboard.jsx";
+import { Keyboard } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
 
@@ -297,6 +297,7 @@ class LanguageSelector extends React.Component {
 
 const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
     const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -304,8 +305,11 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
 
     return (
         <>
-            <Form className="anaconda-screen-selectors-container" isHorizontal>
-                <FormGroup label={_("Language")}>
+            <Form isHorizontal>
+                <FormGroup
+                  className="anaconda-screen-selectors-container"
+                  label={_("Language")}
+                >
                     <LanguageSelector
                       id="language-selector"
                       languages={languages}
@@ -318,10 +322,14 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                 </FormGroup>
 
                 {keyboardLayouts.length > 0 && (
-                    <FormGroup label={_("Keyboard")} fieldId={`${SCREEN_ID}-keyboard-layouts`}>
-                        <KeyboardSelector
-                          id="keyboard-selector"
+                    <FormGroup
+                      className={isBootIso ? "anaconda-screen-selectors-container" : ""}
+                      fieldId={`${SCREEN_ID}-keyboard-layouts`}
+                      label={_("Keyboard")}
+                    >
+                        <Keyboard
                           idPrefix={SCREEN_ID}
+                          setIsFormValid={setIsFormValid}
                         />
                     </FormGroup>
                 )}

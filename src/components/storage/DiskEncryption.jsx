@@ -19,12 +19,14 @@ import cockpit from "cockpit";
 
 import React, { useContext } from "react";
 import {
+    Alert,
     Checkbox,
     EmptyState,
     EmptyStateFooter,
     EmptyStateHeader,
     EmptyStateIcon,
     Form,
+    FormGroup,
     FormSection,
     Spinner,
     Text,
@@ -37,8 +39,9 @@ import {
     setLuksEncryptionDataAction
 } from "../../actions/storage-actions.js";
 
-import { RuntimeContext, StorageContext } from "../../contexts/Common.jsx";
+import { RuntimeContext, StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
+import { Keyboard } from "../localization/Keyboard.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./DiskEncryption.scss";
@@ -69,6 +72,7 @@ const CheckDisksSpinner = (
 export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
+    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -86,19 +90,38 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
         />
     );
 
-    const passphraseForm = (
-        <PasswordFormFields
-          idPrefix={idPrefix}
-          policy={luksPolicy}
-          password={luks.passphrase}
-          setPassword={(value) => dispatch(setLuksEncryptionDataAction({ passphrase: value }))}
-          passwordLabel={_("Passphrase")}
-          confirmPassword={luks.confirmPassphrase}
-          setConfirmPassword={(value) => dispatch(setLuksEncryptionDataAction({ confirmPassphrase: value }))}
-          confirmPasswordLabel={_("Confirm passphrase")}
-          rules={[ruleLength, ruleAscii]}
-          setIsValid={setIsFormValid}
-        />
+    const encryptionContent = (
+        <>
+            {!isBootIso && (
+                <>
+                    <FormGroup
+                      label={_("Keyboard layout during boot")}
+                    >
+                        <Keyboard
+                          idPrefix={idPrefix}
+                          setIsFormValid={setIsFormValid}
+                        />
+                    </FormGroup>
+                    <Alert
+                      isInline
+                      isPlain
+                      variant="info"
+                      title={_("This layout will be used for unlocking your system on boot")} />
+                </>
+            )}
+            <PasswordFormFields
+              idPrefix={idPrefix}
+              policy={luksPolicy}
+              password={luks.passphrase}
+              setPassword={(value) => dispatch(setLuksEncryptionDataAction({ passphrase: value }))}
+              passwordLabel={_("Passphrase")}
+              confirmPassword={luks.confirmPassphrase}
+              setConfirmPassword={(value) => dispatch(setLuksEncryptionDataAction({ confirmPassphrase: value }))}
+              confirmPasswordLabel={_("Confirm passphrase")}
+              rules={[ruleLength, ruleAscii]}
+              setIsValid={setIsFormValid}
+            />
+        </>
     );
 
     return (
@@ -111,7 +134,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
                         {_("Secure your data using disk-based encryption. Only applies to new partitions")}
                     </Text>
                 </TextContent>
-                {encryptedDevicesCheckbox(luks.encrypted ? passphraseForm : null)}
+                {encryptedDevicesCheckbox(luks.encrypted ? encryptionContent : null)}
             </FormSection>
         </Form>
     );
