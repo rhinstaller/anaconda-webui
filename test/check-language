@@ -168,7 +168,7 @@ class TestLanguage(VirtInstallMachineCase):
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
 
-    @skipImage("TODO: Keyboard feature not merged yet", "fedora-42-boot")
+    @skipImage("TODO: Keyboard feature not available yet in the gated ISO", "fedora-42-boot", "fedora-rawhide-boot")
     def testKeyboardLayoutSelection(self):
         b = self.browser
         m = self.machine
