@@ -15,31 +15,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
-    def testLVMOnRAID(self):
-        """
-        Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
-        - Partition 1: biosboot (1M)
-        - Partition 2: RAID1 for /boot (xfs)
-        - Partition 3: RAID1 for LVM (ext4 for /).
-        """
+    def _testLVMOnRAID_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-
-        self.add_disk(15)
 
         disk1 = "/dev/vda"
         disk2 = "/dev/vdb"
-        dev1 = disk1.split("/")[-1]
-        dev2 = disk2.split("/")[-1]
         raid_name = "raid1"
 
         s.partition_disk(disk1, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
@@ -62,11 +51,28 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         mkfs.ext4 -F /dev/vol-group/root
 
         """)
-        s.udevadm_settle()
+
+    @disk_images([("", 15), ("", 15)])
+    def testLVMOnRAID(self):
+        """
+        Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
+        - Partition 1: biosboot (1M)
+        - Partition 2: RAID1 for /boot (xfs)
+        - Partition 3: RAID1 for LVM (ext4 for /).
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        disk1 = "/dev/vda"
+        disk2 = "/dev/vdb"
+        dev1 = disk1.split("/")[-1]
+        dev2 = disk2.split("/")[-1]
+        raid_name = "raid1"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.select_mountpoint([(dev1, True), (dev2, True)])
         s.select_mountpoint_row_device(1, "vol-group-root")

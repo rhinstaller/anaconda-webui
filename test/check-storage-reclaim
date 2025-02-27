@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from operating_systems import WindowsOS
 from review import Review
@@ -28,7 +28,7 @@ from testlib import (
 
 @nondestructive
 class TestStorageReclaimSpace(VirtInstallMachineCase):
-    def setup_partitions(self, s, i):
+    def setup_partitions(self, s):
         disk = "/dev/vda"
         btrfsname = "btrfstest"
         s.partition_disk(
@@ -41,11 +41,21 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             ]
         )
 
-        s.udevadm_settle()
+    def _testReclaimSpaceOptional_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
 
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
+        disk = "/dev/vda"
+        btrfsname = "btrfstest"
+        s.partition_disk(
+            disk,
+            [
+                ("1MB", "biosboot"),
+                ("1GB", "ext4"),
+                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
+            ]
+        )
 
     def testReclaimSpaceOptional(self):
         # When there is enough free space for the installation
@@ -57,23 +67,10 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        disk = "/dev/vda"
         dev = "vda"
-        btrfsname = "btrfstest"
-        s.partition_disk(
-            disk,
-            [
-                ("1MB", "biosboot"),
-                ("1GB", "ext4"),
-                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
-            ]
-        )
-
-        s.udevadm_settle()
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.set_partitioning("use-free-space")
         s.reclaim_check_checkbox(False, False)
@@ -94,6 +91,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         r.check_disk_row(dev, "/", "vda5, LVM", "8.59 GB", True, "xfs")
 
+    def _testReclaimSpaceDeleteBtrfsSubvolumes_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        self.setup_partitions(s)
+
     def testReclaimSpaceDeleteBtrfsSubvolumes(self):
         # When there is not enough free space for the installation
         # the reclaim action is selected and disabled
@@ -104,7 +108,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        self.setup_partitions(s, i)
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
 
         s.set_partitioning("use-free-space")
         s.reclaim_check_checkbox(True, True)
@@ -159,6 +164,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         r.check_disk_row("vda", parent="vda4", action="delete")
 
+    def _testReclaimSpaceShrinkBtrfsSubvolumes_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        self.setup_partitions(s)
+
     def testReclaimSpaceShrinkBtrfsSubvolumes(self):
         b = self.browser
         m = self.machine
@@ -166,7 +178,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        self.setup_partitions(s, i)
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
 
         s.set_partitioning("use-free-space")
         i.next(True)
@@ -207,12 +220,10 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
 
-    def testExtendedPartitionEFI(self):
+    def _testExtendedPartitionEFI_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-        r = Review(b, m)
 
         # Configure disk layout with a logical Btrfs partition
         disk = "/dev/vda"
@@ -237,11 +248,15 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         umount /mnt
         """)
 
-        s.udevadm_settle()
+    def testExtendedPartitionEFI(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.set_partitioning("use-free-space")
         s.reclaim_set_checkbox(True)
@@ -278,14 +293,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
-
-    def testReclaimExt4onLUKS(self):
-        # Shrinking LUKS partitions is not yet supported
-        # Deletion of locked partitions should be possible
-
+    def _testReclaimExt4onLUKS_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
 
         disk = "/dev/vda"
@@ -296,11 +306,18 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         mkfs.ext4 -F /dev/mapper/encrypted-vol
         cryptsetup luksClose encrypted-vol
         """)
-        s.udevadm_settle()
+
+    def testReclaimExt4onLUKS(self):
+        # Shrinking LUKS partitions is not yet supported
+        # Deletion of locked partitions should be possible
+
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.set_partitioning("use-free-space")
         s.reclaim_set_checkbox(True)
@@ -319,8 +336,8 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
-    disk_image = "fedora-rawhide"
 
+    @disk_images([("fedora-rawhide", 15)])
     def testDeletePartition(self):
         b = self.browser
         m = self.machine
@@ -350,12 +367,12 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
-    disk_size = 20
 
     def setUp(self):
         super().setUp()
         WindowsOS(machine=self.machine, browser=self.browser).partition_disk()
 
+    @disk_images([("", 20)])
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -376,8 +393,8 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
 
 class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
-    disk_image = "ubuntu-stable"
 
+    @disk_images([("ubuntu-stable", 15)])
     @nondestructive
     def testReclaimSpaceShrink(self):
         b = self.browser

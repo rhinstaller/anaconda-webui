@@ -28,7 +28,7 @@ sys.path.append(BOTS_DIR)
 
 from step_logger import log_step
 from steps import CUSTOM_MOUNT_POINT, INSTALLATION_METHOD
-from testlib import Error
+from testlib import Error, wait
 
 STORAGE_SERVICE = "org.fedoraproject.Anaconda.Modules.Storage"
 STORAGE_INTERFACE = STORAGE_SERVICE
@@ -327,6 +327,7 @@ class StorageUtils(StorageDestination):
     def udevadm_settle(self):
         # Workaround to not have any empty mountpoint labels
         self.machine.execute("""
+        systemctl restart systemd-udevd
         udevadm trigger
         udevadm settle --timeout=120
         """)
@@ -358,6 +359,17 @@ class StorageDBus():
             {task} \
             org.fedoraproject.Anaconda.Task Start')
 
+        wait(lambda: self.dbus_get_task_status(task) == "false", tries=20, delay=6)
+
+    def dbus_get_task_status(self, task):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property \
+            {STORAGE_SERVICE} \
+            {task} \
+            org.fedoraproject.Anaconda.Task IsRunning')
+
+        return ret.split('b ')[1].strip().strip('"')
+
     def dbus_get_usable_disks(self):
         ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
             call \
@@ -373,6 +385,13 @@ class StorageDBus():
             {STORAGE_SERVICE} \
             {STORAGE_OBJECT_PATH}/DiskSelection \
             {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 0')
+
+    def dbus_set_selected_disk(self, disk):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH}/DiskSelection \
+            {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 1 {disk}')
 
     def dbus_reset_partitioning(self):
         self.machine.execute(f'busctl --address="{self._bus_address}" \

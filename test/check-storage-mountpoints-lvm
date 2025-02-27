@@ -24,17 +24,14 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 @nondestructive
 class TestStorageMountPointsLVM(VirtInstallMachineCase):
-
-    def testLVM(self):
-        b = self.browser
+    def _testLVM_partition_disk(self):
         m = self.machine
-        i = Installer(b, m, scenario="mount-point-mapping")
+        b = self.browser
         s = Storage(b, m)
-        r = Review(b, m)
 
-        vgname = "fedoravg"
         disk = "/dev/vda"
-        dev = "vda"
+        vgname = "fedoravg"
+
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", None)])
         m.execute(f"""
         vgcreate -y -f {vgname} {disk}3
@@ -46,11 +43,17 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
         mkswap /dev/{vgname}/swap
         """)
 
-        s.udevadm_settle()
+    def testLVM(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="mount-point-mapping")
+        s = Storage(b, m)
+        r = Review(b, m)
 
+        vgname = "fedoravg"
+        dev = "vda"
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
 
         s.select_mountpoint([(dev, True)])
 
