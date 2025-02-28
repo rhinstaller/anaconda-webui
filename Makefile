@@ -110,7 +110,7 @@ $(SPEC): packaging/$(SPEC).in $(NODE_MODULES_TEST)
 	provides=$$(npm ls --omit dev --package-lock-only --depth=Infinity | grep -Eo '[^[:space:]]+@[^[:space:]]+' | sort -u | sed 's/^/Provides: bundled(npm(/; s/\(.*\)@/\1)) = /'); \
 	awk -v p="$$provides" '{gsub(/%{VERSION}/, "$(VERSION)"); gsub(/%{NPM_PROVIDES}/, p)}1' $< > $@
 
-$(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) $(NODE_MODULES_TEST) package.json build.js
+$(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) package.json build.js
 	NODE_ENV=production ./build.js
 
 watch:
@@ -171,6 +171,7 @@ EXTRA_DIST = dist src firefox-theme
 COCKPIT_REPO_FILES = \
 	pkg/lib \
 	test/common \
+	tools/node-modules \
 	$(NULL)
 
 COCKPIT_REPO_URL = https://github.com/cockpit-project/cockpit.git
@@ -230,10 +231,11 @@ test/reference: test/common
 update-reference-images: test/common test/reference
 	test/common/pixel-tests push
 
-$(NODE_MODULES_TEST): package.json
-	rm -f package-lock.json #  if it exists already, npm install won't update it; force that so that we always get up-to-date packages
-	env -u NODE_ENV npm install #  unset NODE_ENV, skips devDependencies otherwise
-	env -u NODE_ENV npm prune
+# We want tools/node-modules to run every time package-lock.json is requested
+# See https://www.gnu.org/software/make/manual/html_node/Force-Targets.html
+FORCE:
+$(NODE_MODULES_TEST): FORCE tools/node-modules
+	tools/node-modules make_package_lock_json
 
 .PHONY: test-compose
 test-compose: bots
