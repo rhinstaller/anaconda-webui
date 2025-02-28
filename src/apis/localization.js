@@ -151,10 +151,6 @@ export const getCompositorSelectedLayout = () => {
     return callClient("GetCompositorSelectedLayout");
 };
 
-export const getConfiguredLayouts = () => {
-    return callClient("GetConfiguredLayouts");
-};
-
 export const setCompositorLayouts = ({ layouts }) => {
     return callClient("SetCompositorLayouts", [layouts, []]);
 };
