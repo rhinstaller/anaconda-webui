@@ -177,6 +177,7 @@ EXTRA_DIST = dist src firefox-theme
 COCKPIT_REPO_FILES = \
 	pkg/lib \
 	test/common \
+	tools/node-modules \
 	$(NULL)
 
 COCKPIT_REPO_URL = https://github.com/cockpit-project/cockpit.git
