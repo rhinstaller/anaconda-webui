@@ -44,7 +44,9 @@ user_pref("toolkit.telemetry.unified", false);
 user_pref("trailhead.firstrun.didSeeAboutWelcome", true);
 
 // Don't show `Allow this site to open the PROTOCOL link with APPLICATION` dialog
-user_pref("security.external_protocol_requires_permission", false);
+user_pref("network.protocol-handler.warn-external-default", false);
+user_pref("network.protocol-handler.external.anaconda-gnome-control-center", true);
+user_pref("network.protocol-handler.external.extlink", true);
 
 // Don't show the `This site is trying to open a popup` dialog
 user_pref("dom.disable_open_during_load", false);
