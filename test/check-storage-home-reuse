@@ -141,7 +141,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
         umount /mnt-fedora
         umount /mnt
-        """)
+        """, timeout=90)
 
     def _testHomeReuseFedoraEncrypted_partition_disk(self):
         self._remove_unknown_mountpoints()
