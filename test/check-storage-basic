@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -52,8 +52,8 @@ class TestStorage(VirtInstallMachineCase):
         # However, since the storage module initialization is long completed
         # the newly added disk, will not be visible in the UI,
         # until the test clicks on the re-scan button
-        self.add_disk(2)
         dev = "vdb"
+        self.add_disk(2, target=dev)
         s.rescan_disks(["vda", dev])
 
         # Check that the disk selection persists when moving next and back
@@ -183,20 +183,10 @@ class TestStorage(VirtInstallMachineCase):
         b.wait_in_text("#critical-error-bz-report-modal-details", "Unexpected storage JS error")
         b.wait_in_text("#critical-error-bz-report-modal header", "The installer cannot continue due to a critical error: Storage plugin failed")
 
-@nondestructive
-class TestStorageMultipleDisks(VirtInstallMachineCase):
-
-    def testDiskSelectionLVM(self):
-        """
-        Test that the user can't select one PV when VG group spans across multiple disks
-        """
-
+    def _testDiskSelectionLVM_partition_disk(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
         s = Storage(b, m)
-
-        self.add_disk(15)
 
         s.partition_disk("/dev/vda", [("10GB", "lvmpv")])
         s.partition_disk("/dev/vdb", [("10GB", "lvmpv")])
@@ -209,9 +199,17 @@ class TestStorageMultipleDisks(VirtInstallMachineCase):
         vgchange -a n vg
         """)
 
+    @disk_images([("", 15), ("", 15)])
+    def testDiskSelectionLVM(self):
+        """
+        Test that the user can't select one PV when VG group spans across multiple disks
+        """
+
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+
         i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.rescan_disks()
         i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
         b.wait_in_text(

@@ -32,7 +32,7 @@ from language import Language
 from machine_install import VirtInstallMachine
 from progress import Progress
 from storage import Storage
-from testlib import MachineCase  # pylint: disable=import-error
+from testlib import MachineCase, wait  # pylint: disable=import-error
 from users import Users
 from utils import add_public_key
 
@@ -42,12 +42,14 @@ pixel_tests_ignore = [".logo", "#betanag-icon"]
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["bios"]
-    disk_image = ""
-    disk_size = 15
     is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
+
+    def partition_disk(self):
+        """ Override this method to partition the disk """
+        pass
 
     @property
     def temp_dir(self):
@@ -73,6 +75,10 @@ class VirtInstallMachineCase(MachineCase):
         openqa_test = getattr(method, "openqa_test", "")
         wikictms_section = getattr(method, "wikictms_section", "")
         boot_modes = getattr(method, "boot_modes", ["bios"])
+        self.disk_images = getattr(method, "disk_images", [("", 15)])
+
+        partition_disk_method_name = "_" + self._testMethodName + "_partition_disk"
+        self.partition_disk = getattr(self, partition_disk_method_name, self.partition_disk)
 
         if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
@@ -91,19 +97,22 @@ class VirtInstallMachineCase(MachineCase):
 
         super().setUp()
 
-        # Add installation target disk
-        backing_file = None if not self.disk_image else os.path.join(BOTS_DIR, f"./images/{self.disk_image}")
-        self.add_disk(self.disk_size, backing_file)
-        # Select the disk as boot device
-        subprocess.check_call([
-            "virt-xml", "-c", "qemu:///session",
-            self.machine.label, "--edit", "--boot", "hd"
-        ])
-
         m = self.machine
         b = self.browser
         s = Storage(b, m)
+
+        self.addAllDisks()
+        s.udevadm_settle()
+
+        # Wait for minimum /dev/vda to be detected before proceeding
+        wait(lambda: "vda" in m.execute("ls /dev"), tries=5, delay=5)
+
+        self.partition_disk()
+
         s.dbus_scan_devices()
+
+        # Set the first disk as the installation target
+        s.dbus_set_selected_disk("vda")
 
         self.resetLanguage()
 
@@ -115,15 +124,12 @@ class VirtInstallMachineCase(MachineCase):
             self.allow_browser_errors(".*client closed.*")
             self.allow_browser_errors(".*Server has closed the connection.*")
 
-    def add_disk(self, size, backing_file=None):
+    def add_disk(self, size, backing_file=None, target="vda"):
         image = self._create_disk_image(size, backing_file=backing_file)
         subprocess.check_call([
             "virt-xml", "-c",  "qemu:///session", self.machine.label,
-            "--update", "--add-device", "--disk", f"{image},format=qcow2"
+            "--update", "--add-device", "--disk", f"{image},format=qcow2,target={target}"
         ])
-
-        if self.is_nondestructive():
-            self.addCleanup(self.rem_disk, image)
 
         return image
 
@@ -162,13 +168,40 @@ class VirtInstallMachineCase(MachineCase):
         users = Users(b, m)
         users.dbus_clear_users()
 
+    def addAllDisks(self):
+        # Add installation target disks
+        for index, (disk, size) in enumerate(self.disk_images):
+            target = "vd" + chr(97 + index) # vd[a-z]
+            backing_file = None if not disk else os.path.join(BOTS_DIR, f"./images/{disk}")
+            self.add_disk(size, backing_file, target)
+
+        # Select the disk as boot device
+        subprocess.check_call([
+            "virt-xml", "-c", "qemu:///session",
+            self.machine.label, "--edit", "--boot", "hd"
+        ])
+
+    def removeAllDisks(self):
+        # Remove all disks
+        domblklist = subprocess.getoutput(
+            f"virsh domblklist {self.machine.label}",
+        )
+        for line in domblklist.splitlines():
+            name = line.split()[0]
+            if "vd" in name:
+                file = line.split()[1]
+                self.rem_disk(file)
+
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data
         m = self.machine
         b = self.browser
         s = Storage(b, m)
 
+        self.removeAllDisks()
         s.dbus_reset_partitioning()
+        # Create an AUTOMATIC partitioning because MANUAL partitioning tests might take the last created
+        s.dbus_create_partitioning("AUTOMATIC")
         s.dbus_reset_selected_disks()
         # CLEAR_PARTITIONS_DEFAULT = -1
         s.dbus_set_initialization_mode(-1)
@@ -242,7 +275,7 @@ class VirtInstallMachineCase(MachineCase):
         # This should be removed from the test
         if self.is_efi:
             # Add efibootmgr entry for the second OS
-            distro_name = self.disk_image.split("-")[0]
+            distro_name = self.disk_images[0][0].split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
             # Select the Fedora grub entry for first boot
             m.execute("efibootmgr -n 0001")
@@ -302,5 +335,17 @@ def run_boot(*modes):
     """
     def decorator(func):
         func.boot_modes = list(modes)
+        return func
+    return decorator
+
+def disk_images(disks):
+    """
+    Decorator to add installation target disks to the test.
+
+    :param disks: List of tuples with disk image OS to be used as backing file and size in GB.
+    If the disk image OS is not provided an empty disk will be created.
+    """
+    def decorator(func):
+        func.disk_images = list(disks)
         return func
     return decorator

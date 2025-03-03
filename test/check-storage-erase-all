@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from operating_systems import WindowsOS
 from review import Review
@@ -24,8 +24,8 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 @nondestructive
 class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
-    disk_image = "fedora-rawhide"
 
+    @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -44,12 +44,12 @@ class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
 
 @nondestructive
 class TestStorageEraseAll_Windows(VirtInstallMachineCase):
-    disk_size = 20
 
     def setUp(self):
         super().setUp()
         WindowsOS(machine=self.machine, browser=self.browser).partition_disk()
 
+    @disk_images([("", 20)])
     def testBasic(self):
         b = self.browser
         m = self.machine
