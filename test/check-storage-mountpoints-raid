@@ -38,7 +38,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         echo einszweidrei | cryptsetup luksOpen {disk}4 encrypted-vol2
         mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 /dev/mapper/encrypted-vol /dev/mapper/encrypted-vol2
         mkfs.xfs /dev/md/encryptedraid
-        """)
+        """, timeout=90)
 
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
@@ -88,7 +88,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         echo einszweidrei | cryptsetup luksOpen /dev/md/encryptedraid encrypted-vol
         mkfs.xfs /dev/mapper/encrypted-vol
         cryptsetup luksClose /dev/mapper/encrypted-vol
-        """)
+        """, timeout=90)
 
     def testEncryptedUnlockLUKSonRAID(self):
         # LUKS on RAID: partition -> RAID -> LUKS -> filesystem

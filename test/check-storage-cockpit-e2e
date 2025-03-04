@@ -1,0 +1,120 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, disk_images
+from installer import Installer
+from review import Review
+from storage import Storage
+from storagelib import StorageCase  # pylint: disable=import-error
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
+    @disk_images([('', 15), ('', 15), ('', 15)])
+    def testRAIDonPartitions(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create BIOS and boot partitions on vdb
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({ "type": "empty"})
+
+        # Create partitions for the RAID device on vdb and vdc
+        self.click_dropdown(self.card_row("Storage", 5), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 6), "Create partition")
+        self.dialog({"type": "empty"})
+
+        self.click_dropdown(self.card_row("Storage", 7), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 8), "Create partition")
+        self.dialog({"type": "empty"})
+
+        # Create RAID1 on vda
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vda3": True, "vdb1": True, "vdc1": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+        b.wait_visible(self.card_row("Storage", name="/dev/md/SOMERAID"))
+
+        # Format and mount the RAID device partition as /
+        self.click_dropdown(self.card_row("Storage", 9), "Format")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        i.reach(i.steps.REVIEW)
+
+        def checkStorageReview(prefix=""):
+            with b.wait_timeout(30):
+                for disk in ("vda", "vdb", "vdc"):
+                    r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)")
+                    r.check_disk_row(disk, "/", "vda3, vdc1, vdb1, RAID", "47.2 GB", False, prefix=prefix)
+
+        # verify review screen
+        checkStorageReview()
+        r.check_checkbox_not_present()
+        self.install(needs_confirmation=False)
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
+        self.assertIn("raid0", [part["type"] for part in vda3["children"]])
+
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        vdb1 = next(part for part in vdb["children"] if part["name"] == "vdb1")
+        self.assertIn("raid0", [part["type"] for part in vdb1["children"]])
+
+        vdc = next(dev for dev in block_devs if dev["name"] == "vdc")
+        vdc1 = next(part for part in vdc["children"] if part["name"] == "vdc1")
+        self.assertIn("raid0", [part["type"] for part in vdc1["children"]])
+
+        raid_root = next(part for part in vda3["children"] if part["type"] == "raid0")
+        self.assertEqual(raid_root["mountpoints"], ["/"])
+        self.assertEqual(raid_root["size"], "44G")
+
+
+if __name__ == '__main__':
+    test_main()

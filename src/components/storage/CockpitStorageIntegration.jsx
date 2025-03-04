@@ -56,6 +56,7 @@ import {
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
+import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
 import {
     applyStorage,
     createPartitioning,
@@ -324,6 +325,7 @@ const CheckStorageDialog = ({
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDevices = diskSelection.usableDevices;
 
     const [error, setError] = useState();
     const [checkStep, setCheckStep] = useState("rescan");
@@ -416,7 +418,7 @@ const CheckStorageDialog = ({
         }
 
         if (devicesToUnlock.length === 0) {
-            setCheckStep("prepare-partitioning");
+            setCheckStep("mdarray");
             return;
         }
 
@@ -429,6 +431,66 @@ const CheckStorageDialog = ({
                     dispatch(getDevicesAction());
                 });
     }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, devices, onCritFail, setError]);
+
+    useEffect(() => {
+        if (checkStep !== "mdarray") {
+            return;
+        }
+
+        const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
+
+        // In blivet we recognize two "types" of MD array:
+        // * The array is directly on top of disks: in this case we consider the array to be a disk
+        // (similar to a hardware RAID) and create the partition table on the array
+        // * The array is on top of partitions: from our pov this is a device and we allow only a single
+        // filesystem (or other format like lvmpv) on top of it and if it has partitions they are ignored
+        //
+        // For the first scenario, we need to re-set 'SelectedDisks' in backend,
+        // for the new mdarrays to be handled as such.
+        const selectedMDarrays = selectedDisks.map(disk => {
+            const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
+            return mdArray.length > 0 ? mdArray[0] : disk;
+        });
+
+        // Check if we have mdarrays that are not fitting in the above two scenarios
+        // and show an error message
+        const mdArraysNotSupported = mdArrays.filter(device => {
+            if (
+                devices[device].parents.v.every(parent => devices[parent].type.v === "disk") &&
+                devices[device].formatData.type.v === "disklabel"
+            ) {
+                return false;
+            }
+            if (
+                devices[device].parents.v.every(parent => devices[parent].type.v === "partition") &&
+                devices[device].formatData.type.v !== "disklabel"
+            ) {
+                return false;
+            }
+            return true;
+        });
+        // TODO: Consider moving this logic to the backend
+        if (mdArraysNotSupported.length > 0) {
+            setError({
+                message: cockpit.format(
+                    _(
+                        "Invalid RAID configuration detected.\n" +
+                        "If your RAID array is created directly on top of disks, a partition table must be created on the array.\n" +
+                        "If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). " +
+                        "Any existing partitions on this array will be ignored."
+                    )
+                )
+            });
+            setCheckStep();
+            return;
+        }
+
+        if (selectedMDarrays.find(mdArray => selectedDisks.indexOf(mdArray) === -1)) {
+            setSelectedDisks({ drives: selectedMDarrays.filter((disk, index) => selectedMDarrays.indexOf(disk) === index) });
+        } else {
+            setCheckStep("prepare-partitioning");
+        }
+    }, [checkStep, devices, usableDevices, selectedDisks]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
