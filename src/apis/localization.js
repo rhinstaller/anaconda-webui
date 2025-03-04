@@ -151,12 +151,42 @@ export const getCompositorSelectedLayout = () => {
     return callClient("GetCompositorSelectedLayout");
 };
 
-export const getConfiguredLayouts = () => {
-    return callClient("GetConfiguredLayouts");
-};
-
 export const setCompositorLayouts = ({ layouts }) => {
     return callClient("SetCompositorLayouts", [layouts, []]);
+};
+
+export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
+    let task;
+    try {
+        task = await callClient("GetKeyboardConfigurationWithTask");
+    } catch (e) {
+        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
+            console.info({ e });
+            return onSuccess([[], ""]);
+        } else {
+            onFail(e);
+        }
+    }
+
+    const taskProxy = new LocalizationClient().client.proxy(
+        "org.fedoraproject.Anaconda.Task",
+        task
+    );
+
+    const getTaskResult = async () => {
+        const result = await taskProxy.GetResult();
+        return onSuccess(result.v);
+    };
+
+    const addEventListeners = () => {
+        taskProxy.addEventListener("Stopped", () => taskProxy.Finish().catch(onFail));
+        taskProxy.addEventListener("Succeeded", getTaskResult);
+    };
+
+    taskProxy.wait(() => {
+        addEventListeners();
+        taskProxy.Start().catch(onFail);
+    });
 };
 
 /**
