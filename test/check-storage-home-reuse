@@ -123,7 +123,19 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         # Copy data from the first disk / to the new disk
         mkdir -p /mnt-fedora
         mount /dev/{dev_fedora}4 /mnt-fedora
-        cp -a /mnt-fedora/* /mnt/
+        rsync -pogAXtlHrDx \
+            --stats \
+            --exclude=/dev/* \
+            --exclude=/proc/* \
+            --exclude=/sys/* \
+            --exclude=/tmp/* \
+            --exclude=/run/* \
+            --exclude=/mnt/* \
+            --exclude=/media/* \
+            --exclude=/lost+found \
+            --exclude=/var/lib/machines \
+            --exclude=/var \
+            /mnt-fedora/* /mnt
 
         # Adjust /etc/fstab to contain the new device UUIDS
         echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
@@ -137,7 +149,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         # Do the same for /boot
         mount /dev/{dev}3 /mnt
         mount /dev/{dev_fedora}3 /mnt-fedora
-        cp -a /mnt-fedora/* /mnt/
+        rsync -aAXHv /mnt-fedora/ /mnt/
 
         umount /mnt-fedora
         umount /mnt
