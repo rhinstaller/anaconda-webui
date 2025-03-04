@@ -61,7 +61,26 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         }
 
         // Before unload ask the user for verification
-        window.onbeforeunload = () => "";
+        const preventExit = () => {
+            return "";
+        };
+
+        // Attach the beforeunload event handler
+        window.addEventListener("beforeunload", preventExit);
+
+        // Function to temporarily disable beforeunload
+        const allowExternalNavigation = (event) => {
+            const link = event.target.closest("a");
+            if (link && (link.href.startsWith("extlink:") || link.href.startsWith("anaconda-gnome-control-center:"))) {
+                window.removeEventListener("beforeunload", preventExit);
+                setTimeout(() => {
+                    window.addEventListener("beforeunload", preventExit);
+                }, 1000); // Re-enable after 1 second
+            }
+        };
+
+        // Attach a click event listener to detect external link clicks
+        document.addEventListener("click", allowExternalNavigation);
 
         Promise.all(clients.map(Client => new Client(address, dispatch).init()))
                 .then(() => {
