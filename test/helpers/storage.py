@@ -82,8 +82,10 @@ class StorageDestination():
     def confirm_entering_cockpit_storage(self):
         self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
 
-    def return_to_installation(self):
+    def return_to_installation(self, error=None):
         self.browser.click("#cockpit-storage-integration-return-to-installation-button")
+        if error:
+            self.browser.wait_in_text("#cockpit-storage-integration-check-storage-dialog", error)
 
     def return_to_installation_confirm(self):
         # FIXME: testBtrfsTopLevelVolume fails sometimes on CI without this workaround
