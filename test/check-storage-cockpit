@@ -467,7 +467,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_top()
         s.return_to_installation("Invalid RAID configuration detected.")
 
-
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testRAIDonDisks(self):
@@ -510,6 +509,13 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
         s.return_to_installation()
+
+        with b.wait_timeout(60):
+            disk = "MDRAID-SOMERAID"
+            prefix="#cockpit-storage-integration-check-storage-dialog"
+            r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "/", "SOMERAID3, RAID", "47.2 GB", False, prefix=prefix)
+
         s.return_to_installation_confirm()
 
         s.set_partitioning("use-configured-storage")
@@ -517,7 +523,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         def checkStorageReview(prefix=""):
-            disk = "MDRAID-SOMERAID"
             with b.wait_timeout(30):
                 r.check_disk(disk, "48.3 GB MDRAID-SOMERAID (MDRAID set (stripe))")
             r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
