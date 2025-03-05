@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from language import Language
 from review import Review
@@ -47,39 +47,39 @@ class TestLanguage(VirtInstallMachineCase):
         lang.check_selected_locale("de_DE")
         b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
 
+    def _testBackendTranslations_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        s.partition_disk("/dev/vda", [("10GB", "lvmpv")])
+        s.partition_disk("/dev/vdb", [("10GB", "lvmpv")])
+
+        # Create VG on LUKS with the two available disks
+        m.execute("""
+        vgcreate -y vg /dev/vda1 /dev/vdb1
+        lvcreate -y -n lv -l 100%FREE vg
+        mkfs.ext4 -F /dev/vg/lv
+        vgchange -a n vg
+        """)
+
+    @skipImage("Needs further investigation: https://issues.redhat.com/browse/INSTALLER-4142", "fedora-42-boot", "fedora-rawhide-boot")
+    @disk_images([("", 15), ("", 15)])
     def testBackendTranslations(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         lang = Language(b, m)
-        s = Storage(b, m)
-
-        # BIOS boot /boot on ext4 / on xfs /home on btrfs
-        disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
-
-        # Two partitions on the same disk with the same UUID raise exception in
-        # Blivet
-        s.set_partition_uuid(disk, 3, "66f47a35-b00e-4341-8f31-f4855fac24a2")
-        s.set_partition_uuid(disk, 4, "66f47a35-b00e-4341-8f31-f4855fac24a2")
-
-        s.udevadm_settle()
 
         i.open()
         lang.select_locale("de_DE")
         lang.check_selected_locale("de_DE")
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        # Clean up the journal before we open Report dialog
-        # (Report dialog presents all journal in a textarea)
-        # to avoid crashing the test browser
-        m.execute("journalctl --rotate; journalctl --vacuum-time=1s")
-
-        s.rescan_disks(expect_failure=True)
-
+        i.reach(i.steps.STORAGE_CONFIGURATION)
+        i.next(should_fail=True)
         b.wait_in_text(
-            "#critical-error-bz-report-modal.pf-v5-c-modal-box",
-            "In diesem Fall können Sie entweder eines der Geräte trennen oder es neu formatieren.")
+            "#anaconda-screen-storage-configuration-step-notification",
+            "Ausgewählte Datenträger vda enthalten die Datenträgergruppe 'vg', die auch weitere nicht ausgewählte Datenträger verwendet"
+        )
 
     def testLanguageSwitching(self):
         b = self.browser

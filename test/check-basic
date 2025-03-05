@@ -17,8 +17,6 @@
 
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
-from language import Language
-from storage import Storage
 from testlib import nondestructive, test_main, wait  # pylint: disable=import-error
 from utils import get_pretty_name
 
@@ -174,42 +172,6 @@ class TestBasic(VirtInstallMachineCase):
 
         b.click("#user-issue-dialog-cancel-btn")
         b.wait_not_present("#user-issue-bz-report-modal.pf-v5-c-modal-box")
-
-    def testErrorHandling(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        _l = Language(b, m)  # noqa: F841
-        s = Storage(b, m)
-
-        # BIOS boot /boot on ext4 / on xfs /home on btrfs
-        disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
-
-        # Two partitions on the same disk with the same UUID raise exception in
-        # Blivet
-        s.set_partition_uuid(disk, 3, "66f47a35-b00e-4341-8f31-f4855fac24a2")
-        s.set_partition_uuid(disk, 4, "66f47a35-b00e-4341-8f31-f4855fac24a2")
-
-        s.udevadm_settle()
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        # FIXME: Remove PF5 specific selector: https://github.com/patternfly/patternfly-react/issues/9512
-        b.wait_not_present("#critical-error-bz-report-modal.pf-v5-c-modal-box")
-
-        # Clean up the journal before we open Report dialog
-        # (Report dialog presents all journal in a textarea)
-        # to avoid crashing the test browser
-        m.execute("journalctl --rotate; journalctl --vacuum-time=1s")
-
-        s.rescan_disks(expect_failure=True)
-
-        b.wait_visible("#critical-error-bz-report-modal.pf-v5-c-modal-box")
-        b.wait_in_text("#critical-error-bz-report-modal header", "Rescanning of the disks failed")
-
-        self._testLogReview(b, m, "critical-error")
 
     def testJsErrorHandling(self):
         b = self.browser

@@ -334,9 +334,6 @@ class StorageUtils(StorageDestination):
         udevadm settle --timeout=120
         """)
 
-    def set_partition_uuid(self, disk, partition, uuid):
-        self.machine.execute(f"sfdisk --part-uuid {disk} {partition} {uuid}")
-
     def get_lsblk_json(self):
         lsblk = self.machine.execute("lsblk -J")
         return json.loads(lsblk)
