@@ -380,8 +380,18 @@ const CheckStorageDialog = ({
         return availability.available && !availability.hidden;
     }, [diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks]);
 
+    const mdArrays = useMemo(() => {
+        return Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
+    }, [devices]);
+    const useEntireSoftwareDisk = useMemo(() => {
+        return selectedDisks.every(disk => (
+            mdArrays.includes(disk) &&
+            getDeviceChildren({ device: disk, deviceData: devices }).every(child => devices[child].type.v !== "partition")
+        ));
+    }, [devices, mdArrays, selectedDisks]);
+
     const loading = !error && checkStep !== undefined;
-    const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace));
+    const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk));
 
     useEffect(() => {
         const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
@@ -438,8 +448,6 @@ const CheckStorageDialog = ({
             return;
         }
 
-        const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
-
         // In blivet we recognize two "types" of MD array:
         // * The array is directly on top of disks: in this case we consider the array to be a disk
         // (similar to a hardware RAID) and create the partition table on the array
@@ -456,6 +464,11 @@ const CheckStorageDialog = ({
         // Check if we have mdarrays that are not fitting in the above two scenarios
         // and show an error message
         const mdArraysNotSupported = mdArrays.filter(device => {
+            // The user created a plain mdarray without any format to be used possible with 'Use entire disk'
+            if (devices[device].formatData.type.v === "") {
+                return false;
+            }
+
             if (
                 devices[device].parents.v.every(parent => devices[parent].type.v === "disk") &&
                 devices[device].formatData.type.v === "disklabel"
@@ -491,7 +504,7 @@ const CheckStorageDialog = ({
         } else {
             setCheckStep("prepare-partitioning");
         }
-    }, [checkStep, devices, usableDevices, selectedDisks]);
+    }, [checkStep, devices, mdArrays, usableDevices, selectedDisks]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
@@ -639,7 +652,9 @@ const CheckStorageDialog = ({
                                         {useConfiguredStorageReview}
                                     </Stack>
                                 )
-                                : _("Free space requirements met")}
+                                : (
+                                    useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
+                                )}
                         </HelperTextItem>}
                     </HelperText>
                 </>}
