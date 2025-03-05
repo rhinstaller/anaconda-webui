@@ -92,9 +92,7 @@ def vm_install(image, compose, verbose, quick):
         else:
             # Pull anaconda-core from the COPR repo packit builds from master branch
             # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
-            # FIXME: download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
-            # Put it back when new python3-kickstart lands in the gated rawhide ISO
-            pass
+            download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui", machine)
 
         # Download missing dependencies rpms
         # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
