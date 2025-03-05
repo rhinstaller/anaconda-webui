@@ -28,7 +28,7 @@ import { helpUseFreeSpace } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
 
-export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks }) => {
+export const checkUseFreeSpace = ({ allowReclaim = true, diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks }) => {
     const availability = new AvailabilityState();
 
     availability.hidden = false;
@@ -38,12 +38,16 @@ export const checkUseFreeSpace = ({ diskFreeSpace, diskTotalSpace, requiredSize,
         availability.hidden = diskFreeSpace === diskTotalSpace;
     }
     if (diskFreeSpace < requiredSize) {
-        availability.enforceAction = true;
         availability.reason = _("Not enough free space on the selected disks.");
         availability.hint = cockpit.format(
             _("To use this option, resize or remove existing partitions to free up at least $0."),
             cockpit.format_bytes(requiredSize)
         );
+        if (allowReclaim) {
+            availability.enforceAction = true;
+        } else {
+            availability.available = false;
+        }
     }
     return availability;
 };

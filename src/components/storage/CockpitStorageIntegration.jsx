@@ -370,6 +370,7 @@ const CheckStorageDialog = ({
 
     const useFreeSpace = useMemo(() => {
         const availability = checkUseFreeSpace({
+            allowReclaim: false,
             diskFreeSpace,
             diskTotalSpace,
             requiredSize,
