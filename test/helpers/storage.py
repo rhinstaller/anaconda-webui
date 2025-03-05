@@ -90,7 +90,7 @@ class StorageDestination():
     def return_to_installation_confirm(self):
         # FIXME: testBtrfsTopLevelVolume fails sometimes on CI without this workaround
         try:
-            with self.browser.wait_timeout(30):
+            with self.browser.wait_timeout(60):
                 self.browser.click("#cockpit-storage-integration-check-storage-dialog-continue")
                 self.browser.wait_not_present("#cockpit-storage-integration-check-storage-dialog")
         except Error:
