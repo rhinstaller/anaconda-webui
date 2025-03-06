@@ -19,6 +19,7 @@ from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from operating_systems import WindowsOS
 from review import Review
+from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
@@ -32,8 +33,12 @@ class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
 
         i = Installer(b, m)
         r = Review(b, m)
+        s = Storage(b, m)
 
         i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.check_scenario_index("erase-all", 2)
+        s.set_scenario("erase-all")
         i.reach(i.steps.REVIEW)
 
         for device in ["vda1", "vda2", "vda3", "vda4"]:
@@ -54,8 +59,11 @@ class TestStorageEraseAll_Windows(VirtInstallMachineCase):
         m = self.machine
         i = Installer(b, m)
         r = Review(b, m)
+        s = Storage(b, m)
 
         i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
         i.reach(i.steps.REVIEW)
 
         for device in ["vda1", "vda2", "vda3", "vda4"]:

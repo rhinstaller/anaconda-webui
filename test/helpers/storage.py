@@ -470,6 +470,9 @@ class StorageScenario():
     def check_scenario_selected(self, scenario):
         self.browser.wait_visible(self._scenario_selector(scenario) + ":checked")
 
+    def check_scenario_index(self, scenario, index):
+        self.browser.wait_visible(f".anaconda-screen-method-scenario:nth-child({index}) > {self._scenario_selector(scenario)}")
+
     @log_step(snapshot_before=True)
     def set_scenario(self, scenario):
         self.browser.click(self._scenario_selector(scenario))

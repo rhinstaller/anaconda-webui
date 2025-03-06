@@ -77,7 +77,6 @@ export const scenarioUseFreeSpace = {
     buttonVariant: "primary",
     canReclaimSpace: true,
     check: checkUseFreeSpace,
-    default: false,
     detail: helpUseFreeSpace,
     id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0

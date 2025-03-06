@@ -60,7 +60,8 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_scenario("home-reuse")
+        s.check_scenario_selected("home-reuse")
+        s.check_scenario_index("home-reuse", 1)
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown

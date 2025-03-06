@@ -208,8 +208,11 @@ class TestStorage(VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        s = Storage(b, m)
 
         i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
         i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
         b.wait_in_text(
