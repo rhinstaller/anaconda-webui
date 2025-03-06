@@ -6,8 +6,8 @@ import { scenarioUseFreeSpace } from "./UseFreeSpace.jsx";
 
 export const scenarios = [
     scenarioReinstallFedora,
-    scenarioEraseAll,
     scenarioUseFreeSpace,
+    scenarioEraseAll,
     scenarioMountPointMapping,
     scenarioConfiguredStorage,
 ];
