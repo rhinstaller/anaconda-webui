@@ -88,14 +88,14 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation()
         s.return_to_installation_confirm()
 
-        s.check_partitioning_selected("use-configured-storage")
+        s.check_scenario_selected("use-configured-storage")
 
         # Check that choosing another storage scenario without diving into that,
         # preserves the visibility of "Use configured storage"
-        s.set_partitioning("erase-all")
+        s.set_scenario("erase-all")
         s.wait_scenario_available("use-configured-storage")
 
-        s.set_partitioning("use-configured-storage")
+        s.set_scenario("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
 
@@ -184,7 +184,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         )
         s.return_to_installation_confirm()
 
-        s.set_partitioning("use-configured-storage")
+        s.set_scenario("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
 
@@ -227,7 +227,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation()
         s.return_to_installation_confirm()
 
-        s.set_partitioning("use-configured-storage")
+        s.set_scenario("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
 
@@ -300,7 +300,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation()
         s.return_to_installation_confirm()
 
-        s.set_partitioning("use-configured-storage")
+        s.set_scenario("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
 
@@ -374,7 +374,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation()
         s.return_to_installation_confirm()
 
-        s.set_partitioning("mount-point-mapping")
+        s.set_scenario("mount-point-mapping")
 
         i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
 
@@ -518,7 +518,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         s.return_to_installation_confirm()
 
-        s.set_partitioning("use-configured-storage")
+        s.set_scenario("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
 
