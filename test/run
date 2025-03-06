@@ -60,18 +60,23 @@ if [ -n "${TEST_COMPOSE-}" ]; then
     if [ "$TEST_OS" == "fedora-42-boot" ]; then
         DIRECTORY="branched"
     fi
-    COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
-    ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+    # FIXME: For Fedora-42 temporarilly run new test code regardless of the compose anaconda-webui version
+    # In recent releases we did major robustification of the tests without which the tests would fail
+    # We can revert once anaconda-webui-26 or higher is present in the composes we are testing
+    if [ "$TEST_OS" == "fedora-rawhide-boot" ]; then
+        COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
+        ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
 
-    # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
-    # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
-    git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
+        # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
+        # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
+        git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
 
-    # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
-    echo "FIXME" > test/reference-image
+        # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
+        echo "FIXME" > test/reference-image
 
-    # Commit the changes to the repo
-    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
+        # Commit the changes to the repo
+        git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
+    fi
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
