@@ -467,7 +467,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_top()
         s.return_to_installation("Invalid RAID configuration detected.")
 
-
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testRAIDonDisks(self):
@@ -510,7 +509,13 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
         s.return_to_installation()
-        s.return_to_installation()
+
+        with b.wait_timeout(60):
+            disk = "MDRAID-SOMERAID"
+            prefix="#cockpit-storage-integration-check-storage-dialog"
+            r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
+            r.check_disk_row(disk, "/", "SOMERAID3, RAID", "47.2 GB", False, prefix=prefix)
+
         s.return_to_installation_confirm()
 
         s.set_partitioning("use-configured-storage")
@@ -518,7 +523,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         def checkStorageReview(prefix=""):
-            disk = "MDRAID-SOMERAID"
             with b.wait_timeout(30):
                 r.check_disk(disk, "48.3 GB MDRAID-SOMERAID (MDRAID set (stripe))")
             r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
@@ -526,6 +530,49 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         checkStorageReview()
+
+    @nondestructive
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    def testRAIDAutomatic(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self.addCleanup(m.execute, "mdadm --zero-superblock /dev/vda /dev/vdb /dev/vdc")
+        self.addCleanup(m.execute, "mdadm --stop /dev/md/SOMERAID")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb, and vdc
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.check_partitioning_selected("erase-all")
+        i.reach(i.steps.REVIEW)
+
+        disk = "MDRAID-SOMERAID"
+        with b.wait_timeout(30):
+            r.check_disk(disk, "48.3 GB MDRAID-SOMERAID (MDRAID set (stripe))")
+        r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", True, "xfs")
+        r.check_disk_row(disk, "/", "SOMERAID3, LVM", "16.1 GB", True, "xfs")
 
 
 if __name__ == '__main__':

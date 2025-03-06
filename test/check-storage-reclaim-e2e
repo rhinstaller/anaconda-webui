@@ -20,12 +20,13 @@ from installer import Installer
 from operating_systems import DualBootHelper_E2E
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
     @disk_images([("debian-stable", 20)])
+    @timeout(900)
     def testReclaimShrink(self):
         b = self.browser
         m = self.machine

@@ -18,7 +18,7 @@
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
@@ -53,6 +53,7 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         """, timeout=90)
 
     @disk_images([("", 15), ("", 15)])
+    @timeout(900)
     def testLVMOnRAID(self):
         """
         Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
