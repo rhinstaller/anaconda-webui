@@ -138,13 +138,13 @@ class TestLanguage(VirtInstallMachineCase):
         self.assertIn('string "de_DE.UTF-8"', language_new)
 
         # Expect language direction to be set to RTL for selected languages
-        l.select_locale("he_IL", False)
+        l.select_locale("he_IL", is_common=False)
         l.check_selected_locale("he_IL", is_common=False)
         b.wait_attr("html", "dir", "rtl")
 
         # Expect language direction to be set to LTR when switching to EN_US from RTL language
         # as this has special handling
-        l.select_locale("en_US")
+        l.select_locale("en_US", locale_name="English (United States)")
         l.check_selected_locale("en_US")
         b.wait_attr("html", "dir", "ltr")
 
