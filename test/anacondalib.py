@@ -308,13 +308,6 @@ class VirtInstallMachineCase(MachineCase):
         super().tearDown()
 
 
-def test_plan(url, section):
-    def decorator(func):
-        func.openqa_test = url
-        func.wikictms_section = section
-        return func
-    return decorator
-
 def run_boot(*modes):
     """
     Decorator to run tests only on specific boot modes ('bios', 'efi').
