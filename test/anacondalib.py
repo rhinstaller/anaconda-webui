@@ -72,8 +72,6 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        openqa_test = getattr(method, "openqa_test", "")
-        wikictms_section = getattr(method, "wikictms_section", "")
         boot_modes = getattr(method, "boot_modes", ["bios"])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
@@ -88,9 +86,6 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
-
-        self.wikictms_section = wikictms_section
-        self.openqa_test = openqa_test
 
         super().setUp()
 
@@ -296,11 +291,8 @@ class VirtInstallMachineCase(MachineCase):
                 "arch": arch,
                 "test_name": test_name,
                 "firmware": firmware,
-                "env": f"{arch} {firmware}",
                 "status": status,
                 "error": error,
-                "openqa_test": self.openqa_test.split("/")[-1],
-                "wikictms_section": self.wikictms_section
             }
             data["tests"].append(new_entry)
             f.seek(0)
