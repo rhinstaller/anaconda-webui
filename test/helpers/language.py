@@ -39,10 +39,14 @@ class Language():
         self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
 
     @log_step()
-    def select_locale(self, locale, is_common=True):
+    def select_locale(self, locale, locale_name=None, is_common=True):
         common_prefix = "common" if is_common else "alpha"
         if self.browser.val(f".{self._step}-search .pf-v5-c-text-input-group__text-input") != "":
             self.input_locale_search("")
+
+        if locale_name:
+            self.input_locale_search(locale_name)
+
         self.browser.click(f"#{self._step}-option-{common_prefix}-{locale}")
 
     @log_step()
