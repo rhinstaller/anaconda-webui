@@ -51,7 +51,7 @@ class WikiReport:
             # If the testname in the testmap matches the openqa_test in the report, we can use the fedora-wiki-testcase
             # and section and milestone to report the result to the wiki
             if testcase["test_name"] not in [test["testname"] for test in testmap]:
-                logger.warning("test %s not in testmap, skipping", testcase["openqa_test"])
+                logger.warning("test %s not in testmap, skipping", testcase["test_name"])
                 continue
 
             fedora_testcase = next(
@@ -70,7 +70,7 @@ class WikiReport:
                         cid=self.compose_id,
                         compose=self.compose,
                         dist="Fedora",
-                        env=testcase["env"],
+                        env=fedora_testcase['environment'] if 'environment' in fedora_testcase else f"{testcase['arch']} {testcase['firmware']}",
                         milestone=milestone,
                         release="42",
                         user="anaconda-bot",
