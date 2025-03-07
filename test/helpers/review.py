@@ -52,8 +52,8 @@ class Review(NetworkDBus, StorageDBus):
     def check_storage_config(self, scenario):
         self.browser.wait_in_text(f"#{self._step}-target-system-mode > .pf-v5-c-description-list__text", scenario)
 
-    def check_disk(self, disk, text):
-        self.browser.wait_text(f"#disk-{disk}", text)
+    def check_disk(self, disk, text, prefix=""):
+        self.browser.wait_text(f"{prefix} #disk-{disk}", text)
 
     def check_disk_row(
         self,
