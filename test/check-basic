@@ -131,9 +131,8 @@ class TestBasic(VirtInstallMachineCase):
 
         self.assertFalse(self.file_exists(logfile))
 
-        # FIXME: Remove PF5 specific selector: https://github.com/patternfly/patternfly-react/issues/9512
         # Click report issue: save reviewed log and open BZ URL
-        b.click(f"#{idPrefix}-bz-report-modal.pf-v5-c-modal-box .pf-v5-c-button.pf-m-primary")
+        b.click(f"#{idPrefix}-bz-report-modal .pf-v5-c-button.pf-m-primary")
 
         with b.wait_timeout(20):
             b.wait(lambda: self.file_exists(logfile))
@@ -144,7 +143,7 @@ class TestBasic(VirtInstallMachineCase):
         # Test editing of the log
         user_text = "STRING_ADDED_BY_USER_TO_LOG"
         b.set_input_text(f"#{idPrefix}-bz-report-modal-review-log", user_text)
-        b.click(f"#{idPrefix}-bz-report-modal.pf-v5-c-modal-box .pf-v5-c-button.pf-m-primary")
+        b.click(f"#{idPrefix}-bz-report-modal .pf-v5-c-button.pf-m-primary")
         wait(lambda: (m.execute(f"cat {logfile}")) == user_text)
 
     def testReportIssue(self):
@@ -154,8 +153,7 @@ class TestBasic(VirtInstallMachineCase):
 
         i.open()
 
-        # FIXME: Remove PF5 specific selector: https://github.com/patternfly/patternfly-react/issues/9512
-        b.wait_not_present("#user-issue-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_not_present("#user-issue-bz-report-modal")
 
         b.click("#toggle-kebab")
 
@@ -166,12 +164,12 @@ class TestBasic(VirtInstallMachineCase):
 
         b.click("#about-modal-dropdown-item-report")
 
-        b.wait_visible("#user-issue-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_visible("#user-issue-bz-report-modal")
 
         self._testLogReview(b, m, "user-issue")
 
         b.click("#user-issue-dialog-cancel-btn")
-        b.wait_not_present("#user-issue-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_not_present("#user-issue-bz-report-modal")
 
     def testJsErrorHandling(self):
         b = self.browser
@@ -185,14 +183,14 @@ class TestBasic(VirtInstallMachineCase):
         # to avoid crashing the test browser
         m.execute("journalctl --rotate; journalctl --vacuum-time=1s")
 
-        b.wait_not_present("#critical-error-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_not_present("#critical-error-bz-report-modal")
 
         b.eval_js("window.setTimeout(function() { myNonExistingFunction()}, 0);")
         b.wait_in_text("#critical-error-bz-report-modal-details", "myNonExistingFunction is not defined")
 
         b.wait_visible("a:contains('Report issue'):not([disabled])")
         b.assert_pixels(
-            "#critical-error-bz-report-modal.pf-v5-c-modal-box",
+            "#critical-error-bz-report-modal",
             "js-error-modal",
             ignore=["#critical-error-bz-report-modal-review-log"]
         )
