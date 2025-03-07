@@ -131,9 +131,8 @@ class TestBasic(VirtInstallMachineCase):
 
         self.assertFalse(self.file_exists(logfile))
 
-        # FIXME: Remove PF5 specific selector: https://github.com/patternfly/patternfly-react/issues/9512
         # Click report issue: save reviewed log and open BZ URL
-        b.click(f"#{idPrefix}-bz-report-modal.pf-v5-c-modal-box .pf-v5-c-button.pf-m-primary")
+        b.click(f"#{idPrefix}-bz-report-modal")
 
         with b.wait_timeout(20):
             b.wait(lambda: self.file_exists(logfile))
