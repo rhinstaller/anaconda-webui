@@ -60,7 +60,8 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("home-reuse")
+        s.check_scenario_selected("home-reuse")
+        s.check_scenario_index("home-reuse", 1)
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
@@ -175,7 +176,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
         s.unlock_all_encrypted()
         s.unlock_device("einszwei", ["vda4"], ["vda4"])
-        s.set_partitioning("home-reuse")
+        s.set_scenario("home-reuse")
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
@@ -226,7 +227,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         s.wait_scenario_visible("home-reuse", True)
         s.wait_scenario_available("home-reuse", True)
 
-        s.set_partitioning("home-reuse")
+        s.set_scenario("home-reuse")
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown

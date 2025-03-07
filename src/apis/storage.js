@@ -21,13 +21,10 @@ import {
     getDiskSelectionAction,
     getPartitioningDataAction,
     setAppliedPartitioningAction,
-    setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
 import { debug } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
-
-import { getDefaultScenario } from "../components/storage/InstallationScenario.jsx";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage";
@@ -96,8 +93,6 @@ export class StorageClient {
     }
 
     async initData () {
-        this.dispatch(setStorageScenarioAction(window.sessionStorage.getItem("storage-scenario-id") || getDefaultScenario().id));
-
         const partitioning = await getProperty("CreatedPartitioning");
         if (partitioning.length !== 0) {
             const lastPartitioning = partitioning[partitioning.length - 1];

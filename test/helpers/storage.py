@@ -397,7 +397,7 @@ class StorageDBus():
             {STORAGE_OBJECT_PATH}/DiskSelection \
             {STORAGE_INTERFACE}.DiskSelection SelectedDisks as 1 {disk}')
 
-    def dbus_reset_partitioning(self):
+    def dbus_reset_scenario(self):
         self.machine.execute(f'busctl --address="{self._bus_address}" \
             call \
             {STORAGE_SERVICE} \
@@ -451,29 +451,32 @@ class StorageScenario():
         self.machine = machine
         self.browser = browser
 
-    def _partitioning_selector(self, scenario):
+    def _scenario_selector(self, scenario):
         return f"#{INSTALLATION_METHOD}-scenario-" + scenario
 
     def wait_scenario_visible(self, scenario, visible=True):
         if visible:
-            self.browser.wait_visible(self._partitioning_selector(scenario))
+            self.browser.wait_visible(self._scenario_selector(scenario))
         else:
-            self.browser.wait_not_present(self._partitioning_selector(scenario))
+            self.browser.wait_not_present(self._scenario_selector(scenario))
 
     def wait_scenario_available(self, scenario, available=True):
         if available:
-            self.browser.wait_visible(f"{self._partitioning_selector(scenario)}:not([disabled])")
+            self.browser.wait_visible(f"{self._scenario_selector(scenario)}:not([disabled])")
         else:
-            self.browser.wait_visible(f"{self._partitioning_selector(scenario)}:disabled")
+            self.browser.wait_visible(f"{self._scenario_selector(scenario)}:disabled")
 
     @log_step(snapshot_before=True)
-    def check_partitioning_selected(self, scenario):
-        self.browser.wait_visible(self._partitioning_selector(scenario) + ":checked")
+    def check_scenario_selected(self, scenario):
+        self.browser.wait_visible(self._scenario_selector(scenario) + ":checked")
+
+    def check_scenario_index(self, scenario, index):
+        self.browser.wait_visible(f".anaconda-screen-method-scenario:nth-child({index}) > {self._scenario_selector(scenario)}")
 
     @log_step(snapshot_before=True)
-    def set_partitioning(self, scenario):
-        self.browser.click(self._partitioning_selector(scenario))
-        self.browser.wait_visible(self._partitioning_selector(scenario) + ":checked")
+    def set_scenario(self, scenario):
+        self.browser.click(self._scenario_selector(scenario))
+        self.browser.wait_visible(self._scenario_selector(scenario) + ":checked")
         self.browser.wait_visible(f"div[data-scenario='{scenario}']")
 
 
@@ -622,7 +625,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
     def select_mountpoint(self, disks):
         self.select_disks(disks)
 
-        self.set_partitioning("mount-point-mapping")
+        self.set_scenario("mount-point-mapping")
 
         self.browser.click("button:contains(Next)")
         self.browser.wait_js_cond(f'window.location.hash === "#/{CUSTOM_MOUNT_POINT}"')
