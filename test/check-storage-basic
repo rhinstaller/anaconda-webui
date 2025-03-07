@@ -208,9 +208,14 @@ class TestStorage(VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        s = Storage(b, m)
 
         i.open()
+        i.next()
+        s.check_disk_selected("vda", selected=True)
+        s.check_disk_selected("vdb", selected=False)
         i.reach(i.steps.STORAGE_CONFIGURATION)
+
         i.next(should_fail=True)
         b.wait_in_text(
             "#anaconda-screen-storage-configuration-step-notification",
