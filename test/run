@@ -29,7 +29,7 @@ RE_EXPENSIVE='E2E'
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
     *compose-*)
-        RUN_OPTS="$ALL_TESTS"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
         ;;
     *efi*)
         RUN_OPTS="$ALL_TESTS";
@@ -52,33 +52,37 @@ case "${TEST_SCENARIO:=}" in
         ;;
 esac
 
-# If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
-if [ -n "${TEST_COMPOSE-}" ]; then
-    DIRECTORY="rawhide"
-    # TODO: remove this once we have released Fedora 42
-    # DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
-    if [ "$TEST_OS" == "fedora-42-boot" ]; then
-        DIRECTORY="branched"
-    fi
-    COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
-    ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+# FIXME: For Fedora-42 temporarilly run new test code regardless of the compose anaconda-webui version
+# In recent releases we did major robustification of the tests without which the tests would fail
+# We can revert once anaconda-webui-26 or higher is present in the composes we are testing
 
-    # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
-    # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
-    git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
-
-    # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
-    echo "FIXME" > test/reference-image
-
-    # Commit the changes to the repo
-    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
-fi
+# # If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
+# if [ -n "${TEST_COMPOSE-}" ]; then
+#     DIRECTORY="rawhide"
+#     # TODO: remove this once we have released Fedora 42
+#     # DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
+#     if [ "$TEST_OS" == "fedora-42-boot" ]; then
+#         DIRECTORY="branched"
+#     fi
+#     COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
+#     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+#
+#     # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
+#     # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
+#     git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
+#
+#     # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
+#     echo "FIXME" > test/reference-image
+#
+#     # Commit the changes to the repo
+#     git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
+# fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
 make create-updates.img
 
 # If TEST_COMPOSE is defined and we are testing main branch prepare the test report
-if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
+if [ -n "${TEST_COMPOSE-}" ]; then
   test/prepare-report
 fi
 
@@ -95,19 +99,21 @@ fi
 # Allow wiki-reporting even if test suite partially failed
 set +e
 
+ls -la test/images
+
 export TEST_JOBS TEST_OS
 J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
 exit_code=$?
 
-if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
+if [ -n "${TEST_COMPOSE-}" ]; then
     # Copy the wiki token to the correct location
-    if [ ! -f "$COCKPIT_FEDORA_WIKI_TOKEN" ]; then
+    if [ ! -f "$COCKPIT_FEDORA_WIKI_STAGING_TOKEN" ]; then
         echo "The wiki token file does not exist"
         exit 1
     fi
 
     mkdir -p ~/.openidc
-    cp $COCKPIT_FEDORA_WIKI_TOKEN ~/.openidc/oidc_wikitcms.json
+    cp $COCKPIT_FEDORA_WIKI_STAGING_TOKEN ~/.openidc/oidc_wikitcms.json
 
     test/wiki-report.py "test/report.json"
 fi
