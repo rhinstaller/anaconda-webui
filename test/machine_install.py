@@ -119,6 +119,8 @@ class VirtInstallMachine(VirtMachine):
 
         # If custom compose if specified for fetching the image then use that
         # else get the image from the bots directory
+        print(f"Starting VM with image {self.image}")
+
         if compose := os.environ.get("TEST_COMPOSE"):
             iso_path = f"{os.getcwd()}/test/images/{compose}.iso"
         else:
