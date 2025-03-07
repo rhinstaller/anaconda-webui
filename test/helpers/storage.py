@@ -134,7 +134,6 @@ class StorageEncryption():
             encrypted_devices = []
         if successfully_unlocked_devices is None:
             successfully_unlocked_devices = []
-        # FIXME: https://github.com/patternfly/patternfly-react/issues/9512
         b = self.browser
         for device in encrypted_devices:
             b.wait_in_text(
