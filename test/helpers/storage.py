@@ -84,8 +84,13 @@ class StorageDestination():
 
     def return_to_installation(self, error=None):
         self.browser.click("#cockpit-storage-integration-return-to-installation-button")
-        if error:
-            self.browser.wait_in_text("#cockpit-storage-integration-check-storage-dialog", error)
+        # FIXME: https://github.com/rhinstaller/anaconda/pull/6234
+        # On Fedora-42 re-scanning takes long when there are LVM devices
+        # This extra timeout can be removed once the above PR is merged
+        with self.browser.wait_timeout(90):
+            if error:
+                self.browser.wait_in_text("#cockpit-storage-integration-check-storage-dialog", error)
+            self.browser.wait_visible("#cockpit-storage-integration-check-storage-dialog-continue:not([disabled])")
 
     def return_to_installation_confirm(self):
         # FIXME: testBtrfsTopLevelVolume fails sometimes on CI without this workaround
