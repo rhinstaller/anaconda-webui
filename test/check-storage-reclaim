@@ -382,13 +382,12 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_partitioning("use-free-space")
-        s.reclaim_set_checkbox(True)
+        # s.reclaim_set_checkbox(True)
         i.next(True)
 
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-windows",
-            ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
 
