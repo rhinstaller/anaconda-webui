@@ -291,8 +291,6 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             r.check_disk_row("vda", parent=device, action="delete")
 
 
-@nondestructive
-class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
     def _testReclaimExt4onLUKS_partition_disk(self):
         b = self.browser
         m = self.machine
@@ -328,10 +326,6 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         s.reclaim_check_action_button_present("vda1", "shrink", True, True)
         s.reclaim_check_action_button_present("vda1", "delete", True)
 
-
-@nondestructive
-class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
-
     @disk_images([("fedora-rawhide", 15)])
     def testDeletePartition(self):
         b = self.browser
@@ -360,14 +354,11 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
         r.check_some_erased_checkbox_label()
 
 
-@nondestructive
-class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
-
-    def _testBasic_partition_disk(self):
+    def _testReclaimSpaceWindows_partition_disk(self):
         WindowsOS(machine=self.machine).partition_disk()
 
     @disk_images([("", 20)])
-    def testBasic(self):
+    def testReclaimSpaceWindows(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -385,11 +376,7 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
             ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
-
-class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
-
     @disk_images([("ubuntu-stable", 15)])
-    @nondestructive
     def testReclaimSpaceShrink(self):
         b = self.browser
         m = self.machine
