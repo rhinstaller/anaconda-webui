@@ -14,7 +14,7 @@
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 from anacondalib import VirtInstallMachineCase
-from storage import Storage, StorageUtils
+from storage import StorageUtils
 from utils import get_pretty_name
 
 
@@ -35,15 +35,11 @@ sector-size: 512
 /dev/vda4 : start=    30367744, size=     1085440, type=DE94BBA4-06D1-4D40-A16A-BFD50179D6AC, uuid=CC7E5418-AF67-472F-9BF4-FAD27A94A082, attrs="RequiredPartition GUID:63"
 """
 
-    def __init__(self, machine, browser):
+    def __init__(self, machine):
         self.machine = machine
-        self.browser = browser
 
     def partition_disk(self):
-        s = Storage(self.browser, self.machine)
-
         self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
-        s.dbus_scan_devices()
 
 
 class DualBootHelper_E2E(VirtInstallMachineCase):

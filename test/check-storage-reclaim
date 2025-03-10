@@ -368,9 +368,8 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 @nondestructive
 class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
-    def setUp(self):
-        super().setUp()
-        WindowsOS(machine=self.machine, browser=self.browser).partition_disk()
+    def _testBasic_partition_disk(self):
+        WindowsOS(machine=self.machine).partition_disk()
 
     @disk_images([("", 20)])
     def testBasic(self):
