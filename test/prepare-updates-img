@@ -22,3 +22,4 @@ for p in tmp/rpms/*.rpm; do
   MYPARAMS+=("--add" "$p")
 done
 scripts/makeupdates "${MYPARAMS[@]}"
+cp updates.img updates-${BUILD_RPMS_IMAGE}.img
