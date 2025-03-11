@@ -92,6 +92,9 @@ if [ -z "${TEST_OS-}" ]; then
   TEST_OS=fedora-rawhide-boot
 fi
 
+# Avoid error: could not define storage pool: operation failed: pool 'images' already exists with uuid ...
+virsh pool-define-as --name images --type dir --target $(pwd)/bots/images
+
 # Allow wiki-reporting even if test suite partially failed
 set +e
 
