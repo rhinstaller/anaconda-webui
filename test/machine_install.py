@@ -106,7 +106,7 @@ class VirtInstallMachine(VirtMachine):
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
-        update_img_global_file = os.path.join(ROOT_DIR, "updates.img")
+        update_img_global_file = os.path.join(ROOT_DIR, f"updates-{self.os}.img")
         update_img_file = os.path.join(ROOT_DIR, self.label + "-updates.img")
         if not os.path.exists(update_img_global_file):
             raise FileNotFoundError("Missing updates.img file")
