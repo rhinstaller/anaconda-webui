@@ -77,9 +77,6 @@ class VirtInstallMachineCase(MachineCase):
         boot_modes = getattr(method, "boot_modes", ["bios"])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
-        partition_disk_method_name = "_" + self._testMethodName + "_partition_disk"
-        self.partition_disk = getattr(self, partition_disk_method_name, self.partition_disk)
-
         if self.is_efi and "efi" not in boot_modes:
             self.skipTest("Skipping for EFI boot mode")
         elif not self.is_efi and "bios" not in boot_modes:
@@ -107,7 +104,11 @@ class VirtInstallMachineCase(MachineCase):
         # Wait for minimum /dev/vda to be detected before proceeding
         wait(lambda: "vda" in m.execute("ls /dev"), tries=5, delay=5)
 
-        self.partition_disk()
+        partition_disk_method_name = "_" + self._testMethodName + "_partition_disk"
+        if getattr(self, partition_disk_method_name, None):
+            self.partition_disk = getattr(self, partition_disk_method_name)
+            self.partition_disk()
+            s.udevadm_settle()
 
         s.dbus_scan_devices()
 
