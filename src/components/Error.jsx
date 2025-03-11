@@ -17,6 +17,8 @@
 
 import cockpit from "cockpit";
 
+import StackTrace from "stacktrace-js";
+
 import React, { cloneElement, useContext, useEffect, useState } from "react";
 import {
     ActionList,
@@ -297,9 +299,11 @@ export class ErrorBoundary extends React.Component {
 
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
-        window.onerror = (message, source, lineno, colno, error) => {
+        window.onerror = async (message, source, lineno, colno, error) => {
             console.error("ErrorBoundary caught an error:", error);
-            this.setState({ frontendException: error, hasError: true });
+            const arrayStackFrame = await StackTrace.fromError(error);
+            const stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
+            this.setState({ frontendException: { message, stack }, hasError: true });
             return true;
         };
 
