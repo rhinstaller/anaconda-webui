@@ -17,6 +17,7 @@
 
 import cockpit from "cockpit";
 
+import StackTrace from "stacktrace-js";
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
 import React, { cloneElement, useContext, useEffect } from "react";
@@ -339,8 +340,10 @@ export class ErrorBoundary extends React.Component {
     componentDidMount () {
         const errorHandler = async (_error) => {
             error("ErrorBoundary caught an error:", _error);
+            const arrayStackFrame = await StackTrace.fromError(_error);
+            const stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
             this.setState({
-                frontendException: { message: _error.message, stack: _error.stack },
+                frontendException: { message: _error.message, stack },
                 hasError: true
             });
             return true;
