@@ -29,7 +29,12 @@ RE_EXPENSIVE='E2E'
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
     *compose-*)
-        RUN_OPTS="$ALL_TESTS"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
+        for test in $ALL_TESTS; do
+            if grep "$test" test/wiki-testmap.json; then
+                RUN_OPTS="$RUN_OPTS $test"
+            fi
+        done
+        export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
         ;;
     *efi*)
         RUN_OPTS="$ALL_TESTS";
