@@ -215,7 +215,7 @@ images: bots
 	# Downoad ISO images: if a compose if specified download from
 	# the compose otherwise download the ISO from Cockpit image server
 	@if [ -n "$(TEST_COMPOSE)" ]; then \
-		bots/image-download "$(TEST_OS)" "$(TEST_COMPOSE)" "$(RELEASE)"; \
+		test/download-iso "$(TEST_OS)" "$(TEST_COMPOSE)" "$(RELEASE)"; \
 	fi
 	bots/image-download "$(TEST_OS)"
 
