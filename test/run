@@ -100,6 +100,10 @@ J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/ru
 exit_code=$?
 
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
+    # Log the report file that we are about to use
+    echo "Using the following report file:"
+    cat test/report.json
+
     # Copy the wiki token to the correct location
     if [ ! -f "$COCKPIT_FEDORA_WIKI_STAGING_TOKEN" ]; then
         echo "The wiki token file does not exist"
