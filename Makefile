@@ -42,10 +42,6 @@ endif
 
 BASE_OS=$(word 1,$(subst -, ,$(TEST_OS)))
 RELEASE=$(word 2,$(subst -, ,$(TEST_OS)))
-# TODO: remove this once we have released Fedora 42
-ifeq ($(RELEASE),42)
-	RELEASE=branched
-endif
 
 # common arguments for tar, mostly to make the generated tarballs reproducible
 TAR_ARGS = --sort=name --mtime "@$(shell git show --no-patch --format='%at')" --mode=go=rX,u+rw,a-s --numeric-owner --owner=0 --group=0
