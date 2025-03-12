@@ -47,7 +47,7 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         # LVM for /
         pvcreate /dev/md/{raid_name}-root
         vgcreate vol-group /dev/md/{raid_name}-root
-        lvcreate -n root -L 1G vol-group
+        lvcreate -n root -L 10G vol-group
         mkfs.ext4 -F /dev/vol-group/root
 
         """, timeout=90)
