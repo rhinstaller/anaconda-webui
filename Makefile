@@ -218,11 +218,8 @@ images: bots
 	bots/image-download debian-stable ubuntu-stable fedora-41 fedora-42 fedora-rawhide
 	# Downoad ISO images: if a compose if specified download from
 	# the compose otherwise download the ISO from Cockpit image server
-	if [ -n "$(TEST_COMPOSE)" ]; then \
-		test/download-iso "$(TEST_OS)" "$(TEST_COMPOSE)" "$(RELEASE)"; \
-	else \
-		bots/image-download "$(TEST_OS)"; \
-	fi
+	[ -n "$(TEST_COMPOSE)" ] && test/download-iso "$(TEST_OS)" "$(TEST_COMPOSE)" "$(RELEASE)"
+	bots/image-download "$(TEST_OS)";
 
 $(UPDATES_IMG): prepare-test-deps
 	test/prepare-updates-img
