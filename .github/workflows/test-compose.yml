@@ -7,6 +7,9 @@ on:
     inputs:
       compose_id:
         description: 'Compose ID to test'
+      staging:
+        description: 'Whether to test the staging wiki'
+        default: 'false'
 jobs:
   trigger:
     environment: 'fedora-wiki'
@@ -26,4 +29,8 @@ jobs:
           else
             export TEST_COMPOSE=${{ github.event.inputs.compose_id }}
           fi
-          make test-compose
+          if [ "${{ github.event.inputs.staging }}" = "true" ]; then
+            make test-compose-staging
+          else
+            make test-compose
+          fi

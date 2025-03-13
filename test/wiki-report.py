@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
 import json
 import logging
 import sys
@@ -32,12 +33,12 @@ class LoginError(Exception):
 
 
 class WikiReport:
-    def __init__(self, report_path):
+    def __init__(self, report_path, staging):
         self.report_path = report_path
         self.report = self.parse_json_report()
         self.compose_id = self.report["metadata"]["compose"]
         self.compose = self.compose_id.split("-")[-1]
-        self.wiki_hostname = "stg.fedoraproject.org"
+        self.wiki_hostname = "stg.fedoraproject.org" if staging else "fedoraproject.org"
 
     def get_passed_testcases(self):
         passed_testcases = set()
@@ -130,8 +131,9 @@ class WikiReport:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: compose-report.py <report_path>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Report test results to the Fedora wiki")
+    parser.add_argument("report", help="Path to the JSON report file")
+    parser.add_argument("--staging", action="store_true", help="Operate on the staging wiki (for testing)")
+    args = parser.parse_args()
 
-    WikiReport(sys.argv[1]).run()
+    report = WikiReport(args.report, staging=args.staging)
