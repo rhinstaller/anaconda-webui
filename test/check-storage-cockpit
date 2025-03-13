@@ -530,6 +530,13 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # verify review screen
         checkStorageReview()
 
+        # Go back and choose 'Mount point mapping' scenario
+        i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("mount-point-mapping")
+        i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
+        s.check_mountpoint_row(1, "/", "SOMERAID3", False, "ext4")
+        s.check_mountpoint_row(2, "/boot", "SOMERAID2", False, "ext4")
+
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testRAIDAutomatic(self):
