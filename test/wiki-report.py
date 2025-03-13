@@ -136,4 +136,4 @@ if __name__ == "__main__":
     parser.add_argument("--staging", action="store_true", help="Operate on the staging wiki (for testing)")
     args = parser.parse_args()
 
-    report = WikiReport(args.report, staging=args.staging)
+    report = WikiReport(args.report, staging=args.staging).run()
