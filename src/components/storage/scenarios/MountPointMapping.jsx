@@ -61,7 +61,6 @@ export const scenarioMountPointMapping = {
     buttonLabel: _("Apply mount point assignment and install"),
     buttonVariant: "danger",
     check: checkMountPointMapping,
-    default: false,
     detail: helpMountPointMapping,
     id: "mount-point-mapping",
     // CLEAR_PARTITIONS_NONE = 0

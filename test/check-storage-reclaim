@@ -72,7 +72,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_check_checkbox(False, False)
 
         s.reclaim_set_checkbox(True)
@@ -111,7 +111,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_check_checkbox(True, True)
         i.next(True)
 
@@ -181,7 +181,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         i.next(True)
 
         s.reclaim_check_available_space("1.03 MB")
@@ -258,7 +258,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
 
@@ -319,7 +319,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
 
@@ -347,7 +347,7 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
 
@@ -380,7 +380,7 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
 
@@ -404,7 +404,7 @@ class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
 

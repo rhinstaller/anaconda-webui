@@ -27,7 +27,6 @@ import {
 
 import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 
-import { debug } from "../../helpers/log.js";
 import {
     getLockedLUKSDevices,
 } from "../../helpers/storage.js";
@@ -65,10 +64,6 @@ export const useScenario = () => {
     }, [storageScenarioId]);
 
     return scenario;
-};
-
-export const getDefaultScenario = () => {
-    return scenarios.filter(s => s.default)[0];
 };
 
 const InstallationScenarioSelector = ({
@@ -135,7 +130,6 @@ const InstallationScenarioSelector = ({
 
     useEffect(() => {
         let selectedScenarioId = "";
-        let availableScenarioExists = false;
 
         // Don't mess up with the scenarios while cockpit storage mode is active
         if (showStorage) {
@@ -153,25 +147,19 @@ const InstallationScenarioSelector = ({
             return;
         }
 
-        for (const scenario of scenarios) {
-            const availability = scenarioAvailability[scenario.id];
-            if (!availability.hidden && availability.available) {
-                availableScenarioExists = true;
-                if (scenario.id === storageScenarioId) {
-                    debug(`Selecting backend scenario ${scenario.id}`);
-                    selectedScenarioId = scenario.id;
-                }
-                if (!selectedScenarioId && scenario.default) {
-                    debug(`Selecting default scenario ${scenario.id}`);
-                    selectedScenarioId = scenario.id;
-                }
-            }
+        if (storageScenarioId && !scenarioAvailability[storageScenarioId].hidden && scenarioAvailability[storageScenarioId].available) {
+            selectedScenarioId = storageScenarioId;
+        } else {
+            selectedScenarioId = scenarios.find(scenario => (
+                scenarioAvailability[scenario.id].available &&
+                !scenarioAvailability[scenario.id].hidden
+            ))?.id;
         }
 
-        if (availableScenarioExists) {
+        if (selectedScenarioId) {
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
-        setIsFormValid(availableScenarioExists);
+        setIsFormValid(!!selectedScenarioId);
     }, [dispatch, mountPoints, scenarioAvailability, setIsFormValid, showStorage, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {

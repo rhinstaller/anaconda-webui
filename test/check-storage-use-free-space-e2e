@@ -36,7 +36,7 @@ class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.set_partitioning("use-free-space")
+        s.check_scenario_selected("use-free-space")
         i.next()
         s.check_encryption_selected(False)
         i.reach(i.steps.REVIEW)

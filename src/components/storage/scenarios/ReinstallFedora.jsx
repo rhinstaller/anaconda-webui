@@ -119,7 +119,6 @@ export const scenarioReinstallFedora = {
     buttonLabel: _("Reinstall Fedora"),
     buttonVariant: "danger",
     check: checkHomeReuse,
-    default: false,
     detail: helpHomeReuse,
     id: "home-reuse",
     // CLEAR_PARTITIONS_NONE = 0

@@ -45,7 +45,6 @@ export const scenarioEraseAll = {
     buttonLabel: _("Erase data and install"),
     buttonVariant: "danger",
     check: checkEraseAll,
-    default: true,
     detail: helpEraseAll,
     id: "erase-all",
     // CLEAR_PARTITIONS_ALL = 1

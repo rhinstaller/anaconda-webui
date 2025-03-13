@@ -91,7 +91,7 @@ class TestStorage(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         # Check the default mode
-        s.check_partitioning_selected("erase-all")
+        s.check_scenario_selected("erase-all")
 
         # Check that when an unpartitioned disk is selected the "Use free space" scenario is hidden
         s.wait_scenario_visible("use-free-space", False)
@@ -104,10 +104,10 @@ class TestStorage(VirtInstallMachineCase):
         # The choice is preserved (stored in the backend).
         # The choice is available only if the partitioning was reset
         # (there is enough free space)
-        s.set_partitioning("use-free-space")
+        s.set_scenario("use-free-space")
         i.next()
         i.back()
-        s.check_partitioning_selected("use-free-space")
+        s.check_scenario_selected("use-free-space")
 
     def testPartitioningObject(self):
         # Test which partitioning object ends up being the AppliedPartitioning
@@ -208,8 +208,11 @@ class TestStorage(VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        s = Storage(b, m)
 
         i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
         i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
         b.wait_in_text(

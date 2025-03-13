@@ -88,7 +88,6 @@ export const scenarioConfiguredStorage = {
     buttonLabel: _("Install"),
     buttonVariant: "danger",
     check: checkConfiguredStorage,
-    default: false,
     detail: helpConfiguredStorage,
     id: "use-configured-storage",
     // CLEAR_PARTITIONS_NONE = 0
