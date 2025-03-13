@@ -29,12 +29,17 @@ RE_EXPENSIVE='E2E'
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
     *compose-*)
+        # Supported values are: compose-<compose-id> or compose-<compose-id>-staging
         for test in $ALL_TESTS; do
             if grep "$test" test/wiki-testmap.json; then
                 RUN_OPTS="$RUN_OPTS $test"
             fi
         done
         export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
+        if [[ "$TEST_COMPOSE" == *"-staging" ]]; then
+            export TEST_COMPOSE="${TEST_COMPOSE%-staging}"
+            TEST_FEDORA_WIKI_STAGING="true"
+        fi
         ;;
     *efi*)
         RUN_OPTS="$ALL_TESTS";
@@ -111,9 +116,14 @@ if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
     fi
 
     mkdir -p ~/.openidc
-    cp $COCKPIT_FEDORA_WIKI_STAGING_TOKEN ~/.openidc/oidc_wikitcms.json
+    if [ "${TEST_FEDORA_WIKI_STAGING-}" = "true" ]; then
+        cp $COCKPIT_FEDORA_WIKI_STAGING_TOKEN ~/.openidc/oidc_wikitcms.json
+        test/wiki-report --staging test/report.json
+    else
+        cp $COCKPIT_FEDORA_WIKI_TOKEN ~/.openidc/oidc_wikitcms.json
+        test/wiki-report.py test/report.json
+    fi
 
-    test/wiki-report.py "test/report.json"
 fi
 
 exit $exit_code
