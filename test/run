@@ -29,7 +29,12 @@ RE_EXPENSIVE='E2E'
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
     *compose-*)
-        RUN_OPTS="$ALL_TESTS"; export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
+        for test in $ALL_TESTS; do
+            if grep "$test" test/wiki-testmap.json; then
+                RUN_OPTS="$RUN_OPTS $test"
+            fi
+        done
+        export TEST_COMPOSE="${TEST_SCENARIO#compose-}"
         ;;
     *efi*)
         RUN_OPTS="$ALL_TESTS";
@@ -54,12 +59,7 @@ esac
 
 # If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
 if [ -n "${TEST_COMPOSE-}" ]; then
-    DIRECTORY="rawhide"
-    # TODO: remove this once we have released Fedora 42
-    # DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
-    if [ "$TEST_OS" == "fedora-42-boot" ]; then
-        DIRECTORY="branched"
-    fi
+    DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
     COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
 

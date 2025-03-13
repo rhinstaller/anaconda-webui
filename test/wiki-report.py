@@ -47,19 +47,23 @@ class WikiReport:
         for testcase in self.report["tests"]:
             # Skip testcases that don't have an openqa test associated with them
             # Check testmap urls for the testcases
-            # testmap is a list of dictionaries, each with a "testname" and "fedora-wiki-testcase" and section and milestone keys
+            # testmap is a list of dictionaries, each with a "testname" and "fedora-wiki-testcase" and section key
             # If the testname in the testmap matches the openqa_test in the report, we can use the fedora-wiki-testcase
-            # and section and milestone to report the result to the wiki
-            if testcase["test_name"] not in [test["testname"] for test in testmap]:
+            # and section to report the result to the wiki
+
+            def find_test(testname):
+                for section in testmap:
+                    for test in section["tests"]:
+                        if test["testname"] == testname:
+                            return {"section": section["section"], **test}
+                return None
+
+            fedora_testcase = find_test(testcase["test_name"])
+            if fedora_testcase is None:
                 logger.warning("test %s not in testmap, skipping", testcase["test_name"])
                 continue
 
-            fedora_testcase = next(
-                (test for test in testmap if test["testname"] == testcase["test_name"]),
-                None
-            )
             fedora_wiki_testcase = fedora_testcase["fedora-wiki-testcase"]
-            milestone = fedora_testcase["milestone"]
             section = fedora_testcase["section"]
 
             if testcase["status"] == "pass":
@@ -71,7 +75,6 @@ class WikiReport:
                         compose=self.compose,
                         dist="Fedora",
                         env=fedora_testcase['environment'] if 'environment' in fedora_testcase else f"{testcase['arch']} {testcase['firmware']}",
-                        milestone=milestone,
                         release="42",
                         user="anaconda-bot",
                         section=section,
