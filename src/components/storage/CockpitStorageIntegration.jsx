@@ -61,6 +61,7 @@ import {
     applyStorage,
     createPartitioning,
     gatherRequests,
+    resetPartitioning,
     setManualPartitioningRequests
 } from "../../apis/storage_partitioning.js";
 
@@ -322,7 +323,7 @@ const CheckStorageDialog = ({
     setShowDialog,
     setShowStorage,
 }) => {
-    const { diskSelection } = useContext(StorageContext);
+    const { appliedPartitioning, diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
     const usableDevices = diskSelection.usableDevices;
@@ -509,7 +510,7 @@ const CheckStorageDialog = ({
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
         // and prepare the partitioning
-        if (checkStep !== "prepare-partitioning") {
+        if (checkStep !== "prepare-partitioning" || appliedPartitioning) {
             return;
         }
 
@@ -540,10 +541,10 @@ const CheckStorageDialog = ({
         };
 
         applyNewPartitioning();
-    }, [devices, checkStep, newMountPoints, selectedDisks, useConfiguredStorage]);
+    }, [appliedPartitioning, devices, checkStep, newMountPoints, selectedDisks, useConfiguredStorage]);
 
     useEffect(() => {
-        if (checkStep !== "rescan" || useConfiguredStorage === undefined) {
+        if (checkStep !== "rescan") {
             return;
         }
 
@@ -556,7 +557,8 @@ const CheckStorageDialog = ({
                             setCheckStep();
                             setError(exc);
                         },
-                        onSuccess: () => dispatch(getDevicesAction())
+                        onSuccess: () => resetPartitioning()
+                                .then(() => dispatch(getDevicesAction()))
                                 .then(() => {
                                     setCheckStep("luks");
                                 })
@@ -567,7 +569,7 @@ const CheckStorageDialog = ({
                         task
                     });
                 });
-    }, [useConfiguredStorage, checkStep, dispatch, setError]);
+    }, [checkStep, dispatch, setError]);
 
     const goBackToInstallation = () => {
         setShowStorage(false);
