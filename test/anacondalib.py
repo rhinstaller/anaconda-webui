@@ -110,6 +110,9 @@ class VirtInstallMachineCase(MachineCase):
         # Set the first disk as the installation target
         s.dbus_set_selected_disk("vda")
 
+        # DEBUG
+        print("Free space on vda: ", s.dbus_get_disk_free_space("vda"))
+
         self.resetLanguage()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')

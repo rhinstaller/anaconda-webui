@@ -383,6 +383,15 @@ class StorageDBus():
 
         return re.findall('"([^"]*)"', ret)
 
+    def dbus_get_disk_free_space(self, disk):
+        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            call \
+            {STORAGE_SERVICE} \
+            {STORAGE_OBJECT_PATH}/DeviceTree \
+            {STORAGE_INTERFACE}.DeviceTree.Viewer GetDiskFreeSpace as 1 {disk}')
+
+        return ret
+
     def dbus_reset_selected_disks(self):
         self.machine.execute(f'busctl --address="{self._bus_address}" \
             set-property \

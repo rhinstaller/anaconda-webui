@@ -40,6 +40,7 @@ sector-size: 512
 
     def partition_disk(self):
         self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
+        print("Windows partitions created:\n" + self.machine.execute("lsblk -f /dev/vda"))
 
 
 class DualBootHelper_E2E(VirtInstallMachineCase):
