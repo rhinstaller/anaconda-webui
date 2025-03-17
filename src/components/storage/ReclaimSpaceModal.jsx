@@ -128,11 +128,7 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                   <TextContent>
                       <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
                       <Text>{
-                          _(
-                              "Removing a filesystem will permanently delete all of the data it contains. " +
-                              "Resizing a partition can free up unused space, but is not risk-free. " +
-                              "Be sure to have backups of anything important before reclaiming space."
-                          )
+                          _("Removing a filesystem will permanently delete all of the data it contains. Resizing a partition can free up unused space, but is not risk-free. Be sure to have backups of anything important before reclaiming space.")
                       }
                       </Text>
                   </TextContent>
@@ -524,10 +520,10 @@ const WindowsHint = () => {
     if (windows?.devices.v.find(itm => devices[itm].formatData.type.v === "bitlocker")) {
         return (
             <Alert variant="warning" isInline title={_("Windows partitions with BitLocker encryption cannot be resized")}>
-                {cockpit.format(_(
-                    "Reboot into Windows to resize BitLocker-encrypted partitions. " +
-                    "Make at least $0 of free space available for installation."
-                ), cockpit.format_bytes(requiredSize))}
+                {cockpit.format(
+                    _("Reboot into Windows to resize BitLocker-encrypted partitions. Make at least $0 of free space available for installation."),
+                    cockpit.format_bytes(requiredSize)
+                )}
             </Alert>
         );
     }

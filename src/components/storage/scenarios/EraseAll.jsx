@@ -32,10 +32,9 @@ const checkEraseAll = ({ diskTotalSpace, requiredSize, selectedDisks }) => {
     if (diskTotalSpace < requiredSize) {
         availability.available = false;
         availability.reason = _("Not enough space on selected disks.");
-        availability.hint = cockpit.format(_(
-            "The installation needs $1 of disk space; " +
-            "however, the capacity of the selected disks is only $0."
-        ), cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
+        availability.hint = cockpit.format(
+            _("The installation needs $1 of disk space; however, the capacity of the selected disks is only $0."),
+            cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
     }
 
     return availability;
