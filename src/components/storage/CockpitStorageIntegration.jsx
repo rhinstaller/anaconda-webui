@@ -149,9 +149,7 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
         >
             <TextContent>
                 <Text>
-                    {_("The storage editor lets you resize, delete, and create partitions. " +
-                        "It can set up LVM and much more. " +
-                        "It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
+                    {_("The storage editor lets you resize, delete, and create partitions. It can set up LVM and much more. It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
                 </Text>
                 <Text component="strong">
                     {_("All changes made in the storage editor take effect immediately.")}
@@ -487,12 +485,7 @@ const CheckStorageDialog = ({
         if (mdArraysNotSupported.length > 0) {
             setError({
                 message: cockpit.format(
-                    _(
-                        "Invalid RAID configuration detected.\n" +
-                        "If your RAID array is created directly on top of disks, a partition table must be created on the array.\n" +
-                        "If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). " +
-                        "Any existing partitions on this array will be ignored."
-                    )
+                    _("Invalid RAID configuration detected. If your RAID array is created directly on top of disks, a partition table must be created on the array. If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). Any existing partitions on this array will be ignored.")
                 )
             });
             setCheckStep();
