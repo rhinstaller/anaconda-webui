@@ -73,7 +73,7 @@ const InstallationScenarioSelector = ({
     setIsFormValid,
     showStorage,
 }) => {
-    const { diskSelection, partitioning } = useContext(StorageContext);
+    const { appliedPartitioning, diskSelection, partitioning } = useContext(StorageContext);
     const { devices, mountPoints } = useOriginalDeviceTree();
     const selectedDisks = diskSelection.selectedDisks;
     const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
@@ -98,13 +98,13 @@ const InstallationScenarioSelector = ({
 
             for (const scenario of scenarios) {
                 const availability = scenario.check({
+                    appliedPartitioning,
                     autopartScheme: defaultScheme,
                     devices,
                     diskFreeSpace,
                     diskTotalSpace,
                     mountPointConstraints,
                     originalExistingSystems,
-                    partitioning: partitioning.path,
                     requiredSize,
                     selectedDisks,
                     storageScenarioId: partitioning.storageScenarioId,
@@ -115,13 +115,13 @@ const InstallationScenarioSelector = ({
             return newAvailability;
         });
     }, [
+        appliedPartitioning,
         defaultScheme,
         devices,
         diskFreeSpace,
         diskTotalSpace,
         mountPointConstraints,
         originalExistingSystems,
-        partitioning.path,
         partitioning.storageScenarioId,
         requiredSize,
         selectedDisks,
