@@ -48,9 +48,6 @@ import {
     scanDevicesWithTask,
 } from "../../apis/storage.js";
 import {
-    setBootloaderDrive,
-} from "../../apis/storage_bootloader.js";
-import {
     unlockDevice,
 } from "../../apis/storage_devicetree.js";
 import {
@@ -241,8 +238,6 @@ export const CockpitStorageIntegration = ({
 
 export const preparePartitioning = async ({ devices, newMountPoints, selectedDisks }) => {
     try {
-        await setBootloaderDrive({ drive: "" });
-
         const partitioning = await createPartitioning({ method: "MANUAL" });
         const requests = await gatherRequests({ partitioning });
         const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
@@ -527,6 +522,7 @@ const CheckStorageDialog = ({
                 const partitioning = await preparePartitioning({ devices, newMountPoints, selectedDisks });
 
                 applyStorage({
+                    devices,
                     onFail: exc => {
                         setCheckStep();
                         setError(exc);

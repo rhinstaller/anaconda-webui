@@ -20,9 +20,6 @@ import {
     getRequiredSpace
 } from "../apis/payloads.js";
 import {
-    setBootloaderDrive,
-} from "../apis/storage_bootloader.js";
-import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatTypeData,
@@ -148,7 +145,6 @@ export const getNewPartitioning = async ({
     if (method === "AUTOMATIC") {
         await setInitializeLabelsEnabled({ enabled: true });
     }
-    await setBootloaderDrive({ drive: "" });
 
     const part = await createPartitioning({ method });
 

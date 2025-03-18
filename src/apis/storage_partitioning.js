@@ -16,12 +16,19 @@
  */
 import cockpit from "cockpit";
 
+import {
+    bootloaderTypes,
+    getDeviceDisk,
+} from "../helpers/storage.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import {
     runStorageTask,
     StorageClient,
 } from "./storage.js";
+import {
+    setBootloaderDrive,
+} from "./storage_bootloader.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";
@@ -248,12 +255,29 @@ export const gatherRequests = ({ partitioning }) => {
     ).then(res => res[0]);
 };
 
-export const applyStorage = async ({ luks, onFail, onSuccess, partitioning }) => {
+export const applyStorage = async ({ devices, luks, onFail, onSuccess, partitioning }) => {
     if (luks?.encrypted !== undefined) {
         await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
     }
     if (luks?.passphrase) {
         await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
+    }
+
+    const method = await getPartitioningMethod({ partitioning });
+    if (method === "MANUAL") {
+        const requests = await gatherRequests({ partitioning });
+        const bootloaderDevice = requests.find(request => bootloaderTypes.includes(request["format-type"].v))?.["device-spec"].v;
+        const bootloaderDisk = getDeviceDisk(devices, bootloaderDevice);
+        const rootDevice = requests.find(request => request["mount-point"].v === "/")?.["device-spec"].v;
+        const rootDisk = getDeviceDisk(devices, rootDevice);
+
+        if (bootloaderDisk !== rootDisk && !!bootloaderDisk) {
+            await setBootloaderDrive({ drive: bootloaderDisk });
+        } else {
+            await setBootloaderDrive({ drive: "" });
+        }
+    } else {
+        await setBootloaderDrive({ drive: "" });
     }
 
     const tasks = await partitioningConfigureWithTask({ partitioning });

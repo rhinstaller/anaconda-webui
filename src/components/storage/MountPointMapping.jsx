@@ -731,9 +731,11 @@ const MountPointMapping = ({
 
 const CustomFooter = ({ setStepNotification }) => {
     const { partitioning } = useContext(StorageContext);
+    const devices = useOriginalDevices();
     const step = new Page().id;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
+            devices,
             onFail: ex => {
                 console.error(ex);
                 setIsFormDisabled(false);

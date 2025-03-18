@@ -139,6 +139,18 @@ export const getParentPartitions = (deviceData, device) => {
     return deviceData[device].parents.v.map(parent => getParentPartitions(deviceData, parent)).flat(Infinity);
 };
 
+/* Get the parent disk ID of a given device
+ * @param {Object} deviceData - The device data object
+ * @param {string} device - The ID of the device
+ * @returns {string}
+ * */
+export const getDeviceDisk = (deviceData, device) => {
+    const parents = getDeviceAncestors(deviceData, device);
+    const parentDisk = parents.find(parent => deviceData[parent].formatData.type.v === "disklabel");
+
+    return parentDisk;
+};
+
 /* Check if a device has parents of a given type
  * @param {Object} deviceData - The device data object
  * @param {string} device - The ID of the device
