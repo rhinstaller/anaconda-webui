@@ -408,7 +408,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
     @disk_images([("", 15), ("", 15), ("", 15)])
-    def testRAIDUnsupported(self):
+    def testUnsupportedRAIDNestedPartitions(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -468,12 +468,12 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
-    def testRAIDonDisks(self):
+    @run_boot("bios", "efi")
+    def testUnsupportedBootloaderOnMDRAID(self):
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
-        r = Review(b, m)
 
         self.addCleanup(m.execute, "mdadm --zero-superblock /dev/vda /dev/vdb /dev/vdc")
         self.addCleanup(m.execute, "mdadm --stop /dev/md/SOMERAID")
@@ -499,7 +499,10 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 4), "Create partition table")
         self.dialog({"type": "gpt"})
         self.click_dropdown(self.card_row("Storage", 5), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 1, "type": "biosboot"})
         self.click_dropdown(self.card_row("Storage", 6), "Create partition")
         self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
         self.click_dropdown(self.card_row("Storage", 7), "Create partition")
@@ -507,28 +510,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
-        s.return_to_installation()
-
-        with b.wait_timeout(60):
-            disk = "MDRAID-SOMERAID"
-            prefix="#cockpit-storage-integration-check-storage-dialog"
-            r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
-            r.check_disk_row(disk, "/", "SOMERAID3, RAID", "47.2 GB", False, prefix=prefix)
-
-        s.return_to_installation_confirm()
-
-        s.set_scenario("use-configured-storage")
-
-        i.reach(i.steps.REVIEW)
-
-        def checkStorageReview(prefix=""):
-            with b.wait_timeout(30):
-                r.check_disk(disk, "48.3 GB MDRAID-SOMERAID (MDRAID set (stripe))")
-            r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", False, prefix=prefix)
-            r.check_disk_row(disk, "/", "SOMERAID3, RAID", "47.2 GB", False, prefix=prefix)
-
-        # verify review screen
-        checkStorageReview()
+        s.return_to_installation("Bootloaders are not supported on MDRAID devices.")
 
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
