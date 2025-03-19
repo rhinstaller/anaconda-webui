@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from storage import Storage
 from testlib import test_main, timeout  # pylint: disable=import-error
@@ -96,6 +96,61 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
             md_part_3 = next(part for part in disk_part_3["children"] if part["type"] == "raid1")
             vol_group = next(part for part in md_part_3["children"] if part["type"] == "lvm")
             self.assertEqual(vol_group["mountpoints"], ["/"])
+
+    def _testRAID1_Scenario0_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk1 = "/dev/vda"
+        disk2 = "/dev/vdb"
+        raid = "/dev/md/raid1"
+
+        m.execute(f"""
+        set -ex
+        mdadm --create --run raid1 --level=raid1 --metadata=1.0 --raid-devices=2 {disk1} {disk2}
+        """, timeout=90)
+        if self.is_efi:
+            s.partition_disk(raid, [("100MiB", "efi"),("1GB", "xfs"), ("10GB" , "ext4")])
+        else:
+            s.partition_disk(raid, [("1MiB", "biosboot"),("1GB", "xfs"), ("10GB" , "ext4")])
+
+    @disk_images([("", 15), ("", "15")])
+    @run_boot("bios", "efi")
+    def testRAID1_Scenario0(self):
+        """
+        Test RAID1 on disk level
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        raid_name = "raid1"
+        raid_disk = "MDRAID-raid1"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_mountpoint([(raid_disk, True)])
+        s.select_mountpoint_row_device(1, f"{raid_name}p3")
+        if self.is_efi:
+            s.select_mountpoint_row_device(2, f"{raid_name}p1")
+            s.select_mountpoint_row_device(3, f"{raid_name}p2")
+        else:
+            s.select_mountpoint_row_device(2, f"{raid_name}p2")
+
+        i.reach(i.steps.REVIEW)
+        self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
+
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        raid_disk = next(dev for dev in vda["children"] if dev["type"] == "raid1")
+        raid_part_boot = next(part for part in raid_disk["children"] if part["name"] == "md127p2")
+        raid_part_root = next(part for part in raid_disk["children"] if part["name"] == "md127p3")
+        self.assertEqual(raid_part_boot["mountpoints"], ["/boot"])
+        self.assertEqual(raid_part_root["mountpoints"], ["/"])
 
 
 if __name__ == '__main__':
