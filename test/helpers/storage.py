@@ -325,7 +325,14 @@ class StorageUtils(StorageDestination):
                     if len(params) > 2:
                         mkfs += params[2:]
 
-                    mkfs.append(f"{disk}{i + 1}")
+                    if disk.startswith("/dev/md"):
+                        mkfs.append(f"{disk}p{i + 1}")
+                    else:
+                        mkfs.append(f"{disk}{i + 1}")
+
+                    # mdraid devices take some time to sync new partitions
+                    if disk.startswith("/dev/md"):
+                        command += "\nudevadm settle --timeout=120"
                     command += f"\n{' '.join(mkfs)}"
 
         # Execute the commands
