@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -114,6 +114,92 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         raid_root = next(part for part in vda3["children"] if part["type"] == "raid0")
         self.assertEqual(raid_root["mountpoints"], ["/"])
         self.assertEqual(raid_root["size"], "44G")
+
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    @run_boot("bios", "efi")
+    def testRAID0Scenario_0(self):
+        """
+        Test scenario with three disks:
+
+        - 'biosboot' and '/boot' are on 'vda'.
+        - A RAID 0 array is created using 'vdb' and 'vdc'.
+        - The root filesystem ('/') is placed on the RAID 0 device.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vdb, and vdc
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vdb": True, "vdc": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Create biosboot and /boot partitions on vda
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 1, "type": "biosboot"})
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
+        # Create / partition on the RAID device
+        self.click_dropdown(self.card_row("Storage", 7), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 8), "Create partition")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        def checkStorageReview(prefix=""):
+            with b.wait_timeout(30):
+                disk = "vda"
+                r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)", prefix=prefix)
+                r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
+
+                disk = "MDRAID-SOMERAID"
+                r.check_disk(disk, f"32.2 GB {disk} (MDRAID set (stripe))", prefix=prefix)
+                r.check_disk_row(disk, "/", "SOMERAID1, RAID", "32.2 GB", False, prefix=prefix)
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        checkStorageReview(prefix="#cockpit-storage-integration-check-storage-dialog")
+        s.return_to_installation_confirm()
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        checkStorageReview()
+        r.check_checkbox_not_present()
+        self.install(needs_confirmation=False)
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        vda2 = next(part for part in vda["children"] if part["name"] == "vda2")
+        self.assertEqual(vda2["mountpoints"], ["/boot"])
+
+        vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
+        raid_dev = next(part for part in vdb["children"] if part["type"] == "raid0")
+        raid_part = next(part for part in raid_dev["children"] if part["type"] == "part")
+        self.assertEqual(raid_part["mountpoints"], ["/"])
+        self.assertEqual(raid_part["size"], "30G")
 
 
 if __name__ == '__main__':

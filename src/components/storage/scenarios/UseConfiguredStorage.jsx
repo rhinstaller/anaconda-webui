@@ -27,16 +27,16 @@ import { helpConfiguredStorage } from "../HelpAutopartOptions.jsx";
 const _ = cockpit.gettext;
 
 export const checkConfiguredStorage = ({
+    appliedPartitioning,
     devices,
     mountPointConstraints,
     newMountPoints,
-    partitioning,
     storageScenarioId,
 }) => {
     const availability = new AvailabilityState();
 
     const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
-    availability.hidden = partitioning === undefined || !currentPartitioningMatches;
+    availability.hidden = !appliedPartitioning || !currentPartitioningMatches;
 
     availability.available = (
         newMountPoints === undefined ||
