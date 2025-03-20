@@ -195,9 +195,27 @@ const DeviceRow = ({ disk }) => {
 
         return parents.includes(disk);
     });
+
+    // If the disk is formatted as mount point let's show it in the disk information
+    // Remove disk name and size as they are already shown in the header
+    const diskMountPoint = (
+        Object.entries(mountPoints).find(mp => mp[1] === disk)
+            ? (
+                getDeviceRow(Object.entries(mountPoints).find(mp => mp[1] === disk))
+                        .columns
+                        .slice(2)
+                        .map(column => column.title)
+                        .filter(Boolean)
+                        .join(" ")
+            )
+            : ""
+    );
+
     return (
         <div>
-            <span id={`disk-${disk}`}>{cockpit.format_bytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
+            <span id={`disk-${disk}`}>
+                {[cockpit.format_bytes(deviceData.size.v), disk, "(" + deviceData.description.v + ")", diskMountPoint].filter(Boolean).join(" ")}
+            </span>
             <ListingTable
               aria-label={_("Device tree for $0", disk)}
               className={"pf-m-no-border-rows " + idPrefix + "-table"}
