@@ -49,9 +49,8 @@ export const ApplicationLoading = () => (
     </Page>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL }) => {
+export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
-    const [showStorage, setShowStorage] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress();
 
@@ -169,6 +168,7 @@ const useAddress = () => {
 };
 
 export const ApplicationWithErrorBoundary = () => {
+    const [showStorage, setShowStorage] = useState(false);
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
     const [errorBeforeBoundary, setErrorBeforeBoundary] = useState();
     const onCritFail = useCallback(
@@ -194,12 +194,16 @@ export const ApplicationWithErrorBoundary = () => {
                 <ErrorBoundary
                   backendException={errorBeforeBoundary}
                   isNetworkConnected={state.network.connected}
-                  reportLinkURL={bzReportURL}>
+                  reportLinkURL={bzReportURL}
+                  showStorage={showStorage}
+                >
                     <Application
                       dispatch={dispatch}
                       isFetching={state.misc.isFetching}
                       osRelease={osRelease}
                       reportLinkURL={bzReportURL}
+                      showStorage={showStorage}
+                      setShowStorage={setShowStorage}
                       state={state}
                     />
                 </ErrorBoundary>
