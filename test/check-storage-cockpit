@@ -597,6 +597,65 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         for disk in ["vda", "vdb", "vdc"]:
             s.check_disk_selected(disk)
 
+    @disk_images([("", 15), ("", 15)])
+    @nondestructive
+    def testFormattedDiskRootfs(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_disks([("vdb", True), ("vda", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+
+        b.switch_to_frame("cockpit-storage")
+
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"type": "ext4", "mount_point": "/home"})
+
+        self.click_dropdown(self.card_row("Storage", 5), "Format")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        # Exit the cockpit-storage iframe
+        b.switch_to_top()
+
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        dev = "vda"
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
+        dev = "vdb"
+        r.check_disk(dev, "16.1 GB vdb (Virtio Block Device)")
+        r.check_disk_row(dev, "/", "", "16.1 GB", False)
+
+        # Check fstab
+        fstab = m.execute("cat /etc/fstab")
+        self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot/home auto noauto 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot auto noauto 0 0" in fstab)
+
 
 if __name__ == '__main__':
     test_main()
