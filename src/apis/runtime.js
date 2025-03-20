@@ -82,11 +82,26 @@ export class RuntimeClient {
 }
 
 /**
- *
+ * @returns {Promise}           Returns the full product data
+ */
+const getProductData = () => {
+    return getProperty("ProductData");
+};
+
+/**
  * @returns {Promise}           Reports if the given OS release is considered final
  */
-export const getIsFinal = () => {
-    return getProperty("IsFinal");
+export const getIsFinal = async () => {
+    let res;
+    try {
+        const productData = await getProductData();
+        res = productData["is-final-release"].v;
+    } catch (ex) {
+        if (ex.name === "org.freedesktop.DBus.Error.InvalidArgs") {
+            res = await getProperty("IsFinal");
+        }
+    }
+    return res;
 };
 
 /**
