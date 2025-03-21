@@ -212,8 +212,9 @@ export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) =
             return false;
         }
 
-        // All device's disks have to be in selected disks.
-        return selectedDisks.some(disk => ancestors.includes(disk));
+        // All device's parent disks have to be in selected disks.
+        // Or the device itself has to be in selected disks.
+        return selectedDisks.some(disk => [device, ...ancestors].includes(disk));
     });
 
     return usableDevices;
