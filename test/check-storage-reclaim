@@ -369,9 +369,9 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
     def _testBasic_partition_disk(self):
-        WindowsOS(machine=self.machine).partition_disk()
+        WindowsOS(machine=self.machine).partition_disk("vdb")
 
-    @disk_images([("", 20)])
+    @disk_images([("", 15), ("", 20)])
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -380,6 +380,7 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vda", False), ("vdb", True)])
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
         i.next(True)
