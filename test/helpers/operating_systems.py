@@ -39,6 +39,8 @@ sector-size: 512
         self.machine = machine
 
     def partition_disk(self):
+        command = "wipefs -a /dev/vda"
+        self.machine.execute(command)
         self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
 
 
