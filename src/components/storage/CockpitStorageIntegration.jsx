@@ -488,6 +488,20 @@ const CheckStorageDialog = ({
             return;
         }
 
+        // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
+        // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
+        // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2353304
+        const bootloaderDevices = Object.keys(devices).filter(device => bootloaderTypes.includes(devices[device].formatData.type.v));
+        if (
+            bootloaderDevices.some(bootloaderDevice => getDeviceAncestors(devices, bootloaderDevice).some(ancestor => mdArrays.includes(ancestor)))
+        ) {
+            setError({
+                message: _("Bootloaders are not supported on MDRAID devices. To ensure the system can boot, avoid placing the bootloader on MDRAID.")
+            });
+            setCheckStep();
+            return;
+        }
+
         if (selectedMDarrays.find(mdArray => selectedDisks.indexOf(mdArray) === -1)) {
             setSelectedDisks({ drives: selectedMDarrays.filter((disk, index) => selectedMDarrays.indexOf(disk) === index) });
         } else {
