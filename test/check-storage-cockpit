@@ -573,6 +573,96 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(disk, "/boot", "SOMERAID2, RAID", "1.07 GB", True, "xfs")
         r.check_disk_row(disk, "/", "SOMERAID3, LVM", "16.1 GB", True, "xfs")
 
+    @nondestructive
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    def testCalculateSelectedDisksRAID(self):
+        """ Verify that the disk selection changes when creating a RAID device """
+
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb, and vdc
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.check_disk_selected("MDRAID-SOMERAID")
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Delete RAID device and expect the disk selection to be set back to the parent disks
+        self.click_dropdown(self.card_row("Storage", 4), "Delete")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        for disk in ["vda", "vdb", "vdc"]:
+            s.check_disk_selected(disk)
+
+        # Do the same for RAID device with 2 disks
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid0")
+        self.dialog_set_val("disks", {"vda": True, "vdb": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.check_disk_selected("MDRAID-SOMERAID")
+        s.check_disk_selected("vdc")
+
+        # Delete RAID device and expect the disk selection to be set back to the parent disks
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        self.click_dropdown(self.card_row("Storage", 4), "Delete")
+        self.dialog_apply()
+        b.wait_not_present(self.card_row("Storage", 4))
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        for disk in ["vda", "vdb", "vdc"]:
+            s.check_disk_selected(disk)
+
 
 if __name__ == '__main__':
     test_main()

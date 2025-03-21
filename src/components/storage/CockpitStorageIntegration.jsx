@@ -17,7 +17,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     ActionList,
     Alert,
@@ -64,6 +64,7 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
 
+import { debug } from "../../helpers/log.js";
 import {
     getDeviceAncestors,
     getDeviceByName,
@@ -318,6 +319,7 @@ const CheckStorageDialog = ({
 }) => {
     const { appliedPartitioning, diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
+    const refDevices = useRef(devices);
     const selectedDisks = diskSelection.selectedDisks;
     const usableDevices = diskSelection.usableDevices;
 
@@ -388,6 +390,13 @@ const CheckStorageDialog = ({
     const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk));
 
     useEffect(() => {
+        if (refDevices.current !== undefined) {
+            return;
+        }
+        refDevices.current = devices;
+    }, [devices]);
+
+    useEffect(() => {
         const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
 
         dispatch(setStorageScenarioAction(mode));
@@ -450,10 +459,25 @@ const CheckStorageDialog = ({
         //
         // For the first scenario, we need to re-set 'SelectedDisks' in backend,
         // for the new mdarrays to be handled as such.
-        const selectedMDarrays = selectedDisks.map(disk => {
+        const newSelectedDisks = selectedDisks.reduce((acc, disk) => {
+            if (!devices[disk]) {
+                if (refDevices.current[disk]?.parents.v) {
+                    debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
+                    return [...acc, ...refDevices.current[disk].parents.v];
+                } else {
+                    debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
+                    return acc;
+                }
+            }
             const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
-            return mdArray.length > 0 ? mdArray[0] : disk;
-        });
+            if (mdArray.length > 0) {
+                debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
+                return [...acc, mdArray[0]];
+            } else {
+                debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
+                return [...acc, disk];
+            }
+        }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
 
         // Check if we have mdarrays that are not fitting in the above two scenarios
         // and show an error message
@@ -488,8 +512,8 @@ const CheckStorageDialog = ({
             return;
         }
 
-        if (selectedMDarrays.find(mdArray => selectedDisks.indexOf(mdArray) === -1)) {
-            setSelectedDisks({ drives: selectedMDarrays.filter((disk, index) => selectedMDarrays.indexOf(disk) === index) });
+        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
+            setSelectedDisks({ drives: newSelectedDisks });
         } else {
             setCheckStep("prepare-partitioning");
         }
