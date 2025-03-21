@@ -78,7 +78,7 @@ def vm_install(image, compose, verbose, quick):
             machine.execute("su builder -c 'mock --no-clean --disablerepo=* --offline --resultdir /var/tmp/build "
                             f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
 
-        if compose or image != "fedora-rawhide":
+        if compose:
             # If we are testing a custom compose do *not* download the anaconda packages, they are in the ISO already
             pass
         elif scenario and scenario.startswith("anaconda-pr-"):
