@@ -84,6 +84,23 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # Exit the cockpit-storage iframe
         b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_cancel()
+        b.switch_to_frame("cockpit-storage")
+
+        # Format the partition again with 'Reuse existing encryption'
+        # Check that cockpit sends us the information also after re-formatting (rhbz#2354497)
+        self.click_dropdown(self.card_row("Storage", 4), "Format")
+        self.dialog_wait_open()
+        self.dialog_set_val("type", "ext4")
+        self.dialog_set_val("mount_point", "/")
+        self.dialog_set_val("old_passphrase", "redhat")
+        b.set_checked("#dialog-confirm", val=True)
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe
+        b.switch_to_top()
 
         s.return_to_installation()
         s.return_to_installation_confirm()
