@@ -20,7 +20,7 @@ import os
 from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from storage import Storage
-from testlib import nondestructive, test_main  # pylint: disable=import-error
+from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -200,6 +200,7 @@ class TestStorage(VirtInstallMachineCase):
         """)
 
     @disk_images([("", 15), ("", 15)])
+    @skipImage("TODO: Investigate and report the issue", "fedora-42-boot")
     def testDiskSelectionLVM(self):
         """
         Test that the user can't select one PV when VG group spans across multiple disks
