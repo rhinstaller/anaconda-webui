@@ -58,12 +58,12 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
 };
 
 export const scenarioMountPointMapping = {
-    buttonLabel: _("Apply mount point assignment and install"),
     buttonVariant: "danger",
     check: checkMountPointMapping,
-    detail: helpMountPointMapping,
+    getButtonLabel: () => _("Apply mount point assignment and install"),
+    getDetail: helpMountPointMapping,
+    getLabel: () => _("Mount point assignment"),
     id: "mount-point-mapping",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    label: _("Mount point assignment"),
 };

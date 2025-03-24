@@ -41,12 +41,12 @@ const checkEraseAll = ({ diskTotalSpace, requiredSize, selectedDisks }) => {
 };
 
 export const scenarioEraseAll = {
-    buttonLabel: _("Erase data and install"),
     buttonVariant: "danger",
     check: checkEraseAll,
-    detail: helpEraseAll,
+    getButtonLabel: () => _("Erase data and install"),
+    getDetail: helpEraseAll,
+    getLabel: () => _("Use entire disk"),
     id: "erase-all",
     // CLEAR_PARTITIONS_ALL = 1
     initializationMode: 1,
-    label: _("Use entire disk"),
 };

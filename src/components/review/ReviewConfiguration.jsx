@@ -64,7 +64,8 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
-    const { label: scenarioLabel } = useScenario();
+    const { getLabel } = useScenario();
+    const scenarioLabel = getLabel?.();
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
@@ -190,7 +191,8 @@ const useConfirmationCheckboxLabel = () => {
 };
 
 const CustomFooter = ({ setIsFormValid }) => {
-    const { buttonLabel } = useScenario();
+    const { getButtonLabel } = useScenario();
+    const buttonLabel = getButtonLabel?.();
     const scenarioConfirmationLabel = useConfirmationCheckboxLabel();
     const installationIsClean = scenarioConfirmationLabel === "";
     const [isConfirmed, setIsConfirmed] = useState(false);

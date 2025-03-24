@@ -173,11 +173,11 @@ const InstallationScenarioSelector = ({
           id={idPrefix + "-scenario-" + scenario.id}
           value={scenario.id}
           name={idPrefix + "-scenario"}
-          label={scenario.label}
+          label={scenario.getLabel()}
           isDisabled={!scenarioAvailability[scenario.id].available || isFormDisabled}
           isChecked={storageScenarioId === scenario.id}
           onChange={() => onScenarioToggled(scenario.id)}
-          description={scenario.detail}
+          description={scenario.getDetail()}
           body={
               <>
                   {selectedDisks.length > 0 && scenarioAvailability[scenario.id].reason &&
