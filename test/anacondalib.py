@@ -269,7 +269,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
         # This should be removed from the test
-        if self.is_efi:
+        if self.is_efi and button_text != "Erase data and install":
             # Add efibootmgr entry for the second OS
             distro_name = self.disk_images[0][0].split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")

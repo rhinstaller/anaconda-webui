@@ -202,5 +202,58 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         self.assertEqual(raid_part["size"], "30G")
 
 
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    @run_boot("bios", "efi")
+    def testRAID1onDisks(self):
+        """
+        Test scenario with three disks:
+        - A RAID 1 array is created using 'vda', 'vdb', and 'vdc'.
+        - The bootloader, '/boot' and the root filesystem ('/') are placed on the RAID 1 device.
+        """
+
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb, and vdc
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", "raid1")
+        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
+        self.dialog_set_val("name", "SOMERAID")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        s.check_scenario_selected("erase-all")
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        self.install(needs_confirmation=False, button_text="Erase data and install")
+
+        # Check that the expected partition layout is created and spans all the target devices
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        raid_dev = next(part for part in vda["children"] if part["type"] == "raid1")
+        raid_dev_boot = next(part for part in raid_dev["children"] if part["type"] == "part" and part["name"] == "md127p2")
+        self.assertEqual(raid_dev_boot["mountpoints"], ["/boot"])
+        raid_dev_root = next(part for part in raid_dev["children"] if part["type"] == "part" and part["name"] == "md127p3")
+        self.assertEqual(raid_dev_root["children"][0]["mountpoints"], ["/"])
+
+
 if __name__ == '__main__':
     test_main()
