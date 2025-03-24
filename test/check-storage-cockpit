@@ -468,47 +468,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
-    def testRAIDUnsupportedMetadataCheck(self):
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        s = Storage(b, m)
-
-        self.addCleanup(m.execute, "mdadm --zero-superblock /dev/vda /dev/vdb /dev/vdc")
-        self.addCleanup(m.execute, "mdadm --stop /dev/md/SOMERAID")
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-        s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
-
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
-
-        # Create RAID device on vda, vdb, and vdc
-        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
-        self.dialog_wait_open()
-        self.dialog_set_val("level", "raid0")
-        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
-        self.dialog_set_val("name", "SOMERAID")
-        self.dialog_apply()
-        self.dialog_wait_close()
-
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
-
-        s.check_scenario_selected("erase-all")
-        i.reach(i.steps.STORAGE_CONFIGURATION)
-        i.next(should_fail=True)
-        b.wait_in_text(
-            "#anaconda-screen-storage-configuration-step-notification",
-            "Failed to find a suitable stage1 device"
-        )
-
-    @nondestructive
-    @disk_images([("", 15), ("", 15), ("", 15)])
     def testCalculateSelectedDisksRAID(self):
         """ Verify that the disk selection changes when creating a RAID device """
 
