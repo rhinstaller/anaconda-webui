@@ -85,12 +85,12 @@ export const checkConfiguredStorage = ({
 };
 
 export const scenarioConfiguredStorage = {
-    buttonLabel: _("Install"),
     buttonVariant: "danger",
     check: checkConfiguredStorage,
-    detail: helpConfiguredStorage,
+    getButtonLabel: () => _("Install"),
+    getDetail: helpConfiguredStorage,
+    getLabel: () => _("Use configured storage"),
     id: "use-configured-storage",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    label: _("Use configured storage"),
 };

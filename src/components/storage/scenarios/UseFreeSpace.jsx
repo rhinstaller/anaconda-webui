@@ -73,13 +73,13 @@ const ReclaimSpace = ({ availability }) => {
 
 export const scenarioUseFreeSpace = {
     action: ReclaimSpace,
-    buttonLabel: _("Install"),
     buttonVariant: "primary",
     canReclaimSpace: true,
     check: checkUseFreeSpace,
-    detail: helpUseFreeSpace,
+    getButtonLabel: () => _("Install"),
+    getDetail: helpUseFreeSpace,
+    getLabel: () => _("Share disk with other operating system"),
     id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    label: _("Share disk with other operating system"),
 };

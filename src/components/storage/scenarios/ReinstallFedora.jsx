@@ -116,12 +116,12 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
 };
 
 export const scenarioReinstallFedora = {
-    buttonLabel: _("Reinstall Fedora"),
     buttonVariant: "danger",
     check: checkHomeReuse,
-    detail: helpHomeReuse,
+    getButtonLabel: () => _("Reinstall Fedora"),
+    getDetail: helpHomeReuse,
+    getLabel: () => _("Reinstall Fedora"),
     id: "home-reuse",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
-    label: _("Reinstall Fedora"),
 };
