@@ -267,12 +267,11 @@ class LanguageSelector extends React.Component {
                     {this.state.search && (
                         <TextInputGroupUtilities>
                             <Button
+                              icon={<TimesIcon />}
                               variant="plain"
                               onClick={() => this.setState({ search: "" })}
                               aria-label={_("Clear search input")}
-                            >
-                                <TimesIcon />
-                            </Button>
+                            />
                         </TextInputGroupUtilities>
                     )}
                 </TextInputGroup>

@@ -28,10 +28,12 @@ import {
     MenuContent,
     MenuItem,
     MenuList,
-    Modal,
     Stack,
-    Title,
+    Title
 } from "@patternfly/react-core";
+import {
+    Modal
+} from "@patternfly/react-core/deprecated";
 import { SyncAltIcon } from "@patternfly/react-icons";
 
 import {
