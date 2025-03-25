@@ -21,17 +21,14 @@ import React, { useContext } from "react";
 import {
     Alert,
     Checkbox,
+    Content,
+    ContentVariants,
     EmptyState,
     EmptyStateFooter,
-    EmptyStateHeader,
-    EmptyStateIcon,
     Form,
     FormGroup,
     FormSection,
     Spinner,
-    Text,
-    TextContent,
-    TextVariants,
     Title,
 } from "@patternfly/react-core";
 
@@ -57,14 +54,13 @@ const ruleAscii = {
 };
 
 const CheckDisksSpinner = (
-    <EmptyState id={idPrefix + "-next-spinner"}>
-        <EmptyStateHeader titleText={<>{_("Checking storage configuration")}</>} icon={<EmptyStateIcon icon={Spinner} />} headingLevel="h4" />
+    <EmptyState headingLevel="h4" icon={Spinner} titleText={<>{_("Checking storage configuration")}</>} id={idPrefix + "-next-spinner"}>
         <EmptyStateFooter>
-            <TextContent>
-                <Text component={TextVariants.p}>
+            <Content>
+                <Content component={ContentVariants.p}>
                     {_("This may take a moment")}
-                </Text>
-            </TextContent>
+                </Content>
+            </Content>
         </EmptyStateFooter>
     </EmptyState>
 );
@@ -129,11 +125,11 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
             <FormSection
               title={<Title headingLevel="h3">{_("Encryption")}</Title>}
             >
-                <TextContent>
-                    <Text component={TextVariants.p}>
+                <Content>
+                    <Content component={ContentVariants.p}>
                         {_("Secure your data using disk-based encryption. Only applies to new partitions")}
-                    </Text>
-                </TextContent>
+                    </Content>
+                </Content>
                 {encryptedDevicesCheckbox(luks.encrypted ? encryptionContent : null)}
             </FormSection>
         </Form>

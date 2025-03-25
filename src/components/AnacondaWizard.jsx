@@ -22,7 +22,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
     PageSection,
     PageSectionTypes,
-    PageSectionVariants,
     Wizard,
     WizardStep,
 } from "@patternfly/react-core";
@@ -123,7 +122,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const finalStep = stepsOrder[stepsOrder.length - 1];
     if (path[0] === finalStep.id) {
         return (
-            <PageSection variant={PageSectionVariants.light}>
+            <PageSection hasBodyWrapper={false}>
                 <finalStep.component {...componentProps} />
             </PageSection>
         );
@@ -145,7 +144,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     };
 
     return (
-        <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
+        <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
             <FooterContext.Provider value={{
                 isFormDisabled: isFormDisabled || isFetching,
                 isFormValid,

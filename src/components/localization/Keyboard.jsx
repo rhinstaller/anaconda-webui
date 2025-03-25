@@ -18,7 +18,7 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, Button, Flex, FormSelect, FormSelectOption, Text } from "@patternfly/react-core";
+import { Alert, Button, Content, Flex, FormSelect, FormSelectOption } from "@patternfly/react-core";
 
 import {
     getKeyboardConfiguration,
@@ -114,7 +114,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     return (
         <>
             <Flex alignItems="center" flexWrap={{ default: "nowrap" }}>
-                <Text>{layout}</Text>
+                <Content component="p">{layout}</Content>
                 <Button
                   variant="link"
                   component="a"

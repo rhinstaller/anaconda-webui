@@ -23,19 +23,20 @@ import {
     ActionList,
     Alert,
     Button,
+    Content,
     Flex,
     FlexItem,
     HelperText,
     HelperTextItem,
-    Modal,
-    ModalVariant,
     Panel,
     Popover,
     Slider,
     Stack,
-    Text,
-    TextContent,
 } from "@patternfly/react-core";
+import {
+    Modal,
+    ModalVariant
+} from "@patternfly/react-core/deprecated";
 import {
     CompressArrowsAltIcon,
     HddIcon,
@@ -125,13 +126,13 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
         <Modal
           description={
               <Stack hasGutter>
-                  <TextContent>
-                      <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
-                      <Text>{
+                  <Content>
+                      <Content component="p">{_("Remove or resize existing filesystems to free up space for the installation.")}</Content>
+                      <Content component="p">{
                           _("Removing a filesystem will permanently delete all of the data it contains. Resizing a partition can free up unused space, but is not risk-free. Be sure to have backups of anything important before reclaiming space.")
                       }
-                      </Text>
-                  </TextContent>
+                      </Content>
+                  </Content>
                   <WindowsHint />
               </Stack>
           }
@@ -208,7 +209,7 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
     return (
         <Stack hasGutter>
             <HelperText>
-                <HelperTextItem id={idPrefix + "-hint"} isDynamic variant={status}>
+                <HelperTextItem id={idPrefix + "-hint"}  variant={status}>
                     {fmtToFragments(
                         _("Available free space: $0. Installation requires: $1."),
                         <b id={idPrefix + "-hint-available-free-space"}>{cockpit.format_bytes(diskFreeSpace + selectedSpaceToReclaim)}</b>,

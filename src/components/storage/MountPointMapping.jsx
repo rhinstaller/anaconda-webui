@@ -245,14 +245,14 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
                         onChange={(_event, val) => setMountPointText(val)}
                         value={mountPointText}
                     />}
-                {isRequiredMountPoint && <Label color="gold">{_("Required")}</Label>}
-                {!isRequiredMountPoint && isRecommendedMountPoint && <Label color="gold">{_("Recommended")}</Label>}
+                {isRequiredMountPoint && <Label color="yellow">{_("Required")}</Label>}
+                {!isRequiredMountPoint && isRecommendedMountPoint && <Label color="yellow">{_("Recommended")}</Label>}
                 {!isRequiredMountPoint && !isRecommendedMountPoint && <Label color="purple">{_("Custom")}</Label>}
 
             </Flex>
             {mountpoint && duplicatedMountPoint &&
                 <HelperText>
-                    <HelperTextItem variant="error" hasIcon>
+                    <HelperTextItem variant="error" >
                         {_("Duplicate mount point.")}
                     </HelperTextItem>
                 </HelperText>}
@@ -387,13 +387,13 @@ const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRe
             />
             {device && duplicatedDevice &&
                 <HelperText>
-                    <HelperTextItem variant="error" hasIcon>
+                    <HelperTextItem variant="error" >
                         {_("Duplicate device.")}
                     </HelperTextItem>
                 </HelperText>}
             {deviceInvalid &&
                 <HelperText>
-                    <HelperTextItem variant="error" hasIcon>
+                    <HelperTextItem variant="error" >
                         {errorMessage}
                     </HelperTextItem>
                 </HelperText>}
@@ -419,7 +419,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
             <FormatSwitch />
             {reformatInvalid &&
                 <HelperText>
-                    <HelperTextItem variant="error" hasIcon>
+                    <HelperTextItem variant="error" >
                         {reformatErrorMsg}
                     </HelperTextItem>
                 </HelperText>}
@@ -434,13 +434,11 @@ const MountPointRowRemove = ({ handleRequestChange, requestIndex }) => {
     };
 
     return (
-        <Button
+        <Button icon={<TrashIcon />}
           aria-label={_("Remove")}
           onClick={handleRemove}
           variant="plain"
-        >
-            <TrashIcon />
-        </Button>
+         />
     );
 };
 

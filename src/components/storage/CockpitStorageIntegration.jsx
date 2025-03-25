@@ -24,6 +24,7 @@ import {
     Button,
     Card,
     CardBody,
+    Content,
     Divider,
     DropdownItem,
     Flex,
@@ -32,15 +33,15 @@ import {
     HelperTextItem,
     List,
     ListItem,
-    Modal,
-    ModalVariant,
     PageSection,
     Stack,
-    Text,
-    TextContent,
     Title,
-    Tooltip,
+    Tooltip
 } from "@patternfly/react-core";
+import {
+    Modal,
+    ModalVariant
+} from "@patternfly/react-core/deprecated";
 import { ArrowLeftIcon } from "@patternfly/react-icons";
 
 import {
@@ -151,14 +152,14 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
               </Button>
           ]}
         >
-            <TextContent>
-                <Text>
+            <Content>
+                <Content component="p">
                     {_("The storage editor lets you resize, delete, and create partitions. It can set up LVM and much more. It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
-                </Text>
-                <Text component="strong">
+                </Content>
+                <Content component="strong">
                     {_("All changes made in the storage editor take effect immediately.")}
-                </Text>
-            </TextContent>
+                </Content>
+            </Content>
         </Modal>
     );
 };
@@ -216,7 +217,7 @@ export const CockpitStorageIntegration = ({
                 />
                 <Divider />
                 <div className={idPrefix + "-page-section-cockpit-storage"}>
-                    <PageSection>
+                    <PageSection hasBodyWrapper={false}>
                         <iframe
                           src="/cockpit/@localhost/storage/index.html"
                           name="cockpit-storage"
@@ -781,7 +782,7 @@ const CheckStorageDialog = ({
                     {storageRequirementsNotMet ? error?.message : null}
                     <HelperText>
                         {!storageRequirementsNotMet &&
-                        <HelperTextItem variant="success" isDynamic>
+                        <HelperTextItem variant="success" >
                             {useConfiguredStorage
                                 ? (
                                     <Stack hasGutter>
@@ -833,44 +834,44 @@ const ModifyStorageSideBar = () => {
     const requiredConstraintsSection = (
         requiredConstraints.length > 0 &&
         <>
-            <Text component="p" className={idPrefix + "-requirements-hint"}>
+            <Content component="p" className={idPrefix + "-requirements-hint"}>
                 {_("If you are configuring partitions the following are required:")}
-            </Text>
+            </Content>
             {getConstraints(requiredConstraints)}
         </>
     );
     const recommendedConstraintsSection = (
         recommendedConstraints.length > 0 &&
         <>
-            <Text component="p" className={idPrefix + "-requirements-hint"}>
+            <Content component="p" className={idPrefix + "-requirements-hint"}>
                 {_("Recommended partitions:")}
-            </Text>
+            </Content>
             {getConstraints(recommendedConstraints)}
         </>
     );
 
     return (
-        <PageSection className={idPrefix + "-sidebar"}>
+        <PageSection hasBodyWrapper={false} className={idPrefix + "-sidebar"}>
             <Card>
                 <CardBody>
                     <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsLg" }}>
                         <FlexItem>
                             <Title headingLevel="h3" size="lg">{_("Requirements")}</Title>
-                            <TextContent>
-                                <Text component="p" className={idPrefix + "-requirements-hint"}>
+                            <Content>
+                                <Content component="p" className={idPrefix + "-requirements-hint"}>
                                     {cockpit.format(_("Fedora linux requires at least $0 of disk space."), cockpit.format_bytes(requiredSize))}
-                                </Text>
-                                <Text component="p" className={idPrefix + "-requirements-hint-detail"}>
+                                </Content>
+                                <Content component="p" className={idPrefix + "-requirements-hint-detail"}>
                                     {_("You can either free up enough space here and let the installer handle the rest or manually set up partitions.")}
-                                </Text>
-                            </TextContent>
+                                </Content>
+                            </Content>
                         </FlexItem>
                         <FlexItem>
                             <Title headingLevel="h3" size="lg">{_("Partitions (advanced)")}</Title>
-                            <TextContent>
+                            <Content>
                                 {requiredConstraintsSection}
                                 {recommendedConstraintsSection}
-                            </TextContent>
+                            </Content>
                         </FlexItem>
                     </Flex>
                 </CardBody>

@@ -29,9 +29,11 @@ import {
     FormHelperText,
     HelperText,
     HelperTextItem,
-    Modal,
     TextInput
 } from "@patternfly/react-core";
+import {
+    Modal
+} from "@patternfly/react-core/deprecated";
 
 import { setHostname } from "../../apis/network.js";
 
@@ -169,7 +171,7 @@ export const HostnameRow = () => {
                     <FlexItem>
                         {initHostname !== ""
                             ? initHostname
-                            : <div className="pf-v5-u-color-400">transient, will use DHCP</div>}
+                            : <div className="pf-v6-u-color-400">transient, will use DHCP</div>}
                     </FlexItem>
                     <FlexItem>
                         <ChangeHostname

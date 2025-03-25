@@ -19,11 +19,11 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Button,
+    Content,
     Flex,
     FlexItem,
     ProgressStep,
     ProgressStepper,
-    Text,
 } from "@patternfly/react-core";
 import {
     CheckCircleIcon,
@@ -166,11 +166,11 @@ const InstallationProgress = ({ onCritFail }) => {
               loading={!icon}
               paragraph={
                   <Flex direction={{ default: "column" }}>
-                      <Text>
+                      <Content component="p">
                           {currentProgressStep < 4
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
-                      </Text>
+                      </Content>
                       {currentProgressStep < 4 && (
                           <>
                               <FlexItem spacer={{ default: "spacerXl" }} />
@@ -209,10 +209,10 @@ const InstallationProgress = ({ onCritFail }) => {
                                             description={
                                                 <Flex direction={{ default: "column" }}>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
-                                                        <Text>{phaseText}</Text>
+                                                        <Content component="p">{phaseText}</Content>
                                                     </FlexItem>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
-                                                        <Text>{statusText}</Text>
+                                                        <Content component="p">{statusText}</Content>
                                                     </FlexItem>
                                                 </Flex>
                                             }
