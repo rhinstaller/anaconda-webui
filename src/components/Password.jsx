@@ -163,7 +163,6 @@ export const PasswordFormFields = ({
             <HelperTextItem
               key={rule.id}
               id={idPrefix + "-password-rule-" + rule.id}
-              
               variant={variant}
               component="li"
             >
@@ -250,7 +249,6 @@ export const PasswordFormFields = ({
                     <HelperText component="ul" aria-live="polite" id="password-confirm-field-helper">
                         <HelperTextItem
                           id={idPrefix + "-password-rule-match"}
-                          
                           variant={ruleConfirmVariant}
                           component="li"
                         >
