@@ -473,6 +473,52 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row_device_available(1, f"{dev}3", False)
         s.check_mountpoint_row_device_available(1, f"{dev}4", False)
 
+    def _testExtendedPartition_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # Configure disk layout with a logical Btrfs partition
+        disk = "/dev/vda"
+        s.partition_disk(
+            disk,
+            [
+                ("512MB", "efi"),
+                ("1GB", "ext4"),
+                ("", "extended"),
+                ("10GB", "logical")
+            ],
+            is_mbr=True
+        )
+
+        # Create subvolumes for the logical Btrfs partition
+        m.execute(f"""
+        mkfs.btrfs -f -L BTRFS {disk}5
+        mount {disk}5 /mnt
+        btrfs subvolume create /mnt/root
+        btrfs subvolume create /mnt/home
+        umount /mnt
+        """)
+
+    @run_boot("efi")
+    def testExtendedPartition(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([("vda", True)])
+
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, "vda1")
+        s.select_mountpoint_row_device(3, "vda2")
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(4, "/home")
+        s.select_mountpoint_row_device(4, "home")
+
 
 if __name__ == '__main__':
     test_main()

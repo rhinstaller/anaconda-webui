@@ -196,7 +196,7 @@ export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) =
         const ancestors = getDeviceAncestors(devices, device);
 
         if (
-            children.length > 0 &&
+            (children.length > 0 || devices[device].attrs.v.isleaf === "False") &&
                 devices[device].type.v !== "btrfs subvolume"
         ) {
             return false;

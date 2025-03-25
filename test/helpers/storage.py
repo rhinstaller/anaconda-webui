@@ -210,8 +210,8 @@ class StorageUtils(StorageDestination):
         self.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
-    def partition_disk(self, disk, partitions_params, is_efi=False):
-        if is_efi:
+    def partition_disk(self, disk, partitions_params, is_mbr=False):
+        if is_mbr:
             # EFI: Use sfdisk and set MBR
             command = f"wipefs -a {disk}"
             command += f"\necho 'label: dos' | sfdisk {disk}"
