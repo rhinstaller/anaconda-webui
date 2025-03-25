@@ -18,14 +18,16 @@ import cockpit from "cockpit";
 
 import React, { useContext, useState } from "react";
 import {
-    ActionList,
-    Button,
-    Modal,
-    ModalVariant,
-    Stack,
-    useWizardContext,
-    WizardFooterWrapper
-} from "@patternfly/react-core";
+	ActionList,
+	Button,
+	Stack,
+	useWizardContext,
+	WizardFooterWrapper
+} from '@patternfly/react-core';
+import {
+	Modal,
+	ModalVariant
+} from '@patternfly/react-core/deprecated';
 
 import { exitGui } from "../helpers/exit.js";
 

@@ -18,11 +18,10 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
 import {
+    Content, ContentVariants,
     Flex,
     Label,
-    PageSection, PageSectionVariants,
-    Popover, PopoverPosition,
-    Text, TextContent, TextVariants
+    PageSection, Popover, PopoverPosition
 } from "@patternfly/react-core";
 import { InfoCircleIcon } from "@patternfly/react-icons";
 
@@ -50,12 +49,12 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
     }, [onCritFail]);
 
     return (
-        <PageSection variant={PageSectionVariants.light}>
+        <PageSection hasBodyWrapper={false} >
             <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
                 <img src="./logo.svg" className="logo" />
-                <TextContent>
-                    <Text component="h1">{title}</Text>
-                </TextContent>
+                <Content>
+                    <Content component="h1">{title}</Content>
+                </Content>
                 {beta && <Beta />}
                 <HeaderKebab
                   currentStepId={currentStepId}
@@ -81,17 +80,17 @@ const Beta = () => {
           minWidth="30rem"
           position={PopoverPosition.auto}
           bodyContent={
-              <TextContent>
-                  <Text component={TextVariants.p}>
+              <Content>
+                  <Content component={ContentVariants.p}>
                       {_("Notice: This is pre-released software that is intended for development and testing purposes only. Do NOT use this software for any critical work or for production environments.")}
-                  </Text>
-                  <Text component={TextVariants.p}>
+                  </Content>
+                  <Content component={ContentVariants.p}>
                       {_("By continuing to use this software, you understand and accept the risks associated with pre-released software, that you intend to use this for testing and development purposes only and are willing to report any bugs or issues in order to enhance this work.")}
-                  </Text>
-                  <Text component={TextVariants.p}>
+                  </Content>
+                  <Content component={ContentVariants.p}>
                       {_("If you do not understand or accept the risks, then please exit this program.")}
-                  </Text>
-              </TextContent>
+                  </Content>
+              </Content>
           }
         >
             <Label color="orange" icon={<InfoCircleIcon />} id="betanag-icon" onClick={() => {}}> {prerelease} </Label>
