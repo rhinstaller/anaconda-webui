@@ -256,37 +256,41 @@ export const gatherRequests = ({ partitioning }) => {
 };
 
 export const applyStorage = async ({ devices, luks, onFail, onSuccess, partitioning }) => {
-    if (luks?.encrypted !== undefined) {
-        await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
-    }
-    if (luks?.passphrase) {
-        await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
-    }
+    try {
+        if (luks?.encrypted !== undefined) {
+            await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
+        }
+        if (luks?.passphrase) {
+            await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
+        }
 
-    const method = await getPartitioningMethod({ partitioning });
-    if (method === "MANUAL") {
-        const requests = await gatherRequests({ partitioning });
-        const bootloaderDevice = requests.find(request => bootloaderTypes.includes(request["format-type"].v))?.["device-spec"].v;
-        const bootloaderDisk = getDeviceDisk(devices, bootloaderDevice);
-        const rootDevice = requests.find(request => request["mount-point"].v === "/")?.["device-spec"].v;
-        const rootDisk = getDeviceDisk(devices, rootDevice);
+        const method = await getPartitioningMethod({ partitioning });
+        if (method === "MANUAL") {
+            const requests = await gatherRequests({ partitioning });
+            const bootloaderDevice = requests.find(request => bootloaderTypes.includes(request["format-type"].v))?.["device-spec"].v;
+            const bootloaderDisk = getDeviceDisk(devices, bootloaderDevice);
+            const rootDevice = requests.find(request => request["mount-point"].v === "/")?.["device-spec"].v;
+            const rootDisk = getDeviceDisk(devices, rootDevice);
 
-        if (bootloaderDisk !== rootDisk && !!bootloaderDisk) {
-            await setBootloaderDrive({ drive: bootloaderDisk });
+            if (bootloaderDisk !== rootDisk && !!bootloaderDisk) {
+                await setBootloaderDrive({ drive: bootloaderDisk });
+            } else {
+                await setBootloaderDrive({ drive: "" });
+            }
         } else {
             await setBootloaderDrive({ drive: "" });
         }
-    } else {
-        await setBootloaderDrive({ drive: "" });
+
+        const tasks = await partitioningConfigureWithTask({ partitioning });
+
+        runStorageTask({
+            onFail,
+            onSuccess: () => applyPartitioning({ partitioning })
+                    .then(onSuccess)
+                    .catch(onFail),
+            task: tasks[0]
+        });
+    } catch (error) {
+        onFail(error);
     }
-
-    const tasks = await partitioningConfigureWithTask({ partitioning });
-
-    runStorageTask({
-        onFail,
-        onSuccess: () => applyPartitioning({ partitioning })
-                .then(onSuccess)
-                .catch(onFail),
-        task: tasks[0]
-    });
 };

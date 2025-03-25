@@ -97,6 +97,10 @@ const usePageInit = () => {
     // This is a workaround, as reseting the partitioning just before the 'applyStorage'
     // call results in a deadlock.
     const needsReset = appliedPartitioning && appliedPartitioning !== partitioning.path;
+    console.info("usePageInit, StorageConfiguration.jsx");
+    console.info("needsReset", needsReset);
+    console.info("appliedPartitioning", appliedPartitioning);
+    console.info("partitioning.path", partitioning.path);
 
     useEffect(() => {
         const _resetPartitioning = async () => {
