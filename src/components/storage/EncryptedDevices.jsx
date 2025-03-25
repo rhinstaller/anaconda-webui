@@ -29,9 +29,11 @@ import {
     FormGroup,
     InputGroup,
     InputGroupItem,
-    Modal,
-    TextInput,
+    TextInput
 } from "@patternfly/react-core";
+import {
+    Modal
+} from "@patternfly/react-core/deprecated";
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 
 import {
