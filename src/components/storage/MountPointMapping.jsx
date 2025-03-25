@@ -25,17 +25,16 @@ import {
     HelperText,
     HelperTextItem,
     Label,
+    MenuToggle,
+    Select,
+    SelectGroup,
+    SelectList,
+    SelectOption,
     Switch,
     TextInput,
     useWizardFooter,
 } from "@patternfly/react-core";
-import {
-    Select,
-    SelectGroup,
-    SelectOption,
-    SelectVariant
-} from "@patternfly/react-core/deprecated";
-import { TrashIcon } from "@patternfly/react-icons";
+import { TimesIcon, TrashIcon } from "@patternfly/react-icons";
 
 import {
     applyStorage,
@@ -260,12 +259,21 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
     );
 };
 
-const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, request, requestIndex }) => {
+export const DeviceColumnSelect = ({
+    deviceData,
+    devices,
+    handleRequestChange,
+    idPrefix,
+    isRequiredMountPoint,
+    lockedLUKSDevices,
+    request,
+    requestIndex
+}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const device = request["device-spec"];
     const deviceName = device && deviceData[device].name.v;
-    const size = cockpit.format_bytes(deviceData[device]?.total.v);
+    const size = device ? cockpit.format_bytes(deviceData[device]?.total.v) : "";
     const optionGroups = {};
 
     for (const device of devices) {
@@ -314,57 +322,92 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
         }
     }
 
-    return (
-        <Select
-          hasPlaceholderStyle
-          isGrouped={Object.keys(optionGroups).length > 1}
-          isOpen={isOpen}
-          placeholderText={_("Select a device")}
-          selections={device
-              ? [{
-                  compareTo: function (value) { return value.device === this.device },
-                  device,
-                  deviceName,
-                  hasUniqueName: Object.keys(deviceData).filter(dev => deviceData[dev].name.v === deviceName).length > 1,
-                  size,
-                  toString: function () {
-                      if (!this.hasUniqueName) { return this.deviceName } else { return cockpit.format("$0 ($1)", this.deviceName, this.size) }
-                  },
-              }]
-              : []}
-          variant={SelectVariant.single}
-          onToggle={(_event, val) => setIsOpen(val)}
-          onSelect={(_, selection) => {
-              const deviceSpec = devices.find(d => d === selection.device);
-              handleRequestChange({ deviceSpec, mountPoint: request["mount-point"], requestIndex });
-              setIsOpen(false);
-          }}
-          onClear={() => {
-              handleRequestChange({ deviceSpec: "", mountPoint: request["mount-point"], requestIndex });
-              setIsOpen();
-          }}
-          toggleId={idPrefix + "-select-toggle"}
-        >
-            {Object.keys(optionGroups).map(disk => {
-                if (Object.keys(optionGroups).length === 1) {
-                    return optionGroups[disk];
+    const onSelect = (_evt, selection) => {
+        const deviceSpec = devices.find(d => d === selection.device);
+        handleRequestChange({
+            deviceSpec,
+            mountPoint: request["mount-point"],
+            requestIndex
+        });
+        setIsOpen(false);
+    };
+
+    const onClear = () => {
+        handleRequestChange({
+            deviceSpec: "",
+            mountPoint: request["mount-point"],
+            requestIndex
+        });
+        setIsOpen(false);
+    };
+
+    const selectedValue = device
+        ? {
+            compareTo: function (val) { return val.device === this.device },
+            device,
+            deviceName,
+            hasUniqueName:
+                Object.keys(deviceData).filter(d => deviceData[d].name.v === deviceName).length > 1,
+            size,
+            toString: function () {
+                if (!this.hasUniqueName) {
+                    return this.deviceName;
                 }
+                return cockpit.format("$0 ($1)", this.deviceName, this.size);
+            }
+        }
+        : undefined;
 
-                const groupLabel = (
-                    cockpit.format(
-                        _("$0 ($1)"),
-                        deviceData[disk]?.description.v,
-                        deviceData[disk]?.name.v
-                    )
-                );
+    const getToggleText = () => {
+        if (selectedValue) {
+            return selectedValue.toString();
+        }
+        return _("Select a device");
+    };
 
-                return (
-                    <SelectGroup label={groupLabel} key={disk}>
-                        {optionGroups[disk]}
-                    </SelectGroup>
-                );
-            })}
-        </Select>
+    return (
+        <div style={{ alignItems: "center", display: "flex" }}>
+            <Select
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+              selected={selectedValue}
+              variant="single"
+              toggle={toggleRef => (
+                  <MenuToggle
+                    ref={toggleRef}
+                    isExpanded={isOpen}
+                    onClick={() => setIsOpen(prev => !prev)}
+                    id={idPrefix + "-select-toggle"}
+                  >
+                      {getToggleText()}
+                  </MenuToggle>
+              )}
+              onSelect={onSelect}
+            >
+                <SelectList>
+                    {Object.keys(optionGroups).map(disk => {
+                        if (Object.keys(optionGroups).length === 1) {
+                            return optionGroups[disk];
+                        }
+
+                        const groupLabel = cockpit.format(
+                            _("$0 ($1)"),
+                            deviceData[disk]?.description.v,
+                            deviceData[disk]?.name.v
+                        );
+                        return (
+                            <SelectGroup label={groupLabel} key={disk}>
+                                {optionGroups[disk]}
+                            </SelectGroup>
+                        );
+                    })}
+                </SelectList>
+            </Select>
+
+            {device && (
+                <Button aria-label={_("Clear selection")} icon={<TimesIcon />} onClick={onClear} variant="plain" />
+            )}
+        </div>
     );
 };
 
@@ -439,7 +482,7 @@ const MountPointRowRemove = ({ handleRequestChange, requestIndex }) => {
           icon={<TrashIcon />}
           onClick={handleRemove}
           variant="plain"
-         />
+        />
     );
 };
 
