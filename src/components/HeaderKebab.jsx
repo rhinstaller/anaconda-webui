@@ -150,13 +150,12 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
               toggle={toggleRef =>
                   <MenuToggle
                     className="pf-m-align-right"
+                    icon={<EllipsisVIcon />}
                     id="toggle-kebab"
                     isExpanded={isOpen}
                     onClick={onToggle}
                     ref={toggleRef}
-                    variant="plain">
-                      <EllipsisVIcon />
-                  </MenuToggle>}
+                    variant="plain" />}
               shouldFocusToggleOnSelect>
                 <DropdownList>
                     {dropdownItems}

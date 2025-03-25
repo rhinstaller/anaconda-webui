@@ -782,7 +782,7 @@ const CheckStorageDialog = ({
                     {storageRequirementsNotMet ? error?.message : null}
                     <HelperText>
                         {!storageRequirementsNotMet &&
-                        <HelperTextItem variant="success" >
+                        <HelperTextItem variant="success">
                             {useConfiguredStorage
                                 ? (
                                     <Stack hasGutter>
