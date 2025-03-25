@@ -25,16 +25,14 @@ import {
     HelperText,
     HelperTextItem,
     Label,
-    Switch,
-    TextInput,
-    useWizardFooter,
-} from "@patternfly/react-core";
-import {
+    MenuToggle,
     Select,
     SelectGroup,
     SelectOption,
-    SelectVariant
-} from "@patternfly/react-core/deprecated";
+    Switch,
+    TextInput,
+    useWizardFooter
+} from "@patternfly/react-core";
 import { TrashIcon } from "@patternfly/react-icons";
 
 import {
@@ -260,12 +258,19 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
     );
 };
 
-const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, request, requestIndex }) => {
+export const DeviceColumnSelect = ({
+    deviceData,
+    devices,
+    handleRequestChange,
+    idPrefix,
+    isRequiredMountPoint,
+    lockedLUKSDevices,
+    request,
+    requestIndex
+}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const device = request["device-spec"];
-    const deviceName = device && deviceData[device].name.v;
-    const size = cockpit.format_bytes(deviceData[device]?.total.v);
     const optionGroups = {};
 
     for (const device of devices) {
@@ -290,23 +295,21 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
          * - Locked LUKS devices
          * - Swap devices when the mount point is preset (required) as these reset it
          */
-        const isDisabled = isLockedLUKS || (formatType === "swap" && isRequiredMountPoint);
+        const isAriaDisabled = isLockedLUKS || (formatType === "swap" && isRequiredMountPoint);
 
         const node = (
             <SelectOption
               data-device-name={deviceName}
               data-device-id={device}
-              isDisabled={isDisabled}
               description={description}
+              isAriaDisabled={isAriaDisabled}
+              itemId={device}
               key={device}
-              value={{
-                  compareTo: function (value) { return value.device === this.device },
-                  device,
-                  deviceName,
-                  toString: function () { return this.deviceName },
-              }}
-            />
+            >
+                {deviceName}
+            </SelectOption>
         );
+
         if (optionGroups[parentDisk]) {
             optionGroups[parentDisk].push(node);
         } else {
@@ -314,42 +317,50 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
         }
     }
 
+    const getToggleText = () => {
+        if (!device) return cockpit.gettext("Select a device");
+
+        const name = deviceData[device]?.name.v;
+        const size = cockpit.format_bytes(deviceData[device]?.total.v);
+        const isAmbiguous = Object.values(deviceData).filter(d => d.name.v === name).length > 1;
+
+        return isAmbiguous ? cockpit.format("$0 ($1)", name, size) : name;
+    };
+
     return (
         <Select
-          hasPlaceholderStyle
+          menuAppendTo="inline"
           isGrouped={Object.keys(optionGroups).length > 1}
           isOpen={isOpen}
-          placeholderText={_("Select a device")}
-          selections={device
-              ? [{
-                  compareTo: function (value) { return value.device === this.device },
-                  device,
-                  deviceName,
-                  hasUniqueName: Object.keys(deviceData).filter(dev => deviceData[dev].name.v === deviceName).length > 1,
-                  size,
-                  toString: function () {
-                      if (!this.hasUniqueName) { return this.deviceName } else { return cockpit.format("$0 ($1)", this.deviceName, this.size) }
-                  },
-              }]
-              : []}
-          variant={SelectVariant.single}
-          onToggle={(_event, val) => setIsOpen(val)}
+          selected={device}
+          variant="single"
+          onOpenChange={setIsOpen}
           onSelect={(_, selection) => {
-              const deviceSpec = devices.find(d => d === selection.device);
-              handleRequestChange({ deviceSpec, mountPoint: request["mount-point"], requestIndex });
+              handleRequestChange({ deviceSpec: selection, mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}
           onClear={() => {
               handleRequestChange({ deviceSpec: "", mountPoint: request["mount-point"], requestIndex });
-              setIsOpen();
+              setIsOpen(false);
           }}
-          toggleId={idPrefix + "-select-toggle"}
+          shouldFocusToggleOnSelect
+          toggle={toggleRef => (
+              <MenuToggle
+                ref={toggleRef}
+                isExpanded={isOpen}
+                onClick={() => setIsOpen(prev => !prev)}
+                id={idPrefix + "-select-toggle"}
+              >
+                  <span className="pf-v6-c-select__toggle-text">
+                      {device ? getToggleText() : _("Select a device")}
+                  </span>
+              </MenuToggle>
+          )}
         >
             {Object.keys(optionGroups).map(disk => {
                 if (Object.keys(optionGroups).length === 1) {
                     return optionGroups[disk];
                 }
-
                 const groupLabel = (
                     cockpit.format(
                         _("$0 ($1)"),
@@ -357,7 +368,6 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
                         deviceData[disk]?.name.v
                     )
                 );
-
                 return (
                     <SelectGroup label={groupLabel} key={disk}>
                         {optionGroups[disk]}
@@ -439,7 +449,7 @@ const MountPointRowRemove = ({ handleRequestChange, requestIndex }) => {
           icon={<TrashIcon />}
           onClick={handleRemove}
           variant="plain"
-         />
+        />
     );
 };
 
