@@ -252,7 +252,7 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
             </Flex>
             {mountpoint && duplicatedMountPoint &&
                 <HelperText>
-                    <HelperTextItem variant="error" >
+                    <HelperTextItem variant="error">
                         {_("Duplicate mount point.")}
                     </HelperTextItem>
                 </HelperText>}
@@ -387,13 +387,13 @@ const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRe
             />
             {device && duplicatedDevice &&
                 <HelperText>
-                    <HelperTextItem variant="error" >
+                    <HelperTextItem variant="error">
                         {_("Duplicate device.")}
                     </HelperTextItem>
                 </HelperText>}
             {deviceInvalid &&
                 <HelperText>
-                    <HelperTextItem variant="error" >
+                    <HelperTextItem variant="error">
                         {errorMessage}
                     </HelperTextItem>
                 </HelperText>}
@@ -419,7 +419,7 @@ const FormatColumn = ({ deviceData, handleRequestChange, idPrefix, request, requ
             <FormatSwitch />
             {reformatInvalid &&
                 <HelperText>
-                    <HelperTextItem variant="error" >
+                    <HelperTextItem variant="error">
                         {reformatErrorMsg}
                     </HelperTextItem>
                 </HelperText>}
@@ -434,8 +434,9 @@ const MountPointRowRemove = ({ handleRequestChange, requestIndex }) => {
     };
 
     return (
-        <Button icon={<TrashIcon />}
+        <Button
           aria-label={_("Remove")}
+          icon={<TrashIcon />}
           onClick={handleRemove}
           variant="plain"
          />
