@@ -19,8 +19,9 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ActionList } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
@@ -71,10 +72,37 @@ import { StorageReview } from "../../review/StorageReview.jsx";
 import { useAvailabilityConfiguredStorage } from "../scenarios/use-configured-storage/UseConfiguredStorage.jsx";
 import { useAvailabilityUseFreeSpace } from "../scenarios/use-free-space/UseFreeSpace.jsx";
 
+import "./CheckStorageDialog.scss";
+
 const _ = cockpit.gettext;
 
 const idPrefix = "cockpit-storage-integration";
 const debug = loggerDebug.bind(null, idPrefix + ":");
+
+const formatMessage = (msg) => {
+    const parts = [];
+    const pattern = /(\b\d+\s*(?:[KMGT]i?B)\b)|(\/(?:[A-Za-z0-9._+-]+(?:\/[A-Za-z0-9._+-]+)*)?)/g;
+    let lastIndex = 0;
+    for (const match of msg.matchAll(pattern)) {
+        const [full, size, path] = match;
+        const start = match.index || 0;
+        if (start > lastIndex) {
+            parts.push(msg.slice(lastIndex, start));
+        }
+        if (size) {
+            parts.push(<strong key={"size-" + start}>{size}</strong>);
+        } else if (path) {
+            parts.push(<strong key={"path-" + start}>{path}</strong>);
+        } else {
+            parts.push(full);
+        }
+        lastIndex = start + full.length;
+    }
+    if (lastIndex < msg.length) {
+        parts.push(msg.slice(lastIndex));
+    }
+    return <>{parts}</>;
+};
 
 const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
     try {
@@ -278,7 +306,7 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
 
                 return (
                     devices[device].formatData.type.v === "luks" &&
-                        devices[device].formatData.attrs.v.has_key !== "True"
+                devices[device].formatData.attrs.v.has_key !== "True"
                 );
             });
 
@@ -468,7 +496,7 @@ const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setError, s
     return <CheckStorageDialogLoading />;
 };
 
-const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, setError, setNeedsNewPartitioning }) => {
+const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, setError, setNeedsNewPartitioning, setStorageValidationReport }) => {
     const devices = useOriginalDevices();
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
     const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
@@ -508,7 +536,10 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
                 applyStorage({
                     devices,
                     onFail,
-                    onSuccess: () => setNeedsNewPartitioning(false),
+                    onSuccess: (report) => {
+                        setStorageValidationReport && setStorageValidationReport(report);
+                        setNeedsNewPartitioning(false);
+                    },
                     partitioning,
                 });
             } catch (exc) {
@@ -517,7 +548,7 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
         };
 
         applyNewPartitioning();
-    }, [devices, dispatch, newMountPoints, setError, setNeedsNewPartitioning, useConfiguredStorage, useFreeSpace]);
+    }, [devices, dispatch, newMountPoints, setError, setNeedsNewPartitioning, setStorageValidationReport, useConfiguredStorage, useFreeSpace]);
 
     return (
         <CheckStorageDialogLoading />
@@ -529,6 +560,7 @@ const CheckStorageDialogLoaded = ({
     newMountPoints,
     setShowDialog,
     setShowStorage,
+    storageValidationReport,
 }) => {
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
@@ -549,6 +581,14 @@ const CheckStorageDialogLoaded = ({
 
     const storageRequirementsNotMet = error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk);
 
+    const warningMessages = storageValidationReport?.["warning-messages"]?.v || [];
+    const errorMessages = storageValidationReport?.["error-messages"]?.v || [];
+    const warningTitle = warningMessages.length === 1 ? _("1 warning") : cockpit.format(_("$0 warnings"), warningMessages.length);
+    const errorTitle = errorMessages.length === 1 ? _("1 error") : cockpit.format(_("$0 errors"), errorMessages.length);
+
+    const hasWarnings = warningMessages.length > 0;
+    const continueVariant = hasWarnings ? "warning" : "primary";
+
     const goBackToInstallation = () => {
         setShowStorage(false);
     };
@@ -565,7 +605,7 @@ const CheckStorageDialogLoaded = ({
           className={idPrefix + "-check-storage-dialog"}
           id={idPrefix + "-check-storage-dialog"}
           onClose={() => setShowDialog(false)}
-          position="top" variant="small" isOpen
+          position="top" variant="medium" isOpen
         >
             <ModalHeader
               title={title}
@@ -573,54 +613,76 @@ const CheckStorageDialogLoaded = ({
             />
             <ModalBody>
                 {storageRequirementsNotMet ? error?.message : null}
-                <HelperText>
-                    {!storageRequirementsNotMet &&
-                    <HelperTextItem variant="success">
+                {!storageRequirementsNotMet && (
+                    <>
                         {useConfiguredStorage
                             ? (
                                 <Stack hasGutter>
-                                    <span>{_("Detected valid storage layout:")}</span>
                                     <StorageReview />
                                 </Stack>
                             )
                             : (
-                                useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
+                                <Stack hasGutter>
+                                    <span>{useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")}</span>
+                                </Stack>
                             )}
-                    </HelperTextItem>}
-                </HelperText>
+                    </>
+                )}
+                {(errorMessages.length > 0 || warningMessages.length > 0) && (
+                    <Stack hasGutter>
+                        {errorMessages.length > 0 && (
+                            <Alert isInline variant="danger" title={errorTitle}>
+                                <List isPlain>
+                                    {errorMessages.map((msg, i) => (
+                                        <ListItem key={"err-" + i}>{formatMessage(msg)}</ListItem>
+                                    ))}
+                                </List>
+                            </Alert>
+                        )}
+                        {warningMessages.length > 0 && (
+                            <Alert isInline variant="warning" title={warningTitle}>
+                                <List>
+                                    {warningMessages.map((msg, i) => (
+                                        <ListItem key={"warn-" + i}>{formatMessage(msg)}</ListItem>
+                                    ))}
+                                </List>
+                            </Alert>
+                        )}
+                    </Stack>
+                )}
             </ModalBody>
             <ModalFooter>
                 <ActionList>
                     {!storageRequirementsNotMet &&
-                    <>
-                        <Button
-                          id={idPrefix + "-check-storage-dialog-continue"}
-                          variant="primary"
-                          onClick={goBackToInstallation}>
-                            {_("Continue")}
-                        </Button>
-                        <Button
-                          id={idPrefix + "-check-storage-dialog-return"}
-                          variant="link"
-                          onClick={() => setShowDialog(false)}>
-                            {_("Return to storage editor")}
-                        </Button>
-                    </>}
+                        <>
+                            <Button
+                              id={idPrefix + "-check-storage-dialog-continue"}
+                              variant={continueVariant}
+                              onClick={goBackToInstallation}>
+                                {_("Continue")}
+                            </Button>
+                            <Button
+                              id={idPrefix + "-check-storage-dialog-return"}
+                              variant="link"
+                              onClick={() => setShowDialog(false)}>
+                                {_("Return to storage editor")}
+                            </Button>
+                        </>}
                     {storageRequirementsNotMet &&
-                    <>
-                        <Button
-                          variant="warning"
-                          id={idPrefix + "-check-storage-dialog-return"}
-                          onClick={() => setShowDialog(false)}>
-                            {_("Configure storage again")}
-                        </Button>
-                        <Button
-                          id={idPrefix + "-check-storage-dialog-continue"}
-                          variant="secondary"
-                          onClick={() => setShowStorage(false)}>
-                            {_("Proceed with installation")}
-                        </Button>
-                    </>}
+                        <>
+                            <Button
+                              variant="warning"
+                              id={idPrefix + "-check-storage-dialog-return"}
+                              onClick={() => setShowDialog(false)}>
+                                {_("Configure storage again")}
+                            </Button>
+                            <Button
+                              id={idPrefix + "-check-storage-dialog-continue"}
+                              variant="secondary"
+                              onClick={() => setShowStorage(false)}>
+                                {_("Proceed with installation")}
+                            </Button>
+                        </>}
                 </ActionList>
             </ModalFooter>
         </Modal>
@@ -630,6 +692,7 @@ const CheckStorageDialogLoaded = ({
 
 export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setShowStorage }) => {
     const [error, setError] = useState();
+    const [storageValidationReport, setStorageValidationReport] = useState({});
 
     const [loadingNewStorage, setLoadingNewStorage] = useState(true);
     const [needsNewPartitioning, setNeedsNewPartitioning] = useState(true);
@@ -651,7 +714,9 @@ export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setSho
             {!error && !loadingNewStorage && needsNewPartitioning &&
                 <CheckStorageDialogLoadingNewPartitioning
                   newMountPoints={newMountPoints}
-                  setNeedsNewPartitioning={setNeedsNewPartitioning} {...loadingCommonProps}
+                  setNeedsNewPartitioning={setNeedsNewPartitioning}
+                  setStorageValidationReport={setStorageValidationReport}
+                  {...loadingCommonProps}
                 />}
             {(error || (!loadingNewStorage && !needsNewPartitioning)) &&
                 <CheckStorageDialogLoaded
@@ -659,6 +724,7 @@ export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setSho
                   newMountPoints={newMountPoints}
                   setShowDialog={setShowDialog}
                   setShowStorage={setShowStorage}
+                  storageValidationReport={storageValidationReport}
                 />}
         </>
     );
