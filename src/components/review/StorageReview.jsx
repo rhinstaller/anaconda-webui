@@ -169,14 +169,14 @@ const DeviceRow = ({ disk }) => {
     const newMountPointRows = Object.entries(mountPoints).filter(mp => {
         const parents = getDeviceAncestors(devices, mp[1]);
 
-        return parents.includes(disk);
+        return parents.includes(disk) || mp[1] === disk;
     });
 
     const swap = Object.keys(devices).find(device => devices[device].formatData.type.v === "swap");
     if (swap) {
         const parents = getDeviceAncestors(devices, swap);
 
-        if (parents.includes(disk)) {
+        if (parents.includes(disk) || swap === disk) {
             newMountPointRows.push(["swap", swap]);
         }
     }
@@ -193,8 +193,9 @@ const DeviceRow = ({ disk }) => {
 
         const parents = getDeviceAncestors(originalDevices, action["device-id"].v);
 
-        return parents.includes(disk);
+        return parents.includes(disk) || action["device-id"].v === disk;
     });
+
     return (
         <div>
             <span id={`disk-${disk}`}>{cockpit.format_bytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
