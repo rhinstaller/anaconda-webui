@@ -248,6 +248,33 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             ignore=pixel_tests_ignore,
         )
 
+    def _testMBRParttable_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # Configure disk layout with MBR partition table
+        disk = "/dev/vda"
+        s.partition_disk(
+            disk,
+            [
+                ("1GB", "ext4"),
+                ("10GiB", "xfs"),
+            ],
+            is_mbr=True
+        )
+
+    def testMBRParttable(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.wait_scenario_available("mount-point-mapping")
+
     def _testEncryptedUnlock_partition_disk(self):
         b = self.browser
         m = self.machine
