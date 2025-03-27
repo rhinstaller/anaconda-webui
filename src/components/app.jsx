@@ -18,8 +18,7 @@ import cockpit from "cockpit";
 
 import React, { useCallback, useEffect, useState } from "react";
 import {
-    Bullseye,
-    Page, PageGroup,
+    Page, PageGroup, PageSection, PageSectionTypes,
 } from "@patternfly/react-core";
 
 import { clients } from "../apis";
@@ -42,11 +41,9 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const ApplicationLoading = () => (
-    <Page>
-        <Bullseye>
-            <EmptyStatePanel loading title={_("Initializing...")} />
-        </Bullseye>
-    </Page>
+    <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
+        <EmptyStatePanel loading title={_("Initializing...")} />
+    </PageSection>
 );
 
 export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
@@ -99,6 +96,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
     return (
         <>
             <PageGroup
+              isFilled={false}
               stickyOnBreakpoint={{ default: "top" }}>
                 <AnacondaHeader
                   currentStepId={currentStepId}
@@ -190,7 +188,7 @@ export const ApplicationWithErrorBoundary = () => {
 
     return (
         <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
-            <Page data-debug={conf.Anaconda.debug}>
+            <Page className="no-masthead-sidebar" data-debug={conf.Anaconda.debug}>
                 <ErrorBoundary
                   backendException={errorBeforeBoundary}
                   isNetworkConnected={state.network.connected}

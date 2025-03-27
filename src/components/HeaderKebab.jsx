@@ -86,7 +86,6 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
         <AboutModal
           id="about-modal"
           isOpen={isModalOpen}
-          noAboutModalBoxContentContainer
           onClose={toggleModal}
           productName={<ProductName />}
         >

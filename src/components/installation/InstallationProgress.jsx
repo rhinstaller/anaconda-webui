@@ -163,7 +163,9 @@ const InstallationProgress = ({ onCritFail }) => {
         <Flex direction={{ default: "column" }} className={SCREEN_ID + "-status " + SCREEN_ID + "-status-" + status}>
             <EmptyStatePanel
               icon={icon}
+              isFullHeight
               loading={!icon}
+              variant="full"
               paragraph={
                   <Flex direction={{ default: "column" }}>
                       <Content component="p">
