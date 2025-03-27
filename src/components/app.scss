@@ -1,8 +1,5 @@
 @import "global-variables";
 
-// FIXME: Make this automatically distro-specific
-@import "../branding/fedora";
-
 // Copied from cockpit/pkg/lib/page.scss instead of including it in its entirety:
 // Let PF4 handle the scrolling through page component otherwise we might get double scrollbar
 html:not(.index-page) body {
@@ -23,7 +20,7 @@ html:not(.index-page) body {
 }
 
 // Nested tables showing partitions in the local standards disks table should not fill space in larger screens
-@media (min-width: $pf-v5-global--breakpoint--lg) {
+@media (min-width: var(--pf-t--global--breakpoint--lg)) {
   .ct-table .pf-v6-c-table__expandable-row-content {
     display: flex;
   }
