@@ -122,7 +122,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const finalStep = stepsOrder[stepsOrder.length - 1];
     if (path[0] === finalStep.id) {
         return (
-            <PageSection hasBodyWrapper={false}>
+            <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
                 <finalStep.component {...componentProps} />
             </PageSection>
         );
