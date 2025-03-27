@@ -408,6 +408,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
     @disk_images([("", 15), ("", 15), ("", 15)])
+    @nondestructive
     def testRAIDUnsupportedNesting(self):
         """
         Check #1: Verify that partitions created on a RAID device which is on top of partitions are considered unsupported
