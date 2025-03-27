@@ -26,7 +26,7 @@ import { createRoot } from "react-dom/client";
 import { ApplicationWithErrorBoundary } from "./components/app.jsx";
 
 import "./components/app.scss";
-import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
+import "../pkg/lib/patternfly/patternfly-6-cockpit.scss";
 /*
  * PF4 overrides need to come after the JSX components imports because
  * these are importing CSS stylesheets that we are overriding
@@ -34,7 +34,7 @@ import "../pkg/lib/patternfly/patternfly-5-cockpit.scss";
  * out of the dist/index.js and since it will maintain the order of the imported CSS,
  * the overrides will be correctly in the end of our stylesheet.
  */
-import "../pkg/lib/patternfly/patternfly-5-overrides.scss";
+import "../pkg/lib/patternfly/patternfly-6-overrides.scss";
 
 document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(document.getElementById("app"));
