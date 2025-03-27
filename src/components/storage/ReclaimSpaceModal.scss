@@ -5,7 +5,7 @@
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-2,
   tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-3 {
     td {
-      padding-block: var(--pf-v5-global--spacer--sm);
+      padding-block: var(--pf-t--global--spacer--sm);
     }
   }
 
@@ -22,17 +22,17 @@
   }
 
   .reclaim-space-modal-device-action-delete {
-    font-size: var(--pf-v5-global--FontSize--sm);
-    color: var(--pf-v5-global--danger-color--100);
+    font-size: var(--pf-t--global--font--size--sm);
+    color: var(--pf-t--global--color--status--danger--default);
   }
 
   .reclaim-space-modal-device-action-shrink {
-    font-size: var(--pf-v5-global--FontSize--sm);
-    color: var(--pf-v5-global--warning-color--100);
+    font-size: var(--pf-t--global--font--size--sm);
+    color: var(--pf-t--global--color--status--warning--default);
   }
 
   .pf-v6-c-table__td {
-    padding-block: var(--pf-v5-global--spacer--sm);
+    padding-block: var(--pf-t--global--spacer--sm);
     align-items: center;
   }
 
@@ -40,11 +40,11 @@
     // Actions should not have a gap
     gap: 0;
     // Actions should "eat into" TD padding so they're aligned appropriately
-    margin: calc(-1 * var(--pf-v5-global--spacer--xs)) calc(-1 * var(--pf-v5-global--spacer--sm));
+    margin: calc(-1 * var(--pf-t--global--spacer--xs)) calc(-1 * var(--pf-t--global--spacer--sm));
 
     // Fix the button size of actions
     .pf-v6-c-button {
-      padding: var(--pf-v5-global--spacer--xs) var(--pf-v5-global--spacer--sm);
+      padding: var(--pf-t--global--spacer--xs) var(--pf-t--global--spacer--sm);
     }
   }
 
@@ -56,11 +56,11 @@
   }
 
   // Small sizes
-  @media (width < $pf-v5-global--breakpoint--md) {
+  @media (width < var(--pf-t--global--breakpoint--md)) {
     // Indent the left for smaller sizes
     .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) {
       margin-inline-start: calc(
-        var(--indent) * var(--pf-v5-global--spacer--sm)
+        var(--indent) * var(--pf-t--global--spacer--sm)
       );
     }
 
@@ -80,10 +80,10 @@
   }
 
   // Large sizes
-  @media (width >= $pf-v5-global--breakpoint--md) {
+  @media (width >= var(--pf-t--global--breakpoint--md)) {
     // Indent the left for larger sizes
     .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) td:nth-child(2) {
-      padding-inline-start: calc(var(--pf-v5-c-table--cell--PaddingLeft) + var(--indent) * var(--pf-v5-global--spacer--md));
+      padding-inline-start: calc(var(--pf-v6-c-table--cell--PaddingInlineEnd) + var(--indent) * var(--pf-t--global--spacer--md));
     }
 
     // Align columns to the right on larger screens
@@ -103,10 +103,10 @@
 
     // Adjust the disk size and make it align properly
     .reclaim-space-modal-device-level-0 {
-      td:first-of-type .pf-v5-svg {
+      td:first-of-type svg {
         height: auto;
         width: var(--icon-size);
-        margin-inline-end: var(--pf-v5-global--spacer--sm);
+        margin-inline-end: var(--pf-t--global--spacer--sm);
         vertical-align: middle;
       }
     }
@@ -114,7 +114,7 @@
     // Align non-icon text with the text that has an icon
     .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) {
       td:first-of-type {
-        padding-left: calc(var(--icon-size) + var(--pf-v5-global--spacer--sm) + var(--pf-v5-c-table--cell--PaddingLeft));
+        padding-left: calc(var(--icon-size) + var(--pf-t--global--spacer--sm) + var(--pf-v6-c-table--cell--PaddingInlineEnd));
       }
     }
 
@@ -136,7 +136,7 @@
     // Make the panel scroll (not the stack)
     overflow: auto;
     // Replace the border below with an actual border for the panel
-    border: var(--pf-v5-c-panel--before--BorderWidth) solid var(--pf-v5-c-panel--before--BorderColor);
+    border: var(--pf-v6-c-panel--before--BorderWidth) solid var(--pf-v6-c-panel--before--BorderColor);
 
     // Hide the original border (as it doesn't work properly)
     &::before {
@@ -165,11 +165,11 @@
 // Emphasize the hint text by making it black instead of grey
 #reclaim-space-modal-hint {
   .pf-v6-c-helper-text__item-text {
-    color: var(--pf-v5-global--Color--100);
+    color: var(--pf-t--global--color--brand--default);
   }
 }
 
 .extended-partition-type {
-  color: var(--pf-v5-global--disabled-color--100);
+  color: var(--pf-t--global--text--color--disabled);
   font-style: italic;
 }

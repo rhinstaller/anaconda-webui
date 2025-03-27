@@ -88,6 +88,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
           isOpen={isModalOpen}
           onClose={toggleModal}
           productName={<ProductName />}
+          variant="small"
         >
             <Flex direction={{ default: "column" }} justifyContent={{ default: "justifyContentSpaceBetween" }}>
                 <AboutModalVersions />
