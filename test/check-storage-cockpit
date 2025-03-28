@@ -491,10 +491,11 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
-    def testRAIDUnsupportedMetadataCheck(self):
+    @run_boot("bios", "efi")
+    def testUnsupportedBootloaderOnMDRAID(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
 
         self.addCleanup(m.execute, "mdadm --zero-superblock /dev/vda /dev/vdb /dev/vdc")
@@ -517,17 +518,24 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.dialog_apply()
         self.dialog_wait_close()
 
+        # Create biosboot, /boot and / partitions on the RAID device
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition table")
+        self.dialog({"type": "gpt"})
+        self.click_dropdown(self.card_row("Storage", 5), "Create partition")
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 1, "type": "biosboot"})
+        self.click_dropdown(self.card_row("Storage", 6), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.click_dropdown(self.card_row("Storage", 7), "Create partition")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
-
-        s.check_scenario_selected("erase-all")
-        i.reach(i.steps.STORAGE_CONFIGURATION)
-        i.next(should_fail=True)
-        b.wait_in_text(
-            "#anaconda-screen-storage-configuration-step-notification",
-            "Failed to find a suitable stage1 device"
+        bootloaderType = "efi" if self.is_efi else "biosboot"
+        s.return_to_installation(
+            f"'{bootloaderType}' partition on MDRAID device SOMERAID found. Bootloader partitions on MDRAID devices are not supported."
         )
 
     @nondestructive

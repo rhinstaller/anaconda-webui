@@ -66,6 +66,7 @@ import { getDevicesAction, setStorageScenarioAction } from "../../actions/storag
 
 import { debug } from "../../helpers/log.js";
 import {
+    bootloaderTypes,
     getDeviceAncestors,
     getDeviceByName,
     getDeviceByPath,
@@ -305,7 +306,7 @@ export const preparePartitioning = async ({ devices, newMountPoints, selectedDis
         });
 
         await setManualPartitioningRequests({ partitioning, requests });
-        return partitioning;
+        return [partitioning, requests];
     } catch (error) {
         console.error("Failed to prepare partitioning", error);
     }
@@ -540,7 +541,24 @@ const CheckStorageDialog = ({
             // CLEAR_PARTITIONS_NONE = 0
             try {
                 await setInitializationMode({ mode: 0 });
-                const partitioning = await preparePartitioning({ devices, newMountPoints, selectedDisks });
+                const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, selectedDisks });
+
+                // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
+                // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
+                // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
+                const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
+                // PMBR does not have a bootloader necessarily
+                const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
+                const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
+                if (bootloaderDriveMDRAID) {
+                    throw Error(
+                        cockpit.format(
+                            _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
+                            bootloaderRequest["format-type"].v,
+                            devices[bootloaderDriveMDRAID].name.v
+                        )
+                    );
+                }
 
                 applyStorage({
                     devices,
