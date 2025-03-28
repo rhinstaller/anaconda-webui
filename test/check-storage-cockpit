@@ -101,6 +101,21 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, True)
 
+        # Do not crash if encrypted device got deleted
+        i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        self.click_dropdown(self.card_row("Storage", 4), "Delete")
+        b.set_checked("#dialog-confirm", val=True)
+        self.dialog_apply()
+        b.wait_not_present(self.card_row("Storage", name="vda3"))
+
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
     @nondestructive
     def testLVM(self):
         b = self.browser

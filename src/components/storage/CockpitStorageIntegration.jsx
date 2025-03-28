@@ -421,6 +421,10 @@ const CheckStorageDialog = ({
                         });
                     }))
                 .filter(({ device }) => {
+                    if (!device) {
+                        return false;
+                    }
+
                     return (
                         devices[device].formatData.type.v === "luks" &&
                             devices[device].formatData.attrs.v.has_key !== "True"
