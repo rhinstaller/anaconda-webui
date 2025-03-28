@@ -23,6 +23,8 @@ import "cockpit-dark-theme";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
+import { convertToCockpitLang } from "./helpers/language";
+
 import { ApplicationWithErrorBoundary } from "./components/app.jsx";
 
 import "./components/app.scss";
@@ -40,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const root = createRoot(document.getElementById("app"));
     root.render(<ApplicationWithErrorBoundary />);
     document.documentElement.setAttribute("dir", cockpit.language_direction);
+    document.documentElement.setAttribute("lang", convertToCockpitLang({ lang: cockpit.language }));
 });
 
 // As we are changing the language from the same iframe the localstorage change (cockpit.lang) will not fire.
@@ -47,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // We need to listen to the virtual event that we generate when changing language and adjust the language direction accordingly.
 // This needs to be exposed as a helper function from cockpit: https://github.com/cockpit-project/cockpit/issues/18874
 window.addEventListener("cockpit-lang", () => {
+    document.documentElement.setAttribute("lang", convertToCockpitLang({ lang: cockpit.language }));
     if (cockpit.language_direction) {
         document.documentElement.setAttribute("dir", cockpit.language_direction);
     }

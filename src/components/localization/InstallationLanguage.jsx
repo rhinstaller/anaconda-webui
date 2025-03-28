@@ -122,7 +122,7 @@ class LanguageSelector extends React.Component {
                   ref={scrollRef}
                   style={isSelected ? { backgroundColor: "var(--pf-v5-c-menu__list-item--hover--BackgroundColor)" } : undefined}
                 >
-                    <div id="language-item">
+                    <div lang={convertToCockpitLang({ lang: getLocaleId(locale) })}>
                         <span>{getLocaleNativeName(locale)}</span>
                     </div>
                 </MenuItem>
