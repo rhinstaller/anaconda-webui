@@ -68,7 +68,8 @@ class Language():
     @log_step(snapshot_before=True)
     def check_selected_locale(self, locale, is_common=True):
         common_prefix = "common" if is_common else "alpha"
-        self.browser.wait_visible(f"#{self._step}-option-{common_prefix}-{locale}.pf-m-selected")
+        web_locale = locale.replace("_", "-").lower()
+        self.browser.wait_visible(f"#{self._step}-option-{common_prefix}-{locale}.pf-m-selected [lang='{web_locale}']")
 
     def dbus_set_language(self, value):
         self.machine.execute(f'dbus-send --print-reply --bus="{self._bus_address}" \

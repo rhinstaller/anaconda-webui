@@ -155,7 +155,7 @@ class TestLanguage(VirtInstallMachineCase):
         b.wait_attr("html", "lang", "de")
 
         # Check one locale with underscore in HTML / Web locale name
-        l.select_locale("zh_TW", is_common=False)
+        l.select_locale("zh_TW", locale_name="繁體中文 (台灣)", is_common=False)
         l.check_selected_locale("zh_TW", is_common=False)
         b.wait_attr("html", "dir", "ltr")
         b.wait_attr("html", "lang", "zh-tw")
