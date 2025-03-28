@@ -141,6 +141,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.select_locale("he_IL", is_common=False)
         l.check_selected_locale("he_IL", is_common=False)
         b.wait_attr("html", "dir", "rtl")
+        b.wait_attr("html", "lang", "he")
 
         # Expect language direction to be set to LTR when switching to EN_US from RTL language
         # as this has special handling
@@ -151,6 +152,13 @@ class TestLanguage(VirtInstallMachineCase):
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
         b.wait_attr("html", "dir", "ltr")
+        b.wait_attr("html", "lang", "de")
+
+        # Check one locale with underscore in HTML / Web locale name
+        l.select_locale("zh_TW", is_common=False)
+        l.check_selected_locale("zh_TW", is_common=False)
+        b.wait_attr("html", "dir", "ltr")
+        b.wait_attr("html", "lang", "zh-tw")
 
     def testUnknownLanguage(self):
         b = self.browser
