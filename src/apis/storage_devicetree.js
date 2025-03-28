@@ -100,8 +100,8 @@ export const getRequiredDeviceSize = ({ requiredSpace }) => {
 /**
  * @returns {Promise}           List of mount point constraints for the platform
  */
-export const getMountPointConstraints = () => {
-    return new DeviceTree().callViewer("GetMountPointConstraints", []);
+export const getMountPointConstraints = ({ diskNames }) => {
+    return new DeviceTree().callViewer("GetMountPointConstraints", [diskNames]);
 };
 
 /**
