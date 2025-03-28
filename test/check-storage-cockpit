@@ -649,10 +649,10 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
-        self.dialog({"type": "ext4", "mount_point": "/home"})
+        self.dialog({"type": "ext4", "mount_point": "/"})
 
         self.click_dropdown(self.card_row("Storage", 5), "Format")
-        self.dialog({"type": "ext4", "mount_point": "/"})
+        self.dialog({"type": "ext4", "mount_point": "/home"})
 
         # Exit the cockpit-storage iframe
         b.switch_to_top()
@@ -668,16 +668,27 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False)
         dev = "vdb"
         r.check_disk(dev, "16.1 GB vdb (Virtio Block Device)")
-        r.check_disk_row(dev, "/", "", "16.1 GB", False)
+        r.check_disk_row(dev, "/home", "", "16.1 GB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
         self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home auto noauto 0 0" in fstab)
         self.assertTrue("/mnt/sysroot auto noauto 0 0" in fstab)
+
+        # Check that mount point assignment also works
+        i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
+        s.select_mountpoint([("vda", True), ("vdb", True)])
+
+        s.select_mountpoint_row_device(1, "vda3")
+        s.select_mountpoint_row_device(2, "vda2")
+
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_device(3, "vdb")
+        s.select_mountpoint_row_mountpoint(3, "/home")
 
     @nondestructive
     def testMBRParttable(self):
