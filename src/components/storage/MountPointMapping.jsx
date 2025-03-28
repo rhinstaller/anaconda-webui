@@ -683,7 +683,7 @@ const useExistingPartitioning = () => {
         const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
 
         // Disk devices are not allowed in the mount point assignment
-        const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []).filter(d => devices[d]?.type.v !== "disk");
+        const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
         if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
             return true;
         }
