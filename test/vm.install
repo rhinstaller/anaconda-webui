@@ -13,6 +13,9 @@ BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
 missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi"
+# We need stat binary from coreutils for cockpit-storage
+# https://github.com/weldr/lorax/commit/51d8501a6ea208a9914bc58b4131285c495e18f7
+missing_packages += " coreutils"
 
 from machine.machine_core import machine_virtual
 
@@ -53,7 +56,12 @@ def vm_install(image, compose, verbose, quick):
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
         else:
-            packages_to_download += " cockpit-storaged"
+            # FIXME: test unreleased cockpit-storaged till cockpit-336 is in the gated ISO
+            # packages_to_download += " cockpit-storaged"
+            if image.startswith("fedora-42"):
+                machine.execute("curl -o /var/tmp/build/cockpit-storaged-336.1-1.fc42.noarch.rpm https://kojipkgs.fedoraproject.org//packages/cockpit/336.1/1.fc42/noarch/cockpit-storaged-336.1-1.fc42.noarch.rpm")
+            else:
+                machine.execute("curl -o /var/tmp/build/cockpit-storaged-336.1-1.fc43.noarch.rpm https://kojipkgs.fedoraproject.org//packages/cockpit/336.1/1.fc43/noarch/cockpit-storaged-336.1-1.fc43.noarch.rpm")
 
         if scenario and scenario.startswith("anaconda-webui-pr-"):
             # If we are testing a anaconda-webui PR scenario from a different repository
