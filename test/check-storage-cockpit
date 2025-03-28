@@ -101,8 +101,28 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, True)
 
-        # Do not crash if encrypted device got deleted
+        # Exit the cockpit-storage iframe
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Format the partition again with 'Reuse existing encryption'
+        # Check that cockpit sends us the information also after re-formatting (rhbz#2354497)
+        self.click_dropdown(self.card_row("Storage", 4), "Format")
+        self.dialog_wait_open()
+        self.dialog_set_val("type", "ext4")
+        self.dialog_set_val("mount_point", "/")
+        self.dialog_set_val("old_passphrase", "redhat")
+        b.set_checked("#dialog-confirm", val=True)
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+
+        # Do not crash if encrypted device got deleted
         s.modify_storage()
         s.confirm_entering_cockpit_storage()
         b.switch_to_frame("cockpit-storage")
