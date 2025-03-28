@@ -546,9 +546,10 @@ const RequestsTable = ({
     setIsFormValid,
     setStepNotification,
 }) => {
-    const mountPointConstraints = useMountPointConstraints();
     const { diskSelection, partitioning } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
     const deviceData = useOriginalDevices();
+    const mountPointConstraints = useMountPointConstraints({ deviceData, selectedDisks });
     const requests = partitioning?.requests;
     const reusePartitioning = useExistingPartitioning();
     const [unappliedRequests, setUnappliedRequests] = useState();
@@ -557,8 +558,8 @@ const RequestsTable = ({
     }, [requests, deviceData]);
     const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
     const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(diskSelection.selectedDisks, deviceData),
-        [deviceData, diskSelection.selectedDisks]
+        () => getLockedLUKSDevices(selectedDisks, deviceData),
+        [deviceData, selectedDisks]
     );
 
     // Add the required mount points to the initial requests

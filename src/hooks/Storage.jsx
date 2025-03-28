@@ -110,12 +110,12 @@ export const useRequiredSize = () => {
     return requiredSize;
 };
 
-export const useMountPointConstraints = () => {
+export const useMountPointConstraints = ({ devices, selectedDisks }) => {
     const [mountPointConstraints, setMountPointConstraints] = useState();
 
     useEffect(() => {
         const update = async () => {
-            let _mountPointConstraints = await getMountPointConstraints();
+            let _mountPointConstraints = await getMountPointConstraints({ diskNames: selectedDisks });
             _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
                 let description = "";
                 const formatType = c["required-filesystem-type"].v;
@@ -128,7 +128,7 @@ export const useMountPointConstraints = () => {
             setMountPointConstraints(_mountPointConstraints);
         };
         update();
-    }, []);
+    }, [selectedDisks, devices]);
 
     return mountPointConstraints;
 };
