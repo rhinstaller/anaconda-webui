@@ -321,6 +321,7 @@ const CheckStorageDialog = ({
     const { appliedPartitioning, diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const refDevices = useRef(devices);
+    const refSelectedDisks = useRef(diskSelection.selectedDisks);
     const selectedDisks = diskSelection.selectedDisks;
     const usableDevices = diskSelection.usableDevices;
 
@@ -464,7 +465,7 @@ const CheckStorageDialog = ({
         //
         // For the first scenario, we need to re-set 'SelectedDisks' in backend,
         // for the new mdarrays to be handled as such.
-        const newSelectedDisks = selectedDisks.reduce((acc, disk) => {
+        const newSelectedDisks = refSelectedDisks.reduce((acc, disk) => {
             if (!devices[disk]) {
                 if (refDevices.current[disk]?.parents.v) {
                     debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
@@ -483,6 +484,7 @@ const CheckStorageDialog = ({
                 return [...acc, disk];
             }
         }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
+        debug("cockpit-storage-integration: re-scan finished: New selected disks", newSelectedDisks);
 
         // Check if we have mdarrays that are not fitting in the above two scenarios
         // and show an error message
@@ -517,12 +519,11 @@ const CheckStorageDialog = ({
             return;
         }
 
-        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
+        if (newSelectedDisks.find(disk => refSelectedDisks.indexOf(disk) === -1) || refSelectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
             setSelectedDisks({ drives: newSelectedDisks });
-        } else {
-            setCheckStep("prepare-partitioning");
         }
-    }, [checkStep, devices, mdArrays, usableDevices, selectedDisks]);
+        setCheckStep("prepare-partitioning");
+    }, [checkStep, devices, mdArrays, usableDevices]);
 
     useEffect(() => {
         // If the required devices needed for manual partitioning are set up,
