@@ -316,7 +316,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
     }
 };
 
-const handleMDRAID = ({ devices, refDevices, setCheckStep, setError, setNextCheckStep }) => {
+const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
     debug("cockpit-storage-integration: mdarray step started");
 
     const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
@@ -382,12 +382,11 @@ const handleMDRAID = ({ devices, refDevices, setCheckStep, setError, setNextChec
     });
     // TODO: Consider moving this logic to the backend
     if (mdArraysNotSupported.length > 0) {
-        setError({
+        onFail({
             message: cockpit.format(
                 _("Invalid RAID configuration detected. If your RAID array is created directly on top of disks, a partition table must be created on the array. If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). Any existing partitions on this array will be ignored.")
             )
         });
-        setCheckStep();
         return;
     }
 
@@ -422,7 +421,7 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
     return devicesToUnlock;
 };
 
-const unlockDevices = ({ devices, dispatch, onCritFail, setCheckStep, setError, setNextCheckStep }) => {
+const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep }) => {
     const cockpitPassphrases = JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}");
     const devicesToUnlock = getDevicesToUnlock({ cockpitPassphrases, devices });
 
@@ -438,20 +437,17 @@ const unlockDevices = ({ devices, dispatch, onCritFail, setCheckStep, setError, 
     debug("cockpit-storage-integration: luks step started");
 
     Promise.all(devicesToUnlock.map(unlockDevice))
-            .catch(exc => {
-                setCheckStep();
-                setError(exc);
-            })
+            .catch(onFail)
             .then(() => {
                 setNextCheckStep();
                 dispatch(getDevicesAction());
             });
 };
 
-const prepareAndApplyPartitioning = ({ devices, newMountPoints, setCheckStep, setError, setNextCheckStep, useConfiguredStorage }) => {
+const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
     // If "Use configured storage" is not available, skip Manual partitioning creation
     if (!useConfiguredStorage) {
-        setCheckStep();
+        setNextCheckStep();
         return;
     }
 
@@ -483,23 +479,19 @@ const prepareAndApplyPartitioning = ({ devices, newMountPoints, setCheckStep, se
 
             applyStorage({
                 devices,
-                onFail: exc => {
-                    setCheckStep();
-                    setError(exc);
-                },
+                onFail,
                 onSuccess: setNextCheckStep,
                 partitioning,
             });
         } catch (exc) {
-            setCheckStep();
-            setError(exc);
+            onFail(exc);
         }
     };
 
     applyNewPartitioning();
 };
 
-const scanDevices = ({ dispatch, setCheckStep, setError, setNextCheckStep }) => {
+const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
     debug("cockpit-storage-integration: rescan step started");
 
     // When the dialog is shown rescan to get latest configured storage
@@ -507,17 +499,11 @@ const scanDevices = ({ dispatch, setCheckStep, setError, setNextCheckStep }) => 
     scanDevicesWithTask()
             .then(task => {
                 return runStorageTask({
-                    onFail: exc => {
-                        setCheckStep();
-                        setError(exc);
-                    },
+                    onFail,
                     onSuccess: () => resetPartitioning()
                             .then(() => dispatch(getDevicesAction()))
                             .then(setNextCheckStep)
-                            .catch(exc => {
-                                setCheckStep();
-                                setError(exc);
-                            }),
+                            .catch(onFail),
                     task
                 });
             });
@@ -545,13 +531,17 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
 
         debug("cockpit-storage-integration: useStorageSetup: running step", checkStep);
 
+        const onFail = exc => {
+            setCheckStep();
+            setError(exc);
+        };
+
         const runStep = async () => {
             switch (checkStep) {
             case "rescan":
                 await scanDevices({
                     dispatch,
-                    setCheckStep,
-                    setError,
+                    onFail,
                     setNextCheckStep: () => setCheckStep("luks"),
                 });
                 break;
@@ -560,8 +550,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                     devices,
                     dispatch,
                     onCritFail,
-                    setCheckStep,
-                    setError,
+                    onFail,
                     setNextCheckStep: () => setCheckStep("waitingForLuks"),
                 });
                 break;
@@ -569,17 +558,15 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                 await unlockDevices({
                     devices,
                     dispatch,
-                    setCheckStep,
-                    setError,
+                    onFail,
                     setNextCheckStep: () => setCheckStep("mdarray"),
                 });
                 break;
             case "mdarray":
                 await handleMDRAID({
                     devices,
+                    onFail,
                     refDevices,
-                    setCheckStep,
-                    setError,
                     setNextCheckStep: () => setCheckStep("preparePartitioning"),
                 });
                 break;
@@ -587,8 +574,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                 await prepareAndApplyPartitioning({
                     devices,
                     newMountPoints,
-                    setCheckStep,
-                    setError,
+                    onFail,
                     setNextCheckStep: () => setCheckStep(),
                     useConfiguredStorage,
                 });
