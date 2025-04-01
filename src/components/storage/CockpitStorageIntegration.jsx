@@ -518,6 +518,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
     const refCheckStep = useRef();
     const devices = useOriginalDevices();
     const refDevices = useRef(devices);
+    const { isFetching } = useContext(StorageContext);
 
     useEffect(() => {
         if (refDevices.current !== undefined) {
@@ -527,8 +528,12 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
     }, [devices]);
 
     useEffect(() => {
+        if (isFetching) {
+            return;
+        }
+
         // Avoid re-running a step if it's already running
-        if (refCheckStep.current === checkStep) {
+        if (refCheckStep.current === checkStep && !checkStep.startsWith("waitingFor")) {
             return;
         }
         refCheckStep.current = checkStep;
@@ -585,7 +590,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
         };
 
         runStep();
-    }, [checkStep, devices, dispatch, newMountPoints, onCritFail, setCheckStep, setError, useConfiguredStorage]);
+    }, [checkStep, devices, dispatch, isFetching, newMountPoints, onCritFail, setCheckStep, setError, useConfiguredStorage]);
 
     return checkStep !== undefined;
 };

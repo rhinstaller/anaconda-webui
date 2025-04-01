@@ -54,7 +54,7 @@ const ModuleContextWrapper = ({ children, state }) => {
     return (
         <LanguageContext.Provider value={state.localization}>
             <RuntimeContext.Provider value={state.runtime}>
-                <StorageContext.Provider value={state.storage}>
+                <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
                     <UsersContext.Provider value={state.users}>
                         <NetworkContext.Provider value={state.network}>
                             {children}
