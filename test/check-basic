@@ -32,7 +32,7 @@ class TestBasic(VirtInstallMachineCase):
         i.open()
 
         self.assertIn(
-            b.attr("#app .pf-v5-c-page", "data-debug").lower(),
+            b.attr("#app .pf-v6-c-page", "data-debug").lower(),
             ["false", "true"]
         )
 
@@ -115,13 +115,13 @@ class TestBasic(VirtInstallMachineCase):
 
         # Pixel test the language step
         b.assert_pixels(
-            ".pf-v5-c-about-modal-box",
+            ".pf-v6-c-about-modal-box",
             "about-modal",
             ignore=["#about-modal-versions dd"],
         )
 
         # Close about modal
-        b.click(".pf-v5-c-button[aria-label='Close Dialog']")
+        b.click(".pf-v6-c-button[aria-label='Close Dialog']")
         b.wait_not_present("#about-modal")
 
     def _testLogReview(self, b, m, idPrefix):
@@ -132,7 +132,7 @@ class TestBasic(VirtInstallMachineCase):
         self.assertFalse(self.file_exists(logfile))
 
         # Click report issue: save reviewed log and open BZ URL
-        b.click(f"#{idPrefix}-bz-report-modal .pf-v5-c-button.pf-m-primary")
+        b.click(f"#{idPrefix}-bz-report-modal .pf-v6-c-button.pf-m-primary")
 
         with b.wait_timeout(20):
             b.wait(lambda: self.file_exists(logfile))
@@ -143,7 +143,7 @@ class TestBasic(VirtInstallMachineCase):
         # Test editing of the log
         user_text = "STRING_ADDED_BY_USER_TO_LOG"
         b.set_input_text(f"#{idPrefix}-bz-report-modal-review-log", user_text)
-        b.click(f"#{idPrefix}-bz-report-modal .pf-v5-c-button.pf-m-primary")
+        b.click(f"#{idPrefix}-bz-report-modal .pf-v6-c-button.pf-m-primary")
         wait(lambda: (m.execute(f"cat {logfile}")) == user_text)
 
     def testReportIssue(self):
