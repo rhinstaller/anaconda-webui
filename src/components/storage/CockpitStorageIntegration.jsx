@@ -429,11 +429,6 @@ const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep
         onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
     }
 
-    if (devicesToUnlock.length === 0) {
-        setNextCheckStep();
-        return;
-    }
-
     debug("cockpit-storage-integration: luks step started");
 
     Promise.all(devicesToUnlock.map(unlockDevice))
@@ -442,6 +437,15 @@ const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep
                 setNextCheckStep();
                 dispatch(getDevicesAction());
             });
+};
+
+const waitForUnlockedDevices = ({ devices, setNextCheckStep }) => {
+    const cockpitPassphrases = JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}");
+    const devicesToUnlock = getDevicesToUnlock({ cockpitPassphrases, devices });
+
+    if (devicesToUnlock.length === 0) {
+        setNextCheckStep();
+    }
 };
 
 const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
@@ -555,10 +559,8 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                 });
                 break;
             case "waitingForLuks":
-                await unlockDevices({
+                await waitForUnlockedDevices({
                     devices,
-                    dispatch,
-                    onFail,
                     setNextCheckStep: () => setCheckStep("mdarray"),
                 });
                 break;
