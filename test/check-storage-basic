@@ -171,7 +171,7 @@ class TestStorage(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.enter_cockpit_storage()
 
-        b.wait_not_present("#critical-error-bz-report-modal.pf-v5-c-modal-box")
+        b.wait_not_present("#critical-error-bz-report-modal.pf-v6-c-modal-box")
 
         b.eval_js("window.setTimeout(function() {throw new Error('Unexpected storage JS error')}, 0);")
         b.switch_to_top()

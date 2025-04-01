@@ -124,9 +124,9 @@ class TestLanguage(VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "language-step-basic",
-            # HACK pf-v5-c-menu__item-text is ignored because some of our CI infrastructure is
+            # HACK pf-v6-c-menu__item-text is ignored because some of our CI infrastructure is
             # missing CJK and Cyrillic fonts..
-            ignore=[*pixel_tests_ignore, ".pf-v5-c-menu__item-text"],
+            ignore=[*pixel_tests_ignore, ".pf-v6-c-menu__item-text"],
         )
 
         b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
