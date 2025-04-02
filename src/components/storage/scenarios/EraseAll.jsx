@@ -27,7 +27,6 @@ import {
 
 import {
     useDiskTotalSpace,
-    useOriginalDevices,
     useRequiredSize,
 } from "../../../hooks/Storage.jsx";
 
@@ -38,10 +37,9 @@ const _ = cockpit.gettext;
 const useAvailabilityEraseAll = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
 
-    const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
-    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
+    const diskTotalSpace = useDiskTotalSpace();
     const requiredSize = useRequiredSize();
 
     useEffect(() => {
