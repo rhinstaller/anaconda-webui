@@ -81,8 +81,6 @@ import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
 import {
-    useDiskFreeSpace,
-    useDiskTotalSpace,
     useMountPointConstraints,
     useOriginalDevices,
     useRequiredSize,
@@ -90,8 +88,8 @@ import {
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { checkConfiguredStorage } from "./scenarios/UseConfiguredStorage.jsx";
-import { checkUseFreeSpace } from "./scenarios/UseFreeSpace.jsx";
+import { useAvailabilityConfiguredStorage } from "./scenarios/UseConfiguredStorage.jsx";
+import { useAvailabilityUseFreeSpace } from "./scenarios/UseFreeSpace.jsx";
 
 import "./CockpitStorageIntegration.scss";
 
@@ -634,55 +632,12 @@ const CheckStorageDialog = ({
     const selectedDisks = diskSelection.selectedDisks;
 
     const [error, setError] = useState();
-    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
-    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
-    const requiredSize = useRequiredSize();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
 
-    const useConfiguredStorage = useMemo(() => {
-        const availability = checkConfiguredStorage({
-            devices,
-            mountPointConstraints,
-            newMountPoints,
-            selectedDisks,
-        });
-        return availability.available;
-    }, [
-        devices,
-        mountPointConstraints,
-        newMountPoints,
-        selectedDisks,
-    ]);
-
-    const useConfiguredStorageReview = useMemo(() => {
-        const availability = checkConfiguredStorage({
-            devices,
-            mountPointConstraints,
-            newMountPoints,
-            selectedDisks,
-        });
-
-        return availability.review;
-    }, [
-        devices,
-        mountPointConstraints,
-        newMountPoints,
-        selectedDisks,
-    ]);
-
-    const useFreeSpace = useMemo(() => {
-        const availability = checkUseFreeSpace({
-            allowReclaim: false,
-            diskFreeSpace,
-            diskTotalSpace,
-            requiredSize,
-            selectedDisks,
-        });
-
-        return availability.available && !availability.hidden;
-    }, [diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks]);
+    const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
+    const useConfiguredStorageReview = useAvailabilityConfiguredStorage({ newMountPoints })?.review;
+    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
 
     const mdArrays = useMemo(() => {
         return Object.keys(devices).filter(device => devices[device].type.v === "mdarray");

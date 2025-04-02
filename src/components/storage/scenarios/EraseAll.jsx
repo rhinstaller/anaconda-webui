@@ -17,32 +17,60 @@
 
 import cockpit from "cockpit";
 
+import { useContext, useEffect, useState } from "react";
+
 import { AvailabilityState } from "./helpers.js";
+
+import {
+    StorageContext,
+} from "../../../contexts/Common.jsx";
+
+import {
+    useDiskTotalSpace,
+    useOriginalDevices,
+    useRequiredSize,
+} from "../../../hooks/Storage.jsx";
 
 import { helpEraseAll } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
 
-const checkEraseAll = ({ diskTotalSpace, requiredSize, selectedDisks }) => {
-    const availability = new AvailabilityState();
+const useAvailabilityEraseAll = () => {
+    const [scenarioAvailability, setScenarioAvailability] = useState();
 
-    availability.available = !!selectedDisks.length;
-    availability.hidden = false;
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
+    const requiredSize = useRequiredSize();
 
-    if (diskTotalSpace < requiredSize) {
-        availability.available = false;
-        availability.reason = _("Not enough space on selected disks.");
-        availability.hint = cockpit.format(
-            _("The installation needs $1 of disk space; however, the capacity of the selected disks is only $0."),
-            cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
-    }
+    useEffect(() => {
+        if ([diskTotalSpace, requiredSize].some((value) => value === undefined)) {
+            return;
+        }
 
-    return availability;
+        const availability = new AvailabilityState();
+
+        availability.available = !!selectedDisks.length;
+        availability.hidden = false;
+
+        if (diskTotalSpace < requiredSize) {
+            availability.available = false;
+            availability.reason = _("Not enough space on selected disks.");
+            availability.hint = cockpit.format(
+                _("The installation needs $1 of disk space; however, the capacity of the selected disks is only $0."),
+                cockpit.format_bytes(diskTotalSpace), cockpit.format_bytes(requiredSize));
+        }
+
+        return setScenarioAvailability(availability);
+    }, [diskTotalSpace, requiredSize, selectedDisks]);
+
+    return scenarioAvailability;
 };
 
 export const scenarioEraseAll = {
     buttonVariant: "danger",
-    check: checkEraseAll,
+    getAvailability: useAvailabilityEraseAll,
     getButtonLabel: () => _("Erase data and install"),
     getDetail: helpEraseAll,
     getLabel: () => _("Use entire disk"),

@@ -17,30 +17,58 @@
 
 import cockpit from "cockpit";
 
+import { useContext, useEffect, useState } from "react";
+
 import { AvailabilityState } from "./helpers.js";
+
+import {
+    StorageContext,
+} from "../../../contexts/Common.jsx";
+
+import {
+    useMountPointConstraints,
+    useOriginalDevices,
+    useUsablePartitions,
+} from "../../../hooks/Storage.jsx";
 
 import { helpMountPointMapping } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
 
-const checkMountPointMapping = ({ mountPointConstraints, selectedDisks, usablePartitions }) => {
-    const availability = new AvailabilityState();
+const useAvailabilityMountPointMapping = () => {
+    const [scenarioAvailability, setScenarioAvailability] = useState();
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const usablePartitions = useUsablePartitions({ devices, selectedDisks });
+    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
 
-    availability.hidden = false;
-    availability.available = !!selectedDisks.length;
+    useEffect(() => {
+        if ([usablePartitions, mountPointConstraints].some(data => data === undefined)) {
+            return;
+        }
 
-    const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
-    const hasFilesystems = usablePartitions
-            .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
+        const availability = new AvailabilityState();
 
-    if (!hasFilesystems) {
-        // No usable devices on the selected disks: hide the scenario to reduce UI clutter
-        availability.hidden = true;
-    } else if (missingNMParts.length) {
-        availability.available = false;
-        availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
-    }
-    return availability;
+        availability.hidden = false;
+        availability.available = !!selectedDisks.length;
+
+        const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
+        const hasFilesystems = usablePartitions
+                .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
+
+        if (!hasFilesystems) {
+            // No usable devices on the selected disks: hide the scenario to reduce UI clutter
+            availability.hidden = true;
+        } else if (missingNMParts.length) {
+            availability.available = false;
+            availability.reason = cockpit.format(_("Some required partitions are missing: $0"), missingNMParts.join(", "));
+        }
+
+        setScenarioAvailability(availability);
+    }, [mountPointConstraints, selectedDisks, usablePartitions]);
+
+    return scenarioAvailability;
 };
 
 const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraints) => {
@@ -59,7 +87,7 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
 
 export const scenarioMountPointMapping = {
     buttonVariant: "danger",
-    check: checkMountPointMapping,
+    getAvailability: useAvailabilityMountPointMapping,
     getButtonLabel: () => _("Apply mount point assignment and install"),
     getDetail: helpMountPointMapping,
     getLabel: () => _("Mount point assignment"),
