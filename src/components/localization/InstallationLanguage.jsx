@@ -199,7 +199,7 @@ class LanguageSelector extends React.Component {
             return [
                 <MenuItem
                   id={`${SCREEN_ID}-search-no-result`}
-                  isDisabled
+                  isAriaDisabled
                   key="no-result"
                 >
                     {_("No results found")}

@@ -71,7 +71,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
             const isVisited = firstStepId === s.id || currentStepId === s.id;
             let stepProps = {
                 id: s.id,
-                isDisabled: isFormDisabled || isFetching,
+                isAriaDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden || s.isFinal,
                 isVisited,
                 name: s.label,
@@ -101,7 +101,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 };
             }
             return (
-                <WizardStep key={s.id + s.isVisited + (stepProps.isDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
+                <WizardStep key={s.id + s.isVisited + (stepProps.isAriaDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
             );
         });
     };
