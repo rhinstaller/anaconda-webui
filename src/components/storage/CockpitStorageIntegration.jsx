@@ -761,10 +761,7 @@ const CheckStorageDialog = ({
 };
 
 const ModifyStorageSideBar = () => {
-    const devices = useOriginalDevices();
-    const { diskSelection } = useContext(StorageContext);
-    const selectedDisks = diskSelection.selectedDisks;
-    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
+    const mountPointConstraints = useMountPointConstraints();
     const requiredSize = useRequiredSize();
 
     if (mountPointConstraints === undefined) {
@@ -849,8 +846,7 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         ...diskSelection.selectedDisks,
         ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
     ];
-    const selectedDisks = diskSelection.selectedDisks;
-    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
+    const mountPointConstraints = useMountPointConstraints();
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
     const cockpitAnaconda = JSON.stringify({
         available_devices: availableDevices.map(device => devices[device].path.v),

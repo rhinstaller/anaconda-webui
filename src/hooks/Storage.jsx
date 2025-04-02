@@ -44,8 +44,12 @@ import { StorageContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
-export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
+export const useDiskTotalSpace = () => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
 
     useEffect(() => {
         const update = async () => {
@@ -59,8 +63,12 @@ export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     return diskTotalSpace;
 };
 
-export const useDiskFreeSpace = ({ devices, selectedDisks }) => {
+export const useDiskFreeSpace = () => {
     const [diskFreeSpace, setDiskFreeSpace] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
 
     useEffect(() => {
         const update = async () => {
@@ -74,8 +82,12 @@ export const useDiskFreeSpace = ({ devices, selectedDisks }) => {
     return diskFreeSpace;
 };
 
-export const useUsablePartitions = ({ devices, selectedDisks }) => {
+export const useUsablePartitions = () => {
     const [usablePartitions, setUsablePartitions] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
 
     useEffect(() => {
         const _usablePartitions = Object.values(devices).filter(device => {
@@ -110,8 +122,12 @@ export const useRequiredSize = () => {
     return requiredSize;
 };
 
-export const useMountPointConstraints = ({ devices, selectedDisks }) => {
+export const useMountPointConstraints = () => {
     const [mountPointConstraints, setMountPointConstraints] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
 
     useEffect(() => {
         const update = async () => {

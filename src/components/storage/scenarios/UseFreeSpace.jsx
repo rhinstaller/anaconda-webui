@@ -30,7 +30,6 @@ import {
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
-    useOriginalDevices,
     useRequiredSize,
 } from "../../../hooks/Storage.jsx";
 
@@ -42,11 +41,10 @@ export const useAvailabilityUseFreeSpace = (args) => {
     const allowReclaim = args?.allowReclaim ?? true;
     const [scenarioAvailability, setScenarioAvailability] = useState();
 
-    const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
-    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace();
+    const diskTotalSpace = useDiskTotalSpace();
     const requiredSize = useRequiredSize();
 
     useEffect(() => {

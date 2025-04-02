@@ -27,7 +27,6 @@ import {
 
 import {
     useMountPointConstraints,
-    useOriginalDevices,
     useUsablePartitions,
 } from "../../../hooks/Storage.jsx";
 
@@ -37,11 +36,10 @@ const _ = cockpit.gettext;
 
 const useAvailabilityMountPointMapping = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
-    const devices = useOriginalDevices();
+    const mountPointConstraints = useMountPointConstraints();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
-    const usablePartitions = useUsablePartitions({ devices, selectedDisks });
-    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
+    const usablePartitions = useUsablePartitions();
 
     useEffect(() => {
         if ([usablePartitions, mountPointConstraints].some(data => data === undefined)) {
