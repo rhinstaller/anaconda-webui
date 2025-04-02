@@ -271,6 +271,8 @@ export const DeviceColumnSelect = ({
     const [isOpen, setIsOpen] = useState(false);
 
     const device = request["device-spec"];
+    const deviceName = device && deviceData[device].name.v;
+    const size = device ? cockpit.format_bytes(deviceData[device]?.total.v) : "";
     const optionGroups = {};
 
     for (const device of devices) {

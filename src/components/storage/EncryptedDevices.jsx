@@ -154,7 +154,7 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
           title={_("Unlock encrypted devices")}
           footer={
               <>
-                  <Button variant="primary" onClick={onSubmit} isDisabled={inProgress} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
+                  <Button variant="primary" onClick={onSubmit} isAriaDisabled={inProgress} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
                       {_("Unlock")}
                   </Button>
                   <Button variant="secondary" onClick={() => onClose()} id={idPrefix + "-close-btn"}>

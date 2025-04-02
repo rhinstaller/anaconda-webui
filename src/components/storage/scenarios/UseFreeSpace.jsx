@@ -63,7 +63,7 @@ const ReclaimSpace = ({ availability }) => {
         <Checkbox
           id="reclaim-space-checkbox"
           isChecked={isReclaimSpaceCheckboxChecked}
-          isDisabled={availability.enforceAction}
+          isAriaDisabled={availability.enforceAction}
           label={!availability.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
           name="reclaim-space"
           onChange={(_, value) => setIsReclaimSpaceCheckboxChecked(value)}

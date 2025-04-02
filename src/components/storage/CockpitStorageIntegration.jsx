@@ -872,11 +872,11 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         mount_point_prefix: targetSystemRoot,
     });
     // Allow to modify storage only when we are in the scenario selection page
-    const isDisabled = currentStepId !== "anaconda-screen-method";
+    const isAriaDisabled = currentStepId !== "anaconda-screen-method";
     const item = (
         <DropdownItem
           id="modify-storage"
-          isAriaDisabled={isDisabled}
+          isAriaDisabled={isAriaDisabled}
           onClick={() => {
               window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
               setShowStorage(true);
@@ -886,7 +886,7 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         </DropdownItem>
     );
 
-    if (!isDisabled) {
+    if (!isAriaDisabled) {
         return item;
     } else {
         return (
