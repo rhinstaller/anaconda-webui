@@ -85,7 +85,17 @@ class VirtInstallMachine(VirtMachine):
 
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
         payload_cached_name, http_payload_port = self._serve_payload()
-        content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
+        content = f"""
+        liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"
+        %pre
+        # root account is by default locked
+        # See: https://src.fedoraproject.org/rpms/setup/c/7ced36d60b67c9e74f7951123225200597e3d2fa
+        # unlock the root account to allow ssh login
+        sed -i 's/^root:!unprovisioned:/root::/' /etc/shadow
+        # start sshd service
+        systemctl start sshd
+        %end
+        """
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
