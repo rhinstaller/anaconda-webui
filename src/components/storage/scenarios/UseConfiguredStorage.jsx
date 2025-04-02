@@ -17,76 +17,90 @@
 
 import cockpit from "cockpit";
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { AvailabilityState } from "./helpers.js";
+
+import {
+    StorageContext,
+} from "../../../contexts/Common.jsx";
+
+import {
+    useMountPointConstraints,
+    useOriginalDevices,
+} from "../../../hooks/Storage.jsx";
 
 import { StorageReview } from "../../review/StorageReview.jsx";
 import { helpConfiguredStorage } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
 
-export const checkConfiguredStorage = ({
-    appliedPartitioning,
-    devices,
-    mountPointConstraints,
-    newMountPoints,
-    storageScenarioId,
-}) => {
-    const availability = new AvailabilityState();
+export const useAvailabilityConfiguredStorage = (args) => {
+    const newMountPoints = args?.newMountPoints;
+    const [scenarioAvailability, setScenarioAvailability] = useState();
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const storageScenarioId = partitioning?.storageScenarioId;
+    const mountPointConstraints = useMountPointConstraints();
+    const devices = useOriginalDevices();
 
-    const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
-    availability.hidden = !appliedPartitioning || !currentPartitioningMatches;
+    useEffect(() => {
+        const availability = new AvailabilityState();
 
-    availability.available = (
-        newMountPoints === undefined ||
-        (
-            mountPointConstraints
-                    ?.filter(m => m.required.v)
-                    .every(m => {
-                        const allDirs = [];
-                        const getNestedDirs = (object) => {
-                            if (!object) {
-                                return;
+        const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
+        availability.hidden = !appliedPartitioning || !currentPartitioningMatches;
+
+        availability.available = (
+            newMountPoints === undefined ||
+            (
+                mountPointConstraints
+                        ?.filter(m => m.required.v)
+                        .every(m => {
+                            const allDirs = [];
+                            const getNestedDirs = (object) => {
+                                if (!object) {
+                                    return;
+                                }
+                                const { content, dir, subvolumes } = object;
+
+                                if (dir) {
+                                    allDirs.push(dir);
+                                }
+                                if (content) {
+                                    getNestedDirs(content);
+                                }
+                                if (subvolumes) {
+                                    Object.keys(subvolumes).forEach(sv => getNestedDirs(subvolumes[sv]));
+                                }
+                            };
+
+                            if (m["mount-point"].v) {
+                                Object.keys(newMountPoints).forEach(key => getNestedDirs(newMountPoints[key]));
+
+                                return allDirs.includes(m["mount-point"].v);
                             }
-                            const { content, dir, subvolumes } = object;
 
-                            if (dir) {
-                                allDirs.push(dir);
+                            if (m["required-filesystem-type"].v === "biosboot") {
+                                const biosboot = Object.keys(devices).find(d => devices[d].formatData.type.v === "biosboot");
+
+                                return biosboot !== undefined;
                             }
-                            if (content) {
-                                getNestedDirs(content);
-                            }
-                            if (subvolumes) {
-                                Object.keys(subvolumes).forEach(sv => getNestedDirs(subvolumes[sv]));
-                            }
-                        };
 
-                        if (m["mount-point"].v) {
-                            Object.keys(newMountPoints).forEach(key => getNestedDirs(newMountPoints[key]));
+                            return false;
+                        })
+            )
+        );
 
-                            return allDirs.includes(m["mount-point"].v);
-                        }
+        availability.review = <StorageReview />;
 
-                        if (m["required-filesystem-type"].v === "biosboot") {
-                            const biosboot = Object.keys(devices).find(d => devices[d].formatData.type.v === "biosboot");
+        setScenarioAvailability(availability);
+    }, [appliedPartitioning, devices, mountPointConstraints, newMountPoints, storageScenarioId]);
 
-                            return biosboot !== undefined;
-                        }
-
-                        return false;
-                    })
-        )
-    );
-
-    availability.review = <StorageReview />;
-
-    return availability;
+    return scenarioAvailability;
 };
 
 export const scenarioConfiguredStorage = {
     buttonVariant: "danger",
-    check: checkConfiguredStorage,
+    getAvailability: useAvailabilityConfiguredStorage,
     getButtonLabel: () => _("Install"),
     getDetail: helpConfiguredStorage,
     getLabel: () => _("Use configured storage"),
