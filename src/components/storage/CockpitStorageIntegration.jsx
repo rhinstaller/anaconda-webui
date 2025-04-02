@@ -53,7 +53,10 @@ import {
 import {
     setInitializationMode,
 } from "../../apis/storage_disk_initialization.js";
-import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
+import {
+    getSelectedDisks,
+    setSelectedDisks
+} from "../../apis/storage_disks_selection.js";
 import {
     applyStorage,
     createPartitioning,
@@ -236,8 +239,9 @@ export const CockpitStorageIntegration = ({
     );
 };
 
-export const preparePartitioning = async ({ devices, newMountPoints, selectedDisks }) => {
+export const preparePartitioning = async ({ devices, newMountPoints }) => {
     try {
+        const selectedDisks = await getSelectedDisks();
         const partitioning = await createPartitioning({ method: "MANUAL" });
         const requests = await gatherRequests({ partitioning });
         const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
@@ -312,27 +316,302 @@ export const preparePartitioning = async ({ devices, newMountPoints, selectedDis
     }
 };
 
+const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
+    debug("cockpit-storage-integration: mdarray step started");
+
+    const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
+
+    // In blivet we recognize two "types" of MD array:
+    // * The array is directly on top of disks: in this case we consider the array to be a disk
+    // (similar to a hardware RAID) and create the partition table on the array
+    // * The array is on top of partitions: from our pov this is a device and we allow only a single
+    // filesystem (or other format like lvmpv) on top of it and if it has partitions they are ignored
+    //
+    // For the first scenario, we need to re-set 'SelectedDisks' in backend,
+    // for the new mdarrays to be handled as such.
+    const setNewSelectedDisks = async () => {
+        const selectedDisks = await getSelectedDisks();
+        const newSelectedDisks = selectedDisks.reduce((acc, disk) => {
+            if (!devices[disk]) {
+                if (refDevices.current[disk]?.parents.v) {
+                    debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
+                    return [...acc, ...refDevices.current[disk].parents.v];
+                } else {
+                    debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
+                    return acc;
+                }
+            }
+            const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
+            if (mdArray.length > 0) {
+                debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
+                return [...acc, mdArray[0]];
+            } else {
+                debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
+                return [...acc, disk];
+            }
+        }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
+
+        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
+            setSelectedDisks({ drives: newSelectedDisks });
+        }
+
+        setNextCheckStep();
+    };
+
+    // Check if we have mdarrays that are not fitting in the above two scenarios
+    // and show an error message
+    const mdArraysNotSupported = mdArrays.filter(device => {
+        // The user created a plain mdarray without any format to be used possible with 'Use entire disk'
+        if (devices[device].formatData.type.v === "") {
+            return false;
+        }
+
+        if (
+            devices[device].parents.v.every(parent => devices[parent].type.v === "disk") &&
+            devices[device].formatData.type.v === "disklabel"
+        ) {
+            return false;
+        }
+        if (
+            devices[device].parents.v.every(parent => devices[parent].type.v === "partition") &&
+            devices[device].formatData.type.v !== "disklabel"
+        ) {
+            return false;
+        }
+        return true;
+    });
+    // TODO: Consider moving this logic to the backend
+    if (mdArraysNotSupported.length > 0) {
+        onFail({
+            message: cockpit.format(
+                _("Invalid RAID configuration detected. If your RAID array is created directly on top of disks, a partition table must be created on the array. If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). Any existing partitions on this array will be ignored.")
+            )
+        });
+        return;
+    }
+
+    setNewSelectedDisks();
+};
+
+const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
+    const devicesToUnlock = (
+        Object.keys(cockpitPassphrases)
+                .map(dev => {
+                    let device = getDeviceByName(devices, dev);
+                    if (!device) {
+                        device = getDeviceByPath(devices, dev);
+                    }
+
+                    return ({
+                        device,
+                        passphrase: cockpitPassphrases[dev]
+                    });
+                }))
+            .filter(({ device }) => {
+                if (!device) {
+                    return false;
+                }
+
+                return (
+                    devices[device].formatData.type.v === "luks" &&
+                        devices[device].formatData.attrs.v.has_key !== "True"
+                );
+            });
+
+    return devicesToUnlock;
+};
+
+const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep }) => {
+    const cockpitPassphrases = JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}");
+    const devicesToUnlock = getDevicesToUnlock({ cockpitPassphrases, devices });
+
+    if (devicesToUnlock.some(dev => !dev.passphrase)) {
+        onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
+    }
+
+    debug("cockpit-storage-integration: luks step started");
+
+    Promise.all(devicesToUnlock.map(unlockDevice))
+            .catch(onFail)
+            .then(() => {
+                setNextCheckStep();
+                dispatch(getDevicesAction());
+            });
+};
+
+const waitForUnlockedDevices = ({ devices, setNextCheckStep }) => {
+    const cockpitPassphrases = JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}");
+    const devicesToUnlock = getDevicesToUnlock({ cockpitPassphrases, devices });
+
+    if (devicesToUnlock.length === 0) {
+        setNextCheckStep();
+    }
+};
+
+const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
+    // If "Use configured storage" is not available, skip Manual partitioning creation
+    if (!useConfiguredStorage) {
+        setNextCheckStep();
+        return;
+    }
+
+    debug("cockpit-storage-integration: prepare partitioning step started");
+
+    const applyNewPartitioning = async () => {
+        // CLEAR_PARTITIONS_NONE = 0
+        try {
+            await setInitializationMode({ mode: 0 });
+            const selectedDisks = getSelectedDisks();
+            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, selectedDisks });
+
+            // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
+            // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
+            // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
+            const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
+            // PMBR does not have a bootloader necessarily
+            const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
+            const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
+            if (bootloaderDriveMDRAID) {
+                throw Error(
+                    cockpit.format(
+                        _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
+                        bootloaderRequest["format-type"].v,
+                        devices[bootloaderDriveMDRAID].name.v
+                    )
+                );
+            }
+
+            applyStorage({
+                devices,
+                onFail,
+                onSuccess: setNextCheckStep,
+                partitioning,
+            });
+        } catch (exc) {
+            onFail(exc);
+        }
+    };
+
+    applyNewPartitioning();
+};
+
+const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
+    debug("cockpit-storage-integration: rescan step started");
+
+    // When the dialog is shown rescan to get latest configured storage
+    // and check if we need to prepare manual partitioning
+    scanDevicesWithTask()
+            .then(task => {
+                return runStorageTask({
+                    onFail,
+                    onSuccess: () => resetPartitioning()
+                            .then(() => dispatch(getDevicesAction()))
+                            .then(setNextCheckStep)
+                            .catch(onFail),
+                    task
+                });
+            });
+};
+
+const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useConfiguredStorage }) => {
+    const [checkStep, setCheckStep] = useState("rescan");
+    const refCheckStep = useRef();
+    const devices = useOriginalDevices();
+    const refDevices = useRef(devices);
+    const { isFetching } = useContext(StorageContext);
+
+    useEffect(() => {
+        if (refDevices.current !== undefined) {
+            return;
+        }
+        refDevices.current = devices;
+    }, [devices]);
+
+    useEffect(() => {
+        if (isFetching) {
+            return;
+        }
+
+        // Avoid re-running a step if it's already running
+        if (refCheckStep.current === checkStep && !checkStep.startsWith("waitingFor")) {
+            return;
+        }
+        refCheckStep.current = checkStep;
+
+        debug("cockpit-storage-integration: useStorageSetup: running step", checkStep);
+
+        const onFail = exc => {
+            setCheckStep();
+            setError(exc);
+        };
+
+        const runStep = async () => {
+            switch (checkStep) {
+            case "rescan":
+                await scanDevices({
+                    dispatch,
+                    onFail,
+                    setNextCheckStep: () => setCheckStep("luks"),
+                });
+                break;
+            case "luks":
+                await unlockDevices({
+                    devices,
+                    dispatch,
+                    onCritFail,
+                    onFail,
+                    setNextCheckStep: () => setCheckStep("waitingForLuks"),
+                });
+                break;
+            case "waitingForLuks":
+                await waitForUnlockedDevices({
+                    devices,
+                    setNextCheckStep: () => setCheckStep("mdarray"),
+                });
+                break;
+            case "mdarray":
+                await handleMDRAID({
+                    devices,
+                    onFail,
+                    refDevices,
+                    setNextCheckStep: () => setCheckStep("preparePartitioning"),
+                });
+                break;
+            case "preparePartitioning":
+                await prepareAndApplyPartitioning({
+                    devices,
+                    newMountPoints,
+                    onFail,
+                    setNextCheckStep: () => setCheckStep(),
+                    useConfiguredStorage,
+                });
+                break;
+            }
+        };
+
+        runStep();
+    }, [checkStep, devices, dispatch, isFetching, newMountPoints, onCritFail, setCheckStep, setError, useConfiguredStorage]);
+
+    return checkStep !== undefined;
+};
+
 const CheckStorageDialog = ({
     dispatch,
     onCritFail,
     setShowDialog,
     setShowStorage,
 }) => {
-    const { appliedPartitioning, diskSelection } = useContext(StorageContext);
+    const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
-    const refDevices = useRef(devices);
     const selectedDisks = diskSelection.selectedDisks;
-    const usableDevices = diskSelection.usableDevices;
 
     const [error, setError] = useState();
-    const [checkStep, setCheckStep] = useState("rescan");
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
     const mountPointConstraints = useMountPointConstraints();
     const requiredSize = useRequiredSize();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
-    const cockpitPassphrases = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_passphrases") || "{}"), []);
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({
@@ -387,224 +666,21 @@ const CheckStorageDialog = ({
         ));
     }, [devices, mdArrays, selectedDisks]);
 
-    const loading = !error && checkStep !== undefined;
+    const storageStepsInProgress = useStorageSetup({
+        dispatch,
+        newMountPoints,
+        onCritFail,
+        setError,
+        useConfiguredStorage,
+    });
+    const loading = !error && storageStepsInProgress;
     const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk));
-
-    useEffect(() => {
-        if (refDevices.current !== undefined) {
-            return;
-        }
-        refDevices.current = devices;
-    }, [devices]);
 
     useEffect(() => {
         const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
 
         dispatch(setStorageScenarioAction(mode));
     }, [useConfiguredStorage, dispatch]);
-
-    useEffect(() => {
-        if (checkStep !== "luks") {
-            return;
-        }
-
-        const devicesToUnlock = (
-            Object.keys(cockpitPassphrases)
-                    .map(dev => {
-                        let device = getDeviceByName(devices, dev);
-                        if (!device) {
-                            device = getDeviceByPath(devices, dev);
-                        }
-
-                        return ({
-                            device,
-                            passphrase: cockpitPassphrases[dev]
-                        });
-                    }))
-                .filter(({ device }) => {
-                    if (!device) {
-                        return false;
-                    }
-
-                    return (
-                        devices[device].formatData.type.v === "luks" &&
-                            devices[device].formatData.attrs.v.has_key !== "True"
-                    );
-                });
-
-        if (devicesToUnlock.some(dev => !dev.passphrase)) {
-            onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
-        }
-
-        if (devicesToUnlock.length === 0) {
-            setCheckStep("mdarray");
-            return;
-        }
-
-        Promise.all(devicesToUnlock.map(unlockDevice))
-                .catch(exc => {
-                    setCheckStep();
-                    setError(exc);
-                })
-                .then(() => {
-                    dispatch(getDevicesAction());
-                });
-    }, [dispatch, checkStep, cockpitPassphrases, newMountPoints, devices, onCritFail, setError]);
-
-    useEffect(() => {
-        if (checkStep !== "mdarray") {
-            return;
-        }
-
-        // In blivet we recognize two "types" of MD array:
-        // * The array is directly on top of disks: in this case we consider the array to be a disk
-        // (similar to a hardware RAID) and create the partition table on the array
-        // * The array is on top of partitions: from our pov this is a device and we allow only a single
-        // filesystem (or other format like lvmpv) on top of it and if it has partitions they are ignored
-        //
-        // For the first scenario, we need to re-set 'SelectedDisks' in backend,
-        // for the new mdarrays to be handled as such.
-        const newSelectedDisks = selectedDisks.reduce((acc, disk) => {
-            if (!devices[disk]) {
-                if (refDevices.current[disk]?.parents.v) {
-                    debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
-                    return [...acc, ...refDevices.current[disk].parents.v];
-                } else {
-                    debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
-                    return acc;
-                }
-            }
-            const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
-            if (mdArray.length > 0) {
-                debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
-                return [...acc, mdArray[0]];
-            } else {
-                debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
-                return [...acc, disk];
-            }
-        }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
-
-        // Check if we have mdarrays that are not fitting in the above two scenarios
-        // and show an error message
-        const mdArraysNotSupported = mdArrays.filter(device => {
-            // The user created a plain mdarray without any format to be used possible with 'Use entire disk'
-            if (devices[device].formatData.type.v === "") {
-                return false;
-            }
-
-            if (
-                devices[device].parents.v.every(parent => devices[parent].type.v === "disk") &&
-                devices[device].formatData.type.v === "disklabel"
-            ) {
-                return false;
-            }
-            if (
-                devices[device].parents.v.every(parent => devices[parent].type.v === "partition") &&
-                devices[device].formatData.type.v !== "disklabel"
-            ) {
-                return false;
-            }
-            return true;
-        });
-        // TODO: Consider moving this logic to the backend
-        if (mdArraysNotSupported.length > 0) {
-            setError({
-                message: cockpit.format(
-                    _("Invalid RAID configuration detected. If your RAID array is created directly on top of disks, a partition table must be created on the array. If your RAID array is created on top of partitions, it must contain a single filesystem or format (e.g., LVM PV). Any existing partitions on this array will be ignored.")
-                )
-            });
-            setCheckStep();
-            return;
-        }
-
-        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
-            setSelectedDisks({ drives: newSelectedDisks });
-        } else {
-            setCheckStep("prepare-partitioning");
-        }
-    }, [checkStep, devices, mdArrays, usableDevices, selectedDisks]);
-
-    useEffect(() => {
-        // If the required devices needed for manual partitioning are set up,
-        // and prepare the partitioning
-        if (checkStep !== "prepare-partitioning" || appliedPartitioning) {
-            return;
-        }
-
-        // If "Use configured storage" is not available, skip Manual partitioning creation
-        if (!useConfiguredStorage) {
-            setCheckStep();
-            return;
-        }
-
-        const applyNewPartitioning = async () => {
-            // CLEAR_PARTITIONS_NONE = 0
-            try {
-                await setInitializationMode({ mode: 0 });
-                const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, selectedDisks });
-
-                // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
-                // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
-                // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
-                const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
-                // PMBR does not have a bootloader necessarily
-                const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
-                const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
-                if (bootloaderDriveMDRAID) {
-                    throw Error(
-                        cockpit.format(
-                            _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
-                            bootloaderRequest["format-type"].v,
-                            devices[bootloaderDriveMDRAID].name.v
-                        )
-                    );
-                }
-
-                applyStorage({
-                    devices,
-                    onFail: exc => {
-                        setCheckStep();
-                        setError(exc);
-                    },
-                    onSuccess: () => setCheckStep(),
-                    partitioning,
-                });
-            } catch (exc) {
-                setCheckStep();
-                setError(exc);
-            }
-        };
-
-        applyNewPartitioning();
-    }, [appliedPartitioning, devices, checkStep, newMountPoints, selectedDisks, useConfiguredStorage]);
-
-    useEffect(() => {
-        if (checkStep !== "rescan") {
-            return;
-        }
-
-        // When the dialog is shown rescan to get latest configured storage
-        // and check if we need to prepare manual partitioning
-        scanDevicesWithTask()
-                .then(task => {
-                    return runStorageTask({
-                        onFail: exc => {
-                            setCheckStep();
-                            setError(exc);
-                        },
-                        onSuccess: () => resetPartitioning()
-                                .then(() => dispatch(getDevicesAction()))
-                                .then(() => {
-                                    setCheckStep("luks");
-                                })
-                                .catch(exc => {
-                                    setCheckStep();
-                                    setError(exc);
-                                }),
-                        task
-                    });
-                });
-    }, [checkStep, dispatch, setError]);
 
     const goBackToInstallation = () => {
         setShowStorage(false);
