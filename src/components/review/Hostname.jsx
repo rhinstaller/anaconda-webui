@@ -102,7 +102,7 @@ const ChangeHostname = ({ initHostname }) => {
               footer={
                   <>
                       <Button
-                        variant="primary" isDisabled={disabled}
+                        variant="primary" isAriaDisabled={disabled}
                         onClick={onSubmit}>{initHostname === "" ? _("Save") : _("Change")}
                       </Button>
                       <Button variant="link" onClick={onClose}>{_("Cancel")}</Button>

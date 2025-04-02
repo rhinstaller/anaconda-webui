@@ -91,7 +91,7 @@ export const AnacondaWizardFooter = ({
                             <Button
                               id="installation-back-btn"
                               variant="secondary"
-                              isDisabled={isFirstScreen || isFormDisabled}
+                              isAriaDisabled={isFirstScreen || isFormDisabled}
                               onClick={() => onBack()}>
                                 {_("Back")}
                             </Button>
@@ -100,7 +100,7 @@ export const AnacondaWizardFooter = ({
                             <Button
                               id="installation-next-btn"
                               variant={nextButtonVariant || "primary"}
-                              isDisabled={!isFormValid || isFormDisabled}
+                              isAriaDisabled={!isFormValid || isFormDisabled}
                               onClick={onNextButtonClicked}>
                                 {nextButtonText || _("Next")}
                             </Button>
@@ -110,7 +110,7 @@ export const AnacondaWizardFooter = ({
                         <ActionListItem>
                             <Button
                               id="installation-quit-btn"
-                              isDisabled={isFormDisabled}
+                              isAriaDisabled={isFormDisabled}
                               variant="link"
                               onClick={() => {
                                   setQuitWaitsConfirmation(true);

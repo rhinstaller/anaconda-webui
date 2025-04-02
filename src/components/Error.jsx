@@ -156,7 +156,7 @@ export const BZReportModal = ({
                           <Button
                             variant="primary"
                             isLoading={preparingReport}
-                            isDisabled={logContent === undefined || preparingReport || !isConnected}
+                            isAriaDisabled={logContent === undefined || preparingReport || !isConnected}
                             icon={<ExternalLinkAltIcon />}
                             onClick={() => { openBZIssue(reportLinkURL, logFile, logContent); return false }}
                             component="a">
@@ -184,7 +184,7 @@ export const BZReportModal = ({
                       onChange={(_, value) => setLogContent(value)}
                       resizeOrientation="vertical"
                       id={idPrefix + "-bz-report-modal-review-log"}
-                      isDisabled={logContent === undefined || preparingReport}
+                      isAriaDisabled={logContent === undefined || preparingReport}
                       rows={25}
                     />
                 </FormGroup>

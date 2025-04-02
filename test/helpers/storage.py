@@ -554,19 +554,17 @@ class StorageReclaimDialog():
         self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='delete']")
 
     def reclaim_check_action_button_present(self, device, action, present=True, disabled=False):
+        selector = (
+            "#reclaim-space-modal-table "
+            f"tr:contains('{device}') "
+            f"button[aria-label='{action}']"
+            f"{'[aria-disabled=true]' if disabled else ':not([aria-disabled=true])'}"
+        )
+
         if present:
-            self.browser.wait_visible(
-                "#reclaim-space-modal-table "
-                f"tr:contains('{device}') "
-                f"button[aria-label='{action}']"
-                f"{':disabled' if disabled else ':not(:disabled)'}"
-            )
+            self.browser.wait_visible(selector)
         else:
-            self.browser.wait_not_present(
-                "#reclaim-space-modal-table "
-                f"tr:contains('{device}') "
-                f"button[aria-label='{action}']"
-            )
+            self.browser.wait_not_present(selector)
 
     def reclaim_modal_submit_and_check_warning(self, warning):
         self.browser.click("button:contains('Reclaim space')")
@@ -689,15 +687,17 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
     def select_mountpoint_row_device(self, row, device, device_id=None):
-        selector = f"{self.table_row(row)}"
+        toggle_selector = f"{self.table_row(row)}-device-select-toggle:not([disabled]):not([aria-disabled=true])"
+        self.browser.click(toggle_selector)
 
-        self.browser.click(f"{selector}-device-select-toggle:not([disabled]):not([aria-disabled=true])")
         if device_id:
-            select_entry = f"{selector} ul button[data-device-id='{device_id}']"
+            item_selector = f".pf-v6-c-menu li[data-device-id='{device_id}']"
         else:
-            select_entry = f"{selector} ul button[data-device-name='{device}']"
-        self.browser.click(select_entry)
-        self.browser.wait_in_text(f"{selector} .pf-v6-c-select__toggle-text", device)
+            item_selector = f".pf-v6-c-menu li[data-device-name='{device}']"
+
+        self.browser.click(item_selector)
+        self.browser.wait_not_present(".pf-v6-c-menu")
+        self.browser.wait_in_text(f"{self.table_row(row)} .pf-v6-c-select__toggle-text", device)
 
     def toggle_mountpoint_row_device(self, row):
         self.browser.click(f"{self.table_row(row)}-device-select-toggle")
@@ -713,18 +713,20 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def check_mountpoint_row_format_type(self, row, format_type):
         self.toggle_mountpoint_row_device(row)
-        self.browser.wait_in_text(f"{self.table_row(row)} ul li button.pf-m-selected", format_type)
+        self.browser.wait_in_text(".pf-v6-c-menu__item.pf-m-selected", format_type)
         self.toggle_mountpoint_row_device(row)
 
     def check_mountpoint_row_device_available(self, row, device, available=True, disabled=False):
         disabled_selector = "[aria-disabled='true']" if disabled else ":not([aria-disabled='true'])"
 
         self.toggle_mountpoint_row_device(row)
-        main_selector = f"{self.table_row(row)} ul li button"
+        item_selector = f".pf-v6-c-menu li[data-device-name='{device}'] button{disabled_selector}"
+
         if available:
-            self.browser.wait_visible(f"{main_selector}{disabled_selector}:contains({device})")
+            self.browser.wait_visible(item_selector)
         else:
-            self.browser.wait_not_present(f"{main_selector}:contains({device})")
+            self.browser.wait_not_present(f".pf-v6-c-menu li[data-device-name='{device}']")
+
         self.toggle_mountpoint_row_device(row)
 
     def select_mountpoint_row_reformat(self, row, selected=True):
