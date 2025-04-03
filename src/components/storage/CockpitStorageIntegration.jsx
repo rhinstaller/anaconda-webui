@@ -161,6 +161,28 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
     );
 };
 
+const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setShowStorage }) => {
+    const [error, setError] = useState();
+    const storageStepsInProgress = useStorageSetup({
+        dispatch,
+        onCritFail,
+        setError,
+    });
+    const loading = !error && storageStepsInProgress;
+
+    return (
+        <>
+            {loading && <CheckStorageDialogLoading />}
+            {!loading &&
+                <CheckStorageDialogLoaded
+                  error={error}
+                  setShowDialog={setShowDialog}
+                  setShowStorage={setShowStorage}
+                />}
+        </>
+    );
+};
+
 export const CockpitStorageIntegration = ({
     dispatch,
     onCritFail,
@@ -463,11 +485,18 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
     }
 };
 
-const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
+const prepareAndApplyPartitioning = ({ devices, dispatch, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage, useFreeSpace }) => {
     // If "Use configured storage" is not available, skip Manual partitioning creation
     if (!useConfiguredStorage) {
+        if (useFreeSpace) {
+            dispatch(setStorageScenarioAction("use-free-space"));
+        } else {
+            dispatch(setStorageScenarioAction(""));
+        }
         setNextCheckStep();
         return;
+    } else {
+        dispatch(setStorageScenarioAction("use-configured-storage"));
     }
 
     debug("cockpit-storage-integration: prepare partitioning step started");
@@ -527,7 +556,7 @@ const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
             });
 };
 
-const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useConfiguredStorage }) => {
+const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
     const [checkStep, setCheckStep] = useState("rescan");
     const refCheckStep = useRef();
     const devices = useOriginalDevices();
@@ -536,6 +565,9 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const [newSelectedDisks, setNewSelectedDisks] = useState();
+    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
+    const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
+    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
 
     useEffect(() => {
         if (refDevices.current !== undefined) {
@@ -606,32 +638,65 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
             case "preparePartitioning":
                 await prepareAndApplyPartitioning({
                     devices,
+                    dispatch,
                     newMountPoints,
                     onFail,
                     setNextCheckStep: () => setCheckStep(),
                     useConfiguredStorage,
+                    useFreeSpace,
                 });
                 break;
             }
         };
 
         runStep();
-    }, [checkStep, devices, dispatch, isFetching, newMountPoints, newSelectedDisks, onCritFail, setCheckStep, selectedDisks, setError, useConfiguredStorage]);
+    }, [
+        checkStep,
+        devices,
+        dispatch,
+        isFetching,
+        newMountPoints,
+        newSelectedDisks,
+        onCritFail,
+        selectedDisks,
+        setCheckStep,
+        setError,
+        useConfiguredStorage,
+        useFreeSpace,
+    ]);
 
     return checkStep !== undefined;
 };
 
-const CheckStorageDialog = ({
-    dispatch,
-    onCritFail,
+const CheckStorageDialogLoading = () => {
+    const loadingDescription = (
+        <EmptyStatePanel
+          loading
+          title={_("Checking storage configuration")}
+          paragraph={_("This will take a few moments")} />
+    );
+
+    return (
+        <Modal
+          aria-label={_("Checking storage configuration")}
+          className={idPrefix + "-check-storage-dialog--loading"}
+          id={idPrefix + "-check-storage-dialog"}
+          onClose={() => {}}
+          position="top" variant="small" isOpen
+        >
+            {loadingDescription}
+        </Modal>
+    );
+};
+
+const CheckStorageDialogLoaded = ({
+    error,
     setShowDialog,
     setShowStorage,
 }) => {
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
-
-    const [error, setError] = useState();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
 
@@ -649,111 +714,79 @@ const CheckStorageDialog = ({
         ));
     }, [devices, mdArrays, selectedDisks]);
 
-    const storageStepsInProgress = useStorageSetup({
-        dispatch,
-        newMountPoints,
-        onCritFail,
-        setError,
-        useConfiguredStorage,
-    });
-    const loading = !error && storageStepsInProgress;
-    const storageRequirementsNotMet = !loading && (error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk));
-
-    useEffect(() => {
-        const mode = useConfiguredStorage ? "use-configured-storage" : "use-free-space";
-
-        dispatch(setStorageScenarioAction(mode));
-    }, [useConfiguredStorage, dispatch]);
+    const storageRequirementsNotMet = error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk);
 
     const goBackToInstallation = () => {
         setShowStorage(false);
     };
 
-    const loadingDescription = (
-        <EmptyStatePanel
-          loading
-          title={_("Checking storage configuration")}
-          paragraph={_("This will take a few moments")} />
-    );
-
     const modalProps = {};
-    if (!loading) {
-        if (storageRequirementsNotMet) {
-            modalProps.title = _("Storage requirements not met");
-        } else {
-            modalProps.title = _("Continue with installation");
-        }
+    if (storageRequirementsNotMet) {
+        modalProps.title = _("Storage requirements not met");
     } else {
-        modalProps["aria-label"] = _("Checking storage configuration");
+        modalProps.title = _("Continue with installation");
     }
 
     return (
         <Modal
-          className={idPrefix + "-check-storage-dialog" + (loading ? "--loading" : "")}
+          className={idPrefix + "-check-storage-dialog"}
           id={idPrefix + "-check-storage-dialog"}
           onClose={() => setShowDialog(false)}
-          titleIconVariant={!loading && storageRequirementsNotMet && "warning"}
+          titleIconVariant={storageRequirementsNotMet && "warning"}
           position="top" variant="small" isOpen
           {...modalProps}
           footer={
-              !loading &&
-              <>
-                  <ActionList>
-                      {!storageRequirementsNotMet &&
-                          <>
-                              <Button
-                                id={idPrefix + "-check-storage-dialog-continue"}
-                                variant="primary"
-                                onClick={goBackToInstallation}>
-                                  {_("Continue")}
-                              </Button>
-                              <Button
-                                id={idPrefix + "-check-storage-dialog-return"}
-                                variant="link"
-                                onClick={() => setShowDialog(false)}>
-                                  {_("Return to storage editor")}
-                              </Button>
-                          </>}
-                      {storageRequirementsNotMet &&
-                          <>
-                              <Button
-                                variant="warning"
-                                id={idPrefix + "-check-storage-dialog-return"}
-                                onClick={() => setShowDialog(false)}>
-                                  {_("Configure storage again")}
-                              </Button>
-                              <Button
-                                id={idPrefix + "-check-storage-dialog-continue"}
-                                variant="secondary"
-                                onClick={() => setShowStorage(false)}>
-                                  {_("Proceed with installation")}
-                              </Button>
-                          </>}
-                  </ActionList>
-              </>
+              <ActionList>
+                  {!storageRequirementsNotMet &&
+                      <>
+                          <Button
+                            id={idPrefix + "-check-storage-dialog-continue"}
+                            variant="primary"
+                            onClick={goBackToInstallation}>
+                              {_("Continue")}
+                          </Button>
+                          <Button
+                            id={idPrefix + "-check-storage-dialog-return"}
+                            variant="link"
+                            onClick={() => setShowDialog(false)}>
+                              {_("Return to storage editor")}
+                          </Button>
+                      </>}
+                  {storageRequirementsNotMet &&
+                      <>
+                          <Button
+                            variant="warning"
+                            id={idPrefix + "-check-storage-dialog-return"}
+                            onClick={() => setShowDialog(false)}>
+                              {_("Configure storage again")}
+                          </Button>
+                          <Button
+                            id={idPrefix + "-check-storage-dialog-continue"}
+                            variant="secondary"
+                            onClick={() => setShowStorage(false)}>
+                              {_("Proceed with installation")}
+                          </Button>
+                      </>}
+              </ActionList>
           }
         >
             <>
-                {loading && loadingDescription}
-                {!loading &&
-                <>
-                    {storageRequirementsNotMet ? error?.message : null}
-                    <HelperText>
-                        {!storageRequirementsNotMet &&
-                        <HelperTextItem variant="success">
-                            {useConfiguredStorage
-                                ? (
-                                    <Stack hasGutter>
-                                        <span>{_("Detected valid storage layout:")}</span>
-                                        {useConfiguredStorageReview}
-                                    </Stack>
-                                )
-                                : (
-                                    useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
-                                )}
-                        </HelperTextItem>}
-                    </HelperText>
-                </>}
+                {storageRequirementsNotMet ? error?.message : null}
+                <HelperText>
+                    {!storageRequirementsNotMet &&
+                    <HelperTextItem variant="success">
+                        {useConfiguredStorage
+                            ? (
+                                <Stack hasGutter>
+                                    <span>{_("Detected valid storage layout:")}</span>
+                                    {useConfiguredStorageReview}
+                                </Stack>
+                            )
+                            : (
+                                useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
+                            )}
+                    </HelperTextItem>}
+                </HelperText>
             </>
         </Modal>
 
