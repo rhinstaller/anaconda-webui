@@ -75,11 +75,6 @@ export const getDevicesAction = () => {
         }
 
         dispatch({
-            payload: { isFetching: false },
-            type: "SET_IS_FETCHING",
-        });
-
-        return dispatch({
             payload: {
                 actions,
                 devices: deviceData,
@@ -87,6 +82,11 @@ export const getDevicesAction = () => {
                 mountPoints,
             },
             type: "GET_DEVICES_DATA"
+        });
+
+        dispatch({
+            payload: { isFetching: false },
+            type: "SET_IS_FETCHING",
         });
     };
 };
