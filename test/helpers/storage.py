@@ -637,15 +637,17 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
     def select_mountpoint_row_device(self, row, device, device_id=None):
-        selector = f"{self.table_row(row)}"
+        toggle_selector = f"{self.table_row(row)}-device-select-toggle:not([disabled]):not([aria-disabled=true])"
+        self.browser.click(toggle_selector)
 
-        self.browser.click(f"{selector}-device-select-toggle:not([disabled]):not([aria-disabled=true])")
         if device_id:
-            select_entry = f"{selector} ul button[data-device-id='{device_id}']"
+            item_selector = f".pf-v6-c-menu li[data-device-id='{device_id}']"
         else:
-            select_entry = f"{selector} ul button[data-device-name='{device}']"
-        self.browser.click(select_entry)
-        self.browser.wait_in_text(f"{selector} .pf-v6-c-select__toggle-text", device)
+            item_selector = f".pf-v6-c-menu li[data-device-name='{device}']"
+
+        self.browser.click(item_selector)
+        self.browser.wait_not_present(".pf-v6-c-menu")
+        self.browser.wait_in_text(f"{self.table_row(row)} .pf-v6-c-select__toggle-text", device)
 
     def toggle_mountpoint_row_device(self, row):
         self.browser.click(f"{self.table_row(row)}-device-select-toggle")
@@ -661,7 +663,7 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def check_mountpoint_row_format_type(self, row, format_type):
         self.toggle_mountpoint_row_device(row)
-        self.browser.wait_in_text(f"{self.table_row(row)} ul li button.pf-m-selected", format_type)
+        self.browser.wait_in_text(".pf-v6-c-menu__item.pf-m-selected", format_type)
         self.toggle_mountpoint_row_device(row)
 
     def check_mountpoint_row_device_available(self, row, device, available=True, disabled=False):
