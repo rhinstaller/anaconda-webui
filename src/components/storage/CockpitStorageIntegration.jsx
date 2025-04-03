@@ -710,7 +710,7 @@ const CheckStorageDialog = ({
           id={idPrefix + "-check-storage-dialog"}
           onClose={() => setShowDialog(false)}
           titleIconVariant={!loading && storageRequirementsNotMet && "warning"}
-          position="top" variant="small" isOpen
+          position="top" variant="medium" isOpen
           {...modalProps}
           footer={
               !loading &&
