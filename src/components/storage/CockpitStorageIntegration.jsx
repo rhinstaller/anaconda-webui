@@ -76,6 +76,7 @@ import {
     getDeviceChildren,
     getUsableDevicesManualPartitioning,
 } from "../../helpers/storage.js";
+import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
@@ -320,6 +321,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
     debug("cockpit-storage-integration: mdarray step started");
 
     const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
+    let ret;
 
     // In blivet we recognize two "types" of MD array:
     // * The array is directly on top of disks: in this case we consider the array to be a disk
@@ -351,11 +353,13 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
             }
         }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
 
-        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
+        if (!checkIfArraysAreEqual(selectedDisks, newSelectedDisks)) {
             setSelectedDisks({ drives: newSelectedDisks });
+            ret = newSelectedDisks;
         }
 
         setNextCheckStep();
+        return ret;
     };
 
     // Check if we have mdarrays that are not fitting in the above two scenarios
@@ -390,7 +394,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
         return;
     }
 
-    setNewSelectedDisks();
+    return setNewSelectedDisks();
 };
 
 const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
@@ -444,6 +448,12 @@ const waitForUnlockedDevices = ({ devices, setNextCheckStep }) => {
     const devicesToUnlock = getDevicesToUnlock({ cockpitPassphrases, devices });
 
     if (devicesToUnlock.length === 0) {
+        setNextCheckStep();
+    }
+};
+
+const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheckStep }) => {
+    if (!newSelectedDisks || checkIfArraysAreEqual(newSelectedDisks, selectedDisks)) {
         setNextCheckStep();
     }
 };
@@ -518,6 +528,9 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
     const devices = useOriginalDevices();
     const refDevices = useRef(devices);
     const { isFetching } = useContext(StorageContext);
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const [newSelectedDisks, setNewSelectedDisks] = useState();
 
     useEffect(() => {
         if (refDevices.current !== undefined) {
@@ -568,11 +581,20 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                     setNextCheckStep: () => setCheckStep("mdarray"),
                 });
                 break;
-            case "mdarray":
-                await handleMDRAID({
+            case "mdarray": {
+                const _newSelectedDisks = await handleMDRAID({
                     devices,
                     onFail,
                     refDevices,
+                    setNextCheckStep: () => setCheckStep("waitingForNewSelectedDisks"),
+                });
+                setNewSelectedDisks(_newSelectedDisks);
+                break;
+            }
+            case "waitingForNewSelectedDisks":
+                await waitForNewSelectedDisks({
+                    newSelectedDisks,
+                    selectedDisks,
                     setNextCheckStep: () => setCheckStep("preparePartitioning"),
                 });
                 break;
@@ -589,7 +611,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
         };
 
         runStep();
-    }, [checkStep, devices, dispatch, isFetching, newMountPoints, onCritFail, setCheckStep, setError, useConfiguredStorage]);
+    }, [checkStep, devices, dispatch, isFetching, newMountPoints, newSelectedDisks, onCritFail, setCheckStep, selectedDisks, setError, useConfiguredStorage]);
 
     return checkStep !== undefined;
 };
