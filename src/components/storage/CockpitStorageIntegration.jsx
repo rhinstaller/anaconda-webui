@@ -166,7 +166,6 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
 export const CockpitStorageIntegration = ({
     dispatch,
     onCritFail,
-    scenarioAvailability,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -231,7 +230,6 @@ export const CockpitStorageIntegration = ({
                     <CheckStorageDialog
                       dispatch={dispatch}
                       onCritFail={onCritFail}
-                      scenarioAvailability={scenarioAvailability}
                       setShowDialog={setShowDialog}
                       setShowStorage={setShowStorage}
                     />}
