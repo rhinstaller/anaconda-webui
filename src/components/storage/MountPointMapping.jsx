@@ -228,7 +228,7 @@ const MountPointColumn = ({ handleRequestChange, idPrefix, isRecommendedMountPoi
 
     return (
         <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsNone" }}>
-            <Flex spaceItems={{ default: "spaceItemsMd" }}>
+            <Flex spaceItems={{ default: "spaceItemsMd" }} flexWrap={{ default: "nowrap" }}>
                 {((isRequiredMountPoint || isRecommendedMountPoint) && !duplicatedMountPoint) || swapMountpoint
                     ? (
                         <FlexItem
