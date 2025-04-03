@@ -461,8 +461,7 @@ const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextC
         // CLEAR_PARTITIONS_NONE = 0
         try {
             await setInitializationMode({ mode: 0 });
-            const selectedDisks = getSelectedDisks();
-            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, selectedDisks });
+            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints });
 
             // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
             // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
