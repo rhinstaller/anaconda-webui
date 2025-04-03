@@ -76,6 +76,7 @@ import {
     getDeviceChildren,
     getUsableDevicesManualPartitioning,
 } from "../../helpers/storage.js";
+import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
 
@@ -239,7 +240,7 @@ export const CockpitStorageIntegration = ({
     );
 };
 
-export const preparePartitioning = async ({ devices, newMountPoints }) => {
+export const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
     try {
         const selectedDisks = await getSelectedDisks();
         const partitioning = await createPartitioning({ method: "MANUAL" });
@@ -312,7 +313,7 @@ export const preparePartitioning = async ({ devices, newMountPoints }) => {
         await setManualPartitioningRequests({ partitioning, requests });
         return [partitioning, requests];
     } catch (error) {
-        console.error("Failed to prepare partitioning", error);
+        onFail(error);
     }
 };
 
@@ -320,6 +321,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
     debug("cockpit-storage-integration: mdarray step started");
 
     const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
+    let ret;
 
     // In blivet we recognize two "types" of MD array:
     // * The array is directly on top of disks: in this case we consider the array to be a disk
@@ -351,11 +353,13 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
             }
         }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
 
-        if (newSelectedDisks.find(disk => selectedDisks.indexOf(disk) === -1) || selectedDisks.find(disk => newSelectedDisks.indexOf(disk) === -1)) {
+        if (!checkIfArraysAreEqual(selectedDisks, newSelectedDisks)) {
             setSelectedDisks({ drives: newSelectedDisks });
+            ret = newSelectedDisks;
         }
 
         setNextCheckStep();
+        return ret;
     };
 
     // Check if we have mdarrays that are not fitting in the above two scenarios
@@ -390,7 +394,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
         return;
     }
 
-    setNewSelectedDisks();
+    return setNewSelectedDisks();
 };
 
 const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
@@ -448,6 +452,12 @@ const waitForUnlockedDevices = ({ devices, setNextCheckStep }) => {
     }
 };
 
+const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheckStep }) => {
+    if (!newSelectedDisks || checkIfArraysAreEqual(newSelectedDisks, selectedDisks)) {
+        setNextCheckStep();
+    }
+};
+
 const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
     // If "Use configured storage" is not available, skip Manual partitioning creation
     if (!useConfiguredStorage) {
@@ -461,8 +471,7 @@ const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextC
         // CLEAR_PARTITIONS_NONE = 0
         try {
             await setInitializationMode({ mode: 0 });
-            const selectedDisks = getSelectedDisks();
-            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, selectedDisks });
+            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, onFail });
 
             // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
             // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
@@ -519,6 +528,9 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
     const devices = useOriginalDevices();
     const refDevices = useRef(devices);
     const { isFetching } = useContext(StorageContext);
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const [newSelectedDisks, setNewSelectedDisks] = useState();
 
     useEffect(() => {
         if (refDevices.current !== undefined) {
@@ -569,11 +581,20 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                     setNextCheckStep: () => setCheckStep("mdarray"),
                 });
                 break;
-            case "mdarray":
-                await handleMDRAID({
+            case "mdarray": {
+                const _newSelectedDisks = await handleMDRAID({
                     devices,
                     onFail,
                     refDevices,
+                    setNextCheckStep: () => setCheckStep("waitingForNewSelectedDisks"),
+                });
+                setNewSelectedDisks(_newSelectedDisks);
+                break;
+            }
+            case "waitingForNewSelectedDisks":
+                await waitForNewSelectedDisks({
+                    newSelectedDisks,
+                    selectedDisks,
                     setNextCheckStep: () => setCheckStep("preparePartitioning"),
                 });
                 break;
@@ -590,7 +611,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
         };
 
         runStep();
-    }, [checkStep, devices, dispatch, isFetching, newMountPoints, onCritFail, setCheckStep, setError, useConfiguredStorage]);
+    }, [checkStep, devices, dispatch, isFetching, newMountPoints, newSelectedDisks, onCritFail, setCheckStep, selectedDisks, setError, useConfiguredStorage]);
 
     return checkStep !== undefined;
 };
