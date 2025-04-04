@@ -163,17 +163,27 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
 
 const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setShowStorage }) => {
     const [error, setError] = useState();
-    const storageStepsInProgress = useStorageSetup({
+
+    const [loadingNewStorage, setLoadingNewStorage] = useState(true);
+    const [needsNewPartitioning, setNeedsNewPartitioning] = useState(true);
+
+    const loadingCommonProps = {
         dispatch,
         onCritFail,
         setError,
-    });
-    const loading = !error && storageStepsInProgress;
+    };
 
     return (
         <>
-            {loading && <CheckStorageDialogLoading />}
-            {!loading &&
+            {!error && loadingNewStorage &&
+                <CheckStorageDialogLoadingNewStorage
+                  setLoadingNewStorage={setLoadingNewStorage} {...loadingCommonProps}
+                />}
+            {!error && !loadingNewStorage && needsNewPartitioning &&
+                <CheckStorageDialogLoadingNewPartitioning
+                  setNeedsNewPartitioning={setNeedsNewPartitioning} {...loadingCommonProps}
+                />}
+            {(error || (!loadingNewStorage && !needsNewPartitioning)) &&
                 <CheckStorageDialogLoaded
                   error={error}
                   setShowDialog={setShowDialog}
@@ -485,59 +495,6 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
     }
 };
 
-const prepareAndApplyPartitioning = ({ devices, dispatch, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage, useFreeSpace }) => {
-    // If "Use configured storage" is not available, skip Manual partitioning creation
-    if (!useConfiguredStorage) {
-        if (useFreeSpace) {
-            dispatch(setStorageScenarioAction("use-free-space"));
-        } else {
-            dispatch(setStorageScenarioAction(""));
-        }
-        setNextCheckStep();
-        return;
-    } else {
-        dispatch(setStorageScenarioAction("use-configured-storage"));
-    }
-
-    debug("cockpit-storage-integration: prepare partitioning step started");
-
-    const applyNewPartitioning = async () => {
-        // CLEAR_PARTITIONS_NONE = 0
-        try {
-            await setInitializationMode({ mode: 0 });
-            const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, onFail });
-
-            // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
-            // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
-            // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
-            const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
-            // PMBR does not have a bootloader necessarily
-            const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
-            const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
-            if (bootloaderDriveMDRAID) {
-                throw Error(
-                    cockpit.format(
-                        _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
-                        bootloaderRequest["format-type"].v,
-                        devices[bootloaderDriveMDRAID].name.v
-                    )
-                );
-            }
-
-            applyStorage({
-                devices,
-                onFail,
-                onSuccess: setNextCheckStep,
-                partitioning,
-            });
-        } catch (exc) {
-            onFail(exc);
-        }
-    };
-
-    applyNewPartitioning();
-};
-
 const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
     debug("cockpit-storage-integration: rescan step started");
 
@@ -565,9 +522,6 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const [newSelectedDisks, setNewSelectedDisks] = useState();
-    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
-    const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
-    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
 
     useEffect(() => {
         if (refDevices.current !== undefined) {
@@ -632,18 +586,7 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
                 await waitForNewSelectedDisks({
                     newSelectedDisks,
                     selectedDisks,
-                    setNextCheckStep: () => setCheckStep("preparePartitioning"),
-                });
-                break;
-            case "preparePartitioning":
-                await prepareAndApplyPartitioning({
-                    devices,
-                    dispatch,
-                    newMountPoints,
-                    onFail,
                     setNextCheckStep: () => setCheckStep(),
-                    useConfiguredStorage,
-                    useFreeSpace,
                 });
                 break;
             }
@@ -655,14 +598,11 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
         devices,
         dispatch,
         isFetching,
-        newMountPoints,
         newSelectedDisks,
         onCritFail,
         selectedDisks,
         setCheckStep,
         setError,
-        useConfiguredStorage,
-        useFreeSpace,
     ]);
 
     return checkStep !== undefined;
@@ -686,6 +626,94 @@ const CheckStorageDialogLoading = () => {
         >
             {loadingDescription}
         </Modal>
+    );
+};
+
+const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setError, setLoadingNewStorage }) => {
+    const loadingNewStorage = useStorageSetup({
+        dispatch,
+        onCritFail,
+        setError,
+    });
+
+    useEffect(() => {
+        setLoadingNewStorage(loadingNewStorage);
+    }, [loadingNewStorage, setLoadingNewStorage]);
+
+    return <CheckStorageDialogLoading />;
+};
+
+const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, setError, setNeedsNewPartitioning }) => {
+    const devices = useOriginalDevices();
+    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
+    const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
+    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        if (mounted.current || useConfiguredStorage === undefined || useFreeSpace === undefined) {
+            return;
+        }
+        mounted.current = true;
+
+        // If "Use configured storage" is not available, skip Manual partitioning creation
+        if (!useConfiguredStorage) {
+            if (useFreeSpace) {
+                dispatch(setStorageScenarioAction("use-free-space"));
+            } else {
+                dispatch(setStorageScenarioAction(""));
+            }
+            setNeedsNewPartitioning(false);
+            return;
+        } else {
+            dispatch(setStorageScenarioAction("use-configured-storage"));
+        }
+
+        const onFail = (exc) => {
+            setError(exc);
+            setNeedsNewPartitioning(false);
+        };
+        debug("cockpit-storage-integration: prepare partitioning step started");
+
+        const applyNewPartitioning = async () => {
+            // CLEAR_PARTITIONS_NONE = 0
+            try {
+                await setInitializationMode({ mode: 0 });
+                const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, onFail });
+
+                // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
+                // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
+                // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
+                const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
+                // PMBR does not have a bootloader necessarily
+                const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
+                const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
+                if (bootloaderDriveMDRAID) {
+                    throw Error(
+                        cockpit.format(
+                            _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
+                            bootloaderRequest["format-type"].v,
+                            devices[bootloaderDriveMDRAID].name.v
+                        )
+                    );
+                }
+
+                applyStorage({
+                    devices,
+                    onFail,
+                    onSuccess: () => setNeedsNewPartitioning(false),
+                    partitioning,
+                });
+            } catch (exc) {
+                onFail(exc);
+            }
+        };
+
+        applyNewPartitioning();
+    }, [devices, dispatch, newMountPoints, setError, setNeedsNewPartitioning, useConfiguredStorage, useFreeSpace]);
+
+    return (
+        <CheckStorageDialogLoading />
     );
 };
 
