@@ -277,7 +277,7 @@ export const DeviceColumnSelect = ({
         const deviceName = deviceData[device].name.v;
 
         const ancestors = getDeviceAncestors(deviceData, device);
-        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "disk");
+        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor]["is-disk"].v);
         const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
         const typeLabel = device[parentPartition]?.attrs?.v?.["partition-type-name"] || "";
 
