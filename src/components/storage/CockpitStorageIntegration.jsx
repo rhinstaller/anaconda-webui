@@ -331,25 +331,30 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
     // for the new mdarrays to be handled as such.
     const setNewSelectedDisks = async () => {
         const selectedDisks = await getSelectedDisks();
-        const newSelectedDisks = selectedDisks.reduce((acc, disk) => {
-            if (!devices[disk]) {
-                if (refDevices.current[disk]?.parents.v) {
-                    debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
-                    return [...acc, ...refDevices.current[disk].parents.v];
-                } else {
-                    debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
-                    return acc;
-                }
-            }
-            const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
-            if (mdArray.length > 0) {
-                debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
-                return [...acc, mdArray[0]];
-            } else {
-                debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
-                return [...acc, disk];
-            }
-        }, []).filter((disk, index, disks) => disks.indexOf(disk) === index);
+        const newSelectedDisks = selectedDisks
+                .reduce((acc, disk) => {
+                    if (!devices[disk]) {
+                        if (refDevices.current[disk]?.parents.v) {
+                            debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
+                            return [...acc, ...refDevices.current[disk].parents.v];
+                        } else {
+                            debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
+                            return acc;
+                        }
+                    }
+                    return [...acc, disk];
+                }, [])
+                .reduce((acc, disk) => {
+                    const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
+                    if (mdArray.length > 0) {
+                        debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
+                        return [...acc, mdArray[0]];
+                    } else {
+                        debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
+                        return [...acc, disk];
+                    }
+                }, [])
+                .filter((disk, index, disks) => disks.indexOf(disk) === index);
 
         if (!checkIfArraysAreEqual(selectedDisks, newSelectedDisks)) {
             setSelectedDisks({ drives: newSelectedDisks });
