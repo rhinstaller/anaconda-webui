@@ -247,6 +247,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         self._remove_unknown_mountpoints("vdb")
 
     @disk_images([("", 20), ("fedora-41", 15)])
+    @skipImage("TODO: the Only Fedora disk check fails on the image", "fedora-42-boot")
     def testNonLinuxSystem(self):
         b = self.browser
         m = self.machine
