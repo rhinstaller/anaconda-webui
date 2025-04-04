@@ -29,7 +29,6 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-@nondestructive
 class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     def _remove_unknown_mountpoints(self):
         # Remove the /var subvolume from the default btrfs layout
@@ -47,6 +46,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     @run_boot("bios", "efi")
     @disk_images([("fedora-rawhide", 15)])
+    @nondestructive
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -80,6 +80,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
                          action="mount")
 
     @disk_images([("fedora-rawhide", 15)])
+    @nondestructive
     def testHidden(self):
         b = self.browser
         m = self.machine
@@ -109,7 +110,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         # Create standard encrypted btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the Fedora encrypted layout
         # Then eject the fedora disk
-        self.addCleanup(m.execute, "killall -9 rsync || true")
         self.machine.execute(f"""
         set -xe
 
@@ -193,6 +193,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    @nondestructive
     def testMultipleRoots(self):
         b = self.browser
         m = self.machine
