@@ -62,10 +62,10 @@ class StorageDestination():
         b = self.browser
         b.click(f"#{INSTALLATION_METHOD}-change-destination-button")
         b.click(f"#{INSTALLATION_METHOD}-rescan-disks")
-        b.wait_visible(f"#{INSTALLATION_METHOD}-rescan-disks.pf-m-disabled")
+        b.wait_visible(f"#{INSTALLATION_METHOD}-rescan-disks[aria-disabled='true']")
         # Default 15 seconds is not always enough for re-scanning disks
         with b.wait_timeout(60):
-            b.wait_not_present(f"#{INSTALLATION_METHOD}-rescan-disks.pf-m-disabled")
+            b.wait_not_present(f"#{INSTALLATION_METHOD}-rescan-disks[aria-disabled='true']")
 
         for disk in expected_disks or []:
             b.wait_visible(f"#{INSTALLATION_METHOD}-disk-selection-menu-item-{disk}")
@@ -168,14 +168,14 @@ class StorageEncryption():
         # The devices that were successfully unlocked should appear in the info alert
         if len(successfully_unlocked_devices) > 0:
             b.wait_in_text(
-                "#unlock-device-dialog .pf-v5-c-alert.pf-m-info",
+                "#unlock-device-dialog .pf-v6-c-alert.pf-m-info",
                 f"Successfully unlocked {', '.join(successfully_unlocked_devices)}."
             )
 
         # If the user did not unlock any device after submiting the form expect a warning
         if successfully_unlocked_devices == []:
             fail_text = "Passphrase did not match any locked device"
-            b.wait_in_text("#unlock-device-dialog .pf-v5-c-helper-text", fail_text)
+            b.wait_in_text("#unlock-device-dialog .pf-v6-c-helper-text", fail_text)
 
     def unlock_all_encrypted(self):
         self.browser.click(f"#{INSTALLATION_METHOD}-unlock-devices-btn")
@@ -518,7 +518,7 @@ class StorageReclaimDialog():
 
     def reclaim_modal_submit_and_check_warning(self, warning):
         self.browser.click("button:contains('Reclaim space')")
-        self.browser.wait_in_text("#reclaim-space-modal .pf-v5-c-alert", warning)
+        self.browser.wait_in_text("#reclaim-space-modal .pf-v6-c-alert", warning)
 
     def reclaim_shrink_device(self, device, new_size, current_size=None, rowIndex=None):
         self.browser.click(
@@ -637,21 +637,23 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         self.browser.set_input_text(f"{self.table_row(row)} td[data-label='Mount point'] input", mountpoint)
 
     def select_mountpoint_row_device(self, row, device, device_id=None):
-        selector = f"{self.table_row(row)}"
+        toggle_selector = f"{self.table_row(row)}-device-select-toggle:not([disabled]):not([aria-disabled=true])"
+        self.browser.click(toggle_selector)
 
-        self.browser.click(f"{selector}-device-select-toggle:not([disabled]):not([aria-disabled=true])")
         if device_id:
-            select_entry = f"{selector} ul button[data-device-id='{device_id}']"
+            item_selector = f".pf-v6-c-menu li[data-device-id='{device_id}']"
         else:
-            select_entry = f"{selector} ul button[data-device-name='{device}']"
-        self.browser.click(select_entry)
-        self.browser.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", device)
+            item_selector = f".pf-v6-c-menu li[data-device-name='{device}']"
+
+        self.browser.click(item_selector)
+        self.browser.wait_not_present(".pf-v6-c-menu")
+        self.browser.wait_in_text(f"{self.table_row(row)} .pf-v6-c-select__toggle-text", device)
 
     def toggle_mountpoint_row_device(self, row):
         self.browser.click(f"{self.table_row(row)}-device-select-toggle")
 
     def check_mountpoint_row_device(self, row, device):
-        self.browser.wait_text(f"{self.table_row(row)} .pf-v5-c-select__toggle-text", device)
+        self.browser.wait_text(f"{self.table_row(row)} .pf-v6-c-select__toggle-text", device)
 
     def check_mountpoint_row_mountpoint(self, row, mountpoint, constrained=True):
         if constrained:
@@ -661,11 +663,11 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def check_mountpoint_row_format_type(self, row, format_type):
         self.toggle_mountpoint_row_device(row)
-        self.browser.wait_in_text(f"{self.table_row(row)} ul li button.pf-m-selected", format_type)
+        self.browser.wait_in_text(".pf-v6-c-menu__item.pf-m-selected", format_type)
         self.toggle_mountpoint_row_device(row)
 
     def check_mountpoint_row_device_available(self, row, device, available=True, disabled=False):
-        disabled_selector = ".pf-m-disabled" if disabled else ":not(.pf-m-disabled)"
+        disabled_selector = "[aria-disabled='true']" if disabled else ":not([aria-disabled='true'])"
 
         self.toggle_mountpoint_row_device(row)
         main_selector = f"{self.table_row(row)} ul li button"
@@ -694,9 +696,9 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
 
     def wait_mountpoint_table_column_helper(self, row, column, text=None, present=True):
         if present:
-            self.browser.wait_in_text(f"#{CUSTOM_MOUNT_POINT}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error", text)
+            self.browser.wait_in_text(f"#{CUSTOM_MOUNT_POINT}-table-row-{row}-{column} .pf-v6-c-helper-text__item.pf-m-error", text)
         else:
-            self.browser.wait_not_present(f"#{CUSTOM_MOUNT_POINT}-table-row-{row}-{column} .pf-v5-c-helper-text__item.pf-m-error")
+            self.browser.wait_not_present(f"#{CUSTOM_MOUNT_POINT}-table-row-{row}-{column} .pf-v6-c-helper-text__item.pf-m-error")
 
 
 class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):

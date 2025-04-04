@@ -120,7 +120,7 @@ class LanguageSelector extends React.Component {
                   key={`${prefix}-${getLocaleId(locale)}`}
                   itemId={getLocaleId(locale)}
                   ref={scrollRef}
-                  style={isSelected ? { backgroundColor: "var(--pf-v5-c-menu__list-item--hover--BackgroundColor)" } : undefined}
+                  style={isSelected ? { backgroundColor: "var(--pf-v6-c-menu__list-item--hover--BackgroundColor)" } : undefined}
                 >
                     <div lang={convertToCockpitLang({ lang: getLocaleId(locale) })}>
                         <span>{getLocaleNativeName(locale)}</span>
@@ -199,7 +199,7 @@ class LanguageSelector extends React.Component {
             return [
                 <MenuItem
                   id={`${SCREEN_ID}-search-no-result`}
-                  isDisabled
+                  isAriaDisabled
                   key="no-result"
                 >
                     {_("No results found")}
@@ -267,12 +267,11 @@ class LanguageSelector extends React.Component {
                     {this.state.search && (
                         <TextInputGroupUtilities>
                             <Button
+                              icon={<TimesIcon />}
                               variant="plain"
                               onClick={() => this.setState({ search: "" })}
                               aria-label={_("Clear search input")}
-                            >
-                                <TimesIcon />
-                            </Button>
+                            />
                         </TextInputGroupUtilities>
                     )}
                 </TextInputGroup>
