@@ -30,13 +30,13 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-@nondestructive
 class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     # FIXME: Re-enable bios test, it's currently failing in CI to detect the BIOS boot partition
     # @run_boot("bios", "efi")
     @run_boot("efi")
     @disk_images([("", 15), ("fedora-41", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    @nondestructive
     def testBasic(self):
         b = self.browser
         m = self.machine
@@ -143,6 +143,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk = "/dev/vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
+    @nondestructive
     def testNoRootMountPoint(self):
         b = self.browser
         m = self.machine
@@ -188,6 +189,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(disk2, [("", "xfs")])
 
     @disk_images([("", 15), ("", 10)])
+    @nondestructive
     def testMultipleDisks(self):
         b = self.browser
         m = self.machine
@@ -390,6 +392,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         cryptsetup luksClose encrypted-vol2
         """)
 
+    @nondestructive
     def testEncryptedUnlock(self):
         b = self.browser
         m = self.machine
@@ -440,6 +443,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(dev1, "/", "vda3", "", True, "xfs", True)
 
+    @nondestructive
     def testEncryptedUnlockCockpit(self):
         b = self.browser
         m = self.machine
@@ -529,6 +533,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         )
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    @nondestructive
     def testDuplicateDeviceNames(self):
         # https://bugzilla.redhat.com/show_bug.cgi?id=2237878
         b = self.browser
@@ -573,6 +578,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk = "/dev/vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
 
+    @nondestructive
     def testUnusableFormats(self):
         b = self.browser
         m = self.machine
@@ -619,6 +625,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         """)
 
     @run_boot("efi")
+    @nondestructive
     def testExtendedPartition(self):
         b = self.browser
         m = self.machine
