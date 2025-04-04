@@ -63,7 +63,6 @@ const InstallationScenarioSelector = ({
     idPrefix,
     isFormDisabled,
     setIsFormValid,
-    showStorage,
 }) => {
     const { diskSelection } = useContext(StorageContext);
     const { mountPoints } = useOriginalDeviceTree();
@@ -77,11 +76,6 @@ const InstallationScenarioSelector = ({
 
     useEffect(() => {
         let selectedScenarioId = "";
-
-        // Don't mess up with the scenarios while cockpit storage mode is active
-        if (showStorage) {
-            return;
-        }
 
         if (scenarioAvailabilityLoading) {
             return;
@@ -107,7 +101,7 @@ const InstallationScenarioSelector = ({
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
         setIsFormValid(!!selectedScenarioId);
-    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, setIsFormValid, showStorage, storageScenarioId]);
+    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, setIsFormValid, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
@@ -177,13 +171,13 @@ export const InstallationScenario = ({
                       lockedLUKSDevices={lockedLUKSDevices}
                     />
                 )}
+                {!showStorage &&
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
                   setIsFormValid={setIsFormValid}
-                  showStorage={showStorage}
-                />
+                />}
             </FormGroup>
         </FormSection>
     );
