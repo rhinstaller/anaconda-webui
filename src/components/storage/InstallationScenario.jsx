@@ -71,7 +71,6 @@ const InstallationScenarioSelector = ({
     idPrefix,
     isFormDisabled,
     setIsFormValid,
-    showStorage,
 }) => {
     const { appliedPartitioning, diskSelection, partitioning } = useContext(StorageContext);
     const { devices, mountPoints } = useOriginalDeviceTree();
@@ -131,11 +130,6 @@ const InstallationScenarioSelector = ({
     useEffect(() => {
         let selectedScenarioId = "";
 
-        // Don't mess up with the scenarios while cockpit storage mode is active
-        if (showStorage) {
-            return;
-        }
-
         if (storageScenarioId && scenarioAvailability[storageScenarioId].available === undefined) {
             return;
         }
@@ -160,7 +154,7 @@ const InstallationScenarioSelector = ({
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
         setIsFormValid(!!selectedScenarioId);
-    }, [dispatch, mountPoints, scenarioAvailability, setIsFormValid, showStorage, storageScenarioId]);
+    }, [dispatch, mountPoints, scenarioAvailability, setIsFormValid, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
@@ -200,7 +194,6 @@ export const InstallationScenario = ({
     isFirstScreen,
     isFormDisabled,
     setIsFormValid,
-    showStorage,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
@@ -231,7 +224,6 @@ export const InstallationScenario = ({
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
                   setIsFormValid={setIsFormValid}
-                  showStorage={showStorage}
                 />
             </FormGroup>
         </FormSection>

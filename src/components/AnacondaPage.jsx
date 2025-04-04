@@ -28,6 +28,7 @@ export const AnacondaPage = ({
     isFirstScreen,
     isFormDisabled,
     setIsFormDisabled,
+    showStorage,
     step,
     title,
     usePageInit,
@@ -53,7 +54,9 @@ export const AnacondaPage = ({
         }
     }, [isFormDisabled]);
 
-    if (!showPage) {
+    // Don't try to render anything while cockpit storage mode is active
+    // as background API calls might cause UnknownDeviceError
+    if (!showPage || showStorage) {
         return null;
     }
 
