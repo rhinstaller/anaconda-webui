@@ -278,7 +278,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Create standard btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the installation on MBR disk.
         # Then eject the fedora disk
-        self.addCleanup(m.execute, "killall -9 rsync || true")
         self.machine.execute(f"""
         set -xe
 
