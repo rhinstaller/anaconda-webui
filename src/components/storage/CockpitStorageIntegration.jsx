@@ -166,7 +166,6 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
 export const CockpitStorageIntegration = ({
     dispatch,
     onCritFail,
-    scenarioAvailability,
     setShowStorage,
 }) => {
     const [showDialog, setShowDialog] = useState(false);
@@ -231,7 +230,6 @@ export const CockpitStorageIntegration = ({
                     <CheckStorageDialog
                       dispatch={dispatch}
                       onCritFail={onCritFail}
-                      scenarioAvailability={scenarioAvailability}
                       setShowDialog={setShowDialog}
                       setShowStorage={setShowStorage}
                     />}
@@ -545,7 +543,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
         }
 
         // Avoid re-running a step if it's already running
-        if (refCheckStep.current === checkStep && !checkStep.startsWith("waitingFor")) {
+        if (checkStep && refCheckStep.current === checkStep && !checkStep.startsWith("waitingFor")) {
             return;
         }
         refCheckStep.current = checkStep;
