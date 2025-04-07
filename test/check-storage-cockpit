@@ -538,6 +538,32 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
             f"'{bootloaderType}' partition on MDRAID device SOMERAID found. Bootloader partitions on MDRAID devices are not supported."
         )
 
+    def _createRAID(self, disks, level, name):
+        """ Create a RAID device with the given disks, level and name """
+
+        b = self.browser
+
+        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
+        self.dialog_wait_open()
+        self.dialog_set_val("level", level)
+        self.dialog_set_val("disks", disks)
+        self.dialog_set_val("name", name)
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        b.wait_visible(self.card_row("Storage", name=f"md/{name}"))
+
+    def _delete_storage(self, index):
+        """ Delete the storage device with the given index """
+
+        b = self.browser
+
+        self.click_dropdown(self.card_row("Storage", index), "Delete")
+        self.dialog_apply()
+        self.dialog_wait_close()
+
+        b.wait_not_present(self.card_row("Storage", index))
+
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testCalculateSelectedDisksRAID(self):
@@ -557,13 +583,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_frame("cockpit-storage")
 
         # Create RAID device on vda, vdb, and vdc
-        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
-        self.dialog_wait_open()
-        self.dialog_set_val("level", "raid0")
-        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
-        self.dialog_set_val("name", "SOMERAID")
-        self.dialog_apply()
-        self.dialog_wait_close()
+        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
@@ -577,9 +597,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_frame("cockpit-storage")
 
         # Delete RAID device and expect the disk selection to be set back to the parent disks
-        self.click_dropdown(self.card_row("Storage", 4), "Delete")
-        self.dialog_apply()
-        self.dialog_wait_close()
+        self._delete_storage(4)
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
@@ -595,13 +613,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_frame("cockpit-storage")
 
         # Create RAID device on vda, vdb
-        self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
-        self.dialog_wait_open()
-        self.dialog_set_val("level", "raid0")
-        self.dialog_set_val("disks", {"vda": True, "vdb": True})
-        self.dialog_set_val("name", "SOMERAID")
-        self.dialog_apply()
-        self.dialog_wait_close()
+        self._createRAID({"vda": True, "vdb": True}, "raid0", "SOMERAID")
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
@@ -616,9 +628,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.confirm_entering_cockpit_storage()
         b.switch_to_frame("cockpit-storage")
 
-        self.click_dropdown(self.card_row("Storage", 4), "Delete")
-        self.dialog_apply()
-        b.wait_not_present(self.card_row("Storage", 4))
+        self._delete_storage(4)
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
@@ -627,6 +637,37 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         for disk in ["vda", "vdb", "vdc"]:
             s.check_disk_selected(disk)
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Create RAID device on vda, vdb, and vdc, then delete it and create a new one with another name
+        # before returning to installation
+        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
+
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_cancel()
+
+        b.switch_to_frame("cockpit-storage")
+        self._delete_storage(4)
+
+        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID2")
+
+        # Exit the cockpit-storage iframe and return to installation
+        b.switch_to_top()
+        s.return_to_installation()
+        s.return_to_installation_confirm()
+        s.check_disk_selected("MDRAID-SOMERAID2")
+
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.switch_to_frame("cockpit-storage")
+
+        # Delete it for the test cleanup
+        self._delete_storage(4)
+
 
     @disk_images([("", 15), ("", 15)])
     @nondestructive
