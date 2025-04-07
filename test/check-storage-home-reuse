@@ -267,9 +267,15 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         s.select_disks([("vda", True), ("vdb", True)])
         s.wait_scenario_visible("home-reuse", False)
 
+        s.check_os_detected("vda", "Windows")
+        s.check_os_detected("vda", "Fedora Linux", detected=False)
+        s.check_os_detected("vdb", "Windows", detected=False)
+        s.check_os_detected("vdb", "Fedora Linux")
+
         # Only the Fedora disk is selected
         s.select_disks([("vda", False), ("vdb", True)])
         s.wait_scenario_visible("home-reuse", True)
+
 
 if __name__ == '__main__':
     test_main()
