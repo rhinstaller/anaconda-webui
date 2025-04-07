@@ -890,7 +890,7 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         mount_point_prefix: targetSystemRoot,
     });
     // Allow to modify storage only when we are in the scenario selection page
-    const isDisabled = currentStepId !== "anaconda-screen-method";
+    const isDisabled = currentStepId !== "anaconda-screen-method" || diskSelection.selectedDisks.length === 0;
     const item = (
         <DropdownItem
           id="modify-storage"
@@ -907,10 +907,16 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
     if (!isDisabled) {
         return item;
     } else {
+        let tooltipContent;
+        if (currentStepId !== "anaconda-screen-method") {
+            tooltipContent = _("Storage editor is available only in the `Installation method` step.")
+        } else if (diskSelection.selectedDisks.length === 0) {
+            tooltipContent = _("Select at least one disk to enable the storage editor.");
+        }
         return (
             <Tooltip
               id="modify-storage-tooltip"
-              content={_("Storage editor is available only in the `Installation method` step.")}>
+              content={tooltipContent}>
                 <span>
                     {item}
                 </span>
