@@ -23,6 +23,27 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID(VirtInstallMachineCase):
+    def _wait_for_mdraid_clean(self):
+        m = self.machine
+        m.execute("""
+        # Wait for the md array to become active
+        udevadm settle
+        while [ "$(cat /sys/block/md127/md/array_state)" != "clean" ]; do
+            echo "Waiting for RAID array to become active..."
+            echo "$(cat /sys/block/md127/md/array_state)"
+            sleep 0.5
+        done
+        """, timeout=30)
+
+    def _create_mdraid(self, devices, name, fsformat=None):
+        """
+        Create a RAID array using the specified devices.
+        """
+        m = self.machine
+        m.execute(f"mdadm --create --run {name} --level=raid1 --raid-devices={len(devices)} {' '.join(devices)}")
+        if fsformat:
+            m.execute(f"mkfs.{fsformat} -f /dev/md/{name}")
+
     def _testEncryptedUnlockRAIDonLUKS_partition_disk(self):
         b = self.browser
         m = self.machine
@@ -36,9 +57,8 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         echo einszweidrei | cryptsetup luksOpen {disk}3 encrypted-vol
         echo einszweidrei | cryptsetup luksFormat {disk}4
         echo einszweidrei | cryptsetup luksOpen {disk}4 encrypted-vol2
-        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 /dev/mapper/encrypted-vol /dev/mapper/encrypted-vol2
-        mkfs.xfs /dev/md/encryptedraid
         """, timeout=90)
+        self._create_mdraid(["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"], "encryptedraid", "xfs")
 
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
@@ -82,11 +102,14 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         disk = "/dev/vda"
 
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
-        m.execute(f"""
-        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 {disk}3 {disk}4
+        self._create_mdraid([f"{disk}3", f"{disk}4"], "encryptedraid")
+        m.execute("""
         echo einszweidrei | cryptsetup luksFormat /dev/md/encryptedraid
         echo einszweidrei | cryptsetup luksOpen /dev/md/encryptedraid encrypted-vol
-        mkfs.xfs /dev/mapper/encrypted-vol
+        """)
+        self._wait_for_mdraid_clean()
+        m.execute("""
+        mkfs.xfs -f /dev/mapper/encrypted-vol
         cryptsetup luksClose /dev/mapper/encrypted-vol
         """, timeout=90)
 
