@@ -52,6 +52,13 @@ class StorageDestination():
         if size is not None:
             self.browser.wait_in_text(f"#{INSTALLATION_METHOD}-target-disk-{disk}", size)
 
+    def check_os_detected(self, disk, value, detected=True):
+        disk_sel_selector = f"#{INSTALLATION_METHOD}-target-disk-{disk}"
+        if detected:
+            self.browser.wait_visible(f"{disk_sel_selector}:contains({value})")
+        else:
+            self.browser.wait_not_present(f"{disk_sel_selector}:contains({value})")
+
     @log_step()
     def wait_no_disks(self):
         self.browser.wait_in_text("#next-helper-text",

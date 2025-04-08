@@ -87,6 +87,14 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
         }
     }
 
+    // Check that no other than Linux system (Windows, MacOS) is found
+    const allSystems = originalExistingSystems.filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
+    if (allSystems.length > linuxSystems.length) {
+        availability.available = false;
+        availability.hidden = true;
+        debug("home reuse: Non-linux existing systems found.");
+    }
+
     debug(`home reuse: Default scheme is ${autopartScheme}.`);
     if (reusedOS) {
         // Check that required autopartitioning scheme matches reused OS.
@@ -120,7 +128,6 @@ const checkHomeReuse = ({ autopartScheme, devices, originalExistingSystems, sele
     // TODO checks:
     // - luks - partitions are unlocked - enforce? allow opt-out?
     // - size ?
-    // - Windows system along (forbidden for now?)
 
     return availability;
 };
