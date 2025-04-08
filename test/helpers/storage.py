@@ -241,6 +241,19 @@ class StorageUtils(StorageDestination):
         mdadm --create --run {name} --level={raid_level} --raid-devices={len(devices)} {' '.join(devices)}
         udevadm settle
         """, timeout=90)
+        self._wait_for_mdraid_clean()
+
+    def _wait_for_mdraid_clean(self):
+        m = self.machine
+        m.execute("""
+        # Wait for the md array to become active
+        udevadm settle
+        while [ "$(cat /sys/block/md127/md/array_state)" != "clean" ]; do
+            echo "Waiting for RAID array to become active..."
+            echo "$(cat /sys/block/md127/md/array_state)"
+            sleep 0.5
+        done
+        """, timeout=30)
 
     def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
         self.machine.execute(f"""
