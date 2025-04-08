@@ -84,14 +84,12 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
 
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
     def _testEncryptedUnlockLUKSonRAID_partition_disk(self):
@@ -136,8 +134,6 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
 
         s.check_mountpoint_row_mountpoint(1, "/")
         selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v5-c-select__toggle"
