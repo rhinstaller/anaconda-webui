@@ -17,13 +17,13 @@
 
 from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
-from operating_systems import DualBootHelper_E2E
+from operating_systems import DualBootHelperDebian, DualBootHelperFedora
 from review import Review
 from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 
 
-class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
+class TestStorageUseFreeSpace_E2E(DualBootHelperDebian, DualBootHelperFedora, VirtInstallMachineCase):
 
     @disk_images([("debian-stable", 20)])
     @run_boot("bios", "efi")
@@ -49,6 +49,31 @@ class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
             root_one_size = int(root_one_size)
         root_two_size = round(18.9 - root_one_size, 1)
         self.verifyDualBootDebian(root_one_size=root_one_size, root_two_size=root_two_size)
+
+    @disk_images([("fedora-rawhide", 20)])
+    @run_boot("efi")
+    def testUseFreeSpaceDualFedora(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.check_scenario_selected("use-free-space")
+        i.next()
+        s.check_encryption_selected(False)
+        i.reach(i.steps.REVIEW)
+        r.check_checkbox_not_present()
+
+        self.install(needs_confirmation=False)
+
+        # Specify numeric values if needed, or None to skip exact size checks
+        root_one_size = None
+        root_two_size = None
+
+        self.verifyDualBootFedora(new_root_size=root_one_size, old_root_size=root_two_size)
 
 
 if __name__ == '__main__':
