@@ -280,6 +280,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Create standard btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the installation on MBR disk.
         # Then eject the fedora disk
+        self.addCleanup(m.execute, "umount /mnt || true")
+        self.addCleanup(m.execute, "umount /mnt-fedora || true")
+
         self.machine.execute(f"""
         set -xe
 
@@ -292,35 +295,18 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Copy data from the first disk / to the new disk
         mkdir -p /mnt-fedora
         mount /dev/{dev_fedora}4 /mnt-fedora
-        rsync -pogAXtlHrDx \
-            --stats \
-            --verbose \
-            --progress \
-            --exclude=/dev/* \
-            --exclude=/proc/* \
-            --exclude=/sys/* \
-            --exclude=/tmp/* \
-            --exclude=/run/* \
-            --exclude=/mnt/* \
-            --exclude=/media/* \
-            --exclude=/lost+found \
-            --exclude=/var/lib/machines \
-            --exclude=/var \
-            /mnt-fedora/* /mnt
 
-        #/mnt-fedora/* /mnt
+        udevadm settle
+
+        # copy only /mnt/root/etc/os-release and /mnt/root/etc/fstab for faking an existing system
+        mkdir -p /mnt/root/etc
+        cp /mnt-fedora/root/etc/os-release /mnt/root/etc/
+        cp /mnt-fedora/root/etc/fstab /mnt/root/etc/
+
         # Adjust /etc/fstab to contain the new device UUIDS
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}1) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
-
-        umount /mnt-fedora
-        umount /mnt
-
-        # Do the same for /boot
-        mount /dev/{dev}1 /mnt
-        mount /dev/{dev_fedora}3 /mnt-fedora
-        rsync -aAXHv /mnt-fedora/ /mnt/
 
         umount /mnt-fedora
         umount /mnt
@@ -331,6 +317,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         self.move_standard_fedora_disk_to_MBR_disk("/dev/vda", "vdb")
 
     @disk_images([("", 15), ("fedora-41", 15)])
+    @nondestructive
     def testMBRParttable(self):
         b = self.browser
         m = self.machine
