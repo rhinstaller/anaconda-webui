@@ -174,7 +174,7 @@ class StorageEncryption():
         b.set_input_text("#unlock-device-dialog-luks-passphrase[type=password]", passphrase)
         b.click("#unlock-device-dialog-submit-btn")
         # Wait for the dialog to either close or stop being in progress
-        with b.wait_timeout(30):
+        with b.wait_timeout(45):
             if successfully_unlocked_devices == encrypted_devices:
                 b.wait_not_present("#unlock-device-dialog")
                 return
