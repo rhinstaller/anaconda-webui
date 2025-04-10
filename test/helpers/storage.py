@@ -643,8 +643,9 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         for (disk, selected) in disks:
             self.check_disk_selected(disk, selected)
 
-    def select_mountpoint(self, disks):
-        self.select_disks(disks)
+    def select_mountpoint(self, disks=None):
+        if disks is not None:
+            self.select_disks(disks)
 
         self.set_scenario("mount-point-mapping")
 
