@@ -76,7 +76,7 @@ if [ -n "${TEST_COMPOSE-}" ]; then
     echo "FIXME" > test/reference-image
 
     # Commit the changes to the repo
-    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes"
+    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes" || echo "Skipped infra checkout commit, no changes"
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
