@@ -22,7 +22,6 @@ import React, { useContext, useEffect, useState } from "react";
 import {
     PageSection,
     PageSectionTypes,
-    PageSectionVariants,
     Wizard,
     WizardStep,
 } from "@patternfly/react-core";
@@ -72,7 +71,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
             const isVisited = firstStepId === s.id || currentStepId === s.id;
             let stepProps = {
                 id: s.id,
-                isDisabled: isFormDisabled || isFetching,
+                isAriaDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden || s.isFinal,
                 isVisited,
                 name: s.label,
@@ -102,7 +101,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 };
             }
             return (
-                <WizardStep key={s.id + s.isVisited + (stepProps.isDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
+                <WizardStep key={s.id + s.isVisited + (stepProps.isAriaDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
             );
         });
     };
@@ -123,7 +122,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const finalStep = stepsOrder[stepsOrder.length - 1];
     if (path[0] === finalStep.id) {
         return (
-            <PageSection variant={PageSectionVariants.light}>
+            <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
                 <finalStep.component {...componentProps} />
             </PageSection>
         );
@@ -145,7 +144,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     };
 
     return (
-        <PageSection type={PageSectionTypes.wizard} variant={PageSectionVariants.light}>
+        <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
             <FooterContext.Provider value={{
                 isFormDisabled: isFormDisabled || isFetching,
                 isFormValid,

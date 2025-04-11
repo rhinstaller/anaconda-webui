@@ -41,7 +41,7 @@ class Language():
     @log_step()
     def select_locale(self, locale, locale_name=None, is_common=True):
         common_prefix = "common" if is_common else "alpha"
-        if self.browser.val(f".{self._step}-search .pf-v5-c-text-input-group__text-input") != "":
+        if self.browser.val(f".{self._step}-search .pf-v6-c-text-input-group__text-input") != "":
             self.input_locale_search("")
 
         if locale_name:
@@ -51,11 +51,11 @@ class Language():
 
     @log_step()
     def get_locale_search(self):
-        return self.browser.val(f".{self._step}-search .pf-v5-c-text-input-group__text-input")
+        return self.browser.val(f".{self._step}-search .pf-v6-c-text-input-group__text-input")
 
     @log_step()
     def input_locale_search(self, text):
-        self.browser.set_input_text(f".{self._step}-search .pf-v5-c-text-input-group__text-input", text)
+        self.browser.set_input_text(f".{self._step}-search .pf-v6-c-text-input-group__text-input", text)
 
     @log_step()
     def locale_option_visible(self, locale, visible=True, is_common=True):

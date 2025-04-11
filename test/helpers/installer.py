@@ -199,7 +199,7 @@ class Installer():
         self.browser.wait_js_cond(f'window.location.hash === "#/{page}"')
 
         if page == self.steps.PROGRESS:
-            self.browser.wait_visible(".pf-v5-c-progress-stepper")
+            self.browser.wait_visible(".pf-v6-c-progress-stepper")
         else:
             self.browser.wait_visible(f"#{page}.pf-m-current")
 

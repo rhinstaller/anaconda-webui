@@ -28,10 +28,12 @@ import {
     MenuContent,
     MenuItem,
     MenuList,
-    Modal,
     Stack,
-    Title,
+    Title
 } from "@patternfly/react-core";
+import {
+    Modal
+} from "@patternfly/react-core/deprecated";
 import { SyncAltIcon } from "@patternfly/react-icons";
 
 import {
@@ -142,7 +144,7 @@ const LocalDisksSelect = ({
           icon={!isRescanningDisks && <SyncAltIcon />}
           className={idPrefix + "-disk-selection-rescan"}
           id={idPrefix + "-rescan-disks"}
-          isDisabled={isRescanningDisks}
+          isAriaDisabled={isRescanningDisks}
           isInline
           isLoading={isRescanningDisks}
           onClick={onClickRescan}
@@ -187,7 +189,7 @@ const LocalDisksSelect = ({
                                   }
                                   hasCheckbox
                                   id={idPrefix + "-disk-selection-menu-item-" + disk}
-                                  isDisabled={isRescanningDisks}
+                                  isAriaDisabled={isRescanningDisks}
                                   isSelected={unappliedSelection.includes(disk)}
                                   itemId={disk}
                                   key={disk}
@@ -342,10 +344,10 @@ const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
                       <>
                           {diskSelection.usableDisks.length > 0 && (
                               <>
-                                  <Button isDisabled={isRescanningDisks} variant="primary" onClick={onSave}>
+                                  <Button isAriaDisabled={isRescanningDisks} variant="primary" onClick={onSave}>
                                       {_("Select")}
                                   </Button>
-                                  <Button isDisabled={isRescanningDisks} variant="link" onClick={() => setIsModalOpen(false)}>
+                                  <Button isAriaDisabled={isRescanningDisks} variant="link" onClick={() => setIsModalOpen(false)}>
                                       {_("Cancel")}
                                   </Button>
                               </>)}

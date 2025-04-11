@@ -21,20 +21,21 @@ import React, { cloneElement, useContext, useEffect, useState } from "react";
 import {
     ActionList,
     Button,
+    Content,
+    ContentVariants,
     Form,
     FormGroup,
     FormHelperText,
     HelperText,
     HelperTextItem,
-    Modal,
-    ModalVariant,
     Stack,
     StackItem,
-    Text,
-    TextArea,
-    TextContent,
-    TextVariants,
+    TextArea
 } from "@patternfly/react-core";
+import {
+    Modal,
+    ModalVariant
+} from "@patternfly/react-core/deprecated";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { exitGui } from "../helpers/exit.js";
@@ -155,7 +156,7 @@ export const BZReportModal = ({
                           <Button
                             variant="primary"
                             isLoading={preparingReport}
-                            isDisabled={logContent === undefined || preparingReport || !isConnected}
+                            isAriaDisabled={logContent === undefined || preparingReport || !isConnected}
                             icon={<ExternalLinkAltIcon />}
                             onClick={() => { openBZIssue(reportLinkURL, logFile, logContent); return false }}
                             component="a">
@@ -183,7 +184,7 @@ export const BZReportModal = ({
                       onChange={(_, value) => setLogContent(value)}
                       resizeOrientation="vertical"
                       id={idPrefix + "-bz-report-modal-review-log"}
-                      isDisabled={logContent === undefined || preparingReport}
+                      isAriaDisabled={logContent === undefined || preparingReport}
                       rows={25}
                     />
                 </FormGroup>
@@ -217,16 +218,16 @@ const exceptionInfo = (exception, idPrefix) => {
     const frontendMessage = exception.frontendException?.message ? exception.frontendException.message : "";
 
     return (
-        <TextContent id={idPrefix + "-bz-report-modal-details"}>
+        <Content id={idPrefix + "-bz-report-modal-details"}>
             {backendMessage &&
-            <Text component={TextVariants.p}>
+            <Content component={ContentVariants.p}>
                 {exceptionNamePrefix + backendMessage}
-            </Text>}
+            </Content>}
             {frontendMessage &&
-            <Text component={TextVariants.p}>
+            <Content component={ContentVariants.p}>
                 {exceptionNamePrefix + frontendMessage}
-            </Text>}
-        </TextContent>
+            </Content>}
+        </Content>
     );
 };
 

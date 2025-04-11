@@ -42,17 +42,17 @@ class TestInstallationProgress(VirtInstallMachineCase):
 
         with b.wait_timeout(300):
             b.wait_in_text("h2", "Installing")
-            b.wait_in_text(".pf-v5-c-empty-state", "Storage configuration: Storage is currently being configured.")
-            b.wait_in_text(".pf-v5-c-empty-state", "Software installation: Storage configuration complete. The "
+            b.wait_in_text(".pf-v6-c-empty-state", "Storage configuration: Storage is currently being configured.")
+            b.wait_in_text(".pf-v6-c-empty-state", "Software installation: Storage configuration complete. The "
                                                    "software is now being installed onto your device.")
-            b.wait_in_text(".pf-v5-c-empty-state", "System configuration: Software installation complete. The system "
+            b.wait_in_text(".pf-v6-c-empty-state", "System configuration: Software installation complete. The system "
                                                    "is now being configured.")
-            b.wait_in_text(".pf-v5-c-empty-state", "Finalizing: The system configuration is complete. Finalizing "
+            b.wait_in_text(".pf-v6-c-empty-state", "Finalizing: The system configuration is complete. Finalizing "
                                                    "installation may take a few moments.")
 
         p.wait_done()
         b.wait_in_text("h2", "Successfully installed")
-        b.wait_in_text(".pf-v5-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
+        b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
 
         # Pixel test the complete progress step
         b.assert_pixels(
