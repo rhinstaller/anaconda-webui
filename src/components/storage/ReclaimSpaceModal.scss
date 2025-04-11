@@ -13,8 +13,12 @@
     border-block-end: none;
   }
 
-  tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-0 {
-    border-block-start: var(--pf-v5-c-table--border-width--base) solid var(--pf-v5-c-table--BorderColor);
+  // Add a border between disk rows, except for the first one,
+  // since it already has a sticky header border that we shouldn't modify.
+  tbody:not(:nth-child(2)) {
+    tr.reclaim-space-modal-table-row.reclaim-space-modal-device-level-0 {
+      border-block-start: var(--pf-v5-c-table--border-width--base) solid var(--pf-v5-c-table--BorderColor);
+    }
   }
 
   .reclaim-space-modal-device-action-delete {
@@ -138,19 +142,6 @@
     &::before {
       display: none;
     }
-  }
-
-  // Make the heading sticky
-  .pf-v5-c-table__thead {
-    // It needs to have background so when it overlaps, it's covering things up
-    background: var(--pf-v5-c-table--BackgroundColor);
-    // Re-add the outline
-    outline: 1px solid var(--pf-v5-c-table--BorderColor);
-    position: sticky;
-    top: 0;
-    // It should have z-index; since it's relative to the stacking overder,
-    // 1 is enough to be above
-    z-index: 1;
   }
 }
 

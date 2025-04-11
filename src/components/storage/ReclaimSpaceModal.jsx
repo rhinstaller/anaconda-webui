@@ -149,6 +149,7 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                 {dialogError && <ModalError variant="warning" dialogError={dialogError.text} dialogErrorDetail={dialogError.message} />}
                 <Panel variant="bordered">
                     <ListingTable
+                      isStickyHeader
                       aria-label={_("Reclaim space")}
                       columns={[
                           { props: { width: 20 }, title: _("Location") },
