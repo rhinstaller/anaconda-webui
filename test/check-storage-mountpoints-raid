@@ -15,14 +15,35 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID(VirtInstallMachineCase):
+    def _wait_for_mdraid_clean(self):
+        m = self.machine
+        m.execute("""
+        # Wait for the md array to become active
+        udevadm settle
+        while [ "$(cat /sys/block/md127/md/array_state)" != "clean" ]; do
+            echo "Waiting for RAID array to become active..."
+            echo "$(cat /sys/block/md127/md/array_state)"
+            sleep 0.5
+        done
+        """, timeout=30)
+
+    def _create_mdraid(self, devices, name, fsformat=None):
+        """
+        Create a RAID array using the specified devices.
+        """
+        m = self.machine
+        m.execute(f"mdadm --create --run {name} --level=raid1 --raid-devices={len(devices)} {' '.join(devices)}")
+        if fsformat:
+            m.execute(f"mkfs.{fsformat} -f /dev/md/{name}")
+
     def _testEncryptedUnlockRAIDonLUKS_partition_disk(self):
         b = self.browser
         m = self.machine
@@ -31,14 +52,16 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         # BIOS boot partition, /boot partition, / on RAID
         disk = "/dev/vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
+        # Settle devices otherwise we might get
+        # Device /dev/vda4 does not exist or access denied.
+        s.udevadm_settle()
         m.execute(f"""
         echo einszweidrei | cryptsetup luksFormat {disk}3
         echo einszweidrei | cryptsetup luksOpen {disk}3 encrypted-vol
         echo einszweidrei | cryptsetup luksFormat {disk}4
         echo einszweidrei | cryptsetup luksOpen {disk}4 encrypted-vol2
-        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 /dev/mapper/encrypted-vol /dev/mapper/encrypted-vol2
-        mkfs.xfs /dev/md/encryptedraid
         """, timeout=90)
+        self._create_mdraid(["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"], "encryptedraid", "xfs")
 
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
@@ -57,21 +80,19 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
         b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint()
 
         s.select_mountpoint_row_device(1, "encryptedraid")
         s.check_mountpoint_row_format_type(1, "xfs")
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
 
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
     def _testEncryptedUnlockLUKSonRAID_partition_disk(self):
@@ -82,11 +103,14 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         disk = "/dev/vda"
 
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
-        m.execute(f"""
-        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 {disk}3 {disk}4
+        self._create_mdraid([f"{disk}3", f"{disk}4"], "encryptedraid")
+        m.execute("""
         echo einszweidrei | cryptsetup luksFormat /dev/md/encryptedraid
         echo einszweidrei | cryptsetup luksOpen /dev/md/encryptedraid encrypted-vol
-        mkfs.xfs /dev/mapper/encrypted-vol
+        """)
+        self._wait_for_mdraid_clean()
+        m.execute("""
+        mkfs.xfs -f /dev/mapper/encrypted-vol
         cryptsetup luksClose /dev/mapper/encrypted-vol
         """, timeout=90)
 
@@ -109,12 +133,10 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
         b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint()
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
 
         s.check_mountpoint_row_mountpoint(1, "/")
         selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v5-c-select__toggle"
@@ -128,6 +150,68 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB",  True, "xfs", True)
+
+    def _testRAID0Scenario_0_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # BIOS boot partition, /boot partition, / on RAID
+        s.partition_disk("/dev/vda", [("1MiB", "biosboot"), ("1GB", "xfs")])
+        self.addCleanup(
+            lambda: m.execute(
+            """
+            mdadm --stop /dev/md/SOMERAID || true
+            mdadm --remove /dev/md/SOMERAID || true
+            """, timeout=90)
+        )
+        m.execute("""
+        mdadm --create --run SOMERAID --level=raid0 --raid-devices=2 /dev/vdb /dev/vdc
+        """, timeout=90)
+        # Create GPT table and / ext4 partition on the RAID device
+        m.execute(
+        """
+        sgdisk --zap-all /dev/md/SOMERAID
+        sgdisk --new=0:0:0 --typecode=0:8300 --change-name=0:'/' /dev/md/SOMERAID
+        udevadm settle
+        mkfs.ext4 -F /dev/md/SOMERAID1
+        """, timeout=90)
+
+    @nondestructive
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    def testRAID0Scenario_0(self):
+        """
+        Test scenario with three disks:
+
+        - 'biosboot' and '/boot' are on 'vda'.
+        - A RAID 0 array is created using 'vdb' and 'vdc'.
+        - The root filesystem ('/') is placed on the RAID 0 device.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([("vda", True), ("MDRAID-SOMERAID", True)]) # Select both disks
+
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, "vda2")
+        s.select_mountpoint_row_reformat(2, False)
+
+        s.check_mountpoint_row_mountpoint(1, "/")
+        s.select_mountpoint_row_device(1, "SOMERAID1")
+        s.select_mountpoint_row_reformat(1, False)
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", False)
+        r.check_disk("MDRAID-SOMERAID", "32.2 GB MDRAID-SOMERAID (MDRAID set (stripe))")
+        r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1", "32.2 GB", False)
 
 
 if __name__ == '__main__':
