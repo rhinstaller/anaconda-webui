@@ -222,9 +222,11 @@ class StorageUtils(StorageDestination):
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
     def partition_disk(self, disk, partitions_params, is_mbr=False):
+        command = "set -x\n"
+
         if is_mbr:
             # EFI: Use sfdisk and set MBR
-            command = f"wipefs -a {disk}"
+            command += f"wipefs -a {disk}"
             command += f"\necho 'label: dos' | sfdisk {disk}"
 
             partition_commands = []
@@ -302,7 +304,7 @@ class StorageUtils(StorageDestination):
 
         else:
             # Non-EFI: Use sgdisk and set GPT
-            command = f"sgdisk --zap-all {disk}"
+            command += f"sgdisk --zap-all {disk}"
 
             for i, params in enumerate(partitions_params):
                 sgdisk = ["sgdisk", f"--new=0:0{':+' + params[0] if params[0] != '' else ':0'}"]
