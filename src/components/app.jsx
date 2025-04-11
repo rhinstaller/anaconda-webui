@@ -41,7 +41,7 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
 export const ApplicationLoading = () => (
-    <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
+    <PageSection className="installation-page--loading" hasBodyWrapper={false} type={PageSectionTypes.wizard}>
         <EmptyStatePanel loading title={_("Initializing...")} />
     </PageSection>
 );
