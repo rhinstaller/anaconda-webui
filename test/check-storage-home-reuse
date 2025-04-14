@@ -126,7 +126,6 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         mkdir -p /mnt-fedora
         mount /dev/{dev_fedora}4 /mnt-fedora
         rsync -pogAXtlHrDx \
-            --stats \
             --exclude=/dev/* \
             --exclude=/proc/* \
             --exclude=/sys/* \

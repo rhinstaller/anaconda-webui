@@ -293,9 +293,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         mkdir -p /mnt-fedora
         mount /dev/{dev_fedora}4 /mnt-fedora
         rsync -pogAXtlHrDx \
-            --stats \
-            --verbose \
-            --progress \
             --exclude=/dev/* \
             --exclude=/proc/* \
             --exclude=/sys/* \
