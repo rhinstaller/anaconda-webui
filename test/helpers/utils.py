@@ -43,19 +43,25 @@ def pretend_default_scheme(test, scheme):
 def get_pretty_name(machine):
     return machine.execute("cat /etc/os-release | grep PRETTY_NAME | cut -d '\"' -f 2 | tr -d '\n'")
 
-def rsync_directory(machine, source_mountpoint, target_mountpoint):
-    machine.execute(f"""
-        set -xe
-        rsync -pogAXtlHrDx \
-            --exclude=/dev/* \
-            --exclude=/proc/* \
-            --exclude=/sys/* \
-            --exclude=/tmp/* \
-            --exclude=/run/* \
-            --exclude=/mnt/* \
-            --exclude=/media/* \
-            --exclude=/lost+found \
-            --exclude=/var/lib/machines \
-            --exclude=/var \
-            {source_mountpoint}/* {target_mountpoint}
-    """)
+def rsync_directory(machine, source_mountpoint, target_mountpoint, retry=True):
+    try:
+        machine.execute(f"""
+            set -xe
+            rsync -pogAXtlHrDx \
+                --exclude=/dev/* \
+                --exclude=/proc/* \
+                --exclude=/sys/* \
+                --exclude=/tmp/* \
+                --exclude=/run/* \
+                --exclude=/mnt/* \
+                --exclude=/media/* \
+                --exclude=/lost+found \
+                --exclude=/var/lib/machines \
+                --exclude=/var \
+                {source_mountpoint}/* {target_mountpoint}
+        """)
+    except RuntimeError as e:
+        if retry:
+            rsync_directory(machine, source_mountpoint, target_mountpoint, retry=False)
+        else:
+            raise RuntimeError(f"Error during rsync: {e}") from e
