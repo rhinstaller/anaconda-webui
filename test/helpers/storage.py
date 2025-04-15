@@ -221,6 +221,13 @@ class StorageUtils(StorageDestination):
         self.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
+    def create_raid_device(self, name, raid_level, devices):
+        self.machine.execute(f"""
+        set -ex
+        mdadm --create --run {name} --level={raid_level} --raid-devices={len(devices)} {' '.join(devices)}
+        udevadm settle
+        """, timeout=90)
+
     def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
         self.machine.execute(f"""
         set -ex

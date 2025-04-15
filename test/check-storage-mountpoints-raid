@@ -33,10 +33,8 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", close_luks=False)
         s.create_luks_partition(f"{disk}4", "einszweidrei", "encrypted-vol2", close_luks=False)
-        m.execute("""
-        mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 /dev/mapper/encrypted-vol /dev/mapper/encrypted-vol2
-        mkfs.xfs /dev/md/encryptedraid
-        """, timeout=90)
+        s.create_raid_device("encryptedraid", "raid1", ["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"])
+        m.execute("mkfs.xfs /dev/md/encryptedraid")
 
     def testEncryptedUnlockRAIDonLUKS(self):
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
@@ -80,7 +78,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         disk = "/dev/vda"
 
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
-        m.execute(f"mdadm --create --run encryptedraid --level=raid1 --raid-devices=2 {disk}3 {disk}4")
+        s.create_raid_device("encryptedraid", "raid1", [f"{disk}3", f"{disk}4"])
         s.create_luks_partition("/dev/md/encryptedraid", "einszweidrei", "encrypted-vol", "xfs")
 
     def testEncryptedUnlockLUKSonRAID(self):
