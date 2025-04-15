@@ -363,7 +363,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk1 = "/dev/vda"
         s.partition_disk(
             disk1,
-            [("1MiB", "biosboot"), ("1GB", "xfs"), ("1GB", "xfs"), ("1GB", "xfs"), ("", "xfs")]
+            [("1MiB", "biosboot"), ("1GB", None), ("1GB", None), ("1GB", None), ("1GB", "xfs")],
         )
         m.execute(f"""
         echo einszwei | cryptsetup luksFormat {disk1}2
