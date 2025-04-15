@@ -302,16 +302,16 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}1) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
 
-        umount /mnt-fedora
-        umount /mnt
+        umount -l /mnt-fedora
+        umount -l /mnt
 
         # Do the same for /boot
         mount /dev/{dev}1 /mnt
         mount /dev/{dev_fedora}3 /mnt-fedora
         rsync -aAXHv /mnt-fedora/ /mnt/
 
-        umount /mnt-fedora
-        umount /mnt
+        umount -l /mnt-fedora
+        umount -l /mnt
         """, timeout=90)
 
 

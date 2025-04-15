@@ -135,8 +135,8 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}3) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
 
-        umount /mnt-fedora
-        umount /mnt
+        umount -l /mnt-fedora
+        umount -l /mnt
         cryptsetup close crypt
 
         # Do the same for /boot
@@ -144,8 +144,8 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         mount /dev/{dev_fedora}3 /mnt-fedora
         rsync -aAXHv /mnt-fedora/ /mnt/
 
-        umount /mnt-fedora
-        umount /mnt
+        umount -l /mnt-fedora
+        umount -l /mnt
         """, timeout=90)
 
     def _testHomeReuseFedoraEncrypted_partition_disk(self):
