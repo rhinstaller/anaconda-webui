@@ -123,8 +123,6 @@ rsync:
 install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
-	# CSS Licence file is empty, so don't keep it
-	rm $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/index.css.LEGAL.txt
 	mkdir -p $(DESTDIR)/usr/share/anaconda
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
 	mkdir -p $(DESTDIR)/usr/share/applications
