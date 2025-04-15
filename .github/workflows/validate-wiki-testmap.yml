@@ -1,0 +1,55 @@
+name: validate-wiki-testmap
+on:
+  pull_request:
+    paths:
+      - test/*
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions: {}
+    container:
+      image: ghcr.io/cockpit-project/tasks
+      options: --user root
+    timeout-minutes: 10
+
+    steps:
+      # https://github.blog/2022-04-12-git-security-vulnerability-announced/
+      - name: Pacify git's permission check
+        run: git config --global --add safe.directory /__w/anaconda-webui/anaconda-webui
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get list of valid test names
+        id: list_tests
+        run: |
+          # Bring ./test/common
+          make pkg/lib/cockpit-po-plugin.js
+          ./test/common/run-tests -l > valid_tests.txt
+          echo "tests<<EOF" >> $GITHUB_OUTPUT
+          cat valid_tests.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Validate JSON entries
+        run: |
+          valid_tests=$(echo "${{ steps.list_tests.outputs.tests }}" | tr '\n' ' ')
+
+          jq -c 'to_entries[] | .value.tests[]' test/wiki-testmap.json | while read -r item; do
+            name=$(echo "$item" | jq -r '.testname')
+            url="https://fedoraproject.org/wiki/$(echo "$item" | jq -r '."fedora-wiki-testcase"')"
+
+            echo "Validating test case: $name - $url"
+
+            # Check if the URL exists
+            if ! curl --head --silent --fail "$url" > /dev/null; then
+              echo "❌ URL does not exist: $url"
+              exit 1
+            fi
+
+            # Check if the name exists in the list of tests
+            if ! grep -q -w "$name" <<< "$valid_tests"; then
+              echo "❌ Test name '$name' not found in run-tests output"
+              exit 1
+            fi
+          done

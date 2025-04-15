@@ -205,6 +205,67 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # verify review screen
         checkStorageReview()
 
+    def _testStandardPartition(self, rootfs_format):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.wait_scenario_visible("use-configured-storage", False)
+        s.check_disk_selected("vda")
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.wait_visible(".cockpit-storage-integration-sidebar")
+
+        frame = "iframe[name='cockpit-storage']"
+        b._wait_present(frame)
+        b.switch_to_frame("cockpit-storage")
+        b._wait_present("#storage.ct-page-fill")
+
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"type": rootfs_format, "mount_point": "/"})
+
+        b.switch_to_top()
+
+        def checkStorageReview(prefix=""):
+            r.check_disk(dev, "16.1 GB vda (Virtio Block Device)", prefix=prefix)
+            r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
+            r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, prefix=prefix)
+
+        s.return_to_installation()
+        checkStorageReview(prefix="#cockpit-storage-integration-check-storage-dialog")
+        s.return_to_installation_confirm()
+
+        i.reach(i.steps.REVIEW)
+        checkStorageReview()
+
+        # Check fstab
+        fstab = m.execute("cat /etc/fstab")
+        self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
+        self.assertTrue("/mnt/sysroot auto noauto 0 0" in fstab)
+
+    @nondestructive
+    def testStandardPartitionExt4(self):
+        self._testStandardPartition("ext4")
+
+    @nondestructive
+    def testStandardPartitionXFS(self):
+        self._testStandardPartition("xfs")
+
     @nondestructive
     @run_boot("efi")
     def testBtrfsTopLevelVolume(self):
