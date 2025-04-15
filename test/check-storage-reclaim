@@ -300,12 +300,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
 
         disk = "/dev/vda"
         s.partition_disk(disk, [("4GB", "ext4")])
-        m.execute(f"""
-        echo einszweidrei | cryptsetup luksFormat {disk}1
-        echo einszweidrei | cryptsetup luksOpen {disk}1 encrypted-vol
-        mkfs.ext4 -F /dev/mapper/encrypted-vol
-        cryptsetup luksClose encrypted-vol
-        """)
+        s.create_luks_partition(f"{disk}1", "einszweidrei", "encrypted-vol")
 
     def testReclaimExt4onLUKS(self):
         # Shrinking LUKS partitions is not yet supported

@@ -221,6 +221,24 @@ class StorageUtils(StorageDestination):
         self.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
+    def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
+        self.machine.execute(f"""
+        set -ex
+        echo {passphrase} | cryptsetup luksFormat {device}
+        echo {passphrase} | cryptsetup luksOpen {device} {luks_name}
+        # Create a filesystem on the LUKS device
+        if [ "{fsformat}" == "xfs" ] || [ "{fsformat}" == "btrfs" ]; then
+            mkfs.{fsformat} -f /dev/mapper/{luks_name}
+        elif [ "{fsformat}" == "ext4" ]; then
+            mkfs.{fsformat} -F /dev/mapper/{luks_name}
+        fi
+
+        udevadm settle
+        if [ "{close_luks}" == "True" ]; then
+            cryptsetup luksClose {luks_name}
+        fi
+        """)
+
     def partition_disk(self, disk, partitions_params, is_mbr=False):
         command = "set -x\n"
 

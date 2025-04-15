@@ -365,20 +365,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             disk1,
             [("1MiB", "biosboot"), ("1GB", None), ("1GB", None), ("1GB", None), ("1GB", "xfs")],
         )
-        m.execute(f"""
-        echo einszwei | cryptsetup luksFormat {disk1}2
-        echo einszwei | cryptsetup luksOpen {disk1}2 encrypted-vol0
-        mkfs.xfs -f /dev/mapper/encrypted-vol0
-        cryptsetup luksClose encrypted-vol0
-        echo einszweidrei | cryptsetup luksFormat {disk1}3
-        echo einszweidrei | cryptsetup luksOpen {disk1}3 encrypted-vol1
-        mkfs.xfs -f /dev/mapper/encrypted-vol1
-        cryptsetup luksClose encrypted-vol1
-        echo einszweidreivier | cryptsetup luksFormat {disk1}4
-        echo einszweidreivier | cryptsetup luksOpen {disk1}4 encrypted-vol2
-        mkfs.xfs -f /dev/mapper/encrypted-vol2
-        cryptsetup luksClose encrypted-vol2
-        """)
+        s.create_luks_partition(f"{disk1}2", "einszwei", "encrypted-vol0", "xfs")
+        s.create_luks_partition(f"{disk1}3", "einszweidrei", "encrypted-vol1", "xfs")
+        s.create_luks_partition(f"{disk1}4", "einszweidreivier", "encrypted-vol2", "xfs")
 
     @nondestructive
     def testEncryptedUnlock(self):
