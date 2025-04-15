@@ -23,7 +23,7 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from utils import pretend_default_scheme
+from utils import pretend_default_scheme, rsync_directory
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -292,20 +292,11 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Copy data from the first disk / to the new disk
         mkdir -p /mnt-fedora
         mount /dev/{dev_fedora}4 /mnt-fedora
-        rsync -pogAXtlHrDx \
-            --exclude=/dev/* \
-            --exclude=/proc/* \
-            --exclude=/sys/* \
-            --exclude=/tmp/* \
-            --exclude=/run/* \
-            --exclude=/mnt/* \
-            --exclude=/media/* \
-            --exclude=/lost+found \
-            --exclude=/var/lib/machines \
-            --exclude=/var \
-            /mnt-fedora/* /mnt
+        """)
 
-        #/mnt-fedora/* /mnt
+        rsync_directory(self.machine, "/mnt-fedora", "/mnt")
+
+        self.machine.execute(f"""
         # Adjust /etc/fstab to contain the new device UUIDS
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
