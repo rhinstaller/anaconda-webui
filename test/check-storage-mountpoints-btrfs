@@ -159,11 +159,8 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", "btrfs")])
+        s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", "btrfs", close_luks=False)
         m.execute(f"""
-        # encrypt the btrfs partition
-        echo einszweidrei | cryptsetup luksFormat {disk}3
-        echo einszweidrei | cryptsetup luksOpen {disk}3 encrypted-vol
-        mkfs.btrfs -f /dev/mapper/encrypted-vol
         mkdir -p {tmp_mount}
         mount /dev/mapper/encrypted-vol {tmp_mount}
         btrfs subvolume create {tmp_mount}/root

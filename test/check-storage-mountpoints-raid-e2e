@@ -34,12 +34,12 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         s.partition_disk(disk1, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
         s.partition_disk(disk2, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
 
+        # RAID1 on partition level for /boot and /
+        s.create_raid_device(f"{raid_name}-boot", "raid1", [disk1 + "2", disk2 + "2"])
+        s.create_raid_device(f"{raid_name}-root", "raid1", [disk1 + "3", disk2 + "3"])
+
         m.execute(f"""
         set -ex
-
-        # RAID1 on partition level for /boot and /
-        mdadm --create --run {raid_name}-boot --level=raid1 --raid-devices=2 {disk1}2 {disk2}2
-        mdadm --create --run {raid_name}-root --level=raid1 --raid-devices=2 {disk1}3 {disk2}3
 
         # Plain ext4 for /boot
         mkfs.xfs /dev/md/{raid_name}-boot

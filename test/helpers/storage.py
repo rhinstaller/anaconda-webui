@@ -221,10 +221,37 @@ class StorageUtils(StorageDestination):
         self.rescan_disks()
 
     # partitions_params expected structure: [("size", "file system" {, "other mkfs.fs flags"})]
+    def create_raid_device(self, name, raid_level, devices):
+        self.machine.execute(f"""
+        set -ex
+        mdadm --create --run {name} --level={raid_level} --raid-devices={len(devices)} {' '.join(devices)}
+        udevadm settle
+        """, timeout=90)
+
+    def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
+        self.machine.execute(f"""
+        set -ex
+        echo {passphrase} | cryptsetup luksFormat {device}
+        echo {passphrase} | cryptsetup luksOpen {device} {luks_name}
+        # Create a filesystem on the LUKS device
+        if [ "{fsformat}" == "xfs" ] || [ "{fsformat}" == "btrfs" ]; then
+            mkfs.{fsformat} -f /dev/mapper/{luks_name}
+        elif [ "{fsformat}" == "ext4" ]; then
+            mkfs.{fsformat} -F /dev/mapper/{luks_name}
+        fi
+
+        udevadm settle
+        if [ "{close_luks}" == "True" ]; then
+            cryptsetup luksClose {luks_name}
+        fi
+        """)
+
     def partition_disk(self, disk, partitions_params, is_mbr=False):
+        command = "set -x\n"
+
         if is_mbr:
             # EFI: Use sfdisk and set MBR
-            command = f"wipefs -a {disk}"
+            command += f"wipefs -a {disk}"
             command += f"\necho 'label: dos' | sfdisk {disk}"
 
             partition_commands = []
@@ -302,7 +329,7 @@ class StorageUtils(StorageDestination):
 
         else:
             # Non-EFI: Use sgdisk and set GPT
-            command = f"sgdisk --zap-all {disk}"
+            command += f"sgdisk --zap-all {disk}"
 
             for i, params in enumerate(partitions_params):
                 sgdisk = ["sgdisk", f"--new=0:0{':+' + params[0] if params[0] != '' else ':0'}"]
