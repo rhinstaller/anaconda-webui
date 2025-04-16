@@ -48,7 +48,7 @@ def vm_install(image, compose, verbose, quick):
         # Pull cockpit dependencies from the image default compose
         # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
         packages_to_download = missing_packages
-        if scenario and scenario.startswith("cockpit-pr-"):
+        if scenario and "cockpit-pr-" in scenario:
             cockpit_pr = scenario.split("-")[-1]
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
@@ -81,7 +81,7 @@ def vm_install(image, compose, verbose, quick):
         if compose:
             # If we are testing a custom compose do *not* download the anaconda packages, they are in the ISO already
             pass
-        elif scenario and scenario.startswith("anaconda-pr-"):
+        elif scenario and "anaconda-pr" in scenario:
             # If we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
             anaconda_pr = scenario.split("-")[-1]
             # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
