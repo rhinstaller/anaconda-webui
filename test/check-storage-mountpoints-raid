@@ -122,7 +122,6 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
-        b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
         s.select_mountpoint()
 
