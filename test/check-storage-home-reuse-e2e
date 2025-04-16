@@ -34,10 +34,12 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         # Remove the /var subvolume from the default btrfs layout
         # as /var/ is not default mount point in Fedora which results in
         # the 'Reinstall Fedora' option to get hidden
+        # Also remove /var/ mount point from /etc/fstab
         self.machine.execute("""
             mount /dev/vda4 /mnt;
             btrfs subvolume delete /mnt/var/lib/machines;
             btrfs subvolume delete /mnt/var;
+            sed -i '/var/d' /mnt/root/etc/fstab;
             umount /mnt
         """)
 
