@@ -25,6 +25,7 @@ RUN_OPTS=""
 ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
 
 RE_EXPENSIVE='E2E'
+SEPARATE_EFI_RUN=false
 
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
@@ -40,6 +41,7 @@ case "${TEST_SCENARIO:=}" in
             export TEST_COMPOSE="${TEST_COMPOSE%-staging}"
             TEST_FEDORA_WIKI_STAGING="true"
         fi
+        SEPARATE_EFI_RUN=true
         ;;
     *efi*)
         RUN_OPTS="$ALL_TESTS";
@@ -59,6 +61,7 @@ case "${TEST_SCENARIO:=}" in
         ;;
     *)
         RUN_OPTS="$ALL_TESTS"
+        SEPARATE_EFI_RUN=true
         ;;
 esac
 
@@ -101,8 +104,26 @@ fi
 set +e
 
 export TEST_JOBS TEST_OS
-J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
+
+run_tests() {
+    J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
+    return $?
+}
+
+run_tests
 exit_code=$?
+
+# If we are running the tests on a compose or we are doing cross project testing run a seperate 'efi' firmware batch
+if $SEPARATE_EFI_RUN; then
+    TEST_FIRMWARE="efi"
+    export TEST_FIRMWARE
+    # Run the tests
+    run_tests
+    exit_code_efi=$?
+    if [ $exit_code_efi -ne 0 ]; then
+        exit_code=$exit_code_efi
+    fi
+fi
 
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
     # Log the report file that we are about to use
