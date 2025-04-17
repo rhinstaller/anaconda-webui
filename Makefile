@@ -238,7 +238,9 @@ $(NODE_MODULES_TEST): package.json
 .PHONY: test-compose
 test-compose: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}"
+	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}"
 
 .PHONY: test-compose-staging
 test-compose-staging: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}-staging"
+	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}-staging"
