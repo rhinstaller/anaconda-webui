@@ -46,14 +46,13 @@ import {
     getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
-    getUsableDevicesManualPartitioning,
     hasDuplicateFields,
     isDuplicateRequestField,
 } from "../../helpers/storage.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
-import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../hooks/Storage.jsx";
+import { useMountPointConstraints, useOriginalDevices } from "../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
@@ -272,7 +271,7 @@ const DeviceColumnSelect = ({ deviceData, devices, handleRequestChange, idPrefix
         const deviceName = deviceData[device].name.v;
 
         const ancestors = getDeviceAncestors(deviceData, device);
-        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "disk");
+        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor]["is-disk"].v);
         const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
         const typeLabel = device[parentPartition]?.attrs?.v?.["partition-type-name"] || "";
 
@@ -550,12 +549,11 @@ const RequestsTable = ({
     const { diskSelection, partitioning } = useContext(StorageContext);
     const deviceData = useOriginalDevices();
     const requests = partitioning?.requests;
-    const reusePartitioning = useExistingPartitioning();
     const [unappliedRequests, setUnappliedRequests] = useState();
     const allDevices = useMemo(() => {
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
-    const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
+    const isLoadingPartitioning = mountPointConstraints === undefined || !requests;
     const lockedLUKSDevices = useMemo(
         () => getLockedLUKSDevices(diskSelection.selectedDisks, deviceData),
         [deviceData, diskSelection.selectedDisks]
@@ -671,45 +669,6 @@ const isUsableDevice = (devSpec, deviceData) => {
     }
 
     return false;
-};
-
-const useExistingPartitioning = () => {
-    const { diskSelection, partitioning } = useContext(StorageContext);
-    const selectedDisks = diskSelection.selectedDisks;
-    const devices = useOriginalDevices();
-    const [usedPartitioning, setUsedPartitioning] = useState();
-
-    const reusePartitioning = useMemo(() => {
-        const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
-
-        // Disk devices are not allowed in the mount point assignment
-        const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
-        if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
-            return true;
-        }
-        return false;
-    }, [devices, selectedDisks, partitioning.requests]);
-
-    useEffect(() => {
-        const _setPartitioningPath = async () => {
-            if (!reusePartitioning || partitioning?.method !== "MANUAL") {
-                /* Reset the bootloader drive before we schedule partitions
-                 * The bootloader drive is automatically set during the partitioning, so
-                 * make sure we always reset the previous value before we run another one,
-                 * so it can be automatically set again based on the current disk selection.
-                 * Otherwise, the partitioning can fail with an error.
-                 */
-                const path = await getNewPartitioning({ method: "MANUAL", storageScenarioId: "mount-point-mapping" });
-                setUsedPartitioning(path);
-            } else {
-                setUsedPartitioning(partitioning.path);
-            }
-        };
-
-        _setPartitioningPath();
-    }, [reusePartitioning, partitioning?.method, partitioning?.path]);
-
-    return usedPartitioning === partitioning.path;
 };
 
 const MountPointMapping = ({

@@ -21,6 +21,19 @@
  * @param {string} device - The ID of the device
  * @returns {Array}
  */
+import {
+    setInitializationMode,
+    setInitializeLabelsEnabled,
+} from "../apis/storage_disk_initialization.js";
+import {
+    createPartitioning,
+    partitioningSetEncrypt,
+    partitioningSetHomeReuse,
+    partitioningSetPassphrase,
+} from "../apis/storage_partitioning.js";
+
+import { scenarios } from "../components/storage/scenarios/index.js";
+
 export const getDeviceAncestors = (deviceData, device) => {
     const ancestors = [];
     const deviceParents = deviceData[device]?.parents?.v || [];
@@ -218,4 +231,51 @@ export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) =
     });
 
     return usableDevices;
+};
+
+const reuseManualPartitioning = ({ devices, partitioning, selectedDisks }) => {
+    const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
+
+    // Disk devices are not allowed in the mount point assignment
+    const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
+    if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
+        return true;
+    }
+    return false;
+};
+
+export const getNewPartitioning = async ({
+    autopartScheme,
+    currentPartitioning,
+    devices,
+    method = "AUTOMATIC",
+    selectedDisks,
+    storageScenarioId,
+}) => {
+    if (method === "MANUAL" && reuseManualPartitioning({ devices, partitioning: currentPartitioning, selectedDisks })) {
+        return currentPartitioning;
+    }
+
+    const initializationMode = scenarios.find(sc => sc.id === storageScenarioId).initializationMode;
+    await setInitializationMode({ mode: initializationMode });
+
+    if (method === "AUTOMATIC") {
+        await setInitializeLabelsEnabled({ enabled: true });
+    }
+
+    const part = await createPartitioning({ method });
+
+    if (storageScenarioId === "home-reuse") {
+        await partitioningSetHomeReuse({ partitioning: part, scheme: autopartScheme });
+    }
+
+    if (currentPartitioning?.method === method &&
+        method === "AUTOMATIC" &&
+        storageScenarioId !== "home-reuse" &&
+        currentPartitioning.requests[0].encrypted) {
+        await partitioningSetEncrypt({ encrypt: true, partitioning: part });
+        await partitioningSetPassphrase({ partitioning: part, passphrase: currentPartitioning.requests[0].passphrase });
+    }
+
+    return part;
 };
