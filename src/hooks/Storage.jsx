@@ -27,22 +27,12 @@ import {
     getRequiredDeviceSize,
 } from "../apis/storage_devicetree.js";
 import {
-    setInitializationMode,
-    setInitializeLabelsEnabled,
-} from "../apis/storage_disk_initialization.js";
-import {
-    createPartitioning,
     getDeviceTree,
-    partitioningSetEncrypt,
-    partitioningSetHomeReuse,
-    partitioningSetPassphrase,
 } from "../apis/storage_partitioning.js";
 
 import { getDeviceAncestors } from "../helpers/storage.js";
 
 import { StorageContext } from "../contexts/Common.jsx";
-
-import { scenarios } from "../components/storage/scenarios/index.js";
 
 export const useDiskTotalSpace = ({ devices, selectedDisks }) => {
     const [diskTotalSpace, setDiskTotalSpace] = useState();
@@ -131,36 +121,6 @@ export const useMountPointConstraints = () => {
     }, []);
 
     return mountPointConstraints;
-};
-
-export const getNewPartitioning = async ({
-    autopartScheme,
-    currentPartitioning,
-    method = "AUTOMATIC",
-    storageScenarioId,
-}) => {
-    const initializationMode = scenarios.find(sc => sc.id === storageScenarioId).initializationMode;
-    await setInitializationMode({ mode: initializationMode });
-
-    if (method === "AUTOMATIC") {
-        await setInitializeLabelsEnabled({ enabled: true });
-    }
-
-    const part = await createPartitioning({ method });
-
-    if (storageScenarioId === "home-reuse") {
-        await partitioningSetHomeReuse({ partitioning: part, scheme: autopartScheme });
-    }
-
-    if (currentPartitioning?.method === method &&
-        method === "AUTOMATIC" &&
-        storageScenarioId !== "home-reuse" &&
-        currentPartitioning.requests[0].encrypted) {
-        await partitioningSetEncrypt({ encrypt: true, partitioning: part });
-        await partitioningSetPassphrase({ partitioning: part, passphrase: currentPartitioning.requests[0].passphrase });
-    }
-
-    return part;
 };
 
 export const useDeviceTree = () => {

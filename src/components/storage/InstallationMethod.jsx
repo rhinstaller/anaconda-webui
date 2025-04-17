@@ -30,6 +30,8 @@ import {
     resetPartitioning,
 } from "../../apis/storage_partitioning.js";
 
+import { getNewPartitioning } from "../../helpers/storage.js";
+
 import {
     DialogsContext,
     FooterContext,
@@ -37,7 +39,7 @@ import {
     StorageDefaultsContext,
 } from "../../contexts/Common.jsx";
 
-import { getNewPartitioning } from "../../hooks/Storage.jsx";
+import { useOriginalDevices } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -108,7 +110,9 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const nextRef = useRef();
-    const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { diskSelection, partitioning, storageScenarioId } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const devices = useOriginalDevices();
     const { defaultScheme } = useContext(StorageDefaultsContext);
     const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
 
@@ -120,45 +124,42 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
     const onNext = async ({ setIsFormDisabled }) => {
-        if (method === "MANUAL") {
-            setNewPartitioning(partitioning.path);
+        const part = await getNewPartitioning({
+            autopartScheme: defaultScheme,
+            currentPartitioning: partitioning,
+            devices,
+            method,
+            selectedDisks,
+            storageScenarioId,
+        });
+        setNewPartitioning(part);
+
+        const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
+        const willShowReclaimSpaceModal = scenarioSupportsReclaimSpace && isReclaimSpaceCheckboxChecked;
+
+        if (willShowReclaimSpaceModal) {
+            setIsReclaimSpaceModalOpen(true);
+        } else if (storageScenarioId !== "home-reuse") {
             setIsNextClicked(true);
         } else {
-            const part = await getNewPartitioning({
-                autopartScheme: defaultScheme,
-                currentPartitioning: partitioning,
-                method,
-                storageScenarioId,
+            setIsFormDisabled(true);
+            const step = new Page().id;
+            await applyStorage({
+                onFail: ex => {
+                    console.error(ex);
+                    setIsFormDisabled(false);
+                    setStepNotification({ step, ...ex });
+                },
+                onSuccess: () => {
+                    goToNextStep();
+
+                    // Reset the state after the onNext call. Otherwise,
+                    // React will try to render the current step again.
+                    setIsFormDisabled(false);
+                    setStepNotification();
+                },
+                partitioning: part,
             });
-            setNewPartitioning(part);
-
-            const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
-            const willShowReclaimSpaceModal = scenarioSupportsReclaimSpace && isReclaimSpaceCheckboxChecked;
-
-            if (willShowReclaimSpaceModal) {
-                setIsReclaimSpaceModalOpen(true);
-            } else if (storageScenarioId !== "home-reuse") {
-                setIsNextClicked(true);
-            } else {
-                setIsFormDisabled(true);
-                const step = new Page().id;
-                await applyStorage({
-                    onFail: ex => {
-                        console.error(ex);
-                        setIsFormDisabled(false);
-                        setStepNotification({ step, ...ex });
-                    },
-                    onSuccess: () => {
-                        goToNextStep();
-
-                        // Reset the state after the onNext call. Otherwise,
-                        // React will try to render the current step again.
-                        setIsFormDisabled(false);
-                        setStepNotification();
-                    },
-                    partitioning: part,
-                });
-            }
         }
     };
 
