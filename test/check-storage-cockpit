@@ -39,8 +39,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.open()
         i.next()
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
+        s.enter_cockpit_storage()
 
     @nondestructive
     def testEncryptedUnlock(self):
@@ -56,14 +55,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -103,9 +95,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # Exit the cockpit-storage iframe
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Format the partition again with 'Reuse existing encryption'
         # Check that cockpit sends us the information also after re-formatting (rhbz#2354497)
@@ -123,9 +113,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation_confirm()
 
         # Do not crash if encrypted device got deleted
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 4), "Delete")
         b.set_checked("#dialog-confirm", val=True)
@@ -151,14 +139,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -238,14 +219,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -299,10 +273,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -354,14 +325,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -428,14 +392,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected("vda")
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -525,9 +482,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create BIOS and boot partitions on vda
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
@@ -586,9 +541,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb, and vdc
         self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
@@ -659,9 +612,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb, and vdc
         self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
@@ -673,9 +624,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         s.check_disk_selected("MDRAID-SOMERAID")
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Delete RAID device and expect the disk selection to be set back to the parent disks
         self._delete_storage(4)
@@ -689,9 +638,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
             s.check_disk_selected(disk)
 
         # Do the same for RAID device with 2 disks
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb
         self._createRAID({"vda": True, "vdb": True}, "raid0", "SOMERAID")
@@ -705,9 +652,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.check_disk_selected("vdc")
 
         # Delete RAID device and expect the disk selection to be set back to the parent disks
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         self._delete_storage(4)
 
@@ -719,9 +664,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         for disk in ["vda", "vdb", "vdc"]:
             s.check_disk_selected(disk)
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb, and vdc, then delete it and create a new one with another name
         # before returning to installation
@@ -742,9 +685,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.return_to_installation_confirm()
         s.check_disk_selected("MDRAID-SOMERAID2")
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Delete it for the test cleanup
         self._delete_storage(4)
@@ -764,10 +705,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         s.select_disks([("vdb", True), ("vda", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.confirm()
@@ -834,14 +772,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.wait_scenario_visible("use-configured-storage", False)
         s.check_disk_selected(dev)
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-
-        frame = "iframe[name='cockpit-storage']"
-        b._wait_present(frame)
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
         self.dialog_set_val("type", "dos")
