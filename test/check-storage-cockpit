@@ -74,11 +74,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
             "passphrase2": "redhat",
         })
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.check_scenario_selected("use-configured-storage")
 
@@ -108,9 +104,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.dialog_apply()
         self.dialog_wait_close()
 
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         # Do not crash if encrypted device got deleted
         s.enter_cockpit_storage()
@@ -120,9 +114,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.dialog_apply()
         b.wait_not_present(self.card_row("Storage", name="vda3"))
 
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
     @nondestructive
     def testLVM(self):
@@ -287,11 +279,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({"type": "btrfs", "mount_point": "/"})
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.set_scenario("use-configured-storage")
 
@@ -353,11 +341,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.click(self.card_button("btrfs subvolume", "Create subvolume"))
         self.dialog({"name": "home", "mount_point": "/home"})
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.set_scenario("use-configured-storage")
 
@@ -420,11 +404,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.click(self.card_button("btrfs subvolume", "Create subvolume"))
         self.dialog({"name": "home", "mount_point": "/home"})
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.set_scenario("mount-point-mapping")
 
@@ -617,10 +597,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Create RAID device on vda, vdb, and vdc
         self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
 
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.check_disk_selected("MDRAID-SOMERAID")
 
@@ -629,10 +606,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Delete RAID device and expect the disk selection to be set back to the parent disks
         self._delete_storage(4)
 
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         for disk in ["vda", "vdb", "vdc"]:
             s.check_disk_selected(disk)
@@ -643,10 +617,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Create RAID device on vda, vdb
         self._createRAID({"vda": True, "vdb": True}, "raid0", "SOMERAID")
 
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.check_disk_selected("MDRAID-SOMERAID")
         s.check_disk_selected("vdc")
@@ -656,10 +627,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         self._delete_storage(4)
 
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         for disk in ["vda", "vdb", "vdc"]:
             s.check_disk_selected(disk)
@@ -679,10 +647,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID2")
 
-        # Exit the cockpit-storage iframe and return to installation
-        b.switch_to_top()
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
         s.check_disk_selected("MDRAID-SOMERAID2")
 
         s.enter_cockpit_storage()
@@ -722,11 +687,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 5), "Format")
         self.dialog({"type": "ext4", "mount_point": "/home"})
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.set_scenario("use-configured-storage")
 
@@ -785,11 +746,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 3), "Create partition")
         self.dialog({"type": "btrfs", "mount_point": "/"})
 
-        # Exit the cockpit-storage iframe
-        b.switch_to_top()
-
-        s.return_to_installation()
-        s.return_to_installation_confirm()
+        s.exit_cockpit_storage()
 
         s.set_scenario("use-configured-storage")
 

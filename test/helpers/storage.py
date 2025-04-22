@@ -127,6 +127,11 @@ class StorageDestination():
         b.switch_to_frame("cockpit-storage")
         b._wait_present("#storage.ct-page-fill")
 
+    def exit_cockpit_storage(self):
+        self.browser.switch_to_top()
+        self.return_to_installation()
+        self.return_to_installation_confirm()
+
 
 class StorageEncryption():
     encryption_id_prefix = "disk-encryption"
