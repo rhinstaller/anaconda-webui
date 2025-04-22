@@ -272,6 +272,92 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot auto noauto 0 0" in fstab)
 
     @nondestructive
+    def testStorageValidationWarnings(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+
+        vgname = "vgwarnings"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.wait_scenario_visible("use-configured-storage", False)
+        s.check_disk_selected("vda")
+        s.modify_storage()
+        s.confirm_entering_cockpit_storage()
+        b.wait_visible(".cockpit-storage-integration-sidebar")
+
+        frame = "iframe[name='cockpit-storage']"
+        b._wait_present(frame)
+        b.switch_to_frame("cockpit-storage")
+        b._wait_present("#storage.ct-page-fill")
+
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 100, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"size": 100, "type": "ext4", "mount_point": "/boot/efi"})
+
+        self.click_devices_dropdown("Create LVM2 volume group")
+        self.dialog({"name": vgname, "disks": {"/dev/vda": True}})
+
+        self.click_card_row("Storage", name=vgname)
+
+        # Create root LV
+        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "lv_root", "size": 4096})
+        self.click_card_row("LVM2 logical volumes", name="lv_root")
+        self.click_card_dropdown("Unformatted data", "Format")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        b.click(self.card_parent_link())
+
+        # Create small /home
+        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "lv_home", "size": 100})
+        self.click_card_row("LVM2 logical volumes", name="lv_home")
+        self.click_card_dropdown("Unformatted data", "Format")
+        self.dialog({"type": "ext4", "mount_point": "/home"})
+
+        b.click(self.card_parent_link())
+
+        # Create swap LV without UUID by skipping format
+        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "lv_swap", "size": 512})
+
+        b.click(self.card_parent_link())
+        b.switch_to_top()
+
+        s.return_to_installation()
+
+        # Pixel test (warnings only, inside the modal body)
+        b.assert_pixels(
+            "#cockpit-storage-integration-check-storage-dialog .pf-v6-c-modal-box__body .pf-v6-c-alert.pf-m-warning",
+            "cockpit-storage-integration-check-storage-dialog-warnings",
+            ignore=pixel_tests_ignore,
+        )
+
+        # Also check warning modal contents via text
+        b.wait_visible("#cockpit-storage-integration-check-storage-dialog")
+        warnings_text = b.text("#cockpit-storage-integration-check-storage-dialog")
+        assert "/boot partition is less than" in warnings_text.lower()
+        assert "/boot/efi partition" in warnings_text.lower()
+        assert "/home partition is less than" in warnings_text.lower()
+        assert "recommended to create a new file system" in warnings_text.lower()
+
+        s.return_to_installation_confirm()
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+    @nondestructive
     def testStandardPartitionExt4(self):
         """
         Description:
