@@ -208,11 +208,6 @@ class TestStorageBasic(VirtInstallMachineCase):
         i = Installer(b, m)
         s = Storage(b, m)
 
-        # Clean up the journal before we open Report dialog
-        # (Report dialog presents all journal in a textarea)
-        # to avoid crashing the test browser
-        m.execute("journalctl --rotate; journalctl --vacuum-time=1s")
-
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.enter_cockpit_storage()

@@ -17,20 +17,22 @@
 
 import cockpit from "cockpit";
 
-import React, { cloneElement, useContext, useEffect, useState } from "react";
+import { fmt_to_fragments as fmtToFragments } from "utils";
+
+import React, { cloneElement, useContext, useEffect } from "react";
 import {
     ActionList,
+    Alert,
     Button,
     Content,
     ContentVariants,
+    Divider,
     Form,
     FormGroup,
-    FormHelperText,
     HelperText,
     HelperTextItem,
     Stack,
-    StackItem,
-    TextArea
+    StackItem
 } from "@patternfly/react-core";
 import {
     Modal,
@@ -81,8 +83,9 @@ const ensureMaximumReportURLLength = (reportURL) => {
     return newUrl.href;
 };
 
-const addLogAttachmentCommentToReportURL = (reportURL, logFile) => {
+const addLogAttachmentCommentToReportURL = (reportURL) => {
     const newUrl = new URL(reportURL);
+    const logFile = "/tmp/journal.log";
     const comment = newUrl.searchParams.get("comment") || "";
     newUrl.searchParams.set("comment", comment +
         "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
@@ -95,37 +98,33 @@ export const BZReportModal = ({
     detailsContent,
     detailsLabel,
     idPrefix,
-    logFile,
     reportLinkURL,
     title,
     titleIconVariant
 }) => {
-    const [logContent, setLogContent] = useState();
-    const [preparingReport, setPreparingReport] = useState(false);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const isConnected = useContext(NetworkContext).connected;
 
     useEffect(() => {
+        // Let's make sure we have the latest logs from journal saved to /tmp/journal.log
+        // Let's not confuse users with syslog
+        // See https://issues.redhat.com/browse/INSTALLER-4210
         cockpit.spawn(["journalctl", "-a"])
-                .then(content => setLogContent(content));
+                .then((output) => (
+                    cockpit.file("/tmp/journal.log")
+                            .replace(output)
+                ));
     }, []);
 
-    const openBZIssue = (reportURL, logFile, logContent) => {
+    const openBZIssue = (reportURL) => {
         reportURL = ensureMaximumReportURLLength(reportURL);
-        reportURL = addLogAttachmentCommentToReportURL(reportURL, logFile);
-        setPreparingReport(true);
+        reportURL = addLogAttachmentCommentToReportURL(reportURL);
 
-        const openPage = (
-            isBootIso
-                ? () => window.open(reportURL)
-                : () => window.location.replace(reportURL, "_blank", "noopener,noreferer")
-        );
-
-        cockpit
-                .file(logFile)
-                .replace(logContent)
-                .always(() => setPreparingReport(false))
-                .then(openPage);
+        if (isBootIso) {
+            window.open(reportURL);
+        } else {
+            window.location.replace(reportURL, "_blank", "noopener,noreferer");
+        }
     };
 
     const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
@@ -140,26 +139,18 @@ export const BZReportModal = ({
           showClose={false}
           title={title}
           titleIconVariant={titleIconVariant}
-          variant={ModalVariant.large}
+          variant={ModalVariant.small}
           footer={
               <Stack hasGutter>
-                  <FormHelperText>
-                      <HelperText>
-                          {isConnected
-                              ? <HelperTextItem> {_("Reporting an issue will send information over the network. Please review and edit the attached log to remove any sensitive information.")} </HelperTextItem>
-                              : <HelperTextItem icon={<DisconnectedIcon />}> {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive} </HelperTextItem>}
-                      </HelperText>
-                  </FormHelperText>
                   <StackItem>
                       <ActionList>
                           <Button
                             variant="primary"
-                            isLoading={preparingReport}
-                            isAriaDisabled={logContent === undefined || preparingReport || !isConnected}
+                            isAriaDisabled={!isConnected}
                             icon={<ExternalLinkAltIcon />}
-                            onClick={() => { openBZIssue(reportLinkURL, logFile, logContent); return false }}
+                            onClick={() => { openBZIssue(reportLinkURL); return false }}
                             component="a">
-                              {preparingReport ? _("Preparing report") : _("Report issue")}
+                              {_("Report issue")}
                           </Button>
                           {buttons}
                       </ActionList>
@@ -168,25 +159,43 @@ export const BZReportModal = ({
           }>
             <Form>
                 {detailsLabel &&
-                <FormGroup
-                  fieldId={idPrefix + "-bz-report-modal-details"}
-                  label={detailsLabel}
-                >
-                    {detailsContent}
-                </FormGroup>}
-                <FormGroup
-                  fieldId={idPrefix + "-bz-report-modal-review-log"}
-                  label={_("Log")}
-                >
-                    <TextArea
-                      value={logContent}
-                      onChange={(_, value) => setLogContent(value)}
-                      resizeOrientation="vertical"
-                      id={idPrefix + "-bz-report-modal-review-log"}
-                      isAriaDisabled={logContent === undefined || preparingReport}
-                      rows={25}
-                    />
-                </FormGroup>
+                <>
+                    <FormGroup
+                      fieldId={idPrefix + "-bz-report-modal-details"}
+                      label={detailsLabel}
+                    >
+                        {detailsContent}
+                    </FormGroup>
+                    <Divider />
+                </>}
+                {isConnected
+                    ? (
+                        <>
+                            {detailsLabel &&
+                            <Content component={ContentVariants.h4} className={idPrefix + "-bz-report-modal-intructions-header"}>
+                                {_("Help us fix the issue!")}
+                            </Content>}
+                            <Content component={ContentVariants.ol}>
+                                <Content component={ContentVariants.li}>
+                                    {fmtToFragments(_("Click \"$0\" to open Bugzilla in a new window."), <strong>{_("Report issue")}</strong>)}
+                                </Content>
+                                <Content component={ContentVariants.li}>
+                                    {_("Log in to Bugzilla, or create a new account.")}
+                                </Content>
+                                <Content component={ContentVariants.li}>
+                                    {fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>/tmp/journal.log</i>)}
+                                </Content>
+                            </Content>
+                            <Alert title={_("Logs may contain sensitive information like IP addresses or usernames. Attachments on Bugzilla issues are marked private by default.")} variant="warning" isInline isPlain />
+                        </>
+                    )
+                    : (
+                        <HelperText>
+                            <HelperTextItem icon={<DisconnectedIcon />}>
+                                {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
+                            </HelperTextItem>
+                        </HelperText>
+                    )}
             </Form>
         </Modal>
     );
@@ -219,11 +228,11 @@ const exceptionInfo = (exception, idPrefix) => {
     return (
         <Content id={idPrefix + "-bz-report-modal-details"}>
             {backendMessage &&
-            <Content component={ContentVariants.p}>
+            <Content>
                 {exceptionNamePrefix + backendMessage}
             </Content>}
             {frontendMessage &&
-            <Content component={ContentVariants.p}>
+            <Content>
                 {exceptionNamePrefix + frontendMessage}
             </Content>}
         </Content>
@@ -252,9 +261,8 @@ const CriticalError = ({ exception }) => {
           description={description}
           reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception)}
           idPrefix={idPrefix}
-          title={_("Critical error")}
+          title={_("Installation failed")}
           titleIconVariant="danger"
-          logFile="/tmp/webui.log"
           detailsLabel={_("Error details")}
           detailsContent={exceptionInfo(exception, idPrefix)}
           buttons={[quitButton(isBootIso)]}
@@ -276,12 +284,10 @@ export const UserIssue = ({ setIsReportIssueOpen }) => {
 
     return (
         <BZReportModal
-          description={_("The following log will be sent to the issue tracking system where you may provide additional details.")}
           reportLinkURL={reportLinkURL}
           idPrefix="user-issue"
           title={_("Report issue")}
           titleIconVariant={null}
-          logFile="/tmp/webui.log"
           buttons={[cancelButton(() => setIsReportIssueOpen(false))]}
         />
     );
