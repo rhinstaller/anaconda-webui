@@ -3,81 +3,47 @@
   Shift PF blue shades to Fedora blue shades,
   aligning to official Fedora blues
   */
-  --pf-v5-global--palette--blue-50:  oklch(94.77% 0.0265 241.35deg);
-  --pf-v5-global--palette--blue-100: oklch(87.56% 0.0589 241.35deg);
-  --pf-v5-global--palette--blue-200: oklch(80.68% 0.0914 241.35deg);
-  --pf-v5-global--palette--blue-300: oklch(68.48% 0.1147 241.35deg);
-  --pf-v5-global--palette--blue-400: oklch(53.77% 0.1229 257.17deg);
-  --pf-v5-global--palette--blue-500: oklch(38.2% 0.0891 263.14deg);
-  --pf-v5-global--palette--blue-600: oklch(25.55% 0.0521 264.29deg);
-  --pf-v5-global--palette--blue-700: oklch(16.84% 0.0251 261.96deg);
+  --pf-t--color--blue--10: oklch(94.77% 0.0265 241.35deg);
+  --pf-t--color--blue--20: oklch(87.56% 0.0589 241.35deg);
+  --pf-t--color--blue--30: oklch(80.68% 0.0914 241.35deg);
+  --pf-t--color--blue--40: oklch(68.48% 0.1147 241.35deg);
+  --pf-t--color--blue--50: oklch(53.77% 0.1229 257.17deg);
+  --pf-t--color--blue--60: oklch(38.2% 0.0891 263.14deg);
+  --pf-t--color--blue--70: oklch(25.55% 0.0521 264.29deg);
 
-  /* Alias colors to Fedora names for clearer code below */
-  --fedora-blue: var(--pf-v5-global--palette--blue-300);
-  --fedora-blue-dark: var(--pf-v5-global--palette--blue-400);
+  /* Fedora blue aliases for reuse */
+  --fedora-blue: var(--pf-t--color--blue--40);
+  --fedora-blue-dark: var(--pf-t--color--blue--50);
 
-  /* Forward-compatible PF6 variable aliases */
+  /* Semantic token remaps (light theme) */
   --pf-t--global--color--brand--default: var(--fedora-blue);
   --pf-t--global--color--brand--hover: var(--fedora-blue-dark);
   --pf-t--global--text--color--brand--default: var(--fedora-blue);
+  --pf-t--global--text--color--link--default: var(--fedora-blue);
+  --pf-t--global--text--color--link--hover: var(--fedora-blue-dark);
+  --pf-t--global--color--status--active--default: var(--fedora-blue-dark);
 
-  /*
-  Primary is usually 300 and 500, but improve accessibility with ones
-  based on Fedora's official blue, just altered in lightness and chroma.
-  */
-  --pf-v5-global--primary-color--100: oklch(56.28% 0.1147 241.35deg);
-  --pf-v5-global--primary-color--200: oklch(37.63% 0.1225 241.35deg);
-  --pf-v5-global--primary-color--300: var(--fedora-blue-dark);
+  --pf-t--global--color--brand--300: var(--pf-t--color--blue--60);
+  --pf-t--global--color--brand--100: var(--pf-t--color--blue--20);
 
-  /* Redefine link colors using above variables */
-  --pf-v5-global--link--Color: var(--pf-v5-global--primary-color--100);
-  --pf-v5-global--link--Color--hover: var(--pf-v5-global--primary-color--200);
-  --pf-v5-global--link--Color--light: var(--pf-v5-global--palette--blue-300);
-  --pf-v5-global--link--Color--light--hover: var(--pf-v5-global--palette--blue-200);
-  --pf-v5-global--link--Color--dark: var(--pf-v5-global--palette--blue-500);
-  --pf-v5-global--link--Color--dark--hover: var(--pf-v5-global--palette--blue-700);
-  /* Special-case visited purple to jibe with Fedora's blue */
-  --pf-v5-global--link--Color--visited: #6e4a8a;
-
-  /* Redefine active colors to use the blue palette too */
-  --pf-v5-global--active-color--100: var(--pf-v5-global--palette--blue-400);
-  --pf-v5-global--active-color--200: var(--pf-v5-global--palette--blue-100);
-  --pf-v5-global--active-color--300: var(--pf-v5-global--palette--blue-300);
-  --pf-v5-global--active-color--400: var(--pf-v5-global--palette--blue-200);
+  --pf-t--global--text--color--link--visited: #6e4a8a;
 }
 
-/* Rewrite just the blues in dark mode too */
-.pf-v5-theme-dark {
-  /*
-  PatternFly uses two lighter blue shades that aren't in the default
-  palette for dark mode. As they're not used elsewhere, use local
-  variables.
-  */
-  --_blue-light: oklch(69.9% 0.1596 241.35deg);
-  --_blue-lighter: oklch(77.06% 0.1122 241.35deg);
+/* Dark theme overrides */
+.pf-v6-theme-dark {
+  --fedora-blue: oklch(77.06% 0.1122 241.35deg);
+  --fedora-blue-dark: oklch(69.9% 0.1596 241.35deg);
 
-  --pf-v5-global--primary-color--100: var(--_blue-light);
-  --pf-v5-global--primary-color--light-100: var(--_blue-light);
-  --pf-v5-global--primary-color--dark-100: var(--_blue-light);
-  /* Used by buttons in dark mode */
-  --pf-v5-global--primary-color--300: var(--fedora-blue-dark);
-
-  --pf-v5-global--link--Color: var(--_blue-light);
-  --pf-v5-global--link--Color--hover: var(--_blue-lighter);
-  --pf-v5-global--link--Color--light: var(--_blue-light);
-  --pf-v5-global--link--Color--light--hover: var(--_blue-lighter);
-  --pf-v5-global--link--Color--dark: var(--_blue-light);
-  --pf-v5-global--link--Color--dark--hover: var(--_blue-lighter);
-
-  /* Forward-compatible PF6 variable aliases */
-  --pf-t--global--color--brand--default: var(--_blue-light);
-  --pf-t--global--color--brand--hover: var(--_blue-lighter);
-  --pf-t--global--text--color--brand--default: var(--_blue-lighter);
+  --pf-t--global--color--brand--default: var(--fedora-blue);
+  --pf-t--global--color--brand--hover: var(--fedora-blue-dark);
+  --pf-t--global--text--color--brand--default: var(--fedora-blue);
+  --pf-t--global--text--color--link--default: var(--fedora-blue);
+  --pf-t--global--text--color--link--hover: var(--fedora-blue-dark);
+  --pf-t--global--color--status--active--default: var(--fedora-blue-dark);
 }
 
 /* Fedora doesn't ship the on-dark version of the SVG, but we can fake it */
 .logo {
-  /* Make a monochrome variant, bump up brightness and screen it against blue */
   filter: invert(1) grayscale(1) brightness(2.5);
   mix-blend-mode: screen;
 }
@@ -85,22 +51,14 @@
 /* Override the top header to have a Fedora blue */
 .pf-v6-c-page__main-group > .pf-v6-c-page__main-section:first-child {
   --_text: white;
-  /*
-  Fedora blue isn't AA compliant; slightly mix in darker blue to make
-  color contrast > 3 for AA, but keep the Fedora blue feel
-  */
   --_darker: color-mix(in oklab, var(--fedora-blue), var(--fedora-blue-dark) 50%);
-  /*
-  Blend a gradient from the official brighter blue surrounding the logo
-  to a slightly darker version of the blue, for AA color contrast
-  */
-	background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--_darker) 25%);
+  background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--_darker) 25%);
 
   .pf-v6-c-content {
-    --pf-v5-c-content--Color: var(--_text);
+    --pf-v6-c-content--Color: var(--_text);
   }
 
-  html.pf-v5-theme-dark & {
+  html.pf-v6-theme-dark & {
     background: var(--fedora-blue-dark);
   }
 }
@@ -117,9 +75,8 @@
 }
 
 /* Special-case some light-mode optimizations */
-html:not(.pf-v5-theme-dark) {
-  /* The nav icon should be a similar blue to buttons and links */
+html:not(.pf-v6-theme-dark) {
   .pf-v6-c-wizard__nav-link.pf-m-current::before {
-    --pf-v5-c-wizard__nav-link--m-current--before--BackgroundColor: var(--pf-v5-global--primary-color--100);
+    --pf-v6-c-wizard__nav-link--m-current--before--BackgroundColor: var(--fedora-blue);
   }
 }
