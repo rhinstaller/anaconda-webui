@@ -206,23 +206,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # Select only vdb disk and verify that mount point assignment is
         # not available (missing biosboot)
         s.select_disks([(dev1, False), (dev2, True)])
-
-
-        # RHBZ 2353002 - the biosboot constraint is not required, therefore the
-        # scenario is available
-        #s.wait_scenario_available("mount-point-mapping", False)
-        s.wait_scenario_available("mount-point-mapping")
-        # Let's check that the missing biosboot is caught later by validation
-        s.select_mountpoint([(dev1, False), (dev2, True)])
-        s.select_mountpoint_row_device(1, f"{dev2}1")
-        s.check_mountpoint_row(1, "/", f"{dev2}1", True, "xfs")
-        s.remove_mountpoint_row(2, 2)
-        i.next(should_fail=True)
-        b.wait_in_text(
-            "#anaconda-screen-mount-point-mapping-step-notification",
-            "Your BIOS-based system needs a special partition to boot from a GPT disk label."
-        )
-        i.back()
+        s.wait_scenario_available("mount-point-mapping", False)
 
         # Select only vda disk and verify that the partitioning request is correct
         s.select_mountpoint([(dev1, True), (dev2, False)])
@@ -439,8 +423,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.confirm_entering_cockpit_storage()
         b.wait_visible(".cockpit-storage-integration-sidebar")
         s.check_constraint("/", True)
-        # RHBZ 2353002 - the biosboot constraint is not required
-        #s.check_constraint("biosboot", True)
+        s.check_constraint("biosboot", True)
         s.check_constraint("/boot", False)
 
         frame = "iframe[name='cockpit-storage']"
