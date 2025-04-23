@@ -81,7 +81,7 @@ const InstallationScenarioSelector = ({
     ));
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const mountPointConstraints = useMountPointConstraints();
+    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
     const usablePartitions = useUsablePartitions({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
     const { storageScenarioId } = useContext(StorageContext);
