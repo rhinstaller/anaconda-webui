@@ -18,14 +18,21 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, Button, Content, Flex, FormSelect, FormSelectOption } from "@patternfly/react-core";
+import {
+    Alert,
+    Button,
+    Content,
+    Flex,
+    FormSelect,
+    FormSelectOption,
+} from "@patternfly/react-core";
 
 import {
     getKeyboardConfiguration,
     setCompositorLayouts,
 } from "../../apis/localization.js";
 
-import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { LanguageContext } from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -134,12 +141,10 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     );
 };
 
-export const Keyboard = ({ idPrefix, setIsFormValid }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
-
-    return (
-        isBootIso
-            ? <KeyboardSelector idPrefix={idPrefix} />
-            : <KeyboardGnome setIsFormValid={setIsFormValid} />
-    );
+export const Keyboard = ({ idPrefix, isGnome, setIsFormValid }) => {
+    if (isGnome) {
+        return <KeyboardGnome setIsFormValid={setIsFormValid} />;
+    } else {
+        return <KeyboardNonGnome idPrefix={idPrefix} />;
+    }
 };

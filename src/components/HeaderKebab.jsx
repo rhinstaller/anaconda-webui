@@ -77,7 +77,7 @@ const ProductName = () => {
 };
 
 const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const toggleModal = () => {
         setIsAboutModalOpen(!isModalOpen);
     };

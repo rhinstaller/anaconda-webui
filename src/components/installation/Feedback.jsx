@@ -31,7 +31,7 @@ import "./Feedback.scss";
 const _ = cockpit.gettext;
 
 export const Feedback = () => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     return (
         <Flex className="feedback-section">
