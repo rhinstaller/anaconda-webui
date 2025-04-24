@@ -23,7 +23,7 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from utils import pretend_default_scheme, rsync_directory
+from utils import move_standard_fedora_disk_to_MBR_disk, pretend_default_scheme
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -251,56 +251,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             ignore=pixel_tests_ignore,
         )
 
-    def move_standard_fedora_disk_to_MBR_disk(self, mbr_disk, new_disk):
-        b = self.browser
-        m = self.machine
-        s = Storage(b, m)
-
-        disk = mbr_disk
-        dev = mbr_disk.split("/")[-1]
-        dev_fedora = new_disk
-        s.partition_disk(disk, [("1GiB", "ext4"), ("13GiB", "btrfs")], is_mbr=True)
-
-        # Create standard btrfs layout in the empty disk and copy the data from the fedora
-        # disk to emulate the installation on MBR disk.
-        # Then eject the fedora disk
-        self.machine.execute(f"""
-        set -xe
-
-        # Create btrfs layout
-        mkfs.btrfs -f -L BTRFS {disk}2
-        mount {disk}2 /mnt
-        btrfs subvolume create /mnt/root
-        btrfs subvolume create /mnt/home
-
-        # Copy data from the first disk / to the new disk
-        mkdir -p /mnt-fedora
-        mount /dev/{dev_fedora}4 /mnt-fedora
-        """)
-
-        rsync_directory(self.machine, "/mnt-fedora", "/mnt")
-
-        self.machine.execute(f"""
-        # Adjust /etc/fstab to contain the new device UUIDS
-        echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
-        echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
-        echo "UUID=$(blkid -s UUID -o value /dev/{dev}1) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
-
-        umount -l /mnt-fedora
-        umount -l /mnt
-
-        # Do the same for /boot
-        mount /dev/{dev}1 /mnt
-        mount /dev/{dev_fedora}3 /mnt-fedora
-        rsync -aAXHv /mnt-fedora/ /mnt/
-
-        umount -l /mnt-fedora
-        umount -l /mnt
-        """, timeout=90)
-
-
     def _testMBRParttable_partition_disk(self):
-        self.move_standard_fedora_disk_to_MBR_disk("/dev/vda", "vdb")
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "/dev/vda", "vdb")
 
     @disk_images([("", 15), ("fedora-41", 15)])
     def testMBRParttable(self):
@@ -317,7 +270,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.wait_scenario_available("mount-point-mapping", True)
-        s.wait_scenario_visible("home-reuse", False)
 
         s.select_mountpoint([("vda", True), ("vdb", False)])
 

@@ -65,3 +65,46 @@ def rsync_directory(machine, source_mountpoint, target_mountpoint, retry=True):
             rsync_directory(machine, source_mountpoint, target_mountpoint, retry=False)
         else:
             raise RuntimeError(f"Error during rsync: {e}") from e
+
+def move_standard_fedora_disk_to_MBR_disk(storage, machine, mbr_disk, new_disk):
+    disk = mbr_disk
+    dev = mbr_disk.split("/")[-1]
+    dev_fedora = new_disk
+    storage.partition_disk(disk, [("1GiB", "ext4"), ("13GiB", "btrfs")], is_mbr=True)
+
+    # Create standard btrfs layout in the empty disk and copy the data from the fedora
+    # disk to emulate the installation on MBR disk.
+    # Then eject the fedora disk
+    machine.execute(f"""
+    set -xe
+
+    # Create btrfs layout
+    mkfs.btrfs -f -L BTRFS {disk}2
+    mount {disk}2 /mnt
+    btrfs subvolume create /mnt/root
+    btrfs subvolume create /mnt/home
+
+    # Copy data from the first disk / to the new disk
+    mkdir -p /mnt-fedora
+    mount /dev/{dev_fedora}4 /mnt-fedora
+    """)
+
+    rsync_directory(machine, "/mnt-fedora", "/mnt")
+
+    machine.execute(f"""
+    # Adjust /etc/fstab to contain the new device UUIDS
+    echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
+    echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
+    echo "UUID=$(blkid -s UUID -o value /dev/{dev}1) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
+
+    umount -l /mnt-fedora
+    umount -l /mnt
+
+    # Do the same for /boot
+    mount /dev/{dev}1 /mnt
+    mount /dev/{dev_fedora}3 /mnt-fedora
+    rsync -aAXHv /mnt-fedora/ /mnt/
+
+    umount -l /mnt-fedora
+    umount -l /mnt
+    """, timeout=90)
