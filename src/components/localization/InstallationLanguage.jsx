@@ -296,7 +296,8 @@ class LanguageSelector extends React.Component {
 
 const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
     const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const { desktopVariant } = useContext(SystemTypeContext);
+    const isGnome = desktopVariant === "GNOME";
 
     useEffect(() => {
         setIsFormValid(language !== "");
@@ -322,12 +323,13 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
 
                 {keyboardLayouts.length > 0 && (
                     <FormGroup
-                      className={isBootIso ? "anaconda-screen-selectors-container" : ""}
+                      className={!isGnome ? "anaconda-screen-selectors-container" : ""}
                       fieldId={`${SCREEN_ID}-keyboard-layouts`}
                       label={_("Keyboard")}
                     >
                         <Keyboard
                           idPrefix={SCREEN_ID}
+                          isGnome={isGnome}
                           setIsFormValid={setIsFormValid}
                         />
                     </FormGroup>

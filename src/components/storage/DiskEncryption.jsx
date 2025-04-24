@@ -68,7 +68,7 @@ const CheckDisksSpinner = (
 export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -88,7 +88,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
 
     const encryptionContent = (
         <>
-            {!isBootIso && (
+            {isGnome && (
                 <>
                     <FormGroup
                       label={_("Keyboard layout during boot")}

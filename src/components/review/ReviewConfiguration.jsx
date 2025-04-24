@@ -68,7 +68,7 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const scenarioLabel = getLabel?.();
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter setIsFormValid={setIsFormValid} />, [setIsFormValid]);

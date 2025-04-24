@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React, { createContext } from "react";
+import cockpit from "cockpit";
+
+import React, { createContext, useEffect, useState } from "react";
 import { Popover, PopoverPosition } from "@patternfly/react-core";
 import { HelpIcon } from "@patternfly/react-icons";
 
@@ -67,12 +69,20 @@ const ModuleContextWrapper = ({ children, state }) => {
 };
 
 const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
+    const [desktopVariant, setDesktopVariant] = useState();
+
+    useEffect(() => {
+        cockpit.spawn(["/bin/sh", "-c", "echo $XDG_CURRENT_DESKTOP"]).then(res => {
+            setDesktopVariant(res.trim());
+        });
+    }, []);
+
     const systemType = conf?.["Installation System"].type;
     const defaultScheme = conf?.Storage.default_scheme;
 
     return (
         <OsReleaseContext.Provider value={osRelease}>
-            <SystemTypeContext.Provider value={systemType}>
+            <SystemTypeContext.Provider value={{ desktopVariant, systemType }}>
                 <StorageDefaultsContext.Provider value={{ defaultScheme }}>
                     <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
                         <UserInterfaceContext.Provider value={conf["User Interface"]}>
