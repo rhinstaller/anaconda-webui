@@ -295,3 +295,11 @@ The following points outline the naming conventions for the test classes / metho
 
     @run_boot("bios", "efi")
     def testBasic(self):
+
+.. _Fedora QA Integration and Reporting:
+
+Fedora QA Integration and Reporting
+===================================
+
+For detailed information on how the Anaconda Web UI's upstream test results are published to
+Fedora's Wiki, see the `Fedora Wiki Reporting README <README-FEDORAWIKI.rst>`_.

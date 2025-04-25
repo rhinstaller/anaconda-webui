@@ -4,29 +4,8 @@ set -eu
 
 # This script creates the report.json which will be used by the CI run to report the test results to OpenQA.
 # Here is only fills in the metadata section. The tests section will be filled by the test run.
-#
 # Structure of report.json
-# {
-#   "metadata": {
-#     "compose": "rawhide/Fedora-Rawhide-20250117.n.0",
-#     "test_env": "qemu-x86_64",
-#   },
-#   "tests": [
-#     {
-#       "test_name": "TestClassX1.test_example_feature",
-#       "firmware": "uefi",
-#       "arch": "x86_64",
-#       "status": "pass",
-#     },
-#     {
-#       "test_name": "TestClassX2.test_another_feature",
-#       "firmware": "bios",
-#       "arch": "x86_64",
-#       "status": "fail",
-#     }
-#   ],
-#   "timestamp": "2025-01-17T10:30:00Z"
-# }
+# https://github.com/rhinstaller/anaconda-webui/blob/main/test/README-FEDORAWIKI.rst#example-of-reportjson
 
 COMPOSE=$TEST_COMPOSE
 TEST_ENV="qemu-x86_64"
