@@ -19,19 +19,11 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect } from "react";
 import {
-    Button,
     Form,
     FormGroup,
-    Menu,
-    MenuContent,
     MenuGroup,
     MenuItem,
-    MenuList,
-    TextInputGroup,
-    TextInputGroupMain,
-    TextInputGroupUtilities,
 } from "@patternfly/react-core";
-import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
 
 import { setLocale } from "../../apis/boss.js";
 import {
@@ -46,6 +38,7 @@ import {
 
 import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
+import { MenuSearch } from "./Common.jsx";
 import { Keyboard } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
@@ -254,40 +247,16 @@ class LanguageSelector extends React.Component {
         const options = this.renderOptions(this.state.search);
 
         return (
-            <>
-                <TextInputGroup className="anaconda-screen-language-search">
-                    <TextInputGroupMain
-                      icon={<SearchIcon />}
-                      value={this.state.search}
-                      onChange={(event) => this.setState({ search: event.target.value })}
-                      aria-label={_("Search for a language")}
-                    />
-                    {this.state.search && (
-                        <TextInputGroupUtilities>
-                            <Button
-                              icon={<TimesIcon />}
-                              variant="plain"
-                              onClick={() => this.setState({ search: "" })}
-                              aria-label={_("Clear search input")}
-                            />
-                        </TextInputGroupUtilities>
-                    )}
-                </TextInputGroup>
-                <Menu
-                  className="anaconda-screen-language-menu"
-                  id={SCREEN_ID + "-language-menu"}
-                  isScrollable
-                  isPlain
-                  onSelect={handleOnSelect}
-                  aria-invalid={!lang}
-                >
-                    <MenuContent>
-                        <MenuList>
-                            {options}
-                        </MenuList>
-                    </MenuContent>
-                </Menu>
-            </>
+            <MenuSearch
+              ariaLabelSearchClear={_("Clear search input")}
+              ariaLabelSearch={_("Search for a language")}
+              handleOnSelect={handleOnSelect}
+              onClick={() => this.setState({ search: "" })}
+              options={options}
+              search={this.state.search}
+              selection={lang}
+              setSearch={search => this.setState({ search })}
+            />
         );
     }
 }

@@ -152,6 +152,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 setIsFormValid,
             }}>
                 <Wizard
+                  className={"anaconda-wizard-step-" + currentStepId}
                   id="installation-wizard"
                   isVisitRequired
                   startIndex={startIndex}

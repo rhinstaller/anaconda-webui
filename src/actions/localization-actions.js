@@ -18,11 +18,11 @@
 import {
     getCommonLocales,
     getCompositorSelectedLayout,
+    getKeyboardLayouts,
     getLanguage,
     getLanguageData,
     getLanguages,
     getLocaleData,
-    getLocaleKeyboardLayouts,
     getLocales,
 } from "../apis/localization.js";
 
@@ -72,9 +72,9 @@ export const getCommonLocalesAction = () => {
     };
 };
 
-export const getKeyboardLayoutsAction = ({ language }) => {
+export const getKeyboardLayoutsAction = () => {
     return async (dispatch) => {
-        const keyboardLayouts = await getLocaleKeyboardLayouts({ locale: language });
+        const keyboardLayouts = await getKeyboardLayouts();
         const compositorSelectedLayout = await getCompositorSelectedLayout();
 
         dispatch({

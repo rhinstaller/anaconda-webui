@@ -23,55 +23,112 @@ import {
     Button,
     Content,
     Flex,
-    FormSelect,
-    FormSelectOption,
+    MenuGroup,
+    MenuItem,
 } from "@patternfly/react-core";
 
 import {
     getKeyboardConfiguration,
     setCompositorLayouts,
+    setXLayouts,
 } from "../../apis/localization.js";
 
 import { LanguageContext } from "../../contexts/Common.jsx";
 
+import { MenuSearch } from "./Common.jsx";
+
 const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-language";
+
+const MenuOption = ({ idPrefix, keyboard, selectedKeyboard }) => {
+    const { description, "layout-id": layoutId } = keyboard;
+    const isSelected = layoutId?.v === selectedKeyboard;
+    const scrollRef = (isSelected)
+        ? (ref) => {
+            if (ref) {
+                ref.scrollIntoView({ block: "center" });
+            }
+        }
+        : undefined;
+
+    return (
+        <MenuItem
+          id={idPrefix + "-keyboard-" + layoutId?.v}
+          isSelected={isSelected}
+          key={layoutId?.v}
+          itemId={layoutId?.v}
+          ref={scrollRef}
+          style={isSelected ? { backgroundColor: "var(--pf-v5-c-menu__list-item--hover--BackgroundColor)" } : undefined}
+        >
+            {description.v}
+        </MenuItem>
+    );
+};
 
 export const KeyboardSelector = ({ idPrefix }) => {
+    const [search, setSearch] = useState("");
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
-    useEffect(() => {
-        if (compositorSelectedLayout && keyboards.find(({ "layout-id": layoutId }) => layoutId?.v === compositorSelectedLayout)) {
-            return;
-        }
-        if (keyboards.length > 0) {
-            setCompositorLayouts({ layouts: [keyboards[0]["layout-id"]?.v] }); // Default layout without variant
-        }
-    }, [keyboards, compositorSelectedLayout]);
+    if (!compositorSelectedLayout) {
+        return null;
+    }
 
-    const handleChange = (event) => {
-        const { value } = event.target;
-
-        setCompositorLayouts({ layouts: [value] });
+    const onSearch = (keyboard) => {
+        const searchLower = search.toLowerCase();
+        const { description, "layout-id": layoutId } = keyboard;
+        return (
+            description.v.toLowerCase()
+                    .includes(searchLower) ||
+            layoutId?.v.toLowerCase()
+                    .includes(searchLower)
+        );
     };
 
-    const selectedValue =
-        compositorSelectedLayout || (keyboards.length > 0 ? keyboards[0]["layout-id"]?.v : "");
+    const getOptions = showCommon => keyboards
+            .filter(onSearch)
+            .filter(keyboard => keyboard["is-common"].v === showCommon)
+            .map(keyboard => (
+                <MenuOption
+                  idPrefix={idPrefix}
+                  key={keyboard["layout-id"].v}
+                  keyboard={keyboard}
+                  selectedKeyboard={compositorSelectedLayout}
+                />
+            ));
+
+    const options = [
+        <MenuGroup
+          id={SCREEN_ID + "-common-keyboards"}
+          key={SCREEN_ID + "-common-keyboards"}
+          label={_("Suggested keyboards")}
+          labelHeadingLevel="h3"
+        >
+            {getOptions(true)}
+        </MenuGroup>,
+        <MenuGroup
+          id={SCREEN_ID + "-other-keyboards"}
+          key={SCREEN_ID + "-other-keyboards"}
+          label={_("Other keyboards")}
+          labelHeadingLevel="h3"
+        >
+            {getOptions(false)}
+        </MenuGroup>,
+    ];
 
     return (
-        <FormSelect
-          id={`${idPrefix}-keyboard-layouts`}
-          onChange={handleChange}
-          value={selectedValue}
-        >
-            {keyboards.map(({ description, "layout-id": layoutId }) => (
-                <FormSelectOption
-                  key={layoutId?.v}
-                  label={description?.v || _("Unknown layout")}
-                  value={layoutId?.v}
-                />
-            ))}
-        </FormSelect>
+        <MenuSearch
+          ariaLabelSearch={_("Search keyboard layout")}
+          ariaLabelSearchClear={_("Clear search")}
+          handleOnSelect={(_event, item) => {
+              setCompositorLayouts({ layouts: [item] });
+              setXLayouts({ layouts: [item] });
+          }}
+          options={options}
+          search={search}
+          selection={compositorSelectedLayout}
+          setSearch={setSearch}
+        />
     );
 };
 
@@ -138,6 +195,24 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
               variant="danger"
             />}
         </>
+    );
+};
+
+const KeyboardNonGnome = ({ idPrefix }) => {
+    const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
+    const keyboards = keyboardLayouts;
+
+    useEffect(() => {
+        if (compositorSelectedLayout && keyboards.find(({ "layout-id": layoutId }) => layoutId?.v === compositorSelectedLayout)) {
+            return;
+        }
+
+        setCompositorLayouts({ layouts: ["us"] });
+        setXLayouts({ layouts: ["us"] });
+    }, [keyboards, compositorSelectedLayout]);
+
+    return (
+        <KeyboardSelector idPrefix={idPrefix} />
     );
 };
 
