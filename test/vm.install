@@ -12,7 +12,7 @@ import sys
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
 
-missing_packages = "cockpit-ws cockpit-bridge fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-kickstart"
+missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-kickstart"
 
 from machine.machine_core import machine_virtual
 
@@ -51,9 +51,9 @@ def vm_install(image, compose, verbose, quick):
         if scenario and "cockpit-pr-" in scenario:
             cockpit_pr = scenario.split("-")[-1]
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
-            download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-storaged", machine)
+            download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}", "cockpit-bridge cockpit-ws cockpit-storaged", machine)
         else:
-            packages_to_download += " cockpit-storaged"
+            download_from_copr("@cockpit/main-builds", "cockpit-bridge cockpit-ws cockpit-storaged", machine)
 
         if scenario and scenario.startswith("anaconda-webui-pr-"):
             # If we are testing a anaconda-webui PR scenario from a different repository
