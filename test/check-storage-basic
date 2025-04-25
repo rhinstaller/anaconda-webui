@@ -169,12 +169,7 @@ class TestStorage(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.wait_visible(".cockpit-storage-integration-sidebar")
-        b._wait_present("iframe[name='cockpit-storage']")
-        b.switch_to_frame("cockpit-storage")
-        b._wait_present("#storage.ct-page-fill")
+        s.enter_cockpit_storage()
 
         b.wait_not_present("#critical-error-bz-report-modal.pf-v5-c-modal-box")
 

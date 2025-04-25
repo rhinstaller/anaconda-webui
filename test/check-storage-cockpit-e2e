@@ -36,9 +36,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create BIOS and boot partitions on vdb
         self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
@@ -135,9 +133,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.select_disks([("vdb", True), ("vda", True), ("vdc", True)])
 
-        s.modify_storage()
-        s.confirm_entering_cockpit_storage()
-        b.switch_to_frame("cockpit-storage")
+        s.enter_cockpit_storage()
 
         # Create RAID device on vdb, and vdc
         self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")

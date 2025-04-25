@@ -118,6 +118,20 @@ class StorageDestination():
         self.browser.click("#toggle-kebab")
         self.browser.click("#modify-storage")
 
+    def enter_cockpit_storage(self):
+        b = self.browser
+        self.modify_storage()
+        self.confirm_entering_cockpit_storage()
+        b.wait_visible(".cockpit-storage-integration-sidebar")
+        b._wait_present("iframe[name='cockpit-storage']")
+        b.switch_to_frame("cockpit-storage")
+        b._wait_present("#storage.ct-page-fill")
+
+    def exit_cockpit_storage(self):
+        self.browser.switch_to_top()
+        self.return_to_installation()
+        self.return_to_installation_confirm()
+
 
 class StorageEncryption():
     encryption_id_prefix = "disk-encryption"
