@@ -239,6 +239,7 @@ export const CockpitStorageIntegration = ({
 };
 
 export const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
+    console.info("preparePartitioning devices", JSON.stringify(devices));
     try {
         const selectedDisks = await getSelectedDisks();
         const partitioning = await createPartitioning({ method: "MANUAL" });
@@ -474,15 +475,19 @@ const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextC
         // CLEAR_PARTITIONS_NONE = 0
         try {
             await setInitializationMode({ mode: 0 });
+            console.info("cockpit-storage-integration: newMountPoints", JSON.stringify(newMountPoints));
             const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, onFail });
 
             // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
             // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
             // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
+            console.info("cockpit-storage-integration: requests", JSON.stringify(requests));
             const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
             // PMBR does not have a bootloader necessarily
             const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
             const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
+            console.info("cockpit-storage-integration: bootloader device", bootloaderDevice, "bootloaderDriveMDRAID", bootloaderDriveMDRAID);
+            console.info("bootloaderRequest", JSON.stringify(bootloaderRequest));
             if (bootloaderDriveMDRAID) {
                 throw Error(
                     cockpit.format(
@@ -636,6 +641,7 @@ const CheckStorageDialog = ({
     const requiredSize = useRequiredSize();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
+    console.info("newMountPoints", JSON.stringify(newMountPoints));
 
     const useConfiguredStorage = useMemo(() => {
         const availability = checkConfiguredStorage({
