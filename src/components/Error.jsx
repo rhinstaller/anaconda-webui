@@ -20,6 +20,7 @@ import cockpit from "cockpit";
 import React, { cloneElement, useContext, useEffect, useState } from "react";
 import {
     ActionList,
+    Alert,
     Button,
     Form,
     FormGroup,
@@ -35,7 +36,7 @@ import {
     TextContent,
     TextVariants,
 } from "@patternfly/react-core";
-import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
+import { DisconnectedIcon, ExclamationTriangleIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { exitGui } from "../helpers/exit.js";
 
@@ -143,13 +144,22 @@ export const BZReportModal = ({
           variant={ModalVariant.large}
           footer={
               <Stack hasGutter>
+                  {!detailsLabel &&
                   <FormHelperText>
                       <HelperText>
                           {isConnected
-                              ? <HelperTextItem> {_("Reporting an issue will send information over the network. Please review and edit the attached log to remove any sensitive information.")} </HelperTextItem>
+                              ? (
+                                  <TextContent>
+                                      <Text>
+                                          {_("The system log will be saved to")}{" "}
+                                          <strong>{logFile}</strong>{" "}
+                                          {_("and will not be automatically uploaded.")}{" "}
+                                          <strong>{_("Please manually attach this file in Bugzilla.")}</strong>
+                                      </Text>
+                                  </TextContent>)
                               : <HelperTextItem icon={<DisconnectedIcon />}> {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive} </HelperTextItem>}
                       </HelperText>
-                  </FormHelperText>
+                  </FormHelperText>}
                   <StackItem>
                       <ActionList>
                           <Button
@@ -178,6 +188,14 @@ export const BZReportModal = ({
                   fieldId={idPrefix + "-bz-report-modal-review-log"}
                   label={_("Log")}
                 >
+                    {detailsLabel &&
+                        <Alert
+                          variant="warning"
+                          isInline
+                          title={_("Please review and edit the following log to remove any sensitive information before reporting.")}
+                          style={{ marginBottom: "1rem" }}
+                          icon={<ExclamationTriangleIcon />}
+                        />}
                     <TextArea
                       value={logContent}
                       onChange={(_, value) => setLogContent(value)}
@@ -275,7 +293,6 @@ const cancelButton = (onClose) => {
 export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) => {
     return (
         <BZReportModal
-          description={_("The following log will be sent to the issue tracking system where you may provide additional details.")}
           reportLinkURL={reportLinkURL}
           idPrefix="user-issue"
           title={_("Report issue")}
