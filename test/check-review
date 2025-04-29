@@ -71,6 +71,7 @@ class TestReview(VirtInstallMachineCase):
 
         # check selected disks are shown
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "",    "vda1", "1.05 MB", True, "biosboot")
         r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs", is_encrypted=True)
 
