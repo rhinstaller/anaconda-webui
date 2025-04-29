@@ -20,12 +20,11 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     ActionList,
-    Alert,
+    Banner,
     Button,
     Card,
     CardBody,
     Content,
-    Divider,
     DropdownItem,
     Flex,
     FlexItem,
@@ -42,7 +41,7 @@ import {
     Modal,
     ModalVariant
 } from "@patternfly/react-core/deprecated";
-import { ArrowLeftIcon } from "@patternfly/react-icons";
+import { ArrowLeftIcon, ExclamationTriangleIcon } from "@patternfly/react-icons";
 
 import {
     runStorageTask,
@@ -210,12 +209,16 @@ export const CockpitStorageIntegration = ({
               onClose={() => setShowDialog(true)}
               showClose={false}
               variant={ModalVariant.large}>
-                <Alert
-                  isInline
-                  title={_("Changes made here will immediately affect the system. There is no 'undo'.")}
-                  variant="warning"
-                />
-                <Divider />
+                <Banner screenReaderText="Warning banner" status="warning">
+                    <Flex spaceItems={{ default: "spaceItemsSm" }}>
+                        <FlexItem><ExclamationTriangleIcon /></FlexItem>
+                        <FlexItem>
+                            {
+                                _("Changes made here will immediately affect the system. There is no 'undo'.")
+                            }
+                        </FlexItem>
+                    </Flex>
+                </Banner>
                 <div className={idPrefix + "-page-section-cockpit-storage"}>
                     <PageSection hasBodyWrapper={false}>
                         <iframe

@@ -4,11 +4,17 @@
 .cockpit-storage-integration-modal-page-section {
     width: 100%;
     height: 100%;
+
+    .pf-v6-c-banner {
+      /* Provide "breathing room" to make the banner more obvious */
+      --pf-v6-c-banner--PaddingBlockStart: var(--pf-t--global--spacer--md);
+      --pf-v6-c-banner--PaddingBlockEnd: var(--pf-t--global--spacer--md);
+    }
 }
 
 .cockpit-storage-integration-page-section-cockpit-storage,
 .cockpit-storage-integration-iframe-cockpit-storage {
-    width: 100%;
+  width: 100%;
 }
 
 .cockpit-storage-integration-page-section-storage-alert {
@@ -17,19 +23,22 @@
 
 .cockpit-storage-integration-iframe-cockpit-storage {
     height: 100%;
+    border-radius: var(--pf-t--global--border--radius--medium);
+    border: var(--pf-t--global--border--width--box--default) solid var(--pf-t--global--border--color--default);
+    background-clip: content-box; /* Fix weird anti-alaising */
 }
 
 .cockpit-storage-integration-page-section-cockpit-storage {
     display: grid;
     grid-template-columns: 3fr 1fr;
+    flex: auto;
+    gap: var(--pf-t--global--spacer--gutter--default);
+    padding: var(--pf-t--global--spacer--gutter--default);
+    background-color: var(--pf-t--global--background--color--action--plain--clicked);
 }
 
 .cockpit-storage-integration-sidebar {
     padding-left: 0;
-}
-
-.cockpit-storage-integration-page-section-cockpit-storage {
-    flex: 1;
 }
 
 .cockpit-storage-integration-page-section-storage-footer.pf-m-sticky-bottom {
