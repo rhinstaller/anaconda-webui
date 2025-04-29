@@ -38,9 +38,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-22 03:26+0000\n"
-"PO-Revision-Date: 2025-03-08 20:25+0000\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2025-04-29 03:29+0000\n"
+"PO-Revision-Date: 2025-04-29 01:13+0000\n"
+"Last-Translator: Hugo Costa <hugo.a.costa@outlook.pt>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/pt/>\n"
 "Language: pt\n"
@@ -48,16 +48,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11\n"
 
 #: src/components/storage/InstallationDestination.jsx:178
 #: src/components/storage/InstallationDestination.jsx:303
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/MountPointMapping.jsx:355
 #: src/components/storage/InstallationDestination.jsx:198
 #: src/components/storage/InstallationDestination.jsx:296
+#: src/components/storage/MountPointMapping.jsx:355
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
@@ -78,10 +78,8 @@ msgstr ""
 "as partições lógicas também removerá automaticamente a partição estendida."
 
 #: src/components/localization/Keyboard.jsx:111
-#, fuzzy
-#| msgid "Nothing selected"
 msgid "$0 layouts detected"
-msgstr "Nada selecionado"
+msgstr "$0 esquemas detetados"
 
 #: src/components/review/StorageReview.jsx:249
 msgid "$0 will be deleted"
@@ -102,6 +100,8 @@ msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
 msgstr ""
+"Partição '$0' no dispositivo MDRAID '$1' encontrada. Partições do carregador "
+"de arranque em dispositivos MDRAID não são suportadas."
 
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
@@ -166,8 +166,8 @@ msgstr "Aplicar a atribuição do ponto de montagem e instalar"
 msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
-"Atribua partições a pontos de montagem. Útil para layouts personalizados pré-"
-"configurados."
+"Atribuir partições a pontos de montagem. Útil para esquemas personalizados "
+"pré-configurados."
 
 #: src/components/storage/ReclaimSpaceModal.jsx:213
 msgid "Available free space: $0. Installation requires: $1."
@@ -189,9 +189,9 @@ msgstr ""
 "teste e desenvolvimento e que está disposto a relatar quaisquer erros ou "
 "problemas para melhorar este trabalho."
 
-#: src/components/storage/CockpitStorageIntegration.jsx:150
-#: src/components/storage/ReclaimSpaceModal.jsx:224
 #: src/components/storage/InstallationDestination.jsx:349
+#: src/components/storage/ReclaimSpaceModal.jsx:224
+#: src/components/storage/CockpitStorageIntegration.jsx:150
 #: src/components/review/Hostname.jsx:106 src/components/Error.jsx:270
 msgid "Cancel"
 msgstr "Cancelar"
@@ -210,7 +210,7 @@ msgstr "Alterar o nome de anfitrião"
 
 #: src/components/localization/Keyboard.jsx:123
 msgid "Change system keyboard layout"
-msgstr ""
+msgstr "Alterar o esquema de teclado do sistema"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:214
 msgid ""
@@ -219,9 +219,9 @@ msgstr ""
 "As alterações feitas aqui afetarão imediatamente o sistema. Não é possivel "
 "anular a operacão."
 
+#: src/components/storage/DiskEncryption.jsx:61
 #: src/components/storage/CockpitStorageIntegration.jsx:716
 #: src/components/storage/CockpitStorageIntegration.jsx:728
-#: src/components/storage/DiskEncryption.jsx:61
 msgid "Checking storage configuration"
 msgstr "A verificar a configuração do armazenamento"
 
@@ -229,8 +229,8 @@ msgstr "A verificar a configuração do armazenamento"
 msgid "Clear search input"
 msgstr "Limpar entrada de pesquisa"
 
-#: src/components/storage/EncryptedDevices.jsx:159
 #: src/components/storage/InstallationDestination.jsx:354
+#: src/components/storage/EncryptedDevices.jsx:159
 msgid "Close"
 msgstr "Fechar"
 
@@ -304,7 +304,7 @@ msgstr "Destino está criptografado"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:788
 msgid "Detected valid storage layout:"
-msgstr "Layout de armazenamento válido detectado:"
+msgstr "Esquema de armazenamento válido detetado:"
 
 #: src/components/storage/MountPointMapping.jsx:626
 #: src/components/review/StorageReview.jsx:206
@@ -337,7 +337,7 @@ msgstr "Cifrado"
 
 #: src/components/storage/scenarios/EraseAll.jsx:46
 msgid "Erase data and install"
-msgstr "Eliminar os dados e instalar"
+msgstr "Apagar dados e instalar"
 
 #: src/components/Error.jsx:258
 msgid "Error details"
@@ -405,8 +405,8 @@ msgstr "Eu entendo que todos os dados existentes serão apagados"
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
-"Eu compreendo que todos os dados existentes serão apagados do disco "
-"selecionado"
+"Eu compreendo que todos os dados existentes serão apagados dos discos "
+"selecionados"
 
 #: src/components/review/ReviewConfiguration.jsx:176
 msgid "I understand that some existing data will be erased"
@@ -472,25 +472,27 @@ msgid ""
 "filesystem or format (e.g., LVM PV). Any existing partitions on this array "
 "will be ignored."
 msgstr ""
+"Configuração de RAID inválida detetada. Se o array RAID for criado "
+"diretamente sobre discos, deverá ser criada uma tabela de partições no "
+"array. Se o array RAID for criado sobre partições, deve conter um único "
+"sistema de ficheiros ou formato (por exemplo, LVM PV). Quaisquer partições "
+"existentes neste array serão ignoradas."
 
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
 "OS."
 msgstr ""
-"Mantem leiaute do disco atual e usa espaço disponível, para dual-boot com "
-"outro Sistema Operacional."
+"Manter o esquema de disco atual e usar o espaço disponível para fazer dual-"
+"boot com outro sistema operativo."
 
 #: src/components/localization/InstallationLanguage.jsx:328
-#, fuzzy
-#| msgctxt "GUI|Spoke"
-#| msgid "_Keyboard"
 msgid "Keyboard"
-msgstr "_Teclado"
+msgstr "Teclado"
 
 #: src/components/storage/DiskEncryption.jsx:98
 msgid "Keyboard layout during boot"
-msgstr ""
+msgstr "Esquema de teclado durante o arranque"
 
 #: src/components/review/ReviewConfiguration.jsx:105
 #: src/components/localization/InstallationLanguage.jsx:311
@@ -539,14 +541,15 @@ msgstr ""
 #: src/components/localization/Keyboard.jsx:92
 msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr ""
+"Mais de um esquema detetado. Remova os esquemas adicionais para continuar"
 
 #: src/components/storage/MountPointMapping.jsx:625
 #: src/components/review/StorageReview.jsx:210
 msgid "Mount point"
 msgstr "Ponto de Montagem"
 
-#: src/components/storage/MountPointMapping.jsx:623
 #: src/components/storage/scenarios/MountPointMapping.jsx:65
+#: src/components/storage/MountPointMapping.jsx:623
 msgid "Mount point assignment"
 msgstr "Atribuição do ponto de montagem"
 
@@ -574,8 +577,8 @@ msgstr "Rede indisponível. Configure a rede para reportar o problema."
 msgid "Next"
 msgstr "Próximo"
 
-#: src/components/storage/ReclaimSpaceModal.jsx:161
 #: src/components/storage/MountPointMapping.jsx:630
+#: src/components/storage/ReclaimSpaceModal.jsx:161
 msgid "No devices"
 msgstr "Sem dispositivos"
 
@@ -621,9 +624,9 @@ msgstr "Sistema operativo"
 msgid "Partitions (advanced)"
 msgstr "Partições (avançado)"
 
+#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/storage/EncryptedDevices.jsx:172
 #: src/components/storage/EncryptedDevices.jsx:179
-#: src/components/storage/DiskEncryption.jsx:117
 #: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:282
 msgid "Passphrase"
 msgstr "Frase-passe"
@@ -660,8 +663,8 @@ msgstr "A preparar o relatório"
 msgid "Proceed with installation"
 msgstr "Prosseguir com a instalação"
 
-#: src/components/Error.jsx:236 src/components/AnacondaWizardFooter.jsx:108
-#: src/components/AnacondaWizardFooter.jsx:131
+#: src/components/AnacondaWizardFooter.jsx:108
+#: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:236
 msgid "Quit"
 msgstr "Sair"
 
@@ -697,20 +700,18 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "O nome de anfitrião deve ter 64 ou menos caracteres"
 
-#: src/components/Error.jsx:236 src/components/AnacondaWizardFooter.jsx:108
-#: src/components/AnacondaWizardFooter.jsx:131
+#: src/components/AnacondaWizardFooter.jsx:108
+#: src/components/AnacondaWizardFooter.jsx:131 src/components/Error.jsx:236
 msgid "Reboot"
 msgstr "Reiniciar"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:525
-#, fuzzy
-#| msgid "Reboot into Windows to resize BitLocker-encrypted partitions. "
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
 msgstr ""
-"Utilize o Windows para redimensionar partições criptografadas com o "
-"BitLocker. "
+"Reinicie no Windows para redimensionar as partições encriptadas com "
+"BitLocker. Liberte pelo menos $0 de espaço livre para a instalação."
 
 #: src/components/AnacondaWizardFooter.jsx:143
 msgid "Reboot system?"
@@ -762,8 +763,8 @@ msgid ""
 "Remove all partitions on the selected devices, including existing operating "
 "systems."
 msgstr ""
-"Remove todas as partições no dispositivo selecionado, inclusive sistemas "
-"operacionais existentes."
+"Remove todas as partições no dispositivo selecionado, incluindo sistemas "
+"operativos existentes."
 
 #: src/components/storage/ReclaimSpaceModal.jsx:129
 msgid ""
@@ -778,6 +779,10 @@ msgid ""
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
 "to have backups of anything important before reclaiming space."
 msgstr ""
+"Remover um sistema de ficheiros irá apagar permanentemente todos os dados "
+"que ele contém. Redimensionar uma partição pode libertar espaço não "
+"utilizado, mas não é isento de riscos. Certifique-se de ter cópias de "
+"segurança de tudo o que for importante antes de recuperar espaço."
 
 #: src/components/storage/HelpAutopartOptions.jsx:11
 msgid "Replace current installation, but keep files in home."
@@ -809,7 +814,7 @@ msgstr "Requisitos"
 
 #: src/components/storage/InstallationDestination.jsx:151
 msgid "Rescan devices"
-msgstr "Reanalisar dispositivos"
+msgstr "Atualizar a lista de dispositivos"
 
 #: src/components/storage/InstallationDestination.jsx:132
 msgid "Rescanning of the disks failed."
@@ -852,12 +857,12 @@ msgstr "Procurar por um idioma"
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
-"Proteja os seus dados utilizando criptografia de disco. Se aplica apenas "
-"para novas partições"
+"Proteja os seus dados utilizando cifra de disco. Aplica-se apenas a novas "
+"partições"
 
 #: src/components/storage/InstallationDestination.jsx:346
 msgid "Select"
-msgstr "Seleccionar"
+msgstr "Selecionar"
 
 #: src/components/storage/MountPointMapping.jsx:322
 msgid "Select a device"
@@ -928,11 +933,11 @@ msgstr "Armazenamento"
 #: src/components/steps.js:25
 #: src/components/installation/InstallationProgress.jsx:143
 msgid "Storage configuration"
-msgstr "Configuração de Armazenamento"
+msgstr "Configuração de armazenamento"
 
 #: src/components/installation/InstallationProgress.jsx:141
 msgid "Storage configuration: Storage is currently being configured."
-msgstr "Configuração de armazenamento: O armazenamento está sendo configurado."
+msgstr "Configuração de armazenamento: O armazenamento está a ser configurado."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:134
 msgid "Storage editor"
@@ -1002,6 +1007,8 @@ msgid ""
 "The installation needs $1 of disk space; however, the capacity of the "
 "selected disks is only $0."
 msgstr ""
+"A instalação necessita de $1 de espaço em disco; no entanto, a capacidade "
+"dos discos selecionados é apenas $0."
 
 #: src/components/Error.jsx:247
 msgid "The installer cannot continue due to a critical error."
@@ -1016,8 +1023,8 @@ msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
 msgstr ""
-"A frase-passe inserida contém caracteres não-ASCII. Pode não conseguir "
-"trocar entre as disposições de teclado enquanto a digita."
+"A frase-passe que forneceu contém caracteres não ASCII. Pode não ser "
+"possível alternar entre os esquemas de teclado ao digitá-la."
 
 #: src/components/storage/CockpitStorageIntegration.jsx:156
 msgid ""
@@ -1025,6 +1032,10 @@ msgid ""
 "set up LVM and much more. It is meant to be used as an advanced utility and "
 "not intended to be used in a typical installation."
 msgstr ""
+"O editor de armazenamento permite redimensionar, eliminar e criar partições. "
+"Pode configurar LVM e muito mais. Destina-se a ser utilizado como uma "
+"ferramenta avançada e não é recomendado para ser usado numa instalação "
+"típica."
 
 #: src/components/users/Accounts.jsx:203
 msgid "This account will have administration privilege with sudo."
@@ -1041,6 +1052,7 @@ msgstr "Este é um software instável de pré-lançamento"
 #: src/components/storage/DiskEncryption.jsx:109
 msgid "This layout will be used for unlocking your system on boot"
 msgstr ""
+"Este esquema será utilizado para desbloquear o seu sistema durante o arranque"
 
 #: src/components/storage/DiskEncryption.jsx:65
 msgid "This may take a moment"
@@ -1079,10 +1091,8 @@ msgid "Unable to schedule resizing of $0"
 msgstr "Incapaz de agendar redimensionamento de $0"
 
 #: src/components/localization/Keyboard.jsx:63
-#, fuzzy
-#| msgid "Unknown Linux"
 msgid "Unknown layout"
-msgstr "Linux desconhecido"
+msgstr "Esquema desconhecido"
 
 #: src/components/storage/EncryptedDevices.jsx:74
 #: src/components/storage/EncryptedDevices.jsx:156
@@ -1102,10 +1112,8 @@ msgid "Unlock encrypted devices"
 msgstr "Desbloquear dispositivos cifrados"
 
 #: src/components/localization/Keyboard.jsx:110
-#, fuzzy
-#| msgid "Available Layouts"
 msgid "Unusable layout"
-msgstr "Disposições disponíveis"
+msgstr "Esquema inutilizável"
 
 #: src/components/storage/scenarios/UseConfiguredStorage.jsx:92
 msgid "Use configured storage"
@@ -1113,20 +1121,15 @@ msgstr "Usar o armazenamento configurado"
 
 #: src/components/storage/scenarios/EraseAll.jsx:48
 msgid "Use entire disk"
-msgstr "Usar disco inteiro"
+msgstr "Utilizar o disco inteiro"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:793
-#, fuzzy
-#| msgid "Use Free Space"
 msgid "Use free space"
-msgstr "UTILIZAR ESPAÇO LIVRE"
+msgstr "Utilizar espaço livre"
 
 #: src/components/storage/CockpitStorageIntegration.jsx:793
-#, fuzzy
-#| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
-msgstr ""
-"Sem espaço livre o suficiente nos discos para o particionamento automático"
+msgstr "Utilizar o dispositivo RAID para partição automática"
 
 #: src/components/users/Accounts.jsx:224
 msgid "User name"
@@ -1158,7 +1161,7 @@ msgstr "Bem-vindo"
 
 #: src/components/AnacondaPage.jsx:80
 msgid "Welcome. Let's install $0 now."
-msgstr "Bem-vindo. Vamos instalar $0 agora."
+msgstr "Bem-vindo. Vamos já instalar o $0."
 
 #: src/components/storage/ReclaimSpaceModal.jsx:523
 msgid "Windows partitions with BitLocker encryption cannot be resized"
