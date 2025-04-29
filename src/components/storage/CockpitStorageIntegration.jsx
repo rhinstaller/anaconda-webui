@@ -461,7 +461,7 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
     }
 };
 
-const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, useConfiguredStorage }) => {
+const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextCheckStep, setStorageValidationReport, useConfiguredStorage }) => {
     // If "Use configured storage" is not available, skip Manual partitioning creation
     if (!useConfiguredStorage) {
         setNextCheckStep();
@@ -496,7 +496,10 @@ const prepareAndApplyPartitioning = ({ devices, newMountPoints, onFail, setNextC
             applyStorage({
                 devices,
                 onFail,
-                onSuccess: setNextCheckStep,
+                onSuccess: (report) => {
+                    setStorageValidationReport(report);
+                    setNextCheckStep();
+                },
                 partitioning,
             });
         } catch (exc) {
@@ -525,7 +528,7 @@ const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
             });
 };
 
-const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useConfiguredStorage }) => {
+const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, setStorageValidationReport, useConfiguredStorage }) => {
     const [checkStep, setCheckStep] = useState("rescan");
     const refCheckStep = useRef();
     const devices = useOriginalDevices();
@@ -607,6 +610,7 @@ const useStorageSetup = ({ dispatch, newMountPoints, onCritFail, setError, useCo
                     newMountPoints,
                     onFail,
                     setNextCheckStep: () => setCheckStep(),
+                    setStorageValidationReport,
                     useConfiguredStorage,
                 });
                 break;
@@ -629,6 +633,7 @@ const CheckStorageDialog = ({
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
 
+    const [storageValidationReport, setStorageValidationReport] = useState({});
     const [error, setError] = useState();
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
@@ -695,6 +700,7 @@ const CheckStorageDialog = ({
         newMountPoints,
         onCritFail,
         setError,
+        setStorageValidationReport,
         useConfiguredStorage,
     });
     const loading = !error && storageStepsInProgress;
@@ -727,6 +733,19 @@ const CheckStorageDialog = ({
     } else {
         modalProps["aria-label"] = _("Checking storage configuration");
     }
+
+    const WarningMessages = ({ warnings }) => {
+        if (!warnings?.length) return null;
+        return (
+            <>
+                {warnings.map((warning, index) => (
+                    <HelperTextItem key={`warning-${index}`} variant="warning" isDynamic>
+                        {warning}
+                    </HelperTextItem>
+                ))}
+            </>
+        );
+    };
 
     return (
         <Modal
@@ -780,19 +799,23 @@ const CheckStorageDialog = ({
                 <>
                     {storageRequirementsNotMet ? error?.message : null}
                     <HelperText>
-                        {!storageRequirementsNotMet &&
-                        <HelperTextItem variant="success" isDynamic>
-                            {useConfiguredStorage
-                                ? (
-                                    <Stack hasGutter>
-                                        <span>{_("Detected valid storage layout:")}</span>
-                                        {useConfiguredStorageReview}
-                                    </Stack>
-                                )
-                                : (
-                                    useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
-                                )}
-                        </HelperTextItem>}
+                        {!storageRequirementsNotMet && (
+                            <>
+                                <WarningMessages warnings={storageValidationReport?.["warning-messages"]?.v} />
+                                <HelperTextItem variant="success" isDynamic>
+                                    {useConfiguredStorage
+                                        ? (
+                                            <Stack hasGutter>
+                                                <span>{_("Detected valid storage layout:")}</span>
+                                                {useConfiguredStorageReview}
+                                            </Stack>
+                                        )
+                                        : (
+                                            (useEntireSoftwareDisk ? _("Use free space") : _("Use the RAID device for automatic partitioning"))
+                                        )}
+                                </HelperTextItem>
+                            </>
+                        )}
                     </HelperText>
                 </>}
             </>
