@@ -343,7 +343,10 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("use-free-space")
+        if m.image == "fedora-42-boot":
+            s.reclaim_set_checkbox(True)
         i.next(True)
+        b.wait_visible("#reclaim-space-modal")
 
         b.assert_pixels(
             "#reclaim-space-modal",
