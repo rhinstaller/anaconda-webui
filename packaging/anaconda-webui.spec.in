@@ -20,12 +20,10 @@ BuildRequires: systemd-rpm-macros
 %endif
 
 %global cockpitver 275
-%global cockpitstorver 336.2
 
 %define _unitdir /usr/lib/systemd/system
 
 # Unpin cockpit-storaged when anaconda-webui get's migrated to Patternfly 6
-Requires: cockpit-storaged <= %{cockpitstorver}
 Requires: cockpit-bridge >= %{cockpitver}
 Requires: cockpit-ws >= %{cockpitver}
 Requires: anaconda-core  >= %{anacondacorever}
