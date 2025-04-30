@@ -46,14 +46,14 @@ case "${TEST_SCENARIO:=}" in
     *expensive*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"
         ;;
-    *cockpit*)
-        RUN_OPTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep "Cockpit")"
-        ;;
     *storage*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep "Storage" | grep -v "Cockpit")"
         ;;
     *other*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -Ev "$RE_EXPENSIVE" | grep -v "Cockpit" | grep -v "Storage")"
+        ;;
+    *cockpit*)
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep "Cockpit")"
         ;;
     *)
         RUN_OPTS="$ALL_TESTS"
