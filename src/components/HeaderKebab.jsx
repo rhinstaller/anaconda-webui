@@ -86,9 +86,9 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
         <AboutModal
           id="about-modal"
           isOpen={isModalOpen}
-          noAboutModalBoxContentContainer
           onClose={toggleModal}
           productName={<ProductName />}
+          variant="small"
         >
             <Flex direction={{ default: "column" }} justifyContent={{ default: "justifyContentSpaceBetween" }}>
                 <AboutModalVersions />
@@ -150,13 +150,12 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
               toggle={toggleRef =>
                   <MenuToggle
                     className="pf-m-align-right"
+                    icon={<EllipsisVIcon />}
                     id="toggle-kebab"
                     isExpanded={isOpen}
                     onClick={onToggle}
                     ref={toggleRef}
-                    variant="plain">
-                      <EllipsisVIcon />
-                  </MenuToggle>}
+                    variant="plain" />}
               shouldFocusToggleOnSelect>
                 <DropdownList>
                     {dropdownItems}

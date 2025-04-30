@@ -23,19 +23,20 @@ import {
     ActionList,
     Alert,
     Button,
+    Content,
     Flex,
     FlexItem,
     HelperText,
     HelperTextItem,
-    Modal,
-    ModalVariant,
     Panel,
     Popover,
     Slider,
     Stack,
-    Text,
-    TextContent,
 } from "@patternfly/react-core";
+import {
+    Modal,
+    ModalVariant
+} from "@patternfly/react-core/deprecated";
 import {
     CompressArrowsAltIcon,
     HddIcon,
@@ -125,13 +126,13 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
         <Modal
           description={
               <Stack hasGutter>
-                  <TextContent>
-                      <Text>{_("Remove or resize existing filesystems to free up space for the installation.")}</Text>
-                      <Text>{
+                  <Content>
+                      <Content component="p">{_("Remove or resize existing filesystems to free up space for the installation.")}</Content>
+                      <Content component="p">{
                           _("Removing a filesystem will permanently delete all of the data it contains. Resizing a partition can free up unused space, but is not risk-free. Be sure to have backups of anything important before reclaiming space.")
                       }
-                      </Text>
-                  </TextContent>
+                      </Content>
+                  </Content>
                   <WindowsHint />
               </Stack>
           }
@@ -208,7 +209,7 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
     return (
         <Stack hasGutter>
             <HelperText>
-                <HelperTextItem id={idPrefix + "-hint"} isDynamic variant={status}>
+                <HelperTextItem id={idPrefix + "-hint"} variant={status}>
                     {fmtToFragments(
                         _("Available free space: $0. Installation requires: $1."),
                         <b id={idPrefix + "-hint-available-free-space"}>{cockpit.format_bytes(diskFreeSpace + selectedSpaceToReclaim)}</b>,
@@ -217,7 +218,7 @@ const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions })
                 </HelperTextItem>
             </HelperText>
             <ActionList>
-                <Button isDisabled={status === "warning" || isFormDisabled} key="reclaim" variant="warning" onClick={onReclaim}>
+                <Button isAriaDisabled={status === "warning" || isFormDisabled} key="reclaim" variant="warning" onClick={onReclaim}>
                     {_("Reclaim space")}
                 </Button>
                 <Button key="cancel" variant="link" onClick={onClose}>
@@ -404,7 +405,7 @@ const DeviceActionDelete = ({ device, hasBeenRemoved, newDeviceSize, onAction })
         <Button
           aria-label={_("delete")}
           icon={<TrashIcon />}
-          isDisabled={isRemoveDisabled}
+          isAriaDisabled={isRemoveDisabled}
           onClick={onRemove}
           variant="plain"
         />
@@ -449,7 +450,7 @@ const useIsDeviceShrinkable = ({ device }) => {
 const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction }) => {
     const onShrink = value => onAction("shrink", value);
     const isDeviceShrinkable = useIsDeviceShrinkable({ device: device["device-id"].v });
-    const shrinkButton = <ShrinkPopover device={device} isDisabled={!isDeviceShrinkable} onShrink={onShrink} />;
+    const shrinkButton = <ShrinkPopover device={device} isAriaDisabled={!isDeviceShrinkable} onShrink={onShrink} />;
 
     if (hasBeenRemoved) {
         return null;
@@ -462,10 +463,10 @@ const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction })
     );
 };
 
-const ShrinkPopover = ({ device, isDisabled, onShrink }) => {
+const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     const [value, setValue] = useState(device.total.v);
     const originalUnit = cockpit.format_bytes(device.total.v).split(" ")[1];
-    const shrinkButton = <Button variant="plain" isDisabled={isDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
+    const shrinkButton = <Button variant="plain" isAriaDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
 
     return (
         <Popover
@@ -500,7 +501,7 @@ const ShrinkPopover = ({ device, isDisabled, onShrink }) => {
                   <Button
                     id={idPrefix + "-shrink-button"}
                     variant="primary"
-                    isDisabled={value === 0 || value === device.total.v}
+                    isAriaDisabled={value === 0 || value === device.total.v}
                     onClick={() => onShrink(value)}>
                       {_("Resize")}
                   </Button>

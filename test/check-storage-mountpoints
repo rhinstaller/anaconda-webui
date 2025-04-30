@@ -409,15 +409,18 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_device(2, "vda5")
 
         s.check_mountpoint_row_mountpoint(1, "/")
-        selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v5-c-select__toggle"
-        b.click(f"{selector}:not([disabled]):not([aria-disabled=true])")
-        select_entry = f"{selector} + ul li:nth-of-type(3) button"
-        b.click(select_entry)
-        b.wait_in_text(f"{selector} .pf-v5-c-select__toggle-text", "luks")
+
+        toggle_selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1-device-select-toggle:not([disabled]):not([aria-disabled=true])"
+        b.click(toggle_selector)
+
+        b.click(".pf-v6-c-menu__content li:nth-of-type(3) button")
+
+        b.wait_not_present(".pf-v6-c-menu")
+        b.wait_js_func("ph_text", f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v6-c-select__toggle-text", "luks")
+
         s.check_mountpoint_row_format_type(1, "xfs")
 
         i.reach(i.steps.REVIEW)
-
         r.check_disk_row(dev1, "/", "vda3", "", True, "xfs", True)
 
     @nondestructive

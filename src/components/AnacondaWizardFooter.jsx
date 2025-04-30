@@ -19,13 +19,17 @@ import cockpit from "cockpit";
 import React, { useContext, useState } from "react";
 import {
     ActionList,
+    ActionListGroup,
+    ActionListItem,
     Button,
-    Modal,
-    ModalVariant,
     Stack,
     useWizardContext,
     WizardFooterWrapper
 } from "@patternfly/react-core";
+import {
+    Modal,
+    ModalVariant
+} from "@patternfly/react-core/deprecated";
 
 import { exitGui } from "../helpers/exit.js";
 
@@ -82,31 +86,40 @@ export const AnacondaWizardFooter = ({
                     />}
                 {footerHelperText}
                 <ActionList>
-                    <Button
-                      id="installation-back-btn"
-                      variant="secondary"
-                      isDisabled={isFirstScreen || isFormDisabled}
-                      onClick={() => onBack()}>
-                        {_("Back")}
-                    </Button>
-                    <Button
-                      id="installation-next-btn"
-                      variant={nextButtonVariant || "primary"}
-                      isDisabled={!isFormValid || isFormDisabled}
-                      onClick={onNextButtonClicked}>
-                        {nextButtonText || _("Next")}
-                    </Button>
-                    <Button
-                      id="installation-quit-btn"
-                      isDisabled={isFormDisabled}
-                      style={{ marginLeft: "var(--pf-v5-c-wizard__footer-cancel--MarginLeft)" }}
-                      variant="link"
-                      onClick={() => {
-                          setQuitWaitsConfirmation(true);
-                      }}
-                    >
-                        {isBootIso ? _("Reboot") : _("Quit")}
-                    </Button>
+                    <ActionListGroup>
+                        <ActionListItem>
+                            <Button
+                              id="installation-back-btn"
+                              variant="secondary"
+                              isAriaDisabled={isFirstScreen || isFormDisabled}
+                              onClick={() => onBack()}>
+                                {_("Back")}
+                            </Button>
+                        </ActionListItem>
+                        <ActionListItem>
+                            <Button
+                              id="installation-next-btn"
+                              variant={nextButtonVariant || "primary"}
+                              isAriaDisabled={!isFormValid || isFormDisabled}
+                              onClick={onNextButtonClicked}>
+                                {nextButtonText || _("Next")}
+                            </Button>
+                        </ActionListItem>
+                    </ActionListGroup>
+                    <ActionListGroup>
+                        <ActionListItem>
+                            <Button
+                              id="installation-quit-btn"
+                              isAriaDisabled={isFormDisabled}
+                              variant="link"
+                              onClick={() => {
+                                  setQuitWaitsConfirmation(true);
+                              }}
+                            >
+                                {isBootIso ? _("Reboot") : _("Quit")}
+                            </Button>
+                        </ActionListItem>
+                    </ActionListGroup>
                 </ActionList>
             </Stack>
         </WizardFooterWrapper>

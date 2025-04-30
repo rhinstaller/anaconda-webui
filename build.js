@@ -78,14 +78,6 @@ const context = await esbuild.context({
         sassPlugin({
             loadPaths: [...nodePaths, "node_modules"],
             quietDeps: true,
-            async transform (source, resolveDir, path) {
-                if (path.includes("patternfly-4-cockpit.scss")) {
-                    return source
-                            .replace(/url.*patternfly-icons-fake-path.*;/g, "url(\"../base1/fonts/patternfly.woff\") format(\"woff\");")
-                            .replace(/@font-face[^}]*patternfly-fonts-fake-path[^}]*}/g, "");
-                }
-                return source;
-            }
         }),
         cockpitPoEsbuildPlugin(),
         cockpitCompressPlugin(),
