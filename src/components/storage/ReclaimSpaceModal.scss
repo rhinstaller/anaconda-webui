@@ -56,7 +56,7 @@
   }
 
   // Small sizes
-  @media (width < var(--pf-t--global--breakpoint--md)) {
+  @media (max-width: $pf-v6-global--breakpoint--md - 1) {
     // Indent the left for smaller sizes
     .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) {
       margin-inline-start: calc(
@@ -80,7 +80,7 @@
   }
 
   // Large sizes
-  @media (width >= var(--pf-t--global--breakpoint--md)) {
+  @media (min-width: $pf-v6-global--breakpoint--md) {
     // Indent the left for larger sizes
     .reclaim-space-modal-table-row:not(.reclaim-space-modal-device-level-0) td:nth-child(2) {
       padding-inline-start: calc(var(--pf-v6-c-table--cell--PaddingInlineEnd) + var(--indent) * var(--pf-t--global--spacer--md));
