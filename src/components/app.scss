@@ -16,6 +16,9 @@ html:not(.index-page) body {
 
 // Remove the default margin and radius from the main container
 #app .pf-v6-c-page__main-container {
+  // PatternFly sets the main container to 100% minus spacer-lg;
+  // this is incorrect, especially as Anaconda uses the wizard to the full page
+  --pf-v6-c-page__main-container--MaxHeight: 100%;
   margin: 0;
   border-radius: 0;
   border: none;
