@@ -50,7 +50,6 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
         onCritFail,
         setIsFormDisabled,
         setIsFormValid,
-        showStorage,
     };
 
     const stepsOrder = getSteps(userInterfaceConfig, isBootIso, storageScenarioId);
@@ -87,6 +86,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                           step={s.id}
                           title={s.title}
                           isFirstScreen={s.isFirstScreen}
+                          showStorage={showStorage}
                           usePageInit={s.usePageInit}>
                             <s.component {...componentProps} isFirstScreen={s.isFirstScreen} />
                         </AnacondaPage>

@@ -57,7 +57,6 @@ const InstallationMethod = ({
     setIsFormDisabled,
     setIsFormValid,
     setStepNotification,
-    showStorage,
 }) => {
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
 
@@ -95,7 +94,6 @@ const InstallationMethod = ({
                   isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
                   setIsFormValid={setIsFormValid}
-                  showStorage={showStorage}
                 />
             </DialogsContext.Provider>
         </Form>
