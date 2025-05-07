@@ -147,6 +147,7 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
               isOpen={isOpen}
               onSelect={onSelect}
               popperProps={{ position: "right" }}
+              onOpenChange={setIsOpen}
               toggle={toggleRef =>
                   <MenuToggle
                     className="pf-m-align-right"
