@@ -1,45 +1,29 @@
 :root {
-  /*
-  Shift PF blue shades to Fedora blue shades,
-  aligning to official Fedora blues
-  */
-  --pf-t--color--blue--10: oklch(94.77% 0.0265 241.35deg);
-  --pf-t--color--blue--20: oklch(87.56% 0.0589 241.35deg);
-  --pf-t--color--blue--30: oklch(80.68% 0.0914 241.35deg);
-  --pf-t--color--blue--40: oklch(68.48% 0.1147 241.35deg);
-  --pf-t--color--blue--50: oklch(53.77% 0.1229 257.17deg);
-  --pf-t--color--blue--60: oklch(38.2% 0.0891 263.14deg);
-  --pf-t--color--blue--70: oklch(25.55% 0.0521 264.29deg);
-
   /* Fedora blue aliases for reuse */
-  --fedora-blue: var(--pf-t--color--blue--40);
-  --fedora-blue-dark: var(--pf-t--color--blue--50);
+  --fedora-blue: oklch(68.48% 0.1147 241.35deg);
+  --fedora-blue-dark: oklch(53.77% 0.1229 257.17deg);
+  /* Use dark for light mode brand color */
+  --fedora-brand: var(--fedora-blue-dark);
+  /* In light mode, darken */
+  --tint: black;
+}
 
-  /* Semantic token remaps (light theme) */
-  --pf-t--global--color--brand--default: var(--fedora-blue);
-  --pf-t--global--color--brand--hover: var(--fedora-blue-dark);
-  --pf-t--global--text--color--brand--default: var(--fedora-blue);
-  --pf-t--global--text--color--link--default: var(--fedora-blue);
-  --pf-t--global--text--color--link--hover: var(--fedora-blue-dark);
-  --pf-t--global--color--status--active--default: var(--fedora-blue-dark);
-
-  --pf-t--global--color--brand--300: var(--pf-t--color--blue--60);
-  --pf-t--global--color--brand--100: var(--pf-t--color--blue--20);
-
-  --pf-t--global--text--color--link--visited: #6e4a8a;
+/* Intentionally in body so it definitely overrides PF values set in :root */
+body {
+  /* Remap base brand colors */
+  --pf-t--global--color--brand--default: var(--fedora-brand);
+  /* Increase tint when hovering */
+  --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%);
+  /* Clicked should be same as hover */
+  --pf-t--global--icon--color--brand--clicked: var(--pf-t--global--color--brand--hover);
 }
 
 /* Dark theme overrides */
 .pf-v6-theme-dark {
-  --fedora-blue: oklch(77.06% 0.1122 241.35deg);
-  --fedora-blue-dark: oklch(69.9% 0.1596 241.35deg);
-
-  --pf-t--global--color--brand--default: var(--fedora-blue);
-  --pf-t--global--color--brand--hover: var(--fedora-blue-dark);
-  --pf-t--global--text--color--brand--default: var(--fedora-blue);
-  --pf-t--global--text--color--link--default: var(--fedora-blue);
-  --pf-t--global--text--color--link--hover: var(--fedora-blue-dark);
-  --pf-t--global--color--status--active--default: var(--fedora-blue-dark);
+  /* Use light for dark mode brand color */
+  --fedora-brand: var(--fedora-blue);
+  /* In dark mode, lighten instead of darken */
+  --tint: white;
 }
 
 /* Fedora doesn't ship the on-dark version of the SVG, but we can fake it */
@@ -51,15 +35,10 @@
 /* Override the top header to have a Fedora blue */
 .pf-v6-c-page__main-group > .pf-v6-c-page__main-section:first-child {
   --_text: white;
-  --_darker: color-mix(in oklab, var(--fedora-blue), var(--fedora-blue-dark) 50%);
-  background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--_darker) 25%);
+  background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--fedora-blue-dark) 100%);
 
   .pf-v6-c-content {
     --pf-v6-c-content--Color: var(--_text);
-  }
-
-  html.pf-v6-theme-dark & {
-    background: var(--fedora-blue-dark);
   }
 }
 
