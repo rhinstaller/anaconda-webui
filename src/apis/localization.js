@@ -78,7 +78,15 @@ export class LocalizationClient {
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
-                        await this.dispatch(getKeyboardLayoutsAction());
+
+                        /* FIXME: On each locale change, KeyboardLayouts must be refetched since they are localized.
+                         * Currently, a race condition in the backend) causes the Language property to update,
+                         * but the returned KeyboardLayouts still are translated with the previous locale.
+                         * Workaround this by dispatching the KeyboardLayouts action with small delay.
+                         */
+                        setTimeout(() => {
+                            this.dispatch(getKeyboardLayoutsAction());
+                        }, 500);
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }

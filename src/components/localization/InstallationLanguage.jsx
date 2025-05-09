@@ -108,7 +108,7 @@ class LanguageSelector extends React.Component {
 
             return (
                 <MenuItem
-                  id={`${SCREEN_ID}-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
+                  id={`${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
                   isSelected={isSelected}
                   key={`${prefix}-${getLocaleId(locale)}`}
                   itemId={getLocaleId(locale)}
@@ -251,6 +251,7 @@ class LanguageSelector extends React.Component {
               ariaLabelSearchClear={_("Clear search input")}
               ariaLabelSearch={_("Search for a language")}
               handleOnSelect={handleOnSelect}
+              menuType="language"
               onClick={() => this.setState({ search: "" })}
               options={options}
               search={this.state.search}
