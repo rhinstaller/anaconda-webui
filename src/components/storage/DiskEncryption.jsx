@@ -29,6 +29,7 @@ import {
     FormGroup,
     FormSection,
     Spinner,
+    TextInput,
     Title,
 } from "@patternfly/react-core";
 
@@ -36,7 +37,7 @@ import {
     setLuksEncryptionDataAction
 } from "../../actions/storage-actions.js";
 
-import { RuntimeContext, StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { Keyboard } from "../localization/Keyboard.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
@@ -69,6 +70,8 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
     const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
+    const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
+    const selectedKeyboard = keyboardLayouts.find(k => k["layout-id"]?.v === compositorSelectedLayout);
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -88,23 +91,28 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
 
     const encryptionContent = (
         <>
-            {isGnome && (
-                <>
-                    <FormGroup
-                      label={_("Keyboard layout during boot")}
-                    >
+            <FormGroup
+              label={_("Keyboard layout during boot")}
+            >
+                {isGnome
+                    ? (
                         <Keyboard
                           idPrefix={idPrefix}
                           setIsFormValid={setIsFormValid}
                         />
-                    </FormGroup>
-                    <Alert
-                      isInline
-                      isPlain
-                      variant="info"
-                      title={_("This layout will be used for unlocking your system on boot")} />
-                </>
-            )}
+                    )
+                    : (
+                        <TextInput
+                          value={selectedKeyboard ? selectedKeyboard.description.v : ""}
+                          readOnlyVariant="default"
+                        />
+                    )}
+            </FormGroup>
+            <Alert
+              isInline
+              isPlain
+              variant="info"
+              title={_("This layout will be used for unlocking your system on boot")} />
             <PasswordFormFields
               idPrefix={idPrefix}
               policy={luksPolicy}
