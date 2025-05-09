@@ -244,8 +244,6 @@ class LanguageSelector extends React.Component {
 
                                     const langEvent = new CustomEvent("cockpit-lang");
                                     window.dispatchEvent(langEvent);
-
-                                    this.props.reRenderApp(item);
                                 });
                         return;
                     }
@@ -317,7 +315,6 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                       language={language}
                       setIsFormValid={setIsFormValid}
                       setStepNotification={setStepNotification}
-                      reRenderApp={setLanguage}
                     />
                 </FormGroup>
 
