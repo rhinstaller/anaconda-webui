@@ -40,7 +40,13 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
 const MenuOption = ({ idPrefix, keyboard, selectedKeyboard }) => {
-    const { description, "layout-id": layoutId } = keyboard;
+    const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
+    const id = (
+        idPrefix +
+        "-keyboard-" +
+        (isCommon.v ? "option-common-" : "option-alpha-") +
+        layoutId?.v.replace(/[\s()]/g, "_")
+    );
     const isSelected = layoutId?.v === selectedKeyboard;
     const scrollRef = (isSelected)
         ? (ref) => {
@@ -52,7 +58,7 @@ const MenuOption = ({ idPrefix, keyboard, selectedKeyboard }) => {
 
     return (
         <MenuItem
-          id={idPrefix + "-keyboard-" + layoutId?.v}
+          id={id}
           isSelected={isSelected}
           key={layoutId?.v}
           itemId={layoutId?.v}
@@ -119,6 +125,7 @@ export const KeyboardSelector = ({ idPrefix }) => {
           ariaLabelSearch={_("Search keyboard layout")}
           ariaLabelSearchClear={_("Clear search")}
           handleOnSelect={(_event, item) => setCompositorLayouts({ layouts: [item] })}
+          menuType="keyboard"
           options={options}
           search={search}
           selection={selectedValue}

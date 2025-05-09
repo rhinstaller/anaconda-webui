@@ -28,10 +28,12 @@ import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
 
 const SCREEN_ID = "anaconda-screen-language";
 
-export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSelect, options, search, selection, setSearch }) => {
+export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSelect, menuType, options, search, selection, setSearch }) => {
+    const prefix = SCREEN_ID + "-" + menuType;
+
     return (
         <>
-            <TextInputGroup className="anaconda-screen-language-search">
+            <TextInputGroup className={prefix + "-search"}>
                 <TextInputGroupMain
                   icon={<SearchIcon />}
                   value={search}
@@ -51,8 +53,8 @@ export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSele
                 )}
             </TextInputGroup>
             <Menu
-              className="anaconda-screen-language-menu"
-              id={SCREEN_ID + "-language-menu"}
+              className={prefix + "-menu"}
+              id={prefix + "-menu"}
               isScrollable
               isPlain
               onSelect={handleOnSelect}

@@ -31,45 +31,92 @@ BOSS_INTERFACE = BOSS_SERVICE
 BOSS_OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss"
 
 
-class Language():
+class Locale():
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
         self._step = LANGUAGE
-        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
+        self._language_search = f".{self._step}-language-search .pf-v6-c-text-input-group__text-input"
 
     @log_step()
     def select_locale(self, locale, locale_name=None, is_common=True):
         common_prefix = "common" if is_common else "alpha"
-        if self.browser.val(f".{self._step}-search .pf-v6-c-text-input-group__text-input") != "":
+        if self.browser.val(self._language_search) != "":
             self.input_locale_search("")
 
         if locale_name:
             self.input_locale_search(locale_name)
 
-        self.browser.click(f"#{self._step}-option-{common_prefix}-{locale}")
+        self.browser.click(f"#{self._step}-language-option-{common_prefix}-{locale}")
 
     @log_step()
     def get_locale_search(self):
-        return self.browser.val(f".{self._step}-search .pf-v6-c-text-input-group__text-input")
+        return self.browser.val(self._language_search)
 
     @log_step()
     def input_locale_search(self, text):
-        self.browser.set_input_text(f".{self._step}-search .pf-v6-c-text-input-group__text-input", text)
+        self.browser.set_input_text(self._language_search, text)
 
     @log_step()
     def locale_option_visible(self, locale, visible=True, is_common=True):
         common_prefix = "common" if is_common else "alpha"
         if visible:
-            self.browser.wait_visible(f"#{self._step}-option-{common_prefix}-{locale}")
+            self.browser.wait_visible(f"#{self._step}-language-option-{common_prefix}-{locale}")
         else:
-            self.browser.wait_not_present(f"#{self._step}-option-{common_prefix}-{locale}")
+            self.browser.wait_not_present(f"#{self._step}-language-option-{common_prefix}-{locale}")
 
     @log_step(snapshot_before=True)
     def check_selected_locale(self, locale, is_common=True):
         common_prefix = "common" if is_common else "alpha"
         web_locale = locale.replace("_", "-").lower()
-        self.browser.wait_visible(f"#{self._step}-option-{common_prefix}-{locale}.pf-m-selected [lang='{web_locale}']")
+        self.browser.wait_visible(f"#{self._step}-language-option-{common_prefix}-{locale}.pf-m-selected [lang='{web_locale}']")
+
+class Keyboard():
+    def __init__(self, browser, machine):
+        self.browser = browser
+        self.machine = machine
+        self._step = LANGUAGE
+        self._keyboard_search = f".{self._step}-keyboard-search .pf-v6-c-text-input-group__text-input"
+
+    def select_keyboard(self, keyboard, keyboard_name=None, is_common=True):
+        common_prefix = "common" if is_common else "alpha"
+        if self.browser.val(self._keyboard_search) != "":
+            self.input_keyboard_search("")
+
+        if keyboard_name:
+            self.input_keyboard_search(keyboard_name)
+
+        self.browser.click(f"#{self._step}-keyboard-option-{common_prefix}-{keyboard}")
+
+    def input_keyboard_search(self, text):
+        self.browser.set_input_text(self._keyboard_search, text)
+
+    def check_selected_keyboard(self, keyboard, is_common=True):
+        common_prefix = "common" if is_common else "alpha"
+        self.browser.wait_visible(f"#{self._step}-keyboard-option-{common_prefix}-{keyboard}.pf-m-selected")
+
+    def check_selected_keyboard_on_device(self, expected_layout, expected_variant=None):
+        result = self.machine.execute("localectl status")
+        layout = None
+        variant = None
+
+        for line in result.splitlines():
+            if "X11 Layout" in line:
+                layout = line.split(":")[-1].strip()
+            if "X11 Variant" in line:
+                variant = line.split(":")[-1].strip()
+
+        assert layout == expected_layout, f"Expected layout '{expected_layout}', but got '{layout}'"
+
+        if expected_variant:
+            assert variant == expected_variant, f"Expected variant '{expected_variant}', but got '{variant}'"
+        else:
+            assert not variant, f"Expected no variant, but got '{variant}'"
+
+class LanguageDBus():
+    def __init__(self, machine):
+        self.machine = machine
+        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
 
     def dbus_set_language(self, value):
         self.machine.execute(f'dbus-send --print-reply --bus="{self._bus_address}" \
@@ -99,26 +146,8 @@ class Language():
             {LOCALIZATION_OBJECT_PATH} \
             {LOCALIZATION_INTERFACE} SetCompositorLayouts asas 1 '{layouts[0]}' 0")
 
-    def select_keyboard_layout(self, layout):
-        self.browser.select_from_dropdown(".anaconda-screen-selectors-container select", layout)
-
-    def check_selected_keyboard(self, layout):
-        self.browser.wait_val(".anaconda-screen-selectors-container select", layout)
-
-    def check_selected_keyboard_on_device(self, expected_layout, expected_variant=None):
-        result = self.machine.execute("localectl status")
-        layout = None
-        variant = None
-
-        for line in result.splitlines():
-            if "X11 Layout" in line:
-                layout = line.split(":")[-1].strip()
-            if "X11 Variant" in line:
-                variant = line.split(":")[-1].strip()
-
-        assert layout == expected_layout, f"Expected layout '{expected_layout}', but got '{layout}'"
-
-        if expected_variant:
-            assert variant == expected_variant, f"Expected variant '{expected_variant}', but got '{variant}'"
-        else:
-            assert not variant, f"Expected no variant, but got '{variant}'"
+class Language(Locale, Keyboard, LanguageDBus):
+    def __init__(self, browser, machine):
+        Locale.__init__(self, browser, machine)
+        Keyboard.__init__(self, browser, machine)
+        LanguageDBus.__init__(self, machine)
