@@ -47,7 +47,7 @@ export const AnacondaWizardFooter = ({
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
     const { activeStep, goToNextStep, goToPrevStep, steps } = useWizardContext();
     const isFirstScreen = activeStep.id === steps.find(step => !step.isHidden).id;
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const {
         isFormDisabled,
         isFormValid,
@@ -127,7 +127,7 @@ export const AnacondaWizardFooter = ({
 };
 
 export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation }) => {
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     return (
         <Modal
