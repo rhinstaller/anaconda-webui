@@ -195,14 +195,6 @@ export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
  * @returns {Promise}           Resolves a list of locale keyboards
  */
 export const getLocaleKeyboardLayouts = async ({ locale }) => {
-    // FIXME: Remove this try-catch when the method is available in the backend
-    // in all supported versions
-    let keyboards;
-
-    try {
-        keyboards = await callClient("GetLocaleKeyboardLayouts", [locale]);
-    } catch (e) {
-        keyboards = [];
-    }
+    const keyboards = await callClient("GetLocaleKeyboardLayouts", [locale]);
     return keyboards;
 };
