@@ -175,6 +175,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         def checkStorageReview(prefix=""):
             disk = "vda"
             r.check_disk(disk, "16.1 GB vda (Virtio Block Device)", prefix=prefix)
+            r.check_disk_row(disk, "", "vda1", "1.05 MB", action="biosboot", prefix=prefix)
             r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False, prefix=prefix)
@@ -352,7 +353,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, False, 3)
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, False, 4)
         r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
 
         # Check fstab
