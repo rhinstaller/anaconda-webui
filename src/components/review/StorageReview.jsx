@@ -29,6 +29,7 @@ import {
     getDeviceChildren,
     getParentPartitions,
     hasEncryptedAncestor,
+    isBootloaderDevice,
 } from "../../helpers/storage.js";
 
 import {
@@ -171,6 +172,16 @@ const DeviceRow = ({ disk }) => {
 
         return parents.includes(disk) || mp[1] === disk;
     });
+
+    // Add rows for every defined bootloader
+    Object.keys(devices)
+            .filter(device => isBootloaderDevice({ device, devices }))
+            .forEach(blDev => {
+                const parents = getDeviceAncestors(devices, blDev);
+                if (parents.includes(disk) || blDev === disk) {
+                    newMountPointRows.unshift(["", blDev]);
+                }
+            });
 
     const swap = Object.keys(devices).find(device => devices[device].formatData.type.v === "swap");
     if (swap) {

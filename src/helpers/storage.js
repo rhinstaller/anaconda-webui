@@ -187,6 +187,13 @@ export const unitMultiplier = {
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
 
+export const isBootloaderDevice = ({ device, devices }) => {
+    const fmt = devices[device].formatData?.type?.v;
+    const mntPt = devices[device].formatData?.attrs?.v?.["mount-point"];
+
+    return bootloaderTypes.includes(fmt) && !mntPt;
+};
+
 export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) => {
     // Calculate usable devices for partitioning by replicating the logic in the backend
     // FIXME: Create a backend API for that
