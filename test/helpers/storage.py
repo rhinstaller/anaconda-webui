@@ -364,10 +364,7 @@ class StorageUtils(StorageDestination):
                     if params[1] == "lvmpv":
                         mkfs = ["pvcreate"]
                     else:
-                        if params[1] == "efi":
-                            fs = "vfat"
-                        else:
-                            fs = params[1]
+                        fs = "vfat" if params[1] == "efi" else params[1]
                         mkfs = [f"mkfs.{fs}"]
 
                     # force flag
