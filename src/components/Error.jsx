@@ -104,7 +104,7 @@ export const BZReportModal = ({
 }) => {
     const [logContent, setLogContent] = useState();
     const [preparingReport, setPreparingReport] = useState(false);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     useEffect(() => {
         cockpit.spawn(["journalctl", "-a"])
@@ -241,7 +241,7 @@ const quitButton = (isBootIso) => {
 
 const CriticalError = ({ exception, isNetworkConnected, reportLinkURL }) => {
     const isConnected = isNetworkConnected;
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const context = exception.backendException?.contextData?.context || exception.frontendException?.contextData?.context;
     const description = context
         ? cockpit.format(_("The installer cannot continue due to a critical error: $0"), _(context))

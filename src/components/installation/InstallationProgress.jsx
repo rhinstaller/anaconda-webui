@@ -62,7 +62,7 @@ const InstallationProgress = ({ onCritFail }) => {
     const [steps, setSteps] = useState();
     const [currentProgressStep, setCurrentProgressStep] = useState(0);
     const refStatusMessage = useRef("");
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
 
     useEffect(() => {

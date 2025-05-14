@@ -176,7 +176,7 @@ class TestLanguage(VirtInstallMachineCase):
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
 
-    @skipImage("TODO: Keyboard feature not available yet in the gated ISO", "fedora-42-boot", "fedora-rawhide-boot")
+    @skipImage("TODO: Keyboard API not available in Fedora 42", "fedora-42-boot")
     def testKeyboardLayoutSelection(self):
         b = self.browser
         m = self.machine
@@ -189,24 +189,14 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboard("us")
         l.check_selected_keyboard_on_device("us")
 
+        # Changing language should not change the keyboard layout
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
-
-        l.check_selected_keyboard_on_device("de", expected_variant="nodeadkeys")
-
-        l.select_locale("cs_CZ", is_common=False)
-        l.check_selected_locale("cs_CZ", is_common=False)
-
-        l.check_selected_keyboard("cz")
-        l.check_selected_keyboard_on_device("cz")
-
-        l.select_keyboard_layout("cz (qwerty)")
-        l.check_selected_keyboard_on_device("cz", "qwerty")
-
-        l.select_locale("en_US")
-        l.check_selected_locale("en_US")
-        l.check_selected_keyboard("us")
         l.check_selected_keyboard_on_device("us")
+
+        # Select a different keyboard layout
+        l.select_keyboard("de__nodeadkeys_", "Deutsch (ohne Akzenttasten)", is_common=True)
+        l.check_selected_keyboard_on_device("de", expected_variant="nodeadkeys")
 
 
 if __name__ == '__main__':

@@ -26,7 +26,7 @@ import {
     WizardStep,
 } from "@patternfly/react-core";
 
-import { FooterContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { FooterContext, StorageContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
@@ -40,7 +40,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
     const { storageScenarioId } = useContext(StorageContext);
-    const isBootIso = useContext(SystemTypeContext) === "BOOT_ISO";
+    const isBootIso = useContext(StorageContext).systemType === "BOOT_ISO";
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
 
@@ -152,6 +152,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 setIsFormValid,
             }}>
                 <Wizard
+                  className={"anaconda-wizard-step-" + currentStepId}
                   id="installation-wizard"
                   isVisitRequired
                   startIndex={startIndex}

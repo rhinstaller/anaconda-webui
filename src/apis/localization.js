@@ -62,10 +62,9 @@ export class LocalizationClient {
     }
 
     async initData () {
-        const language = await getLanguage();
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
-        await this.dispatch(getKeyboardLayoutsAction({ language }));
+        await this.dispatch(getKeyboardLayoutsAction());
     }
 
     startEventMonitor () {
@@ -74,13 +73,20 @@ export class LocalizationClient {
             async (path, iface, signal, args) => {
                 switch (signal) {
                 case "CompositorSelectedLayoutChanged":
-                    await this.dispatch(getKeyboardLayoutsAction({ language: await getLanguage() }));
+                    await this.dispatch(getKeyboardLayoutsAction());
                     break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
-                        const language = await getLanguage();
-                        await this.dispatch(getKeyboardLayoutsAction({ language }));
+
+                        /* FIXME: On each locale change, KeyboardLayouts must be refetched since they are localized.
+                         * Currently, a race condition in the backend) causes the Language property to update,
+                         * but the returned KeyboardLayouts still are translated with the previous locale.
+                         * Workaround this by dispatching the KeyboardLayouts action with small delay.
+                         */
+                        setTimeout(() => {
+                            this.dispatch(getKeyboardLayoutsAction());
+                        }, 500);
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -147,6 +153,10 @@ export const setLanguage = ({ lang }) => {
     return setProperty("Language", cockpit.variant("s", lang));
 };
 
+export const setXLayouts = ({ layouts }) => {
+    return setProperty("XLayouts", cockpit.variant("as", layouts));
+};
+
 export const getCompositorSelectedLayout = () => {
     return callClient("GetCompositorSelectedLayout");
 };
@@ -190,11 +200,19 @@ export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
 };
 
 /**
- * @param {string} lang         Locale id
- *
  * @returns {Promise}           Resolves a list of locale keyboards
  */
-export const getLocaleKeyboardLayouts = async ({ locale }) => {
-    const keyboards = await callClient("GetLocaleKeyboardLayouts", [locale]);
-    return keyboards;
+export const getKeyboardLayouts = async () => {
+    // FIXME: GetKeyboardLayouts is not available in Fedora 42
+    // Remove this try/catch when we stop testing Fedora 42
+    try {
+        const keyboards = await callClient("GetKeyboardLayouts", []);
+        return keyboards;
+    } catch (e) {
+        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
+            return [];
+        } else {
+            throw e;
+        }
+    }
 };
