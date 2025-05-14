@@ -28,6 +28,14 @@ class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
+        """"
+        Description:
+            Test erase-all scenario with pre-existing Fedora OS
+
+        Expected results:
+            - The installer should allow the user to select the erase-all scenario
+            - The system should be marked as deleted in the review screen
+        """
         b = self.browser
         m = self.machine
 
@@ -55,6 +63,14 @@ class TestStorageEraseAll_Windows(VirtInstallMachineCase):
 
     @disk_images([("", 20)])
     def testBasic(self):
+        """
+        Description:
+            Test erase-all scenario with pre-existing Windows OS
+
+        Expected results:
+            - The installer should allow the user to select the erase-all scenario
+            - The system should be marked as deleted in the review screen
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)

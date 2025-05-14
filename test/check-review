@@ -28,6 +28,17 @@ from utils import pretend_live_iso
 class TestReview(VirtInstallMachineCase):
 
     def testBasic(self):
+        """
+        Description:
+            Check the review step for a Live ISO installation
+
+        Expected results:
+            - The review step is shown
+            - The review step shows the correct information
+            - The review step shows the correct information after setting encryption
+            - The hostname is not shown for Live ISO
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -86,6 +97,15 @@ class TestReview(VirtInstallMachineCase):
         )
 
     def testHostnameHandling(self):
+        """
+        Description:
+            Check the hostname handling in the review step
+
+        Expected results:
+            - The hostname can be set to empty string
+            - The hostname can be set to a custom value
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)

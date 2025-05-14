@@ -51,6 +51,16 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     @disk_images([("fedora-rawhide", 15)])
     @nondestructive
     def testBasic(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing standard
+            Fedora installation
+
+        Expected results:
+            - The home reuse installation method is available
+            - The home reuse expected layout is shown in the review screen
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -85,6 +95,14 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     @disk_images([("fedora-rawhide", 15)])
     @nondestructive
     def testHidden(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing
+            Fedora installation with unexpected mount points
+
+        Expected results:
+            - The home reuse installation method is not available
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -156,6 +174,15 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15), ("fedora-41", 15)])
     def testHomeReuseFedoraEncrypted(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing standard
+            Fedora installation layout with encrypted /.
+
+        Expected results:
+            - The home reuse installation method is available after the encrypted device is unlocked.
+            - The home reuse expected layout is shown in the review screen
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -189,6 +216,20 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
     def testMultipleRoots(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing multiple Linux OSes
+            on the selected disks
+
+        Expected results:
+            The home reuse installation method is not available
+                - when two Fedora systems are on the selected disk[s]
+                - when only a single non Fedora Linux OS is present on the selected disk[s]
+                - when a Fedora system and a non Fedora Linux OS are on the selected disk[s]
+
+            The home reuse installation method is available
+                - when only a single Linux OS is present on the selected disk[s] and the OS is Fedora OS
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -239,6 +280,20 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     @disk_images([("", 20), ("fedora-41", 15)])
     def testNonLinuxSystem(self):
+        """
+        Description:
+            Test the home reuse installation method with two disks
+            - One with a standard Fedora installation layout
+            - One with a Windows installation layout
+
+        Expected results:
+            The home reuse installation method is available
+            - when only the Fedora disk is selected
+
+            The home reuse installation method is not available
+            - when only the Windows disk is selected
+            - when both disks are selected
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -272,6 +327,14 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     @disk_images([("", 15), ("fedora-41", 15)])
     def testMBRParttable(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing Fedora installation on MBR partition table
+
+        Expected results:
+            - The home reuse installation method is available
+            - The home reuse expected layout is shown in the review screen
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")

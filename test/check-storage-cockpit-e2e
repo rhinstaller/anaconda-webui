@@ -26,6 +26,19 @@ from testlib import test_main  # pylint: disable=import-error
 class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
     @disk_images([('', 15), ('', 15), ('', 15)])
     def testRAIDonPartitions(self):
+        """
+        Description:
+            Test scenario with three disks:
+
+            - 'biosboot' and '/boot' are on 'vda'.
+            - A RAID 0 array is created using partitions on 'vdb1' and 'vdc1'.
+            - The root filesystem ('/') is placed on the RAID 0 device.
+
+        Expected results:
+            - The installer can create a RAID0 array on partitions and use it for rootfs
+            - The installed system storage layout is as expected
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -117,11 +130,16 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
     @run_boot("bios", "efi")
     def testRAID0Scenario_0(self):
         """
-        Test scenario with three disks:
+        Description:
+            Test scenario with three disks:
 
-        - 'biosboot' and '/boot' are on 'vda'.
-        - A RAID 0 array is created using 'vdb' and 'vdc'.
-        - The root filesystem ('/') is placed on the RAID 0 device.
+            - 'biosboot' and '/boot' are on 'vda'.
+            - A RAID 0 array is created using 'vdb' and 'vdc'.
+            - The root filesystem ('/') is placed on the RAID 0 device.
+
+        Expected results:
+            - The installer can create a RAID 0 array on disks and use it for rootfs.
+            - The installed system storage layout is as expected.
         """
         b = self.browser
         m = self.machine

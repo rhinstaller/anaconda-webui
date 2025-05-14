@@ -26,6 +26,16 @@ from utils import get_pretty_name
 class TestInstallationProgress(VirtInstallMachineCase):
 
     def testBasic(self):
+        """
+        Description:
+            Verify the installation progress page
+
+        Expected results:
+            - The installation steps are displayed in the correct order
+            - The 'Successfully installed' message is displayed at the end of the installation
+            - The 'Modify Storage' option is not available from the kebab menu
+        """
+
         # HACK Ignore some selinux errors
         self.allow_journal_messages(".*denied.*comm=\"tar\" name=\"/\".*")
 

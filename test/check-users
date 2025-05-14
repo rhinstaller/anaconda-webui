@@ -29,6 +29,14 @@ class TestUsers(VirtInstallMachineCase):
         super().setUp()
 
     def testBasic(self):
+        """
+        Description:
+            Test the basic functionality of the user creation screen
+
+        Expected results:
+            - A new user can be created
+            - The root account can be enabled and root password can be set
+        """
         b = self.browser
         i = Installer(b, self.machine)
         u = Users(b, self.machine)
@@ -86,6 +94,16 @@ class TestUsers(VirtInstallMachineCase):
             installer.check_next_disabled(disabled=False)
 
     def testAccessAndValidation(self):
+        """
+        Description:
+            Test the access and validation of the user creation screen
+
+        Expected results:
+            - The forward / back navigation keeps the values inserted
+            - Invalid values for user name, password and full name are detected
+            - The next button is disabled when the values are invalid
+            - Password strength is shown
+        """
         b = self.browser
         i = Installer(b, self.machine)
         p = Password(b, CREATE_ACCOUNT_ID_PREFIX)

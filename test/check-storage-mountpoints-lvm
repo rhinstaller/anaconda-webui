@@ -44,6 +44,14 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
         """)
 
     def testLVM(self):
+        """
+        Description:
+            Test 'Mount point mapping' screen with LVM
+
+        Expected results:
+            - The mount point mapping screen should show the LVM volumes
+            - The review screen should show the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="mount-point-mapping")

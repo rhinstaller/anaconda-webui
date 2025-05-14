@@ -33,6 +33,15 @@ class TestLanguage(VirtInstallMachineCase):
         self.allow_journal_messages("Error .* data: Connection reset by peer")
 
     def testOtherDefault(self):
+        """
+        Description:
+            Test that backend language selection is picked up by the WebUI
+
+        Expected results:
+            - The WebUI selected language is set to the backend selected language
+            - The WebUI is translated
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -66,6 +75,13 @@ class TestLanguage(VirtInstallMachineCase):
     @skipImage("Needs further investigation: https://issues.redhat.com/browse/INSTALLER-4142", "fedora-rawhide-boot")
     @disk_images([("", 15), ("", 15)])
     def testBackendTranslations(self):
+        """
+        Description:
+            Test that strings from the backend are translated when displayed in the WebUI
+
+        Expected results:
+            - Strings from the backend are translated when displayed in the WebUI
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -82,6 +98,16 @@ class TestLanguage(VirtInstallMachineCase):
         )
 
     def testLanguageSwitching(self):
+        """
+        Description:
+            Test that the language selection is working correctly
+
+        Expected results:
+            - The languages can be filtered by English and native names
+            - RTL languages are displayed correctly
+            - 'lang' attribute is set (rhbz#2355246)
+
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -161,6 +187,10 @@ class TestLanguage(VirtInstallMachineCase):
         b.wait_attr("html", "lang", "zh-tw")
 
     def testUnknownLanguage(self):
+        """
+        Description:
+            Test that the installer can handle unknown languages
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -177,6 +207,15 @@ class TestLanguage(VirtInstallMachineCase):
         r.check_language("mk_MK.UTF-8")
 
     def testKeyboardLayoutSelection(self):
+        """
+        Description:
+            Test that the keyboard layout selection is working correctly
+
+        Expected results:
+            - The default keyboard selection is 'English (US)'
+            - The keyboard layout can be changed
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)

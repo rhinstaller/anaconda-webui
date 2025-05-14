@@ -31,6 +31,16 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 class TestStorage(VirtInstallMachineCase):
 
     def testLocalStandardDisks(self):
+        """
+        Description:
+            Test that the installer can detect and select local standard disks
+
+        Expected results:
+            - The installer should detect the local standard disks
+            - The installer should allow the user to select the disks
+            - Without any disks selected, the installer should not allow the user to continue
+            - The disk selection should be preserved when moving back and forth between screens
+        """
         b = self.browser
         i = Installer(b, self.machine)
         s = Storage(b, self.machine)
@@ -79,9 +89,10 @@ class TestStorage(VirtInstallMachineCase):
 
     def testScenarioSelection(self):
         """
-        Test that the use-free-space scenario is conditionally available
-        and the the user selection for scenario is kept when moving back and forth
-        between screens
+        Description:
+            Test that the use-free-space scenario is conditionally available
+            and the user selection for scenario is kept when moving back and forth
+            between screens
         """
         b = self.browser
         i = Installer(b, self.machine)
@@ -110,8 +121,11 @@ class TestStorage(VirtInstallMachineCase):
         s.check_scenario_selected("use-free-space")
 
     def testPartitioningObject(self):
-        # Test which partitioning object ends up being the AppliedPartitioning
-        # when we go back and forward the storage steps
+        """
+        Description:
+            Test which partitioning object ends up being the AppliedPartitioning
+            when we go back and forward the storage steps
+        """
 
         b = self.browser
         i = Installer(b, self.machine)
@@ -157,6 +171,18 @@ class TestStorage(VirtInstallMachineCase):
         self.assertEqual(new_applied_partitioning, "")
 
     def testCockpitJsErrorHandling(self):
+        """
+        Description:
+            Test that the installer can handle JS errors in the storage module
+            and that it does not crash the installer
+
+        Setup:
+            - Generate a JS error in the storage module
+
+        Expected results:
+            - The installer should not crash
+            - The installer should show a critical error dialog
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -197,8 +223,17 @@ class TestStorage(VirtInstallMachineCase):
     @disk_images([("", 15), ("", 15)])
     def testDiskSelectionLVM(self):
         """
-        Test that the user can't select one PV when VG group spans across multiple disks
+        Description:
+            Test that the user can't select one PV when VG group spans across multiple disks
+
+        Setup:
+            - Create a VG group on LVM with two disks
+            - Create a LV on the VG group
+
+        Expected results:
+            - The installer should not allow the user to select one of the disks and proceed with the installation
         """
+
 
         b = self.browser
         m = self.machine

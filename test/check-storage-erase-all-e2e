@@ -33,6 +33,13 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 class TestStorageEraseAll_E2E(VirtInstallMachineCase):
     def testGuidedEncrypted(self):
+        """
+        Description:
+            Test installation with erase-all and encryption enabled
+
+        Expected results:
+            - The installed system is bootable and the encryption is enabled
+        """
         b = self.browser
         i = Installer(b, self.machine)
         r = Review(b, self.machine)
@@ -73,6 +80,13 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
 
     @disk_images([("", 15), ("debian-stable", 15)])
     def testGuidedMultiSelect(self):
+        """
+        Description:
+            Test dual boot installation with 'share with other OS' and multiple disks selected
+
+        Expected results:
+            - Both the new and existing OS are bootable and the partition layout is correct
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -117,6 +131,14 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
 
     @disk_images([("", 15), ("", 15)])
     def testGuidedMultiEmptyAll(self):
+        """
+        Description:
+            Test installation with erase-all and multiple empty disks selected
+
+        Expected results:
+            - The installed system is bootable and the partition layout is correct
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, self.machine)

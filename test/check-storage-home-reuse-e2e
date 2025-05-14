@@ -96,6 +96,14 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
+        """
+        Description:
+            Test the home reuse scenario with a standard Fedora pre-existing installation
+
+        Expected results:
+            - The installer should allow the user to reuse the home partition
+            - The installed system should have the home partition mounted with the correct options
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")

@@ -56,10 +56,16 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
     @timeout(900)
     def testLVMOnRAID(self):
         """
-        Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
-        - Partition 1: biosboot (1M)
-        - Partition 2: RAID1 for /boot (xfs)
-        - Partition 3: RAID1 for LVM (ext4 for /).
+        Description:
+            Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
+            - Partition 1: biosboot (1M)
+            - Partition 2: RAID1 for /boot (xfs)
+            - Partition 3: RAID1 for LVM (ext4 for /)
+
+        Expected results:
+            - The user can select the devices for biosboot, boot and root partitions in the
+            mount point assignment screen
+            - The mount points are correctly assigned to the devices in the installed system
         """
         b = self.browser
         m = self.machine

@@ -25,6 +25,13 @@ from utils import get_pretty_name
 class TestBasic(VirtInstallMachineCase):
 
     def testNavigation(self):
+        """
+        Description:
+            Verifies that all steps in the installer are accessible via 'Next' button
+
+        Expected results:
+            - All steps are reachable by clicking on the 'Next' button
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -46,6 +53,15 @@ class TestBasic(VirtInstallMachineCase):
         self.assertIn("/usr/libexec/anaconda/webui-desktop", m.execute("ps aux"))
 
     def testSidebarNavigation(self):
+        """
+        Description:
+            Verifies navigation to previous steps using the sidebar
+
+        Expected results:
+            - All previous steps are reachable by clicking on the sidebar
+            - Later steps are disabled in the sidebar
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -84,6 +100,15 @@ class TestBasic(VirtInstallMachineCase):
             i.check_sidebar_step_disabled(step)
 
     def testAboutModal(self):
+        """
+        Description:
+            Test the About modal
+
+        Expected results:
+            - The About modal is shown when clicking on the "About" item in the kebab menu
+            - The About modal contains the correct information
+            - The About modal can be closed
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -147,6 +172,15 @@ class TestBasic(VirtInstallMachineCase):
         wait(lambda: (m.execute(f"cat {logfile}")) == user_text)
 
     def testReportIssue(self):
+        """
+        Description:
+            Test the Report Issue modal
+
+        Expected results:
+            - The Report Issue modal is shown when clicking on the "Report issue" item in the kebab menu
+            - The Report Issue modal contains the correct information
+            - The Report Issue modal can be closed
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -172,6 +206,18 @@ class TestBasic(VirtInstallMachineCase):
         b.wait_not_present("#user-issue-bz-report-modal")
 
     def testJsErrorHandling(self):
+        """
+        Description:
+            Test that the Error modal is shown when a JS error occurs
+
+        Setup:
+            - Trigger a JS error
+
+        Expected results:
+            - The Error modal is shown
+            - The Error modal contains the correct information
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m)

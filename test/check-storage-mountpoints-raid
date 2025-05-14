@@ -37,6 +37,18 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         m.execute("mkfs.xfs /dev/md/encryptedraid")
 
     def testEncryptedUnlockRAIDonLUKS(self):
+        """
+        Description:
+            Test that we can use RAID on LUKS partitions with the mount point
+            mapping scenario
+
+        Expected results:
+            - The 'Unlock' dialog is available for unlocking the partitions before entering the mount point mapping
+            - The user can unlock the disk using a passphrase.
+            - The user can select the unlocked devices in the mount point mapping
+              table.
+            - The review screen should show the correct mountpoints and devices
+        """
         # RAID on LUKS: partition -> LUKS -> RAID -> filesystem
         b = self.browser
         m = self.machine
@@ -82,6 +94,18 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.create_luks_partition("/dev/md/encryptedraid", "einszweidrei", "encrypted-vol", "xfs")
 
     def testEncryptedUnlockLUKSonRAID(self):
+        """
+        Description:
+            Test 'Mount Point Mapping' with LUKS on RAID partitions
+
+        Expected results:
+            - The 'Unlock' dialog is displayed before entering the mount point mapping
+              screen.
+            - The user can unlock the disk using a passphrase.
+            - The user can select the unlocked devices in the mount point mapping
+              table.
+            - The review screen should show the correct mountpoints and devices
+        """
         # LUKS on RAID: partition -> RAID -> LUKS -> filesystem
         b = self.browser
         m = self.machine

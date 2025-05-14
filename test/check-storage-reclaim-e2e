@@ -28,6 +28,15 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
     @disk_images([("debian-stable", 20)])
     @timeout(900)
     def testReclaimShrink(self):
+        """
+        Description:
+            Test dual boot with Debian by reclaiming space from the debian root partition.
+
+        Expected results:
+            - The installer should allow the user to reclaim space from the debian root partition.
+            - The installation should complete successfully.
+            - The system should boot into both operating systems without issues.
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
