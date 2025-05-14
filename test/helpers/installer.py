@@ -53,10 +53,7 @@ class InstallerSteps(UserDict):
         }
         _hidden_steps = hidden_steps or []
 
-        if (
-            scenario == 'use-configured-storage'
-            or scenario == 'home-reuse'
-        ):
+        if scenario in ['use-configured-storage', 'home-reuse']:
             _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
             _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
         else:
