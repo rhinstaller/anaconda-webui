@@ -74,16 +74,6 @@ const useAvailabilityHomeReuse = () => {
             return unknownMountPoints;
         };
 
-        const hasGPTDisk = (selectedDisks, devices) => {
-            return selectedDisks.filter(device => devices[device]?.formatData.description.v === "partition table (GPT)").length > 0;
-        };
-
-        if (!hasGPTDisk(selectedDisks, devices)) {
-            availability.available = false;
-            availability.hidden = true;
-            debug("home reuse: No disk with GPT table found.");
-        }
-
         // Check that exactly one Linux OS is present and it is Fedora Linux
         // (Stronger check for mountpoints uniqueness is in the backend
         const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
