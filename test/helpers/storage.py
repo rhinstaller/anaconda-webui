@@ -144,9 +144,9 @@ class StorageEncryption():
     def check_encryption_selected(self, selected):
         sel = f"#{self.encryption_id_prefix}-encrypt-devices"
         if selected:
-            self.browser.wait_visible(sel + ':checked')
+            self.browser.wait_visible(f'{sel}:checked')
         else:
-            self.browser.wait_visible(sel + ':not([checked])')
+            self.browser.wait_visible(f'{sel}:not([checked])')
 
     @log_step(snapshot_before=True)
     def set_encryption_selected(self, selected):
@@ -475,7 +475,7 @@ class StorageScenario():
         self.browser = browser
 
     def _scenario_selector(self, scenario):
-        return f"#{INSTALLATION_METHOD}-scenario-" + scenario
+        return f"#{INSTALLATION_METHOD}-scenario-{scenario}"
 
     def wait_scenario_visible(self, scenario, visible=True):
         if visible:
@@ -491,7 +491,7 @@ class StorageScenario():
 
     @log_step(snapshot_before=True)
     def check_scenario_selected(self, scenario):
-        self.browser.wait_visible(self._scenario_selector(scenario) + ":checked")
+        self.browser.wait_visible(f"{self._scenario_selector(scenario)}:checked")
 
     def check_scenario_index(self, scenario, index):
         self.browser.wait_visible(f".anaconda-screen-method-scenario:nth-child({index}) > {self._scenario_selector(scenario)}")
@@ -499,7 +499,7 @@ class StorageScenario():
     @log_step(snapshot_before=True)
     def set_scenario(self, scenario):
         self.browser.click(self._scenario_selector(scenario))
-        self.browser.wait_visible(self._scenario_selector(scenario) + ":checked")
+        self.browser.wait_visible(f"{self._scenario_selector(scenario)}:checked")
         self.browser.wait_visible(f"div[data-scenario='{scenario}']")
 
 

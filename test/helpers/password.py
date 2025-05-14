@@ -29,8 +29,8 @@ class Password():
 
     @log_step(snapshot_before=True)
     def check_pw_rule(self, rule, value):
-        sel = f"#{self.id_prefix}-password-rule-" + rule
-        cls_value = "pf-m-" + value
+        sel = f"#{self.id_prefix}-password-rule-{rule}"
+        cls_value = f"pf-m-{value}"
         self.browser.wait_visible(sel)
         self.browser.wait_attr_contains(sel, "class", cls_value)
 
@@ -70,4 +70,4 @@ class Password():
         elif strength == "strong":
             variant = "success"
 
-        self.browser.wait_attr_contains(sel, "class", "pf-m-" + variant)
+        self.browser.wait_attr_contains(sel, "class", f"pf-m-{variant}")
