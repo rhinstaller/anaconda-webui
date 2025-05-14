@@ -41,12 +41,12 @@ def cmd_cli():
         if not live_os:
             print("You can connect to the VM in the following ways:")
             # print ssh command
-            print("ssh -o ControlPath=%s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p %s %s@%s" %
-                  (machine.ssh_master, machine.ssh_port, machine.ssh_user, machine.ssh_address))
+            print(
+                f"ssh -o ControlPath={machine.ssh_master} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p {machine.ssh_port} {machine.ssh_user}@{machine.ssh_address}"
+            )
             # print Cockpit web address
             print(
-                "http://%s:%s/cockpit/@localhost/anaconda-webui/index.html" %
-                (machine.web_address, machine.web_port)
+                f"http://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
             )
 
             # rsync development files over so /usr/local/share/cockpit is created with a development version
@@ -55,7 +55,9 @@ def cmd_cli():
                 subprocess.check_call(["npm", "run", "build"], env={'RSYNC': args.host, "PATH": "/usr/bin/:node_modules/.bin"})
         else:
             print("You can start the installer by running the following command on the terminal in the test VM:")
-            print("liveinst --graphical --updates=http://10.0.2.2:%s/updates.img" % (machine.http_updates_img_port))
+            print(
+                f"liveinst --graphical --updates=http://10.0.2.2:{machine.http_updates_img_port}/updates.img"
+            )
 
         # print marker that the VM is ready; tests can poll for this to wait for the VM
         print("RUNNING")
