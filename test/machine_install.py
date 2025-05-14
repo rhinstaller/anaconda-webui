@@ -136,11 +136,7 @@ class VirtInstallMachine(VirtMachine):
         else:
             location = f"{iso_path}"
 
-        if self.is_efi:
-            boot_arg = "--boot uefi "
-        else:
-            boot_arg = ""
-
+        boot_arg = "--boot uefi " if self.is_efi else ""
         try:
             self._execute(
                 "virt-install "
