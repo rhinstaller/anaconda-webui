@@ -62,7 +62,7 @@ class Review(NetworkDBus, StorageDBus):
         fs_type=None, is_encrypted=False, rowIndex=None,
         action="", prefix=""
     ):
-        action = f"format as {fs_type}" if reformat else action if action else "mount"
+        action = f"format as {fs_type}" if reformat else action or "mount"
         encrypt_text = "encrypted" if is_encrypted and not reformat else "encrypt" if is_encrypted and reformat else ""
         self.browser.wait_visible(
             f"{prefix} table[aria-label={disk}] "
