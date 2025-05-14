@@ -99,7 +99,7 @@ class VirtInstallMachineCase(MachineCase):
         # Wait for minimum /dev/vda to be detected before proceeding
         wait(lambda: "vda" in m.execute("ls /dev"), tries=5, delay=5)
 
-        partition_disk_method_name = "_" + self._testMethodName + "_partition_disk"
+        partition_disk_method_name = f"_{self._testMethodName}_partition_disk"
         if getattr(self, partition_disk_method_name, None):
             self.partition_disk = getattr(self, partition_disk_method_name)
             self.partition_disk()
@@ -164,7 +164,7 @@ class VirtInstallMachineCase(MachineCase):
     def addAllDisks(self):
         # Add installation target disks
         for index, (disk, size) in enumerate(self.disk_images):
-            target = "vd" + chr(97 + index) # vd[a-z]
+            target = f"vd{chr(97 + index)}"
             backing_file = None if not disk else os.path.join(BOTS_DIR, f"./images/{disk}")
             self.add_disk(size, backing_file, target)
 

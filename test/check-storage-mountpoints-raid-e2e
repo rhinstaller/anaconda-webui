@@ -35,8 +35,8 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         s.partition_disk(disk2, [("1MiB", "biosboot"),("1GiB", "xfs"), ("" , None)])
 
         # RAID1 on partition level for /boot and /
-        s.create_raid_device(f"{raid_name}-boot", "raid1", [disk1 + "2", disk2 + "2"])
-        s.create_raid_device(f"{raid_name}-root", "raid1", [disk1 + "3", disk2 + "3"])
+        s.create_raid_device(f"{raid_name}-boot", "raid1", [f"{disk1}2", f"{disk2}2"])
+        s.create_raid_device(f"{raid_name}-root", "raid1", [f"{disk1}3", f"{disk2}3"])
 
         m.execute(f"""
         set -ex
@@ -83,7 +83,7 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
 
         s.select_mountpoint([(dev1, True), (dev2, True)])
         s.select_mountpoint_row_device(1, "vol-group-root")
-        s.select_mountpoint_row_device(2, raid_name + "-boot")
+        s.select_mountpoint_row_device(2, f"{raid_name}-boot")
 
         i.reach(i.steps.REVIEW)
         self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
