@@ -52,7 +52,7 @@ class VirtInstallMachine(VirtMachine):
         port = start_port
         while True:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                if not (sock.connect_ex(('127.0.0.1', port)) == 0):
+                if sock.connect_ex(('127.0.0.1', port)) != 0:
                     return port
             port = port + 1
 
