@@ -318,6 +318,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(True)
 
+        b.wait_visible("#reclaim-space-modal")
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-encrypted",
@@ -379,6 +380,7 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(True)
 
+        b.wait_visible("#reclaim-space-modal")
         b.assert_pixels(
             "#reclaim-space-modal",
             "reclaim-space-modal-windows",
