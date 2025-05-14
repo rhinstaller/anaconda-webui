@@ -274,7 +274,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     def testMBRParttable(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
 
         # This is required for home-reuse availability check
