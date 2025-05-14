@@ -23,7 +23,7 @@ from operating_systems import WindowsOS
 from review import Review
 from storage import Storage
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from utils import pretend_default_scheme, rsync_directory
+from utils import move_standard_fedora_disk_to_MBR_disk, pretend_default_scheme, rsync_directory
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -269,6 +269,35 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         s.select_disks([("vda", False), ("vdb", True)])
         s.wait_scenario_visible("home-reuse", True)
 
+    def _testMBRParttable_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "/dev/vda", "vdb")
+        self._remove_unknown_mountpoints("vdb")
+
+    @disk_images([("", 15), ("fedora-41", 15)])
+    def testMBRParttable(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        # This is required for home-reuse availability check
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Not supported for MBR
+        s.select_disks([("vda", True), ("vdb", False)])
+        s.wait_scenario_visible("home-reuse", False)
+
+        # Supported for GPT
+        s.select_disks([("vda", False), ("vdb", True)])
+        s.wait_scenario_visible("home-reuse", True)
+
+        # Disabled because of 2 Fedora systems
+        s.select_disks([("vda", True), ("vdb", True)])
+        s.wait_scenario_visible("home-reuse", False)
 
 if __name__ == '__main__':
     test_main()

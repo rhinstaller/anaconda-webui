@@ -636,7 +636,7 @@ const CheckStorageDialog = ({
     const [error, setError] = useState();
     const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
     const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const mountPointConstraints = useMountPointConstraints();
+    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
@@ -806,7 +806,10 @@ const CheckStorageDialog = ({
 };
 
 const ModifyStorageSideBar = () => {
-    const mountPointConstraints = useMountPointConstraints();
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
     const requiredSize = useRequiredSize();
 
     if (mountPointConstraints === undefined) {
@@ -891,7 +894,8 @@ export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
         ...diskSelection.selectedDisks,
         ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
     ];
-    const mountPointConstraints = useMountPointConstraints();
+    const selectedDisks = diskSelection.selectedDisks;
+    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
     const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
     const cockpitAnaconda = JSON.stringify({
         available_devices: availableDevices.map(device => devices[device].path.v),
