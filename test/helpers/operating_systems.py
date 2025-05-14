@@ -39,7 +39,7 @@ sector-size: 512
         self.machine = machine
 
     def partition_disk(self):
-        self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
+        self.machine.execute(f"echo '{self.WINDOWS_SFDISK}' | sfdisk /dev/vda")
 
 
 class DualBootHelper_E2E(VirtInstallMachineCase):
