@@ -464,9 +464,12 @@ class StorageDBus():
         """Get device ids of all volumes with volume_name found."""
         # The tool shows unspecified name as "none"
         volume_name = volume_name or "none"
-        volume_ids = [f"BTRFS-{uuid.strip()}" for uuid in
-                      self.machine.execute(f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3").split('\n')[:-1]]
-        return volume_ids
+        return [
+            f"BTRFS-{uuid.strip()}"
+            for uuid in self.machine.execute(
+                f"btrfs filesystem show | grep {volume_name} | cut -d ':' -f 3"
+            ).split('\n')[:-1]
+        ]
 
 
 class StorageScenario():
