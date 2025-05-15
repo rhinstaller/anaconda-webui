@@ -41,8 +41,9 @@ def cmd_cli():
         if not live_os:
             print("You can connect to the VM in the following ways:")
             # print ssh command
+            ssh_args = f"-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p {machine.ssh_port}"
             print(
-                f"ssh -o ControlPath={machine.ssh_master} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p {machine.ssh_port} {machine.ssh_user}@{machine.ssh_address}"
+                f"ssh -o ControlPath={machine.ssh_master} {ssh_args} {machine.ssh_user}@{machine.ssh_address}"
             )
             # print Cockpit web address
             print(
