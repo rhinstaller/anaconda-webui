@@ -63,7 +63,7 @@ class TestLanguage(VirtInstallMachineCase):
         vgchange -a n vg
         """)
 
-    @skipImage("Needs further investigation: https://issues.redhat.com/browse/INSTALLER-4142", "fedora-42-boot", "fedora-rawhide-boot")
+    @skipImage("Needs further investigation: https://issues.redhat.com/browse/INSTALLER-4142", "fedora-rawhide-boot")
     @disk_images([("", 15), ("", 15)])
     def testBackendTranslations(self):
         b = self.browser
@@ -176,7 +176,6 @@ class TestLanguage(VirtInstallMachineCase):
         # test the macedonian language selected
         r.check_language("mk_MK.UTF-8")
 
-    @skipImage("TODO: Keyboard API not available in Fedora 42", "fedora-42-boot")
     def testKeyboardLayoutSelection(self):
         b = self.browser
         m = self.machine
