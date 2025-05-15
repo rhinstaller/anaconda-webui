@@ -84,3 +84,21 @@ as described in `<test/README.rst>`_.
 Then you can run::
 
     make rsync
+
+Updating `node_modules`
+----------------------
+
+Before making any changes, ensure the following environment variable is set::
+
+    GITHUB_BASE="rhinstaller/anaconda-webui"
+
+If you need to update package.json — for example, to add or remove a dependency — run::
+
+    tools/node-modules install
+
+This command regenerates the node_modules cache based on your updated package.json using npm install.
+
+Note: Your locally rebuilt changes to `node_modules` won't be used by others.  A new
+version will be created by a GitHub workflow when you open your pull request.
+
+For more details, see the `Cockpit HACKING.md guide <https://github.com/cockpit-project/cockpit/blob/main/HACKING.md#updating-node_modules>`_.
