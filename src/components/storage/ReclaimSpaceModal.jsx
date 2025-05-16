@@ -197,9 +197,8 @@ const getReclaimableSpaceFromAction = ({ action, devices, unappliedActions }) =>
 };
 
 const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions }) => {
-    const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
-    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks: diskSelection.selectedDisks });
+    const diskFreeSpace = useDiskFreeSpace();
     const requiredSize = useRequiredSize();
     const selectedSpaceToDelete = getReclaimableSpaceFromAction({ action: "remove", devices, unappliedActions });
     const selectedSpaceToShrink = getReclaimableSpaceFromAction({ action: "shrink", devices, unappliedActions });

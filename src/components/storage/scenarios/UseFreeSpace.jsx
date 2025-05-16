@@ -17,39 +17,65 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Checkbox } from "@patternfly/react-core";
 
 import { AvailabilityState } from "./helpers.js";
 
-import { DialogsContext } from "../../../contexts/Common.jsx";
+import {
+    DialogsContext,
+    StorageContext,
+} from "../../../contexts/Common.jsx";
+
+import {
+    useDiskFreeSpace,
+    useDiskTotalSpace,
+    useRequiredSize,
+} from "../../../hooks/Storage.jsx";
 
 import { helpUseFreeSpace } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
 
-export const checkUseFreeSpace = ({ allowReclaim = true, diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks }) => {
-    const availability = new AvailabilityState();
+export const useAvailabilityUseFreeSpace = (args) => {
+    const allowReclaim = args?.allowReclaim ?? true;
+    const [scenarioAvailability, setScenarioAvailability] = useState();
 
-    availability.hidden = false;
-    availability.available = !!selectedDisks.length;
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const diskFreeSpace = useDiskFreeSpace();
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
 
-    if (diskFreeSpace > 0 && diskTotalSpace > 0) {
-        availability.hidden = diskFreeSpace === diskTotalSpace;
-    }
-    if (diskFreeSpace < requiredSize) {
-        availability.reason = _("Not enough free space on the selected disks.");
-        availability.hint = cockpit.format(
-            _("To use this option, resize or remove existing partitions to free up at least $0."),
-            cockpit.format_bytes(requiredSize)
-        );
-        if (allowReclaim) {
-            availability.enforceAction = true;
-        } else {
-            availability.available = false;
+    useEffect(() => {
+        if ([diskFreeSpace, diskTotalSpace, requiredSize].some((value) => value === undefined)) {
+            return;
         }
-    }
-    return availability;
+
+        const availability = new AvailabilityState();
+
+        availability.hidden = false;
+        availability.available = !!selectedDisks.length;
+
+        if (diskFreeSpace > 0 && diskTotalSpace > 0) {
+            availability.hidden = diskFreeSpace === diskTotalSpace;
+        }
+        if (diskFreeSpace < requiredSize) {
+            availability.reason = _("Not enough free space on the selected disks.");
+            availability.hint = cockpit.format(
+                _("To use this option, resize or remove existing partitions to free up at least $0."),
+                cockpit.format_bytes(requiredSize)
+            );
+            if (allowReclaim) {
+                availability.enforceAction = true;
+            } else {
+                availability.available = false;
+            }
+        }
+        setScenarioAvailability(availability);
+    }, [allowReclaim, diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks]);
+
+    return scenarioAvailability;
 };
 
 const ReclaimSpace = ({ availability }) => {
@@ -75,7 +101,7 @@ export const scenarioUseFreeSpace = {
     action: ReclaimSpace,
     buttonVariant: "primary",
     canReclaimSpace: true,
-    check: checkUseFreeSpace,
+    getAvailability: useAvailabilityUseFreeSpace,
     getButtonLabel: () => _("Install"),
     getDetail: helpUseFreeSpace,
     getLabel: () => _("Share disk with other operating system"),

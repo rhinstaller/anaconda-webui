@@ -30,22 +30,14 @@ import { setStorageScenarioAction } from "../../actions/storage-actions.js";
 import {
     getLockedLUKSDevices,
 } from "../../helpers/storage.js";
-import { AvailabilityState } from "./scenarios/helpers.js";
 
 import {
     StorageContext,
-    StorageDefaultsContext,
 } from "../../contexts/Common.jsx";
 
 import {
-    useDiskFreeSpace,
-    useDiskTotalSpace,
-    useMountPointConstraints,
     useOriginalDevices,
     useOriginalDeviceTree,
-    useOriginalExistingSystems,
-    useRequiredSize,
-    useUsablePartitions,
 } from "../../hooks/Storage.jsx";
 
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
@@ -72,65 +64,20 @@ const InstallationScenarioSelector = ({
     isFormDisabled,
     setIsFormValid,
 }) => {
-    const { appliedPartitioning, diskSelection, partitioning } = useContext(StorageContext);
-    const { devices, mountPoints } = useOriginalDeviceTree();
+    const { diskSelection } = useContext(StorageContext);
+    const { mountPoints } = useOriginalDeviceTree();
     const selectedDisks = diskSelection.selectedDisks;
-    const [scenarioAvailability, setScenarioAvailability] = useState(Object.fromEntries(
-        scenarios.map((s) => [s.id, new AvailabilityState()])
-    ));
-    const diskTotalSpace = useDiskTotalSpace({ devices, selectedDisks });
-    const diskFreeSpace = useDiskFreeSpace({ devices, selectedDisks });
-    const mountPointConstraints = useMountPointConstraints({ devices, selectedDisks });
-    const usablePartitions = useUsablePartitions({ devices, selectedDisks });
-    const requiredSize = useRequiredSize();
     const { storageScenarioId } = useContext(StorageContext);
-    const originalExistingSystems = useOriginalExistingSystems();
-    const { defaultScheme } = useContext(StorageDefaultsContext);
-
-    useEffect(() => {
-        if ([diskTotalSpace, diskFreeSpace, mountPointConstraints, requiredSize, usablePartitions].some(itm => itm === undefined)) {
-            return;
-        }
-
-        setScenarioAvailability(() => {
-            const newAvailability = {};
-
-            for (const scenario of scenarios) {
-                const availability = scenario.check({
-                    appliedPartitioning,
-                    autopartScheme: defaultScheme,
-                    devices,
-                    diskFreeSpace,
-                    diskTotalSpace,
-                    mountPointConstraints,
-                    originalExistingSystems,
-                    requiredSize,
-                    selectedDisks,
-                    storageScenarioId: partitioning.storageScenarioId,
-                    usablePartitions,
-                });
-                newAvailability[scenario.id] = availability;
-            }
-            return newAvailability;
-        });
-    }, [
-        appliedPartitioning,
-        defaultScheme,
-        devices,
-        diskFreeSpace,
-        diskTotalSpace,
-        mountPointConstraints,
-        originalExistingSystems,
-        partitioning.storageScenarioId,
-        requiredSize,
-        selectedDisks,
-        usablePartitions,
-    ]);
+    const scenarioAvailability = scenarios.reduce((acc, scenario) => {
+        acc[scenario.id] = scenario.getAvailability();
+        return acc;
+    }, {});
+    const scenarioAvailabilityLoading = scenarios.some(scenario => scenarioAvailability[scenario.id] === undefined);
 
     useEffect(() => {
         let selectedScenarioId = "";
 
-        if (storageScenarioId && scenarioAvailability[storageScenarioId].available === undefined) {
+        if (scenarioAvailabilityLoading) {
             return;
         }
 
@@ -154,11 +101,15 @@ const InstallationScenarioSelector = ({
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
         setIsFormValid(!!selectedScenarioId);
-    }, [dispatch, mountPoints, scenarioAvailability, setIsFormValid, storageScenarioId]);
+    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, setIsFormValid, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
     };
+
+    if (scenarioAvailabilityLoading) {
+        return null;
+    }
 
     const scenarioItems = scenarios.filter(scenario => !scenarioAvailability[scenario.id].hidden).map(scenario => (
         <Radio
