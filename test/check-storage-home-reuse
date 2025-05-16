@@ -274,8 +274,12 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
     def testMBRParttable(self):
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="home-reuse")
         s = Storage(b, m)
+        r = Review(b, m)
+
+        dev_mbr = "vda"
+        dev_gpt = "vdb"
 
         # This is required for home-reuse availability check
         pretend_default_scheme(self, "BTRFS")
@@ -283,17 +287,34 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
 
-        # Not supported for MBR
-        s.select_disks([("vda", True), ("vdb", False)])
-        s.wait_scenario_visible("home-reuse", False)
+        # Supported for MBR
+        s.select_disks([(dev_mbr, True), (dev_gpt, False)])
+        s.wait_scenario_visible("home-reuse", True)
 
         # Supported for GPT
-        s.select_disks([("vda", False), ("vdb", True)])
+        s.select_disks([(dev_mbr, False), (dev_gpt, True)])
         s.wait_scenario_visible("home-reuse", True)
 
         # Disabled because of 2 Fedora systems
-        s.select_disks([("vda", True), ("vdb", True)])
+        s.select_disks([(dev_mbr, True), (dev_gpt, True)])
         s.wait_scenario_visible("home-reuse", False)
+
+        # Working on MBR
+        s.select_disks([(dev_mbr, True), (dev_gpt, False)])
+        s.wait_scenario_visible("home-reuse", True)
+        s.wait_scenario_available("home-reuse", True)
+
+        s.set_scenario("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk(dev_mbr, f"16.1 GB {dev_mbr} (Virtio Block Device)")
+        r.check_disk_row(dev_mbr, parent=f"{dev_mbr}1", action="delete")
+        r.check_disk_row(dev_mbr, "/home", f"{dev_mbr}2", "14.0 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "1.07 GB", True, "xfs", is_encrypted=False)
+
 
 if __name__ == '__main__':
     test_main()
