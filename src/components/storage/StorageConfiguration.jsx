@@ -22,8 +22,6 @@ import { useWizardFooter } from "@patternfly/react-core";
 
 import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
 
-import { setLuksEncryptionDataAction } from "../../actions/storage-actions.js";
-
 import { FooterContext, StorageContext } from "../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
@@ -54,11 +52,7 @@ const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification })
     return (
         <DiskEncryption
           dispatch={dispatch}
-          isEncrypted={luks.encrypted}
-          password={luks.passphrase}
-          setIsEncrypted={(value) => dispatch(setLuksEncryptionDataAction({ encrypted: value }))}
           setIsFormValid={setIsFormValid}
-          setPassword={(value) => dispatch(setLuksEncryptionDataAction({ passphrase: value }))}
         />
     );
 };
