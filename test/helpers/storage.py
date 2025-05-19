@@ -332,6 +332,8 @@ class StorageUtils(StorageDestination):
 
             mkfs_args = f"{" ".join(params[2:] if len(params) > 2 else [])} {device}"
 
+            command += "\nudevadm settle"
+
             # Format the partition
             if fstype == "swap":
                 mkfs = f"mkswap {mkfs_args}"
@@ -341,7 +343,7 @@ class StorageUtils(StorageDestination):
                 mkfs = f"mkfs.vfat {mkfs_args}"
             elif fstype == "logical":
                 mkfs = f"mkfs.btrfs {mkfs_args}"
-            elif fstype == "biosboot" or fstype == None:
+            elif fstype == "biosboot" or fstype is None:
                 continue
             else:
                 fs = fstype
