@@ -235,7 +235,7 @@ update-reference-images: test/common test/reference
 # See https://www.gnu.org/software/make/manual/html_node/Force-Targets.html
 FORCE:
 $(NODE_MODULES_TEST): FORCE tools/node-modules
-	tools/node-modules make_package_lock_json
+	GITHUB_BASE=${GITHUB_BASE} tools/node-modules make_package_lock_json
 
 .PHONY: test-compose
 test-compose: bots
