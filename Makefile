@@ -111,7 +111,7 @@ $(SPEC): packaging/$(SPEC).in $(NODE_MODULES_TEST)
 	awk -v p="$$provides" '{gsub(/%{VERSION}/, "$(VERSION)"); gsub(/%{NPM_PROVIDES}/, p)}1' $< > $@
 
 $(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) package.json build.js
-	NODE_ENV=production ./build.js
+	$(MAKE) package-lock.json && NODE_ENV=production ./build.js
 
 watch:
 	rm -f dist/*
