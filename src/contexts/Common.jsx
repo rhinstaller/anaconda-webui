@@ -72,8 +72,12 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
     const [desktopVariant, setDesktopVariant] = useState();
 
     useEffect(() => {
-        cockpit.spawn(["/bin/sh", "-c", "echo $XDG_CURRENT_DESKTOP"]).then(res => {
-            setDesktopVariant(res.trim());
+        cockpit.spawn(["ps", "-eo", "comm"]).then(res => {
+            if (res.includes("gnome-shell")) {
+                setDesktopVariant("GNOME");
+            } else {
+                setDesktopVariant("UNKNOWN");
+            }
         });
     }, []);
 
