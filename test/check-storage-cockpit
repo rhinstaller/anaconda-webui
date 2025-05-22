@@ -52,8 +52,14 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testBasicLiveISO(self):
-        # Test that the 'Modify storage' button is available on the first page
-        # https://bugzilla.redhat.com/show_bug.cgi?id=2336488
+        """
+        Description:
+            Test that the 'Modify storage' button is available on the first page
+            of the installer when using a live ISO.
+
+        References:
+            - https://bugzilla.redhat.com/show_bug.cgi?id=2336488
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -68,6 +74,18 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testEncryptedUnlock(self):
+        """
+        Description:
+            Test installation on an encrypted partition created in Cockpit storage
+
+        Expected results:
+            - An encrypted partition can be created and used as the root mount point
+            - An encrypted partition can be reformatted in Cockpit storage and reused
+            - The partition can be deleted in Cockpit storage
+
+        References:
+            - https://bugzilla.redhat.com/show_bug.cgi?id=2354497
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -131,6 +149,13 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testLVM(self):
+        """
+        Description:
+            Test installation on an LVM volume created in Cockpit storage
+
+        Expected results:
+            - An LVM volume can be created and used for the root mount point
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -248,15 +273,38 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testStandardPartitionExt4(self):
+        """
+        Description:
+            Test installation on an ext4 partition created in Cockpit storage
+
+        Expected results:
+            - An ext4 partition can be created and used for the root mount point
+        """
         self._testStandardPartition("ext4")
 
     @nondestructive
     def testStandardPartitionXFS(self):
+        """
+        Description:
+            Test installation on an XFS partition created in Cockpit storage"
+
+        Expected results:
+            - An xfs partition can be created and used for the root mount point
+        """
         self._testStandardPartition("xfs")
 
     @nondestructive
     @run_boot("efi")
     def testBtrfsTopLevelVolume(self):
+        """
+        Description:
+            Test installation on a btrfs top-level volume created in Cockpit storage
+
+        Expected results:
+            - A btrfs top-level volume can be created and used for the root mount point
+            - The review screen shows the correct mount points
+            - The fstab file is updated correctly
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -296,6 +344,15 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testBtrfsSubvolumes(self):
+        """
+        Description:
+            Test installation on a btrfs subvolume created in Cockpit storage
+
+        Expected results:
+            - A btrfs subvolume can be created and used for the root and home mount points
+            - The review screen shows the correct mount points
+            - The fstab file is updated correctly
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -347,6 +404,16 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testBtrfsAndMountPointAssignment(self):
+        """
+        Description:
+            Test installation on a btrfs subvolume created in Cockpit storage by
+            selecting these in the Mount Point Assignment screen
+
+        Expected results:
+            - A btrfs subvolume can be created and used through mount point assignment screen for the root and home mount points
+            - The review screen shows the correct mount points
+            - The fstab file is updated correctly
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -415,13 +482,15 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     @nondestructive
     def testRAIDUnsupportedNesting(self):
         """
-        Check #1: Verify that partitions created on a RAID device which is on top of partitions are considered unsupported
+        Description:
+            Check that partitions created on a RAID device which is on top of partitions are considered unsupported
 
-        This logic is currently implemented in the frontend, but it should be moved to the backend.
+        References:
+            - https://issues.redhat.com/browse/INSTALLER-4141
 
-        See: https://issues.redhat.com/browse/INSTALLER-4141
-
-        Once this is moved to backend we should implement a unit test for this and we can remove the Web UI test.
+        TODO:
+            This logic is currently implemented in the frontend, but it should be moved to the backend
+            Once this is moved to backend we should implement a unit test for this and we can remove the Web UI test
         """
 
         b = self.browser
@@ -480,6 +549,15 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     @disk_images([("", 15), ("", 15), ("", 15)])
     @run_boot("bios", "efi")
     def testUnsupportedBootloaderOnMDRAID(self):
+        """
+        Description:
+            Check that the installer does not support bootloader partitions on MDRAID devices
+
+        Expected results:
+            - The installer should show an error message when trying to use a bootloader partition on a MDRAID device
+            - The installer should block the user from proceeding with the installation
+        """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -552,7 +630,14 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testCalculateSelectedDisksRAID(self):
-        """ Verify that the disk selection changes when creating a RAID device """
+        """
+        Description:
+            Verify that the disk selection changes when creating a RAID device
+
+        Expected results:
+            - The disk selection should be updated to include the RAID device and exclude the member disks when the RAID device is created
+            - The disk selection should be updated to include the member disks and exclude the RAID device when the RAID device is deleted
+        """
 
         b = self.browser
         m = self.machine
@@ -630,6 +715,15 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     @disk_images([("", 15), ("", 15)])
     @nondestructive
     def testFormattedDiskRootfs(self):
+        """
+        Description:
+            Test that a formatted disk can be used as the root filesystem
+
+        Expected results:
+            - The disk can be formatted and used as the root filesystem
+            - The review screen should show the correct mount points
+            - The fstab file should be updated correctly
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")
@@ -692,6 +786,15 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testMBRParttable(self):
+        """
+        Description:
+            Test that a MBR formatted disk can be used for the installation
+
+        Expected results:
+            - The 'Use configured storage' scenario should be available when using a MBR formatted disk
+            - The review screen shows the correct mount points
+            - The fstab file should be updated correctly
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage")

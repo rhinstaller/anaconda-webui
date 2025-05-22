@@ -38,6 +38,19 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
     def testBasic(self):
+        """
+        Description:
+            Test the basic functionality of the mount point mapping table.
+
+        Expected results:
+            - The mount point mapping table is displayed correctly.
+            - The user can select a device / mount point / format type.
+            - The user can add and remove rows.
+
+            - The 'Next' button is disabled when the mount point mapping table is not valid.
+            - Swap partitions are not selectable for the required mount point rows.
+            - The review screen should show the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -145,6 +158,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testNoRootMountPoint(self):
+        """
+        Description:
+            Test the case when the root mount point is not selected.
+
+        Expected results:
+            - The 'Next' button is disabled when the mount point mapping table does
+              not contain a root mount point.
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -191,6 +212,16 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @disk_images([("", 15), ("", 10)])
     @nondestructive
     def testMultipleDisks(self):
+        """
+        Description:
+            Tests the case when multiple disks are selected, and also checks that bootloader
+            partition requirements are correctly enforced
+
+        Expected results:
+            - The mount point mapping scenario is available and can be used with
+              multiple disks
+            - The bootloader requirements (biosboot) are verified for the selected disk[s]
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -257,6 +288,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @disk_images([("", 15), ("fedora-41", 15)])
     def testMBRParttable(self):
+        """
+        Description:
+            Test the case when the disk is MBR partitioned.
+
+        Expected results:
+            - The mount point mapping scenario is available and can be used with
+              MBR partitioned disks.
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -307,6 +346,17 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testEncryptedUnlock(self):
+        """
+        Description:
+            Test 'Mount point mapping' with encrypted partitions
+
+        Expected results:
+            - The 'Unlock' dialog is available for unlocking the partitions before entering the mount point mapping
+            - The user can unlock the disk using a passphrase.
+            - The user can select the unlocked devices in the mount point mapping
+              table.
+            - The review screen should show the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -361,6 +411,18 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testEncryptedUnlockCockpit(self):
+        """
+        Description:
+            Test 'Mount point mapping' with encrypted partitions created using Cockpit Storage
+
+        Expected results:
+            - The user can create an encrypted partition with cockpit storage
+            - The 'Unlock' dialog is available for unlocking the partitions before entering the mount point mapping
+            - The user can unlock the disk using a passphrase
+            - The user can selected the unlocked devices in the mount point mapping
+              table
+            - The review screen should show the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -450,7 +512,20 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
     def testDuplicateDeviceNames(self):
-        # https://bugzilla.redhat.com/show_bug.cgi?id=2237878
+        """
+        Description:
+            Test the case when the devices with the same name exist
+
+        Expected results:
+            - The devices with the same name are displayed in the mount point mapping
+              table
+            - The user can select the devices with the same name in the mount point mapping
+              table
+            - The review screen should show the correct mountpoints and devices
+
+        References:
+            - https://bugzilla.redhat.com/show_bug.cgi?id=2237878
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -495,6 +570,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @nondestructive
     def testUnusableFormats(self):
+        """
+        Description:
+            Test the case when the devices with unusable formats exist
+
+        Expected results:
+            - The devices with unusable formats are not displayed in the mount point mapping
+              table
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -542,6 +625,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @run_boot("efi")
     @nondestructive
     def testExtendedPartition(self):
+        """
+        Description:
+            Test 'Mount point mapping' with a disk that has an extended partition
+
+        Expected results:
+            - The extended partition is not selectable
+            - The other partitions are selectable
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)

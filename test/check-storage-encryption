@@ -30,6 +30,14 @@ class TestStorageEncryption(VirtInstallMachineCase):
         password_ui.set_password_confirm(password)
 
     def testEncryptionPassword(self):
+        """
+        Description:
+            Verifies the password rules and strength indicators
+
+        Expected results:
+            - The password rules are shown correctly
+            - The password strength is shown correctly
+        """
         b = self.browser
         i = Installer(b, self.machine)
         s = Storage(b, self.machine)
@@ -124,8 +132,9 @@ class TestStorageEncryption(VirtInstallMachineCase):
 
     def testEncryptionPreserved(self):
         """
-        Test that the encryption details are preserved when moving back and forth
-        between screens
+        Description:
+            Check that the encryption details are preserved when moving
+            back and forth between screens
         """
         b = self.browser
         i = Installer(b, self.machine)

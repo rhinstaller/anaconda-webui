@@ -58,8 +58,15 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         )
 
     def testReclaimSpaceOptional(self):
-        # When there is enough free space for the installation
-        # the reclaim action is not set by default
+        """
+        Description:
+            Test the reclaim space scenario when there is enough free space
+            for the installation.
+
+        Expected results:
+            - The reclaim space checkbox is not selected by default.
+            - The reclaim space checkbox is enabled.
+        """
 
         b = self.browser
         m = self.machine
@@ -99,8 +106,17 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         self.setup_partitions(s)
 
     def testReclaimSpaceDeleteBtrfsSubvolumes(self):
-        # When there is not enough free space for the installation
-        # the reclaim action is selected and disabled
+        """
+        Description:
+            Test the reclaim space scenario with deleting BTRFS subvolumes
+
+        Expected results:
+            - The BTRFS subvolumes can be deleted in the reclaim space dialog.
+            - Deleting a parent partition will delete all contained partitions.
+            - The delete operation can be undone.
+            - The installation can proceed after deleting
+            - The installation can proceed after allocating enough space by deleting partitions.
+        """
 
         b = self.browser
         m = self.machine
@@ -172,6 +188,17 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         self.setup_partitions(s)
 
     def testReclaimSpaceShrinkBtrfsSubvolumes(self):
+        """
+        Description:
+            Test the reclaim space scenario with shrinking partitions
+
+        Expected results:
+            - The shrinking is not available for disks.
+            - Shrinking BTRFS subvolumes is not available.
+            - A warning is shown when trying to shrink a partition too much.
+            - The shrinking operation can be undone.
+            - The installation can proceed after allocating enough space by shrinking partitions.
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -303,6 +330,15 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         s.create_luks_partition(f"{disk}1", "einszweidrei", "encrypted-vol")
 
     def testReclaimExt4onLUKS(self):
+        """
+        Description:
+            Test the reclaim space scenario with LUKS partitions
+
+        Expected results:
+            - The LUKS partition cannot be shrunk
+            - The LUKS partition can be deleted
+            - The installation can proceed after deleting the LUKS partition - password is not needed
+        """
         # Shrinking LUKS partitions is not yet supported
         # Deletion of locked partitions should be possible
 
@@ -335,6 +371,13 @@ class TestStorageReclaimExistingSystemFedora(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15)])
     def testDeletePartition(self):
+        """
+        Description:
+            Test reclaiming space from an existing Fedora system by deleting partitions
+
+        Expected results:
+            - The review screen shows the affected system when partitions from an existing system are deleted
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -369,6 +412,13 @@ class TestStorageReclaimExistingSystemWindows(VirtInstallMachineCase):
 
     @disk_images([("", 20)])
     def testBasic(self):
+        """
+        Description:
+            Test reclaiming space from an existing Windows system by deleting partitions
+
+        Expected results:
+            - The Windows partitions are identified and displayed in the reclaim space dialog
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -393,6 +443,13 @@ class TestStorageReclaimExistingSystemUbuntu(VirtInstallMachineCase):
     @disk_images([("ubuntu-stable", 15)])
     @nondestructive
     def testReclaimSpaceShrink(self):
+        """
+        Description:
+            Test reclaiming space from an existing Ubuntu system by resizing partitions
+
+        Expected results:
+            - The review screen shows the affected system when partitions from an existing system are resized
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)

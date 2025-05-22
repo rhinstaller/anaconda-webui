@@ -45,6 +45,14 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBtrfsSubvolumes(self):
+        """
+        Description:
+            Test 'Mount point mapping' screen with btrfs subvolumes and snapshots
+
+        Expected results:
+            - The installer should be able to detect / handle btrfs subvolumes and snapshots
+            - The review screen should show the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
@@ -171,6 +179,17 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         """)
 
     def testEncryptedUnlockBTRFSonLUKS(self):
+        """
+        Description:
+            Test that the installer can handle BTRFS on LUKS encrypted devices
+
+        Expected results:
+            - The 'Unlock' dialog is available for unlocking the partitions before entering the mount point mapping
+            - The user can unlock the disk using a passphrase
+            - The user can select the unlocked devices in the mount point mapping
+              table.
+            - The review screen shows the correct mountpoints and devices
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)

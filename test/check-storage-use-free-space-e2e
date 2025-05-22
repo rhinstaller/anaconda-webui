@@ -28,6 +28,13 @@ class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
     @disk_images([("debian-stable", 20)])
     @run_boot("bios", "efi")
     def testScenarioUseFreeSpace(self):
+        """
+        Description:
+            Test dual boot installation with use free space scenario with debian
+
+        Expected results:
+            - The installer should be able to install the system using free space
+        """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
