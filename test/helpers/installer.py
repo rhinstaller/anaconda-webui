@@ -43,20 +43,17 @@ class InstallerSteps(UserDict):
         REVIEW = self.REVIEW
         STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
 
-        _steps_jump = {}
-        _steps_jump[LANGUAGE] = [INSTALLATION_METHOD]
-        _steps_jump[STORAGE_CONFIGURATION] = [ACCOUNTS]
-        _steps_jump[CUSTOM_MOUNT_POINT] = [ACCOUNTS]
-        _steps_jump[ACCOUNTS] = [REVIEW]
-        _steps_jump[REVIEW] = [PROGRESS]
-        _steps_jump[PROGRESS] = []
-
+        _steps_jump = {
+            LANGUAGE: [INSTALLATION_METHOD],
+            STORAGE_CONFIGURATION: [ACCOUNTS],
+            CUSTOM_MOUNT_POINT: [ACCOUNTS],
+            ACCOUNTS: [REVIEW],
+            REVIEW: [PROGRESS],
+            PROGRESS: [],
+        }
         _hidden_steps = hidden_steps or []
 
-        if (scenario == 'use-configured-storage'):
-            _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
-            _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
-        elif (scenario == 'home-reuse'):
+        if scenario in ['use-configured-storage', 'home-reuse']:
             _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
             _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
         else:
@@ -65,15 +62,15 @@ class InstallerSteps(UserDict):
         self._steps_jump = _steps_jump
         self.hidden_steps = _hidden_steps
 
-        _parent_steps = {}
-        _parent_steps[CUSTOM_MOUNT_POINT] = STORAGE_CONFIGURATION
-
+        _parent_steps = {CUSTOM_MOUNT_POINT: STORAGE_CONFIGURATION}
         self._parent_steps = _parent_steps
 
-        _steps_callbacks = {}
-        _steps_callbacks[ACCOUNTS] = create_user
-        _steps_callbacks[STORAGE_CONFIGURATION] = lambda browser, machine: StorageEncryption(browser, machine).set_encryption_selected(False)
-
+        _steps_callbacks = {
+            ACCOUNTS: create_user,
+            STORAGE_CONFIGURATION: lambda browser, machine: StorageEncryption(
+                browser, machine
+            ).set_encryption_selected(False),
+        }
         self._steps_callbacks = _steps_callbacks
 
 
