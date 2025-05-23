@@ -61,8 +61,8 @@ class TestLanguage(VirtInstallMachineCase):
         m = self.machine
         s = Storage(b, m)
 
-        s.partition_disk("/dev/vda", [("10GB", "lvmpv")])
-        s.partition_disk("/dev/vdb", [("10GB", "lvmpv")])
+        s.partition_disk("/dev/vda", [("10GiB", "lvmpv")])
+        s.partition_disk("/dev/vdb", [("10GiB", "lvmpv")])
 
         # Create VG on LUKS with the two available disks
         m.execute("""

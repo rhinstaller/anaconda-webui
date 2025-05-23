@@ -31,8 +31,8 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         disk2 = "/dev/vdb"
         raid_name = "raid1"
 
-        s.partition_disk(disk1, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
-        s.partition_disk(disk2, [("1MiB", "biosboot"),("1GB", "xfs"), ("" , None)])
+        s.partition_disk(disk1, [("1MiB", "biosboot"),("1GiB", "xfs"), ("" , None)])
+        s.partition_disk(disk2, [("1MiB", "biosboot"),("1GiB", "xfs"), ("" , None)])
 
         # RAID1 on partition level for /boot and /
         s.create_raid_device(f"{raid_name}-boot", "raid1", [disk1 + "2", disk2 + "2"])

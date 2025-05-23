@@ -154,7 +154,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # BIOS boot /boot on ext4 / on xfs /home on btrfs
         disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
     @nondestructive
     def testNoRootMountPoint(self):
@@ -203,7 +203,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # BIOS boot partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("", "xfs")])
 
         # /dev/vdb1 /home partition
         disk2 = "/dev/vdb"
@@ -338,7 +338,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk1 = "/dev/vda"
         s.partition_disk(
             disk1,
-            [("1MiB", "biosboot"), ("1GB", None), ("1GB", None), ("1GB", None), ("1GB", "xfs")],
+            [("1MiB", "biosboot"), ("1GiB", None), ("1GiB", None), ("1GiB", None), ("1GiB", "xfs")],
         )
         s.create_luks_partition(f"{disk1}2", "einszwei", "encrypted-vol0", "xfs")
         s.create_luks_partition(f"{disk1}3", "einszweidrei", "encrypted-vol1", "xfs")
@@ -502,7 +502,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             disk,
             [
                 ("1MiB", "biosboot"),
-                ("1GB", "ext4"),
+                ("1GiB", "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", "root"),
                 ("5GiB", "btrfs", "-f", "-L", btrfsname),
                 ("", "btrfs", "-f", "-L", btrfsname)
@@ -566,7 +566,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
 
         disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("1GB", None), ("1GB", "lvmpv")])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
 
     @nondestructive
     def testUnusableFormats(self):
@@ -605,10 +605,10 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(
             disk,
             [
-                ("512MB", "efi"),
-                ("1GB", "ext4"),
+                ("512MiB", "efi"),
+                ("1GiB", "ext4"),
                 ("", "extended"),
-                ("10GB", "logical")
+                ("10GiB", "logical")
             ],
             is_mbr=True
         )
