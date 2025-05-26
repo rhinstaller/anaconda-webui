@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
     List,
     ListItem,
@@ -37,11 +37,13 @@ import {
 } from "../../contexts/Common.jsx";
 
 import {
+    useFreeSystemMountPointsSpace,
     useOriginalDevices,
     useOriginalExistingSystems,
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
+    useRequiredSize,
 } from "../../hooks/Storage.jsx";
 
 import { ListingTable } from "cockpit-components-table.jsx";
@@ -52,10 +54,30 @@ import "./StorageReview.scss";
 
 const _ = cockpit.gettext;
 const idPrefix = "storage-review";
+const SCREEN_ID = "anaconda-screen-review";
 
-export const StorageReview = () => {
+export const StorageReview = ({ setStepNotification }) => {
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const freeSpace = useFreeSystemMountPointsSpace();
+    const requiredSize = useRequiredSize();
+
+    useEffect(() => {
+        if (requiredSize > freeSpace && setStepNotification) {
+            const msg = cockpit.format(
+                _("Not enough free space on assigned mount points. Required: $0 Available: $1."),
+                cockpit.format_bytes(requiredSize),
+                cockpit.format_bytes(freeSpace)
+            );
+            setStepNotification({
+                message: msg,
+                step: SCREEN_ID,
+                variant: "warning"
+            });
+        } else if (setStepNotification) {
+            setStepNotification();
+        }
+    }, [requiredSize, freeSpace, setStepNotification]);
 
     return (
         <Stack hasGutter>
@@ -358,7 +380,7 @@ export const StorageReviewNote = () => {
 
     return (
         <ReviewDescriptionListItem
-          id="anaconda-screen-review-target-storage-note"
+          id={`${SCREEN_ID}-target-storage-note`}
           term={_("Note")}
           description={description}
         />
