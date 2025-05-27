@@ -149,7 +149,7 @@ const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
         });
 
         await setManualPartitioningRequests({ partitioning, requests });
-        return [partitioning, requests];
+        return partitioning;
     } catch (error) {
         onFail(error);
     }
@@ -235,6 +235,25 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
             )
         });
         return;
+    }
+
+    for (const device of Object.keys(devices)) {
+        // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
+        // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
+        // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
+        const bootloaderDevice = bootloaderTypes.includes(devices[device].formatData.type.v);
+        // PMBR does not have a bootloader necessarily
+        const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, device).find(device => mdArrays.includes(device));
+
+        if (bootloaderDriveMDRAID) {
+            onFail({
+                message: cockpit.format(
+                    _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
+                    devices[device].formatData.type.v,
+                    devices[bootloaderDriveMDRAID].name.v
+                )
+            });
+        }
     }
 
     return setNewSelectedDisks();
@@ -485,24 +504,7 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, setError, setNeeds
             // CLEAR_PARTITIONS_NONE = 0
             try {
                 await setInitializationMode({ mode: 0 });
-                const [partitioning, requests] = await preparePartitioning({ devices, newMountPoints, onFail });
-
-                // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
-                // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
-                // See more: https://bugzilla.redhat.com/show_bug.cgi?id=2355346
-                const bootloaderRequest = requests.find(request => bootloaderTypes.includes(request["format-type"].v));
-                // PMBR does not have a bootloader necessarily
-                const bootloaderDevice = bootloaderRequest?.["device-spec"].v;
-                const bootloaderDriveMDRAID = bootloaderDevice && getDeviceAncestors(devices, bootloaderDevice).find(device => devices[device].type.v === "mdarray");
-                if (bootloaderDriveMDRAID) {
-                    throw Error(
-                        cockpit.format(
-                            _("'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID devices are not supported."),
-                            bootloaderRequest["format-type"].v,
-                            devices[bootloaderDriveMDRAID].name.v
-                        )
-                    );
-                }
+                const partitioning = await preparePartitioning({ devices, newMountPoints, onFail });
 
                 applyStorage({
                     devices,
