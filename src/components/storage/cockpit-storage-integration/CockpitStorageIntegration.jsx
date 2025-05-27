@@ -46,28 +46,28 @@ import { ArrowLeftIcon, ExclamationTriangleIcon } from "@patternfly/react-icons"
 import {
     runStorageTask,
     scanDevicesWithTask,
-} from "../../apis/storage.js";
+} from "../../../apis/storage.js";
 import {
     unlockDevice,
-} from "../../apis/storage_devicetree.js";
+} from "../../../apis/storage_devicetree.js";
 import {
     setInitializationMode,
-} from "../../apis/storage_disk_initialization.js";
+} from "../../../apis/storage_disk_initialization.js";
 import {
     getSelectedDisks,
     setSelectedDisks
-} from "../../apis/storage_disks_selection.js";
+} from "../../../apis/storage_disks_selection.js";
 import {
     applyStorage,
     createPartitioning,
     gatherRequests,
     resetPartitioning,
     setManualPartitioningRequests
-} from "../../apis/storage_partitioning.js";
+} from "../../../apis/storage_partitioning.js";
 
-import { getDevicesAction, setStorageScenarioAction } from "../../actions/storage-actions.js";
+import { getDevicesAction, setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
-import { debug } from "../../helpers/log.js";
+import { debug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
     getDeviceAncestors,
@@ -75,21 +75,21 @@ import {
     getDeviceByPath,
     getDeviceChildren,
     getUsableDevicesManualPartitioning,
-} from "../../helpers/storage.js";
-import { checkIfArraysAreEqual } from "../../helpers/utils.js";
+} from "../../../helpers/storage.js";
+import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
-import { StorageContext, TargetSystemRootContext } from "../../contexts/Common.jsx";
+import { StorageContext, TargetSystemRootContext } from "../../../contexts/Common.jsx";
 
 import {
     useMountPointConstraints,
     useOriginalDevices,
     useRequiredSize,
-} from "../../hooks/Storage.jsx";
+} from "../../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { useAvailabilityConfiguredStorage } from "./scenarios/UseConfiguredStorage.jsx";
-import { useAvailabilityUseFreeSpace } from "./scenarios/UseFreeSpace.jsx";
+import { useAvailabilityConfiguredStorage } from "../scenarios/UseConfiguredStorage.jsx";
+import { useAvailabilityUseFreeSpace } from "../scenarios/UseFreeSpace.jsx";
 
 import "./CockpitStorageIntegration.scss";
 
