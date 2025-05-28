@@ -72,6 +72,7 @@ import {
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
+import { StorageReview } from "../../review/StorageReview.jsx";
 import { useAvailabilityConfiguredStorage } from "../scenarios/UseConfiguredStorage.jsx";
 import { useAvailabilityUseFreeSpace } from "../scenarios/UseFreeSpace.jsx";
 
@@ -535,7 +536,6 @@ const CheckStorageDialogLoaded = ({
     const selectedDisks = diskSelection.selectedDisks;
 
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
-    const useConfiguredStorageReview = useAvailabilityConfiguredStorage({ newMountPoints })?.review;
     const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
 
     const mdArrays = useMemo(() => {
@@ -613,7 +613,7 @@ const CheckStorageDialogLoaded = ({
                             ? (
                                 <Stack hasGutter>
                                     <span>{_("Detected valid storage layout:")}</span>
-                                    {useConfiguredStorageReview}
+                                    <StorageReview />
                                 </Stack>
                             )
                             : (
