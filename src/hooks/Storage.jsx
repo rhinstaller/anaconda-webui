@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import {
     getRequiredSpace
@@ -38,9 +38,9 @@ import {
     partitioningSetPassphrase,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors } from "../helpers/storage.js";
+import { getDeviceAncestors, hasReusableFedoraWithWindowsOS } from "../helpers/storage.js";
 
-import { StorageContext } from "../contexts/Common.jsx";
+import { StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -149,9 +149,27 @@ export const useMountPointConstraints = () => {
     return mountPointConstraints;
 };
 
+export const useHomeReuseOptions = () => {
+    const originalExistingSystems = useOriginalExistingSystems();
+    const { defaultScheme } = useContext(StorageDefaultsContext);
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+
+    const reuseEFIPart = useMemo(
+        () => hasReusableFedoraWithWindowsOS(devices, selectedDisks, originalExistingSystems),
+        [devices, selectedDisks, originalExistingSystems]
+    );
+
+    return {
+        reuseEFIPart,
+        scheme: defaultScheme,
+    };
+};
+
 export const getNewPartitioning = async ({
-    autopartScheme,
     currentPartitioning,
+    homeReuseOptions,
     method = "AUTOMATIC",
     storageScenarioId,
 }) => {
@@ -165,7 +183,7 @@ export const getNewPartitioning = async ({
     const part = await createPartitioning({ method });
 
     if (storageScenarioId === "home-reuse") {
-        await partitioningSetHomeReuse({ partitioning: part, scheme: autopartScheme });
+        await partitioningSetHomeReuse({ homeReuseOptions, partitioning: part });
     }
 
     if (currentPartitioning?.method === method &&

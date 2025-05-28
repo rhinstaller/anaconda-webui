@@ -34,10 +34,9 @@ import {
     DialogsContext,
     FooterContext,
     StorageContext,
-    StorageDefaultsContext,
 } from "../../contexts/Common.jsx";
 
-import { getNewPartitioning } from "../../hooks/Storage.jsx";
+import { getNewPartitioning, useHomeReuseOptions } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -107,7 +106,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const nextRef = useRef();
     const { partitioning, storageScenarioId } = useContext(StorageContext);
-    const { defaultScheme } = useContext(StorageDefaultsContext);
+    const homeReuseOptions = useHomeReuseOptions();
     const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
 
     useEffect(() => {
@@ -123,8 +122,8 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
             setIsNextClicked(true);
         } else {
             const part = await getNewPartitioning({
-                autopartScheme: defaultScheme,
                 currentPartitioning: partitioning,
+                homeReuseOptions,
                 method,
                 storageScenarioId,
             });
