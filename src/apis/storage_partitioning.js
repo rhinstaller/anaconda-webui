@@ -102,7 +102,11 @@ export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
             });
 };
 
-export const getAutopartReuseDBusRequest = (scheme) => {
+/* Create DBus request object for home reuse partitioning
+ * @param {string} scheme           autopartitioning scheme
+ * @param {string} reuseEFIPart     should EFI partition be reused ?
+ */
+export const getAutopartReuseDBusRequest = ({ reuseEFIPart, scheme }) => {
     const configurationSchemeToDBus = {
         BTRFS: cockpit.variant("i", 1),
         LVM: cockpit.variant("i", 2),
@@ -113,14 +117,17 @@ export const getAutopartReuseDBusRequest = (scheme) => {
         "partitioning-scheme": configurationSchemeToDBus?.[scheme],
     };
 
-    request["reused-mount-points"] = cockpit.variant("as", ["/home"]);
+    const reused = reuseEFIPart ? ["/home", "/boot/efi"] : ["/home"];
+    request["reused-mount-points"] = cockpit.variant("as", reused);
     if (scheme === "PLAIN") {
         // "/" will be reallocated by autopartitioning
-        request["removed-mount-points"] = cockpit.variant("as", ["/", "/boot", "bootloader"]);
+        const removed = reuseEFIPart ? ["/", "/boot"] : ["/", "/boot", "bootloader"];
+        request["removed-mount-points"] = cockpit.variant("as", removed);
     } else {
         // "LVM", "BTRFS", "LVM_THINP"
         // "/" can't be reallocated by autopartitioing as it is sharing container device with /home
-        request["removed-mount-points"] = cockpit.variant("as", ["/boot", "bootloader"]);
+        const removed = reuseEFIPart ? ["/boot"] : ["/boot", "bootloader"];
+        request["removed-mount-points"] = cockpit.variant("as", removed);
         request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
     }
     return request;
@@ -128,11 +135,11 @@ export const getAutopartReuseDBusRequest = (scheme) => {
 
 /**
  * @param {string} partitioning     DBus path to a partitioning
- * @param {string} scheme           autopartitioning scheme
+ * @param {string} homeReuseOptions options for home reuse partitioning requests
  */
-export const partitioningSetHomeReuse = async ({ partitioning, scheme }) => {
+export const partitioningSetHomeReuse = async ({ homeReuseOptions, partitioning }) => {
     const autopartRequest = await getPartitioningRequest({ partitioning });
-    const reuseRequest = getAutopartReuseDBusRequest(scheme);
+    const reuseRequest = getAutopartReuseDBusRequest(homeReuseOptions);
     const request = { ...autopartRequest, ...reuseRequest };
 
     await setPartitioningRequest({ partitioning, request });

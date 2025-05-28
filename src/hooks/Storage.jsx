@@ -38,9 +38,9 @@ import {
     partitioningSetPassphrase,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors } from "../helpers/storage.js";
+import { getDeviceAncestors, hasReusableFedoraWithWindowsOS } from "../helpers/storage.js";
 
-import { StorageContext } from "../contexts/Common.jsx";
+import { StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -149,9 +149,30 @@ export const useMountPointConstraints = () => {
     return mountPointConstraints;
 };
 
+export const useHomeReuseOptions = () => {
+    const [reuseEFIPart, setReuseEFIPart] = useState();
+
+    const originalExistingSystems = useOriginalExistingSystems();
+    const { defaultScheme } = useContext(StorageDefaultsContext);
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+
+    useEffect(() => {
+        setReuseEFIPart(hasReusableFedoraWithWindowsOS(devices, selectedDisks, originalExistingSystems));
+    }, [devices, selectedDisks, originalExistingSystems]);
+
+    const reuseOptions = {
+        reuseEFIPart,
+        scheme: defaultScheme,
+    };
+
+    return reuseOptions;
+};
+
 export const getNewPartitioning = async ({
-    autopartScheme,
     currentPartitioning,
+    homeReuseOptions,
     method = "AUTOMATIC",
     storageScenarioId,
 }) => {
@@ -165,7 +186,7 @@ export const getNewPartitioning = async ({
     const part = await createPartitioning({ method });
 
     if (storageScenarioId === "home-reuse") {
-        await partitioningSetHomeReuse({ partitioning: part, scheme: autopartScheme });
+        await partitioningSetHomeReuse({ homeReuseOptions, partitioning: part });
     }
 
     if (currentPartitioning?.method === method &&
