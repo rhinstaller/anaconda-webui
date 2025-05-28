@@ -175,7 +175,7 @@ COCKPIT_REPO_FILES = \
 	$(NULL)
 
 COCKPIT_REPO_URL = https://github.com/cockpit-project/cockpit.git
-COCKPIT_REPO_COMMIT = 09ebd7da87b5f6b584b8c553cd58181d84056b22 # 339 + 2 commits
+COCKPIT_REPO_COMMIT = 82e2dedbfae08d00428c4a100a53cbea3b077d23
 
 $(COCKPIT_REPO_FILES): $(COCKPIT_REPO_STAMP)
 COCKPIT_REPO_TREE = '$(strip $(COCKPIT_REPO_COMMIT))^{tree}'
@@ -195,7 +195,7 @@ codecheck: test/common $(NODE_MODULES_TEST)
 # as we consume ready ISOs
 # https://github.com/cockpit-project/cockpit/blob/main/test/common/testlib.py#L1118
 bots: test/common
-	GITHUB_BASE="cockpit-project/cockpit" test/common/make-bots
+	test/common/make-bots
 	cd test && ln -sf ../bots/images images
 
 live-vm: bots $(UPDATES_IMG)
