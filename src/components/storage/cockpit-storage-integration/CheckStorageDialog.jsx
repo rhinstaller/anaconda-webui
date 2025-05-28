@@ -468,9 +468,8 @@ const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setError, s
     return <CheckStorageDialogLoading />;
 };
 
-const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, setError, setNeedsNewPartitioning }) => {
+const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, setError, setNeedsNewPartitioning }) => {
     const devices = useOriginalDevices();
-    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
     const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
     const mounted = useRef(false);
@@ -527,14 +526,13 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, setError, setNeeds
 
 const CheckStorageDialogLoaded = ({
     error,
+    newMountPoints,
     setShowDialog,
     setShowStorage,
 }) => {
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const selectedDisks = diskSelection.selectedDisks;
-
-    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
 
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
     const useConfiguredStorageReview = useAvailabilityConfiguredStorage({ newMountPoints })?.review;
@@ -641,6 +639,8 @@ export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setSho
         setError,
     };
 
+    const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
+
     return (
         <>
             {!error && loadingNewStorage &&
@@ -649,11 +649,13 @@ export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setSho
                 />}
             {!error && !loadingNewStorage && needsNewPartitioning &&
                 <CheckStorageDialogLoadingNewPartitioning
+                  newMountPoints={newMountPoints}
                   setNeedsNewPartitioning={setNeedsNewPartitioning} {...loadingCommonProps}
                 />}
             {(error || (!loadingNewStorage && !needsNewPartitioning)) &&
                 <CheckStorageDialogLoaded
                   error={error}
+                  newMountPoints={newMountPoints}
                   setShowDialog={setShowDialog}
                   setShowStorage={setShowStorage}
                 />}
