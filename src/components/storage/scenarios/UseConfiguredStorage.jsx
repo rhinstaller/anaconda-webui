@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { AvailabilityState } from "./helpers.js";
 
@@ -30,7 +30,6 @@ import {
     useOriginalDevices,
 } from "../../../hooks/Storage.jsx";
 
-import { StorageReview } from "../../review/StorageReview.jsx";
 import { helpConfiguredStorage } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
@@ -47,6 +46,7 @@ export const useAvailabilityConfiguredStorage = (args) => {
         const availability = new AvailabilityState();
 
         const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
+        availability.showReview = true;
         availability.hidden = !appliedPartitioning || !currentPartitioningMatches;
 
         availability.available = (
@@ -89,9 +89,6 @@ export const useAvailabilityConfiguredStorage = (args) => {
                         })
             )
         );
-
-        availability.review = <StorageReview />;
-
         setScenarioAvailability(availability);
     }, [appliedPartitioning, devices, mountPointConstraints, newMountPoints, storageScenarioId]);
 
