@@ -30,7 +30,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         # BIOS boot partition, /boot partition, / on RAID
         disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", close_luks=False)
         s.create_luks_partition(f"{disk}4", "einszweidrei", "encrypted-vol2", close_luks=False)
         s.create_raid_device("encryptedraid", "raid1", ["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"])
@@ -89,7 +89,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         disk = "/dev/vda"
 
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "xfs"), ("5GB", None), ("5GB", None)])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_raid_device("encryptedraid", "raid1", [f"{disk}3", f"{disk}4"])
         s.create_luks_partition("/dev/md/encryptedraid", "einszweidrei", "encrypted-vol", "xfs")
 

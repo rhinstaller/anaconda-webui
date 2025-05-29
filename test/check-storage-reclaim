@@ -34,9 +34,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("1MB", "biosboot"),
-                ("4GB", "ext4"),
-                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
+                ("1MiB", "biosboot"),
+                ("4GiB", "ext4"),
+                ("5GiB", "btrfs", "-f", "-L", btrfsname + "A"),
                 ("", "btrfs", "-f", "-L", btrfsname + "B")
             ]
         )
@@ -51,9 +51,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("1MB", "biosboot"),
-                ("1GB", "ext4"),
-                ("5GB", "btrfs", "-f", "-L", btrfsname + "A"),
+                ("1MiB", "biosboot"),
+                ("1GiB", "ext4"),
+                ("5GiB", "btrfs", "-f", "-L", btrfsname + "A"),
             ]
         )
 
@@ -131,7 +131,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_checkbox(True, True)
         i.next(True)
 
-        s.reclaim_check_available_space("1.03 MB")
+        s.reclaim_check_available_space("2.06 MB")
 
         # Check that all partitions are present
         s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
@@ -152,7 +152,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete", False)
 
-        s.reclaim_check_available_space("1.03 MB")
+        s.reclaim_check_available_space("2.06 MB")
 
         # Check that actions for devices whose parents are marked for deletion are not sent to blivet
         s.reclaim_remove_device("vda4")
@@ -211,7 +211,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.set_scenario("use-free-space")
         i.next(True)
 
-        s.reclaim_check_available_space("1.03 MB")
+        s.reclaim_check_available_space("2.06 MB")
 
         # Check that shrinking action is only available for partitions
         s.reclaim_check_action_button_present("vda (Virtio", "shrink", False)
@@ -237,7 +237,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             s.reclaim_undo_action(device)
             s.reclaim_check_action_present(device, "shrink", False)
 
-        s.reclaim_check_available_space("1.03 MB")
+        s.reclaim_check_available_space("2.06 MB")
 
         # Shrink one partition and allocate enough space for the installation
         s.reclaim_shrink_device("vda2", "1", "4.29")
@@ -326,7 +326,7 @@ class TestStorageReclaimSpaceLUKS(VirtInstallMachineCase):
         s = Storage(b, m)
 
         disk = "/dev/vda"
-        s.partition_disk(disk, [("4GB", "ext4")])
+        s.partition_disk(disk, [("4GiB", "ext4")])
         s.create_luks_partition(f"{disk}1", "einszweidrei", "encrypted-vol")
 
     def testReclaimExt4onLUKS(self):

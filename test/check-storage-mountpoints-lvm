@@ -32,7 +32,7 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
         disk = "/dev/vda"
         vgname = "fedoravg"
 
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GB", "ext4"), ("", None)])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "ext4"), ("", None)])
         m.execute(f"""
         vgcreate -y -f {vgname} {disk}3
         lvcreate -y -l40%FREE -n root {vgname}
