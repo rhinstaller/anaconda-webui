@@ -352,12 +352,18 @@ class StorageUtils(StorageDestination):
                     sgdisk.append("--typecode=0:ef02")
                 if params[1] == "efi":
                     sgdisk.append("--typecode=0:ef00")
+                if params[1] == "ms-reserved":
+                    sgdisk.append("--typecode=0:0c01")
+                if params[1] == "ms-basic-data":
+                    sgdisk.append("--typecode=0:0700")
+                if params[1] == "win-re":
+                    sgdisk.append("--typecode=0:2700")
 
                 sgdisk.append(disk)
 
                 command += f"\n{' '.join(sgdisk)}"
 
-                if params[1] not in ("biosboot", None):
+                if params[1] not in ("biosboot", None, "ms-reserved", "ms-basic-data", "win-re"):
                     if params[1] == "lvmpv":
                         mkfs = ["pvcreate"]
                     else:

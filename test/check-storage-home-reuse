@@ -23,7 +23,8 @@ from operating_systems import WindowsOS
 from review import Review
 from storage import Storage
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from utils import move_standard_fedora_disk_to_MBR_disk, pretend_default_scheme, rsync_directory
+from utils import move_standard_fedora_disk_to_MBR_disk, \
+    move_standard_fedora_disk_to_win_disk, pretend_default_scheme, rsync_directory
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -322,7 +323,7 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
 
     def _testMBRParttable_partition_disk(self):
         storage = Storage(self.browser, self.machine)
-        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "/dev/vda", "vdb")
+        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
         self._remove_unknown_mountpoints("vdb")
 
     @disk_images([("", 15), ("fedora-41", 15)])
@@ -377,6 +378,57 @@ class TestStorageHomeReuseFedora(VirtInstallMachineCase):
                          action="mount")
         r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs", is_encrypted=False)
         r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "1.07 GB", True, "xfs", is_encrypted=False)
+
+    def _testNonLinuxSystemSingleDisk_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
+        self._remove_unknown_mountpoints("vdb")
+
+    @run_boot("efi")
+    @disk_images([("", 35), ("fedora-rawhide", 15)])
+    def testNonLinuxSystemSingleDisk(self):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev_win_fed = "vda"
+        dev_fed = "vdb"
+
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Only the Windows+Fedora disk is selected
+        s.wait_scenario_visible("home-reuse", True)
+
+        # Only the Fedora disk is selected
+        s.select_disks([(dev_win_fed, False), (dev_fed, True)])
+        s.wait_scenario_visible("home-reuse", True)
+
+        # Both the Windows+Fedora and Fedora disk is selected
+        s.select_disks([(dev_win_fed, True), (dev_fed, True)])
+        s.wait_scenario_visible("home-reuse", False)
+
+        # Only the Windows+Fedora disk is selected
+        s.select_disks([(dev_win_fed, True), (dev_fed, False)])
+        s.wait_scenario_visible("home-reuse", True)
+        s.wait_scenario_available("home-reuse", True)
+
+        s.set_scenario("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
+        r.check_disk_row(dev_win_fed, parent=f"{dev_win_fed}4", action="delete")
+        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "xfs", is_encrypted=False)
 
 
 if __name__ == '__main__':
