@@ -238,6 +238,8 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
         return;
     }
 
+    console.info("cockpit-storage-integration: handleMDRAID: Devices:", JSON.stringify(Object.keys(devices)));
+
     for (const device of Object.keys(devices)) {
         // FIXME: Do not allow stage1 device to be mdarray when this was created in Cockpit Storage
         // Cockpit Storage creates MDRAID with metadata 1.2, which is not supported by bootloaders
