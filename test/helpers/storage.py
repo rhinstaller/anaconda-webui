@@ -301,9 +301,6 @@ class StorageUtils(StorageDestination):
                     "efi": "ef",
                     "swap": "82",
                     "lvmpv": "8e",
-                    "ext4": "83",
-                    "btrfs": "83",
-                    "logical": "83",
                     "extended": "extended"
                 }.get(fstype, "83")
             else:
