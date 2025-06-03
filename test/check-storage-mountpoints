@@ -23,7 +23,7 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
-from utils import move_standard_fedora_disk_to_MBR_disk, pretend_default_scheme
+from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -649,6 +649,56 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.add_mountpoint_row()
         s.select_mountpoint_row_mountpoint(4, "/home")
         s.select_mountpoint_row_device(4, "home")
+
+    def _testWindowsSingleDiskHomeReuse_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
+
+    @run_boot("efi")
+    @disk_images([("", 35), ("fedora-rawhide", 15)])
+    def testWindowsSingleDiskHomeReuse(self):
+        """
+        Description:
+            Test home reuse via 'Mount point mapping' installation method with
+            a disk containig dual boot setup with Windows and Fedora (shared EFI partition).
+
+        Expected results:
+            - The mount point mapping scenario is available and can be used for reuse
+              of the home partition.
+            - The home reuse expected layout is shown in the review screen
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.wait_scenario_available("mount-point-mapping", True)
+
+        s.select_mountpoint([("vda", True), ("vdb", False)])
+
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, "vda1")
+        s.select_mountpoint_row_device(3, "vda4")
+        s.select_mountpoint_row_reformat(3)
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(4, "/home")
+        s.select_mountpoint_row_device(4, "home")
+        s.check_mountpoint_row_reformat(4, False)
+
+        i.reach(i.steps.REVIEW)
+
+        dev_win_fed = "vda"
+        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
+        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
 
 
 if __name__ == '__main__':
