@@ -283,6 +283,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         self._remove_unknown_mountpoints("vdb")
 
     @disk_images([("", 20), ("fedora-41", 15)])
+    @nondestructive
     def testNonLinuxSystem(self):
         """
         Description:
