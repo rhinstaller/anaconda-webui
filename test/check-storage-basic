@@ -128,7 +128,8 @@ class TestStorageBasic(VirtInstallMachineCase):
         s.wait_scenario_visible("use-free-space", False)
 
         # Check that when a partitioned disk is selected the "Use free space" scenario is visible
-        s.add_basic_partitioning()
+        s.partition_disk("/dev/vda", [("10GiB", "lvmpv")])
+        s.rescan_disks()
         s.wait_scenario_visible("use-free-space")
 
         # Storage Configuration
