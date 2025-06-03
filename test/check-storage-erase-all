@@ -17,7 +17,6 @@
 
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
-from operating_systems import WindowsOS
 from review import Review
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -54,11 +53,14 @@ class TestStorageEraseAll(VirtInstallMachineCase):
 
         r.check_deleted_system("Fedora Linux")
 
-
     def _testWindows_partition_disk(self):
-        WindowsOS(machine=self.machine).partition_disk()
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
 
-    @disk_images([("", 20)])
+        disk = "/dev/vda"
+        s.partition_disk(disk, [("1MiB", "efi"), ("1GiB", "microsoft-reserved"), ("5GiB", "basic-data")])
+
     def testWindows(self):
         """
         Description:
@@ -79,7 +81,7 @@ class TestStorageEraseAll(VirtInstallMachineCase):
         s.set_scenario("erase-all")
         i.reach(i.steps.REVIEW)
 
-        for device in ["vda1", "vda2", "vda3", "vda4"]:
+        for device in ["vda1", "vda2", "vda3"]:
             r.check_disk_row("vda", parent=device, action="delete")
 
         r.check_all_erased_checkbox_label()

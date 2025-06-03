@@ -309,11 +309,11 @@ class StorageUtils(StorageDestination):
             else:
                 # Determine the GPT type name
                 type_code = {
+                    "basic-data": "EBD0A0A2-B9E5-4433-87C0-68B6B72699C7",
                     "biosboot": "BIOS boot",
                     "efi": "C12A7328-F81F-11D2-BA4B-00A0C93EC93B",
-                    "ms-reserved": "E3C9E316-0B5C-4DB8-817D-F92DF00215AE",
-                    "ms-basic-data": "EBD0A0A2-B9E5-4433-87C0-68B6B72699C7",
-                    "win-re": "DE94BBA4-06D1-4D40-A16A-BFD50179D6AC",
+                    "microsoft-reserved": "E3C9E316-0B5C-4DB8-817D-F92DF00215AE",
+                    "microsoft-recovery": "DE94BBA4-06D1-4D40-A16A-BFD50179D6AC",
                 }.get(fstype, "Linux filesystem")
 
             # Build the sfdisk line without redundant commas
@@ -367,7 +367,7 @@ class StorageUtils(StorageDestination):
                 mkfs = f"mkfs.vfat {mkfs_args}"
             elif fstype == "logical":
                 mkfs = f"mkfs.btrfs {mkfs_args}"
-            elif fstype in ("biosboot", None, "ms-reserved", "ms-basic-data", "win-re"):
+            elif fstype in ["biosboot", "microsoft-reserved", "microsoft-recovery", "basic-data"] or fstype is None:
                 continue
             else:
                 fs = fstype

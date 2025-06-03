@@ -136,13 +136,13 @@ def move_standard_fedora_disk_to_win_disk(storage, machine, win_disk, fedora_dis
         # Common
         ("100MiB", "efi"),
         # Windows
-        ("128MiB", "ms-reserved"),
-        ("11.5GiB", "ms-basic-data"),
+        ("128MiB", "microsoft-reserved"),
+        ("11.5GiB", "basic-data"),
         # Fedora
         ("1GiB", "ext4"),
         ("13GiB", "btrfs"),
         # Windows
-        ("530MiB", "win-re"),
+        ("530MiB", "microsoft-recovery"),
     ])
     boot_part = 4
     root_part = 5

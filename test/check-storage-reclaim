@@ -17,7 +17,6 @@
 
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
-from operating_systems import WindowsOS
 from review import Review
 from storage import Storage
 from testlib import (
@@ -399,9 +398,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
 
     def _testReclaimSpaceWindows_partition_disk(self):
-        WindowsOS(machine=self.machine).partition_disk()
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
 
-    @disk_images([("", 20)])
+        disk = "/dev/vda"
+        s.partition_disk(disk, [("1MiB", "efi"), ("1GiB", "microsoft-reserved"), ("10GiB", "basic-data"), ("500MiB", "microsoft-recovery")])
+
     def testReclaimSpaceWindows(self):
         """
         Description:
