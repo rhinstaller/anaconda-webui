@@ -174,6 +174,7 @@ class VirtInstallMachine(VirtMachine):
                     except subprocess.CalledProcessError:
                         time.sleep(10)
                 else:
+                    print(Machine.execute(self, "journalctl -n 300"))
                     raise AssertionError("Webui initialization did not finish")
 
                 # Symlink /usr/share/cockpit to /usr/local/share/cockpit so that rsync works without killing cockpit-bridge
