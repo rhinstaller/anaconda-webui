@@ -24,10 +24,10 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
-class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
+class TestStorageEraseAll(VirtInstallMachineCase):
 
     @disk_images([("fedora-rawhide", 15)])
-    def testBasic(self):
+    def testFedora(self):
         """"
         Description:
             Test erase-all scenario with pre-existing Fedora OS
@@ -55,14 +55,11 @@ class TestStorageEraseAll_Fedora(VirtInstallMachineCase):
         r.check_deleted_system("Fedora Linux")
 
 
-@nondestructive
-class TestStorageEraseAll_Windows(VirtInstallMachineCase):
-
-    def _testBasic_partition_disk(self):
+    def _testWindows_partition_disk(self):
         WindowsOS(machine=self.machine).partition_disk()
 
     @disk_images([("", 20)])
-    def testBasic(self):
+    def testWindows(self):
         """
         Description:
             Test erase-all scenario with pre-existing Windows OS
