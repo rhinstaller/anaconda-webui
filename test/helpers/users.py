@@ -107,7 +107,7 @@ class Users(UsersDBus):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
         password = "password"
         p.set_password(password)
-        p.set_password_confirm(password + "" if valid else "X")
+        p.set_password_confirm(password if valid else "X")
 
 
 def create_user(browser, machine):
