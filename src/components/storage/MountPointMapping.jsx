@@ -48,6 +48,9 @@ import {
     hasDuplicateFields,
     isDuplicateRequestField,
 } from "../../helpers/storage.js";
+import {
+    checkIfArraysAreEqual,
+} from "../../helpers/utils.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
@@ -694,7 +697,7 @@ const useExistingPartitioning = () => {
 
         // Disk devices are not allowed in the mount point assignment
         const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
-        if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
+        if (checkIfArraysAreEqual(usedDevices, usableDevices)) {
             return true;
         }
         return false;
