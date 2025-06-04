@@ -4,6 +4,7 @@ import { NetworkClient } from "./network.js";
 import { PayloadsClient } from "./payloads";
 import { RuntimeClient } from "./runtime";
 import { StorageClient } from "./storage.js";
+import { TimezoneClient } from "./timezone.js";
 import { UsersClient } from "./users";
 
 export const clients = [
@@ -13,5 +14,6 @@ export const clients = [
     PayloadsClient,
     RuntimeClient,
     StorageClient,
+    TimezoneClient,
     UsersClient
 ];
