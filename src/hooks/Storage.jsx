@@ -22,6 +22,7 @@ import {
 import {
     getDiskFreeSpace,
     getDiskTotalSpace,
+    getFileSystemFreeSpace,
     getFormatTypeData,
     getMountPointConstraints,
     getRequiredDeviceSize,
@@ -80,6 +81,26 @@ export const useDiskFreeSpace = () => {
     }, [selectedDisks, devices]);
 
     return diskFreeSpace;
+};
+
+export const useFreeSystemMountPointsSpace = () => {
+    const [freeMountPointsSpace, setFreeMountPointsSpace] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const plannedDeviceTree = useDeviceTree();
+
+    useEffect(() => {
+        const update = async () => {
+            const freeMountPointsSpace = await getFileSystemFreeSpace({ mountPoints: ["/", "/usr"] });
+
+            setFreeMountPointsSpace(freeMountPointsSpace);
+        };
+        update();
+    }, [selectedDisks, devices, plannedDeviceTree]);
+
+    return freeMountPointsSpace;
 };
 
 export const useUsablePartitions = () => {
