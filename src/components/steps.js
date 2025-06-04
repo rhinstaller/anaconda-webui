@@ -2,6 +2,7 @@ import cockpit from "cockpit";
 
 import { debug } from "../helpers/log.js";
 
+import { Page as PageDateAndTime } from "./datetime/DateAndTime.jsx";
 import { Page as PageProgress } from "./installation/InstallationProgress.jsx";
 import { Page as PageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
 import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
@@ -17,6 +18,7 @@ export const getSteps = (userInterfaceConfig, ...args) => {
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
         new PageInstallationLanguage(...args),
+        new PageDateAndTime(...args),
         new PageInstallationMethod(...args),
         new PageStorageConfiguration(...args),
         {
