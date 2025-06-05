@@ -39,7 +39,7 @@ sector-size: 512
         self.machine = machine
 
     def partition_disk(self):
-        self.machine.execute("echo '%s' | sfdisk /dev/vda" % self.WINDOWS_SFDISK)
+        self.machine.execute(f"echo '{self.WINDOWS_SFDISK}' | sfdisk /dev/vda")
 
 
 class DualBootHelper_E2E(VirtInstallMachineCase):
@@ -62,7 +62,7 @@ class DualBootHelper_E2E(VirtInstallMachineCase):
 
         vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
         vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
-        self.assertEqual(vda3_root["size"], str(root_one_size) + "G")
+        self.assertEqual(vda3_root["size"], f"{root_one_size!s}G")
 
         # Select second OS grub entry
         self.selectBootMenuEntry(2)
@@ -77,7 +77,7 @@ class DualBootHelper_E2E(VirtInstallMachineCase):
 
         vda1 = next(part for part in vda["children"] if part["name"] == "vda1")
         self.assertEqual(vda1["mountpoints"], ["/"])
-        self.assertEqual(vda1["size"], str(root_two_size) + "G")
+        self.assertEqual(vda1["size"], f"{root_two_size!s}G")
 
         vda15 = next(part for part in vda["children"] if part["name"] == "vda15")
         # TODO: add explanation why the /efi mountpoint is present when legacy boot is used

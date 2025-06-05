@@ -38,13 +38,13 @@ class UsersDBus():
         self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
 
     def dbus_get_users(self):
-        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+        return self.machine.execute(
+            f'busctl --address="{self._bus_address}" \
             get-property  \
             {USERS_SERVICE} \
             {USERS_OBJECT_PATH} \
-            {USERS_INTERFACE} Users')
-
-        return ret
+            {USERS_INTERFACE} Users'
+        )
 
     def dbus_clear_users(self):
         self.machine.execute(f'busctl --address="{self._bus_address}" \
@@ -107,7 +107,7 @@ class Users(UsersDBus):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
         password = "password"
         p.set_password(password)
-        p.set_password_confirm(password + "" if valid else "X")
+        p.set_password_confirm(password if valid else "X")
 
 
 def create_user(browser, machine):

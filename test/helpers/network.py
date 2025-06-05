@@ -30,13 +30,13 @@ class NetworkDBus():
         self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
 
     def dbus_get_hostname(self):
-        ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
+        return self.machine.execute(
+            f'busctl --address="{self._bus_address}" \
                     get-property  \
                     {NETWORK_SERVICE} \
                     {NETWORK_OBJECT_PATH} \
-                    {NETWORK_INTERFACE} Hostname')
-
-        return ret
+                    {NETWORK_INTERFACE} Hostname'
+        )
 
     def dbus_set_hostname(self, hostname):
         self.machine.execute(f'busctl --address="{self._bus_address}" \

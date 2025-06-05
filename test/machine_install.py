@@ -52,7 +52,7 @@ class VirtInstallMachine(VirtMachine):
         port = start_port
         while True:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                if not (sock.connect_ex(('127.0.0.1', port)) == 0):
+                if sock.connect_ex(('127.0.0.1', port)) != 0:
                     return port
             port = port + 1
 
@@ -107,7 +107,7 @@ class VirtInstallMachine(VirtMachine):
             raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
 
         update_img_global_file = os.path.join(ROOT_DIR, f"updates-{self.os}.img")
-        update_img_file = os.path.join(ROOT_DIR, self.label + "-updates.img")
+        update_img_file = os.path.join(ROOT_DIR, f"{self.label}-updates.img")
         if not os.path.exists(update_img_global_file):
             raise FileNotFoundError("Missing updates.img file")
 
@@ -136,11 +136,7 @@ class VirtInstallMachine(VirtMachine):
         else:
             location = f"{iso_path}"
 
-        if self.is_efi:
-            boot_arg = "--boot uefi "
-        else:
-            boot_arg = ""
-
+        boot_arg = "--boot uefi " if self.is_efi else ""
         try:
             self._execute(
                 "virt-install "

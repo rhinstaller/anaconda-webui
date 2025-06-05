@@ -30,7 +30,7 @@ def log_step(snapshots=False, snapshot_before=False, snapshot_after=False, docst
             if kwargs:
                 nice_args += ', ' + ', '.join(f'{k}: {v}' for k, v in kwargs.items())
             if nice_args:
-                nice_args = ', with ' + nice_args
+                nice_args = f', with {nice_args}'
 
             print(f'[TEST STEP] {function.__name__}{nice_args}')
             if docstring:
@@ -47,5 +47,7 @@ def log_step(snapshots=False, snapshot_before=False, snapshot_after=False, docst
                 BrowserSnapshot.new(args[0].browser)
 
             return result
+
         return wrapper
+
     return decorator

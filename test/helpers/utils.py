@@ -17,7 +17,7 @@ import os
 
 
 def add_public_key(machine):
-    with open(machine.identity_file + '.pub', 'r') as pub:
+    with open(f'{machine.identity_file}.pub', 'r') as pub:
         public_key = pub.read()
 
     sysroot_ssh = '/mnt/sysroot/root/.ssh'

@@ -36,9 +36,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             [
                 ("1MiB", "biosboot"),
                 ("4GiB", "ext4"),
-                ("5GiB", "btrfs", "-f", "-L", btrfsname + "A"),
-                ("", "btrfs", "-f", "-L", btrfsname + "B")
-            ]
+                ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
+                ("", "btrfs", "-f", "-L", f"{btrfsname}B"),
+            ],
         )
 
     def _testReclaimSpaceOptional_partition_disk(self):
@@ -53,8 +53,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             [
                 ("1MiB", "biosboot"),
                 ("1GiB", "ext4"),
-                ("5GiB", "btrfs", "-f", "-L", btrfsname + "A"),
-            ]
+                ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
+            ],
         )
 
     def testReclaimSpaceOptional(self):
