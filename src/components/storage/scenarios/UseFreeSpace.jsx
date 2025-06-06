@@ -18,7 +18,7 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Checkbox } from "@patternfly/react-core";
+import { Checkbox, Flex } from "@patternfly/react-core";
 
 import { AvailabilityState } from "./helpers.js";
 
@@ -60,17 +60,8 @@ export const useAvailabilityUseFreeSpace = (args) => {
         if (diskFreeSpace > 0 && diskTotalSpace > 0) {
             availability.hidden = diskFreeSpace === diskTotalSpace;
         }
-        if (diskFreeSpace < requiredSize) {
-            availability.reason = _("Not enough free space on the selected disks.");
-            availability.hint = cockpit.format(
-                _("To use this option, resize or remove existing partitions to free up at least $0."),
-                cockpit.format_bytes(requiredSize)
-            );
-            if (allowReclaim) {
-                availability.enforceAction = true;
-            } else {
-                availability.available = false;
-            }
+        if (diskFreeSpace < requiredSize && !allowReclaim) {
+            availability.available = false;
         }
         setScenarioAvailability(availability);
     }, [allowReclaim, diskFreeSpace, diskTotalSpace, requiredSize, selectedDisks]);
@@ -78,19 +69,38 @@ export const useAvailabilityUseFreeSpace = (args) => {
     return scenarioAvailability;
 };
 
-const ReclaimSpace = ({ availability }) => {
+const ReclaimSpace = () => {
     const { isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked } = useContext(DialogsContext);
+    const diskFreeSpace = useDiskFreeSpace();
+    const requiredSize = useRequiredSize();
+    const enforceAction = diskFreeSpace < requiredSize;
 
     useEffect(() => {
-        setIsReclaimSpaceCheckboxChecked(availability.enforceAction);
-    }, [availability.enforceAction, setIsReclaimSpaceCheckboxChecked]);
+        setIsReclaimSpaceCheckboxChecked(enforceAction);
+    }, [enforceAction, setIsReclaimSpaceCheckboxChecked]);
+
+    const requiredHint = (
+        <span>
+            {cockpit.format(_("Required; less than $0 available"), cockpit.format_bytes(requiredSize))}
+        </span>
+    );
+    const label = enforceAction
+        ? _("Reclaim space")
+        : _("Reclaim additional space");
+
+    const labelWithHint = (
+        <Flex>
+            {label}
+            {enforceAction && requiredHint}
+        </Flex>
+    );
 
     return (
         <Checkbox
           id="reclaim-space-checkbox"
           isChecked={isReclaimSpaceCheckboxChecked}
-          isDisabled={availability.enforceAction}
-          label={!availability.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
+          isDisabled={enforceAction}
+          label={labelWithHint}
           name="reclaim-space"
           onChange={(_, value) => setIsReclaimSpaceCheckboxChecked(value)}
         />
