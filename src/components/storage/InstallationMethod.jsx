@@ -36,7 +36,12 @@ import {
     StorageContext,
 } from "../../contexts/Common.jsx";
 
-import { getNewPartitioning, useHomeReuseOptions } from "../../hooks/Storage.jsx";
+import {
+    getNewPartitioning,
+    useDiskTotalSpace,
+    useHomeReuseOptions,
+    useRequiredSize,
+} from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -58,6 +63,9 @@ const InstallationMethod = ({
     setStepNotification,
 }) => {
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
+    const { selectedDisks } = useContext(StorageContext).diskSelection;
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -85,6 +93,7 @@ const InstallationMethod = ({
               setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />
+            {selectedDisks.length > 0 && diskTotalSpace >= requiredSize &&
             <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>
                 <InstallationScenario
                   dispatch={dispatch}
@@ -94,7 +103,7 @@ const InstallationMethod = ({
                   onCritFail={onCritFail}
                   setIsFormValid={setIsFormValid}
                 />
-            </DialogsContext.Provider>
+            </DialogsContext.Provider>}
         </Form>
     );
 };
