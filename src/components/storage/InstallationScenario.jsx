@@ -41,7 +41,7 @@ import {
 } from "../../hooks/Storage.jsx";
 
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
-import { scenarios } from "./scenarios/index.js";
+import { scenarios, useScenariosAvailability } from "./scenarios/index.js";
 
 import "./InstallationScenario.scss";
 
@@ -68,11 +68,8 @@ const InstallationScenarioSelector = ({
     const { mountPoints } = useOriginalDeviceTree();
     const selectedDisks = diskSelection.selectedDisks;
     const { storageScenarioId } = useContext(StorageContext);
-    const scenarioAvailability = scenarios.reduce((acc, scenario) => {
-        acc[scenario.id] = scenario.getAvailability();
-        return acc;
-    }, {});
-    const scenarioAvailabilityLoading = scenarios.some(scenario => scenarioAvailability[scenario.id] === undefined);
+    const scenarioAvailability = useScenariosAvailability();
+    const scenarioAvailabilityLoading = scenarioAvailability === undefined;
 
     useEffect(() => {
         let selectedScenarioId = "";
