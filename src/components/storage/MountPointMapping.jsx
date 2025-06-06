@@ -48,6 +48,9 @@ import {
     hasDuplicateFields,
     isDuplicateRequestField,
 } from "../../helpers/storage.js";
+import {
+    checkIfArraysAreEqual,
+} from "../../helpers/utils.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
@@ -277,7 +280,7 @@ export const DeviceColumnSelect = ({
         const deviceName = deviceData[device].name.v;
 
         const ancestors = getDeviceAncestors(deviceData, device);
-        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "disk");
+        const parentDisk = [device, ...ancestors].find(ancestor => deviceData[ancestor]["is-disk"].v);
         const parentPartition = [device, ...ancestors].find(ancestor => deviceData[ancestor].type.v === "partition");
         const typeLabel = device[parentPartition]?.attrs?.v?.["partition-type-name"] || "";
 
@@ -694,7 +697,7 @@ const useExistingPartitioning = () => {
 
         // Disk devices are not allowed in the mount point assignment
         const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
-        if (usedDevices.every(d => usableDevices.includes(d)) && usableDevices.every(d => usedDevices.includes(d))) {
+        if (checkIfArraysAreEqual(usedDevices, usableDevices)) {
             return true;
         }
         return false;

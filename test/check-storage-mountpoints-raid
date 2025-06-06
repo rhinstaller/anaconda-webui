@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID(VirtInstallMachineCase):
@@ -65,7 +65,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s.unlock_device("einszweidrei", ["vda3", "vda4"], ["vda3", "vda4"])
         b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint()
 
         s.select_mountpoint_row_device(1, "encryptedraid")
         s.check_mountpoint_row_format_type(1, "xfs")
@@ -122,9 +122,8 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         # select only vda and check that we don't try to unlock the LUKS partition on vdb
         s.unlock_all_encrypted()
         s.unlock_device("einszweidrei", ["encryptedraid"], ["encryptedraid"])
-        b.wait_not_present(f"#{i.steps.CUSTOM_MOUNT_POINT}-table tbody tr:nth-child(4) td[data-label='Format type'] #unlock-luks-btn")
 
-        s.select_mountpoint([(dev, True)])
+        s.select_mountpoint()
 
         s.check_mountpoint_row_mountpoint(2, "/boot")
         s.select_mountpoint_row_device(2, f"{dev}2")
@@ -142,6 +141,66 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
+
+    def _testRAID0Scenario_0_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # BIOS boot partition, /boot partition, / on RAID
+        s.partition_disk("/dev/vda", [("1MiB", "biosboot"), ("1GB", "xfs")])
+        self.addCleanup(
+            lambda: m.execute(
+            """
+            mdadm --stop /dev/md/SOMERAID || true
+            mdadm --remove /dev/md/SOMERAID || true
+            """, timeout=90)
+        )
+        s.create_raid_device("SOMERAID", "raid0", ["/dev/vdb", "/dev/vdc"])
+        # Create GPT table and / ext4 partition on the RAID device
+        m.execute(
+        """
+        sgdisk --zap-all /dev/md/SOMERAID
+        sgdisk --new=0:0:0 --typecode=0:8300 --change-name=0:'/' /dev/md/SOMERAID
+        udevadm settle
+        mkfs.ext4 -F /dev/md/SOMERAID1
+        """, timeout=90)
+
+    @nondestructive
+    @disk_images([("", 15), ("", 15), ("", 15)])
+    def testRAID0Scenario_0(self):
+        """
+        Test scenario with three disks:
+
+        - 'biosboot' and '/boot' are on 'vda'.
+        - A RAID 0 array is created using 'vdb' and 'vdc'.
+        - The root filesystem ('/') is placed on the RAID 0 device.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([("vda", True), ("MDRAID-SOMERAID", True)]) # Select both disks
+
+        s.check_mountpoint_row_mountpoint(2, "/boot")
+        s.select_mountpoint_row_device(2, "vda2")
+        s.select_mountpoint_row_reformat(2, False)
+
+        s.check_mountpoint_row_mountpoint(1, "/")
+        s.select_mountpoint_row_device(1, "SOMERAID1")
+        s.select_mountpoint_row_reformat(1, False)
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot", "vda2", "1.00 GB", False)
+        r.check_disk("MDRAID-SOMERAID", "32.2 GB MDRAID-SOMERAID (MDRAID set (stripe))")
+        r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1", "32.2 GB", False)
 
 
 if __name__ == '__main__':

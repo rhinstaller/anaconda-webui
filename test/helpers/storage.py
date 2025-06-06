@@ -174,7 +174,7 @@ class StorageEncryption():
         b.set_input_text("#unlock-device-dialog-luks-passphrase[type=password]", passphrase)
         b.click("#unlock-device-dialog-submit-btn")
         # Wait for the dialog to either close or stop being in progress
-        with b.wait_timeout(30):
+        with b.wait_timeout(45):
             if successfully_unlocked_devices == encrypted_devices:
                 b.wait_not_present("#unlock-device-dialog")
                 return
@@ -241,6 +241,19 @@ class StorageUtils(StorageDestination):
         mdadm --create --run {name} --level={raid_level} --raid-devices={len(devices)} {' '.join(devices)}
         udevadm settle
         """, timeout=90)
+        self._wait_for_mdraid_clean()
+
+    def _wait_for_mdraid_clean(self):
+        m = self.machine
+        m.execute("""
+        # Wait for the md array to become active
+        udevadm settle
+        while [ "$(cat /sys/block/md127/md/array_state)" != "clean" ]; do
+            echo "Waiting for RAID array to become active..."
+            echo "$(cat /sys/block/md127/md/array_state)"
+            sleep 0.5
+        done
+        """, timeout=30)
 
     def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
         self.machine.execute(f"""
@@ -646,8 +659,9 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
         for (disk, selected) in disks:
             self.check_disk_selected(disk, selected)
 
-    def select_mountpoint(self, disks):
-        self.select_disks(disks)
+    def select_mountpoint(self, disks=None):
+        if disks is not None:
+            self.select_disks(disks)
 
         self.set_scenario("mount-point-mapping")
 
