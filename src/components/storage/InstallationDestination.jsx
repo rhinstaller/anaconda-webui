@@ -24,6 +24,8 @@ import {
     FlexItem,
     FormGroup,
     FormSection,
+    HelperText,
+    HelperTextItem,
     Menu,
     MenuContent,
     MenuItem,
@@ -51,7 +53,12 @@ import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
-import { useOriginalDevices, useOriginalExistingSystems } from "../../hooks/Storage.jsx";
+import {
+    useDiskTotalSpace,
+    useOriginalDevices,
+    useOriginalExistingSystems,
+    useRequiredSize,
+} from "../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
@@ -312,10 +319,28 @@ export const InstallationDestination = ({
                             </FlexItem>
                         </Flex>
                     ))}
+                    {diskSelection.selectedDisks.length > 0 && <InsufficientSpace />}
                     <ChangeDestination dispatch={dispatch} idPrefix={idPrefix} onCritFail={onCritFail} />
                 </Flex>
             </FormGroup>
         </FormSection>
+    );
+};
+
+const InsufficientSpace = () => {
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
+
+    if (diskTotalSpace >= requiredSize) {
+        return null;
+    }
+
+    return (
+        <HelperText>
+            <HelperTextItem variant="error">
+                {cockpit.format(_("Insufficient disk space. Minimum of $0 required."), cockpit.format_bytes(requiredSize))}
+            </HelperTextItem>
+        </HelperText>
     );
 };
 

@@ -18,6 +18,8 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
+    EmptyState,
+    EmptyStateBody,
     Form,
     HelperText,
     HelperTextItem,
@@ -37,7 +39,11 @@ import {
     StorageDefaultsContext,
 } from "../../contexts/Common.jsx";
 
-import { getNewPartitioning } from "../../hooks/Storage.jsx";
+import {
+    getNewPartitioning,
+    useDiskTotalSpace,
+    useRequiredSize,
+} from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { InstallationDestination } from "./InstallationDestination.jsx";
@@ -59,6 +65,9 @@ const InstallationMethod = ({
     setStepNotification,
 }) => {
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
+    const { selectedDisks } = useContext(StorageContext).diskSelection;
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -86,6 +95,9 @@ const InstallationMethod = ({
               setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />
+            {selectedDisks.length === 0 && <NoDisksSelectedWarning />}
+            {selectedDisks.length > 0 && diskTotalSpace < requiredSize && <InsufficientSpaceWarning />}
+            {selectedDisks.length > 0 && diskTotalSpace >= requiredSize &&
             <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>
                 <InstallationScenario
                   dispatch={dispatch}
@@ -95,7 +107,7 @@ const InstallationMethod = ({
                   onCritFail={onCritFail}
                   setIsFormValid={setIsFormValid}
                 />
-            </DialogsContext.Provider>
+            </DialogsContext.Provider>}
         </Form>
     );
 };
@@ -183,6 +195,24 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
         </>
     );
 };
+
+const InsufficientSpaceWarning = () => (
+    <EmptyState
+      status="danger"
+      titleText={_("Insufficient space to install")}
+    >
+        <EmptyStateBody>{_("Please select a destination with more space to proceed.")}</EmptyStateBody>
+    </EmptyState>
+);
+
+const NoDisksSelectedWarning = () => (
+    <EmptyState
+      status="danger"
+      titleText={_("No disks selected")}
+    >
+        <EmptyStateBody>{_("Please select at least one disk to install the system.")}</EmptyStateBody>
+    </EmptyState>
+);
 
 const InstallationMethodFooterHelper = () => {
     const { isFormValid } = useContext(FooterContext);
