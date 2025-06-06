@@ -22,12 +22,17 @@ import { useContext, useEffect, useState } from "react";
 import { getAutopartReuseDBusRequest } from "../../../apis/storage_partitioning.js";
 
 import { debug } from "../../../helpers/log.js";
-import { bootloaderTypes, getDeviceAncestors } from "../../../helpers/storage.js";
+import {
+    bootloaderTypes,
+    hasReusableFedoraWithWindowsOS,
+    isCompleteOSOnDisks,
+} from "../../../helpers/storage.js";
 import { AvailabilityState } from "./helpers.js";
 
-import { StorageContext, StorageDefaultsContext } from "../../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
 import {
+    useHomeReuseOptions,
     useOriginalDevices,
     useOriginalExistingSystems,
 } from "../../../hooks/Storage.jsx";
@@ -42,30 +47,23 @@ const useAvailabilityHomeReuse = () => {
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const originalExistingSystems = useOriginalExistingSystems();
-    const { defaultScheme } = useContext(StorageDefaultsContext);
+    const { reuseEFIPart, scheme } = useHomeReuseOptions();
 
     useEffect(() => {
         const availability = new AvailabilityState();
         let reusedOS = null;
-        const autopartScheme = defaultScheme;
+        const autopartScheme = scheme;
 
         availability.hidden = false;
         availability.available = !!selectedDisks.length;
 
-        const isCompleteOSOnDisks = (osData, disks) => {
-            const osDisks = osData.devices.v.map(deviceId => getDeviceAncestors(devices, deviceId))
-                    .reduce((disks, ancestors) => disks.concat(ancestors))
-                    .filter(dev => devices[dev].type.v === "disk")
-                    .reduce((uniqueDisks, disk) => uniqueDisks.includes(disk) ? uniqueDisks : [...uniqueDisks, disk], []);
-            const missingDisks = osDisks.filter(disk => !disks.includes(disk));
-            return missingDisks.length === 0;
-        };
-
         const getUnknownMountPoints = (scheme, existingOS) => {
-            const reuseRequest = getAutopartReuseDBusRequest(scheme);
+            const reuseRequest = getAutopartReuseDBusRequest({ reuseEFIPart, scheme });
             const isBootloader = (device) => bootloaderTypes.includes(devices[device].formatData.type.v);
+            // Ignore bootloader device mount points, they have special handling
             const existingMountPoints = Object.entries(existingOS["mount-points"].v)
-                    .map(([mountPoint, device]) => isBootloader(device) ? "bootloader" : mountPoint);
+                    .filter(mp => !isBootloader(mp[1]))
+                    .map((mp) => mp[0]);
 
             const managedMountPoints = reuseRequest["reformatted-mount-points"].v
                     .concat(reuseRequest["reused-mount-points"].v, reuseRequest["removed-mount-points"].v);
@@ -77,7 +75,7 @@ const useAvailabilityHomeReuse = () => {
         // Check that exactly one Linux OS is present and it is Fedora Linux
         // (Stronger check for mountpoints uniqueness is in the backend
         const linuxSystems = originalExistingSystems.filter(osdata => osdata["os-name"].v.includes("Linux"))
-                .filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
+                .filter(osdata => isCompleteOSOnDisks(devices, selectedDisks, osdata));
         if (linuxSystems.length === 0) {
             availability.available = false;
             availability.hidden = true;
@@ -96,17 +94,25 @@ const useAvailabilityHomeReuse = () => {
         }
 
         // Check that no other than Linux system (Windows, MacOS) is found
-        const allSystems = originalExistingSystems.filter(osdata => isCompleteOSOnDisks(osdata, selectedDisks));
+        const allSystems = originalExistingSystems.filter(osdata => isCompleteOSOnDisks(devices, selectedDisks, osdata));
         if (allSystems.length > linuxSystems.length) {
             availability.available = false;
             availability.hidden = true;
             debug("home reuse: Non-linux existing systems found.");
         }
 
+        // Allow for a reusable Fedora with Windows system along
+        if (hasReusableFedoraWithWindowsOS(devices, selectedDisks, originalExistingSystems)) {
+            availability.available = true;
+            availability.hidden = false;
+            debug("home reuse: Reusable Fedora with a Windows system along found.");
+        }
+
         debug(`home reuse: Default scheme is ${autopartScheme}.`);
         if (reusedOS) {
             // Check that required autopartitioning scheme matches reused OS.
-            // Check just "/home". To be more generic we could check all reused devices (as the backend).
+            // Check just "/home". To be more generic we could check all reused devices except bootloader
+            // (as the backend).
             const homeDevice = reusedOS["mount-points"].v["/home"];
             const homeDeviceType = devices[homeDevice]?.type.v;
             const requiredSchemeTypes = {
@@ -138,7 +144,7 @@ const useAvailabilityHomeReuse = () => {
         // - size ?
 
         setScenarioAvailability(availability);
-    }, [defaultScheme, devices, originalExistingSystems, selectedDisks]);
+    }, [devices, originalExistingSystems, reuseEFIPart, selectedDisks, scheme]);
 
     return scenarioAvailability;
 };

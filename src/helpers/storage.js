@@ -15,6 +15,8 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { checkIfArraysAreEqual } from "./utils.js";
+
 /* Get the list of IDs of all the ancestors of the given device
  * (including the device itself)
  * @param {Object} deviceData - The device data object
@@ -225,4 +227,48 @@ export const getUsableDevicesManualPartitioning = ({ devices, selectedDisks }) =
     });
 
     return usableDevices;
+};
+
+/* Get disks on which given existing OS is located
+ * @param {Object} deviceData - The device data object
+ * @param {Object} osData - the existing OS data object
+ * @returns {Array}
+ * */
+export const getOSDisks = (deviceData, osData) => {
+    return osData.devices.v.map(deviceId => getDeviceAncestors(deviceData, deviceId)).flat()
+            .filter(dev => deviceData[dev]["is-disk"].v)
+            .reduce((uniqueDisks, disk) => uniqueDisks.includes(disk) ? uniqueDisks : [...uniqueDisks, disk], []);
+};
+
+/* Check if the OS is located completely on the disks
+ * @param {Object} deviceData - The device data object
+ * @param {Array[string]} selectedDisks - a list of disk names
+ * @param {Object} osData - the existing OS data object
+ * @returns {boolean}
+ * */
+export const isCompleteOSOnDisks = (deviceData, selectedDisks, osData) => {
+    return getOSDisks(deviceData, osData).every(disk => selectedDisks.includes(disk));
+};
+
+/* Check if the there is a reusable Fedora + Windows installation
+ * @param {Object} deviceData - The device data object
+ * @param {Array[string]} selectedDisks - a list of disk names
+ * @param {Array[Object]} existingSystems - a list of OS data objects
+ * @returns {boolean}
+ * */
+export const hasReusableFedoraWithWindowsOS = (deviceData, selectedDisks, existingSystems) => {
+    const completeSystems = existingSystems
+            .filter(osdata => isCompleteOSOnDisks(deviceData, selectedDisks, osdata));
+    const fedoraSystems = completeSystems
+            .filter(osdata => osdata["os-name"].v.includes("Fedora"));
+    const windowsSystems = completeSystems
+            .filter(osdata => osdata["os-name"].v.includes("Windows"));
+    return (
+        fedoraSystems.length === 1 &&
+        windowsSystems.length === 1 &&
+        checkIfArraysAreEqual(
+            getOSDisks(deviceData, fedoraSystems[0]),
+            getOSDisks(deviceData, windowsSystems[0])
+        )
+    );
 };
