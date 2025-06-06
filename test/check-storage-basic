@@ -58,6 +58,12 @@ class TestStorageBasic(VirtInstallMachineCase):
             ignore=pixel_tests_ignore,
         )
 
+        # Unselect the only available disk
+        s.select_disks([("vda", False)])
+        s.wait_no_disks()
+        # Check the next buton is disabled if no disks are selected
+        i.check_next_disabled()
+
         # This attaches a disk to the running VM
         # However, since the storage module initialization is long completed
         # the newly added disk, will not be visible in the UI,
@@ -67,6 +73,7 @@ class TestStorageBasic(VirtInstallMachineCase):
         s.rescan_disks(["vda", dev])
 
         # Check that the disk selection persists when moving next and back
+        s.select_disks([("vda", True), (dev, False)])
         s.check_disk_selected("vda", True)
         s.check_disk_selected(dev, False)
         i.next()
@@ -74,7 +81,7 @@ class TestStorageBasic(VirtInstallMachineCase):
         s.check_disk_selected("vda", True)
         s.check_disk_selected(dev, False)
 
-        # Try unselecting the single disk and expect and error
+        # Try unselecting both disks and expect and error
         s.select_disks([("vda", False), (dev, False)])
         s.wait_no_disks()
         # Check the next button is disabled if no disks are selected

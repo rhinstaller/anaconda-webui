@@ -246,12 +246,13 @@ export const InstallationDestination = ({
     const refUsableDisks = useRef();
     const { diskSelection } = useContext(StorageContext);
     const devices = useOriginalDevices();
+    const usableDisksStr = diskSelection.usableDisks.join(",");
 
     debug("DiskSelector: devices: ", JSON.stringify(Object.keys(devices)), ", diskSelection: ", JSON.stringify(diskSelection));
 
     useEffect(() => {
         refUsableDisks.current = false;
-    }, [diskSelection.usableDisks]);
+    }, [usableDisksStr]);
 
     useEffect(() => {
         // Select default disks for the partitioning on component mount
