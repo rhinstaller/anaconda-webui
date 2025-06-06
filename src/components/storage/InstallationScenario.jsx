@@ -65,9 +65,7 @@ const InstallationScenarioSelector = ({
     isFormDisabled,
     setIsFormValid,
 }) => {
-    const { diskSelection } = useContext(StorageContext);
     const { mountPoints } = useOriginalDeviceTree();
-    const selectedDisks = diskSelection.selectedDisks;
     const { storageScenarioId } = useContext(StorageContext);
     const scenarioAvailability = useScenariosAvailability();
     const scenarioAvailabilityLoading = scenarioAvailability === undefined;
@@ -123,11 +121,11 @@ const InstallationScenarioSelector = ({
           description={scenario.getDetail()}
           body={
               <>
-                  {selectedDisks.length > 0 && scenarioAvailability[scenario.id].reason &&
+                  {scenarioAvailability[scenario.id].reason &&
                   <span className={idPrefix + "-scenario-disabled-reason"}>
                       {scenarioAvailability[scenario.id].reason}
                   </span>}
-                  {selectedDisks.length > 0 && <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>}
+                  <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>
                   {scenarioAvailability[scenario.id].showReview && <span className={idPrefix + "-scenario-review"}><StorageReview /></span>}
                   {scenario.action && <scenario.action availability={scenarioAvailability[scenario.id]} />}
               </>
