@@ -306,10 +306,6 @@ export class ErrorBoundary extends React.Component {
 
         window.onunhandledrejection = (event) => {
             console.error("ErrorBoundary caught an error:", event.reason);
-            if (this.props.showStorage && event.reason.name === "org.fedoraproject.Anaconda.Modules.Storage.UnknownDeviceError") {
-                // Users in Cockpit storage might remove devices from the device tree, which can cause this error.
-                return false;
-            }
             this.setState({ frontendException: event.reason, hasError: true });
             return true;
         };

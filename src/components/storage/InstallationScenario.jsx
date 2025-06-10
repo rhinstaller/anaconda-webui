@@ -40,6 +40,7 @@ import {
     useOriginalDeviceTree,
 } from "../../hooks/Storage.jsx";
 
+import { StorageReview } from "../review/StorageReview.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 import { scenarios } from "./scenarios/index.js";
 
@@ -130,7 +131,7 @@ const InstallationScenarioSelector = ({
                       {scenarioAvailability[scenario.id].reason}
                   </span>}
                   {selectedDisks.length > 0 && <span className={idPrefix + "-scenario-disabled-shorthint"}>{scenarioAvailability[scenario.id].hint}</span>}
-                  {scenarioAvailability[scenario.id].review && <span className={idPrefix + "-scenario-review"}>{scenarioAvailability[scenario.id].review}</span>}
+                  {scenarioAvailability[scenario.id].showReview && <span className={idPrefix + "-scenario-review"}><StorageReview /></span>}
                   {scenario.action && <scenario.action availability={scenarioAvailability[scenario.id]} />}
               </>
           } />
