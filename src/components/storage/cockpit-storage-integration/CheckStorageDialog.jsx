@@ -54,7 +54,7 @@ import {
 
 import { getDevicesAction, setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
-import { debug } from "../../../helpers/log.js";
+import { debug as loggerDebug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
     getDeviceAncestors,
@@ -78,7 +78,9 @@ import { useAvailabilityConfiguredStorage } from "../scenarios/UseConfiguredStor
 import { useAvailabilityUseFreeSpace } from "../scenarios/UseFreeSpace.jsx";
 
 const _ = cockpit.gettext;
+
 const idPrefix = "cockpit-storage-integration";
+const debug = loggerDebug.bind(null, idPrefix + ":");
 
 const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
     try {
@@ -158,7 +160,7 @@ const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
 };
 
 const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
-    debug("cockpit-storage-integration: mdarray step started");
+    debug("mdarray step started");
 
     const mdArrays = Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
     let ret;
@@ -177,10 +179,10 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
                 .reduce((acc, disk) => {
                     if (!devices[disk]) {
                         if (refDevices.current[disk]?.parents.v) {
-                            debug("cockpit-storage-integration: re-scan finished: Device got removed, adding parent disks to selected disks", disk);
+                            debug("re-scan finished: Device got removed, adding parent disks to selected disks", disk);
                             return [...acc, ...refDevices.current[disk].parents.v];
                         } else {
-                            debug("cockpit-storage-integration: re-scan finished: Device got removed, removing from selected disks", disk);
+                            debug("re-scan finished: Device got removed, removing from selected disks", disk);
                             return acc;
                         }
                     }
@@ -189,10 +191,10 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
                 .reduce((acc, disk) => {
                     const mdArray = devices[disk].children.v.filter(child => mdArrays.includes(child));
                     if (mdArray.length > 0) {
-                        debug("cockpit-storage-integration: re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
+                        debug("re-scan finished: MD array found, replacing disk with mdarray", disk, mdArray);
                         return [...acc, mdArray[0]];
                     } else {
-                        debug("cockpit-storage-integration: re-scan finished: Keeping disk", disk);
+                        debug("re-scan finished: Keeping disk", disk);
                         return [...acc, disk];
                     }
                 }, [])
@@ -297,7 +299,7 @@ const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep
         onCritFail()({ message: _("Cockpit storage did not provide the passphrase to unlock encrypted device.") });
     }
 
-    debug("cockpit-storage-integration: luks step started");
+    debug("luks step started");
 
     Promise.all(devicesToUnlock.map(unlockDevice))
             .catch(onFail)
@@ -323,7 +325,7 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
 };
 
 const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
-    debug("cockpit-storage-integration: rescan step started");
+    debug("rescan step started");
 
     // When the dialog is shown rescan to get latest configured storage
     // and check if we need to prepare manual partitioning
@@ -368,7 +370,7 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
         }
         refCheckStep.current = checkStep;
 
-        debug("cockpit-storage-integration: useStorageSetup: running step", checkStep);
+        debug("useStorageSetup: running step", checkStep);
 
         const onFail = exc => {
             setCheckStep();
@@ -501,7 +503,7 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
             setError(exc);
             setNeedsNewPartitioning(false);
         };
-        debug("cockpit-storage-integration: prepare partitioning step started");
+        debug("prepare partitioning step started");
 
         const applyNewPartitioning = async () => {
             // CLEAR_PARTITIONS_NONE = 0
