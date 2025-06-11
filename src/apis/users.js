@@ -16,6 +16,7 @@
  */
 import cockpit from "cockpit";
 
+import { error } from "../helpers/log.js";
 import { _callClient, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users";
@@ -49,7 +50,7 @@ export class UsersClient {
 
     init () {
         this.client.addEventListener(
-            "close", () => console.error("Users client closed")
+            "close", () => error("Users client closed")
         );
     }
 }
