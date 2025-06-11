@@ -39,7 +39,13 @@ class Logger {
 
         this._write("DEBUG", args);
     }
+
+    error (...args) {
+        console.error("anaconda", ...args);
+        this._write("ERROR", args);
+    }
 }
 
 const logger = new Logger();
 export const debug = logger.debug.bind(logger);
+export const error = logger.error.bind(logger);
