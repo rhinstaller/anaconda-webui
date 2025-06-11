@@ -44,8 +44,14 @@ class Logger {
         console.error("anaconda", ...args);
         this._write("ERROR", args);
     }
+
+    warn (...args) {
+        console.warn("anaconda", ...args);
+        this._write("WARN", args);
+    }
 }
 
 const logger = new Logger();
 export const debug = logger.debug.bind(logger);
 export const error = logger.error.bind(logger);
+export const warn = logger.warn.bind(logger);

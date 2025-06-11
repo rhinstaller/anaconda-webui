@@ -21,12 +21,12 @@ import { useContext, useEffect, useState } from "react";
 
 import { getAutopartReuseDBusRequest } from "../../../apis/storage_partitioning.js";
 
+import { debug as loggerDebug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
     hasReusableFedoraWithWindowsOS,
     isCompleteOSOnDisks,
 } from "../../../helpers/storage.js";
-import { debug as loggerDebug } from "../../../helpers/log.js";
 import { AvailabilityState } from "./helpers.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -137,7 +137,7 @@ const useAvailabilityHomeReuse = () => {
             if (unknownMountPoints.length > 0) {
                 availability.available = false;
                 availability.hidden = true;
-                console.info(`Unknown existing mountpoints found ${unknownMountPoints}`);
+                debug(`Unknown existing mountpoints found ${unknownMountPoints}`);
             }
         }
 
