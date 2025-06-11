@@ -35,7 +35,7 @@ class Logger {
         // see https://github.com/cockpit-project/cockpit/blob/main/HACKING.md#debug-logging-in-javascript-console
         if (window.debugging === "all" || window.debugging?.includes("anaconda")) {
             // eslint-disable-next-line no-console
-            console.debug("anaconda", ...args);
+            console.debug(args);
         }
 
         this._write("DEBUG", args);
@@ -43,7 +43,7 @@ class Logger {
 
     error (...args) {
         // eslint-disable-next-line no-console
-        console.error("anaconda", ...args);
+        console.error(args);
         this._write("ERROR", args);
     }
 
