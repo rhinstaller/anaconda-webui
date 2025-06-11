@@ -98,6 +98,15 @@ fi
 # Allow wiki-reporting even if test suite partially failed
 set +e
 
+# Create tmp storage pool to avoid parallel test runs to conflict
+echo "<pool type='dir'>
+  <name>tmp</name>
+  <target>
+    <path>/var/tmp/</path>
+  </target>
+</pool>" > /tmp/storage-pool.xml
+virsh pool-define --file /tmp/storage-pool.xml
+
 export TEST_JOBS TEST_OS
 J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
 exit_code=$?
