@@ -23,7 +23,7 @@ import {
     setAppliedPartitioningAction,
 } from "../actions/storage-actions.js";
 
-import { debug } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage";
@@ -55,7 +55,7 @@ export class StorageClient {
     }
 
     async init () {
-        this.client.addEventListener("close", () => console.error("Storage client closed"));
+        this.client.addEventListener("close", () => error("Storage client closed"));
 
         this.startEventMonitor();
 

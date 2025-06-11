@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import { debug } from "./log.js";
+import { debug, error } from "./log.js";
 
 export const exitGui = () => {
     const pidFile = cockpit.file("/run/anaconda/webui_script.pid", { superuser: "try" });
@@ -27,6 +27,6 @@ export const exitGui = () => {
                 debug("Killing WebUI process, PID: ", pid);
                 return cockpit.spawn(["kill", pid]);
             })
-            .catch(exc => console.error("Failed to kill WebUI process, PID: ", pid, exc.message))
+            .catch(exc => error("Failed to kill WebUI process, PID: ", pid, exc.message))
             .finally(pidFile.close);
 };

@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 
 import { getConnectedAction, getHostnameAction } from "../actions/network-actions.js";
 
-import { debug } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Network";
@@ -52,7 +52,7 @@ export class NetworkClient {
     }
 
     async init () {
-        this.client.addEventListener("close", () => console.error("Network client closed"));
+        this.client.addEventListener("close", () => error("Network client closed"));
 
         this.startEventMonitor();
 

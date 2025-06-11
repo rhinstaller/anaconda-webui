@@ -17,6 +17,7 @@
 
 import cockpit from "cockpit";
 
+import { error } from "../helpers/log.js";
 import { _callClient } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
@@ -49,7 +50,7 @@ export class BossClient {
     }
 
     init () {
-        this.client.addEventListener("close", () => console.error("Boss client closed"));
+        this.client.addEventListener("close", () => error("Boss client closed"));
     }
 }
 

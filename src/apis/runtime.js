@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 
 import { getPasswordPoliciesAction } from "../actions/runtime-actions.js";
 
-import { debug } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _getProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
@@ -49,7 +49,7 @@ export class RuntimeClient {
 
     async init () {
         this.client.addEventListener(
-            "close", () => console.error("Runtime client closed")
+            "close", () => error("Runtime client closed")
         );
 
         this.startEventMonitor();
