@@ -86,7 +86,10 @@ const context = await esbuild.context({
         {
             name: "notify-end",
             setup (build) {
-                build.onEnd(() => console.log(`${getTime()}: Build finished`));
+                build.onEnd(() => {
+                    // eslint-disable-next-line no-console
+                    console.log(`${getTime()}: Build finished`);
+                });
             }
         },
     ],
@@ -105,6 +108,7 @@ try {
 
 if (watchMode) {
     const onChange = async path => {
+        // eslint-disable-next-line no-console
         console.log("change detected:", path);
         await context.cancel();
         try {
