@@ -137,7 +137,7 @@ const useAvailabilityHomeReuse = () => {
             if (unknownMountPoints.length > 0) {
                 availability.available = false;
                 availability.hidden = true;
-                console.info(`Unknown existing mountpoints found ${unknownMountPoints}`);
+                debug(`Unknown existing mountpoints found ${unknownMountPoints}`);
             }
         }
 
