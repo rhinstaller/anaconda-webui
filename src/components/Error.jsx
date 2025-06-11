@@ -40,6 +40,7 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
+import { error } from "../helpers/log.js";
 
 import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -308,41 +309,41 @@ export class ErrorBoundary extends React.Component {
 
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
-        window.onerror = (message, source, lineno, colno, error) => {
-            console.error("ErrorBoundary caught an error:", error);
-            this.setState({ frontendException: error, hasError: true });
+        window.onerror = (message, source, lineno, colno, _error) => {
+            error("ErrorBoundary caught an error:", _error);
+            this.setState({ frontendException: _error, hasError: true });
             return true;
         };
 
         window.onunhandledrejection = (event) => {
-            console.error("ErrorBoundary caught an error:", event.reason);
+            error("ErrorBoundary caught an error:", event.reason);
             this.setState({ frontendException: event.reason, hasError: true });
             return true;
         };
     }
 
-    static getDerivedStateFromError (error) {
-        if (error) {
+    static getDerivedStateFromError (_error) {
+        if (_error) {
             return {
-                backendException: error,
+                backendException: _error,
                 hasError: true
             };
         }
     }
 
-    componentDidCatch (error, info) {
-        console.error("ComponentDidCatch: ErrorBoundary caught an error:", error, info);
+    componentDidCatch (_error, info) {
+        error("ComponentDidCatch: ErrorBoundary caught an error:", _error, info);
     }
 
     onCritFailBackend = (arg) => {
         const { context, isFrontEnd } = arg || {};
 
-        return (error) => {
-            console.info("ErrorBoundary caught an error:", error, context);
+        return (_error) => {
+            error("ErrorBoundary caught an error:", _error, context);
             if (isFrontEnd) {
-                this.setState({ frontendException: { ...error, contextData: { context } }, hasError: true });
+                this.setState({ frontendException: { ..._error, contextData: { context } }, hasError: true });
             } else {
-                this.setState({ backendException: { ...error, contextData: { context } }, hasError: true });
+                this.setState({ backendException: { ..._error, contextData: { context } }, hasError: true });
             }
         };
     };
