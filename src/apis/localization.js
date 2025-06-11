@@ -166,18 +166,7 @@ export const setCompositorLayouts = ({ layouts }) => {
 };
 
 export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
-    let task;
-    try {
-        task = await callClient("GetKeyboardConfigurationWithTask");
-    } catch (e) {
-        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
-            console.info({ e });
-            return onSuccess([[], ""]);
-        } else {
-            onFail(e);
-        }
-    }
-
+    const task = await callClient("GetKeyboardConfigurationWithTask");
     const taskProxy = new LocalizationClient().client.proxy(
         "org.fedoraproject.Anaconda.Task",
         task
