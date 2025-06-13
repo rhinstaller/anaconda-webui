@@ -8,6 +8,7 @@ import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.js
 import { Page as PageInstallationMethod } from "./storage/InstallationMethod.jsx";
 import { Page as PageMountPointMapping } from "./storage/MountPointMapping.jsx";
 import { Page as PageStorageConfiguration } from "./storage/StorageConfiguration.jsx";
+import { Page as PageDateAndTime } from "./timezone/DateAndTime.jsx";
 import { Page as PageAccounts } from "./users/Accounts.jsx";
 
 const _ = cockpit.gettext;
@@ -17,6 +18,7 @@ export const getSteps = (userInterfaceConfig, ...args) => {
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
         new PageInstallationLanguage(...args),
+        new PageDateAndTime(...args),
         new PageInstallationMethod(...args),
         new PageStorageConfiguration(...args),
         {
