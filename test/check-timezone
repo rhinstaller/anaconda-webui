@@ -1,0 +1,189 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import datetime
+from zoneinfo import ZoneInfo
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from language import Language
+from testlib import nondestructive, test_main
+from timezone import DateAndTime
+
+
+@nondestructive
+class TestDateAndTime(VirtInstallMachineCase):
+
+    def setUp(self):
+        super().setUp()
+
+    def testDefaultState(self):
+        """
+        Description:
+            Test default state picked up from backend
+
+        Expected results:
+            - WebUI auto date/time and timezone matches backend
+            - NTP, timezone, date and time match backend
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        dt = DateAndTime(b, m)
+
+        i.open()
+        i.reach(i.steps.DATE_TIME)
+        dt.check_auto_date_time(dt.dbus_get_ntp_enabled())
+        dt.check_auto_timezone(True)
+        region, city = dt.dbus_get_timezone().split('/')
+        dt.check_region(region)
+        dt.check_city(city)
+
+    def testNtpServerSelection(self):
+        """
+        Description:
+            Test selecting custom NTP server.
+
+        Expected Results:
+            - The default NTP servers are loaded from the chronyd configuration
+            - The user can configure a custom NTP server in the UI
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        dt = DateAndTime(b, m)
+
+        i.open()
+        i.reach(i.steps.DATE_TIME)
+
+        b.click(f"#{i.steps.DATE_TIME}-configure-ntp")
+        dt.check_ntp_server_enabled("2.fedora.pool.ntp.org", 0)
+
+        dt.add_ntp_server("europe.pool.ntp.org", 1)
+
+    def testManualDateTimeTimezoneAndFormat(self):
+        """
+        Description:
+            Test manual setting of time, date, timezone and time format.
+
+        Expected results:
+            - Time and date are manually set and reflected in backend
+            - Manual timezone selection changes timezone on backend
+            - Switching between 24h and AM/PM format works as expected
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        dt = DateAndTime(b, m)
+        lang = Language(b, m)
+
+        i.open()
+        lang.select_locale("de_DE")
+        i.reach(i.steps.DATE_TIME)
+
+        dt.set_auto_date_time(False)
+        dt.set_date("2025-01-01")
+        dt.set_time("19:00")
+        dt.check_date("2025-01-01")
+        dt.check_time("19:00")
+
+        dt.set_time_format("ampm")
+        dt.check_time_format("ampm")
+        dt.check_time("07:00 PM")
+
+        dt.set_time_format("24")
+        dt.check_time_format("24")
+        dt.check_time("19:00")
+
+        dt.set_auto_timezone(False)
+        dt.select_region("Europe")
+        dt.select_city("Prague")
+        dt.check_timezone_label("MESZ, UTC+2")
+        self.assertEqual(dt.dbus_get_timezone(), "Europe/Prague")
+
+    def testTimezoneAndTimeFormat(self):
+        """
+        Description:
+            Test full cycle of setting time zone, time format (24h/AMPM), date/time,
+            and verify correct UTC conversion on the backend.
+
+        Expected results:
+            - User can manually disable automatic time and timezone settings.
+            - Time format can be switched between 24h and AM/PM, and is correctly reflected in the UI.
+            - Timezone selection (e.g., America/New_York, Asia/Tokyo) updates both the label and backend value.
+            - The backend datetime is correctly calculated and stored in UTC regardless of selected timezone.
+            - Setting local time in one timezone correctly adjusts backend UTC time.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        dt = DateAndTime(b, m)
+
+        i.open()
+        i.reach(i.steps.DATE_TIME)
+        dt.set_auto_date_time(False)
+        dt.set_auto_timezone(False)
+
+        dt.set_time_format("24")
+        dt.check_time_format("24")
+        dt.select_region("America")
+        dt.select_city("New_York")
+        self.assertEqual(dt.dbus_get_timezone(), "America/New_York")
+
+        dt.set_date("2025-01-31")
+        dt.set_time("15:45")
+
+        dt.set_time_format("ampm")
+        dt.check_time_format("ampm")
+        dt.check_time("03:45 PM")
+
+        dt.set_time_format("24")
+        dt.check_time_format("24")
+        dt.check_time("15:45")
+
+        backend_iso = dt.dbus_get_system_datetime()
+        dt_parsed = datetime.datetime.fromisoformat(backend_iso)
+        dt_utc = dt_parsed.astimezone(datetime.timezone.utc)
+
+        expected_utc = datetime.datetime(2025, 1, 31, 20, 45, tzinfo=datetime.timezone.utc)
+        assert dt_utc.strftime("%Y-%m-%dT%H:%M") == expected_utc.strftime("%Y-%m-%dT%H:%M")
+
+        dt.select_region("Asia")
+        dt.select_city("Tokyo")
+        self.assertEqual(dt.dbus_get_timezone(), "Asia/Tokyo")
+
+        dt.check_time("05:45")
+        dt.set_time("00:45")
+
+        dt.set_time_format("ampm")
+        dt.check_time_format("ampm")
+        dt.check_time("12:45 AM")
+
+        dt.set_time_format("24")
+        dt.check_time_format("24")
+        dt.set_time("08:00")
+
+        local_tokyo = datetime.datetime(2025, 2, 1, 8, 0, tzinfo=ZoneInfo("Asia/Tokyo"))
+        backend_iso3 = dt.dbus_get_system_datetime()
+        self.assertTrue(
+            backend_iso3.startswith(local_tokyo.strftime("%Y-%m-%dT%H:%M")),
+            f"Expected backend local time {local_tokyo}, got {backend_iso3}"
+        )
+
+
+if __name__ == '__main__':
+    test_main()
