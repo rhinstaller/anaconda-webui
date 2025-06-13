@@ -750,7 +750,6 @@ const CustomFooter = ({ setStepNotification }) => {
         return applyStorage({
             devices,
             onFail: ex => {
-                console.error(ex);
                 setIsFormDisabled(false);
                 setStepNotification({ step, ...ex });
             },

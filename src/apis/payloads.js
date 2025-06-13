@@ -16,6 +16,7 @@
  */
 import cockpit from "cockpit";
 
+import { error } from "../helpers/log.js";
 import { _callClient } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Payloads";
@@ -45,7 +46,7 @@ export class PayloadsClient {
 
     init () {
         this.client.addEventListener(
-            "close", () => console.error("Payloads client closed")
+            "close", () => error("Payloads client closed")
         );
     }
 }

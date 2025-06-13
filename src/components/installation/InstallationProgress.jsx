@@ -115,9 +115,13 @@ const InstallationProgress = ({ onCritFail }) => {
                     };
                     taskProxy.wait(() => {
                         addEventListeners();
-                        taskProxy.Start().catch(console.error);
+                        taskProxy.Start().catch(onCritFail({
+                            context: _("Installation of the system failed"),
+                        }));
                     });
-                }, console.error);
+                }, onCritFail({
+                    context: _("Installation of the system failed"),
+                }));
     }, [onCritFail]);
 
     if (steps === undefined) {

@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 
 import { getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 
-import { debug } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization";
@@ -54,7 +54,7 @@ export class LocalizationClient {
     }
 
     async init () {
-        this.client.addEventListener("close", () => console.error("Localization client closed"));
+        this.client.addEventListener("close", () => error("Localization client closed"));
 
         this.startEventMonitor();
 
@@ -166,18 +166,7 @@ export const setCompositorLayouts = ({ layouts }) => {
 };
 
 export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
-    let task;
-    try {
-        task = await callClient("GetKeyboardConfigurationWithTask");
-    } catch (e) {
-        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
-            console.info({ e });
-            return onSuccess([[], ""]);
-        } else {
-            onFail(e);
-        }
-    }
-
+    const task = await callClient("GetKeyboardConfigurationWithTask");
     const taskProxy = new LocalizationClient().client.proxy(
         "org.fedoraproject.Anaconda.Task",
         task

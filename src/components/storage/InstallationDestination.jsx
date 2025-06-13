@@ -45,7 +45,7 @@ import { resetPartitioning } from "../../apis/storage_partitioning.js";
 
 import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
 
-import { debug } from "../../helpers/log.js";
+import { debug as loggerDebug } from "../../helpers/log.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
@@ -59,6 +59,9 @@ import "./InstallationDestination.scss";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
+
+const idPrefix = "anaconda-screen-method";
+const debug = loggerDebug.bind(null, idPrefix + ":");
 
 /**
  *  Select default disks for the partitioning.
