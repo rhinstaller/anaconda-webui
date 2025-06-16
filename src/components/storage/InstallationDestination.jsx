@@ -18,6 +18,7 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
+    Alert,
     Button,
     Divider,
     Flex,
@@ -51,7 +52,12 @@ import { checkIfArraysAreEqual } from "../../helpers/utils.js";
 
 import { StorageContext } from "../../contexts/Common.jsx";
 
-import { useOriginalDevices, useOriginalExistingSystems } from "../../hooks/Storage.jsx";
+import {
+    useDiskTotalSpace,
+    useOriginalDevices,
+    useOriginalExistingSystems,
+    useRequiredSize,
+} from "../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
@@ -287,11 +293,6 @@ export const InstallationDestination = ({
         >
             <FormGroup>
                 <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
-                    {diskSelection.selectedDisks.length === 0 && (
-                        <FlexItem>
-                            {_("No disks selected")}
-                        </FlexItem>
-                    )}
                     {diskSelection.selectedDisks.map(disk => (
                         <Flex key={disk} id={idPrefix + "-target-disk-" + disk}>
                             <FlexItem>
@@ -313,12 +314,45 @@ export const InstallationDestination = ({
                             </FlexItem>
                         </Flex>
                     ))}
+                    {diskSelection.selectedDisks.length > 0 && <InsufficientSpace />}
+                    {diskSelection.selectedDisks.length === 0 && <NoDisksSelected />}
                     <ChangeDestination dispatch={dispatch} idPrefix={idPrefix} onCritFail={onCritFail} />
                 </Flex>
             </FormGroup>
         </FormSection>
     );
 };
+
+const InsufficientSpace = () => {
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
+
+    if (diskTotalSpace >= requiredSize) {
+        return null;
+    }
+
+    return (
+        <Alert
+          isInline
+          isPlain
+          title={_("Insufficient disk space")}
+          variant="warning"
+        >
+            {cockpit.format(_("Minimum of $0 required"), cockpit.format_bytes(requiredSize))}
+        </Alert>
+    );
+};
+
+const NoDisksSelected = () => (
+    <Alert
+      isInline
+      isPlain
+      title={_("No disks selected")}
+      variant="danger"
+    >
+        {_("Please select at least one disk to continue")}
+    </Alert>
+);
 
 const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
     const [isRescanningDisks, setIsRescanningDisks] = useState(false);

@@ -87,6 +87,13 @@ class TestStorageBasic(VirtInstallMachineCase):
         # Check the next button is disabled if no disks are selected
         i.check_next_disabled()
 
+        # Pixel test the storage step when no disks are selected
+        b.assert_pixels(
+            "#app",
+            "storage-step-no-disks",
+            ignore=pixel_tests_ignore,
+        )
+
         # Check that disk selection is kept on Next and Back
         s.select_disks([(dev, True), ("vda", True)])
         i.next()
