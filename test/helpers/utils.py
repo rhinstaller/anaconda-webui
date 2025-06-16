@@ -66,45 +66,86 @@ def rsync_directory(machine, source_mountpoint, target_mountpoint, retry=True):
         else:
             raise RuntimeError(f"Error during rsync: {e}") from e
 
-def move_standard_fedora_disk_to_MBR_disk(storage, machine, mbr_disk, new_disk):
-    disk = mbr_disk
-    dev = mbr_disk.split("/")[-1]
-    dev_fedora = new_disk
-    storage.partition_disk(disk, [("1GiB", "ext4"), ("13GiB", "btrfs")], is_mbr=True)
 
-    # Create standard btrfs layout in the empty disk and copy the data from the fedora
-    # disk to emulate the installation on MBR disk.
-    # Then eject the fedora disk
+def move_standard_fedora_disk_to_disk(machine, src_disk, dst_disk,
+                                      dst_root_part_num, dst_boot_part_num,
+                                      dst_efi_part_num=None):
+    """
+    Move Fedora installation from a disk to another disk.
+
+    Copy content of / and /boot, create /etc/fstab.
+    """
     machine.execute(f"""
     set -xe
 
     # Create btrfs layout
-    mkfs.btrfs -f -L BTRFS {disk}2
-    mount {disk}2 /mnt
+    mkfs.btrfs -f -L BTRFS /dev/{dst_disk}{dst_root_part_num}
+    mount /dev/{dst_disk}{dst_root_part_num} /mnt
     btrfs subvolume create /mnt/root
     btrfs subvolume create /mnt/home
 
     # Copy data from the first disk / to the new disk
     mkdir -p /mnt-fedora
-    mount /dev/{dev_fedora}4 /mnt-fedora
+    mount /dev/{src_disk}4 /mnt-fedora
     """)
 
     rsync_directory(machine, "/mnt-fedora", "/mnt")
 
+    efi_fstab_record = ""
+    if dst_efi_part_num:
+        efi_fstab_record = (
+            f"echo \"UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_efi_part_num}) "
+            f"/boot/efi vfat umask=0077,shortname=winnt 0 2\" >> /mnt/root/etc/fstab"
+        )
+
     machine.execute(f"""
     # Adjust /etc/fstab to contain the new device UUIDS
-    echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
-    echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
-    echo "UUID=$(blkid -s UUID -o value /dev/{dev}1) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
+    echo "UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_root_part_num}) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
+    echo "UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_root_part_num}) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
+    echo "UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_boot_part_num}) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
+    {efi_fstab_record}
 
     umount -l /mnt-fedora
     umount -l /mnt
 
     # Do the same for /boot
-    mount /dev/{dev}1 /mnt
-    mount /dev/{dev_fedora}3 /mnt-fedora
+    mount /dev/{dst_disk}{dst_boot_part_num} /mnt
+    mount /dev/{src_disk}3 /mnt-fedora
     rsync -aAXHv /mnt-fedora/ /mnt/
 
     umount -l /mnt-fedora
     umount -l /mnt
     """, timeout=90)
+
+
+def move_standard_fedora_disk_to_MBR_disk(storage, machine, mbr_disk, fedora_disk):
+    """Partition a disk with msdos table and copy Fedora system from another disk on it."""
+    storage.partition_disk(f"/dev/{mbr_disk}", [
+        ("1GiB", "ext4"),
+        ("13GiB", "btrfs"),
+    ], is_mbr=True)
+    boot_part = 1
+    root_part = 2
+    move_standard_fedora_disk_to_disk(machine, fedora_disk, mbr_disk, root_part, boot_part)
+
+
+def move_standard_fedora_disk_to_win_disk(storage, machine, win_disk, fedora_disk):
+    """Partition a disk with Win + Fedora layout and copy Fedora system from another disk on it."""
+    # Windows + Fedora partitioning
+    storage.partition_disk(f"/dev/{win_disk}", [
+        # Common
+        ("100MiB", "efi"),
+        # Windows
+        ("128MiB", "ms-reserved"),
+        ("11.5GiB", "ms-basic-data"),
+        # Fedora
+        ("1GiB", "ext4"),
+        ("13GiB", "btrfs"),
+        # Windows
+        ("530MiB", "win-re"),
+    ])
+    boot_part = 4
+    root_part = 5
+    uefi_part = 1
+    move_standard_fedora_disk_to_disk(machine, fedora_disk, win_disk, root_part, boot_part,
+                                      dst_efi_part_num=uefi_part)
