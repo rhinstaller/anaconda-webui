@@ -24,6 +24,10 @@ class Logger {
         this.logger = cockpit.file(LOG_FILE);
     }
 
+    _write_to_journal (level, args) {
+        cockpit.spawn(["logger", "-t", "anaconda-webui", "-p", level, args.join(" ")]);
+    }
+
     _write (level, args) {
         const timestamp = new Date().toISOString();
         const message = `${timestamp} [${level}] ${args.join(" ")}\n`;
@@ -45,6 +49,7 @@ class Logger {
         // eslint-disable-next-line no-console
         console.error(args);
         this._write("ERROR", args);
+        this._write_to_journal("err", args);
     }
 
     warn (...args) {
