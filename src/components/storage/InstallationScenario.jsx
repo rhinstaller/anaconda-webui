@@ -63,7 +63,6 @@ const InstallationScenarioSelector = ({
     dispatch,
     idPrefix,
     isFormDisabled,
-    setIsFormValid,
 }) => {
     const { mountPoints } = useOriginalDeviceTree();
     const { storageScenarioId } = useContext(StorageContext);
@@ -96,8 +95,7 @@ const InstallationScenarioSelector = ({
         if (selectedScenarioId) {
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
-        setIsFormValid(!!selectedScenarioId);
-    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, setIsFormValid, storageScenarioId]);
+    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
@@ -145,6 +143,10 @@ export const InstallationScenario = ({
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
     const devices = useOriginalDevices();
+    const scenarioAvailability = useScenariosAvailability();
+    const noScenariosAvailable = !Object.values(scenarioAvailability || {}).some(scenario => (
+        scenario.available && !scenario.hidden
+    ));
 
     const lockedLUKSDevices = useMemo(
         () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
@@ -152,6 +154,14 @@ export const InstallationScenario = ({
     );
 
     const showLuksUnlock = lockedLUKSDevices?.length > 0;
+
+    useEffect(() => {
+        setIsFormValid(!noScenariosAvailable);
+    }, [noScenariosAvailable, setIsFormValid]);
+
+    if (noScenariosAvailable && !showLuksUnlock) {
+        return null;
+    }
 
     return (
         <FormSection
@@ -170,7 +180,6 @@ export const InstallationScenario = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFormDisabled={isFormDisabled}
-                  setIsFormValid={setIsFormValid}
                 />
             </FormGroup>
         </FormSection>
