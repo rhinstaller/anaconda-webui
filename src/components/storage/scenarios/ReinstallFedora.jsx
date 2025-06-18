@@ -21,7 +21,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { getAutopartReuseDBusRequest } from "../../../apis/storage_partitioning.js";
 
-import { debug } from "../../../helpers/log.js";
+import { debug as loggerDebug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
     hasReusableFedoraWithWindowsOS,
@@ -40,6 +40,8 @@ import {
 import { helpHomeReuse } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
+
+const debug = loggerDebug.bind(null, "home reuse:");
 
 const useAvailabilityHomeReuse = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
@@ -79,17 +81,17 @@ const useAvailabilityHomeReuse = () => {
         if (linuxSystems.length === 0) {
             availability.available = false;
             availability.hidden = true;
-            debug("home reuse: No existing Linux system found.");
+            debug("No existing Linux system found.");
         } else if (linuxSystems.length > 1) {
             availability.available = false;
             availability.hidden = true;
-            debug("home reuse: Multiple existing Linux systems found.");
+            debug("Multiple existing Linux systems found.");
         } else {
             reusedOS = linuxSystems[0];
             if (!linuxSystems.some(osdata => osdata["os-name"].v.includes("Fedora"))) {
                 availability.available = false;
                 availability.hidden = true;
-                debug("home reuse: No existing Fedora Linux system found.");
+                debug("No existing Fedora Linux system found.");
             }
         }
 
@@ -98,17 +100,17 @@ const useAvailabilityHomeReuse = () => {
         if (allSystems.length > linuxSystems.length) {
             availability.available = false;
             availability.hidden = true;
-            debug("home reuse: Non-linux existing systems found.");
+            debug("Non-linux existing systems found.");
         }
 
         // Allow for a reusable Fedora with Windows system along
         if (hasReusableFedoraWithWindowsOS(devices, selectedDisks, originalExistingSystems)) {
             availability.available = true;
             availability.hidden = false;
-            debug("home reuse: Reusable Fedora with a Windows system along found.");
+            debug("Reusable Fedora with a Windows system along found.");
         }
 
-        debug(`home reuse: Default scheme is ${autopartScheme}.`);
+        debug(`Default scheme is ${autopartScheme}.`);
         if (reusedOS) {
             // Check that required autopartitioning scheme matches reused OS.
             // Check just "/home". To be more generic we could check all reused devices except bootloader
@@ -124,7 +126,7 @@ const useAvailabilityHomeReuse = () => {
             if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
                 availability.available = false;
                 availability.hidden = true;
-                debug(`home reuse: No reusable existing Linux system found, reused devices must have ${requiredSchemeTypes[autopartScheme]} type`);
+                debug(`No reusable existing Linux system found, reused devices must have ${requiredSchemeTypes[autopartScheme]} type`);
             }
         }
 
@@ -135,7 +137,7 @@ const useAvailabilityHomeReuse = () => {
             if (unknownMountPoints.length > 0) {
                 availability.available = false;
                 availability.hidden = true;
-                console.info(`home reuse: Unknown existing mountpoints found ${unknownMountPoints}`);
+                debug(`Unknown existing mountpoints found ${unknownMountPoints}`);
             }
         }
 

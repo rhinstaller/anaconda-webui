@@ -150,7 +150,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
                 const step = new Page().id;
                 await applyStorage({
                     onFail: ex => {
-                        console.error(ex);
                         setIsFormDisabled(false);
                         setStepNotification({ step, ...ex });
                     },
