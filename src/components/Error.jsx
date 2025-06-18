@@ -21,7 +21,6 @@ import { fmt_to_fragments as fmtToFragments } from "utils";
 
 import React, { cloneElement, useContext, useEffect } from "react";
 import {
-    ActionList,
     Alert,
     Button,
     Content,
@@ -31,8 +30,6 @@ import {
     FormGroup,
     HelperText,
     HelperTextItem,
-    Stack,
-    StackItem
 } from "@patternfly/react-core";
 import {
     Modal,
@@ -140,23 +137,18 @@ export const BZReportModal = ({
           title={title}
           titleIconVariant={titleIconVariant}
           variant={ModalVariant.small}
-          footer={
-              <Stack hasGutter>
-                  <StackItem>
-                      <ActionList>
-                          <Button
-                            variant="primary"
-                            isAriaDisabled={!isConnected}
-                            icon={<ExternalLinkAltIcon />}
-                            onClick={() => { openBZIssue(reportLinkURL); return false }}
-                            component="a">
-                              {_("Report issue")}
-                          </Button>
-                          {buttons}
-                      </ActionList>
-                  </StackItem>
-              </Stack>
-          }>
+          actions={[
+              <Button
+                key="report-issue"
+                variant="primary"
+                isAriaDisabled={!isConnected}
+                icon={<ExternalLinkAltIcon />}
+                onClick={() => { openBZIssue(reportLinkURL); return false }}
+                component="a">
+                  {_("Report issue")}
+              </Button>,
+              ...buttons
+          ]}>
             <Form>
                 {detailsLabel &&
                 <>
