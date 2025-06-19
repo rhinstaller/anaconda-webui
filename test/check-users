@@ -75,20 +75,12 @@ class TestUsers(VirtInstallMachineCase):
         assert not u.dbus_get_is_root_password_set()
 
     @staticmethod
-    def _test_user_name(user, installer, valid, invalid):
-        installer.check_next_disabled(disabled=False)
-
-        n_valid = len(valid) - 1
-        n_invalid = len(invalid) - 1
-
-        # Set valid and invalid value in turns and check the next button
-        for i in range(max(n_valid, n_invalid)):
-            i_valid = min(i, n_valid)
-            i_invalid = min(i, n_invalid)
-            user.set_user_name(invalid[i_invalid])
-            installer.check_next_disabled()
-            user.set_user_name(valid[i_valid])
+    def _test_user_name(user, installer, username, valid):
+        user.set_user_name(username)
+        if valid:
             installer.check_next_disabled(disabled=False)
+        else:
+            installer.check_next_disabled(disabled=True)
 
     def testAccessAndValidation(self):
         """
@@ -160,37 +152,16 @@ class TestUsers(VirtInstallMachineCase):
         u.enable_root_account(False)
         i.check_next_disabled(disabled=False)
 
-        # Test user name validation
-        # FIXME this should be tested by unit tests?
-        invalid_user_names = [
-            "",
-            # reserved
-            "root", "system", "daemon", "home",
-            "33333",
-            ".",
-            "..",
-            "-tester",
-            "123",
-            "$",
-            "$tester",
-            "tester?",
-            "longer_than_32_characteeeeeeeeeeeeeeeeeeers",
-        ]
-        valid_user_names = [
-            "tester-",
-            "...",
-            "12.3",
-            "tester1",
-            "tester$",
-            "test-er",
-            "test_er",
-            "test.er",
-            "_tester",
-            ".tester",
-            "_",
-        ]
-        self._test_user_name(u, i, valid_user_names, invalid_user_names)
-        u.set_user_name(user_name)
+        # Test that username validation results from the backend are correctly reflected in the UI
+        # Detailed validation logic is covered by unit tests; here we only check UI response (Next button state)
+        invalid_user_names = ["", "-tester"]
+        valid_user_names = ["tester-"]
+
+        for username in invalid_user_names:
+            self._test_user_name(u, i, username, valid=False)
+
+        for username in valid_user_names:
+            self._test_user_name(u, i, username, valid=True)
 
         # Test password validation
         # No password set
