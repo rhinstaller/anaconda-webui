@@ -39,6 +39,8 @@ class TestStorageBasic(VirtInstallMachineCase):
             - The installer should detect the local standard disks
             - The installer should allow the user to select the disks
             - Without any disks selected, the installer should not allow the user to continue
+            - When the selected disk[s] does not have enough space for the installation,
+              the installer should not allow the user to continue
             - The disk selection should be preserved when moving back and forth between screens
         """
         b = self.browser
@@ -71,6 +73,10 @@ class TestStorageBasic(VirtInstallMachineCase):
         dev = "vdb"
         self.add_disk(2, target=dev)
         s.rescan_disks(["vda", dev])
+
+        # Check the next button is disabled when not sufficient disk space is available
+        s.select_disks([("vda", False), (dev, True)])
+        i.check_next_disabled()
 
         # Check that the disk selection persists when moving next and back
         s.select_disks([("vda", True), (dev, False)])

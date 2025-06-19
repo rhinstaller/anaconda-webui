@@ -25,6 +25,11 @@ import {
     StorageContext,
 } from "../../../contexts/Common.jsx";
 
+import {
+    useDiskTotalSpace,
+    useRequiredSize,
+} from "../../../hooks/Storage.jsx";
+
 import { helpEraseAll } from "../HelpAutopartOptions.jsx";
 
 const _ = cockpit.gettext;
@@ -34,15 +39,29 @@ const useAvailabilityEraseAll = () => {
 
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
 
     useEffect(() => {
+        if ([diskTotalSpace, requiredSize].some((value) => value === undefined)) {
+            return;
+        }
+
         const availability = new AvailabilityState();
 
         availability.available = !!selectedDisks.length;
         availability.hidden = false;
 
+        if (diskTotalSpace < requiredSize) {
+            availability.available = false;
+            availability.reason = _("Not enough space on selected disks.");
+            availability.hint = cockpit.format(
+                _("The installation needs $0 of disk space; however, the capacity of the selected disks is only $1."),
+                cockpit.format_bytes(requiredSize), cockpit.format_bytes(diskTotalSpace));
+        }
+
         return setScenarioAvailability(availability);
-    }, [selectedDisks]);
+    }, [diskTotalSpace, requiredSize, selectedDisks]);
 
     return scenarioAvailability;
 };
