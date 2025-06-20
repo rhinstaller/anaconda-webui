@@ -38,29 +38,28 @@ import {
 } from "@patternfly/react-core/deprecated";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
+import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
 
-import { SystemTypeContext } from "../contexts/Common.jsx";
+import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import "./Error.scss";
 
 const _ = cockpit.gettext;
 
-export const bugzillaPrefiledReportURL = (productQueryData, isBootIso) => {
-    const baseURL = "https://bugzilla.redhat.com";
-    const queryData = {
-        ...productQueryData,
-        component: "anaconda",
-    };
+const useBugzillaPrefiledReportURL = () => {
+    const {
+        REDHAT_BUGZILLA_PRODUCT: product,
+        REDHAT_BUGZILLA_PRODUCT_VERSION: version,
+    } = useContext(OsReleaseContext);
+    const { systemType } = useContext(SystemTypeContext);
+    const isBootIso = systemType === "BOOT_ISO";
+    const href = createBugzillaEnterBug({ product, version });
 
-    const reportURL = new URL(baseURL);
-    reportURL.pathname = "enter_bug.cgi";
-    Object.keys(queryData).map(query => reportURL.searchParams.append(query, queryData[query]));
-    if (isBootIso) {
-        return reportURL.href;
-    } else {
-        return reportURL.href.replace("https", "extlink");
+    if (!isBootIso) {
+        return href.replace("https", "extlink");
     }
+    return href;
 };
 
 const ensureMaximumReportURLLength = (reportURL) => {
@@ -96,7 +95,6 @@ export const BZReportModal = ({
     detailsContent,
     detailsLabel,
     idPrefix,
-    isConnected,
     logFile,
     reportLinkURL,
     title,
@@ -105,6 +103,7 @@ export const BZReportModal = ({
     const [logContent, setLogContent] = useState();
     const [preparingReport, setPreparingReport] = useState(false);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
+    const isConnected = useContext(NetworkContext).connected;
 
     useEffect(() => {
         cockpit.spawn(["journalctl", "-a"])
@@ -239,8 +238,8 @@ const quitButton = (isBootIso) => {
     );
 };
 
-const CriticalError = ({ exception, isNetworkConnected, reportLinkURL }) => {
-    const isConnected = isNetworkConnected;
+const CriticalError = ({ exception }) => {
+    const reportLinkURL = useBugzillaPrefiledReportURL();
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const context = exception.backendException?.contextData?.context || exception.frontendException?.contextData?.context;
     const description = context
@@ -259,7 +258,6 @@ const CriticalError = ({ exception, isNetworkConnected, reportLinkURL }) => {
           detailsLabel={_("Error details")}
           detailsContent={exceptionInfo(exception, idPrefix)}
           buttons={[quitButton(isBootIso)]}
-          isConnected={isConnected}
         />
 
     );
@@ -273,7 +271,9 @@ const cancelButton = (onClose) => {
     );
 };
 
-export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) => {
+export const UserIssue = ({ setIsReportIssueOpen }) => {
+    const reportLinkURL = useBugzillaPrefiledReportURL();
+
     return (
         <BZReportModal
           description={_("The following log will be sent to the issue tracking system where you may provide additional details.")}
@@ -283,7 +283,6 @@ export const UserIssue = ({ isConnected, reportLinkURL, setIsReportIssueOpen }) 
           titleIconVariant={null}
           logFile="/tmp/webui.log"
           buttons={[cancelButton(() => setIsReportIssueOpen(false))]}
-          isConnected={isConnected}
         />
     );
 };
@@ -342,8 +341,6 @@ export class ErrorBoundary extends React.Component {
             return (
                 <CriticalError
                   exception={this.state}
-                  isNetworkConnected={this.props.isNetworkConnected}
-                  reportLinkURL={this.props.reportLinkURL}
                 />
             );
         }

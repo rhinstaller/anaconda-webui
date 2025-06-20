@@ -35,7 +35,7 @@ import { read_os_release as readOsRelease } from "os-release.js";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { bugzillaPrefiledReportURL, ErrorBoundary } from "./Error.jsx";
+import { ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
@@ -175,31 +175,22 @@ export const ApplicationWithErrorBoundary = () => {
     );
     const conf = useConf({ onCritFail });
     const osRelease = useOsRelease({ onCritFail });
-    const isBootIso = conf?.["Installation System"].type === "BOOT_ISO";
 
     if (!conf || !osRelease) {
         return <ApplicationLoading />;
     }
-
-    const bzReportURL = bugzillaPrefiledReportURL({
-        product: osRelease.REDHAT_BUGZILLA_PRODUCT,
-        version: osRelease.REDHAT_BUGZILLA_PRODUCT_VERSION,
-    }, isBootIso);
 
     return (
         <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
             <Page className="no-masthead-sidebar" data-debug={conf.Anaconda.debug}>
                 <ErrorBoundary
                   backendException={errorBeforeBoundary}
-                  isNetworkConnected={state.network.connected}
-                  reportLinkURL={bzReportURL}
                   showStorage={showStorage}
                 >
                     <Application
                       dispatch={dispatch}
                       isFetching={state.misc.isFetching}
                       osRelease={osRelease}
-                      reportLinkURL={bzReportURL}
                       showStorage={showStorage}
                       setShowStorage={setShowStorage}
                       state={state}
