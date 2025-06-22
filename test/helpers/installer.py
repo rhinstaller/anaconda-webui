@@ -88,7 +88,7 @@ class Installer():
         if needs_confirmation:
             self.browser.wait_visible("#installation-next-btn[aria-disabled=true]")
             self.browser.click(f"#{self.steps.REVIEW}-next-confirmation-checkbox")
-            self.browser.wait_visible("#installation-next-btn[aria-disabled=false]")
+            self.browser.wait_visible("#installation-next-btn:not([aria-disabled=true])")
 
         self.browser.wait_text("#installation-next-btn", button_text)
         self.browser.click("#installation-next-btn")
