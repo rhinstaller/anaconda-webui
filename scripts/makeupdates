@@ -50,7 +50,7 @@ def usage(cmd):
 def main(argv):
     prog = os.path.basename(argv[0])
     cwd = os.getcwd()
-    metainfo = os.path.realpath(cwd + '/org.cockpit-project.anaconda-webui.metainfo.xml')
+    package_json = os.path.realpath(cwd + '/package.json')
     updates = cwd + '/updates'
     show_help, unknown = False, False
     opts = []
@@ -77,7 +77,7 @@ def main(argv):
         sys.stderr.write("Try `%s --help' for more information." % (prog,))
         sys.exit(1)
 
-    if not os.path.isfile(metainfo):
+    if not os.path.isfile(package_json):
         sys.stderr.write("You must be at the top level of the repository source tree.\n")
         sys.exit(1)
 
