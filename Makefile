@@ -202,7 +202,7 @@ payload: bots
 .PHONY: images
 images: bots
 	# Download cloud images
-	bots/image-download debian-stable ubuntu-stable fedora-41 fedora-42 fedora-rawhide
+	bots/image-download debian-testing ubuntu-stable fedora-41 fedora-42 fedora-rawhide
 	# Downoad ISO images: if a compose if specified download from
 	# the compose otherwise download the ISO from Cockpit image server
 	@if [ -n "$(TEST_COMPOSE)" ]; then \

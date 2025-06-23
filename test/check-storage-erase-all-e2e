@@ -78,7 +78,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
         self.assertEqual(vda3_root["size"], "14G")
 
-    @disk_images([("", 15), ("debian-stable", 15)])
+    @disk_images([("", 15), ("debian-testing", 15)])
     def testGuidedMultiSelect(self):
         """
         Description:
