@@ -26,7 +26,6 @@ SPEC=$(RPM_NAME).spec
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
 # stamp file to check if/when npm install ran
 NODE_MODULES_TEST=package-lock.json
-APPSTREAMFILE=org.cockpit-project.$(PACKAGE_NAME).metainfo.xml
 
 ifeq ($(TEST_OS),)
     ifdef TEST_COMPOSE
@@ -82,10 +81,7 @@ po/$(PACKAGE_NAME).html.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
 po/$(PACKAGE_NAME).manifest.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
 	pkg/lib/manifest2po src/manifest.json -o $@
 
-po/$(PACKAGE_NAME).metainfo.pot: $(APPSTREAMFILE)
-	xgettext --default-domain=$(PACKAGE_NAME) --output=$@ $<
-
-po/$(PACKAGE_NAME).pot: po/$(PACKAGE_NAME).html.pot po/$(PACKAGE_NAME).js.pot po/$(PACKAGE_NAME).manifest.pot po/$(PACKAGE_NAME).metainfo.pot
+po/$(PACKAGE_NAME).pot: po/$(PACKAGE_NAME).html.pot po/$(PACKAGE_NAME).js.pot po/$(PACKAGE_NAME).manifest.pot
 	msgcat --sort-output --output-file=$@ $^
 
 po/LINGUAS:
@@ -101,7 +97,6 @@ dist_libexec_SCRIPTS = webui-desktop firefox-ext
 dist_noinst_DATA = \
 	$(DIST_TEST) \
 	$(COCKPIT_REPO_STAMP) \
-	org.cockpit-project.anaconda-webui.metainfo.xml \
 	package-lock.json \
 	package.json \
 	build.js
@@ -128,8 +123,6 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp extlinks.desktop $(DESTDIR)/usr/share/applications/
 	cp anaconda-gnome-control-center.desktop $(DESTDIR)/usr/share/applications/
-	mkdir -p $(DESTDIR)/usr/share/metainfo/
-	cp org.cockpit-project.$(PACKAGE_NAME).metainfo.xml $(DESTDIR)/usr/share/metainfo/
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	cp firefox-ext $(DESTDIR)/usr/libexec/anaconda
@@ -150,7 +143,6 @@ dist: $(TARFILE)
 # we ship a pre-built dist/ (so it's not necessary) and ship package-lock.json (so that node_modules/ can be reconstructed if necessary)
 $(TARFILE): export NODE_ENV ?= production
 $(TARFILE): $(DIST_TEST) $(SPEC)
-	if type appstream-util >/dev/null 2>&1; then appstream-util validate-relax --nonet *.metainfo.xml; fi
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
