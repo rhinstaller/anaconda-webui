@@ -25,7 +25,7 @@ from testlib import test_main, timeout  # pylint: disable=import-error
 
 class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
-    @disk_images([("debian-stable", 20)])
+    @disk_images([("debian-testing", 20)])
     @timeout(900)
     def testReclaimShrink(self):
         """
