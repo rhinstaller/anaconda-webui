@@ -95,7 +95,6 @@ export const KeyboardSelector = () => {
     return (
         <MenuSearch
           ariaLabelSearch={_("Search keyboard layout")}
-          ariaLabelSearchClear={_("Clear search")}
           handleOnSelect={(_event, item) => {
               setCompositorLayouts({ layouts: [item] });
               setXLayouts({ layouts: [item] });

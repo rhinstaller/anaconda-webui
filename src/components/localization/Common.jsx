@@ -94,7 +94,7 @@ const renderOptions = (options, selection, search) => {
     });
 };
 
-export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSelect, menuType, options, selection }) => {
+export const MenuSearch = ({ ariaLabelSearch, handleOnSelect, menuType, options, selection }) => {
     const [search, setSearch] = useState("");
     const prefix = SCREEN_ID + "-" + menuType;
     const menuListContent = renderOptions(options, selection, search);
@@ -113,7 +113,7 @@ export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSele
                         <Button
                           variant="plain"
                           onClick={() => setSearch("")}
-                          aria-label={ariaLabelSearchClear}
+                          aria-label={_("Clear search")}
                         >
                             <TimesIcon />
                         </Button>
