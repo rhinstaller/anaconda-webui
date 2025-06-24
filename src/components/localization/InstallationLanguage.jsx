@@ -52,9 +52,6 @@ const getLocaleNativeName = locale => locale["native-name"].v;
 class LanguageSelector extends React.Component {
     constructor (props) {
         super(props);
-        this.state = {
-            search: "",
-        };
         this.initiallySelectedLanguage = props.language;
 
         this.renderOptions = this.renderOptions.bind(this);
@@ -73,11 +70,9 @@ class LanguageSelector extends React.Component {
         }
     }
 
-    renderOptions (filter) {
+    renderOptions () {
         const { commonLocales, languages } = this.props;
-
-        const filtered = [];
-        const filterLow = filter.toLowerCase();
+        const options = [];
 
         // Returns a locale with a given code.
         const findLocaleWithId = (localeCode) => {
@@ -92,26 +87,32 @@ class LanguageSelector extends React.Component {
             console.warn(`Locale with code ${localeCode} not found.`);
         };
 
+        const onSearch = (locale, search) => {
+            const searchLower = search.toLowerCase();
+
+            return (
+                getLocaleNativeName(locale).toLowerCase()
+                        .includes(searchLower) ||
+                getLanguageNativeName(locale).toLowerCase()
+                        .includes(searchLower) ||
+                getLanguageEnglishName(locale).toLowerCase()
+                        .includes(searchLower)
+            );
+        };
+
         // Helper to create a menu item
         const createMenuItem = (locale, prefix) => {
             return ({
                 id: `${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`,
+                item: locale,
                 itemId: getLocaleId(locale),
                 itemLang: convertToCockpitLang({ lang: getLocaleId(locale) }),
                 itemText: getLocaleNativeName(locale),
                 itemType: "menu-item",
                 key: `${prefix}-${getLocaleId(locale)}`,
+                onSearch: onSearch.bind(null, locale),
             });
         };
-
-        const onSearch = (locale) => (
-            getLocaleNativeName(locale).toLowerCase()
-                    .includes(filterLow) ||
-            getLanguageNativeName(locale).toLowerCase()
-                    .includes(filterLow) ||
-            getLanguageEnglishName(locale).toLowerCase()
-                    .includes(filterLow)
-        );
 
         const suggestedItems = commonLocales
                 .map(findLocaleWithId)
@@ -127,11 +128,10 @@ class LanguageSelector extends React.Component {
                     }
                     return getLocaleNativeName(a).localeCompare(getLocaleNativeName(b));
                 })
-                .filter(locale => locale && onSearch(locale))
                 .map(locale => createMenuItem(locale, "option-common"));
 
         if (suggestedItems.length > 0) {
-            filtered.push({
+            options.push({
                 id: `${SCREEN_ID}-common-languages`,
                 itemChildren: suggestedItems,
                 itemLabel: _("Suggested languages"),
@@ -140,20 +140,19 @@ class LanguageSelector extends React.Component {
             });
         }
 
-        // List other languages (filtered by search if applicable)
         const otherItems = Object.keys(languages)
                 .sort((a, b) => {
                     return getLanguageNativeName(languages[a].locales[0]).localeCompare(getLanguageNativeName(languages[b].locales[0]));
                 })
                 .flatMap(languageId => {
                     const languageItem = languages[languageId];
-                    return languageItem.locales.filter(onSearch);
+                    return languageItem.locales;
                 })
                 .filter(locale => commonLocales.indexOf(getLocaleId(locale)) === -1)
                 .map(locale => createMenuItem(locale, "option-alpha"));
 
         if (otherItems.length > 0) {
-            filtered.push({
+            options.push({
                 id: `${SCREEN_ID}-additional-languages`,
                 itemChildren: otherItems,
                 itemLabel: _("Additional languages"),
@@ -162,17 +161,7 @@ class LanguageSelector extends React.Component {
             });
         }
 
-        // Handle case when no results are found
-        if (filter && filtered.length === 0) {
-            return [{
-                id: `${SCREEN_ID}-search-no-result`,
-                isAriaDisabled: true,
-                itemChildren: [_("No results found")],
-                itemType: "menu-item",
-            }];
-        }
-
-        return filtered;
+        return options;
     }
 
     render () {
@@ -215,7 +204,7 @@ class LanguageSelector extends React.Component {
             }
         };
 
-        const options = this.renderOptions(this.state.search);
+        const options = this.renderOptions();
 
         return (
             <MenuSearch
@@ -223,11 +212,8 @@ class LanguageSelector extends React.Component {
               ariaLabelSearch={_("Search for a language")}
               handleOnSelect={handleOnSelect}
               menuType="language"
-              onClick={() => this.setState({ search: "" })}
               options={options}
-              search={this.state.search}
               selection={this.props.language}
-              setSearch={search => this.setState({ search })}
             />
         );
     }
