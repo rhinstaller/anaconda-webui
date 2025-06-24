@@ -21,8 +21,6 @@ import React, { useContext, useEffect } from "react";
 import {
     Form,
     FormGroup,
-    MenuGroup,
-    MenuItem,
 } from "@patternfly/react-core";
 
 import { setLocale } from "../../apis/boss.js";
@@ -96,30 +94,14 @@ class LanguageSelector extends React.Component {
 
         // Helper to create a menu item
         const createMenuItem = (locale, prefix) => {
-            const isSelected = this.props.language === getLocaleId(locale);
-            // Creating a ref that will be applied to the selected language and cause it to scroll into view.
-            const scrollRef = (isSelected)
-                ? (ref) => {
-                    if (ref) {
-                        ref.scrollIntoView({ block: "center" });
-                    }
-                }
-                : undefined;
-
-            return (
-                <MenuItem
-                  id={`${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
-                  isSelected={isSelected}
-                  key={`${prefix}-${getLocaleId(locale)}`}
-                  itemId={getLocaleId(locale)}
-                  ref={scrollRef}
-                  style={isSelected ? { backgroundColor: "var(--pf-v6-c-menu__list-item--hover--BackgroundColor)" } : undefined}
-                >
-                    <div lang={convertToCockpitLang({ lang: getLocaleId(locale) })}>
-                        <span>{getLocaleNativeName(locale)}</span>
-                    </div>
-                </MenuItem>
-            );
+            return ({
+                id: `${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`,
+                itemId: getLocaleId(locale),
+                itemLang: convertToCockpitLang({ lang: getLocaleId(locale) }),
+                itemText: getLocaleNativeName(locale),
+                itemType: "menu-item",
+                key: `${prefix}-${getLocaleId(locale)}`,
+            });
         };
 
         const onSearch = (locale) => (
@@ -149,17 +131,13 @@ class LanguageSelector extends React.Component {
                 .map(locale => createMenuItem(locale, "option-common"));
 
         if (suggestedItems.length > 0) {
-            filtered.push(
-                <React.Fragment key="group-common-languages">
-                    <MenuGroup
-                      label={_("Suggested languages")}
-                      id={SCREEN_ID + "-common-languages"}
-                      labelHeadingLevel="h3"
-                    >
-                        {suggestedItems}
-                    </MenuGroup>
-                </React.Fragment>
-            );
+            filtered.push({
+                id: `${SCREEN_ID}-common-languages`,
+                itemChildren: suggestedItems,
+                itemLabel: _("Suggested languages"),
+                itemLabelHeadingLevel: "h3",
+                itemType: "menu-group",
+            });
         }
 
         // List other languages (filtered by search if applicable)
@@ -175,36 +153,29 @@ class LanguageSelector extends React.Component {
                 .map(locale => createMenuItem(locale, "option-alpha"));
 
         if (otherItems.length > 0) {
-            filtered.push(
-                <MenuGroup
-                  label={_("Additional languages")}
-                  id={`${SCREEN_ID}-additional-languages`}
-                  labelHeadingLevel="h3"
-                  key="group-additional-languages"
-                >
-                    {otherItems}
-                </MenuGroup>
-            );
+            filtered.push({
+                id: `${SCREEN_ID}-additional-languages`,
+                itemChildren: otherItems,
+                itemLabel: _("Additional languages"),
+                itemLabelHeadingLevel: "h3",
+                itemType: "menu-group",
+            });
         }
 
         // Handle case when no results are found
         if (filter && filtered.length === 0) {
-            return [
-                <MenuItem
-                  id={`${SCREEN_ID}-search-no-result`}
-                  isAriaDisabled
-                  key="no-result"
-                >
-                    {_("No results found")}
-                </MenuItem>
-            ];
+            return [{
+                id: `${SCREEN_ID}-search-no-result`,
+                isAriaDisabled: true,
+                itemChildren: [_("No results found")],
+                itemType: "menu-item",
+            }];
         }
 
         return filtered;
     }
 
     render () {
-        const { lang } = this.state;
         const { languages } = this.props;
 
         const handleOnSelect = (_event, item) => {
@@ -255,7 +226,7 @@ class LanguageSelector extends React.Component {
               onClick={() => this.setState({ search: "" })}
               options={options}
               search={this.state.search}
-              selection={lang}
+              selection={this.props.language}
               setSearch={search => this.setState({ search })}
             />
         );

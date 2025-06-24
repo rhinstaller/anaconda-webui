@@ -23,8 +23,6 @@ import {
     Button,
     Content,
     Flex,
-    MenuGroup,
-    MenuItem,
 } from "@patternfly/react-core";
 
 import {
@@ -39,37 +37,6 @@ import { MenuSearch } from "./Common.jsx";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
-
-const MenuOption = ({ idPrefix, keyboard, selectedKeyboard }) => {
-    const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
-    const id = (
-        idPrefix +
-        "-keyboard-" +
-        (isCommon.v ? "option-common-" : "option-alpha-") +
-        layoutId?.v.replace(/[\s()]/g, "_")
-    );
-    const isSelected = layoutId?.v === selectedKeyboard;
-    const scrollRef = (isSelected)
-        ? (ref) => {
-            if (ref) {
-                ref.scrollIntoView({ block: "center" });
-            }
-        }
-        : undefined;
-
-    return (
-        <MenuItem
-          id={id}
-          isSelected={isSelected}
-          key={layoutId?.v}
-          itemId={layoutId?.v}
-          ref={scrollRef}
-          style={isSelected ? { backgroundColor: "var(--pf-v5-c-menu__list-item--hover--BackgroundColor)" } : undefined}
-        >
-            {description.v}
-        </MenuItem>
-    );
-};
 
 export const KeyboardSelector = ({ idPrefix }) => {
     const [search, setSearch] = useState("");
@@ -94,32 +61,38 @@ export const KeyboardSelector = ({ idPrefix }) => {
     const getOptions = showCommon => keyboards
             .filter(onSearch)
             .filter(keyboard => keyboard["is-common"].v === showCommon)
-            .map(keyboard => (
-                <MenuOption
-                  idPrefix={idPrefix}
-                  key={keyboard["layout-id"].v}
-                  keyboard={keyboard}
-                  selectedKeyboard={compositorSelectedLayout}
-                />
-            ));
+            .map(keyboard => {
+                const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
+                const id = (
+                    idPrefix +
+                    "-keyboard-" +
+                    (isCommon.v ? "option-common-" : "option-alpha-") +
+                    layoutId?.v.replace(/[\s()]/g, "_")
+                );
+                return ({
+                    id,
+                    itemId: layoutId?.v,
+                    itemText: description.v,
+                    itemType: "menu-item",
+                    key: layoutId?.v,
+                });
+            });
 
     const options = [
-        <MenuGroup
-          id={SCREEN_ID + "-common-keyboards"}
-          key={SCREEN_ID + "-common-keyboards"}
-          label={_("Suggested keyboards")}
-          labelHeadingLevel="h3"
-        >
-            {getOptions(true)}
-        </MenuGroup>,
-        <MenuGroup
-          id={SCREEN_ID + "-other-keyboards"}
-          key={SCREEN_ID + "-other-keyboards"}
-          label={_("Other keyboards")}
-          labelHeadingLevel="h3"
-        >
-            {getOptions(false)}
-        </MenuGroup>,
+        {
+            id: SCREEN_ID + "-common-keyboards",
+            itemChildren: getOptions(true),
+            itemLabel: _("Suggested keyboards"),
+            itemLabelHeadingLevel: "h3",
+            itemType: "menu-group",
+        },
+        {
+            id: SCREEN_ID + "-other-keyboards",
+            itemChildren: getOptions(false),
+            itemLabel: _("Other keyboards"),
+            itemLabelHeadingLevel: "h3",
+            itemType: "menu-group",
+        },
     ];
 
     return (
