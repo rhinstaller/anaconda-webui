@@ -252,7 +252,6 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                       label={_("Keyboard")}
                     >
                         <Keyboard
-                          idPrefix={SCREEN_ID}
                           isGnome={isGnome}
                           setIsFormValid={setIsFormValid}
                         />

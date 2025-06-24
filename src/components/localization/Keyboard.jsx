@@ -38,7 +38,48 @@ import { MenuSearch } from "./Common.jsx";
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
-export const KeyboardSelector = ({ idPrefix }) => {
+const buildMenuItem = (keyboard) => {
+    const {
+        description,
+        "is-common": isCommon,
+        "layout-id": layoutId,
+    } = keyboard;
+
+    const id = (
+        SCREEN_ID +
+        "-keyboard-" +
+        (isCommon.v ? "option-common-" : "option-alpha-") +
+        layoutId?.v.replace(/[\s()]/g, "_")
+    );
+
+    return {
+        id,
+        item: keyboard,
+        itemId: layoutId?.v,
+        itemText: description.v,
+        itemType: "menu-item",
+        key: layoutId?.v,
+        onSearch: search => {
+            const searchLower = search.toLowerCase();
+            return (
+                description.v.toLowerCase().includes(searchLower) ||
+                layoutId?.v.toLowerCase().includes(searchLower)
+            );
+        },
+    };
+};
+
+const buildMenuGroup = (keyboards, showCommon) => ({
+    id: SCREEN_ID + "-keyboard-group-" + (showCommon ? "common" : "other") + "-keyboards",
+    itemChildren: keyboards
+            .filter(keyboard => keyboard["is-common"].v === showCommon)
+            .map(keyboard => buildMenuItem(keyboard)),
+    itemLabel: showCommon ? _("Suggested keyboards") : _("Other keyboards"),
+    itemLabelHeadingLevel: "h3",
+    itemType: "menu-group",
+});
+
+export const KeyboardSelector = () => {
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
@@ -46,53 +87,9 @@ export const KeyboardSelector = ({ idPrefix }) => {
         return null;
     }
 
-    const onSearch = (keyboard, search) => {
-        const searchLower = search.toLowerCase();
-        const { description, "layout-id": layoutId } = keyboard;
-        return (
-            description.v.toLowerCase()
-                    .includes(searchLower) ||
-            layoutId?.v.toLowerCase()
-                    .includes(searchLower)
-        );
-    };
-
-    const getOptions = showCommon => keyboards
-            .filter(keyboard => keyboard["is-common"].v === showCommon)
-            .map(keyboard => {
-                const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
-                const id = (
-                    idPrefix +
-                    "-keyboard-" +
-                    (isCommon.v ? "option-common-" : "option-alpha-") +
-                    layoutId?.v.replace(/[\s()]/g, "_")
-                );
-                return ({
-                    id,
-                    item: keyboard,
-                    itemId: layoutId?.v,
-                    itemText: description.v,
-                    itemType: "menu-item",
-                    key: layoutId?.v,
-                    onSearch: onSearch.bind(null, keyboard),
-                });
-            });
-
     const options = [
-        {
-            id: SCREEN_ID + "-common-keyboards",
-            itemChildren: getOptions(true),
-            itemLabel: _("Suggested keyboards"),
-            itemLabelHeadingLevel: "h3",
-            itemType: "menu-group",
-        },
-        {
-            id: SCREEN_ID + "-other-keyboards",
-            itemChildren: getOptions(false),
-            itemLabel: _("Other keyboards"),
-            itemLabelHeadingLevel: "h3",
-            itemType: "menu-group",
-        },
+        buildMenuGroup(keyboards, true),
+        buildMenuGroup(keyboards, false),
     ];
 
     return (
@@ -176,7 +173,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     );
 };
 
-const KeyboardNonGnome = ({ idPrefix }) => {
+const KeyboardNonGnome = () => {
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
@@ -190,14 +187,14 @@ const KeyboardNonGnome = ({ idPrefix }) => {
     }, [keyboards, compositorSelectedLayout]);
 
     return (
-        <KeyboardSelector idPrefix={idPrefix} />
+        <KeyboardSelector />
     );
 };
 
-export const Keyboard = ({ idPrefix, isGnome, setIsFormValid }) => {
+export const Keyboard = ({ isGnome, setIsFormValid }) => {
     if (isGnome) {
         return <KeyboardGnome setIsFormValid={setIsFormValid} />;
     } else {
-        return <KeyboardNonGnome idPrefix={idPrefix} />;
+        return <KeyboardNonGnome />;
     }
 };
