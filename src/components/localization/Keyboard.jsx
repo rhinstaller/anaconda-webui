@@ -39,7 +39,6 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
 export const KeyboardSelector = ({ idPrefix }) => {
-    const [search, setSearch] = useState("");
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
@@ -47,7 +46,7 @@ export const KeyboardSelector = ({ idPrefix }) => {
         return null;
     }
 
-    const onSearch = (keyboard) => {
+    const onSearch = (keyboard, search) => {
         const searchLower = search.toLowerCase();
         const { description, "layout-id": layoutId } = keyboard;
         return (
@@ -59,7 +58,6 @@ export const KeyboardSelector = ({ idPrefix }) => {
     };
 
     const getOptions = showCommon => keyboards
-            .filter(onSearch)
             .filter(keyboard => keyboard["is-common"].v === showCommon)
             .map(keyboard => {
                 const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
@@ -71,10 +69,12 @@ export const KeyboardSelector = ({ idPrefix }) => {
                 );
                 return ({
                     id,
+                    item: keyboard,
                     itemId: layoutId?.v,
                     itemText: description.v,
                     itemType: "menu-item",
                     key: layoutId?.v,
+                    onSearch: onSearch.bind(null, keyboard),
                 });
             });
 
@@ -105,9 +105,7 @@ export const KeyboardSelector = ({ idPrefix }) => {
           }}
           menuType="keyboard"
           options={options}
-          search={search}
           selection={compositorSelectedLayout}
-          setSearch={setSearch}
         />
     );
 };

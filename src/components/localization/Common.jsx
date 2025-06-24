@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import React from "react";
+import cockpit from "cockpit";
+
+import React, { useState } from "react";
 import {
     Button,
     Menu,
@@ -27,10 +29,11 @@ import {
     TextInputGroupUtilities,
 } from "@patternfly/react-core";
 import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
+const _ = cockpit.gettext;
 
 const SCREEN_ID = "anaconda-screen-language";
 
-const renderOptions = (options, selection) => {
+const renderOptions = (options, selection, search) => {
     return options.map(option => {
         const isSelected = selection && option.itemId === selection;
         // Creating a ref that will be applied to the selected language and cause it to scroll into view.
@@ -44,6 +47,10 @@ const renderOptions = (options, selection) => {
 
         switch (option.itemType) {
         case "menu-item":
+            if (search && option.onSearch(search) === false) {
+                return null; // Skip items that do not match the search criteria
+            }
+
             return (
                 <MenuItem
                   id={option.id}
@@ -63,7 +70,12 @@ const renderOptions = (options, selection) => {
                         : option.itemText}
                 </MenuItem>
             );
-        case "menu-group":
+        case "menu-group": {
+            const itemChildren = renderOptions(option.itemChildren, selection, search);
+
+            if (itemChildren.filter((item) => item !== null).length === 0) {
+                return null; // Skip empty groups
+            }
             return (
                 <MenuGroup
                   key={option.key || option.id}
@@ -71,16 +83,21 @@ const renderOptions = (options, selection) => {
                   label={option.itemLabel}
                   labelHeadingLevel={option.itemLabelHeadingLevel}
                 >
-                    {renderOptions(option.itemChildren, selection)}
+                    {itemChildren}
                 </MenuGroup>
             );
         }
-        return null;
+        default:
+            console.warn(`Unknown item type: ${option.itemType}`);
+            return null;
+        }
     });
 };
 
-export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSelect, menuType, options, search, selection, setSearch }) => {
+export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSelect, menuType, options, selection }) => {
+    const [search, setSearch] = useState("");
     const prefix = SCREEN_ID + "-" + menuType;
+    const menuListContent = renderOptions(options, selection, search);
 
     return (
         <>
@@ -113,7 +130,15 @@ export const MenuSearch = ({ ariaLabelSearch, ariaLabelSearchClear, handleOnSele
             >
                 <MenuContent>
                     <MenuList>
-                        {renderOptions(options, selection)}
+                        {menuListContent.filter((item) => item !== null).length > 0
+                            ? (
+                                menuListContent
+                            )
+                            : (
+                                <MenuItem isAriaDisabled>
+                                    {_("No results found")}
+                                </MenuItem>
+                            )}
                     </MenuList>
                 </MenuContent>
             </Menu>
