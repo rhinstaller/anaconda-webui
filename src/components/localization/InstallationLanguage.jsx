@@ -208,7 +208,6 @@ class LanguageSelector extends React.Component {
 
         return (
             <MenuSearch
-              ariaLabelSearchClear={_("Clear search input")}
               ariaLabelSearch={_("Search for a language")}
               handleOnSelect={handleOnSelect}
               menuType="language"
