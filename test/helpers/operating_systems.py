@@ -80,8 +80,4 @@ class DualBootHelper_E2E(VirtInstallMachineCase):
         self.assertEqual(vda1["size"], f"{root_two_size!s}G")
 
         vda15 = next(part for part in vda["children"] if part["name"] == "vda15")
-        # TODO: add explanation why the /efi mountpoint is present when legacy boot is used
-        if self.is_efi:
-            self.assertEqual(vda15["mountpoints"], ["/boot/efi"])
-        else:
-            self.assertEqual(vda15["mountpoints"], ["/efi", "/boot/efi"])
+        self.assertEqual(vda15["mountpoints"], ["/boot/efi"])
