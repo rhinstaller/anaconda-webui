@@ -23,8 +23,6 @@ import {
     Button,
     Content,
     Flex,
-    MenuGroup,
-    MenuItem,
 } from "@patternfly/react-core";
 
 import {
@@ -40,39 +38,48 @@ import { MenuSearch } from "./Common.jsx";
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
-const MenuOption = ({ idPrefix, keyboard, selectedKeyboard }) => {
-    const { description, "is-common": isCommon, "layout-id": layoutId } = keyboard;
+const buildMenuItem = (keyboard) => {
+    const {
+        description,
+        "is-common": isCommon,
+        "layout-id": layoutId,
+    } = keyboard;
+
     const id = (
-        idPrefix +
+        SCREEN_ID +
         "-keyboard-" +
         (isCommon.v ? "option-common-" : "option-alpha-") +
         layoutId?.v.replace(/[\s()]/g, "_")
     );
-    const isSelected = layoutId?.v === selectedKeyboard;
-    const scrollRef = (isSelected)
-        ? (ref) => {
-            if (ref) {
-                ref.scrollIntoView({ block: "center" });
-            }
-        }
-        : undefined;
 
-    return (
-        <MenuItem
-          id={id}
-          isSelected={isSelected}
-          key={layoutId?.v}
-          itemId={layoutId?.v}
-          ref={scrollRef}
-          style={isSelected ? { backgroundColor: "var(--pf-v5-c-menu__list-item--hover--BackgroundColor)" } : undefined}
-        >
-            {description.v}
-        </MenuItem>
-    );
+    return {
+        id,
+        item: keyboard,
+        itemId: layoutId?.v,
+        itemText: description.v,
+        itemType: "menu-item",
+        key: layoutId?.v,
+        onSearch: search => {
+            const searchLower = search.toLowerCase();
+            return (
+                description.v.toLowerCase().includes(searchLower) ||
+                layoutId?.v.toLowerCase().includes(searchLower)
+            );
+        },
+    };
 };
 
-export const KeyboardSelector = ({ idPrefix }) => {
-    const [search, setSearch] = useState("");
+const buildMenuGroup = (keyboards, showCommon) => ({
+    id: SCREEN_ID + "-keyboard-group-" + (showCommon ? "common" : "other") + "-keyboards",
+    itemChildren: keyboards
+            .filter(keyboard => keyboard["is-common"].v === showCommon)
+            .map(keyboard => buildMenuItem(keyboard)),
+    itemLabel: showCommon ? _("Suggested keyboards") : _("Other keyboards"),
+    itemLabelHeadingLevel: "h3",
+    itemType: "menu-group",
+});
+
+export const KeyboardSelector = () => {
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
@@ -80,61 +87,21 @@ export const KeyboardSelector = ({ idPrefix }) => {
         return null;
     }
 
-    const onSearch = (keyboard) => {
-        const searchLower = search.toLowerCase();
-        const { description, "layout-id": layoutId } = keyboard;
-        return (
-            description.v.toLowerCase()
-                    .includes(searchLower) ||
-            layoutId?.v.toLowerCase()
-                    .includes(searchLower)
-        );
-    };
-
-    const getOptions = showCommon => keyboards
-            .filter(onSearch)
-            .filter(keyboard => keyboard["is-common"].v === showCommon)
-            .map(keyboard => (
-                <MenuOption
-                  idPrefix={idPrefix}
-                  key={keyboard["layout-id"].v}
-                  keyboard={keyboard}
-                  selectedKeyboard={compositorSelectedLayout}
-                />
-            ));
-
     const options = [
-        <MenuGroup
-          id={SCREEN_ID + "-common-keyboards"}
-          key={SCREEN_ID + "-common-keyboards"}
-          label={_("Suggested keyboards")}
-          labelHeadingLevel="h3"
-        >
-            {getOptions(true)}
-        </MenuGroup>,
-        <MenuGroup
-          id={SCREEN_ID + "-other-keyboards"}
-          key={SCREEN_ID + "-other-keyboards"}
-          label={_("Other keyboards")}
-          labelHeadingLevel="h3"
-        >
-            {getOptions(false)}
-        </MenuGroup>,
+        buildMenuGroup(keyboards, true),
+        buildMenuGroup(keyboards, false),
     ];
 
     return (
         <MenuSearch
           ariaLabelSearch={_("Search keyboard layout")}
-          ariaLabelSearchClear={_("Clear search")}
           handleOnSelect={(_event, item) => {
               setCompositorLayouts({ layouts: [item] });
               setXLayouts({ layouts: [item] });
           }}
           menuType="keyboard"
           options={options}
-          search={search}
           selection={compositorSelectedLayout}
-          setSearch={setSearch}
         />
     );
 };
@@ -205,7 +172,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     );
 };
 
-const KeyboardNonGnome = ({ idPrefix }) => {
+const KeyboardNonGnome = () => {
     const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
@@ -219,14 +186,14 @@ const KeyboardNonGnome = ({ idPrefix }) => {
     }, [keyboards, compositorSelectedLayout]);
 
     return (
-        <KeyboardSelector idPrefix={idPrefix} />
+        <KeyboardSelector />
     );
 };
 
-export const Keyboard = ({ idPrefix, isGnome, setIsFormValid }) => {
+export const Keyboard = ({ isGnome, setIsFormValid }) => {
     if (isGnome) {
         return <KeyboardGnome setIsFormValid={setIsFormValid} />;
     } else {
-        return <KeyboardNonGnome idPrefix={idPrefix} />;
+        return <KeyboardNonGnome />;
     }
 };
