@@ -35,6 +35,7 @@ import {
     getLangCookie,
     setLangCookie
 } from "../../helpers/language.js";
+import { error as loggerError } from "../../helpers/log.js";
 
 import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
@@ -45,6 +46,7 @@ import "./InstallationLanguage.scss";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
+const error = loggerError.bind(null, SCREEN_ID + ":");
 
 const getLanguageEnglishName = lang => lang["english-name"].v;
 const getLanguageNativeName = lang => lang["native-name"].v;
@@ -91,7 +93,7 @@ class LanguageSelector extends React.Component {
                     }
                 }
             }
-            console.warn(`Locale with code ${localeCode} not found.`);
+            error(`Locale with code ${localeCode} not found.`);
         };
 
         // Helper to create a menu item

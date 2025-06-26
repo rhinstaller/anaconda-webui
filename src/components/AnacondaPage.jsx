@@ -19,6 +19,8 @@ import cockpit from "cockpit";
 import React, { cloneElement, useContext, useEffect, useRef, useState } from "react";
 import { Alert, Stack, Title } from "@patternfly/react-core";
 
+import { error } from "../helpers/log.js";
+
 import { OsReleaseContext } from "../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
@@ -46,6 +48,14 @@ export const AnacondaPage = ({
             setIsFormDisabled(false);
         }
     }, [setIsFormDisabled, usePageInit]);
+
+    useEffect(() => {
+        if (!stepNotification?.message) {
+            return;
+        }
+
+        error(stepNotification?.step, stepNotification?.message);
+    }, [stepNotification?.step, stepNotification?.message]);
 
     useEffect(() => {
         if (!isFormDisabled && !showPageRef.current) {
