@@ -38,7 +38,8 @@ do
         in
         t)THEME_ID=${OPTARG};;
         r)WEBUI_REMOTE=${OPTARG};;
-        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE]" >&2
+        b)DEFAULT_BROWSER_CMD=${OPTARG};;
+        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE] [-b DEFAULT_BROWSER_CMD]" >&2
        exit 1 ;;
     esac
 done
@@ -145,7 +146,13 @@ else
 
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
-    BROWSER=($(prepare_firefox_cmd "$INSTALLER_USER"))
+    # If default browser command is not set, or set to firefox then prepare the firefox command
+    if [[ -z "${DEFAULT_BROWSER_CMD:-}" || "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
+        BROWSER=($(prepare_firefox_cmd "$INSTALLER_USER"))
+    else
+        # Otherwise, use the default browser command
+        BROWSER=(${DEFAULT_BROWSER_CMD})
+    fi
 
     HOME="$BROWSER_HOME" XDG_CURRENT_DESKTOP=GNOME \
     pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
