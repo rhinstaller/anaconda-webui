@@ -38,27 +38,12 @@ do
         in
         t)THEME_ID=${OPTARG};;
         r)WEBUI_REMOTE=${OPTARG};;
-        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE] <Cockpit path>" >&2
+        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE]" >&2
        exit 1 ;;
     esac
 done
 
-shift "$((OPTIND-1))"
-# Expand the commandline argument into a url
-case "$1" in
-    /*)
-        URL_PATH="$1"
-        ;;
-    */)
-        URL_PATH="/cockpit/@localhost/$1index.html"
-        ;;
-    */*)
-        URL_PATH="/cockpit/@localhost/$1.html"
-        ;;
-    *)
-        URL_PATH="/cockpit/@localhost/$1/index.html"
-        ;;
-esac
+URL_PATH="/cockpit/@localhost/anaconda-webui/index.html"
 
 WEBUI_ADDRESS="127.0.0.1"
 if [[ "$WEBUI_REMOTE" == "1" ]]
