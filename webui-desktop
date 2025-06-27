@@ -54,14 +54,8 @@ fi
 echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
 systemctl start webui-cockpit-ws
 
-if [[ "$WEBUI_REMOTE" == "1" ]]
-then
-    /bin/sleep infinity &
-    BLOCK_ON_PID=$!
-else
-    # prepare empty firefox profile dir with theme based on the passed profile id
-    FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
-
+# Function to setup user-related environment
+setup_user_environment() {
     # PKEXEC_UID is the uid for "gnome-initial-setup" or "liveuser"
     # depending on how the installer gets started.
     #
@@ -84,19 +78,32 @@ else
 
     # Check if the home directory exists, otherwise create it
     if [ ! -d "$HOME_DIR" ]; then
-      echo "The home directory $HOME_DIR does not exist. Creating it."
+      echo "The home directory $HOME_DIR does not exist. Creating it." >&2
       mkdir -p "$HOME_DIR"
       chown "$INSTALLER_USER" "$HOME_DIR"
     else
-      echo "Home directory $HOME_DIR already exists."
+      echo "Home directory $HOME_DIR already exists." >&2
     fi
 
+    # Return the user and home directory for further use
+    echo "$INSTALLER_USER"
+}
+
+prepare_firefox_cmd() {
+    INSTALLER_USER=$1
+
+    export MOZ_APP_TITLE=""
+    export MOZ_APP_REMOTINGNAME="liveinst"
+    export MOZ_GTK_TITLEBAR_DECORATION=client
+
+    # prepare empty firefox profile dir with theme based on the passed profile id
+    FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
     FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR}/anaconda/firefox-profile"
 
     # make sure the profile directory exists and is empty
     if [ -d ${FIREFOX_PROFILE_PATH} ]
     then
-        echo "Cleaning up existing Anaconda Firefox profile directory."
+        echo "Cleaning up existing Anaconda Firefox profile directory." >&2
         rm -rf ${FIREFOX_PROFILE_PATH}
     fi
     pkexec --user "${INSTALLER_USER}" mkdir -p ${FIREFOX_PROFILE_PATH}
@@ -110,8 +117,18 @@ else
     # FIXME: is this hardcoded resolution necessary ?
     BROWSER=(/usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
 
-    # start browser in a temporary home dir, so that it does not interfere with your real one
-    BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
+    echo $BROWSER
+}
+
+
+if [[ "$WEBUI_REMOTE" == "1" ]]
+then
+    /bin/sleep infinity &
+    BLOCK_ON_PID=$!
+else
+    USER_INFO=$(setup_user_environment)
+    INSTALLER_USER=$(echo "$USER_INFO" | cut -d' ' -f1)
+    HOME_DIR=$(echo "$USER_INFO" | cut -d' ' -f2)
 
     # if we have netcat, use it for waiting until ws is up
     if type nc >/dev/null 2>&1; then
@@ -126,7 +143,11 @@ else
 
     readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" systemctl --user show-environment)
 
-    HOME="$BROWSER_HOME" MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" XDG_CURRENT_DESKTOP=GNOME MOZ_GTK_TITLEBAR_DECORATION=client \
+    # start browser in a temporary home dir, so that it does not interfere with your real one
+    BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
+    BROWSER=($(prepare_firefox_cmd "$INSTALLER_USER"))
+
+    HOME="$BROWSER_HOME" XDG_CURRENT_DESKTOP=GNOME \
     pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
     BLOCK_ON_PID=$!
 fi
