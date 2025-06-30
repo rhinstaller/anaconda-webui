@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
     Page, PageGroup, PageSection, PageSectionTypes,
 } from "@patternfly/react-core";
@@ -143,23 +143,27 @@ const useOsRelease = ({ onCritFail }) => {
 };
 
 const useAddress = () => {
-    const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
+    const timeoutIdRef = useRef(null); // Using a ref to store the timeoutId
 
     useEffect(() => {
-        if (!backendReady) {
-            return;
-        }
+        const checkAddress = () => {
+            cockpit.file("/run/anaconda/bus.address")
+                    .read()
+                    .then(setAddress, () => {
+                        // If the file is not available, we will retry
+                        timeoutIdRef.current = setTimeout(checkAddress, 500);
+                    });
+        };
+        checkAddress();
 
-        cockpit.file("/run/anaconda/bus.address").watch(address => {
-            setAddress(address);
-        });
-    }, [backendReady]);
-
-    useEffect(() => {
-        cockpit.file("/run/anaconda/backend_ready").watch(
-            res => setBackendReady(res !== null)
-        );
+        return () => {
+            // Clear the timeout if the component unmounts or re-renders
+            if (timeoutIdRef.current) {
+                clearTimeout(timeoutIdRef.current);
+                timeoutIdRef.current = null;
+            }
+        };
     }, []);
 
     return address;
