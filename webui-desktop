@@ -89,6 +89,33 @@ setup_user_environment() {
     echo "$INSTALLER_USER"
 }
 
+get_default_browser() {
+    # Read the default browser from the anaconda runtime configuration file but wait till it's available
+    # FIXME: Related to: https://issues.redhat.com/browse/INSTALLER-4223
+    timeout=60
+    elapsed=0
+
+    while [ ! -f /run/anaconda/anaconda.conf ]; do
+        if [ "$elapsed" -ge "$timeout" ]; then
+            echo "Timed out waiting for anaconda.conf to be available." >&2
+            exit 1
+        fi
+        sleep 1
+        elapsed=$((elapsed + 1))
+    done
+
+    # FIXME: Should be provided as an argument to this script instead of grepping the config file
+    DEFAULT_BROWSER=$(grep '^webui_web_engine =' /run/anaconda/anaconda.conf | cut -d'=' -f2)
+    if [ -n "$DEFAULT_BROWSER" ]; then
+        echo "Default browser set in anaconda.conf: $DEFAULT_BROWSER" >&2
+        DEFAULT_BROWSER=$(echo "$DEFAULT_BROWSER" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        echo "$DEFAULT_BROWSER"
+    else
+        echo "No default browser set in anaconda.conf, using firefox." >&2
+        echo "firefox"
+    fi
+}
+
 prepare_firefox_cmd() {
     INSTALLER_USER=$1
 
@@ -117,7 +144,7 @@ prepare_firefox_cmd() {
     # FIXME: is this hardcoded resolution necessary ?
     BROWSER=(/usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
 
-    echo $BROWSER
+    declare -p BROWSER
 }
 
 
@@ -143,10 +170,18 @@ else
 
     readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" systemctl --user show-environment)
 
+    DEFAULT_BROWSER_CMD=$(get_default_browser)
+    echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
+    if [[ "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
+        eval "$(prepare_firefox_cmd "$INSTALLER_USER")"
+        echo "Using Firefox browser command: ${BROWSER[@]}" >&2
+    else
+        BROWSER=(${DEFAULT_BROWSER_CMD})
+        echo "Using default browser command: ${BROWSER[@]}" >&2
+    fi
+
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
-    BROWSER=($(prepare_firefox_cmd "$INSTALLER_USER"))
-
     HOME="$BROWSER_HOME" XDG_CURRENT_DESKTOP=GNOME \
     pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
     BLOCK_ON_PID=$!
