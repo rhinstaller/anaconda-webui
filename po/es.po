@@ -66,8 +66,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-24 03:40+0000\n"
-"PO-Revision-Date: 2025-06-21 23:55+0000\n"
+"POT-Creation-Date: 2025-07-01 03:50+0000\n"
+"PO-Revision-Date: 2025-06-28 08:53+0000\n"
 "Last-Translator: \"Fco. Javier F. Serrador\" <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/es/>\n"
@@ -154,6 +154,10 @@ msgstr "Agregar montaje"
 msgid "Additional languages"
 msgstr "Idiomas adicionales"
 
+#: src/components/Error.jsx:178
+msgid "After creating the issue, click 'Add attachment' and attach file $0."
+msgstr "Tras crear el tema, pulse ‘Añadir adjunto’ y adjunte el archivo $0."
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
@@ -205,7 +209,7 @@ msgid ""
 msgstr ""
 "Al continuar utilizando este software, entiende y acepta los riesgos "
 "asociados con el software previo al lanzamiento, que utilizará para pruebas "
-"y desarrollo únicamente, y está dispuesto a informar de cualquier error o "
+"y desarrollo únicamente, y está dispuesto a informar de cualquier defecto o "
 "problema que encuentre con el fin de mejorar este trabajo."
 
 #: src/components/Error.jsx:269
@@ -252,6 +256,10 @@ msgstr "Limpiar búsqueda"
 #: src/components/localization/InstallationLanguage.jsx:251
 msgid "Clear search input"
 msgstr "Limpiar entrada de búsqueda"
+
+#: src/components/Error.jsx:172
+msgid "Click \"$0\" to open Bugzilla in a new window."
+msgstr "Pulse “$0” para abrir Bugzilla en una ventana nueva."
 
 #: src/components/storage/EncryptedDevices.jsx:161
 #: src/components/storage/InstallationDestination.jsx:391
@@ -301,10 +309,6 @@ msgstr "Crear cuenta"
 #: src/components/users/Accounts.jsx:201
 msgid "Create account"
 msgstr "Crear una cuenta"
-
-#: src/components/Error.jsx:255
-msgid "Critical error"
-msgstr "Error crítico"
 
 #: src/components/storage/InstallationDestination.jsx:109
 msgid "Currently installed: $0"
@@ -401,6 +405,10 @@ msgstr "Nombre completo"
 msgid "Full name cannot contain colon characters"
 msgstr "El nombre completo no puede contener el carácter de dos puntos"
 
+#: src/components/Error.jsx:168
+msgid "Help us fix the issue!"
+msgstr "¡Ayúdenos a reparar el problema!"
+
 #: src/components/Password.jsx:242
 msgid "Hide confirmed password"
 msgstr "Ocultar contraseña confirmada"
@@ -470,6 +478,7 @@ msgstr "Inicializando…"
 msgid "Install"
 msgstr "Instalar"
 
+#: src/components/Error.jsx:256
 #: src/components/installation/InstallationProgress.jsx:134
 msgid "Installation failed"
 msgstr "Instalación incorrecta"
@@ -542,9 +551,18 @@ msgstr "Ubicación"
 msgid "Locked devices"
 msgstr "Dispositivos bloqueados"
 
-#: src/components/Error.jsx:179
-msgid "Log"
-msgstr "Registro"
+#: src/components/Error.jsx:175
+msgid "Log in to Bugzilla, or create a new account."
+msgstr "Acceda a Bugzilla, o cree una cuenta nueva."
+
+#: src/components/Error.jsx:181
+msgid ""
+"Logs may contain sensitive information like IP addresses or usernames. "
+"Attachments on Bugzilla issues are marked private by default."
+msgstr ""
+"Las bitácoras pueden contener información sensible como direcciones IP o "
+"nombres de usuario. Los adjuntos en los problemas de Bugzilla están marcados "
+"por defecto como privados."
 
 #: src/components/storage/MountPointMapping.jsx:776
 msgid "Manual disk configuration"
@@ -596,7 +614,7 @@ msgstr "Debe tener al menos $0 caracteres"
 msgid "Name"
 msgstr "Nombre"
 
-#: src/components/Error.jsx:131
+#: src/components/Error.jsx:127
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -604,7 +622,7 @@ msgstr ""
 "Red no disponible. Configure la red en el menú de la barra superior para "
 "informar del problema."
 
-#: src/components/Error.jsx:132
+#: src/components/Error.jsx:128
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Red no disponible. Configure la red para informar del problema."
 
@@ -698,15 +716,11 @@ msgstr "Desarrollado por Anaconda"
 msgid "Pre-release"
 msgstr "Previo al lanzamiento"
 
-#: src/components/Error.jsx:162
-msgid "Preparing report"
-msgstr "Preparación del reporte"
-
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Proceed with installation"
 msgstr "Proceder a la instalación"
 
-#: src/components/Error.jsx:236 src/components/AnacondaWizardFooter.jsx:119
+#: src/components/Error.jsx:237 src/components/AnacondaWizardFooter.jsx:119
 #: src/components/AnacondaWizardFooter.jsx:144
 msgid "Quit"
 msgstr "Salir"
@@ -743,7 +757,7 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "El nombre del hospedaje real debe ser de 64 caracteres o menos"
 
-#: src/components/Error.jsx:236 src/components/AnacondaWizardFooter.jsx:119
+#: src/components/Error.jsx:237 src/components/AnacondaWizardFooter.jsx:119
 #: src/components/AnacondaWizardFooter.jsx:144
 msgid "Reboot"
 msgstr "Reiniciar"
@@ -836,17 +850,10 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Informar un defecto"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:282
+#: src/components/Error.jsx:148 src/components/Error.jsx:172
+#: src/components/Error.jsx:281
 msgid "Report issue"
 msgstr "Informar defecto"
-
-#: src/components/Error.jsx:149
-msgid ""
-"Reporting an issue will send information over the network. Please review and "
-"edit the attached log to remove any sensitive information."
-msgstr ""
-"Informar un defecto enviará información sobre la red. Revise y edite el "
-"boletín adjuntado para quitar cualquier información sensible."
 
 #: src/components/storage/MountPointMapping.jsx:249
 msgid "Required"
@@ -1048,14 +1055,6 @@ msgstr ""
 "Configuración del sistema: Instalación del software completada. Se está "
 "configurando el sistema."
 
-#: src/components/Error.jsx:279
-msgid ""
-"The following log will be sent to the issue tracking system where you may "
-"provide additional details."
-msgstr ""
-"Los boletines siguientes serán enviados al sistema de seguimiento de "
-"defectos donde puede proporcionar detalles adicionales."
-
 #: src/components/storage/scenarios/EraseAll.jsx:59
 msgid ""
 "The installation needs $0 of disk space; however, the capacity of the "
@@ -1064,11 +1063,11 @@ msgstr ""
 "La instalación necesita $0 de espacio del disco; sin embargo, la capacidad "
 "de los discos seleccionados solo es de $1."
 
-#: src/components/Error.jsx:247
+#: src/components/Error.jsx:248
 msgid "The installer cannot continue due to a critical error."
 msgstr "El instalador no puede continuar debido a un error crítico."
 
-#: src/components/Error.jsx:246
+#: src/components/Error.jsx:247
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "El instalador no puede continuar debido a un error crítico: $0"
 
@@ -1289,6 +1288,29 @@ msgstr "reducir a $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:386
 msgid "undo"
 msgstr "deshacer"
+
+#~ msgid "Critical error"
+#~ msgstr "Error crítico"
+
+#~ msgid "Log"
+#~ msgstr "Registro"
+
+#~ msgid "Preparing report"
+#~ msgstr "Preparación del reporte"
+
+#~ msgid ""
+#~ "Reporting an issue will send information over the network. Please review "
+#~ "and edit the attached log to remove any sensitive information."
+#~ msgstr ""
+#~ "Informar un defecto enviará información sobre la red. Revise y edite el "
+#~ "boletín adjuntado para quitar cualquier información sensible."
+
+#~ msgid ""
+#~ "The following log will be sent to the issue tracking system where you may "
+#~ "provide additional details."
+#~ msgstr ""
+#~ "Los boletines siguientes serán enviados al sistema de seguimiento de "
+#~ "defectos donde puede proporcionar detalles adicionales."
 
 #~ msgid "Anaconda installer"
 #~ msgstr "Instalador Anaconda"
