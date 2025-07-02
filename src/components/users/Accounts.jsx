@@ -20,7 +20,7 @@ import cockpit from "cockpit";
 import * as python from "python.js";
 import { debounce } from "throttle-debounce";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Checkbox,
     Form,
@@ -258,10 +258,22 @@ const RootAccount = ({
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const isRootAccountEnabled = accounts.isRootEnabled;
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.root;
+    const passwordRef = useRef();
 
     useEffect(() => {
         setIsRootValid(isPasswordValid || !isRootAccountEnabled);
     }, [setIsRootValid, isPasswordValid, isRootAccountEnabled]);
+
+    useEffect(() => {
+        if (isRootAccountEnabled) {
+            // When the user is enabling root account, we want to focus the password field
+            setTimeout(() => {
+                if (passwordRef.current) {
+                    passwordRef.current.focus();
+                }
+            }, 100);
+        }
+    }, [isRootAccountEnabled]);
 
     const rootAccountCheckbox = content => (
         <Checkbox
@@ -278,6 +290,7 @@ const RootAccount = ({
           idPrefix={idPrefix}
           policy={passwordPolicy}
           password={password}
+          passwordRef={passwordRef}
           setPassword={setPassword}
           passwordLabel={_("Passphrase")}
           confirmPassword={confirmPassword}

@@ -125,6 +125,7 @@ export const PasswordFormFields = ({
     idPrefix,
     password,
     passwordLabel,
+    passwordRef,
     policy,
     rules,
     setConfirmPassword,
@@ -206,6 +207,7 @@ export const PasswordFormFields = ({
                           value={password}
                           onChange={(_event, val) => setPassword(val)}
                           id={idPrefix + "-password-field"}
+                          ref={passwordRef}
                         />
                     </InputGroupItem>
                     <InputGroupItem>
