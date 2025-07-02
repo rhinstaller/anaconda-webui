@@ -33,7 +33,7 @@ case "${TEST_SCENARIO:=}" in
     *compose-*)
         # Supported values are: compose-<compose-id> or compose-<compose-id>-staging
         for test in $ALL_TESTS; do
-            if grep "$test" test/wiki-testmap.json; then
+            if grep "$test" test/fedora-wiki/wiki-testmap.json; then
                 RUN_OPTS="$RUN_OPTS $test"
             fi
         done
@@ -82,7 +82,7 @@ make create-updates.img
 
 # If TEST_COMPOSE is defined and we are testing main branch prepare the test report
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
-  test/prepare-report
+  test/fedora-wiki/prepare-report
 fi
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
@@ -125,10 +125,10 @@ if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
     mkdir -p ~/.openidc
     if [ "${TEST_FEDORA_WIKI_STAGING-}" = "true" ]; then
         cp $COCKPIT_FEDORA_WIKI_STAGING_TOKEN ~/.openidc/oidc_wikitcms.json
-        test/wiki-report --staging test/report.json
+        test/fedora-wiki/wiki-report --staging test/report.json
     else
         cp $COCKPIT_FEDORA_WIKI_TOKEN ~/.openidc/oidc_wikitcms.json
-        test/wiki-report.py test/report.json
+        test/fedora-wiki/wiki-report.py test/report.json
     fi
 
 fi
