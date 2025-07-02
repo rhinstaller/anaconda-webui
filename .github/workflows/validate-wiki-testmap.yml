@@ -35,7 +35,7 @@ jobs:
         run: |
           valid_tests=$(echo "${{ steps.list_tests.outputs.tests }}" | tr '\n' ' ')
 
-          jq -c 'to_entries[] | .value.tests[]' test/wiki-testmap.json | while read -r item; do
+          jq -c 'to_entries[] | .value.tests[]' test/fedora-wiki/wiki-testmap.json | while read -r item; do
             name=$(echo "$item" | jq -r '.testname')
             url="https://fedoraproject.org/wiki/$(echo "$item" | jq -r '."fedora-wiki-testcase"')"
 

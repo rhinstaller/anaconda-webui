@@ -43,7 +43,7 @@ class WikiReport:
     def get_passed_testcases(self):
         passed_testcases = set()
 
-        testmap = json.load(open("./test/wiki-testmap.json", "r"))
+        testmap = json.load(open("./test/fedora-wiki/wiki-testmap.json", "r"))
 
         for testcase in self.report["tests"]:
             # Skip testcases that don't have an openqa test associated with them
