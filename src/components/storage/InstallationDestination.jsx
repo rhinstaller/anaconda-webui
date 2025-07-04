@@ -29,12 +29,13 @@ import {
     MenuContent,
     MenuItem,
     MenuList,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     Stack,
     Title
 } from "@patternfly/react-core";
-import {
-    Modal
-} from "@patternfly/react-core/deprecated";
 import { SyncAltIcon } from "@patternfly/react-icons";
 
 import {
@@ -374,34 +375,37 @@ const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
                 <Modal
                   id={idPrefix + "-change-destination-modal"}
                   position="top" variant="small" isOpen onClose={() => setIsModalOpen(false)}
-                  title={_("Select destination")}
-                  footer={
-                      <>
-                          {diskSelection.usableDisks.length > 0 && (
-                              <>
-                                  <Button isAriaDisabled={isRescanningDisks} variant="primary" onClick={onSave}>
-                                      {_("Select")}
-                                  </Button>
-                                  <Button isAriaDisabled={isRescanningDisks} variant="link" onClick={() => setIsModalOpen(false)}>
-                                      {_("Cancel")}
-                                  </Button>
-                              </>)}
-                          {diskSelection.usableDisks.length === 0 && (
-                              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-                                  {_("Close")}
-                              </Button>
-                          )}
-                      </>
-                  }>
-                    <LocalDisksSelect
-                      dispatch={dispatch}
-                      idPrefix={idPrefix}
-                      isRescanningDisks={isRescanningDisks}
-                      unappliedSelection={unappliedSelection}
-                      onCritFail={onCritFail}
-                      setUnappliedSelection={setUnappliedSelection}
-                      setIsRescanningDisks={setIsRescanningDisks}
+                >
+                    <ModalHeader
+                      title={_("Select destination")}
                     />
+                    <ModalBody>
+                        <LocalDisksSelect
+                          dispatch={dispatch}
+                          idPrefix={idPrefix}
+                          isRescanningDisks={isRescanningDisks}
+                          unappliedSelection={unappliedSelection}
+                          onCritFail={onCritFail}
+                          setUnappliedSelection={setUnappliedSelection}
+                          setIsRescanningDisks={setIsRescanningDisks}
+                        />
+                    </ModalBody>
+                    <ModalFooter>
+                        {diskSelection.usableDisks.length > 0 && (
+                            <>
+                                <Button isAriaDisabled={isRescanningDisks} variant="primary" onClick={onSave}>
+                                    {_("Select")}
+                                </Button>
+                                <Button isAriaDisabled={isRescanningDisks} variant="link" onClick={() => setIsModalOpen(false)}>
+                                    {_("Cancel")}
+                                </Button>
+                            </>)}
+                        {diskSelection.usableDisks.length === 0 && (
+                            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+                                {_("Close")}
+                            </Button>
+                        )}
+                    </ModalFooter>
                 </Modal>
             )}
         </>

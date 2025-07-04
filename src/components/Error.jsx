@@ -30,11 +30,12 @@ import {
     FormGroup,
     HelperText,
     HelperTextItem,
-} from "@patternfly/react-core";
-import {
     Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     ModalVariant
-} from "@patternfly/react-core/deprecated";
+} from "@patternfly/react-core";
 import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
@@ -127,68 +128,80 @@ export const BZReportModal = ({
     const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
     const networkHelperMessageBootIso = _("Network not available. Configure the network to report the issue.");
 
+    const header = (
+        <ModalHeader
+          description={description}
+          title={title}
+          titleIconVariant={titleIconVariant}
+        />
+    );
+    const footer = (
+        <ModalFooter>
+            <Button
+              key="report-issue"
+              variant="primary"
+              isAriaDisabled={!isConnected}
+              icon={<ExternalLinkAltIcon />}
+              onClick={() => { openBZIssue(reportLinkURL); return false }}
+              component="a">
+                {_("Report issue")}
+            </Button>
+            {buttons}
+        </ModalFooter>
+    );
+
     return (
         <Modal
-          description={description}
           id={idPrefix + "-bz-report-modal"}
           isOpen
           position="top"
-          showClose={false}
-          title={title}
-          titleIconVariant={titleIconVariant}
           variant={ModalVariant.small}
-          actions={[
-              <Button
-                key="report-issue"
-                variant="primary"
-                isAriaDisabled={!isConnected}
-                icon={<ExternalLinkAltIcon />}
-                onClick={() => { openBZIssue(reportLinkURL); return false }}
-                component="a">
-                  {_("Report issue")}
-              </Button>,
-              ...buttons
-          ]}>
-            <Form>
-                {detailsLabel &&
-                <>
-                    <FormGroup
-                      fieldId={idPrefix + "-bz-report-modal-details"}
-                      label={detailsLabel}
-                    >
-                        {detailsContent}
-                    </FormGroup>
-                    <Divider />
-                </>}
-                {isConnected
-                    ? (
-                        <>
-                            {detailsLabel &&
-                            <Content component={ContentVariants.h4} className={idPrefix + "-bz-report-modal-intructions-header"}>
-                                {_("Help us fix the issue!")}
-                            </Content>}
-                            <Content component={ContentVariants.ol}>
-                                <Content component={ContentVariants.li}>
-                                    {fmtToFragments(_("Click \"$0\" to open Bugzilla in a new window."), <strong>{_("Report issue")}</strong>)}
+        >
+
+            {header}
+            <ModalBody>
+                <Form>
+                    {detailsLabel &&
+                    <>
+                        <FormGroup
+                          fieldId={idPrefix + "-bz-report-modal-details"}
+                          label={detailsLabel}
+                        >
+                            {detailsContent}
+                        </FormGroup>
+                        <Divider />
+                    </>}
+                    {isConnected
+                        ? (
+                            <>
+                                {detailsLabel &&
+                                <Content component={ContentVariants.h4} className={idPrefix + "-bz-report-modal-intructions-header"}>
+                                    {_("Help us fix the issue!")}
+                                </Content>}
+                                <Content component={ContentVariants.ol}>
+                                    <Content component={ContentVariants.li}>
+                                        {fmtToFragments(_("Click \"$0\" to open Bugzilla in a new window."), <strong>{_("Report issue")}</strong>)}
+                                    </Content>
+                                    <Content component={ContentVariants.li}>
+                                        {_("Log in to Bugzilla, or create a new account.")}
+                                    </Content>
+                                    <Content component={ContentVariants.li}>
+                                        {fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>/tmp/journal.log</i>)}
+                                    </Content>
                                 </Content>
-                                <Content component={ContentVariants.li}>
-                                    {_("Log in to Bugzilla, or create a new account.")}
-                                </Content>
-                                <Content component={ContentVariants.li}>
-                                    {fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>/tmp/journal.log</i>)}
-                                </Content>
-                            </Content>
-                            <Alert title={_("Logs may contain sensitive information like IP addresses or usernames. Attachments on Bugzilla issues are marked private by default.")} variant="warning" isInline isPlain />
-                        </>
-                    )
-                    : (
-                        <HelperText>
-                            <HelperTextItem icon={<DisconnectedIcon />}>
-                                {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
-                            </HelperTextItem>
-                        </HelperText>
-                    )}
-            </Form>
+                                <Alert title={_("Logs may contain sensitive information like IP addresses or usernames. Attachments on Bugzilla issues are marked private by default.")} variant="warning" isInline isPlain />
+                            </>
+                        )
+                        : (
+                            <HelperText>
+                                <HelperTextItem icon={<DisconnectedIcon />}>
+                                    {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
+                                </HelperTextItem>
+                            </HelperText>
+                        )}
+                </Form>
+            </ModalBody>
+            {footer}
         </Modal>
     );
 };

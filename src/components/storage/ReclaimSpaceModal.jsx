@@ -28,15 +28,16 @@ import {
     FlexItem,
     HelperText,
     HelperTextItem,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    ModalVariant,
     Panel,
     Popover,
     Slider,
     Stack,
 } from "@patternfly/react-core";
-import {
-    Modal,
-    ModalVariant
-} from "@patternfly/react-core/deprecated";
 import {
     CompressArrowsAltIcon,
     HddIcon,
@@ -124,48 +125,51 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
 
     return (
         <Modal
-          description={
-              <Stack hasGutter>
-                  <Content>
-                      <Content component="p">{_("Remove or resize existing filesystems to free up space for the installation.")}</Content>
-                      <Content component="p">{
-                          _("Removing a filesystem will permanently delete all of the data it contains. Resizing a partition can free up unused space, but is not risk-free. Be sure to have backups of anything important before reclaiming space.")
-                      }
-                      </Content>
-                  </Content>
-                  <WindowsHint />
-              </Stack>
-          }
           id={idPrefix}
           isOpen
           onClose={onClose}
-          size="md"
-          title={_("Reclaim space")}
           variant={ModalVariant.large}
-          footer={
-              <ReclaimFooter isFormDisabled={isFormDisabled} unappliedActions={unappliedActions} onReclaim={onReclaim} onClose={onClose} />
-          }
         >
-            <Stack hasGutter>
-                {dialogError && <ModalError variant="warning" dialogError={dialogError.text} dialogErrorDetail={dialogError.message} />}
-                <Panel variant="bordered">
-                    <ListingTable
-                      isStickyHeader
-                      aria-label={_("Reclaim space")}
-                      columns={[
-                          { props: { width: 20 }, title: _("Location") },
-                          { props: { width: 20 }, title: _("Name") },
-                          { props: { width: 20 }, title: _("Type") },
-                          { props: { width: 20 }, title: _("Space") },
-                          { props: { width: 20 }, title: _("Actions") }
-                      ]}
-                      emptyCaption={_("No devices")}
-                      id={idPrefix + "-table"}
-                      rows={rows}
-                      variant="compact"
-                    />
-                </Panel>
-            </Stack>
+            <ModalHeader
+              title={_("Reclaim space")}
+              description={
+                  <Stack hasGutter>
+                      <Content>
+                          <Content component="p">{_("Remove or resize existing filesystems to free up space for the installation.")}</Content>
+                          <Content component="p">{
+                              _("Removing a filesystem will permanently delete all of the data it contains. Resizing a partition can free up unused space, but is not risk-free. Be sure to have backups of anything important before reclaiming space.")
+                          }
+                          </Content>
+                      </Content>
+                      <WindowsHint />
+                  </Stack>
+              }
+            />
+            <ModalBody>
+                <Stack hasGutter>
+                    {dialogError && <ModalError variant="warning" dialogError={dialogError.text} dialogErrorDetail={dialogError.message} />}
+                    <Panel variant="bordered">
+                        <ListingTable
+                          isStickyHeader
+                          aria-label={_("Reclaim space")}
+                          columns={[
+                              { props: { width: 20 }, title: _("Location") },
+                              { props: { width: 20 }, title: _("Name") },
+                              { props: { width: 20 }, title: _("Type") },
+                              { props: { width: 20 }, title: _("Space") },
+                              { props: { width: 20 }, title: _("Actions") }
+                          ]}
+                          emptyCaption={_("No devices")}
+                          id={idPrefix + "-table"}
+                          rows={rows}
+                          variant="compact"
+                        />
+                    </Panel>
+                </Stack>
+            </ModalBody>
+            <ModalFooter>
+                <ReclaimFooter isFormDisabled={isFormDisabled} unappliedActions={unappliedActions} onReclaim={onReclaim} onClose={onClose} />
+            </ModalFooter>
         </Modal>
     );
 };

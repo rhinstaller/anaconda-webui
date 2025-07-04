@@ -29,11 +29,12 @@ import {
     FormGroup,
     InputGroup,
     InputGroupItem,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     TextInput
 } from "@patternfly/react-core";
-import {
-    Modal
-} from "@patternfly/react-core/deprecated";
 import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 
 import {
@@ -151,51 +152,54 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
           description={_("All devices using this passphrase will be unlocked")}
           id={idPrefix}
           position="top" variant="small" isOpen onClose={() => onClose()}
-          title={_("Unlock encrypted devices")}
-          footer={
-              <>
-                  <Button variant="primary" onClick={onSubmit} isAriaDisabled={inProgress} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
-                      {_("Unlock")}
-                  </Button>
-                  <Button variant="secondary" onClick={() => onClose()} id={idPrefix + "-close-btn"}>
-                      {_("Close")}
-                  </Button>
-              </>
-          }>
-            <Form
-              onSubmit={e => {
-                  e.preventDefault();
-                  onSubmit();
-              }}>
-                {dialogSuccess && <InlineNotification type="info" text={dialogSuccess} />}
-                <FormGroup fieldId={idPrefix + "-luks-devices"} label={_("Locked devices")}>
-                    <LuksDevices id={idPrefix + "-luks-devices"} lockedLUKSDevices={lockedLUKSDevices} />
-                </FormGroup>
-                <FormGroup fieldId={idPrefix + "-luks-passphrase"} label={_("Passphrase")}>
-                    <InputGroup>
-                        <InputGroupItem isFill>
-                            <TextInput
-                              isRequired
-                              id={idPrefix + "-luks-passphrase"}
-                              type={passphraseHidden ? "password" : "text"}
-                              aria-label={_("Passphrase")}
-                              value={passphrase}
-                              onChange={(_event, val) => setPassphrase(val)}
-                            />
-                        </InputGroupItem>
-                        <InputGroupItem>
-                            <Button
-                              variant="control"
-                              onClick={() => setPassphraseHidden(!passphraseHidden)}
-                              aria-label={passphraseHidden ? _("Show passphrase") : _("Hide passphrase")}
-                            >
-                                {passphraseHidden ? <EyeIcon /> : <EyeSlashIcon />}
-                            </Button>
-                        </InputGroupItem>
-                    </InputGroup>
-                    <FormHelper helperText={dialogWarning} variant="warning" />
-                </FormGroup>
-            </Form>
+        >
+            <ModalHeader
+              title={_("Unlock encrypted devices")}
+            />
+            <ModalBody>
+                <Form
+                  onSubmit={e => {
+                      e.preventDefault();
+                      onSubmit();
+                  }}>
+                    {dialogSuccess && <InlineNotification type="info" text={dialogSuccess} />}
+                    <FormGroup fieldId={idPrefix + "-luks-devices"} label={_("Locked devices")}>
+                        <LuksDevices id={idPrefix + "-luks-devices"} lockedLUKSDevices={lockedLUKSDevices} />
+                    </FormGroup>
+                    <FormGroup fieldId={idPrefix + "-luks-passphrase"} label={_("Passphrase")}>
+                        <InputGroup>
+                            <InputGroupItem isFill>
+                                <TextInput
+                                  isRequired
+                                  id={idPrefix + "-luks-passphrase"}
+                                  type={passphraseHidden ? "password" : "text"}
+                                  aria-label={_("Passphrase")}
+                                  value={passphrase}
+                                  onChange={(_event, val) => setPassphrase(val)}
+                                />
+                            </InputGroupItem>
+                            <InputGroupItem>
+                                <Button
+                                  variant="control"
+                                  onClick={() => setPassphraseHidden(!passphraseHidden)}
+                                  aria-label={passphraseHidden ? _("Show passphrase") : _("Hide passphrase")}
+                                >
+                                    {passphraseHidden ? <EyeIcon /> : <EyeSlashIcon />}
+                                </Button>
+                            </InputGroupItem>
+                        </InputGroup>
+                        <FormHelper helperText={dialogWarning} variant="warning" />
+                    </FormGroup>
+                </Form>
+            </ModalBody>
+            <ModalFooter>
+                <Button variant="primary" onClick={onSubmit} isAriaDisabled={inProgress} isLoading={inProgress} id={idPrefix + "-submit-btn"}>
+                    {_("Unlock")}
+                </Button>
+                <Button variant="secondary" onClick={() => onClose()} id={idPrefix + "-close-btn"}>
+                    {_("Close")}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };
