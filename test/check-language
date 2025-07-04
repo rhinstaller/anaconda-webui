@@ -20,7 +20,7 @@ from installer import Installer
 from language import Language
 from review import Review
 from storage import Storage
-from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
 @nondestructive
@@ -72,7 +72,6 @@ class TestLanguage(VirtInstallMachineCase):
         vgchange -a n vg
         """)
 
-    @skipImage("Needs further investigation: https://issues.redhat.com/browse/INSTALLER-4142", "fedora-rawhide-boot")
     @disk_images([("", 15), ("", 15)])
     def testBackendTranslations(self):
         """
@@ -85,11 +84,16 @@ class TestLanguage(VirtInstallMachineCase):
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        s = Storage(b, m)
         lang = Language(b, m)
 
         i.open()
         lang.select_locale("de_DE")
         lang.check_selected_locale("de_DE")
+
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
+
         i.reach(i.steps.STORAGE_CONFIGURATION)
         i.next(should_fail=True)
         b.wait_in_text(
