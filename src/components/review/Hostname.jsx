@@ -29,11 +29,12 @@ import {
     FormHelperText,
     HelperText,
     HelperTextItem,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     TextInput
 } from "@patternfly/react-core";
-import {
-    Modal
-} from "@patternfly/react-core/deprecated";
 
 import { setHostname } from "../../apis/network.js";
 
@@ -99,53 +100,55 @@ const ChangeHostname = ({ initHostname }) => {
                 {_("edit")}
             </Button>
             <Modal
-              footer={
-                  <>
-                      <Button
-                        variant="primary" isAriaDisabled={disabled}
-                        onClick={onSubmit}>{initHostname === "" ? _("Save") : _("Change")}
-                      </Button>
-                      <Button variant="link" onClick={onClose}>{_("Cancel")}</Button>
-                  </>
-              }
               id="system_information_change_hostname"
               isOpen={isModalOpen}
               onClose={onClose}
               position="top"
-              title={initHostname === "" ? _("Set custom hostname") : _("Change hostname")}
               variant="small"
             >
-                <Form isHorizontal onSubmit={onSubmit}>
-                    <FormGroup fieldId="review-handle-hostname-hostname" label={_("Hostname")}>
-                        <TextInput
-                          id="review-handle-hostname-hostname" value={currentHostname}
-                          onChange={(_event, value) => onHostnameChanged(value)}
-                          validated={error.length ? "error" : "default"} />
-                        {error.length > 0
-                            ? (
-                                <FormHelperText>
-                                    <HelperText>
-                                        {error.map((err, i) =>
-                                            <HelperTextItem key={i} variant="error">
-                                                {err}
+                <ModalHeader
+                  title={initHostname === "" ? _("Set custom hostname") : _("Change hostname")}
+                />
+                <ModalBody>
+                    <Form isHorizontal onSubmit={onSubmit}>
+                        <FormGroup fieldId="review-handle-hostname-hostname" label={_("Hostname")}>
+                            <TextInput
+                              id="review-handle-hostname-hostname" value={currentHostname}
+                              onChange={(_event, value) => onHostnameChanged(value)}
+                              validated={error.length ? "error" : "default"} />
+                            {error.length > 0
+                                ? (
+                                    <FormHelperText>
+                                        <HelperText>
+                                            {error.map((err, i) =>
+                                                <HelperTextItem key={i} variant="error">
+                                                    {err}
+                                                </HelperTextItem>
+                                            )}
+                                        </HelperText>
+                                    </FormHelperText>)
+                                : (
+                                    <FormHelperText>
+                                        <HelperText>
+                                            <HelperTextItem>
+                                                {_("May contain letters, numbers, and dashes.")}
                                             </HelperTextItem>
-                                        )}
-                                    </HelperText>
-                                </FormHelperText>)
-                            : (
-                                <FormHelperText>
-                                    <HelperText>
-                                        <HelperTextItem>
-                                            {_("May contain letters, numbers, and dashes.")}
-                                        </HelperTextItem>
-                                        <HelperTextItem>
-                                            {_("If empty, hostname will be transient and set by network information.")}
-                                        </HelperTextItem>
-                                    </HelperText>
-                                </FormHelperText>
-                            )}
-                    </FormGroup>
-                </Form>
+                                            <HelperTextItem>
+                                                {_("If empty, hostname will be transient and set by network information.")}
+                                            </HelperTextItem>
+                                        </HelperText>
+                                    </FormHelperText>
+                                )}
+                        </FormGroup>
+                    </Form>
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                      variant="primary" isAriaDisabled={disabled}
+                      onClick={onSubmit}>{initHostname === "" ? _("Save") : _("Change")}
+                    </Button>
+                    <Button variant="link" onClick={onClose}>{_("Cancel")}</Button>
+                </ModalFooter>
             </Modal>
         </>
     );

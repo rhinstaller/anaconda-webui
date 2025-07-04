@@ -22,14 +22,15 @@ import {
     ActionListGroup,
     ActionListItem,
     Button,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    ModalVariant,
     Stack,
     useWizardContext,
     WizardFooterWrapper
 } from "@patternfly/react-core";
-import {
-    Modal,
-    ModalVariant
-} from "@patternfly/react-core/deprecated";
 
 import { exitGui } from "../helpers/exit.js";
 
@@ -132,32 +133,36 @@ export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation
     return (
         <Modal
           id="installation-quit-confirm-dialog"
-          actions={[
-              <Button
-                id="installation-quit-confirm-btn"
-                key="confirm"
-                onClick={() => {
-                    exitGui();
-                }}
-                variant="danger"
-              >
-                  {isBootIso ? _("Reboot") : _("Quit")}
-              </Button>,
-              <Button
-                id="installation-quit-confirm-cancel-btn"
-                key="cancel"
-                onClick={() => setQuitWaitsConfirmation(false)}
-                variant="secondary">
-                  {_("Continue installation")}
-              </Button>
-          ]}
           isOpen
           onClose={() => setQuitWaitsConfirmation(false)}
-          title={isBootIso ? _("Reboot system?") : _("Quit installer?")}
-          titleIconVariant="warning"
           variant={ModalVariant.small}
         >
-            {_("Your progress will not be saved.")}
+            <ModalHeader
+              title={isBootIso ? _("Reboot system?") : _("Quit installer?")}
+              titleIconVariant="warning"
+            />
+            <ModalBody>
+                {_("Your progress will not be saved.")}
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                  id="installation-quit-confirm-btn"
+                  key="confirm"
+                  onClick={() => {
+                      exitGui();
+                  }}
+                  variant="danger"
+                >
+                    {isBootIso ? _("Reboot") : _("Quit")}
+                </Button>
+                <Button
+                  id="installation-quit-confirm-cancel-btn"
+                  key="cancel"
+                  onClick={() => setQuitWaitsConfirmation(false)}
+                  variant="secondary">
+                    {_("Continue installation")}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };
