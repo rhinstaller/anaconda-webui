@@ -92,7 +92,7 @@ po/LINGUAS:
 #
 all: $(DIST_TEST)
 
-dist_libexec_SCRIPTS = webui-desktop firefox-ext
+dist_libexec_SCRIPTS = webui-desktop browser-ext
 # makes sure it gets built as part of `make` and `make dist`
 dist_noinst_DATA = \
 	$(DIST_TEST) \
@@ -125,7 +125,7 @@ install: $(DIST_TEST) po/LINGUAS
 	cp anaconda-gnome-control-center.desktop $(DESTDIR)/usr/share/applications/
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
-	cp firefox-ext $(DESTDIR)/usr/libexec/anaconda
+	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
 	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
