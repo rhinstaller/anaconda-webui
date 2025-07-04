@@ -25,13 +25,14 @@ import {
     DropdownItem,
     Flex,
     FlexItem,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    ModalVariant,
     PageSection,
     Tooltip
 } from "@patternfly/react-core";
-import {
-    Modal,
-    ModalVariant
-} from "@patternfly/react-core/deprecated";
 import { ArrowLeftIcon, ExclamationTriangleIcon } from "@patternfly/react-icons";
 
 import {
@@ -86,34 +87,38 @@ const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmO
         <Modal
           isOpen={showConfirmation}
           onClose={handleCancelOpenModal}
-          title={_("Storage editor")}
-          titleIconVariant="warning"
           variant="small"
-          actions={[
-              <Button
-                id={idPrefix + "-enter-storage-confirm"}
-                key="confirm"
-                variant="warning"
-                onClick={handleConfirmOpenModal}>
-                  {_("Launch storage editor")}
-              </Button>,
-              <Button
-                id={idPrefix + "-enter-storage-cancel"}
-                key="cancel"
-                variant="link"
-                onClick={handleCancelOpenModal}>
-                  {_("Cancel")}
-              </Button>
-          ]}
         >
-            <Content>
-                <Content component="p">
-                    {_("The storage editor lets you resize, delete, and create partitions. It can set up LVM and much more. It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
+            <ModalHeader
+              title={_("Storage editor")}
+              iconVariant="warning"
+            />
+            <ModalBody>
+                <Content>
+                    <Content component="p">
+                        {_("The storage editor lets you resize, delete, and create partitions. It can set up LVM and much more. It is meant to be used as an advanced utility and not intended to be used in a typical installation.")}
+                    </Content>
+                    <Content component="strong">
+                        {_("All changes made in the storage editor take effect immediately.")}
+                    </Content>
                 </Content>
-                <Content component="strong">
-                    {_("All changes made in the storage editor take effect immediately.")}
-                </Content>
-            </Content>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                  id={idPrefix + "-enter-storage-confirm"}
+                  key="confirm"
+                  variant="warning"
+                  onClick={handleConfirmOpenModal}>
+                    {_("Launch storage editor")}
+                </Button>
+                <Button
+                  id={idPrefix + "-enter-storage-cancel"}
+                  key="cancel"
+                  variant="link"
+                  onClick={handleCancelOpenModal}>
+                    {_("Cancel")}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };
@@ -158,8 +163,6 @@ export const CockpitStorageIntegration = ({
             <Modal
               aria-label={_("Configure storage")}
               className={backdropClass + " " + idPrefix + "-modal-page-section"}
-              footer={<ReturnToInstallationButton onAction={() => setShowDialog(true)} />}
-              hasNoBodyWrapper
               isOpen={isConfirmed}
               onClose={() => setShowDialog(true)}
               showClose={false}
@@ -192,6 +195,9 @@ export const CockpitStorageIntegration = ({
                       setShowDialog={setShowDialog}
                       setShowStorage={setShowStorage}
                     />}
+                <ModalFooter>
+                    <ReturnToInstallationButton onAction={() => setShowDialog(true)} />
+                </ModalFooter>
             </Modal>
         </>
     );

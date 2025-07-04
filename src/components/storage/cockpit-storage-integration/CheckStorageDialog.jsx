@@ -23,11 +23,12 @@ import {
     Button,
     HelperText,
     HelperTextItem,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     Stack,
 } from "@patternfly/react-core";
-import {
-    Modal,
-} from "@patternfly/react-core/deprecated";
 
 import {
     runStorageTask,
@@ -450,7 +451,9 @@ const CheckStorageDialogLoading = () => {
           onClose={() => {}}
           position="top" variant="small" isOpen
         >
-            {loadingDescription}
+            <ModalBody>
+                {loadingDescription}
+            </ModalBody>
         </Modal>
     );
 };
@@ -554,11 +557,11 @@ const CheckStorageDialogLoaded = ({
         setShowStorage(false);
     };
 
-    const modalProps = {};
+    let title;
     if (storageRequirementsNotMet) {
-        modalProps.title = _("Storage requirements not met");
+        title = _("Storage requirements not met");
     } else {
-        modalProps.title = _("Continue with installation");
+        title = _("Continue with installation");
     }
 
     return (
@@ -566,45 +569,13 @@ const CheckStorageDialogLoaded = ({
           className={idPrefix + "-check-storage-dialog"}
           id={idPrefix + "-check-storage-dialog"}
           onClose={() => setShowDialog(false)}
-          titleIconVariant={storageRequirementsNotMet && "warning"}
           position="top" variant="small" isOpen
-          {...modalProps}
-          footer={
-              <ActionList>
-                  {!storageRequirementsNotMet &&
-                      <>
-                          <Button
-                            id={idPrefix + "-check-storage-dialog-continue"}
-                            variant="primary"
-                            onClick={goBackToInstallation}>
-                              {_("Continue")}
-                          </Button>
-                          <Button
-                            id={idPrefix + "-check-storage-dialog-return"}
-                            variant="link"
-                            onClick={() => setShowDialog(false)}>
-                              {_("Return to storage editor")}
-                          </Button>
-                      </>}
-                  {storageRequirementsNotMet &&
-                      <>
-                          <Button
-                            variant="warning"
-                            id={idPrefix + "-check-storage-dialog-return"}
-                            onClick={() => setShowDialog(false)}>
-                              {_("Configure storage again")}
-                          </Button>
-                          <Button
-                            id={idPrefix + "-check-storage-dialog-continue"}
-                            variant="secondary"
-                            onClick={() => setShowStorage(false)}>
-                              {_("Proceed with installation")}
-                          </Button>
-                      </>}
-              </ActionList>
-          }
         >
-            <>
+            <ModalHeader
+              title={title}
+              titleIconVariant={storageRequirementsNotMet && "warning"}
+            />
+            <ModalBody>
                 {storageRequirementsNotMet ? error?.message : null}
                 <HelperText>
                     {!storageRequirementsNotMet &&
@@ -621,7 +592,41 @@ const CheckStorageDialogLoaded = ({
                             )}
                     </HelperTextItem>}
                 </HelperText>
-            </>
+            </ModalBody>
+            <ModalFooter>
+                <ActionList>
+                    {!storageRequirementsNotMet &&
+                    <>
+                        <Button
+                          id={idPrefix + "-check-storage-dialog-continue"}
+                          variant="primary"
+                          onClick={goBackToInstallation}>
+                            {_("Continue")}
+                        </Button>
+                        <Button
+                          id={idPrefix + "-check-storage-dialog-return"}
+                          variant="link"
+                          onClick={() => setShowDialog(false)}>
+                            {_("Return to storage editor")}
+                        </Button>
+                    </>}
+                    {storageRequirementsNotMet &&
+                    <>
+                        <Button
+                          variant="warning"
+                          id={idPrefix + "-check-storage-dialog-return"}
+                          onClick={() => setShowDialog(false)}>
+                            {_("Configure storage again")}
+                        </Button>
+                        <Button
+                          id={idPrefix + "-check-storage-dialog-continue"}
+                          variant="secondary"
+                          onClick={() => setShowStorage(false)}>
+                            {_("Proceed with installation")}
+                        </Button>
+                    </>}
+                </ActionList>
+            </ModalFooter>
         </Modal>
 
     );
