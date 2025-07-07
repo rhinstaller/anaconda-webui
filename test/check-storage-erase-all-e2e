@@ -120,8 +120,8 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         self.assertEqual(vda3_root["size"], "14G")
 
         vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
-        vdb_mountpoints = [part["mountpoints"][0] for part in vdb["children"]]
-        self.assertEqual(vdb_mountpoints, [None] * len(vdb_mountpoints))
+        vdb_mountpoints = [part["mountpoints"] for part in vdb["children"]]
+        self.assertEqual(vdb_mountpoints, [[]] * len(vdb_mountpoints))
 
         m.reboot()
         self.selectBootMenuEntry(2)
