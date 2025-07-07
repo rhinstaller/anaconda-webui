@@ -21,8 +21,6 @@ import React, { useContext, useEffect } from "react";
 import {
     Form,
     FormGroup,
-    MenuGroup,
-    MenuItem,
 } from "@patternfly/react-core";
 
 import { setLocale } from "../../apis/boss.js";
@@ -54,9 +52,6 @@ const getLocaleNativeName = locale => locale["native-name"].v;
 class LanguageSelector extends React.Component {
     constructor (props) {
         super(props);
-        this.state = {
-            search: "",
-        };
         this.initiallySelectedLanguage = props.language;
 
         this.renderOptions = this.renderOptions.bind(this);
@@ -75,11 +70,9 @@ class LanguageSelector extends React.Component {
         }
     }
 
-    renderOptions (filter) {
+    renderOptions () {
         const { commonLocales, languages } = this.props;
-
-        const filtered = [];
-        const filterLow = filter.toLowerCase();
+        const options = [];
 
         // Returns a locale with a given code.
         const findLocaleWithId = (localeCode) => {
@@ -94,42 +87,32 @@ class LanguageSelector extends React.Component {
             console.warn(`Locale with code ${localeCode} not found.`);
         };
 
-        // Helper to create a menu item
-        const createMenuItem = (locale, prefix) => {
-            const isSelected = this.props.language === getLocaleId(locale);
-            // Creating a ref that will be applied to the selected language and cause it to scroll into view.
-            const scrollRef = (isSelected)
-                ? (ref) => {
-                    if (ref) {
-                        ref.scrollIntoView({ block: "center" });
-                    }
-                }
-                : undefined;
+        const onSearch = (locale, search) => {
+            const searchLower = search.toLowerCase();
 
             return (
-                <MenuItem
-                  id={`${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`}
-                  isSelected={isSelected}
-                  key={`${prefix}-${getLocaleId(locale)}`}
-                  itemId={getLocaleId(locale)}
-                  ref={scrollRef}
-                  style={isSelected ? { backgroundColor: "var(--pf-v6-c-menu__list-item--hover--BackgroundColor)" } : undefined}
-                >
-                    <div lang={convertToCockpitLang({ lang: getLocaleId(locale) })}>
-                        <span>{getLocaleNativeName(locale)}</span>
-                    </div>
-                </MenuItem>
+                getLocaleNativeName(locale).toLowerCase()
+                        .includes(searchLower) ||
+                getLanguageNativeName(locale).toLowerCase()
+                        .includes(searchLower) ||
+                getLanguageEnglishName(locale).toLowerCase()
+                        .includes(searchLower)
             );
         };
 
-        const onSearch = (locale) => (
-            getLocaleNativeName(locale).toLowerCase()
-                    .includes(filterLow) ||
-            getLanguageNativeName(locale).toLowerCase()
-                    .includes(filterLow) ||
-            getLanguageEnglishName(locale).toLowerCase()
-                    .includes(filterLow)
-        );
+        // Helper to create a menu item
+        const createMenuItem = (locale, prefix) => {
+            return ({
+                id: `${SCREEN_ID}-language-${prefix}-${getLocaleId(locale).split(".UTF-8")[0]}`,
+                item: locale,
+                itemId: getLocaleId(locale),
+                itemLang: convertToCockpitLang({ lang: getLocaleId(locale) }),
+                itemText: getLocaleNativeName(locale),
+                itemType: "menu-item",
+                key: `${prefix}-${getLocaleId(locale)}`,
+                onSearch: onSearch.bind(null, locale),
+            });
+        };
 
         const suggestedItems = commonLocales
                 .map(findLocaleWithId)
@@ -145,66 +128,43 @@ class LanguageSelector extends React.Component {
                     }
                     return getLocaleNativeName(a).localeCompare(getLocaleNativeName(b));
                 })
-                .filter(locale => locale && onSearch(locale))
                 .map(locale => createMenuItem(locale, "option-common"));
 
         if (suggestedItems.length > 0) {
-            filtered.push(
-                <React.Fragment key="group-common-languages">
-                    <MenuGroup
-                      label={_("Suggested languages")}
-                      id={SCREEN_ID + "-common-languages"}
-                      labelHeadingLevel="h3"
-                    >
-                        {suggestedItems}
-                    </MenuGroup>
-                </React.Fragment>
-            );
+            options.push({
+                id: `${SCREEN_ID}-common-languages`,
+                itemChildren: suggestedItems,
+                itemLabel: _("Suggested languages"),
+                itemLabelHeadingLevel: "h3",
+                itemType: "menu-group",
+            });
         }
 
-        // List other languages (filtered by search if applicable)
         const otherItems = Object.keys(languages)
                 .sort((a, b) => {
                     return getLanguageNativeName(languages[a].locales[0]).localeCompare(getLanguageNativeName(languages[b].locales[0]));
                 })
                 .flatMap(languageId => {
                     const languageItem = languages[languageId];
-                    return languageItem.locales.filter(onSearch);
+                    return languageItem.locales;
                 })
                 .filter(locale => commonLocales.indexOf(getLocaleId(locale)) === -1)
                 .map(locale => createMenuItem(locale, "option-alpha"));
 
         if (otherItems.length > 0) {
-            filtered.push(
-                <MenuGroup
-                  label={_("Additional languages")}
-                  id={`${SCREEN_ID}-additional-languages`}
-                  labelHeadingLevel="h3"
-                  key="group-additional-languages"
-                >
-                    {otherItems}
-                </MenuGroup>
-            );
+            options.push({
+                id: `${SCREEN_ID}-additional-languages`,
+                itemChildren: otherItems,
+                itemLabel: _("Additional languages"),
+                itemLabelHeadingLevel: "h3",
+                itemType: "menu-group",
+            });
         }
 
-        // Handle case when no results are found
-        if (filter && filtered.length === 0) {
-            return [
-                <MenuItem
-                  id={`${SCREEN_ID}-search-no-result`}
-                  isAriaDisabled
-                  key="no-result"
-                >
-                    {_("No results found")}
-                </MenuItem>
-            ];
-        }
-
-        return filtered;
+        return options;
     }
 
     render () {
-        const { lang } = this.state;
         const { languages } = this.props;
 
         const handleOnSelect = (_event, item) => {
@@ -244,19 +204,15 @@ class LanguageSelector extends React.Component {
             }
         };
 
-        const options = this.renderOptions(this.state.search);
+        const options = this.renderOptions();
 
         return (
             <MenuSearch
-              ariaLabelSearchClear={_("Clear search input")}
               ariaLabelSearch={_("Search for a language")}
               handleOnSelect={handleOnSelect}
               menuType="language"
-              onClick={() => this.setState({ search: "" })}
               options={options}
-              search={this.state.search}
-              selection={lang}
-              setSearch={search => this.setState({ search })}
+              selection={this.props.language}
             />
         );
     }
@@ -295,7 +251,6 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
                       label={_("Keyboard")}
                     >
                         <Keyboard
-                          idPrefix={SCREEN_ID}
                           isGnome={isGnome}
                           setIsFormValid={setIsFormValid}
                         />
