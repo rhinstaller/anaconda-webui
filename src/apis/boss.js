@@ -81,3 +81,10 @@ export const installWithTasks = () => {
 export const setLocale = ({ locale }) => {
     return callClient("SetLocale", [locale]);
 };
+
+/**
+ * @returns {Promise}           Resolves a list of running threads
+ */
+export const getRunningThreads = () => {
+    return callClient("GetRunningThreads", []);
+};
