@@ -24,6 +24,19 @@ from testlib import test_main  # pylint: disable=import-error
 
 
 class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
+    def cockpitCreateBootloaderPartitions(self):
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        if self.is_efi:
+            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
+        else:
+            self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
     @disk_images([('', 15), ('', 15), ('', 15)])
     def testRAIDonPartitions(self):
         """
@@ -51,15 +64,8 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
 
         s.enter_cockpit_storage()
 
-        # Create BIOS and boot partitions on vdb
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.confirm()
-
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        self.dialog({"size": 1, "type": "biosboot"})
-
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        # Create BIOS and boot partitions on vda
+        self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
         self.dialog({ "type": "empty"})
@@ -163,15 +169,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         self.dialog_wait_close()
 
         # Create biosboot and /boot partitions on vda
-        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
-        self.dialog({"type": "gpt"})
-        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
-        if self.is_efi:
-            self.dialog({"size": 100, "type": "efi", "mount_point": "/boot/efi"})
-        else:
-            self.dialog({"size": 1, "type": "biosboot"})
-        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
-        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+        self.cockpitCreateBootloaderPartitions()
 
         # Create / partition on the RAID device
         self.click_dropdown(self.card_row("Storage", 7), "Create partition table")
@@ -214,6 +212,60 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         raid_part = next(part for part in raid_dev["children"] if part["type"] == "part")
         self.assertEqual(raid_part["mountpoints"], ["/"])
         self.assertEqual(raid_part["size"], "30G")
+
+    def testSWAP(self):
+        """
+        Description:
+            Test an installation using 'storage editor' and including a disk-based swap partition
+
+        Expected results:
+            - The install process should complete successfully and the installed system should boot as expected.
+            - The expected partition layout should be created on the target device(s).
+            - The disk-based swap partition should be active (you can check /proc/swaps or the output of swapon --show).
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.enter_cockpit_storage()
+        # Create BIOS and boot partitions on vda
+        self.cockpitCreateBootloaderPartitions()
+        # Create a partition for /
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"size": 4096, "type": "ext4", "mount_point": "/"})
+        # Create a partition for swap
+        self.click_dropdown(self.card_row("Storage", 5), "Create partition")
+        self.dialog({"size": 1024, "type": "swap"})
+        # Exit the cockpit-storage iframe and return to installation
+        s.exit_cockpit_storage()
+        s.check_scenario_selected("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row("vda", "/", "vda3", "4.10 GB", False)
+        r.check_disk_row("vda", "swap", "vda4", "1.02 GB", False)
+        self.install(needs_confirmation=False)
+
+        # Check that the expected partition layout is created
+        lsblk = s.get_lsblk_json()
+        block_devs = lsblk["blockdevices"]
+        vda = next(dev for dev in block_devs if dev["name"] == "vda")
+        for dev, mountpoint in (
+            ("vda2", "/boot"),
+            ("vda3", "/"),
+            ("vda4", "[SWAP]"),
+        ):
+            part = next(part for part in vda["children"] if part["name"] == dev)
+            self.assertEqual(part["mountpoints"], [mountpoint])
+
+        # Check that the swap partition is active
+        self.assertIn("/dev/vda4", m.execute("swapon --show"))
 
 
 if __name__ == '__main__':
