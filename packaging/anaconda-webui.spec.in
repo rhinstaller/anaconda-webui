@@ -27,12 +27,8 @@ Requires: cockpit-storaged
 Requires: cockpit-bridge >= %{cockpitver}
 Requires: cockpit-ws >= %{cockpitver}
 Requires: anaconda-core  >= %{anacondacorever}
-# Firefox dependency needs to be specified there as cockpit web-view does not have a hard dependency on Firefox as
-# it can often fall back to a diferent browser. This does not work in the limited installer
-# environment, so we need to make sure Firefox is available. Exclude on RHEL, only Flatpak version will be there.
-%if ! 0%{?rhel}
 Requires: (firefox if fedora-release-workstation)
-%endif
+Requires: (slitherer unless fedora-release-workstation)
 %if 0%{?fedora}
 Requires: fedora-logos
 %endif
