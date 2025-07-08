@@ -31,7 +31,7 @@ Requires: anaconda-core  >= %{anacondacorever}
 # it can often fall back to a diferent browser. This does not work in the limited installer
 # environment, so we need to make sure Firefox is available. Exclude on RHEL, only Flatpak version will be there.
 %if ! 0%{?rhel}
-Requires: firefox
+Requires: (firefox if fedora-release-workstation)
 %endif
 %if 0%{?fedora}
 Requires: fedora-logos
