@@ -47,6 +47,8 @@ import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts
 import "./Error.scss";
 
 const _ = cockpit.gettext;
+const JOURNAL_LOG = "/tmp/journal.log";
+const WEBUI_LOG = "/tmp/anaconda-webui.log";
 
 const useBugzillaPrefiledReportURL = () => {
     const {
@@ -84,7 +86,7 @@ const ensureMaximumReportURLLength = (reportURL) => {
 
 const addLogAttachmentCommentToReportURL = (reportURL) => {
     const newUrl = new URL(reportURL);
-    const logFile = "/tmp/journal.log";
+    const logFile = JOURNAL_LOG;
     const comment = newUrl.searchParams.get("comment") || "";
     newUrl.searchParams.set("comment", comment +
         "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
@@ -97,6 +99,7 @@ export const BZReportModal = ({
     detailsContent,
     detailsLabel,
     idPrefix,
+    isFrontendException,
     reportLinkURL,
     title,
     titleIconVariant
@@ -110,7 +113,7 @@ export const BZReportModal = ({
         // See https://issues.redhat.com/browse/INSTALLER-4210
         cockpit.spawn(["journalctl", "-a"])
                 .then((output) => (
-                    cockpit.file("/tmp/journal.log")
+                    cockpit.file(JOURNAL_LOG)
                             .replace(output)
                 ));
     }, []);
@@ -187,7 +190,9 @@ export const BZReportModal = ({
                                         {_("Log in to Bugzilla, or create a new account.")}
                                     </Content>
                                     <Content component={ContentVariants.li}>
-                                        {fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>/tmp/journal.log</i>)}
+                                        {!isFrontendException
+                                            ? fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>{JOURNAL_LOG}</i>)
+                                            : fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0 and $1."), <i>{JOURNAL_LOG}</i>, <i>{WEBUI_LOG}</i>)}
                                     </Content>
                                 </Content>
                                 <Alert title={_("Logs may contain sensitive information like IP addresses or usernames. Attachments on Bugzilla issues are marked private by default.")} variant="warning" isInline isPlain />
@@ -267,6 +272,7 @@ const CriticalError = ({ exception }) => {
           description={description}
           reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception)}
           idPrefix={idPrefix}
+          isFrontendException={!!exception.frontendException}
           title={_("Installation failed")}
           titleIconVariant="danger"
           detailsLabel={_("Error details")}
