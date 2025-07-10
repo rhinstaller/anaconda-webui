@@ -271,7 +271,7 @@ class VirtInstallMachineCase(MachineCase):
             distro_name = self.disk_images[0][0].split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
             # Select the Fedora grub entry for first boot
-            m.execute("efibootmgr -n 0001")
+            m.execute("efibootmgr -n 0002")
 
         self.handleReboot()
 

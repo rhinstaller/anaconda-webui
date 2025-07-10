@@ -65,7 +65,11 @@ class DualBootHelper_E2E(VirtInstallMachineCase):
         self.assertEqual(vda3_root["size"], f"{root_one_size!s}G")
 
         # Select second OS grub entry
-        self.selectBootMenuEntry(2)
+        if self.is_efi:
+            debian_boot_entry = m.execute("efibootmgr | grep debian | sed -nE 's/^Boot([0-9]+)\\*.*/\\1/p'").strip()
+            m.execute(f"efibootmgr -n {debian_boot_entry}")
+        else:
+            self.selectBootMenuEntry(2)
         m.reboot()
         pretty_name = get_pretty_name(m)
         self.assertIn("Debian GNU/Linux", pretty_name)
