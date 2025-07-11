@@ -254,6 +254,12 @@ export const usePlannedDevices = () => {
     return plannedDeviceTree ? plannedDeviceTree.devices : {};
 };
 
+export const usePlannedExistingSystems = () => {
+    const plannedDeviceTree = useDeviceTree();
+
+    return plannedDeviceTree ? plannedDeviceTree.existingSystems : [];
+};
+
 export const usePlannedMountPoints = () => {
     const plannedDeviceTree = useDeviceTree();
 
