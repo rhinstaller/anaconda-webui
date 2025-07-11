@@ -184,6 +184,7 @@ class TestBasic(VirtInstallMachineCase):
         Expected results:
             - The Error modal is shown
             - The Error modal contains the correct information
+            - The Journal contains the exception
         """
 
         b = self.browser
@@ -202,6 +203,12 @@ class TestBasic(VirtInstallMachineCase):
             "#critical-error-bz-report-modal",
             "js-error-modal",
             ignore=["#critical-error-bz-report-modal-review-log"]
+        )
+
+        # Check the exception is present in the journal
+        self.assertIn(
+            "myNonExistingFunction is not defined",
+            m.execute("journalctl -b -t anaconda-webui")
         )
 
 

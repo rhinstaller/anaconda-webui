@@ -40,12 +40,15 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
+import { error } from "../helpers/log.js";
 
 import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import "./Error.scss";
 
 const _ = cockpit.gettext;
+const JOURNAL_LOG = "/tmp/journal.log";
+const WEBUI_LOG = "/tmp/anaconda-webui.log";
 
 const useBugzillaPrefiledReportURL = () => {
     const {
@@ -83,7 +86,7 @@ const ensureMaximumReportURLLength = (reportURL) => {
 
 const addLogAttachmentCommentToReportURL = (reportURL) => {
     const newUrl = new URL(reportURL);
-    const logFile = "/tmp/journal.log";
+    const logFile = JOURNAL_LOG;
     const comment = newUrl.searchParams.get("comment") || "";
     newUrl.searchParams.set("comment", comment +
         "\n\n" + cockpit.format(_("Please attach the log file $0 to the issue."), logFile));
@@ -96,6 +99,7 @@ export const BZReportModal = ({
     detailsContent,
     detailsLabel,
     idPrefix,
+    isFrontendException,
     reportLinkURL,
     title,
     titleIconVariant
@@ -109,7 +113,7 @@ export const BZReportModal = ({
         // See https://issues.redhat.com/browse/INSTALLER-4210
         cockpit.spawn(["journalctl", "-a"])
                 .then((output) => (
-                    cockpit.file("/tmp/journal.log")
+                    cockpit.file(JOURNAL_LOG)
                             .replace(output)
                 ));
     }, []);
@@ -186,7 +190,9 @@ export const BZReportModal = ({
                                         {_("Log in to Bugzilla, or create a new account.")}
                                     </Content>
                                     <Content component={ContentVariants.li}>
-                                        {fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>/tmp/journal.log</i>)}
+                                        {!isFrontendException
+                                            ? fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0."), <i>{JOURNAL_LOG}</i>)
+                                            : fmtToFragments(_("After creating the issue, click 'Add attachment' and attach file $0 and $1."), <i>{JOURNAL_LOG}</i>, <i>{WEBUI_LOG}</i>)}
                                     </Content>
                                 </Content>
                                 <Alert title={_("Logs may contain sensitive information like IP addresses or usernames. Attachments on Bugzilla issues are marked private by default.")} variant="warning" isInline isPlain />
@@ -266,6 +272,7 @@ const CriticalError = ({ exception }) => {
           description={description}
           reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception)}
           idPrefix={idPrefix}
+          isFrontendException={!!exception.frontendException}
           title={_("Installation failed")}
           titleIconVariant="danger"
           detailsLabel={_("Error details")}
@@ -308,41 +315,41 @@ export class ErrorBoundary extends React.Component {
 
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
-        window.onerror = (message, source, lineno, colno, error) => {
-            console.error("ErrorBoundary caught an error:", error);
-            this.setState({ frontendException: error, hasError: true });
+        window.onerror = (message, source, lineno, colno, _error) => {
+            error("ErrorBoundary caught an error:", _error);
+            this.setState({ frontendException: _error, hasError: true });
             return true;
         };
 
         window.onunhandledrejection = (event) => {
-            console.error("ErrorBoundary caught an error:", event.reason);
+            error("ErrorBoundary caught an error:", event.reason);
             this.setState({ frontendException: event.reason, hasError: true });
             return true;
         };
     }
 
-    static getDerivedStateFromError (error) {
-        if (error) {
+    static getDerivedStateFromError (_error) {
+        if (_error) {
             return {
-                backendException: error,
+                backendException: _error,
                 hasError: true
             };
         }
     }
 
-    componentDidCatch (error, info) {
-        console.error("ComponentDidCatch: ErrorBoundary caught an error:", error, info);
+    componentDidCatch (_error, info) {
+        error("ComponentDidCatch: ErrorBoundary caught an error:", _error, info);
     }
 
     onCritFailBackend = (arg) => {
         const { context, isFrontEnd } = arg || {};
 
-        return (error) => {
-            console.info("ErrorBoundary caught an error:", error, context);
+        return (_error) => {
+            error("ErrorBoundary caught an error:", _error, context);
             if (isFrontEnd) {
-                this.setState({ frontendException: { ...error, contextData: { context } }, hasError: true });
+                this.setState({ frontendException: { ..._error, contextData: { context } }, hasError: true });
             } else {
-                this.setState({ backendException: { ...error, contextData: { context } }, hasError: true });
+                this.setState({ backendException: { ..._error, contextData: { context } }, hasError: true });
             }
         };
     };

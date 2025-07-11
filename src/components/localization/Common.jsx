@@ -29,9 +29,12 @@ import {
     TextInputGroupUtilities,
 } from "@patternfly/react-core";
 import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
+
+import { warn as loggerWarn } from "../../helpers/log.js";
 const _ = cockpit.gettext;
 
 const SCREEN_ID = "anaconda-screen-language";
+const warn = loggerWarn.bind(null, SCREEN_ID + ":");
 
 const renderOptions = (options, selection, search) => {
     return options.map(option => {
@@ -88,7 +91,7 @@ const renderOptions = (options, selection, search) => {
             );
         }
         default:
-            console.warn(`Unknown item type: ${option.itemType}`);
+            warn(`Unknown item type: ${option.itemType}`);
             return null;
         }
     });
