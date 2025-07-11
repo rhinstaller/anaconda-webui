@@ -65,7 +65,7 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
     const localizationData = useContext(LanguageContext);
     const accounts = useContext(UsersContext);
     const { getLabel } = useScenario();
-    const scenarioLabel = getLabel?.();
+    const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";

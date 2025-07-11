@@ -30,6 +30,7 @@ import {
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
+    usePlannedExistingSystems,
     useRequiredSize,
 } from "../../../hooks/Storage.jsx";
 
@@ -97,6 +98,16 @@ const ReclaimSpace = ({ availability }) => {
     );
 };
 
+const ScenarioLabel = ({ isReview }) => {
+    const existingSystems = usePlannedExistingSystems();
+
+    if (isReview && existingSystems?.length) {
+        return cockpit.format(_("Share disk with other operating systems: $0"), existingSystems?.map((system) => system["os-name"].v).join(", "));
+    }
+
+    return _("Share disk with other operating systems");
+};
+
 export const scenarioUseFreeSpace = {
     action: ReclaimSpace,
     buttonVariant: "primary",
@@ -104,7 +115,7 @@ export const scenarioUseFreeSpace = {
     getAvailability: useAvailabilityUseFreeSpace,
     getButtonLabel: () => _("Install"),
     getDetail: helpUseFreeSpace,
-    getLabel: () => _("Share disk with other operating system"),
+    getLabel: (params) => <ScenarioLabel isReview={params?.isReview} />,
     id: "use-free-space",
     // CLEAR_PARTITIONS_NONE = 0
     initializationMode: 0,
