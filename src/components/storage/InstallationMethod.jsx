@@ -27,7 +27,6 @@ import {
 
 import {
     applyStorage,
-    resetPartitioning,
 } from "../../apis/storage_partitioning.js";
 
 import {
@@ -39,6 +38,7 @@ import {
 import {
     getNewPartitioning,
     useHomeReuseOptions,
+    usePartitioningReset,
 } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
@@ -202,32 +202,12 @@ const InstallationMethodFooterHelper = () => {
     );
 };
 
-const usePageInit = () => {
-    const { setIsFormDisabled } = useContext(FooterContext);
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
-    const pageHasMounted = useRef(false);
-    // Always reset the partitioning when entering the installation destination page
-    // If the last partitioning applied was from the cockpit storage integration
-    // we should not reset it, as this option does apply the partitioning onNext
-    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
-        appliedPartitioning &&
-        pageHasMounted.current !== true;
-
-    useEffect(() => {
-        pageHasMounted.current = true;
-        if (needsReset) {
-            resetPartitioning();
-        } else {
-            setIsFormDisabled(false);
-        }
-    }, [needsReset, setIsFormDisabled]);
-};
-
 export class Page {
     constructor () {
         this.component = InstallationMethod;
         this.id = "anaconda-screen-method";
         this.label = _("Installation method");
-        this.usePageInit = usePageInit;
+        /* Reset partitioning on page load to prevent stacking planned changes */
+        this.usePageInit = usePartitioningReset;
     }
 }

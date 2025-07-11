@@ -20,9 +20,11 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useWizardFooter } from "@patternfly/react-core";
 
-import { applyStorage, resetPartitioning } from "../../apis/storage_partitioning.js";
+import { applyStorage } from "../../apis/storage_partitioning.js";
 
-import { FooterContext, StorageContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../contexts/Common.jsx";
+
+import { usePartitioningReset } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
@@ -82,33 +84,6 @@ const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
     return <AnacondaWizardFooter onNext={onNext} />;
 };
 
-const usePageInit = () => {
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
-    const { setIsFormDisabled } = useContext(FooterContext);
-    // Reset the partitioning before applying the new one, because in the 'use-free-space' case
-    // the remaining space is not calculated correctly if the partitioning is not reset.
-    // FIXME: https://issues.redhat.com/browse/INSTALLER-3982
-    // This is a workaround, as reseting the partitioning just before the 'applyStorage'
-    // call results in a deadlock.
-    const needsReset = appliedPartitioning && appliedPartitioning !== partitioning.path;
-
-    useEffect(() => {
-        const _resetPartitioning = async () => {
-            await resetPartitioning();
-        };
-
-        if (needsReset) {
-            _resetPartitioning();
-        }
-    }, [needsReset]);
-
-    useEffect(() => {
-        if (!needsReset) {
-            setIsFormDisabled(false);
-        }
-    }, [needsReset, setIsFormDisabled]);
-};
-
 export class Page {
     constructor (isBootIso, storageScenarioId) {
         this.component = StorageConfiguration;
@@ -116,6 +91,7 @@ export class Page {
         this.isHidden = ["mount-point-mapping", "use-configured-storage", "home-reuse"].includes(storageScenarioId);
         this.label = _("Storage configuration");
         this.title = _("Storage configuration");
-        this.usePageInit = usePageInit;
+        /* Reset partitioning on page load to prevent stacking planned changes */
+        this.usePageInit = usePartitioningReset;
     }
 }

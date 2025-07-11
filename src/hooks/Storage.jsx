@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import {
     getRequiredSpace
@@ -36,11 +36,12 @@ import {
     partitioningSetEncrypt,
     partitioningSetHomeReuse,
     partitioningSetPassphrase,
+    resetPartitioning,
 } from "../apis/storage_partitioning.js";
 
 import { getDeviceAncestors, hasReusableFedoraWithWindowsOS } from "../helpers/storage.js";
 
-import { StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
+import { FooterContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -197,6 +198,29 @@ export const getNewPartitioning = async ({
     return part;
 };
 
+export const usePartitioningReset = () => {
+    const { setIsFormDisabled } = useContext(FooterContext);
+    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const pageHasMounted = useRef(false);
+    // Always reset the partitioning when entering the installation destination page
+    // If the last partitioning applied was from the cockpit storage integration
+    // we should not reset it, as this option does apply the partitioning onNext
+    const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
+        appliedPartitioning &&
+        pageHasMounted.current !== true;
+
+    useEffect(() => {
+        pageHasMounted.current = true;
+        if (needsReset) {
+            resetPartitioning();
+        } else {
+            setIsFormDisabled(false);
+        }
+    }, [needsReset, setIsFormDisabled]);
+
+    return !needsReset;
+};
+
 export const useDeviceTree = () => {
     const [deviceTreePath, setDeviceTreePath] = useState();
     const { appliedPartitioning, deviceTrees } = useContext(StorageContext);
@@ -228,6 +252,12 @@ export const usePlannedDevices = () => {
     const plannedDeviceTree = useDeviceTree();
 
     return plannedDeviceTree ? plannedDeviceTree.devices : {};
+};
+
+export const usePlannedExistingSystems = () => {
+    const plannedDeviceTree = useDeviceTree();
+
+    return plannedDeviceTree ? plannedDeviceTree.existingSystems : [];
 };
 
 export const usePlannedMountPoints = () => {
