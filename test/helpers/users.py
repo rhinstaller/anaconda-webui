@@ -102,6 +102,7 @@ class Users(UsersDBus):
     def enable_root_account(self, enable):
         sel = f"#{ACCOUNTS_SCREEN}-root-account-enable-root-account"
         self.browser.set_checked(sel, enable)
+        self.browser.wait_visible(f"{sel}:checked" if enable else f"{sel}:not(:checked)")
 
     def set_valid_root_password(self, valid=True):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
