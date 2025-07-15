@@ -192,7 +192,7 @@ const CreateAccount = ({
     const userFormBody = (
         <>
             <FormSection>
-                {_("This account will have administration privilege with sudo.")}
+                {_("A standard user account with admin access for making system-wide changes.")}
                 <FormGroup
                   label={_("Full name")}
                   fieldId={idPrefix + "-full-name"}
