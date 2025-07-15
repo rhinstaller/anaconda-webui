@@ -118,6 +118,11 @@ class Users(UsersDBus):
             p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
             p.check_pw_focused()
 
+    @log_step(snapshot_before=True)
+    def enable_user_account(self, enable):
+        sel = f"#{ACCOUNTS_SCREEN}-create-account-set-user-account"
+        self.browser.set_checked(sel, enable)
+
     def set_valid_root_password(self, valid=True):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
         password = "password"

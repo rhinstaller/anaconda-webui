@@ -60,10 +60,28 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
+const AccountsDescription = () => {
+    const accounts = useContext(UsersContext);
+
+    if (accounts.skipAccountCreation && !accounts.isRootEnabled) {
+        return _("No user or root account has been configured");
+    } else if (accounts.skipAccountCreation && accounts.isRootEnabled) {
+        return _("Root account is enabled, but no user account has been configured");
+    } else if (!accounts.skipAccountCreation && !accounts.isRootEnabled) {
+        return accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName;
+    } else {
+        return (
+            <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
+                <div>{_("Root account is enabled")}</div>
+                <div>{cockpit.format("User account: $0", accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName)}</div>
+            </Flex>
+        );
+    }
+};
+
 const ReviewConfiguration = ({ setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
-    const accounts = useContext(UsersContext);
     const { getLabel } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
@@ -111,7 +129,7 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                             <ReviewDescriptionListItem
                               id={`${SCREEN_ID}-target-system-account`}
                               term={_("Account")}
-                              description={accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName}
+                              description={<AccountsDescription />}
                             />
                         </ReviewDescriptionList>}
                     {isBootIso &&
