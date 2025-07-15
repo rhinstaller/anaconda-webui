@@ -197,6 +197,7 @@ export const PasswordFormFields = ({
     return (
         <FormSection>
             <FormGroup
+              isRequired
               label={passwordLabel}
               labelInfo={rulesSatisfied(ruleResults) && passwordStrengthLabel(idPrefix, passwordStrength, strengthLevels)}
             >
@@ -227,6 +228,7 @@ export const PasswordFormFields = ({
                 </FormHelperText>
             </FormGroup>
             <FormGroup
+              isRequired
               label={confirmPasswordLabel}
             >
                 <InputGroup>
