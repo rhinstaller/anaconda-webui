@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const setUsers = (users) => ({
+export const setUsersAction = (users) => ({
     payload: { users },
     type: "SET_USERS"
 });

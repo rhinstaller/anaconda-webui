@@ -75,6 +75,7 @@ export const usersInitialState = {
     password: "",
     rootConfirmPassword: "",
     rootPassword: "",
+    skipAccountCreation: false,
     userName: "",
 };
 

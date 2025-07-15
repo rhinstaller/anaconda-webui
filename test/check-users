@@ -32,20 +32,24 @@ class TestUsers(VirtInstallMachineCase):
 
         Expected results:
             - A new user can be created
-            - The root account can be enabled and root password can be set
+            - The root account can be enabled and a root password set
+            - The user can skip creating a user account
+            - The user can skip enabling the root account
+            - The user can skip both and proceed to the next step
         """
         b = self.browser
         i = Installer(b, self.machine)
         u = Users(b, self.machine)
+        r = Review(b, self.machine)
 
         i.open()
-
         i.reach(i.steps.ACCOUNTS)
+
+        # Check skipping root account enablement
         create_user(b, self.machine)
 
         # Wait for the form to be ready before taking a screenshot
         i.check_next_disabled(False)
-
         b.assert_pixels(
             "#app",
             "users-step-basic",
@@ -56,23 +60,35 @@ class TestUsers(VirtInstallMachineCase):
         users = u.dbus_get_users()
         self.assertIn('"groups" as 1 "wheel"', users)
         self.assertIn('"is-crypted" b true', users)
+        self.assertIn("tester", users)
         assert u.dbus_get_root_locked()
         assert not u.dbus_get_is_root_password_set()
 
-        # Check root password enablement
+        r.check_account("tester")
 
+        # Check skipping user account creation
         i.reach_on_sidebar(i.steps.ACCOUNTS)
+        u.enable_user_account(False)
         u.enable_root_account(True)
         u.set_valid_root_password()
-        i.reach(i.steps.REVIEW)
+        i.next()
+        r.check_account("Root account is enabled, but no user account has been configured")
         assert not u.dbus_get_root_locked()
         assert u.dbus_get_is_root_password_set()
+        users = u.dbus_get_users()
+        assert "tester" not in users
 
+        # Check skipping both user and root account creation
         i.reach_on_sidebar(i.steps.ACCOUNTS)
+        u.enable_user_account(False)
         u.enable_root_account(False)
-        i.reach(i.steps.REVIEW)
+        i.next()
+        r.check_account("No user or root account has been configured")
         assert u.dbus_get_root_locked()
         assert not u.dbus_get_is_root_password_set()
+        users = u.dbus_get_users()
+        assert "tester" not in users
+
 
     @staticmethod
     def _test_user_name(user, installer, valid, invalid):

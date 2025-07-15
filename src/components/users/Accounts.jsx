@@ -17,7 +17,6 @@
 
 import cockpit from "cockpit";
 
-import * as python from "python.js";
 import { debounce } from "throttle-debounce";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
@@ -35,55 +34,25 @@ import {
 } from "@patternfly/react-core";
 
 import {
-    clearRootPassword,
     guessUsernameFromFullName,
-    setCryptedRootPassword,
-    setIsRootAccountLocked,
-    setUsers,
 } from "../../apis/users.js";
 
 import {
-    setUsers as setUsersAction,
+    setUsersAction,
 } from "../../actions/users-actions.js";
+
+import {
+    applyAccounts,
+} from "../../helpers/users.js";
 
 import { RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
 
-import encryptUserPw from "../../scripts/encrypt-user-pw.py";
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
 
 import "./Accounts.scss";
 
 const _ = cockpit.gettext;
-
-export const cryptUserPassword = async (password) => {
-    const crypted = await python.spawn(encryptUserPw, password, { environ: ["LC_ALL=C.UTF-8"], err: "message" });
-    return crypted;
-};
-
-export const applyAccounts = async (accounts) => {
-    const cryptedUserPw = await cryptUserPassword(accounts.password);
-    const users = accountsToDbusUsers({ ...accounts, password: cryptedUserPw });
-    await setUsers(users);
-
-    await setIsRootAccountLocked(!accounts.isRootEnabled);
-    if (accounts.isRootEnabled) {
-        const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
-        await setCryptedRootPassword({ password: cryptedRootPw });
-    } else {
-        await clearRootPassword();
-    }
-};
-
-export const accountsToDbusUsers = (accounts) => {
-    return [{
-        gecos: cockpit.variant("s", accounts.fullName || ""),
-        groups: cockpit.variant("as", ["wheel"]),
-        "is-crypted": cockpit.variant("b", true),
-        name: cockpit.variant("s", accounts.userName || ""),
-        password: cockpit.variant("s", accounts.password || ""),
-    }];
-};
 
 const reservedNames = [
     "root",
@@ -131,6 +100,7 @@ const CreateAccount = ({
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
     const [guessingUserName, setGuessingUserName] = useState(false);
+    const [skipAccountCreation, setSkipAccountCreation] = useState(accounts.skipAccountCreation);
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -141,8 +111,11 @@ const CreateAccount = ({
     }, [fullName, setCheckFullName]);
 
     useEffect(() => {
-        setIsUserValid(isPasswordValid && isUserNameValid && isFullNameValid !== false);
-    }, [setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
+        setIsUserValid(
+            (isPasswordValid !== false && isUserNameValid !== false && isFullNameValid !== false) ||
+            skipAccountCreation
+        );
+    }, [skipAccountCreation, setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
 
     useEffect(() => {
         let valid = true;
@@ -190,18 +163,35 @@ const CreateAccount = ({
     );
 
     useEffect(() => {
-        setAccounts({ confirmPassword, fullName, password, userName });
-    }, [setAccounts, fullName, userName, password, confirmPassword]);
+        setAccounts({ confirmPassword, fullName, password, skipAccountCreation, userName });
+    }, [
+        confirmPassword,
+        fullName,
+        password,
+        setAccounts,
+        skipAccountCreation,
+        userName,
+    ]);
 
     const getValidatedVariant = (valid) => valid === null ? "default" : valid ? "success" : "error";
     const userNameValidated = getValidatedVariant(isUserNameValid);
     const fullNameValidated = getValidatedVariant(isFullNameValid);
 
-    return (
+    const userAccountCheckbox = content => (
+        <Checkbox
+          id={idPrefix + "-set-user-account"}
+          label={_("Use local account")}
+          isChecked={!skipAccountCreation}
+          onChange={(_event, enable) => {
+              setSkipAccountCreation(!enable);
+          }}
+          body={content}
+        />
+    );
+
+    const userFormBody = (
         <>
-            <FormSection
-              title={_("Create account")}
-            >
+            <FormSection>
                 {_("This account will have administration privilege with sudo.")}
                 <FormGroup
                   label={_("Full name")}
@@ -226,16 +216,17 @@ const CreateAccount = ({
                       validated={fullNameValidated}
                     />
                     {fullNameValidated === "error" &&
-                    <FormHelperText>
-                        <HelperText>
-                            <HelperTextItem variant={fullNameValidated}>
-                                {fullNameInvalidHint}
-                            </HelperTextItem>
-                        </HelperText>
-                    </FormHelperText>}
+                        <FormHelperText>
+                            <HelperText>
+                                <HelperTextItem variant={fullNameValidated}>
+                                    {fullNameInvalidHint}
+                                </HelperTextItem>
+                            </HelperText>
+                        </FormHelperText>}
                 </FormGroup>
                 <FormGroup
                   label={_("User name")}
+                  isRequired
                   fieldId={idPrefix + "-user-name"}
                 >
                     <InputGroup id={idPrefix + "-user-name-input-group"}>
@@ -248,17 +239,27 @@ const CreateAccount = ({
                         />
                     </InputGroup>
                     {userNameValidated === "error" &&
-                    <FormHelperText>
-                        <HelperText>
-                            <HelperTextItem variant={userNameValidated}>
-                                {userNameInvalidHint}
-                            </HelperTextItem>
-                        </HelperText>
-                    </FormHelperText>}
+                        <FormHelperText>
+                            <HelperText>
+                                <HelperTextItem variant={userNameValidated}>
+                                    {userNameInvalidHint}
+                                </HelperTextItem>
+                            </HelperText>
+                        </FormHelperText>}
                 </FormGroup>
             </FormSection>
             {passphraseForm}
         </>
+    );
+
+    return (
+        <FormSection
+          title={_("Create account")}
+        >
+            {userAccountCheckbox(
+                !skipAccountCreation ? userFormBody : null
+            )}
+        </FormSection>
     );
 };
 
@@ -374,6 +375,7 @@ const CustomFooter = () => {
 
     return (
         <AnacondaWizardFooter
+          footerHelperText={(!accounts.isRootEnabled && !accounts.userName) ? _("Skipping account creation during installation. It will happen on first boot instead.") : null}
           onNext={onNext}
         />
     );

@@ -107,20 +107,18 @@ export const AnacondaWizardFooter = ({
                             </Button>
                         </ActionListItem>
                     </ActionListGroup>
-                    <ActionListGroup>
-                        <ActionListItem>
-                            <Button
-                              id="installation-quit-btn"
-                              isAriaDisabled={isFormDisabled}
-                              variant="link"
-                              onClick={() => {
-                                  setQuitWaitsConfirmation(true);
-                              }}
-                            >
-                                {isBootIso ? _("Reboot") : _("Quit")}
-                            </Button>
-                        </ActionListItem>
-                    </ActionListGroup>
+                    <ActionListItem>
+                        <Button
+                          id="installation-quit-btn"
+                          isAriaDisabled={isFormDisabled}
+                          variant="link"
+                          onClick={() => {
+                              setQuitWaitsConfirmation(true);
+                          }}
+                        >
+                            {isBootIso ? _("Reboot") : _("Quit")}
+                        </Button>
+                    </ActionListItem>
                 </ActionList>
             </Stack>
         </WizardFooterWrapper>
