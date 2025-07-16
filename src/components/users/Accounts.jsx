@@ -310,6 +310,7 @@ const RootAccount = ({
           setPassword={setPassword}
           passwordLabel={_("Passphrase")}
           confirmPassword={confirmPassword}
+          sectionDescription={_("For better security, avoid using the root account directly. Instead, use the local account above to manage the system.")}
           setConfirmPassword={setConfirmPassword}
           confirmPasswordLabel={_("Confirm passphrase")}
           rules={[ruleLength]}
