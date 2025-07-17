@@ -295,7 +295,7 @@ const RootAccount = ({
           id={idPrefix + "-enable-root-account"}
           label={_("Enable root account")}
           isChecked={isRootAccountEnabled}
-          onChange={(_event, enable) => setAccounts({ isRootEnabled: enable })}
+          onChange={() => setAccounts({ isRootEnabled: !isRootAccountEnabled })}
           body={content}
         />
     );
