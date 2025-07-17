@@ -79,3 +79,7 @@ export const setCryptedRootPassword = ({ password }) => {
 export const clearRootPassword = () => {
     return callClient("ClearRootPassword", []);
 };
+
+export const guessUsernameFromFullName = (fullName) => {
+    return callClient("GuessUsernameFromFullName", [fullName]);
+};

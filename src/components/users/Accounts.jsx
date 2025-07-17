@@ -36,6 +36,7 @@ import {
 
 import {
     clearRootPassword,
+    guessUsernameFromFullName,
     setCryptedRootPassword,
     setIsRootAccountLocked,
     setUsers,
@@ -129,6 +130,7 @@ const CreateAccount = ({
     const [confirmPassword, setConfirmPassword] = useState(accounts.confirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
+    const [guessingUserName, setGuessingUserName] = useState(false);
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -209,6 +211,18 @@ const CreateAccount = ({
                       id={idPrefix + "-full-name"}
                       value={fullName}
                       onChange={(_event, val) => setFullName(val)}
+                      onBlur={async (_event) => {
+                          if (userName.trim() !== "") {
+                              return;
+                          }
+
+                          setGuessingUserName(true);
+
+                          const generatedUserName = await guessUsernameFromFullName(_event.target.value);
+
+                          setUserName(generatedUserName);
+                          setGuessingUserName(false);
+                      }}
                       validated={fullNameValidated}
                     />
                     {fullNameValidated === "error" &&
@@ -227,6 +241,7 @@ const CreateAccount = ({
                     <InputGroup id={idPrefix + "-user-name-input-group"}>
                         <TextInput
                           id={idPrefix + "-user-name"}
+                          isAriaDisabled={guessingUserName}
                           value={userName}
                           onChange={(_event, val) => setUserName(val)}
                           validated={userNameValidated}
