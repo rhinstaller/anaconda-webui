@@ -128,6 +128,7 @@ export const PasswordFormFields = ({
     passwordRef,
     policy,
     rules,
+    sectionDescription,
     setConfirmPassword,
     setIsValid,
     setPassword,
@@ -196,7 +197,9 @@ export const PasswordFormFields = ({
 
     return (
         <FormSection>
+            {sectionDescription}
             <FormGroup
+              isRequired
               label={passwordLabel}
               labelInfo={rulesSatisfied(ruleResults) && passwordStrengthLabel(idPrefix, passwordStrength, strengthLevels)}
             >
@@ -227,6 +230,7 @@ export const PasswordFormFields = ({
                 </FormHelperText>
             </FormGroup>
             <FormGroup
+              isRequired
               label={confirmPasswordLabel}
             >
                 <InputGroup>
