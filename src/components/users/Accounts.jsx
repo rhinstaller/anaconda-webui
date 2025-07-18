@@ -45,6 +45,8 @@ import {
     setUsers as setUsersAction,
 } from "../../actions/users-actions.js";
 
+import { warn } from "../../helpers/log.js";
+
 import { RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
 
 import encryptUserPw from "../../scripts/encrypt-user-pw.py";
@@ -257,6 +259,10 @@ const RootAccount = ({
     const [confirmPassword, setConfirmPassword] = useState(accounts.rootConfirmPassword);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const isRootAccountEnabled = accounts.isRootEnabled;
+    warn("Root account enabled:", !!isRootAccountEnabled);
+    warn("Password is set:", password);
+    warn("Confirm password is set:", confirmPassword);
+
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.root;
     const passwordRef = useRef();
 
