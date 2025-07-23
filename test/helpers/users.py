@@ -104,6 +104,11 @@ class Users(UsersDBus):
         self.browser.set_checked(sel, enable)
         self.browser.wait_visible(f"{sel}:checked" if enable else f"{sel}:not(:checked)")
 
+        if enable:
+            # Wait that the root password field is visible and focused
+            p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
+            p.check_pw_focused()
+
     def set_valid_root_password(self, valid=True):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
         password = "password"

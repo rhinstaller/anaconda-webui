@@ -27,6 +27,10 @@ class Password():
         self.browser = browser
         self.id_prefix = id_prefix
 
+    def check_pw_focused(self):
+        sel = f"#{self.id_prefix}-password-field"
+        self.browser.wait_visible(f"{sel}:focus")
+
     @log_step(snapshot_before=True)
     def check_pw_rule(self, rule, value):
         sel = f"#{self.id_prefix}-password-rule-{rule}"
