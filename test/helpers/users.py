@@ -16,6 +16,8 @@
 import os
 import sys
 
+from testlib import Error  # pylint: disable=import-error
+
 HELPERS_DIR = os.path.dirname(__file__)
 sys.path.append(HELPERS_DIR)
 
@@ -101,8 +103,20 @@ class Users(UsersDBus):
     @log_step(snapshot_before=True)
     def enable_root_account(self, enable):
         sel = f"#{ACCOUNTS_SCREEN}-root-account-enable-root-account"
-        self.browser.set_checked(sel, enable)
-        self.browser.wait_visible(f"{sel}:checked" if enable else f"{sel}:not(:checked)")
+        # FIXME:
+        # Tests are sometimes failing to enable the root account for unknown reasons.
+        # Let's be resilient and try to set the checkbox twice.
+        try:
+            self.browser.set_checked(sel, enable)
+            self.browser.wait_visible(f"{sel}:checked" if enable else f"{sel}:not(:checked)")
+        except Error:
+            self.browser.set_checked(sel, enable)
+            self.browser.wait_visible(f"{sel}:checked" if enable else f"{sel}:not(:checked)")
+
+        if enable:
+            # Wait that the root password field is visible and focused
+            p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
+            p.check_pw_focused()
 
     def set_valid_root_password(self, valid=True):
         p = Password(self.browser, ROOT_ACCOUNT_ID_PREFIX)
