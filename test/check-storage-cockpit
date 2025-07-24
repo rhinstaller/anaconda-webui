@@ -21,7 +21,7 @@ from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
-from utils import pretend_live_iso
+from utils import pretend_live_workstation_iso
 
 
 class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
@@ -65,7 +65,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i = Installer(b, m, scenario="use-configured-storage")
         s = Storage(b, m)
 
-        pretend_live_iso(self, i, m)
+        pretend_live_workstation_iso(self, i, m)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
