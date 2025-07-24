@@ -26,7 +26,7 @@ def add_public_key(machine):
     machine.write(authorized_keys, public_key, perm="0600")
 
 
-def pretend_live_iso(test, installer, machine):
+def pretend_live_workstation_iso(test, installer, machine):
     hidden_screens = machine.execute("cat /etc/anaconda/profile.d/fedora-workstation.conf  | grep anaconda-screen").split('\n')
     hidden_screens = [x.strip() for x in hidden_screens]
 
