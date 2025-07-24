@@ -115,7 +115,7 @@ class Installer():
             next_page = path.pop()
             if next_page not in self.steps.hidden_steps:
                 self.next(next_page=next_page)
-                if next_page in self.steps._steps_callbacks:
+                if next_page in self.steps._steps_callbacks and next_page != target_page:
                     self.steps._steps_callbacks[next_page](self.browser, self.machine)
 
     @log_step()
