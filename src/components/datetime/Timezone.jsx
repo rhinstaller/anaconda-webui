@@ -18,7 +18,7 @@ import cockpit from "cockpit";
 
 import { DateTime } from "luxon";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Checkbox,
     Flex,
@@ -34,10 +34,12 @@ import {
 } from "@patternfly/react-core";
 
 import {
-    getAllValidTimezones,
-    getTimezone,
     setTimezone,
 } from "../../apis/timezone.js";
+
+import {
+    TimezoneContext,
+} from "../../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-date-time";
@@ -51,25 +53,27 @@ export const TimezoneSection = ({ locale, setSectionValid, setTimezoneLabel }) =
     const [region, setRegion] = useState("");
     const [city, setCity] = useState("");
     const [shownTimezoneLabel, setShownTimezoneLabel] = useState("");
+    const timezoneData = useContext(TimezoneContext);
+    const timezone = timezoneData?.timezone;
+    const allValidTimezones = timezoneData?.allValidTimezones;
 
     useEffect(() => {
-        getAllValidTimezones().then(zoneDict => {
-            const keys = Object.keys(zoneDict || {});
-            setRegions(keys);
-            setCitiesByRegion(zoneDict || {});
-            if (keys.length) {
-                setRegion(keys[0]);
-                setCity(zoneDict[keys[0]][0]);
-            }
-        });
-        getTimezone().then(val => {
-            if (val && typeof val === "string" && val.includes("/")) {
-                const [reg, cty] = val.split("/");
-                setRegion(reg);
-                setCity(cty);
-            }
-        });
-    }, []);
+        const keys = Object.keys(allValidTimezones || {});
+        setRegions(keys);
+        setCitiesByRegion(allValidTimezones || {});
+        if (keys.length > 0 && !timezone) {
+            setRegion(keys[0]);
+            setCity(allValidTimezones[keys[0]][0]);
+        }
+    }, [timezone, allValidTimezones]);
+
+    useEffect(() => {
+        if (timezone && typeof timezone === "string" && timezone.includes("/")) {
+            const [reg, cty] = timezone.split("/");
+            setRegion(reg);
+            setCity(cty);
+        }
+    }, [timezone]);
 
     useEffect(() => {
         setSectionValid(autoTimezone || (!!region && !!city));
