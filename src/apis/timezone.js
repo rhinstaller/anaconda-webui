@@ -17,6 +17,11 @@
 
 import cockpit from "cockpit";
 
+import {
+    setAllValidTimezonesAction,
+    setTimezoneAction,
+} from "../actions/timezone-actions.js";
+
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
@@ -56,6 +61,29 @@ export class TimezoneClient {
     async init () {
         this.client.addEventListener("close", () => error("Timezone client closed"));
         // You can subscribe to DBus signals here if needed.
+
+        this.startEventMonitor();
+
+        const timezone = await getTimezone();
+        this.dispatch(setTimezoneAction({ timezone }));
+
+        const allValidTimezones = await getAllValidTimezones();
+        this.dispatch(setAllValidTimezonesAction({ allValidTimezones }));
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            async (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Timezone")) {
+                        this.dispatch(setTimezoneAction({ timezone: args[1].Timezone }));
+                    }
+                    break;
+                }
+            }
+        );
     }
 }
 
