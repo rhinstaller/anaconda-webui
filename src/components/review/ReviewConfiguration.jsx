@@ -27,7 +27,15 @@ import {
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
-import { LanguageContext, OsReleaseContext, StorageContext, SystemTypeContext, UserInterfaceContext, UsersContext } from "../../contexts/Common.jsx";
+import {
+    LanguageContext,
+    OsReleaseContext,
+    StorageContext,
+    SystemTypeContext,
+    TimezoneContext,
+    UserInterfaceContext,
+    UsersContext,
+} from "../../contexts/Common.jsx";
 
 import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
 
@@ -82,6 +90,7 @@ const AccountsDescription = () => {
 const ReviewConfiguration = ({ setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
+    const timezone = useContext(TimezoneContext)?.timezone;
     const { getLabel } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
@@ -124,6 +133,12 @@ const ReviewConfiguration = ({ setIsFormValid }) => {
                           description={language ? language["native-name"].v : localizationData.language}
                         />
                     </ReviewDescriptionList>
+                    {!hiddenScreens.includes("anaconda-screen-date-time") &&
+                    <ReviewDescriptionListItem
+                      id={`${SCREEN_ID}-target-system-timezone`}
+                      term={_("Timezone")}
+                      description={timezone}
+                    />}
                     {!hiddenScreens.includes("anaconda-screen-accounts") &&
                         <ReviewDescriptionList>
                             <ReviewDescriptionListItem
