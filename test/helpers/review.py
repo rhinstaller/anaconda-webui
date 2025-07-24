@@ -49,6 +49,14 @@ class Review(NetworkDBus, StorageDBus):
         self.browser.wait_in_text(f"#{self._step}-target-system-account > .pf-v6-c-description-list__text", account)
 
     @log_step()
+    def check_timezone(self, timezone):
+        self.browser.wait_in_text(f"#{self._step}-target-system-timezone > .pf-v6-c-description-list__text", timezone)
+
+    @log_step()
+    def check_timezone_not_present(self):
+        self.browser.wait_not_present(f"#{self._step}-target-system-timezone")
+
+    @log_step()
     def check_storage_config(self, scenario):
         self.browser.wait_in_text(f"#{self._step}-target-system-mode > .pf-v6-c-description-list__text", scenario)
 

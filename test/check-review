@@ -37,6 +37,7 @@ class TestReview(VirtInstallMachineCase):
             - The review step shows the correct information
             - The review step shows the correct information after setting encryption
             - The hostname is not shown for Live ISO
+            - The timezone is not shown for Live ISO
         """
 
         b = self.browser
@@ -65,6 +66,9 @@ class TestReview(VirtInstallMachineCase):
 
         # check hostname is not visible for Live ISO
         r.check_hostname_not_present()
+
+        # check timezone is not visible for Live ISO
+        r.check_timezone_not_present()
 
         # Pixel test the review step
         b.assert_pixels(
