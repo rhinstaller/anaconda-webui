@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 EnvironmentFile=/tmp/webui-cockpit-ws.env
 Environment="COCKPIT_SUPERUSER=pkexec"
-ExecStart=/usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --no-tls --local-session=cockpit-bridge
+ExecStart=/usr/libexec/anaconda/cockpit-coproc-wrapper.sh $WEBUI_ADDRESS
 Restart=on-failure
 RestartSec=5s
 
