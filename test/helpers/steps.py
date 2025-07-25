@@ -15,6 +15,7 @@
 
 
 LANGUAGE = "anaconda-screen-language"
+DATE_TIME = "anaconda-screen-date-time"
 INSTALLATION_METHOD = "anaconda-screen-method"
 CUSTOM_MOUNT_POINT = "anaconda-screen-mount-point-mapping"
 STORAGE_CONFIGURATION = "anaconda-screen-storage-configuration"

@@ -22,6 +22,7 @@ from users import create_user
 
 class InstallerSteps(UserDict):
     ACCOUNTS = steps.ACCOUNTS
+    DATE_TIME = steps.DATE_TIME
     CUSTOM_MOUNT_POINT = steps.CUSTOM_MOUNT_POINT
     INSTALLATION_METHOD = steps.INSTALLATION_METHOD
     LANGUAGE = steps.LANGUAGE
@@ -37,6 +38,7 @@ class InstallerSteps(UserDict):
 
         ACCOUNTS = self.ACCOUNTS
         CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
+        DATE_TIME = self.DATE_TIME
         INSTALLATION_METHOD = self.INSTALLATION_METHOD
         LANGUAGE = self.LANGUAGE
         PROGRESS = self.PROGRESS
@@ -44,7 +46,8 @@ class InstallerSteps(UserDict):
         STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
 
         _steps_jump = {
-            LANGUAGE: [INSTALLATION_METHOD],
+            LANGUAGE: [DATE_TIME],
+            DATE_TIME: [INSTALLATION_METHOD],
             STORAGE_CONFIGURATION: [ACCOUNTS],
             CUSTOM_MOUNT_POINT: [ACCOUNTS],
             ACCOUNTS: [REVIEW],
