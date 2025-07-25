@@ -61,6 +61,12 @@ export const runtimeInitialState = {
     connected: null
 };
 
+/* Initial state for the timezone store substate */
+export const timezoneInitialState = {
+    allValidTimezones: {},
+    timezone: "",
+};
+
 export const miscInitialState = {
     isFetching: false,
 };
@@ -86,6 +92,7 @@ export const initialState = {
     network: networkInitialState,
     runtime: runtimeInitialState,
     storage: storageInitialState,
+    timezone: timezoneInitialState,
     users: usersInitialState,
 };
 
@@ -115,6 +122,7 @@ export const reducer = (state, action) => {
         network: networkReducer(state.network, action),
         runtime: runtimeReducer(state.runtime, action),
         storage: storageReducer(state.storage, action),
+        timezone: timezoneReducer(state.timezone, action),
         users: usersReducer(state.users, action)
     });
 };
@@ -208,6 +216,16 @@ const miscReducer = (state = miscInitialState, action) => {
 export const runtimeReducer = (state = runtimeInitialState, action) => {
     if (action.type === "GET_RUNTIME_PASSWORD_POLICIES") {
         return { ...state, passwordPolicies: action.payload.passwordPolicies };
+    } else {
+        return state;
+    }
+};
+
+export const timezoneReducer = (state = timezoneInitialState, action) => {
+    if (action.type === "SET_TIMEZONE") {
+        return { ...state, timezone: action.payload.timezone };
+    } else if (action.type === "SET_ALL_VALID_TIMEZONES") {
+        return { ...state, allValidTimezones: action.payload.allValidTimezones };
     } else {
         return state;
     }

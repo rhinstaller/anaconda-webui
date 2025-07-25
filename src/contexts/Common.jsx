@@ -33,6 +33,7 @@ export const TargetSystemRootContext = createContext(null);
 export const UsersContext = createContext(null);
 export const UserInterfaceContext = createContext(null);
 export const NetworkContext = createContext(null);
+export const TimezoneContext = createContext(null);
 export const DialogsContext = createContext(null);
 
 export const FormGroupHelpPopover = ({ helpContent }) => {
@@ -59,7 +60,9 @@ const ModuleContextWrapper = ({ children, state }) => {
                 <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
                     <UsersContext.Provider value={state.users}>
                         <NetworkContext.Provider value={state.network}>
-                            {children}
+                            <TimezoneContext.Provider value={state.timezone}>
+                                {children}
+                            </TimezoneContext.Provider>
                         </NetworkContext.Provider>
                     </UsersContext.Provider>
                 </StorageContext.Provider>

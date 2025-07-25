@@ -21,6 +21,7 @@ from zoneinfo import ZoneInfo
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from language import Language
+from review import Review
 from testlib import nondestructive, test_main
 from timezone import DateAndTime
 
@@ -39,19 +40,26 @@ class TestDateAndTime(VirtInstallMachineCase):
         Expected results:
             - WebUI auto date/time and timezone matches backend
             - NTP, timezone, date and time match backend
+            - The selected timezone is displayed in the Review screen
         """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        r = Review(b, m)
         dt = DateAndTime(b, m)
+
+        default_timezone = dt.dbus_get_timezone()
 
         i.open()
         i.reach(i.steps.DATE_TIME)
         dt.check_auto_date_time(dt.dbus_get_ntp_enabled())
         dt.check_auto_timezone(True)
-        region, city = dt.dbus_get_timezone().split('/')
+        region, city = default_timezone.split('/')
         dt.check_region(region)
         dt.check_city(city)
+
+        i.reach(i.steps.REVIEW)
+        r.check_timezone(default_timezone)
 
     def testNtpServerSelection(self):
         """
