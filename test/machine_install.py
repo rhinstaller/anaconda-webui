@@ -98,6 +98,11 @@ class VirtInstallMachine(VirtMachine):
             # pack the updates.img again and replace the original one
             os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
+    def _remove_gui_path(self):
+        """Prevent GTK UI for getting detected as default
+        """
+        Machine.execute(self, "rm -rf /usr/share/anaconda/ui/spokes")
+
     def start(self):
         self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
         self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
@@ -166,6 +171,9 @@ class VirtInstallMachine(VirtMachine):
             # so we can't run any Machine.* methods on it.
             if not self.is_live():
                 Machine.wait_boot(self, timeout_sec=300)
+
+                # FIXME: This can be removed once the ISO contains only anaconda-webui, see https://github.com/rhinstaller/anaconda/pull/6530
+                self._remove_gui_path()
 
                 for _ in range(30):
                     try:
