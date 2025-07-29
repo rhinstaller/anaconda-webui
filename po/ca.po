@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-07-15 03:51+0000\n"
 "Last-Translator: naly zzwd <xeanhort007@gmail.com>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
@@ -92,11 +92,16 @@ msgstr ""
 "S'ha trobat la partició '$0' al dispositiu MDRAID $1. Les particions del "
 "bootloader als dispositius MDRAID no són compatibles."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "Quant a"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Compte"
 
@@ -104,6 +109,12 @@ msgstr "Compte"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Accions"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Afegeix un servidor NTP"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -159,6 +170,15 @@ msgstr ""
 "Assigna particions als punts de muntatge. Útil per a disposicions "
 "personalitzades preconfigurades."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Espai lliure disponible: $0. La instal·lació requereix: $1."
@@ -182,6 +202,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -238,6 +259,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Completat"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Configura els servidors NTP"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Configura els servidors NTP"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Configura l'emmagatzematge"
@@ -247,7 +278,7 @@ msgid "Configure storage again"
 msgstr "Torneu a configurar l'emmagatzematge"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Confirmeu la paraula de pas"
 
@@ -255,7 +286,7 @@ msgstr "Confirmeu la paraula de pas"
 msgid "Continue"
 msgstr "Continua"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Continueu la instal·lació"
 
@@ -263,11 +294,11 @@ msgstr "Continueu la instal·lació"
 msgid "Continue with installation"
 msgstr "Continueu amb la instal·lació"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Crea Compte"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Crea un compte"
 
@@ -278,6 +309,17 @@ msgstr "Instal·lat actualment: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Personalitzat"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Estableix l'hora i la data"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -308,7 +350,7 @@ msgstr "Dispositiu duplicat."
 msgid "Duplicate mount point."
 msgstr "Punt de muntatge duplicat."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Habilita el compte root"
 
@@ -357,11 +399,17 @@ msgstr ""
 "Finalitzant: La configuració del sistema s'ha completat. Finalitzar la "
 "instal·lació pot trigar uns moments."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Nom complet"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "El nom complet no pot contenir el caràcter dos punts"
 
@@ -369,7 +417,7 @@ msgstr "El nom complet no pot contenir el caràcter dos punts"
 msgid "Help us fix the issue!"
 msgstr "Ajudeu-nos a solucionar el problema!"
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Amaga la contrasenya confirmada"
 
@@ -377,7 +425,7 @@ msgstr "Amaga la contrasenya confirmada"
 msgid "Hide passphrase"
 msgstr "Amaga la paraula de pas"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Oculta la contrasenya"
 
@@ -390,21 +438,21 @@ msgstr "Nom d'amfitrió"
 msgid "How would you like to install?"
 msgstr "Com t'agradaria instal·lar?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Entenc que totes les dades existents s'esborraran"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Entenc que totes les dades existents s'esborraran dels discs seleccionats"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Entenc que s'esborraran algunes dades existents"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Entenc que algunes particions seran modificades"
 
@@ -454,7 +502,7 @@ msgstr "La instal·lació del sistema ha fallat"
 msgid "Installation of the system failed: $0"
 msgstr "La instal·lació del sistema ha fallat: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Tipus d'instal·lació"
 
@@ -480,6 +528,12 @@ msgstr ""
 "un únic sistema de fitxers o format (p. ex., LVM PV). Qualsevol partició "
 "existent en aquesta matriu s'ignorarà."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "El nom d'amfitrió no és vàlid"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -496,7 +550,7 @@ msgstr "Teclat"
 msgid "Keyboard layout during boot"
 msgstr "Disposició del teclat durant l'arrencada"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Idioma"
@@ -572,6 +626,18 @@ msgstr "Assignació del punt de muntatge"
 msgid "Must be at least $0 characters"
 msgstr "Ha de tenir com a mínim $0 caràcters"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "Servidors NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Nom"
@@ -610,6 +676,12 @@ msgstr "No s'ha seleccionat cap disc"
 msgid "No results found"
 msgstr "No s'han trobat resultats"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "no s'ha configurat cap servidor NTP"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "No hi ha prou espai lliure als discs seleccionats."
@@ -632,9 +704,16 @@ msgstr ""
 "propòsits de desenvolupament i proves. No utilitzeu aquest programari per a "
 "cap treball crític ni per a entorns de producció."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Sistema operatiu"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+#, fuzzy
+#| msgctxt "GUI|Keyboard Layout"
+#| msgid "_Options"
+msgid "Options"
+msgstr "_Opcions"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -647,7 +726,7 @@ msgstr "Particions (avançat)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Contrasenya"
 
@@ -655,7 +734,7 @@ msgstr "Contrasenya"
 msgid "Passphrase did not match any locked device"
 msgstr "La contrasenya no coincideix amb cap dispositiu bloquejat"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "Les contrasenyes han de coincidir"
 
@@ -671,6 +750,10 @@ msgstr "Adjunteu el fitxer de registre $0 al problema."
 msgid "Please select at least one disk to continue"
 msgstr "Seleccioneu almenys un disc per continuar"
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Agrupament"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Impulsat per Anaconda"
@@ -683,12 +766,12 @@ msgstr "Pre-llançament"
 msgid "Proceed with installation"
 msgstr "Continueu amb la instal·lació"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Surt"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Sortir de l'instal·lador?"
 
@@ -720,8 +803,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "El nom d'amfitrió real ha de tenir 64 caràcters o menys"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Reiniciar"
 
@@ -734,7 +817,7 @@ msgstr ""
 "BitLocker. Oferiu com a mínim $0 d'espai lliure disponible per a la "
 "instal·lació."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Reiniciar el sistema?"
 
@@ -794,6 +877,12 @@ msgstr ""
 "Traieu o canvieu la mida dels sistemes de fitxers existents per alliberar "
 "espai per a la instal·lació."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Suprimeix el servidor NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -850,11 +939,22 @@ msgstr "Tornar a la instal·lació"
 msgid "Return to storage editor"
 msgstr "Torna a l'editor d'emmagatzematge"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Revisar i instal·lar"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled."
+msgid "Root account is enabled"
+msgstr "El compte de root està inhabilitat."
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Desa"
@@ -887,9 +987,22 @@ msgstr "Selecciona"
 msgid "Select a device"
 msgstr "Seleccioneu un dispositiu"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "Selecciona"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Seleccioneu la destinació"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_On the network:"
+msgid "Select region"
+msgstr "_A la xarxa:"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -898,6 +1011,16 @@ msgstr "El format '$0' del dispositiu seleccionat no es pot reformatejar."
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Envieu-nos comentaris sobre la vostra instal·lació"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "Server"
+msgstr "Servidors NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -911,7 +1034,14 @@ msgstr "Comparteix el disc amb altres sistemes operatius"
 msgid "Share disk with other operating systems: $0"
 msgstr "Comparteix el disc amb altres sistemes operatius: $0"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Mostra la contrasenya confirmada"
 
@@ -919,13 +1049,19 @@ msgstr "Mostra la contrasenya confirmada"
 msgid "Show passphrase"
 msgstr "Mostra la paraula de pas"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Mostra la contrasenya"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Mida"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -947,14 +1083,14 @@ msgstr "Falten algunes particions necessàries: $0"
 msgid "Space"
 msgstr "Espai"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Emmagatzematge"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Configuració d'emmagatzematge"
 
@@ -1007,7 +1143,7 @@ msgstr "Teclats suggerits"
 msgid "Suggested languages"
 msgstr "Llengües suggerides"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "Sistema"
 
@@ -1057,10 +1193,6 @@ msgstr ""
 "particions. Pot configurar LVM i molt més. Està pensat com una utilitat "
 "avançada i no per ser utilitzat en una instal·lació típica."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Aquest compte tindrà privilegi d'administració amb sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Aquest nom d'amfitrió no es pot enviar"
@@ -1080,6 +1212,18 @@ msgstr "Això pot trigar una estona"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Això trigarà uns instants"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "Zona horària: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "Zona horària: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1142,15 +1286,21 @@ msgstr "Utilitzeu el disc sencer"
 msgid "Use free space"
 msgstr "Usa l'espai lliure"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "Crea un compte"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Usa el dispositiu RAID per a les particions automàtiques"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Nom d'usuari"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1158,11 +1308,11 @@ msgstr ""
 "El nom d'usuari només pot contenir: lletres d'a-z, dígits 0-9, guió $0, punt "
 "$1, guió baix $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "El nom d'usuari no ha de ser una paraula reservada"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "Els noms d'usuari han de tenir menys de 33 caràcters"
 
@@ -1191,7 +1341,11 @@ msgstr ""
 "Podeu alliberar prou espai aquí i deixar que l'instal·lador gestioni la "
 "resta o configurar manualment les particions."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "El vostre progrés no es desarà."
 
@@ -1253,6 +1407,9 @@ msgstr "encongeix a $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "desfer"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Aquest compte tindrà privilegi d'administració amb sudo."
 
 #~ msgid "Clear search input"
 #~ msgstr "Esborrar l'entrada de cerca"
@@ -1930,9 +2087,6 @@ msgstr "desfer"
 #~ msgid "Add Layout"
 #~ msgstr "Afegeix una disposició"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Afegeix un servidor NTP"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Afegeix l'adreça d'un servidor NTP"
 
@@ -2376,9 +2530,6 @@ msgstr "desfer"
 #~ msgid "Configure NTP"
 #~ msgstr "Configura NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Configura els servidors NTP"
-
 #, fuzzy
 #~| msgid "Configure NTP servers"
 #~ msgid "Configure Network Time Servers"
@@ -2504,9 +2655,6 @@ msgstr "desfer"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "INSTAL·LACIÓ DE LA DISTRIBUCIÓ"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #, fuzzy
 #~| msgid "Lock root account"
@@ -3283,9 +3431,6 @@ msgstr "desfer"
 #~ msgid "Invalid group name."
 #~ msgstr "El nom del grup no és vàlid."
 
-#~ msgid "Invalid host name"
-#~ msgstr "El nom d'amfitrió no és vàlid"
-
 #~ msgid "Invalid mount point given"
 #~ msgstr "El punt de muntatge indicat no és vàlid"
 
@@ -3550,9 +3695,6 @@ msgstr "desfer"
 #~ msgid "NTP configuration"
 #~ msgstr "Configuració NTP"
 
-#~ msgid "NTP servers:"
-#~ msgstr "Servidors NTP:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "Dispositiu NVDIMM {namespace}"
@@ -3813,12 +3955,6 @@ msgstr "desfer"
 #~ msgid "OK"
 #~ msgstr "D'ac_ord"
 
-#, fuzzy
-#~| msgctxt "GUI|Keyboard Layout"
-#~| msgid "_Options"
-#~ msgid "Options"
-#~ msgstr "_Opcions"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4039,9 +4175,6 @@ msgstr "desfer"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Espereu... encara s'estan carregant metadades de programari."
-
-#~ msgid "Pool"
-#~ msgstr "Agrupament"
 
 #~ msgid "Port"
 #~ msgstr "Port"
@@ -4277,9 +4410,6 @@ msgstr "desfer"
 #~ msgid "Remove"
 #~ msgstr "Suprimeix"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Suprimeix el servidor NTP"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Suprimeix el(s) punt(s) de muntatge seleccionat(s)."
 
@@ -4353,11 +4483,6 @@ msgstr "desfer"
 
 #~ msgid "Root Selection"
 #~ msgstr "Selecció del directori arrel del sistema"
-
-#, fuzzy
-#~| msgid "Root account is disabled."
-#~ msgid "Root account is disabled"
-#~ msgstr "El compte de root està inhabilitat."
 
 #~ msgid "Root password"
 #~ msgstr "Contrasenya de root"
@@ -4533,9 +4658,6 @@ msgstr "desfer"
 #~| msgid "_zSeries Devices"
 #~ msgid "Service level"
 #~ msgstr "Dispositius _zSerie"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Estableix l'hora i la data"
 
 #~ msgid "Set as current system host name."
 #~ msgstr "Estableix com al nom d'amfitrió actual."
@@ -6054,10 +6176,6 @@ msgstr "desfer"
 #~ "\n"
 #~ "\tchroot %(mountpoint)s\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Accepta els canvis"
@@ -6715,12 +6833,6 @@ msgstr "desfer"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Seleccioneu el tipus de dispositiu que vulgueu afegir"
 
-#, fuzzy
-#~| msgid "NTP servers:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "Servidors NTP:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "E_stableix com dispositiu d'arrencada"
@@ -7143,12 +7255,6 @@ msgstr "desfer"
 #~ msgid "Select no disk"
 #~ msgstr "Dispositiu seleccionat"
 
-#, fuzzy
-#~| msgctxt "GUI|Software Source"
-#~| msgid "_On the network:"
-#~ msgid "Select none"
-#~ msgstr "_A la xarxa:"
-
 #~ msgid "Try Fedora"
 #~ msgstr "Proveu Fedora"
 
@@ -7501,11 +7607,6 @@ msgstr "desfer"
 #~ msgstr "No connectat"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "Zona horària: %s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "Estableix la zona horària"
@@ -7706,9 +7807,6 @@ msgstr "desfer"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "no s'ha configurat cap servidor NTP"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Error en preparar la instal·lació des del disc dur"

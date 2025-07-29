@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2024-11-18 02:57+0000\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -81,11 +81,16 @@ msgid ""
 "devices are not supported."
 msgstr ""
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "על אודות"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "חשבון"
 
@@ -93,6 +98,12 @@ msgstr "חשבון"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "פעולות"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "הוספת שרת NTP"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -142,6 +153,15 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr "הקצאת מחיצות לנקודות עגינה. שימושי לפריסות מותאמות אישית שהוגדרו מראש."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "מקום פנוי זמין: $0. דרישות ההתקנה: $1."
@@ -164,6 +184,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "ביטול"
@@ -219,6 +240,16 @@ msgstr "האחסון של Cockpit לא סיפק מילת צופן לשחרור �
 msgid "Completed"
 msgstr "הושלם"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "הגדרת שרתי NTP"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "הגדרת שרתי NTP"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "הגדרת אחסון"
@@ -228,7 +259,7 @@ msgid "Configure storage again"
 msgstr "הגדרת האחסון שוב"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "אישור מילת צופן"
 
@@ -236,7 +267,7 @@ msgstr "אישור מילת צופן"
 msgid "Continue"
 msgstr "המשך"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "להמשיך להתקין"
 
@@ -244,11 +275,11 @@ msgstr "להמשיך להתקין"
 msgid "Continue with installation"
 msgstr "להמשיך בהתקנה"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "יצירת חשבון"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "יצירת חשבון"
 
@@ -259,6 +290,17 @@ msgstr "מותקן כרגע: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "מותאם אישית"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "קביעת שעה ותאריך"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -291,7 +333,7 @@ msgstr "התקן כפול."
 msgid "Duplicate mount point."
 msgstr "נקודת עגינה כפולה."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "הפעלת חשבון root"
 
@@ -340,11 +382,17 @@ msgid ""
 "may take a few moments."
 msgstr "סיום: הגדרת המערכת הושלמה. סיום ההתקנה עשוי לארוך מספר רגעים."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "שם מלא"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "השם המלא לא יכול להכיל את התו נקודתיים"
 
@@ -352,7 +400,7 @@ msgstr "השם המלא לא יכול להכיל את התו נקודתיים"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "הסתרת סיסמה שאושרה"
 
@@ -360,7 +408,7 @@ msgstr "הסתרת סיסמה שאושרה"
 msgid "Hide passphrase"
 msgstr "הסתרת מילת צופן"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "הסתרת הסיסמה"
 
@@ -373,20 +421,20 @@ msgstr "שם מארח"
 msgid "How would you like to install?"
 msgstr "איך להתקין?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "ברור לי שכל הנתונים הקיימים יימחקו"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr "ברור לי שכל הנתונים הקיימים יימחקו מהכוננים הנבחרים"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "ברור לי שחלק מהנתונים הקיימים יימחקו"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "ברור לי שחלק מהמחיצות ישתנו"
 
@@ -436,7 +484,7 @@ msgstr "התקנת המערכת נכשלה: $0"
 msgid "Installation of the system failed: $0"
 msgstr "התקנת המערכת נכשלה: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "סוג התקנה"
 
@@ -457,6 +505,12 @@ msgid ""
 "will be ignored."
 msgstr ""
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "שם מארח לא חוקי"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -476,7 +530,7 @@ msgstr "_מקלדת"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "שפה"
@@ -546,6 +600,18 @@ msgstr "הקצאה של נקודות עיגון"
 msgid "Must be at least $0 characters"
 msgstr "חייב להיות לפחות $0 תווים"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "שרתי NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "שם"
@@ -583,6 +649,12 @@ msgstr "לא נבחרו כוננים"
 msgid "No results found"
 msgstr "אין תוצאות"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "לא הוגדרו שרתי NTP"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "אין די מקום פנוי בכוננים שנבחרו."
@@ -604,9 +676,13 @@ msgstr ""
 "לתשומת ליבך: זוהי תוכנה שטרם שוחררה ומיועדת למטרות פיתוח ובדיקה בלבד. אין "
 "להשתמש בתוכנה זו לעבודות חשובות או בסביבות ייצור."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "מערכת הפעלה"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "אפשרויות"
 
 #: src/components/localization/Keyboard.jsx:77
 #, fuzzy
@@ -622,7 +698,7 @@ msgstr "מחיצות (מתקדם)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "מילת צופן"
 
@@ -630,7 +706,7 @@ msgstr "מילת צופן"
 msgid "Passphrase did not match any locked device"
 msgstr "מילת הצופן לא מתאימה לאף התקן נעול"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "מילות הצופן חייבות להיות תואמות"
 
@@ -648,6 +724,10 @@ msgstr "נא להצמיד את קוב היומן ‎$0 לדיווח."
 msgid "Please select at least one disk to continue"
 msgstr "לא נבחרו כוננים; נא לבחור כונן אחד לפחות להתקנה."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "בריכה"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "מופעל על גבי אנקונדה"
@@ -660,12 +740,12 @@ msgstr "קדם־שחרור"
 msgid "Proceed with installation"
 msgstr "המשך בהתקנה"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "י_ציאה"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "לצאת מתוכנית ההתקנה?"
 
@@ -696,8 +776,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "שם המארח האמיתי חייב להיות באורך 64 תווים או פחות"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "הפעלה מחדש"
 
@@ -709,7 +789,7 @@ msgid ""
 "$0 of free space available for installation."
 msgstr "יש להפעיל מחדש ל־Windows כדי לשנות גודל של מחיצות מוצפנות BitLocker. "
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "להפעיל את המערכת מחדש?"
 
@@ -765,6 +845,12 @@ msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr "להסיר או לשנות מערכות קבצים קיימות כדי לפנות מקום להתקנה."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "הסרת שרת NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -817,11 +903,22 @@ msgstr "חזרה להתקנה"
 msgid "Return to storage editor"
 msgstr "חזרה לעורך האחסון"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "סקירה והתקנה"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "חשבון העל (root) מושבת"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "שמירה"
@@ -856,9 +953,21 @@ msgstr "בחירה"
 msgid "Select a device"
 msgstr "נא לבחור התקן"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "בחירה"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "בחירת יעד"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "לא לבחור בכלום"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -867,6 +976,17 @@ msgstr "לא ניתן לפרמט מחדש את תצורת הכונן הנבחר�
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "שליחת משוב על ההתקנה שלך"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "_שרת:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -884,7 +1004,14 @@ msgstr "שיתוף כונן עם מערכת הפעלה אחרת"
 msgid "Share disk with other operating systems: $0"
 msgstr "שיתוף כונן עם מערכת הפעלה אחרת"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "הצגת סיסמה שאושרה"
 
@@ -892,13 +1019,19 @@ msgstr "הצגת סיסמה שאושרה"
 msgid "Show passphrase"
 msgstr "הצגת מילת צופן"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "הצגת הסיסמה"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "גודל"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -918,14 +1051,14 @@ msgstr "חלק מהמחיצות הנחוצות חסרות: $0"
 msgid "Space"
 msgstr "מקום"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "אחסון"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "הגדרות אחסון"
 
@@ -977,7 +1110,7 @@ msgstr "נא לבחור שפה"
 msgid "Suggested languages"
 msgstr "נא לבחור שפה"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "מערכת"
 
@@ -1020,10 +1153,6 @@ msgid ""
 "not intended to be used in a typical installation."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "לחשבון הזה תהיינה הרשאות ניהול עם sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "אי אפשר להגיש את שם המשתמש הזה"
@@ -1043,6 +1172,18 @@ msgstr "פעולה זו עלולה לארוך זמן מה"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "הפעולה הזאת יכולה לארוך מספר רגעים"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "אזור זמן: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "אזור זמן: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1107,17 +1248,23 @@ msgstr "להשתמש בכונן כולו"
 msgid "Use free space"
 msgstr "להשתמש במקום הפנוי"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "יצירת חשבון"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "אין שטח גדול מספיק על הכוננים לחלוקה אוטומטית למחיצות"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "שם משתמש"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1125,11 +1272,11 @@ msgstr ""
 "שם משתמש יכול להכיל רק: אותיות מ־a עד z, ספרות מ־0 עד 9, מינוס $0, נקודה $1, "
 "קו תחתי $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "שם המשתמש לא יכול להיות מילה שמורה"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "שמות המשתמשים חייבים להיות קצרים מ־33 תווים"
 
@@ -1156,7 +1303,11 @@ msgid ""
 msgstr ""
 "אפשר לפנות מספיק מקום כאן ולאפשר להתקנה לטפל בשאר או להגדיר מחיצות ידנית."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "התהליך שעברת לא יישמר."
 
@@ -1220,6 +1371,9 @@ msgstr "כיווץ לכדי $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "ביטול"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "לחשבון הזה תהיינה הרשאות ניהול עם sudo."
 
 #, fuzzy
 #~| msgid "Clear input value"
@@ -1936,9 +2090,6 @@ msgstr "ביטול"
 #~ msgid "Add Layout"
 #~ msgstr "הוספת פריסה"
 
-#~ msgid "Add NTP server"
-#~ msgstr "הוספת שרת NTP"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "הוספת כתובות שרתי NTP"
 
@@ -2356,9 +2507,6 @@ msgstr "ביטול"
 #~ msgid "Configure NTP"
 #~ msgstr "הגדרת תצורת NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "הגדרת שרתי NTP"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "הגדרת שרתי זמן מהרשת"
 
@@ -2486,9 +2634,6 @@ msgstr "ביטול"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "התקנת הפצה"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3256,9 +3401,6 @@ msgstr "ביטול"
 #~ msgid "Invalid group name."
 #~ msgstr "שם קבוצה לא חוקי."
 
-#~ msgid "Invalid host name"
-#~ msgstr "שם מארח לא חוקי"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3511,9 +3653,6 @@ msgstr "ביטול"
 #~ msgid "NTP configuration"
 #~ msgstr "הגדרות NTP"
 
-#~ msgid "NTP servers:"
-#~ msgstr "שרתי NTP:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "התקן NVDIMM‏ {namespace}"
@@ -3750,9 +3889,6 @@ msgstr "ביטול"
 #~ msgid "Optional comma-separated list of mount options for the NFS mount"
 #~ msgstr "רשימה מופרדת בפסיקים של אפשרויות עיגון לעיגון ה־NFS"
 
-#~ msgid "Options"
-#~ msgstr "אפשרויות"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -3968,9 +4104,6 @@ msgstr "ביטול"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "נא להמתין... מידע התכנה עדיין בטעינה."
-
-#~ msgid "Pool"
-#~ msgstr "בריכה"
 
 #~ msgid "Port"
 #~ msgstr "פתחה"
@@ -4224,9 +4357,6 @@ msgstr "ביטול"
 #~ msgid "Remove"
 #~ msgstr "הסרה"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "הסרת שרת NTP"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "הסרת נקודות העיגון שנבחרו."
 
@@ -4309,9 +4439,6 @@ msgstr "ביטול"
 
 #~ msgid "Root Selection"
 #~ msgstr "בחירת מחיצת על (root)"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "חשבון העל (root) מושבת"
 
 #~ msgid "Root password"
 #~ msgstr "סיסמת משתמש העל (root)"
@@ -4480,9 +4607,6 @@ msgstr "ביטול"
 
 #~ msgid "Service level"
 #~ msgstr "רמת שירות"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "קביעת שעה ותאריך"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6002,10 +6126,6 @@ msgstr "ביטול"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_קבלת השינויים"
@@ -6642,10 +6762,6 @@ msgstr "ביטול"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_בחירת סוג ההתקן שיש להוסיף"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "_שרת:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_קביעה כהתקן אתחול"
@@ -7113,9 +7229,6 @@ msgstr "ביטול"
 #~ msgid "Select no disk"
 #~ msgstr "לא לבחור באף כונן"
 
-#~ msgid "Select none"
-#~ msgstr "לא לבחור בכלום"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7500,11 +7613,6 @@ msgstr "ביטול"
 #~ msgstr "לא מחובר"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "אזור זמן: %s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "הגדרת אזור זמן"
@@ -7745,9 +7853,6 @@ msgstr "ביטול"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "לא הוגדרו שרתי NTP"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "שגיאה בהכנת התקנה מדיסק"

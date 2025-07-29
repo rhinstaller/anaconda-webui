@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-05-31 12:40+0000\n"
 "Last-Translator: Marvin Parlevliet <mrvnp@msn.com>\n"
 "Language-Team: Dutch <https://translate.fedoraproject.org/projects/anaconda-"
@@ -99,11 +99,16 @@ msgstr ""
 "'$0' partitie op MDRAID-apparaat $1 gevonden. Bootloader-partities op MDRAID-"
 "apparaten worden niet ondersteund."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "Over Fedora"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Account"
 
@@ -111,6 +116,12 @@ msgstr "Account"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Acties"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Voeg NTP-server toe"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -160,6 +171,19 @@ msgstr ""
 "Partities toewijzen aan aankoppelpunten. Handig voor vooraf geconfigureerde, "
 "aangepaste indelingen."
 
+#: src/components/datetime/DateAndTime.jsx:147
+#, fuzzy
+#| msgid "Automatically using specific NTP servers"
+msgid "Automatically set date and time, using time servers"
+msgstr "Automatisch met specifieke NTP-servers"
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+#, fuzzy
+#| msgid "Automatically using NTP"
+msgid "Automatically set timezone"
+msgstr "Automatisch met NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Beschikbare vrije ruimte: $0. Benodigd voor installatie: $1."
@@ -183,6 +207,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Annuleren"
@@ -240,6 +265,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Voltooid"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Configureer NTP-servers"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Configureer NTP-servers"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Opslag configureren"
@@ -249,7 +284,7 @@ msgid "Configure storage again"
 msgstr "Opslag opnieuw configureren"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Bevestig wachtwoordzin"
 
@@ -257,7 +292,7 @@ msgstr "Bevestig wachtwoordzin"
 msgid "Continue"
 msgstr "Doorgaan"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Installatie vervolgen"
 
@@ -265,11 +300,11 @@ msgstr "Installatie vervolgen"
 msgid "Continue with installation"
 msgstr "Verdergaan met installatie"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Account Aanmaken"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Account aanmaken"
 
@@ -280,6 +315,17 @@ msgstr "Momenteel geïnstalleerd: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Aangepast"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Stel datum & tijd in"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -312,7 +358,7 @@ msgstr "Dupliceer apparaat."
 msgid "Duplicate mount point."
 msgstr "Dupliceer aankoppelpunt."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Rootaccount inschakelen"
 
@@ -361,11 +407,17 @@ msgstr ""
 "Afronding: De systeemconfiguratie is voltooid. Het voltooien van de "
 "installatie kan even duren."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "De volledige naam mag geen dubbele punten bevatten"
 
@@ -373,7 +425,7 @@ msgstr "De volledige naam mag geen dubbele punten bevatten"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Bevestigd wachtwoord verbergen"
 
@@ -381,7 +433,7 @@ msgstr "Bevestigd wachtwoord verbergen"
 msgid "Hide passphrase"
 msgstr "Verberg wachtzin"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Verberg wachtwoord"
 
@@ -394,22 +446,22 @@ msgstr "Hostnaam"
 msgid "How would you like to install?"
 msgstr "Hoe wilt u installeren?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Ik begrijp dat alle bestaande data wordt verwijderd"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Ik begrijp dat alle bestaande data wordt verwijderd van de geselecteerde "
 "schijven"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Ik begrijp dat sommige bestaande data zal worden verwijderd"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Ik begrijp dat sommige partities worden gewijzigd"
 
@@ -462,7 +514,7 @@ msgstr "Installatie van het systeem mislukt: $0"
 msgid "Installation of the system failed: $0"
 msgstr "Installatie van het systeem mislukt: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Installatietype"
 
@@ -488,6 +540,12 @@ msgstr ""
 "bestandssysteem of formaat te bevatten (bijv. LVM PV). Alle bestaande "
 "partities op dit array worden genegeerd."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "Ongeldige hostnaam"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -504,7 +562,7 @@ msgstr "Toetsenbord"
 msgid "Keyboard layout during boot"
 msgstr "Toetsenbordindeling tijdens het opstarten"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Taal"
@@ -578,6 +636,18 @@ msgstr "Aankoppelpunttoewijzing"
 msgid "Must be at least $0 characters"
 msgstr "Moet minimaal $0 tekens lang zijn"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "NTP-servers:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Naam"
@@ -616,6 +686,12 @@ msgstr "Geen schijven geselecteerd"
 msgid "No results found"
 msgstr "Geen resultaten gevonden"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "er zijn geen NTP-servers geconfigureerd"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "Onvoldoende vrije ruimte op de geselecteerde schijven."
@@ -638,9 +714,13 @@ msgstr ""
 "ontwikkelings- en testdoeleinden. Gebruik deze software NIET voor belangrijk "
 "werk of voor productieomgevingen."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Besturingssysteem"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Opties"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -653,7 +733,7 @@ msgstr "Partities (geavanceerd)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Wachtzin"
 
@@ -661,7 +741,7 @@ msgstr "Wachtzin"
 msgid "Passphrase did not match any locked device"
 msgstr "Wachtzin komt met geen enkel vergrendeld apparaat overeen"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "Wachtwoordzinnen moeten overeenkomen"
 
@@ -681,6 +761,10 @@ msgstr ""
 "Geen schijven geselecteerd; selecteer tenminste één schijf waarop "
 "geïnstalleerd kan worden."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Pool"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Mogelijk gemaakt door Anaconda"
@@ -693,12 +777,12 @@ msgstr "Pre-release"
 msgid "Proceed with installation"
 msgstr "Doorgaan met installatie"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Afsluiten"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Installatieprogramma afsluiten?"
 
@@ -730,8 +814,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Een echte hostnaam moet 64 karakters of minder bevatten"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Herstarten"
 
@@ -744,7 +828,7 @@ msgstr ""
 "partities te veranderen. Maak minstens $0 vrije ruimte beschikbaar voor de "
 "installatie."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Systeem herstarten?"
 
@@ -804,6 +888,12 @@ msgstr ""
 "Verwijder of verander de grootte van bestaande bestandssystemen om ruimte "
 "vrij te maken voor de installatie."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Verwijder NTP-server"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -860,11 +950,22 @@ msgstr "Terugkeren naar installatie"
 msgid "Return to storage editor"
 msgstr "Terug naar opslageditor"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Bekijk en installeer"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "Root-account is uitgezet"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Opslaan"
@@ -897,9 +998,21 @@ msgstr "Selecteren"
 msgid "Select a device"
 msgstr "Selecteer een apparaat"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "Selecteren"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Bestemming selecteren"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "Selecteer niets"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -909,6 +1022,17 @@ msgstr ""
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Geef ons feedback over de installatie"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "_Server:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -926,7 +1050,14 @@ msgstr "Deel schijf met ander besturingssysteeem"
 msgid "Share disk with other operating systems: $0"
 msgstr "Deel schijf met ander besturingssysteeem"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Toon bevestigd wachtwoord"
 
@@ -934,13 +1065,19 @@ msgstr "Toon bevestigd wachtwoord"
 msgid "Show passphrase"
 msgstr "Toon wachtzin"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Toon wachtwoord"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Grootte"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -962,14 +1099,14 @@ msgstr "Een aantal vereiste partities zijn niet aanwezig: $0"
 msgid "Space"
 msgstr "Ruimte"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Opslag"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Opslagconfiguratie"
 
@@ -1017,7 +1154,7 @@ msgstr "Voorgestelde toetsenborden"
 msgid "Suggested languages"
 msgstr "Voorgestelde talen"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "Systeem"
 
@@ -1074,10 +1211,6 @@ msgstr ""
 "geconfigureerd worden. Dit is een geavanceerd hulpprogramma en niet bedoeld "
 "voor gebruik in een typische installatie."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Dit account zal administratorrechten hebben met 'sudo'."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Deze hostnaam kan niet gebruikt worden"
@@ -1099,6 +1232,18 @@ msgstr "Dit kan heel even duren"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Dit kan even duren"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Time zone"
+msgid "Time"
+msgstr "Tijdzone"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Time zone"
+msgid "Timezone"
+msgstr "Tijdzone"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1162,15 +1307,21 @@ msgstr "Gebruik gehele schijf"
 msgid "Use free space"
 msgstr "Gebruik vrije ruimte"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "Account aanmaken"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Gebruik het RAID-apparaat voor automatisch partitioneren"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Gebruikersnaam"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1178,11 +1329,11 @@ msgstr ""
 "Gebruikersnaam kan alleen het volgende bevatten: letters van a-z, cijfers "
 "0-9, koppelteken $0, punt $1, laag streepje $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "Gebruikersnaam mag geen gereserveerd woord zijn"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "Gebruikersnamen moeten korter zijn dan 33 karakters"
 
@@ -1212,7 +1363,11 @@ msgstr ""
 "U kunt kiezen om genoeg vrije ruimte te maken en het installatieprogramma de "
 "rest te laten regelen, of handmatig partities te configureren."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "Je voortgang wordt niet opgeslagen."
 
@@ -1274,6 +1429,9 @@ msgstr "verkleinen naar $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "ongedaan maken"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Dit account zal administratorrechten hebben met 'sudo'."
 
 #~ msgid "Clear search input"
 #~ msgstr "Zoekveld wissen"
@@ -2029,9 +2187,6 @@ msgstr "ongedaan maken"
 #~ msgid "Add Layout"
 #~ msgstr "Indeling toevoegen"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Voeg NTP-server toe"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Voeg NTP-server adres toe"
 
@@ -2471,9 +2626,6 @@ msgstr "ongedaan maken"
 #~ msgid "Configure NTP"
 #~ msgstr "Configureer NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Configureer NTP-servers"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "Configureer Network Time Servers"
 
@@ -2605,9 +2757,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "DISTRIBUTIE-INSTALLATIE"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3400,9 +3549,6 @@ msgstr "ongedaan maken"
 #~ msgid "Invalid group name."
 #~ msgstr "Ongeldige groepsnaam."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Ongeldige hostnaam"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3658,9 +3804,6 @@ msgstr "ongedaan maken"
 #~ msgid "NTP configuration"
 #~ msgstr "NTP-configuratie"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP-servers:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM apparaat {namespace}"
@@ -3913,9 +4056,6 @@ msgstr "ongedaan maken"
 #~ "Optionele door komma's gescheiden lijst met aankoppelopties voor de NFS-"
 #~ "aankoppeling"
 
-#~ msgid "Options"
-#~ msgstr "Opties"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4143,9 +4283,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Even wachten... software-metadata wordt nog geladen."
-
-#~ msgid "Pool"
-#~ msgstr "Pool"
 
 #~ msgid "Port"
 #~ msgstr "Poort"
@@ -4403,9 +4540,6 @@ msgstr "ongedaan maken"
 #~ msgid "Remove"
 #~ msgstr "Verwijderen"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Verwijder NTP-server"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Verwijderen geselecteerd(e) koppelpunt(en)."
 
@@ -4490,9 +4624,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "Root Selection"
 #~ msgstr "Rootselectie"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "Root-account is uitgezet"
 
 #~ msgid "Root password"
 #~ msgstr "Rootwachtwoord"
@@ -4663,9 +4794,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "Service level"
 #~ msgstr "Service-niveau"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Stel datum & tijd in"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6297,10 +6425,6 @@ msgstr "ongedaan maken"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Accepteer veranderingen"
@@ -6938,10 +7062,6 @@ msgstr "ongedaan maken"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Selecteer het type apparaat dat je wilt toevoegen"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "_Server:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_Stel in als bootapparaat"
@@ -7438,9 +7558,6 @@ msgstr "ongedaan maken"
 #~ msgid "Select no disk"
 #~ msgstr "Selecteer geen schijf"
 
-#~ msgid "Select none"
-#~ msgstr "Selecteer niets"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7914,20 +8031,11 @@ msgstr "ongedaan maken"
 #~ msgid "Log messages"
 #~ msgstr "Logboekboodschappen"
 
-#~ msgid "Time zone"
-#~ msgstr "Tijdzone"
-
 #~ msgid "Set time"
 #~ msgstr "Stel tijd in"
 
 #~ msgid "Manually"
 #~ msgstr "Handmatig"
-
-#~ msgid "Automatically using NTP"
-#~ msgstr "Automatisch met NTP"
-
-#~ msgid "Automatically using specific NTP servers"
-#~ msgstr "Automatisch met specifieke NTP-servers"
 
 #~ msgid "Pick date"
 #~ msgstr "Kies datum"
@@ -8199,9 +8307,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "er zijn geen NTP-servers geconfigureerd"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Fout bij het instellen van installatie vanaf HDD"

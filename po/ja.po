@@ -63,9 +63,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
-"PO-Revision-Date: 2025-04-29 09:44+0000\n"
-"Last-Translator: Ooyama Yosiyuki <qqke6wd9k@apricot.ocn.ne.jp>\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
+"PO-Revision-Date: 2025-07-28 04:01+0000\n"
+"Last-Translator: Takuya Wakazono <pastalian46@gmail.com>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/ja/>\n"
 "Language: ja\n"
@@ -73,18 +73,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: src/components/storage/InstallationDestination.jsx:190
 #: src/components/storage/InstallationDestination.jsx:311
 msgid "$0 $1"
-msgstr ""
+msgstr "$0 $1"
 
 #: src/components/storage/InstallationDestination.jsx:210
 #: src/components/storage/InstallationDestination.jsx:304
 #: src/components/storage/MountPointMapping.jsx:369
 msgid "$0 ($1)"
-msgstr ""
+msgstr "$0 ($1)"
 
 #: src/components/app.jsx:94
 msgid "$0 installation"
@@ -99,13 +99,12 @@ msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
 msgstr ""
+"$0 は論理パーティションを含む MBR 拡張パーティションです。全ての論理パーティ"
+"ションを削除すると拡張パーティションも自動的に削除されます。"
 
 #: src/components/localization/Keyboard.jsx:149
-#, fuzzy
-#| msgid "$0 selected"
-#| msgid_plural "$0 selected"
 msgid "$0 layouts detected"
-msgstr "$0 選択済みです"
+msgstr "$0 個レイアウトを検出"
 
 #: src/components/review/StorageReview.jsx:260
 #, fuzzy
@@ -114,8 +113,6 @@ msgid "$0 will be deleted"
 msgstr "ユーザーは作成されません"
 
 #: src/components/storage/MountPointMapping.jsx:210
-#, fuzzy
-#| msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr ""
 "ファイルシステム '$0' は、暗号化ブロックデバイス上に置くことができません"
@@ -130,20 +127,29 @@ msgid ""
 "devices are not supported."
 msgstr ""
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr "システム全体の変更を行うための管理者権限を持つ標準ユーザーアカウント。"
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "About"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "アカウント"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:160
 #: src/components/review/StorageReview.jsx:219
-#, fuzzy
-#| msgid "Action"
 msgid "Actions"
 msgstr "アクション"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "NTP サーバーの追加"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -166,7 +172,7 @@ msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:102
 msgid "All changes made in the storage editor take effect immediately."
-msgstr ""
+msgstr "ストレージエディターで行った変更は全て即座に反映されます。"
 
 #: src/components/storage/EncryptedDevices.jsx:152
 msgid "All devices using this passphrase will be unlocked"
@@ -192,10 +198,21 @@ msgstr "マウントポイントの割り当てを適用してインストール
 msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
+"パーティションをマウントポイントに割り当てます。カスタムレイアウトを事前設定"
+"している場合に便利です。"
+
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
 
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
-msgstr ""
+msgstr "利用可能な空き領域: $0。 インストールに必要な領域: $1。"
 
 #: src/components/AnacondaWizardFooter.jsx:97
 msgid "Back"
@@ -216,6 +233,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "取り消し"
@@ -228,10 +246,8 @@ msgid "Change"
 msgstr "変更を保存(_S)"
 
 #: src/components/storage/InstallationDestination.jsx:375
-#, fuzzy
-#| msgid "Destination"
 msgid "Change destination"
-msgstr "インストール先"
+msgstr "インストール先を変更"
 
 #: src/components/review/Hostname.jsx:110
 #, fuzzy
@@ -241,7 +257,7 @@ msgstr "ホスト名の指定"
 
 #: src/components/localization/Keyboard.jsx:161
 msgid "Change system keyboard layout"
-msgstr ""
+msgstr "システムのキーボードレイアウトを変更"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:175
 msgid ""
@@ -281,6 +297,16 @@ msgstr ""
 msgid "Completed"
 msgstr "完了しました"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "NTP サーバーの設定"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "NTP サーバーの設定"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "ストレージの設定"
@@ -290,7 +316,7 @@ msgid "Configure storage again"
 msgstr "ストレージを再度設定"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "パスフレーズの確認"
 
@@ -298,7 +324,7 @@ msgstr "パスフレーズの確認"
 msgid "Continue"
 msgstr "続行"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "インストールを続行する"
 
@@ -306,11 +332,11 @@ msgstr "インストールを続行する"
 msgid "Continue with installation"
 msgstr "インストールを続行する"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "アカウントを作成"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "アカウントを作成"
 
@@ -324,6 +350,17 @@ msgstr "現在のホスト名:"
 msgid "Custom"
 msgstr "カスタム"
 
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "日付と時刻の設定"
+
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
@@ -333,10 +370,8 @@ msgid "Destination"
 msgstr "インストール先"
 
 #: src/components/storage/EncryptedDevices.jsx:71
-#, fuzzy
-#| msgid "The container is encrypted."
 msgid "Destination is encrypted"
-msgstr "コンテナーは暗号化されています。"
+msgstr "インストール先は暗号化されています"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:588
 msgid "Detected valid storage layout:"
@@ -355,7 +390,7 @@ msgstr "重複されたデバイスです。"
 msgid "Duplicate mount point."
 msgstr "重複されたマウントポイントです。"
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "rootアカウントを有効化"
 
@@ -383,7 +418,7 @@ msgstr "エラーの詳細"
 
 #: src/components/installation/InstallationProgress.jsx:236
 msgid "Exit to live desktop"
-msgstr ""
+msgstr "ライブデスクトップに戻る"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:258
 #: src/components/storage/ReclaimSpaceModal.jsx:265
@@ -408,11 +443,17 @@ msgstr ""
 "最終処理中: システム構成が完了しました。 インストールの完了には少し時間がかか"
 "る場合があります。"
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "フルネーム"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "フルネームにはコロン ':' を使用できません"
 
@@ -420,7 +461,7 @@ msgstr "フルネームにはコロン ':' を使用できません"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "確認済みパスワードを非表示にする"
 
@@ -428,7 +469,7 @@ msgstr "確認済みパスワードを非表示にする"
 msgid "Hide passphrase"
 msgstr "パスフレーズを非表示にする"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "パスワードを非表示にする"
 
@@ -443,22 +484,22 @@ msgstr "ホスト名"
 msgid "How would you like to install?"
 msgstr "どのようにインストールしますか？"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
-msgstr ""
+msgstr "既存のデータが全て削除されることを理解しました"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr ""
+msgstr "選択したディスクから既存のデータが全て削除されることを理解しました"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
-msgstr ""
+msgstr "既存のデータが一部削除されることを理解しました"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
-msgstr ""
+msgstr "一部のパーティションが変更されることを理解しました"
 
 #: src/components/review/Hostname.jsx:137
 msgid "If empty, hostname will be transient and set by network information."
@@ -506,7 +547,7 @@ msgstr "システムのインストールに失敗しました: $0"
 msgid "Installation of the system failed: $0"
 msgstr "システムのインストールに失敗しました: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "インストールタイプ"
 
@@ -527,38 +568,37 @@ msgid ""
 "will be ignored."
 msgstr ""
 
-#: src/components/storage/HelpAutopartOptions.jsx:7
+#: src/components/datetime/CustomNTPModal.jsx:96
 #, fuzzy
-#| msgid "Keep current disk layout and only install into available space."
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "無効なホスト名です"
+
+#: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
 "OS."
 msgstr ""
-"現在のディスクレイアウトを維持し、利用可能なスペースのみにインストールしま"
-"す。"
+"別の OS とデュアルブートできるように、現在のディスクレイアウトを維持し、利用"
+"可能な領域を使用します。"
 
 #: src/components/localization/InstallationLanguage.jsx:253
-#, fuzzy
-#| msgctxt "GUI|Spoke"
-#| msgid "_Keyboard"
 msgid "Keyboard"
-msgstr "キーボード(_K)"
+msgstr "キーボード"
 
 #: src/components/storage/DiskEncryption.jsx:95
 msgid "Keyboard layout during boot"
-msgstr ""
+msgstr "起動時のキーボードレイアウト"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "言語"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:112
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:232
-#, fuzzy
-#| msgid "Return to storage editor"
 msgid "Launch storage editor"
-msgstr "ストレージエディターに戻る"
+msgstr "ストレージエディターを起動"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:156
 msgid "Location"
@@ -605,6 +645,8 @@ msgstr "親デバイスと子デバイスの再フォーマットの選択が一
 #: src/components/localization/Keyboard.jsx:130
 msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr ""
+"複数のレイアウトが検出されました。続行するには余分なレイアウトを削除してくだ"
+"さい"
 
 #: src/components/storage/MountPointMapping.jsx:638
 #: src/components/review/StorageReview.jsx:221
@@ -619,6 +661,18 @@ msgstr "マウントポイントの割り当て"
 #: src/components/Password.jsx:51
 msgid "Must be at least $0 characters"
 msgstr "$0文字以上である必要があります"
+
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "NTP サーバー:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
@@ -661,6 +715,12 @@ msgstr "ディスクが選択されていません"
 msgid "No results found"
 msgstr "結果が見つかりません"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "NTP サーバーは設定されていません"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "選択したディスクには十分な空き領域がありません。"
@@ -682,9 +742,13 @@ msgstr ""
 "注記: これは、開発およびテストのみを目的としたプレリリースのソフトウェアで"
 "す。このソフトウェアは、重要な作業や実稼働環境では使用しないでください。"
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "オペレーティングシステム"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "オプション"
 
 #: src/components/localization/Keyboard.jsx:77
 #, fuzzy
@@ -700,7 +764,7 @@ msgstr "パーティション (上級者向け)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "パスフレーズ"
 
@@ -708,7 +772,7 @@ msgstr "パスフレーズ"
 msgid "Passphrase did not match any locked device"
 msgstr "パスフレーズがロックされたデバイスのどれとも一致しませんでした"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "パスフレーズが一致しません"
 
@@ -721,12 +785,12 @@ msgid "Please attach the log file $0 to the issue."
 msgstr "ログファイル $0 をIssueに添付してください。"
 
 #: src/components/storage/InstallationDestination.jsx:357
-#, fuzzy
-#| msgid "No disks selected; please select at least one disk to install to."
 msgid "Please select at least one disk to continue"
-msgstr ""
-"ディスクが選択されていません。インストール先として少なくともディスクを 1 つ選"
-"択してください。"
+msgstr "続行するには少なくともディスクを 1 つ選択してください"
+
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "プール"
 
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
@@ -740,12 +804,12 @@ msgstr "プレリリース"
 msgid "Proceed with installation"
 msgstr "インストールを継続"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "終了"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "インストーラーを終了しますか？"
 
@@ -777,8 +841,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "ホスト名は、64 文字以下の長さにする必要があります。"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "再起動"
 
@@ -788,7 +852,7 @@ msgid ""
 "$0 of free space available for installation."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "システムを再起動しますか？"
 
@@ -808,18 +872,12 @@ msgstr "領域の再利用(_R)"
 #: src/components/storage/ReclaimSpaceModal.jsx:134
 #: src/components/storage/ReclaimSpaceModal.jsx:154
 #: src/components/storage/ReclaimSpaceModal.jsx:225
-#, fuzzy
-#| msgctxt "GUI|Reclaim Dialog"
-#| msgid "_Reclaim space"
 msgid "Reclaim space"
-msgstr "領域の再利用(_R)"
+msgstr "領域の再利用"
 
 #: src/components/storage/scenarios/UseFreeSpace.jsx:94
-#, fuzzy
-#| msgctxt "GUI|Reclaim Dialog"
-#| msgid "_Reclaim space"
 msgid "Reclaim space (required)"
-msgstr "領域の再利用(_R)"
+msgstr "領域の再利用 (必須)"
 
 #: src/components/storage/MountPointMapping.jsx:250
 msgid "Recommended"
@@ -847,23 +905,25 @@ msgid "Remove"
 msgstr "削除"
 
 #: src/components/storage/HelpAutopartOptions.jsx:5
-#, fuzzy
-#| msgid ""
-#| "Remove all partitions on the selected devices, including existing "
-#| "operating systems. Make sure you have backed up your data."
 msgid ""
 "Remove all partitions on the selected devices, including existing operating "
 "systems."
 msgstr ""
-"既存のオペレーティング システムを含む、選択したデバイス上のすべてのパーティ"
-"ションを削除します。 データをバックアップしていることを確認してください。"
+"既存のオペレーティングシステムを含む、選択したデバイス上のすべてのパーティ"
+"ションを削除します。"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:138
-#, fuzzy
-#| msgid "Use free space for the installation"
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
-msgstr "空き領域をインストールに使用します"
+msgstr ""
+"インストール用の領域を解放するために、既存のファイルシステムを削除・リサイズ"
+"してください。"
+
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "NTP サーバーの削除"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
@@ -871,6 +931,9 @@ msgid ""
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
 "to have backups of anything important before reclaiming space."
 msgstr ""
+"ファイルシステムの削除は中に含まれるデータを全て完全に削除します。パーティ"
+"ションのリサイズは未使用領域を解放できますが、リスクを伴います。領域を再利用"
+"する前に、重要なデータは必ずバックアップしてください。"
 
 #: src/components/storage/HelpAutopartOptions.jsx:11
 msgid "Replace current installation, but keep files in home."
@@ -917,11 +980,22 @@ msgstr "インストールに戻る"
 msgid "Return to storage editor"
 msgstr "ストレージエディターに戻る"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "確認とインストール"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "root アカウントは無効になっています"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 #, fuzzy
 #| msgctxt "GUI|Custom Partitioning|Container Dialog"
@@ -949,24 +1023,33 @@ msgstr "言語の選択"
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
+"ディスクベースの暗号化でデータを保護します。新規パーティションにのみ適用され"
+"ます"
 
 #: src/components/storage/InstallationDestination.jsx:400
-#, fuzzy
-#| msgctxt "GUI|Custom Partitioning|Configure Dialog"
-#| msgid "_Select"
 msgid "Select"
-msgstr "選択(_S)"
+msgstr "選択"
 
 #: src/components/storage/MountPointMapping.jsx:324
 #: src/components/storage/MountPointMapping.jsx:358
 msgid "Select a device"
 msgstr "デバイスを選択する"
 
-#: src/components/storage/InstallationDestination.jsx:383
+#: src/components/datetime/Timezone.jsx:190
 #, fuzzy
-#| msgid "Destination"
+#| msgid "Select"
+msgid "Select city"
+msgstr "選択"
+
+#: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
-msgstr "インストール先"
+msgstr "インストール先を選択"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "なしを選択します"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -976,6 +1059,17 @@ msgstr "選択したデバイスのフォーマット '$0' は再フォーマッ
 msgid "Send us feedback on your installation"
 msgstr "インストールに関するフィードバックをお寄せください"
 
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "サーバー(_S):"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
+
 #: src/components/review/Hostname.jsx:110
 #, fuzzy
 #| msgid "Set host name"
@@ -984,13 +1078,20 @@ msgstr "ホスト名の指定"
 
 #: src/components/storage/scenarios/UseFreeSpace.jsx:108
 msgid "Share disk with other operating systems"
-msgstr ""
+msgstr "他のオペレーティングシステムとディスクを共有"
 
 #: src/components/storage/scenarios/UseFreeSpace.jsx:105
 msgid "Share disk with other operating systems: $0"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "AM/PM(_A)"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "パスワードの確認を表示する"
 
@@ -998,12 +1099,18 @@ msgstr "パスワードの確認を表示する"
 msgid "Show passphrase"
 msgstr "パスフレーズを表示する"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "パスワードを表示する"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
@@ -1023,19 +1130,17 @@ msgid "Some required partitions are missing: $0"
 msgstr "いくつかのパーティションが見つかりません: $0"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:159
-#, fuzzy
-#| msgid "No Space"
 msgid "Space"
-msgstr "空きがありません"
+msgstr "領域"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "ストレージ"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "ストレージの設定"
 
@@ -1044,14 +1149,13 @@ msgid "Storage configuration: Storage is currently being configured."
 msgstr "ストレージの構成: ストレージは現在構成中です。"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:93
-#, fuzzy
-#| msgid "Return to storage editor"
 msgid "Storage editor"
-msgstr "ストレージエディターに戻る"
+msgstr "ストレージエディター"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:242
 msgid "Storage editor is available only in the `Installation method` step."
 msgstr ""
+"ストレージエディターは「インストール方法」のステップでのみ利用可能です。"
 
 #: src/components/storage/HelpAutopartOptions.jsx:13
 msgid "Storage is based on the configuration from 'Modify storage'."
@@ -1091,7 +1195,7 @@ msgstr "言語の選択"
 msgid "Suggested languages"
 msgstr "言語の選択"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "システム"
 
@@ -1135,12 +1239,9 @@ msgid ""
 "set up LVM and much more. It is meant to be used as an advanced utility and "
 "not intended to be used in a typical installation."
 msgstr ""
-
-#: src/components/users/Accounts.jsx:203
-#, fuzzy
-#| msgid "This account will have administration priviledge with sudo."
-msgid "This account will have administration privilege with sudo."
-msgstr "このアカウントは sudo を使った管理者権限を持つことになります。"
+"ストレージエディターではパーティションのリサイズ、削除、作成が可能です。LVM "
+"の設定なども可能です。これは高度なユーティリティであり、通常のインストールで"
+"使用することは想定されていません。"
 
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
@@ -1152,7 +1253,7 @@ msgstr "これは、プレリリースの不安定なソフトウェアです"
 
 #: src/components/storage/DiskEncryption.jsx:115
 msgid "This layout will be used for unlocking your system on boot"
-msgstr ""
+msgstr "このレイアウトは起動時にシステムのロック解除で使用されます"
 
 #: src/components/storage/DiskEncryption.jsx:62
 msgid "This may take a moment"
@@ -1161,6 +1262,18 @@ msgstr "これには少し時間がかかる場合があります"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "これには少し時間がかかります"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "タイムゾーン: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "タイムゾーン: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1175,8 +1288,8 @@ msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
-"このオプションを使用して、既存のパーティションをリサイズ・削除することで、少"
-"なくとも $0 の容量を解放できます。"
+"このオプションを使用するには、既存のパーティションをリサイズ・削除して、少な"
+"くとも $0 の容量を解放してください。"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:158
 msgid "Type"
@@ -1184,11 +1297,11 @@ msgstr "タイプ"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:105
 msgid "Unable to schedule deletion of $0"
-msgstr ""
+msgstr "$0 の削除を予約できません"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:107
 msgid "Unable to schedule resizing of $0"
-msgstr ""
+msgstr "$0 のリサイズを予約できません"
 
 #: src/components/storage/EncryptedDevices.jsx:77
 #: src/components/storage/EncryptedDevices.jsx:197
@@ -1200,26 +1313,24 @@ msgid ""
 "Unlock LUKS-encrypted partitions to keep existing data and show more "
 "installation methods."
 msgstr ""
+"既存データを保持し、より多くのインストール方法を表示するため、LUKS で暗号化さ"
+"れたパーティションをロック解除してください。"
 
 #: src/components/storage/EncryptedDevices.jsx:157
 msgid "Unlock encrypted devices"
 msgstr "暗号化されたデバイスのロック解除を行います"
 
 #: src/components/localization/Keyboard.jsx:148
-#, fuzzy
-#| msgid "Available Layouts"
 msgid "Unusable layout"
-msgstr "利用可能なレイアウト"
+msgstr "使用できないレイアウト"
 
 #: src/components/storage/scenarios/UseConfiguredStorage.jsx:103
 msgid "Use configured storage"
 msgstr "構成したストレージを使用する"
 
 #: src/components/storage/scenarios/EraseAll.jsx:74
-#, fuzzy
-#| msgid "Selected disks"
 msgid "Use entire disk"
-msgstr "選択したディスク"
+msgstr "ディスク全体を使用"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 #, fuzzy
@@ -1227,17 +1338,23 @@ msgstr "選択したディスク"
 msgid "Use free space"
 msgstr "空き領域を使用する"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "アカウントを作成"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "自動パーティション設定に十分に大きな空き領域がディスクにありません"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "ユーザー名"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1245,11 +1362,11 @@ msgstr ""
 "ユーザー名は次の文字のみを使用できます: a-z の文字、0-9 の数字、ダッシュ $0、"
 "ピリオド $1、アンダースコア $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "ユーザ名は指定された文字のみを使用してください"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "ユーザー名は 33 文字未満にしてください"
 
@@ -1267,7 +1384,7 @@ msgstr "ようこそ。今すぐ $0 をインストールしましょう。"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:527
 msgid "Windows partitions with BitLocker encryption cannot be resized"
-msgstr ""
+msgstr "BitLocker で暗号化された Windows パーティションはリサイズできません"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:101
 msgid ""
@@ -1277,7 +1394,11 @@ msgstr ""
 "ここでインストールに十分な領域を確保して、あとはインストーラーに任せることも"
 "できますし、手動でパーティションを構成することもできます。"
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "進行状況は保存されません。"
 
@@ -1302,16 +1423,12 @@ msgid "edit"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:126
-#, fuzzy
-#| msgid "Encrypt"
 msgid "encrypt"
 msgstr "暗号化"
 
 #: src/components/review/StorageReview.jsx:126
-#, fuzzy
-#| msgid "Encrypt"
 msgid "encrypted"
-msgstr "暗号化"
+msgstr "暗号化済み"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:254
 #, fuzzy
@@ -1337,18 +1454,21 @@ msgstr ""
 
 #: src/components/storage/ReclaimSpaceModal.jsx:472
 #: src/components/storage/ReclaimSpaceModal.jsx:476
-#, fuzzy
-#| msgid "Shrink"
 msgid "shrink"
 msgstr "縮小"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:430
 msgid "shrink to $0"
-msgstr ""
+msgstr "$0 に縮小"
 
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr ""
+
+#, fuzzy
+#~| msgid "This account will have administration priviledge with sudo."
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "このアカウントは sudo を使った管理者権限を持つことになります。"
 
 #, fuzzy
 #~| msgid "Clear input value"
@@ -2092,9 +2212,6 @@ msgstr ""
 #~ msgid "Add Layout"
 #~ msgstr "レイアウトの追加"
 
-#~ msgid "Add NTP server"
-#~ msgstr "NTP サーバーの追加"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "NTP サーバーアドレスの追加"
 
@@ -2526,9 +2643,6 @@ msgstr ""
 #~ msgid "Configure NTP"
 #~ msgstr "NTP の設定"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "NTP サーバーの設定"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "ネットワーク時刻サーバーの設定"
 
@@ -2658,9 +2772,6 @@ msgstr ""
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "ディストリビューションのインストール"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3452,9 +3563,6 @@ msgstr ""
 #~ msgid "Invalid group name."
 #~ msgstr "無効なグループ名。"
 
-#~ msgid "Invalid host name"
-#~ msgstr "無効なホスト名です"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3713,9 +3821,6 @@ msgstr ""
 #~ msgid "NTP configuration"
 #~ msgstr "NTP 設定"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP サーバー:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM デバイス {namespace}"
@@ -3963,9 +4068,6 @@ msgstr ""
 #~ msgid "Optional comma-separated list of mount options for the NFS mount"
 #~ msgstr "NFSマウントのマウントオプションのカンマ区切りリスト (オプション)"
 
-#~ msgid "Options"
-#~ msgstr "オプション"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4198,9 +4300,6 @@ msgstr ""
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "少々お待ちください... ソフトウェアのメタデータがまだロード中です。"
-
-#~ msgid "Pool"
-#~ msgstr "プール"
 
 #~ msgid "Port"
 #~ msgstr "ポート"
@@ -4457,9 +4556,6 @@ msgstr ""
 #~ msgid "Remove"
 #~ msgstr "削除"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "NTP サーバーの削除"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "選択したマウントポイントを削除します。"
 
@@ -4542,9 +4638,6 @@ msgstr ""
 
 #~ msgid "Root Selection"
 #~ msgstr "Root の選択"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "root アカウントは無効になっています"
 
 #~ msgid "Root password"
 #~ msgstr "root パスワード"
@@ -4717,9 +4810,6 @@ msgstr ""
 
 #~ msgid "Service level"
 #~ msgstr "サービスレベル"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "日付と時刻の設定"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6310,10 +6400,6 @@ msgstr ""
 #~ "\\\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "AM/PM(_A)"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "変更を許可する(_A)"
@@ -6951,10 +7037,6 @@ msgstr ""
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "追加するデバイスのタイプを選択する(_S)"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "サーバー(_S):"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "ブートデバイスとして設定(_S)"
@@ -7433,9 +7515,6 @@ msgstr ""
 #~ msgid "Select no disk"
 #~ msgstr "ディスクなしを選択します"
 
-#~ msgid "Select none"
-#~ msgstr "なしを選択します"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7864,11 +7943,6 @@ msgstr ""
 #~ msgstr "接続していません"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "タイムゾーン: %s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "タイムゾーンの設定"
@@ -8118,9 +8192,6 @@ msgstr ""
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "NTP サーバーは設定されていません"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "HDD からのインストール設定でエラー"

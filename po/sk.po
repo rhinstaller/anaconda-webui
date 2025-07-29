@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-04-24 21:02+0000\n"
 "Last-Translator: Ondrej Sulek <feonsu@gmail.com>\n"
 "Language-Team: Slovak <https://translate.fedoraproject.org/projects/anaconda-"
@@ -88,11 +88,16 @@ msgstr ""
 "Na zariadení MDRAID $1 bol nájdený oddiel '$0'. Oddiely zavádzača systému na "
 "zariadeniach MDRAID nie sú podporované."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "O aplikácii"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Účet"
 
@@ -100,6 +105,12 @@ msgstr "Účet"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Akcie"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Pridať server NTP"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -149,6 +160,15 @@ msgstr ""
 "Priradiť oddiely k bodom pripojenia. Užitočné pre predkonfigurované vlastné "
 "rozloženia."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Dostupné voľné miesto: $0. Inštalácia vyžaduje: $1."
@@ -171,6 +191,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Zrušiť"
@@ -228,6 +249,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Dokončené"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Nastaviť servery NTP"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Nastaviť servery NTP"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Konfigurovať úložisko"
@@ -237,7 +268,7 @@ msgid "Configure storage again"
 msgstr "Znova konfigurovať úložisko"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Potvrdenie hesla"
 
@@ -245,7 +276,7 @@ msgstr "Potvrdenie hesla"
 msgid "Continue"
 msgstr "Pokračovať"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Pokračovať v inštalácii"
 
@@ -253,11 +284,11 @@ msgstr "Pokračovať v inštalácii"
 msgid "Continue with installation"
 msgstr "Pokračovať v inštalácii"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Vytvoriť účet"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Vytvoriť účet"
 
@@ -268,6 +299,17 @@ msgstr "Aktuálne nainštalované: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Vlastné"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Nastavenie dátumu a času"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -298,7 +340,7 @@ msgstr "Duplicitné zariadenie."
 msgid "Duplicate mount point."
 msgstr "Duplicitný bod pripojenia."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Povoliť účet root"
 
@@ -347,11 +389,17 @@ msgstr ""
 "Finalizácia: Konfigurácia systému je dokončená. Finalizácia inštalácie môže "
 "chvíľu trvať."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Celé meno"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "Celé meno nemôže obsahovať znak dvojbodky"
 
@@ -359,7 +407,7 @@ msgstr "Celé meno nemôže obsahovať znak dvojbodky"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Skryť potvrdené heslo"
 
@@ -367,7 +415,7 @@ msgstr "Skryť potvrdené heslo"
 msgid "Hide passphrase"
 msgstr "Skryť heslo"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Skryť heslo"
 
@@ -380,20 +428,20 @@ msgstr "Názov počítača"
 msgid "How would you like to install?"
 msgstr "Ako chcete inštalovať?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Rozumiem, že všetky existujúce údaje budú vymazané"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr "Rozumiem, že všetky existujúce údaje budú vymazané z vybraných diskov"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Rozumiem, že niektoré existujúce údaje budú vymazané"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Rozumiem, že niektoré oddiely budú upravené"
 
@@ -446,7 +494,7 @@ msgstr "Inštalácia systému zlyhala: $0"
 msgid "Installation of the system failed: $0"
 msgstr "Inštalácia systému zlyhala: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Typ Inštalácie"
 
@@ -471,6 +519,12 @@ msgstr ""
 "vytvorené na oddieloch, musí obsahovať jediný súborový systém alebo formát "
 "(napr. LVM PV). Akékoľvek existujúce oddiely na tomto poli budú ignorované."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "Neplatný názov počítača"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -487,7 +541,7 @@ msgstr "Klávesnica"
 msgid "Keyboard layout during boot"
 msgstr "Rozloženie klávesnice počas zavádzania systému"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Jazyk"
@@ -560,6 +614,18 @@ msgstr "Priradenie bodov pripojenia"
 msgid "Must be at least $0 characters"
 msgstr "Musí mať aspoň $0 znakov"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "NTP servery:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Názov"
@@ -598,6 +664,12 @@ msgstr "Nie sú vybrané žiadne disky"
 msgid "No results found"
 msgstr "Neboli nájdené žiadne výsledky"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "nie je nakonfigurovaný žiadny server NTP"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "Nedostatok voľného miesta na vybraných diskoch."
@@ -620,9 +692,13 @@ msgstr ""
 "vývoja a testovania. Nepoužívajte tento softvér pre žiadnu kritickú prácu "
 "ani pre produkčné prostredia."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Operačný systém"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Voľby"
 
 #: src/components/localization/Keyboard.jsx:77
 #, fuzzy
@@ -637,7 +713,7 @@ msgstr "Oddiely (pokročilé)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Heslo"
 
@@ -645,7 +721,7 @@ msgstr "Heslo"
 msgid "Passphrase did not match any locked device"
 msgstr "Heslo sa nezhoduje s žiadnym zamknutým zariadením"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "Heslá sa musia zhodovať"
 
@@ -664,6 +740,10 @@ msgid "Please select at least one disk to continue"
 msgstr ""
 "Nie sú vybrané žiadne disky. Prosím, vyberte aspoň jeden disk pre inštaláciu."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Pool"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Poháňané Anacondou"
@@ -676,12 +756,12 @@ msgstr "Predčasné vydanie"
 msgid "Proceed with installation"
 msgstr "Pokračovať v inštalácii"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Ukončiť"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Ukončiť inštalátor?"
 
@@ -713,8 +793,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Názov počítača musí mať 64 znakov alebo menej"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Reštartovať"
 
@@ -726,7 +806,7 @@ msgstr ""
 "Reštartujte do systému Windows, aby ste zmenšili oddiely šifrované "
 "BitLockerom. Uvoľnite aspoň $0 voľného miesta pre inštaláciu."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Reštartovať systém?"
 
@@ -786,6 +866,12 @@ msgstr ""
 "Odstráňte alebo zmeňte veľkosť existujúcich súborových systémov, aby ste "
 "uvoľnili miesto pre inštaláciu."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Odstrániť server NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -843,11 +929,22 @@ msgstr "Návrat k inštalácii"
 msgid "Return to storage editor"
 msgstr "Návrat do editora úložiska"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Skontrolovať a nainštalovať"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "Účet správcu je zakázaný"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Uložiť"
@@ -881,9 +978,21 @@ msgstr "Vybrať"
 msgid "Select a device"
 msgstr "Vyberte zariadenie"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "Vybrať"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Vyberte cieľ"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "Nevybrať nič"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -892,6 +1001,17 @@ msgstr "Formát vybraného zariadenia '$0' nie je možné preformátovať."
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Pošlite nám spätnú väzbu o vašej inštalácii"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "_Server:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -909,7 +1029,14 @@ msgstr "Zdieľať disk s iným operačným systémom"
 msgid "Share disk with other operating systems: $0"
 msgstr "Zdieľať disk s iným operačným systémom"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Zobraziť potvrdené heslo"
 
@@ -917,13 +1044,19 @@ msgstr "Zobraziť potvrdené heslo"
 msgid "Show passphrase"
 msgstr "Zobraziť heslo"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Zobraziť heslo"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Veľkosť"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -945,14 +1078,14 @@ msgstr "Chýbajú niektoré požadované oddiely: $0"
 msgid "Space"
 msgstr "Miesto"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Úložisko"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Konfigurácia úložiska"
 
@@ -1002,7 +1135,7 @@ msgstr "Odporúčané jazyky"
 msgid "Suggested languages"
 msgstr "Odporúčané jazyky"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "Systém"
 
@@ -1056,10 +1189,6 @@ msgstr ""
 "Umožňuje nastaviť LVM a oveľa viac. Je určený na použitie ako pokročilý "
 "nástroj a nie je určený na použitie v typickej inštalácii."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Tento účet bude mať administrátorské práva s použitím sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Tento názov počítača nie je možné nastaviť"
@@ -1080,6 +1209,18 @@ msgstr "Môže to chvíľu trvať"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Chvíľu to potrvá"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "Časové pásmo: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "Časové pásmo: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1142,15 +1283,21 @@ msgstr "Použiť celý disk"
 msgid "Use free space"
 msgstr "Použiť voľné miesto"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "Vytvoriť účet"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Použiť RAID zariadenie pre automatické rozdelenie"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Používateľské meno"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1158,11 +1305,11 @@ msgstr ""
 "Používateľské meno môže obsahovať iba: písmená a-z, číslice 0-9, pomlčku $0, "
 "bodku $1, podčiarkovník $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "Používateľské meno nesmie byť rezervované slovo"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "Používateľské meno musí byť kratšie ako 33 znakov"
 
@@ -1190,7 +1337,11 @@ msgstr ""
 "Tu môžete buď uvoľniť dostatok miesta a nechať inštalátor, aby sa postaral o "
 "zvyšok, alebo oddiely nastaviť manuálne."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "Váš postup sa neuloží."
 
@@ -1252,6 +1403,9 @@ msgstr "zmenšiť na $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "späť"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Tento účet bude mať administrátorské práva s použitím sudo."
 
 #~ msgid "Clear search input"
 #~ msgstr "Vymazať vstup vyhľadávania"
@@ -1925,9 +2079,6 @@ msgstr "späť"
 #~ msgid "Add Layout"
 #~ msgstr "Pridanie rozloženia"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Pridať server NTP"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Pridať adresu servera NTP"
 
@@ -2356,9 +2507,6 @@ msgstr "späť"
 #~ msgid "Configure NTP"
 #~ msgstr "Konfigurovať NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Nastaviť servery NTP"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "Nastaviť servery NTP"
 
@@ -2488,9 +2636,6 @@ msgstr "späť"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "INŠTALÁCIA DISTRIBÚCIE"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3269,9 +3414,6 @@ msgstr "späť"
 #~ msgid "Invalid group name."
 #~ msgstr "Neplatný názov skupiny."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Neplatný názov počítača"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3528,9 +3670,6 @@ msgstr "späť"
 #~ msgid "NTP configuration"
 #~ msgstr "Konfigurácia NTP"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP servery:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM zariadenie {namespace}"
@@ -3782,9 +3921,6 @@ msgstr "späť"
 #~ msgstr ""
 #~ "Voliteľný zoznam volieb pripojenia oddelených čiarkou pre NFS pripojenie"
 
-#~ msgid "Options"
-#~ msgstr "Voľby"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4007,9 +4143,6 @@ msgstr "späť"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Prosím, čakajte... metaúdaje softvéru sa stále načítavajú."
-
-#~ msgid "Pool"
-#~ msgstr "Pool"
 
 #~ msgid "Port"
 #~ msgstr "Port"
@@ -4263,9 +4396,6 @@ msgstr "späť"
 #~ msgid "Remove"
 #~ msgstr "Odstrániť"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Odstrániť server NTP"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Odstrániť vybraté body pripojení."
 
@@ -4348,9 +4478,6 @@ msgstr "späť"
 
 #~ msgid "Root Selection"
 #~ msgstr "Výber koreňového adresára"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "Účet správcu je zakázaný"
 
 #~ msgid "Root password"
 #~ msgstr "Heslo správcu"
@@ -4520,9 +4647,6 @@ msgstr "späť"
 
 #~ msgid "Service level"
 #~ msgstr "Úroveň služieb"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Nastavenie dátumu a času"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6120,10 +6244,6 @@ msgstr "späť"
 #~ "chroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Prijať zmeny"
@@ -6760,10 +6880,6 @@ msgstr "späť"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Vyberte typ zariadenia, ktoré chcete pridať"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "_Server:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_Nastaviť ako zavádzacie zariadenie"
@@ -7213,9 +7329,6 @@ msgstr "späť"
 #~ msgid "Select no disk"
 #~ msgstr "Nevybrať žiadny disk"
 
-#~ msgid "Select none"
-#~ msgstr "Nevybrať nič"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7653,11 +7766,6 @@ msgstr "späť"
 #~ msgstr "Nepripojené"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "Časové pásmo: %s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "Nastaviť časové pásmo"
@@ -7900,9 +8008,6 @@ msgstr "späť"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "nie je nakonfigurovaný žiadny server NTP"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Chyba pri nastavovaní inštalácie z HDD"

@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-05-15 22:41+0000\n"
 "Last-Translator: Rui Cruz <rmfc27@outlook.pt>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/"
@@ -103,11 +103,16 @@ msgstr ""
 "Partição '$0' no dispositivo MDRAID '$1' encontrada. Partições do carregador "
 "de arranque em dispositivos MDRAID não são suportadas."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "Sobre"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Conta"
 
@@ -115,6 +120,12 @@ msgstr "Conta"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Ação"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Adicionar servidor NTP"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -166,6 +177,15 @@ msgstr ""
 "Atribuir partições a pontos de montagem. Útil para esquemas personalizados "
 "pré-configurados."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Espaço livre disponível: $0. A instalação requer: $1."
@@ -189,6 +209,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Cancelar"
@@ -248,6 +269,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Concluído"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Configurar servidores NTP"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Configurar servidores NTP"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Configurar o armazenamento"
@@ -257,7 +288,7 @@ msgid "Configure storage again"
 msgstr "Configurar o armazenamento novamente"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Confirmar frase-passe"
 
@@ -265,7 +296,7 @@ msgstr "Confirmar frase-passe"
 msgid "Continue"
 msgstr "Continuar"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Continuar a instalação"
 
@@ -273,11 +304,11 @@ msgstr "Continuar a instalação"
 msgid "Continue with installation"
 msgstr "Continuar com a instalação"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Criar Conta"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Criar conta"
 
@@ -288,6 +319,17 @@ msgstr "Instalação atual: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Personalizar"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Configurar data e hora"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -318,7 +360,7 @@ msgstr "Dispositivo duplicado."
 msgid "Duplicate mount point."
 msgstr "Ponto de montagem duplicado."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Ativar conta root"
 
@@ -367,11 +409,17 @@ msgstr ""
 "A finalizar: A configuração do sistema está completa. A finalização da "
 "instalação pode demorar alguns momentos."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Nome completo"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "O nome completo não pode conter caracteres de dois pontos"
 
@@ -379,7 +427,7 @@ msgstr "O nome completo não pode conter caracteres de dois pontos"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Esconder a palavra-passe confirmada"
 
@@ -387,7 +435,7 @@ msgstr "Esconder a palavra-passe confirmada"
 msgid "Hide passphrase"
 msgstr "Esconder frase-passe"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Ocultar palavra-passe"
 
@@ -400,22 +448,22 @@ msgstr "Nome de anfitrião"
 msgid "How would you like to install?"
 msgstr "Como gostaria de instalar?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Eu entendo que todos os dados existentes serão apagados"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Eu compreendo que todos os dados existentes serão apagados dos discos "
 "selecionados"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Eu compreendo que alguns dados existentes serão apagados"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Eu compreendo que algumas partições serão modificadas"
 
@@ -467,7 +515,7 @@ msgstr "A instalação do sistema falhou: $0"
 msgid "Installation of the system failed: $0"
 msgstr "A instalação do sistema falhou: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Tipo de instalação"
 
@@ -493,6 +541,12 @@ msgstr ""
 "sistema de ficheiros ou formato (por exemplo, LVM PV). Quaisquer partições "
 "existentes neste array serão ignoradas."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "Hostname inválido"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -509,7 +563,7 @@ msgstr "Teclado"
 msgid "Keyboard layout during boot"
 msgstr "Esquema de teclado durante o arranque"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Língua"
@@ -582,6 +636,18 @@ msgstr "Atribuição do ponto de montagem"
 msgid "Must be at least $0 characters"
 msgstr "Deve ter pelo menos $0 caracteres"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "Servidores NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Nome"
@@ -619,6 +685,10 @@ msgstr "Nenhum disco selecionado"
 msgid "No results found"
 msgstr "Nenhum resultado encontrado"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+msgid "No user or root account has been configured"
+msgstr ""
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "Não há espaço livre suficiente nos discos selecionados."
@@ -641,9 +711,13 @@ msgstr ""
 "desenvolvimento e teste. NÃO utilize este software para trabalhos críticos "
 "ou em ambientes de produção."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Sistema operativo"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Opções"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -656,7 +730,7 @@ msgstr "Partições (avançado)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Frase-passe"
 
@@ -664,7 +738,7 @@ msgstr "Frase-passe"
 msgid "Passphrase did not match any locked device"
 msgstr "A frase-passe não correspondeu a nenhum dispositivo bloqueado"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "As frases-passe têm de coincidir"
 
@@ -684,6 +758,10 @@ msgstr ""
 "Sem disco selecionado. Por favor, selecione pelo menos um disco para "
 "instalar."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Conjunto"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Desenvolvido por Anaconda"
@@ -696,12 +774,12 @@ msgstr "Pré-lançamento"
 msgid "Proceed with installation"
 msgstr "Prosseguir com a instalação"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Sair"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Sair do instalador?"
 
@@ -733,8 +811,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "O nome de anfitrião deve ter 64 ou menos caracteres"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Reiniciar"
 
@@ -746,7 +824,7 @@ msgstr ""
 "Reinicie no Windows para redimensionar as partições encriptadas com "
 "BitLocker. Liberte pelo menos $0 de espaço livre para a instalação."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Reiniciar sistema?"
 
@@ -806,6 +884,12 @@ msgstr ""
 "Remova ou redimensione os sistemas de arquivos existentes para libertar "
 "espaço para instalação."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Remover servidor NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -862,11 +946,22 @@ msgstr "Voltar para a instalação"
 msgid "Return to storage editor"
 msgstr "Voltar ao editor de armazenamento"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Rever e instalar"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "A conta \"root\" está desativada"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Gravar"
@@ -899,9 +994,22 @@ msgstr "Selecionar"
 msgid "Select a device"
 msgstr "Selecione um dispositivo"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "Selecionar"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Selecione o destino"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgctxt "GUI|Network|Wireless"
+#| msgid "_Select network"
+msgid "Select region"
+msgstr "_Selecione uma rede"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -910,6 +1018,16 @@ msgstr "O formato do dispositivo selecionado '$0' não pode ser reformatado."
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Envie-nos comentários sobre a sua instalação"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "Server"
+msgstr "Servidores NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -927,7 +1045,14 @@ msgstr "Compartilhar disco com outro sistema operacional"
 msgid "Share disk with other operating systems: $0"
 msgstr "Compartilhar disco com outro sistema operacional"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Mostrar palavra-passe confirmada"
 
@@ -935,13 +1060,19 @@ msgstr "Mostrar palavra-passe confirmada"
 msgid "Show passphrase"
 msgstr "Mostrar frase-passe"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Exibir palavra-passe"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Tamanho"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -963,14 +1094,14 @@ msgstr "Algumas partições necessárias estão faltando: $0"
 msgid "Space"
 msgstr "Espaço"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Armazenamento"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Configuração de armazenamento"
 
@@ -1021,7 +1152,7 @@ msgstr "Teclados sugeridos"
 msgid "Suggested languages"
 msgstr "Idiomas sugeridos"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "Sistema"
 
@@ -1076,10 +1207,6 @@ msgstr ""
 "ferramenta avançada e não é recomendado para ser usado numa instalação "
 "típica."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Esta conta terá o privilégio de administrador com o sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Este nome de anfitrião não pode ser submetido"
@@ -1100,6 +1227,18 @@ msgstr "Pode demorar um pouco"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Isto vai demorar alguns momentos"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "Fuso horário: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "Fuso horário: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1162,15 +1301,21 @@ msgstr "Utilizar o disco inteiro"
 msgid "Use free space"
 msgstr "Utilizar espaço livre"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "Criar conta"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Utilizar o dispositivo RAID para partição automática"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Nome de usuário"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1178,11 +1323,11 @@ msgstr ""
 "Nome de usuário poderá conter: letras de A a Z, dígitos de 0 a 9, espaço $0, "
 "ponto $1, underline $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "O nome de utilizador não pode ser uma palavra reservada"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "O nome dos utilizadores deve ser menor que 33 caracteres"
 
@@ -1211,7 +1356,11 @@ msgstr ""
 "Pode liberar espaço suficiente aqui e deixar o instalador tratar do resto ou "
 "configurar as partições manualmente."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "Seu progresso não vai ser salvo."
 
@@ -1273,6 +1422,9 @@ msgstr "diminuir para $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "desfazer"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Esta conta terá o privilégio de administrador com o sudo."
 
 #~ msgid "Clear search input"
 #~ msgstr "Limpar entrada de pesquisa"
@@ -1977,9 +2129,6 @@ msgstr "desfazer"
 #~ msgid "Add Layout"
 #~ msgstr "Adicionar disposição"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Adicionar servidor NTP"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Adicionar endereço de servidor NTP"
 
@@ -2407,9 +2556,6 @@ msgstr "desfazer"
 #~ msgid "Configure NTP"
 #~ msgstr "Configurar NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Configurar servidores NTP"
-
 #, fuzzy
 #~| msgid "Configure NTP servers"
 #~ msgid "Configure Network Time Servers"
@@ -2541,9 +2687,6 @@ msgstr "desfazer"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "INSTALAÇÃO DA DISTRIBUIÇÃO"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #, fuzzy
 #~| msgid "Lock root account"
@@ -3312,9 +3455,6 @@ msgstr "desfazer"
 #~ msgid "Invalid group name."
 #~ msgstr "Nome de grupo inválido."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Hostname inválido"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3576,9 +3716,6 @@ msgstr "desfazer"
 #~ msgid "NTP configuration"
 #~ msgstr "Configuração NTP"
 
-#~ msgid "NTP servers:"
-#~ msgstr "Servidores NTP:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "Dispositivo {namespace} NVDIMM"
@@ -3828,9 +3965,6 @@ msgstr "desfazer"
 #~ msgid "OK"
 #~ msgstr "Aceitar"
 
-#~ msgid "Options"
-#~ msgstr "Opções"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4055,9 +4189,6 @@ msgstr "desfazer"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Favor aguardar... metadados de programas ainda estão carregando."
-
-#~ msgid "Pool"
-#~ msgstr "Conjunto"
 
 #~ msgid "Port"
 #~ msgstr "Porta"
@@ -4312,9 +4443,6 @@ msgstr "desfazer"
 #~ msgid "Remove"
 #~ msgstr "Remover"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Remover servidor NTP"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Remova o(s) ponto(s) de montagem selecionado(s)."
 
@@ -4400,9 +4528,6 @@ msgstr "desfazer"
 
 #~ msgid "Root Selection"
 #~ msgstr "Seleção de administrador"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "A conta \"root\" está desativada"
 
 #~ msgid "Root password"
 #~ msgstr "Palavra-passe de administrador"
@@ -4575,9 +4700,6 @@ msgstr "desfazer"
 
 #~ msgid "Service level"
 #~ msgstr "Nível de serviço"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Configurar data e hora"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6167,10 +6289,6 @@ msgstr "desfazer"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Aceitar mudanças"
@@ -6815,12 +6933,6 @@ msgstr "desfazer"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Selecionar o tipo de dispositivo que deseja adicionar"
 
-#, fuzzy
-#~| msgid "NTP servers:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "Servidores NTP:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_Definir como Dispositivo de Arranque"
@@ -7244,12 +7356,6 @@ msgstr "desfazer"
 #~ msgid "Select no disk"
 #~ msgstr "Discos selecionados"
 
-#, fuzzy
-#~| msgctxt "GUI|Network|Wireless"
-#~| msgid "_Select network"
-#~ msgid "Select none"
-#~ msgstr "_Selecione uma rede"
-
 #~ msgid "Try Fedora"
 #~ msgstr "Teste o Fedora"
 
@@ -7603,11 +7709,6 @@ msgstr "desfazer"
 #~| msgid "Not connected"
 #~ msgid "Not synchronized"
 #~ msgstr "Não ligado"
-
-#, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "Fuso horário: %s\n"
 
 #, fuzzy
 #~| msgid "Set timezone"

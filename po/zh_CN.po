@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-06-04 09:57+0000\n"
 "Last-Translator: z z <3397542367@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -107,11 +107,16 @@ msgid ""
 msgstr ""
 "在 MDRAID 设备 $1 上发现“$0”分区。不支持 MDRAID 设备上的引导加载程序分区。"
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "关于"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "账户"
 
@@ -119,6 +124,12 @@ msgstr "账户"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "操作"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "添加 NTP 服务器"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -166,6 +177,15 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr "将分区分配给挂载点。对于预配置的自定义布局很有用。"
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "可用空间: $0。安装需要: $1。"
@@ -187,6 +207,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "取消"
@@ -240,6 +261,16 @@ msgstr "Cockpit 存储没有提供解锁加密设备的密码。"
 msgid "Completed"
 msgstr "完全的"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "配置 NTP 服务器"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "配置 NTP 服务器"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "配置存储"
@@ -249,7 +280,7 @@ msgid "Configure storage again"
 msgstr "再次配置存储"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "确认密码"
 
@@ -257,7 +288,7 @@ msgstr "确认密码"
 msgid "Continue"
 msgstr "继续"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "继续安装"
 
@@ -265,11 +296,11 @@ msgstr "继续安装"
 msgid "Continue with installation"
 msgstr "继续安装"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "创建账户"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "创建账户"
 
@@ -280,6 +311,17 @@ msgstr "目前安装：$0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "自定义"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "设置日期和时间"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -310,7 +352,7 @@ msgstr "重复的设备。"
 msgid "Duplicate mount point."
 msgstr "重复的挂载点。"
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "启用 root 账户"
 
@@ -357,11 +399,17 @@ msgid ""
 "may take a few moments."
 msgstr "最终确定：系统配置已经完成。最终完成安装可能需要一些时间。"
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "全名"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "全名不能含有冒号"
 
@@ -369,7 +417,7 @@ msgstr "全名不能含有冒号"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "隐藏确认密码"
 
@@ -377,7 +425,7 @@ msgstr "隐藏确认密码"
 msgid "Hide passphrase"
 msgstr "隐藏密码"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "隐藏密码"
 
@@ -390,20 +438,20 @@ msgstr "主机名"
 msgid "How would you like to install?"
 msgstr "您想如何安装？"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "我了解所有现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr "我了解所选磁盘上的所有现有数据都将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "我了解部分现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "我了解有些分区会被修改"
 
@@ -453,7 +501,7 @@ msgstr "系统安装失败：$0"
 msgid "Installation of the system failed: $0"
 msgstr "系统安装失败：$0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "安装类型"
 
@@ -477,6 +525,12 @@ msgstr ""
 "建分区表。如果您的 RAID 阵列在分区上创建，则它必须包含单个文件系统或格式（例"
 "如 LVM PV）。此阵列上的任何现有分区都将被忽略。"
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "无效主机名"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -491,7 +545,7 @@ msgstr "键盘"
 msgid "Keyboard layout during boot"
 msgstr "启动期间的键盘布局"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "语言"
@@ -561,6 +615,18 @@ msgstr "挂载点配置"
 msgid "Must be at least $0 characters"
 msgstr "必须至少包含$0字符"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "NTP 服务器："
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "名称"
@@ -596,6 +662,12 @@ msgstr "未选择任何磁盘"
 msgid "No results found"
 msgstr "未找到结果"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "没有配置 NTP 服务器"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "所选磁盘中没有足够剩余空间。"
@@ -617,9 +689,13 @@ msgstr ""
 "注意：该预发行软件仅用于开发和测试。绝不要在任何关键工作及生产环境中使用此软"
 "件。"
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "操作系统"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "选项"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -632,7 +708,7 @@ msgstr "分区（高级）"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "密码"
 
@@ -640,7 +716,7 @@ msgstr "密码"
 msgid "Passphrase did not match any locked device"
 msgstr "密码与任何锁定的设备都不匹配"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "密码必须匹配"
 
@@ -658,6 +734,10 @@ msgstr "请将日志文件 $0 附加到问题中。"
 msgid "Please select at least one disk to continue"
 msgstr "尚未选择磁盘，要安装系统请至少选择一个磁盘。"
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "池"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "由 Anaconda 强力驱动"
@@ -670,12 +750,12 @@ msgstr "预发布"
 msgid "Proceed with installation"
 msgstr "继续安装"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "退出"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "退出安装程序？"
 
@@ -705,8 +785,8 @@ msgstr "真实主机名只能包含字符、数字、破折号（不是开始或
 msgid "Real hostname must be 64 characters or less"
 msgstr "实际主机名必须不超过 64 个字符"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "重启"
 
@@ -718,7 +798,7 @@ msgstr ""
 "重新启动 Windows 以调整 BitLocker 加密分区的大小。为安装提供至少 $0 的可用空"
 "间。"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "重启系统？"
 
@@ -774,6 +854,12 @@ msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr "删除或调整现有文件系统的大小以释放安装空间。"
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "移除 NTP 服务器"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -828,11 +914,22 @@ msgstr "返回安装"
 msgid "Return to storage editor"
 msgstr "返回存储编辑器"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "检查并安装"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "Root 帐户已禁用"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "保存"
@@ -863,9 +960,21 @@ msgstr "选择"
 msgid "Select a device"
 msgstr "所选一个设备"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "选择"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "选择目标位置"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "选择无"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -874,6 +983,17 @@ msgstr "无法重新格式化所选设备的格式 '$0'。"
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "向我们发送有关您的安装的反馈"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "服务器 (_S)："
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -891,7 +1011,14 @@ msgstr "与其他操作系统共享磁盘"
 msgid "Share disk with other operating systems: $0"
 msgstr "与其他操作系统共享磁盘"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "显示确认密码"
 
@@ -899,13 +1026,19 @@ msgstr "显示确认密码"
 msgid "Show passphrase"
 msgstr "显示密码"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "显示密码"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "大小"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -925,14 +1058,14 @@ msgstr "缺少一些必需的分区：$0"
 msgid "Space"
 msgstr "空间"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "存储"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "存储配置"
 
@@ -980,7 +1113,7 @@ msgstr "建议的键盘"
 msgid "Suggested languages"
 msgstr "建议语言"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "系统"
 
@@ -1027,10 +1160,6 @@ msgstr ""
 "存储编辑器允许您调整分区大小、删除分区和创建分区。它可以设置 LVM 等。它旨在用"
 "作高级实用程序，不适用于典型安装。"
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "该账户将拥有 sudo 的管理权限。"
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "无法提交此主机名"
@@ -1050,6 +1179,18 @@ msgstr "这可能需要些时间"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "这需要一些时间"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "时区：%s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "时区：%s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1108,25 +1249,31 @@ msgstr "使用整个磁盘"
 msgid "Use free space"
 msgstr "使用空闲空间"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "创建账户"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "使用 RAID 设备进行自动分区"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "用户名"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
 msgstr "用户名只能包含：a-z 字母、0-9 数字、破折号 $0、句点 $1、下划线 $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "用户名不能是保留字"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "用户名必须少于 33 个字符"
 
@@ -1152,7 +1299,11 @@ msgid ""
 "rest or manually set up partitions."
 msgstr "您可以在此处释放足够的空间并让安装程序处理其余部分，或者手动设置分区。"
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "您的进度将不会被保存。"
 
@@ -1214,6 +1365,9 @@ msgstr "缩小至 $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "撤消"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "该账户将拥有 sudo 的管理权限。"
 
 #~ msgid "Clear search input"
 #~ msgstr "清除搜索输入"
@@ -1909,9 +2063,6 @@ msgstr "撤消"
 #~ msgid "Add Layout"
 #~ msgstr "增加布局"
 
-#~ msgid "Add NTP server"
-#~ msgstr "添加 NTP 服务器"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "添加 NTP 服务器地址"
 
@@ -2321,9 +2472,6 @@ msgstr "撤消"
 #~ msgid "Configure NTP"
 #~ msgstr "配置 NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "配置 NTP 服务器"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "配置网络时间服务器"
 
@@ -2450,9 +2598,6 @@ msgstr "撤消"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "发行版安装"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3207,9 +3352,6 @@ msgstr "撤消"
 #~ msgid "Invalid group name."
 #~ msgstr "组名称无效。"
 
-#~ msgid "Invalid host name"
-#~ msgstr "无效主机名"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3459,9 +3601,6 @@ msgstr "撤消"
 #~ msgid "NTP configuration"
 #~ msgstr "NTP 配置"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP 服务器："
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM 设备 {namespace}"
@@ -3695,9 +3834,6 @@ msgstr "撤消"
 #~ msgid "Optional comma-separated list of mount options for the NFS mount"
 #~ msgstr "NFS Mount 的可选逗号分隔列表"
 
-#~ msgid "Options"
-#~ msgstr "选项"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -3904,9 +4040,6 @@ msgstr "撤消"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "请稍等...仍在加载软件元数据。"
-
-#~ msgid "Pool"
-#~ msgstr "池"
 
 #~ msgid "Port"
 #~ msgstr "端口"
@@ -4153,9 +4286,6 @@ msgstr "撤消"
 #~ msgid "Remove"
 #~ msgstr "删除"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "移除 NTP 服务器"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "删除已选挂载点。"
 
@@ -4236,9 +4366,6 @@ msgstr "撤消"
 
 #~ msgid "Root Selection"
 #~ msgstr "选择 root 分区"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "Root 帐户已禁用"
 
 #~ msgid "Root password"
 #~ msgstr "Root 密码"
@@ -4406,9 +4533,6 @@ msgstr "撤消"
 
 #~ msgid "Service level"
 #~ msgstr "服务级别"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "设置日期和时间"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -5875,10 +5999,6 @@ msgstr "撤消"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "接受更改(_A)"
@@ -6515,10 +6635,6 @@ msgstr "撤消"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "选择您要添加设备的类型(_S)"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "服务器 (_S)："
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "设为 Boot 设备 (_S)"
@@ -7009,9 +7125,6 @@ msgstr "撤消"
 #~ msgid "Select no disk"
 #~ msgstr "选择无磁盘"
 
-#~ msgid "Select none"
-#~ msgstr "选择无"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7382,11 +7495,6 @@ msgstr "撤消"
 #~ msgstr "未连接"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "时区：%s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "设置时区"
@@ -7626,9 +7734,6 @@ msgstr "撤消"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "没有配置 NTP 服务器"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "设置从 HDD 的安装出错"
