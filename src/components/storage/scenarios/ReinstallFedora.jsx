@@ -151,6 +151,12 @@ const useAvailabilityHomeReuse = () => {
     return scenarioAvailability;
 };
 
+/**
+ * @description Reinstalls Fedora while preserving your existing home directory and user data.
+ * Use when you want to refresh your Fedora installation while keeping all your personal files
+ * and settings. This option only appears when exactly one existing Fedora system is detected
+ * and the system has only the default mount points.
+ */
 export const scenarioReinstallFedora = {
     buttonVariant: "danger",
     getAvailability: useAvailabilityHomeReuse,

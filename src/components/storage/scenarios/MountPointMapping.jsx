@@ -83,6 +83,12 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
     return missingNonmountablePartitions;
 };
 
+/**
+ * @description Allows you to manually assign mount points to specific devices
+ * for complete control over the partition layout.
+ * Use this if you have custom storage requirements or want to reuse existing
+ * partitions selectively.
+ */
 export const scenarioMountPointMapping = {
     buttonVariant: "danger",
     getAvailability: useAvailabilityMountPointMapping,
