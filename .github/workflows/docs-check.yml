@@ -1,0 +1,53 @@
+name: Check Documentation
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/storage/scenarios/**'
+      - 'docs/generate-storage-scenarios-docs.js'
+  push:
+    branches: [main]
+    paths:
+      - 'src/components/storage/scenarios/**'
+      - 'docs/generate-storage-scenarios-docs.js'
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Generate documentation
+        run: make docs-scenarios
+
+      - name: Check for documentation changes
+        id: check_changes
+        run: |
+          if git diff --quiet docs/storage-scenarios.rst; then
+            echo "✅ Documentation is up to date"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Documentation needs to be updated"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo ""
+            echo "=== Documentation changes needed ==="
+            git diff docs/storage-scenarios.rst
+          fi
+
+      - name: Fail if documentation is outdated
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          echo "::error::Documentation is outdated. Please run 'make docs-scenarios' and commit the changes."
+          exit 1
+
+      - name: Success message
+        if: steps.check_changes.outputs.changes == 'false'
+        run: |
+          echo "✅ All documentation is current and up to date!"

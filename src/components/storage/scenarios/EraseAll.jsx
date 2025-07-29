@@ -66,6 +66,11 @@ const useAvailabilityEraseAll = () => {
     return scenarioAvailability;
 };
 
+/**
+ * @description Completely erases all data on the selected disks and
+ * automatically creates a new partition layout.
+ * Use this for clean installations when you do not need to preserve any existing data.
+ */
 export const scenarioEraseAll = {
     buttonVariant: "danger",
     getAvailability: useAvailabilityEraseAll,

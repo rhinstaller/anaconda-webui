@@ -108,6 +108,11 @@ const ScenarioLabel = ({ isReview }) => {
     return _("Share disk with other operating systems");
 };
 
+/**
+ * @description Installs using only unallocated free space, preserving existing partitions
+ * and data. Use when you want to dual-boot with existing operating systems. This option only
+ * appears when existing partitions are detected on the selected disks.
+ */
 export const scenarioUseFreeSpace = {
     action: ReclaimSpace,
     buttonVariant: "primary",

@@ -95,6 +95,11 @@ export const useAvailabilityConfiguredStorage = (args) => {
     return scenarioAvailability;
 };
 
+/**
+ * @description Uses storage configuration created through the external Cockpit storage
+ * editor tool for non-default layouts. This option only appears when you have
+ * configured and confirmed a valid storage layout through cockpit-storage.
+ */
 export const scenarioConfiguredStorage = {
     buttonVariant: "danger",
     getAvailability: useAvailabilityConfiguredStorage,
