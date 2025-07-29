@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
-"PO-Revision-Date: 2025-07-14 03:27+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
+"PO-Revision-Date: 2025-07-29 09:39+0000\n"
 "Last-Translator: Luna Jernberg <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/sv/>\n"
@@ -93,11 +93,18 @@ msgstr ""
 "'$0' partition på MDRAID enhet $1 hittades. Bootloader-partitioner på MDRAID-"
 "enheter stöds inte."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+"Ett standardanvändarkonto med administratörsåtkomst för att göra "
+"systemomfattande ändringar."
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "Om"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Konto"
 
@@ -105,6 +112,10 @@ msgstr "Konto"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Åtgärder"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+msgid "Add another server..."
+msgstr "Lägg en annan server..."
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -159,6 +170,15 @@ msgstr ""
 "Tilldela partitioner till monteringspunkter. Användbart för förkonfigurerade "
 "anpassade layouter."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr "Ställ in datum och tid automatiskt med hjälp av tidsservrar"
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr "Ställ in tidszon automatiskt"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Tillgängligt fritt utrymme: $0. Installationen behöver: $1."
@@ -182,6 +202,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Avbryt"
@@ -237,6 +258,14 @@ msgstr "Cockpitlagring gav inte lösenfrasen för att låsa upp krypterad enhet.
 msgid "Completed"
 msgstr "Färdig"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Konfigurera NTP-servrar"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+msgid "Configure custom NTP servers"
+msgstr "Konfigurera anpassade NTP-servrar"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Konfigurera lagring"
@@ -246,7 +275,7 @@ msgid "Configure storage again"
 msgstr "Konfigurera lagring igen"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Bekräfta lösenfras"
 
@@ -254,7 +283,7 @@ msgstr "Bekräfta lösenfras"
 msgid "Continue"
 msgstr "Fortsätt"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Fortsätt installation"
 
@@ -262,11 +291,11 @@ msgstr "Fortsätt installation"
 msgid "Continue with installation"
 msgstr "Fortsätt med installation"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Skapa konto"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Skapa konto"
 
@@ -277,6 +306,15 @@ msgstr "Nuvarande installerat: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Anpassad"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr "Datum"
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+msgid "Date and time"
+msgstr "Datum och tid"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -307,7 +345,7 @@ msgstr "Duplicera enhet."
 msgid "Duplicate mount point."
 msgstr "Duplicera monteringspunkt."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Aktivera root-konto"
 
@@ -356,11 +394,19 @@ msgstr ""
 "Slutför: Systemkonfigurationen är klar. Den slutförande installationen kan "
 "ta en stund."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+"För bättre säkerhet, undvik att använda root-kontot direkt. Använd istället "
+"det lokala kontot ovan för att hantera systemet."
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Fullständigt namn"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "Det fullständiga namnet får inte innehålla kolontecken"
 
@@ -368,7 +414,7 @@ msgstr "Det fullständiga namnet får inte innehålla kolontecken"
 msgid "Help us fix the issue!"
 msgstr "Hjälp oss att lösa problemet!"
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Dölj bekräftat lösenord"
 
@@ -376,7 +422,7 @@ msgstr "Dölj bekräftat lösenord"
 msgid "Hide passphrase"
 msgstr "Dölj lösenfras"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Dölj lösenord"
 
@@ -389,21 +435,21 @@ msgstr "Värdnamn"
 msgid "How would you like to install?"
 msgstr "Hur vill du installera?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Jag förstår att all befintlig data kommer att raderas"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Jag förstår att all befintlig data kommer att raderas från de valda diskarna"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Jag förstår att någon befintliga data kan komma att raderas"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Jag förstår att vissa partitioner kommer att modifieras"
 
@@ -454,7 +500,7 @@ msgstr "installationen av systemet misslyckades"
 msgid "Installation of the system failed: $0"
 msgstr "installationen av systemet misslyckades: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Installationstyp"
 
@@ -479,6 +525,10 @@ msgstr ""
 "ovanpå partitioner måste den innehålla ett enda filsystem eller format (t."
 "ex. LVM PV). Alla befintliga partitioner på denna array kommer att ignoreras."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+msgid "Invalid hostname"
+msgstr "Ogiltigt värdnamn"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -495,7 +545,7 @@ msgstr "Tangentbord"
 msgid "Keyboard layout during boot"
 msgstr "Tangentbordslayout under uppstart"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Språk"
@@ -571,6 +621,14 @@ msgstr "Monteringspunkt tilldelning"
 msgid "Must be at least $0 characters"
 msgstr "Måste vara minst $0 tecken"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+msgid "NTP Servers"
+msgstr "NTP-servrar"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+msgid "NTS"
+msgstr "NTS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Namn"
@@ -609,6 +667,10 @@ msgstr "Inga diskar valda"
 msgid "No results found"
 msgstr "Inga resultat funna"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+msgid "No user or root account has been configured"
+msgstr "Inget användar eller root-konto har konfigurerats"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "Inte tillräckligt med ledigt utrymme på de valda diskarna."
@@ -631,9 +693,13 @@ msgstr ""
 "utvecklings- och testsyften. Använd INTE denna programvara för kritiskt "
 "arbete eller för produktionsmiljöer."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Operativsystem"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Alternativ"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -646,7 +712,7 @@ msgstr "Partitioner (avancerat)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Lösenfras"
 
@@ -654,7 +720,7 @@ msgstr "Lösenfras"
 msgid "Passphrase did not match any locked device"
 msgstr "Lösenfrasen matchade inte någon låst enhet"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "Lösenfraserna måste matcha varandra"
 
@@ -670,6 +736,10 @@ msgstr "Bifoga loggfilen $0 till problemrapporten."
 msgid "Please select at least one disk to continue"
 msgstr "Välj minst en disk för att fortsätta"
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Pool"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Drivs av Anaconda"
@@ -682,12 +752,12 @@ msgstr "Förhandsutgåva"
 msgid "Proceed with installation"
 msgstr "Fortsätt med installationen"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Avsluta"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Avsluta installationsprogrammet?"
 
@@ -719,8 +789,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Riktiga värdnamn måste bestå av 64 tecken eller mindre"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Starta om"
 
@@ -733,7 +803,7 @@ msgstr ""
 "partitioner. Se till att minst $0 ledigt utrymme tillgängligt för "
 "installation."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Starta om systemet?"
 
@@ -793,6 +863,10 @@ msgstr ""
 "Ta bort eller byt storlek på befintliga filsystem för att frigöra utrymme "
 "för installationen."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+msgid "Remove server"
+msgstr "Ta bort server"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -849,11 +923,20 @@ msgstr "Återgå till installation"
 msgid "Return to storage editor"
 msgstr "Återgå till lagringsredigerare"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Granska och installera"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+msgid "Root account is enabled"
+msgstr "Root-konto är aktiverat"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr "Root-konto är aktiverat, men inget användarkonto har konfigurerats"
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Spara"
@@ -886,9 +969,17 @@ msgstr "Välj"
 msgid "Select a device"
 msgstr "Välj en enhet"
 
+#: src/components/datetime/Timezone.jsx:190
+msgid "Select city"
+msgstr "Välj stad"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Välj destination"
+
+#: src/components/datetime/Timezone.jsx:171
+msgid "Select region"
+msgstr "Välj region"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -897,6 +988,14 @@ msgstr "Den valda enhetens format '$0' kan inte formateras om."
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Skicka oss feedback om din installation"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+msgid "Server"
+msgstr "Server"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr "Server är inte nåbar"
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -910,7 +1009,11 @@ msgstr "Dela disk med andra operativsystem"
 msgid "Share disk with other operating systems: $0"
 msgstr "Dela disk med annat operativsystem: $0"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+msgid "Show AM/PM"
+msgstr "Visa AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Visa bekräftat lösenord"
 
@@ -918,13 +1021,21 @@ msgstr "Visa bekräftat lösenord"
 msgid "Show passphrase"
 msgstr "Visa lösenfras"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Visa lösenord"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Storlek"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
+"Hoppar över kontoskapandet under installationen. Det kommer att ske vid "
+"första uppstart istället."
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -946,14 +1057,14 @@ msgstr "Vissa nödvändiga partitioner saknas: $0"
 msgid "Space"
 msgstr "Utrymme"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Lagring"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Lagringskonfiguration"
 
@@ -1002,7 +1113,7 @@ msgstr "Föreslagna tangentbord"
 msgid "Suggested languages"
 msgstr "Föreslagna språk"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "System"
 
@@ -1054,10 +1165,6 @@ msgstr ""
 "Det kan konfigurera LVM och mycket mer. Det är tänkt att användas som ett "
 "avancerat verktyg och inte avsett att användas i en typisk installation."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Detta konto kommer att ha administratörsbehörighet med sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Detta värdnamn kan inte skickas in"
@@ -1078,6 +1185,14 @@ msgstr "Detta kan ta en stund"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Detta kommer att ta en stund"
+
+#: src/components/datetime/DateAndTime.jsx:197
+msgid "Time"
+msgstr "Tid"
+
+#: src/components/datetime/Timezone.jsx:144
+msgid "Timezone"
+msgstr "Tidszon"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1140,15 +1255,19 @@ msgstr "Använd hela disken"
 msgid "Use free space"
 msgstr "Använd ledigt utrymme"
 
+#: src/components/users/Accounts.jsx:183
+msgid "Use local account"
+msgstr "Använd lokalt konto"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Använd RAID-enheten för automatisk partitionering"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Användarnamn"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1156,11 +1275,11 @@ msgstr ""
 "Användarnamn får bara innehålla: bokstäver från a-z, siffror 0-9, "
 "bindestreck $0, punkt $1, understreck $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "Användarnamn får inte ha ett reserverat ord"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "Användarnamn måste vara kortare än 33 tecken"
 
@@ -1190,7 +1309,13 @@ msgstr ""
 "Du kan antingen frigöra tillräckligt med utrymme här och låta "
 "installationsprogrammet sköta resten eller manuellt sätta upp partitioner."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+"Du måste vara ansluten till ett nätverk för att aktivera automatisk datum "
+"och tid."
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "Ditt förlopp kommer inte att sparas."
 
@@ -1252,6 +1377,9 @@ msgstr "krymp till $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "ångra"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Detta konto kommer att ha administratörsbehörighet med sudo."
 
 #~ msgid "Clear search input"
 #~ msgstr "Rensa sökinmatning"
@@ -1989,9 +2117,6 @@ msgstr "ångra"
 #~ msgid "Add Layout"
 #~ msgstr "Lägg till layout"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Lägg till NTP server"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Lägg till NTP server adress"
 
@@ -2422,9 +2547,6 @@ msgstr "ångra"
 #~ msgid "Configure NTP"
 #~ msgstr "Konfigurera NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Konfigurera NTP-servrar"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "Konfigurera nätverkstidsservrar"
 
@@ -2554,9 +2676,6 @@ msgstr "ångra"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "DISTRIBUTIONSINSTALLATION"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3346,9 +3465,6 @@ msgstr "ångra"
 #~ msgid "Invalid group name."
 #~ msgstr "Felaktigt gruppnamn."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Felaktigt värdnamn"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3604,9 +3720,6 @@ msgstr "ångra"
 #~ msgid "NTP configuration"
 #~ msgstr "NTP-konfiguration"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP-servrar:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM-enhet {namespace}"
@@ -3857,9 +3970,6 @@ msgstr "ångra"
 #~ "Frivillig, kommaseparerad, lista av monteringsalternativ för NFS-"
 #~ "monteringen"
 
-#~ msgid "Options"
-#~ msgstr "Alternativ"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4086,9 +4196,6 @@ msgstr "ångra"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Var god dröj … metadata om program läses fortfarande in."
-
-#~ msgid "Pool"
-#~ msgstr "Pool"
 
 #~ msgid "Port"
 #~ msgstr "Port"
@@ -4344,9 +4451,6 @@ msgstr "ångra"
 #~ msgid "Remove"
 #~ msgstr "Ta bort"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Ta bort NTP server"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Ta bort de valda monteringspunkterna."
 
@@ -4429,9 +4533,6 @@ msgstr "ångra"
 
 #~ msgid "Root Selection"
 #~ msgstr "Rotval"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "Root-kontot är avaktiverat"
 
 #~ msgid "Root password"
 #~ msgstr "Root lösenord"
@@ -4601,9 +4702,6 @@ msgstr "ångra"
 
 #~ msgid "Service level"
 #~ msgstr "Servicenivå"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Sätt datum och tid"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6200,10 +6298,6 @@ msgstr "ångra"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Acceptera ändringar"
@@ -6841,10 +6935,6 @@ msgstr "ångra"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Välj enhetstypen du vill lägga till"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "_Server:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_Sätt som startenhet"
@@ -7346,9 +7436,6 @@ msgstr "ångra"
 #~ msgid "Select no disk"
 #~ msgstr "Välj ingen disk"
 
-#~ msgid "Select none"
-#~ msgstr "Välj ingen"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7811,20 +7898,11 @@ msgstr "ångra"
 #~ msgid "Log messages"
 #~ msgstr "Loggmeddelanden"
 
-#~ msgid "Time zone"
-#~ msgstr "Tidszon"
-
 #~ msgid "Set time"
 #~ msgstr "Ställ in tid"
 
 #~ msgid "Manually"
 #~ msgstr "Manuellt"
-
-#~ msgid "Automatically using NTP"
-#~ msgstr "Automatiskt med hjälp av NTP"
-
-#~ msgid "Automatically using specific NTP servers"
-#~ msgstr "Automatiskt genom att använda specifika NTP-servrar"
 
 #~ msgid "Pick date"
 #~ msgstr "Välj datum"
@@ -8091,9 +8169,6 @@ msgstr "ångra"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "inga NTP-servrar har konfigurerats"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Fel vid uppsättning av installation från hårddisk"

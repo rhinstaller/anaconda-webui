@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Danish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -89,11 +89,16 @@ msgid ""
 "devices are not supported."
 msgstr ""
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -106,6 +111,12 @@ msgstr "_Konto"
 #| msgid "Action"
 msgid "Actions"
 msgstr "Handling"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Tilføj NTP-server"
 
 #: src/components/storage/MountPointMapping.jsx:663
 #, fuzzy
@@ -160,6 +171,15 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr ""
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr ""
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
@@ -192,6 +212,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 #, fuzzy
 msgid "Cancel"
@@ -254,6 +275,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Færdig!"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Konfigurér NTP-servere"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Konfigurér NTP-servere"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 #, fuzzy
 #| msgid "Configuring storage"
@@ -267,7 +298,7 @@ msgid "Configure storage again"
 msgstr "Konfigurerer lager"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "_Bekræft adgangskode"
@@ -276,7 +307,7 @@ msgstr "_Bekræft adgangskode"
 msgid "Continue"
 msgstr "Fortsæt"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 #, fuzzy
 msgid "Continue installation"
 msgstr "Kører præinstallationsopgaver"
@@ -286,14 +317,14 @@ msgstr "Kører præinstallationsopgaver"
 msgid "Continue with installation"
 msgstr "Kører præinstallationsopgaver"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
 msgid "Create Account"
 msgstr "_Konto"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Create account"
@@ -309,6 +340,17 @@ msgstr "Nuværende værtsnavn:"
 #, fuzzy
 msgid "Custom"
 msgstr "_Tilpasset"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Angiv dato og klokkeslæt"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -344,7 +386,7 @@ msgstr "_Flerstis-enheder"
 msgid "Duplicate mount point."
 msgstr "Indtast venligst et monteringspunkt."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Enable root account"
@@ -400,11 +442,17 @@ msgid ""
 "may take a few moments."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Fulde navn"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "Det fulde navn må ikke indeholde kolon"
 
@@ -412,7 +460,7 @@ msgstr "Det fulde navn må ikke indeholde kolon"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 #, fuzzy
 msgid "Hide confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -422,7 +470,7 @@ msgstr "_Bekræft adgangskode"
 msgid "Hide passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 #, fuzzy
 msgid "Hide password"
 msgstr "Skjul adgangskode."
@@ -441,20 +489,20 @@ msgstr ""
 "\n"
 "Vil du bruge det alligevel?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -509,7 +557,7 @@ msgstr "Installation"
 msgid "Installation of the system failed: $0"
 msgstr "Installation"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 #, fuzzy
 msgid "Installation type"
 msgstr "Installation"
@@ -532,6 +580,12 @@ msgid ""
 "will be ignored."
 msgstr ""
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "Ugyldigt værtsnavn"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -549,7 +603,7 @@ msgstr "_Tastatur"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 #, fuzzy
 msgid "Language"
@@ -626,6 +680,18 @@ msgstr "Monteringspunkt"
 msgid "Must be at least $0 characters"
 msgstr "Adgangskoden skal være på mindst seks tegn."
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "NTP-servere:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Navn"
@@ -664,6 +730,12 @@ msgstr "Ingen diske valgt"
 msgid "No results found"
 msgstr ""
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "ingen NTP-servere er blevet konfigureret"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 #, fuzzy
 msgid "Not enough free space on the selected disks."
@@ -685,10 +757,14 @@ msgid ""
 "production environments."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 #, fuzzy
 msgid "Operating system"
 msgstr "Oprettelse af brugere"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Valgmuligheder"
 
 #: src/components/localization/Keyboard.jsx:77
 #, fuzzy
@@ -704,7 +780,7 @@ msgstr ""
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Adgangssætning"
 
@@ -712,7 +788,7 @@ msgstr "Adgangssætning"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 #, fuzzy
 msgid "Passphrases must match"
 msgstr "Adgangskoderne er ikke ens."
@@ -731,6 +807,10 @@ msgstr ""
 msgid "Please select at least one disk to continue"
 msgstr "Ingen diske valgt; vælg mindst én disk som der skal installeres på."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Klynge"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr ""
@@ -745,12 +825,12 @@ msgstr ""
 msgid "Proceed with installation"
 msgstr "Kunne ikke indstille installationskilde"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Afslut"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 #, fuzzy
 msgid "Quit installer?"
 msgstr "_Afslut installationsprogram"
@@ -786,8 +866,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Værtsnavnet må være højst 64 tegn langt."
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 #, fuzzy
 msgid "Reboot"
 msgstr "Genstarter."
@@ -798,7 +878,7 @@ msgid ""
 "$0 of free space available for installation."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 #, fuzzy
 msgid "Reboot system?"
 msgstr "_Genstart system"
@@ -870,6 +950,12 @@ msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr "Kunne ikke indstille installationskilde"
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Fjern NTP-server"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -932,12 +1018,23 @@ msgstr "Installation"
 msgid "Return to storage editor"
 msgstr "Installation"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 #, fuzzy
 msgid "Review and install"
 msgstr "_Begynd installation"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled."
+msgid "Root account is enabled"
+msgstr "Root-konto er deaktiveret."
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 #, fuzzy
 #| msgctxt "GUI|Custom Partitioning|Container Dialog"
@@ -977,10 +1074,24 @@ msgstr "_Vælg"
 msgid "Select a device"
 msgstr "Valgte enhed"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Configure Dialog"
+#| msgid "_Select"
+msgid "Select city"
+msgstr "_Vælg"
+
 #: src/components/storage/InstallationDestination.jsx:383
 #, fuzzy
 msgid "Select destination"
 msgstr "Beskrivelse"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgctxt "GUI|Network|Wireless"
+#| msgid "_Select network"
+msgid "Select region"
+msgstr "_Vælg netværk"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -990,6 +1101,16 @@ msgstr ""
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Kunne ikke indstille installationskilde"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "Server"
+msgstr "NTP-servere:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 #, fuzzy
@@ -1005,7 +1126,14 @@ msgstr ""
 msgid "Share disk with other operating systems: $0"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 #, fuzzy
 msgid "Show confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -1015,13 +1143,19 @@ msgstr "_Bekræft adgangskode"
 msgid "Show passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 #, fuzzy
 msgid "Show password"
 msgstr "Vis adgangskode."
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
+msgstr ""
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
@@ -1045,7 +1179,7 @@ msgstr ""
 msgid "Space"
 msgstr "Ingen plads"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 #, fuzzy
 msgid "Storage"
 msgstr "Valgmuligheder for lager"
@@ -1053,7 +1187,7 @@ msgstr "Valgmuligheder for lager"
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 #, fuzzy
 msgid "Storage configuration"
 msgstr "Lagerkonfiguration"
@@ -1109,7 +1243,7 @@ msgstr "Sprog"
 msgid "Suggested languages"
 msgstr "Sprog"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 #, fuzzy
 #| msgid "File System"
 msgid "System"
@@ -1157,10 +1291,6 @@ msgid ""
 "not intended to be used in a typical installation."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr ""
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr ""
@@ -1183,6 +1313,18 @@ msgstr "Det kan tage noget tid."
 #, fuzzy
 msgid "This will take a few moments"
 msgstr "Det kan tage noget tid."
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Time"
+msgstr "Tidszone: %s\n"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Timezone: %s\n"
+msgid "Timezone"
+msgstr "Tidszone: %s\n"
 
 #: src/components/installation/InstallationProgress.jsx:178
 #, fuzzy
@@ -1255,29 +1397,35 @@ msgstr "Valgte diske"
 msgid "Use free space"
 msgstr "Brug ledig plads"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Lock root account"
+msgid "Use local account"
+msgstr "Lås root-konto"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Ikke stor nok ledig plads på diske til automatisk partitionering"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Brugernavn"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
 msgstr ""
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 #, fuzzy
 #| msgid "User name is reserved for system: %s"
 msgid "User name must not be a reserved word"
 msgstr "Brugernavn er reserveret til system: %s"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 #, fuzzy
 #| msgid "Name must be shorter than 33 characters."
 msgid "User names must be shorter than 33 characters"
@@ -1305,7 +1453,11 @@ msgid ""
 "rest or manually set up partitions."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr ""
 
@@ -1994,9 +2146,6 @@ msgstr ""
 #~ msgid "Add Layout"
 #~ msgstr "Tilføj layout"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Tilføj NTP-server"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Tilføj NTP-serveradresse"
 
@@ -2420,9 +2569,6 @@ msgstr ""
 #~ msgid "Configure NTP"
 #~ msgstr "Konfigurér NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Konfigurér NTP-servere"
-
 #, fuzzy
 #~| msgid "Configure NTP servers"
 #~ msgid "Configure Network Time Servers"
@@ -2555,9 +2701,6 @@ msgstr ""
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "DISTRIBUTIONSINSTALLATION"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #, fuzzy
 #~| msgid "Lock root account"
@@ -3343,9 +3486,6 @@ msgstr ""
 #~ msgid "Invalid group name."
 #~ msgstr "Ugyldigt gruppenavn."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Ugyldigt værtsnavn"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3620,9 +3760,6 @@ msgstr ""
 #~ msgid "NTP configuration"
 #~ msgstr "NTP-konfiguration"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP-servere:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM-enheden {namespace}"
@@ -3886,9 +4023,6 @@ msgstr ""
 #~ msgid "OK"
 #~ msgstr "_OK"
 
-#~ msgid "Options"
-#~ msgstr "Valgmuligheder"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4113,9 +4247,6 @@ msgstr ""
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Vent venligst... softwaremetadata indlæser stadig."
-
-#~ msgid "Pool"
-#~ msgstr "Klynge"
 
 #~ msgid "Port"
 #~ msgstr "Port"
@@ -4360,9 +4491,6 @@ msgstr ""
 #~ msgid "Remove"
 #~ msgstr "Fjern"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Fjern NTP-server"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Fjern de valgte monteringspunkt(er)."
 
@@ -4447,11 +4575,6 @@ msgstr ""
 
 #~ msgid "Root Selection"
 #~ msgstr "Valg af rod"
-
-#, fuzzy
-#~| msgid "Root account is disabled."
-#~ msgid "Root account is disabled"
-#~ msgstr "Root-konto er deaktiveret."
 
 #~ msgid "Root password"
 #~ msgstr "Root-adgangskode"
@@ -4617,9 +4740,6 @@ msgstr ""
 
 #~ msgid "Service level"
 #~ msgstr "Tjenesteniveau"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Angiv dato og klokkeslæt"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6190,10 +6310,6 @@ msgstr ""
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "_Acceptér ændringer"
@@ -6837,12 +6953,6 @@ msgstr ""
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Vælg den type enhed, som du vil tilføje"
 
-#, fuzzy
-#~| msgid "NTP servers:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "NTP-servere:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "_Sæt som opstartsenhed"
@@ -7267,12 +7377,6 @@ msgstr ""
 #~ msgid "Select no disk"
 #~ msgstr "Valgte diske"
 
-#, fuzzy
-#~| msgctxt "GUI|Network|Wireless"
-#~| msgid "_Select network"
-#~ msgid "Select none"
-#~ msgstr "_Vælg netværk"
-
 #~ msgid "Try Fedora"
 #~ msgstr "Prøv Fedora"
 
@@ -7622,11 +7726,6 @@ msgstr ""
 #~ msgstr "Ikke forbundet"
 
 #, fuzzy
-#~| msgid "Timezone: %s\n"
-#~ msgid "Time zone"
-#~ msgstr "Tidszone: %s\n"
-
-#, fuzzy
 #~| msgid "Set timezone"
 #~ msgid "Set time"
 #~ msgstr "Sæt tidszone"
@@ -7862,9 +7961,6 @@ msgstr ""
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "ingen NTP-servere er blevet konfigureret"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Fejl ved opsætning af installation fra HDD"

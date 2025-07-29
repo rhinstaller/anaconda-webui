@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
 "PO-Revision-Date: 2025-05-30 05:30+0000\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.fedoraproject.org/projects/"
@@ -99,11 +99,16 @@ msgstr ""
 "Partisi '$0' pada perangkat MDRAID $1 ditemukan. Partisi bootloader pada "
 "perangkat MDRAID tidak didukung."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "Ihwal"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "Akun"
 
@@ -111,6 +116,12 @@ msgstr "Akun"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "Aksi"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+#, fuzzy
+#| msgid "Add NTP server"
+msgid "Add another server..."
+msgstr "Tambah server NTP"
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -161,6 +172,19 @@ msgstr ""
 "Tetapkan partisi ke mount point (titik pemasangan). Berguna untuk tata letak "
 "khusus yang telah dikonfigurasi sebelumnya."
 
+#: src/components/datetime/DateAndTime.jsx:147
+#, fuzzy
+#| msgid "Automatically using specific NTP servers"
+msgid "Automatically set date and time, using time servers"
+msgstr "Secara otomatis memakai server NTP tertentu"
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+#, fuzzy
+#| msgid "Automatically using NTP"
+msgid "Automatically set timezone"
+msgstr "Secara otomatis memakai NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Ruang kosong yang tersedia: $0. Instalasi membutuhkan: $1."
@@ -184,6 +208,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "Batal"
@@ -241,6 +266,16 @@ msgstr ""
 msgid "Completed"
 msgstr "Lengkap"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "Konfigurasikan server NTP"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+#, fuzzy
+#| msgid "Configure NTP servers"
+msgid "Configure custom NTP servers"
+msgstr "Konfigurasikan server NTP"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "Konfigurasikan penyimpanan"
@@ -250,7 +285,7 @@ msgid "Configure storage again"
 msgstr "Konfigurasikan penyimpanan lagi"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "Konfirmasi frasa sandi"
 
@@ -258,7 +293,7 @@ msgstr "Konfirmasi frasa sandi"
 msgid "Continue"
 msgstr "Lanjutkan"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "Lanjutkan instalasi"
 
@@ -266,11 +301,11 @@ msgstr "Lanjutkan instalasi"
 msgid "Continue with installation"
 msgstr "Lanjutkan dengan instalasi"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "Buat Akun"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "Buat akun"
 
@@ -281,6 +316,17 @@ msgstr "Saat ini terinstal: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "Ubahan"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr ""
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+#, fuzzy
+#| msgid "Set Date & Time"
+msgid "Date and time"
+msgstr "Atur Tanggal & Jam"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -311,7 +357,7 @@ msgstr "Peranti duplikat."
 msgid "Duplicate mount point."
 msgstr "Titik kait duplikat."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "Fungsikan akun root"
 
@@ -360,11 +406,17 @@ msgstr ""
 "Finalisasi: Konfigurasi sistem telah lengkap. Finalisasi instalasi mungkin "
 "makan waktu beberapa saat."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "Nama lengkap"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "Nama lengkap tidak boleh mengandung karakter titik dua"
 
@@ -372,7 +424,7 @@ msgstr "Nama lengkap tidak boleh mengandung karakter titik dua"
 msgid "Help us fix the issue!"
 msgstr ""
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Sembunyikan kata sandi terkonfirmasi"
 
@@ -380,7 +432,7 @@ msgstr "Sembunyikan kata sandi terkonfirmasi"
 msgid "Hide passphrase"
 msgstr "Sembunyikan frasa sandi"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "Sembunyikan kata sandi"
 
@@ -393,21 +445,21 @@ msgstr "Nama host"
 msgid "How would you like to install?"
 msgstr "Bagaimana Anda ingin memasang?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "Saya memahami bahwa semua data yang ada akan dihapus"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Saya memahami bahwa semua data yang ada akan dihapus dari disk yang dipilih"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "Saya memahami bahwa beberapa data yang ada akan dihapus"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "Saya memahami bahwa beberapa partisi akan dimodifikasi"
 
@@ -460,7 +512,7 @@ msgstr "Instalasi sistem gagal: $0"
 msgid "Installation of the system failed: $0"
 msgstr "Instalasi sistem gagal: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "Tipe instalasi"
 
@@ -486,6 +538,12 @@ msgstr ""
 "satu sistem berkas atau format (mis., LVM PV). Setiap partisi yang ada pada "
 "array ini akan diabaikan."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+#, fuzzy
+#| msgid "Invalid host name"
+msgid "Invalid hostname"
+msgstr "Nama host tidak valid"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -502,7 +560,7 @@ msgstr "Papan Ketik"
 msgid "Keyboard layout during boot"
 msgstr "Tata letak keyboard selama boot"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Bahasa"
@@ -575,6 +633,18 @@ msgstr "Penugasan titik kait"
 msgid "Must be at least $0 characters"
 msgstr "Mesti paling tidak $0 karakter"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+#, fuzzy
+#| msgid "NTP servers:"
+msgid "NTP Servers"
+msgstr "Server NTP:"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+#, fuzzy
+#| msgid "DNS"
+msgid "NTS"
+msgstr "DNS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Nama"
@@ -613,6 +683,12 @@ msgstr "Tidak ada disk yang dipilih"
 msgid "No results found"
 msgstr "Tidak ditemukan hasil"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "No user or root account has been configured"
+msgstr "tidak ada server NTP yang telah dikonfigurasi"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "Tidak cukup ruang bebas pada disk yang dipilih."
@@ -635,9 +711,13 @@ msgstr ""
 "untuk tujuan pengembangan dan pengujian. JANGAN gunakan perangkat lunak ini "
 "untuk pekerjaan penting apa pun atau untuk lingkungan produksi."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "Sistem operasi"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "Opsi"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -650,7 +730,7 @@ msgstr "Partisi (tingkat lanjut)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "Frasa sandi"
 
@@ -658,7 +738,7 @@ msgstr "Frasa sandi"
 msgid "Passphrase did not match any locked device"
 msgstr "Frasa sandi tidak cocok dengan perangkat yang terkunci"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "Frasa sandi tidak cocok"
 
@@ -678,6 +758,10 @@ msgstr ""
 "Tidak ada disk yang dipilih, silakan pilih setidaknya satu disk untuk "
 "dipasangi."
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "Pool"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "Ditenagai oleh Anaconda"
@@ -690,12 +774,12 @@ msgstr "Prarilis"
 msgid "Proceed with installation"
 msgstr "Lanjutkan dengan instalasi"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "Keluar"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "Keluar pemasang?"
 
@@ -727,8 +811,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Panjang nama host nyata mesti 64 karakter atau kurang"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "Boot ulang"
 
@@ -740,7 +824,7 @@ msgstr ""
 "Mulai ulang Windows untuk mengubah ukuran partisi yang dienkripsi BitLocker. "
 "Sediakan setidaknya $0 ruang kosong untuk instalasi."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "Boot ulang sistem?"
 
@@ -800,6 +884,12 @@ msgstr ""
 "Hapus atau ubah ukuran sistem file yang ada untuk mengosongkan ruang untuk "
 "penginstalan."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+#, fuzzy
+#| msgid "Remove NTP server"
+msgid "Remove server"
+msgstr "Hapus server NTP"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -856,11 +946,22 @@ msgstr "Kembali ke instalasi"
 msgid "Return to storage editor"
 msgstr "Kembali ke penyunting penyimpanan"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "Tinjau dan pasang"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+#, fuzzy
+#| msgid "Root account is disabled"
+msgid "Root account is enabled"
+msgstr "Akun root dinonaktifkan"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "Simpan"
@@ -893,9 +994,21 @@ msgstr "Pilih"
 msgid "Select a device"
 msgstr "Pilih suatu perangkat"
 
+#: src/components/datetime/Timezone.jsx:190
+#, fuzzy
+#| msgid "Select"
+msgid "Select city"
+msgstr "Pilih"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "Pilih tujuan"
+
+#: src/components/datetime/Timezone.jsx:171
+#, fuzzy
+#| msgid "Select none"
+msgid "Select region"
+msgstr "Pilih nihil"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -904,6 +1017,17 @@ msgstr "Format '$0' dari perangkat yang dipilih tidak bisa diformat ulang."
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "Kirimi kami umpan balik tentang instalasi Anda"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_Server:"
+msgid "Server"
+msgstr "_Server:"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr ""
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -921,7 +1045,14 @@ msgstr "Berbagi disk dengan sistem operasi lain"
 msgid "Share disk with other operating systems: $0"
 msgstr "Berbagi disk dengan sistem operasi lain"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+#, fuzzy
+#| msgctxt "GUI|Date and Time"
+#| msgid "_AM/PM"
+msgid "Show AM/PM"
+msgstr "_AM/PM"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "Tampilkan kata sandi terkonfirmasi"
 
@@ -929,13 +1060,19 @@ msgstr "Tampilkan kata sandi terkonfirmasi"
 msgid "Show passphrase"
 msgstr "Tampilkan frasa sandi"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "Tampilkan kata sandi"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "Ukuran"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -957,14 +1094,14 @@ msgstr "Beberapa partisi yang diperlukan kurang: $0"
 msgid "Space"
 msgstr "Ruang"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "Penyimpanan"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "Konfigurasi penyimpanan"
 
@@ -1012,7 +1149,7 @@ msgstr "Papan tik yang disarankan"
 msgid "Suggested languages"
 msgstr "Bahasa yang disarankan"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "Sistem"
 
@@ -1067,10 +1204,6 @@ msgstr ""
 "ini dimaksudkan untuk digunakan sebagai utilitas tingkat lanjut dan tidak "
 "dimaksudkan untuk digunakan dalam instalasi biasa."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "Akun ini akan memiliki hak istimewa administrasi dengan sudo."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "Nama host ini tidak bisa dikirim"
@@ -1091,6 +1224,18 @@ msgstr "Ini mungkin perlu waktu"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "Ini akan makan waktu beberapa saat"
+
+#: src/components/datetime/DateAndTime.jsx:197
+#, fuzzy
+#| msgid "Time zone"
+msgid "Time"
+msgstr "Zona waktu"
+
+#: src/components/datetime/Timezone.jsx:144
+#, fuzzy
+#| msgid "Time zone"
+msgid "Timezone"
+msgstr "Zona waktu"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1153,15 +1298,21 @@ msgstr "Gunakan seluruh disk"
 msgid "Use free space"
 msgstr "Gunakan ruang kosong"
 
+#: src/components/users/Accounts.jsx:183
+#, fuzzy
+#| msgid "Create account"
+msgid "Use local account"
+msgstr "Buat akun"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Gunakan perangkat RAID untuk partisi otomatis"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "Nama pengguna"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1169,11 +1320,11 @@ msgstr ""
 "Nama pengguna hanya boleh mengandung: huruf dari a-z, angka 0-9, strip $0, "
 "titik $1, garis bawah $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "Nama pengguna tidak boleh berupa kata yang dicadangkan"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "Nama pengguna mesti kurang dari 33 karakter"
 
@@ -1201,7 +1352,11 @@ msgstr ""
 "Anda dapat membebaskan cukup ruang di sini dan membiarkan pemasang menangani "
 "sisanya atau secara manual menyiapkan partisi."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "Kemajuan Anda tidak akan disimpan."
 
@@ -1263,6 +1418,9 @@ msgstr "mengecil menjadi $0"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "batalkan"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "Akun ini akan memiliki hak istimewa administrasi dengan sudo."
 
 #~ msgid "Clear search input"
 #~ msgstr "Menghapus input pencarian"
@@ -2004,9 +2162,6 @@ msgstr "batalkan"
 #~ msgid "Add Layout"
 #~ msgstr "Tambah Layout"
 
-#~ msgid "Add NTP server"
-#~ msgstr "Tambah server NTP"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "Tambah alamat server NTP"
 
@@ -2435,9 +2590,6 @@ msgstr "batalkan"
 #~ msgid "Configure NTP"
 #~ msgstr "Konfigurasi NTP"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "Konfigurasikan server NTP"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "Konfigurasikan Server Waktu Jaringan"
 
@@ -2569,9 +2721,6 @@ msgstr "batalkan"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "INSTALASI DISTRIBUSI"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3358,9 +3507,6 @@ msgstr "batalkan"
 #~ msgid "Invalid group name."
 #~ msgstr "Nama grup tidak valid."
 
-#~ msgid "Invalid host name"
-#~ msgstr "Nama host tidak valid"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3618,9 +3764,6 @@ msgstr "batalkan"
 #~ msgid "NTP configuration"
 #~ msgstr "Konfigurasi NTP"
 
-#~ msgid "NTP servers:"
-#~ msgstr "Server NTP:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "Peranti NVDIMM {namespace}"
@@ -3872,9 +4015,6 @@ msgstr "batalkan"
 #~ msgid "Optional comma-separated list of mount options for the NFS mount"
 #~ msgstr "Daftar opsional opsi mount yang dipisah koma bagi mount NFS"
 
-#~ msgid "Options"
-#~ msgstr "Opsi"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4102,9 +4242,6 @@ msgstr "batalkan"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "Silakan tunggu... metadata perangkat lunak sedang dimuat."
-
-#~ msgid "Pool"
-#~ msgstr "Pool"
 
 #~ msgid "Port"
 #~ msgstr "Port"
@@ -4361,9 +4498,6 @@ msgstr "batalkan"
 #~ msgid "Remove"
 #~ msgstr "Hapus"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "Hapus server NTP"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "Hapus titik kait yang dipilih."
 
@@ -4447,9 +4581,6 @@ msgstr "batalkan"
 
 #~ msgid "Root Selection"
 #~ msgstr "Pemilihan Root"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "Akun root dinonaktifkan"
 
 #~ msgid "Root password"
 #~ msgstr "Sandi root"
@@ -4619,9 +4750,6 @@ msgstr "batalkan"
 
 #~ msgid "Service level"
 #~ msgstr "Tingkat layanan"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "Atur Tanggal & Jam"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6238,10 +6366,6 @@ msgstr "batalkan"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "_AM/PM"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "Terim_a Perubahan"
@@ -6879,10 +7003,6 @@ msgstr "batalkan"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "_Pilih tipe peranti yang hendak Anda tambahkan"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "_Server:"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "Atur _sebagai Peranti Boot"
@@ -7362,9 +7482,6 @@ msgstr "batalkan"
 #~ msgid "Select no disk"
 #~ msgstr "Memilih tidak satu disk pun"
 
-#~ msgid "Select none"
-#~ msgstr "Pilih nihil"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7818,20 +7935,11 @@ msgstr "batalkan"
 #~ msgid "Log messages"
 #~ msgstr "Pesan-pesan log"
 
-#~ msgid "Time zone"
-#~ msgstr "Zona waktu"
-
 #~ msgid "Set time"
 #~ msgstr "Tata waktu"
 
 #~ msgid "Manually"
 #~ msgstr "Secara manual"
-
-#~ msgid "Automatically using NTP"
-#~ msgstr "Secara otomatis memakai NTP"
-
-#~ msgid "Automatically using specific NTP servers"
-#~ msgstr "Secara otomatis memakai server NTP tertentu"
 
 #~ msgid "Pick date"
 #~ msgstr "Pilih tanggal"
@@ -8089,9 +8197,6 @@ msgstr "batalkan"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "tidak ada server NTP yang telah dikonfigurasi"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "Galat saat menyiapkan instalasi dari HDD"

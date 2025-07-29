@@ -37,8 +37,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-22 03:51+0000\n"
-"PO-Revision-Date: 2025-07-13 03:51+0000\n"
+"POT-Creation-Date: 2025-07-29 04:01+0000\n"
+"PO-Revision-Date: 2025-07-27 03:33+0000\n"
 "Last-Translator: 김인수 <simmon@nplob.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/ko/>\n"
@@ -100,11 +100,17 @@ msgstr ""
 "MDRAID 장치 $1 에서 '$0' 파티션을 찾았습니다. MDRAID 장치에서 부트로더 파티션"
 "은 지원되지 않습니다."
 
+#: src/components/users/Accounts.jsx:195
+msgid ""
+"A standard user account with admin access for making system-wide changes."
+msgstr ""
+"시스템-전반의 변경 사양을 만들기 위해 admin 접근을 갖는 표준 사용자 계정."
+
 #: src/components/HeaderKebab.jsx:137
 msgid "About"
 msgstr "정보"
 
-#: src/components/review/ReviewConfiguration.jsx:113
+#: src/components/review/ReviewConfiguration.jsx:131
 msgid "Account"
 msgstr "계정"
 
@@ -112,6 +118,10 @@ msgstr "계정"
 #: src/components/review/StorageReview.jsx:219
 msgid "Actions"
 msgstr "동작"
+
+#: src/components/datetime/CustomNTPModal.jsx:236
+msgid "Add another server..."
+msgstr "다른 서버 추가..."
 
 #: src/components/storage/MountPointMapping.jsx:663
 msgid "Add mount"
@@ -161,6 +171,15 @@ msgstr ""
 "파티션을 적재 지점에 할당합니다. 사전-구성된 사용자 정의 배열을 위해 유용합니"
 "다."
 
+#: src/components/datetime/DateAndTime.jsx:147
+msgid "Automatically set date and time, using time servers"
+msgstr "시간 서버를 사용하여, 자동으로 날짜 및 시간을 설정합니다"
+
+#: src/components/datetime/Timezone.jsx:154
+#: src/components/datetime/Timezone.jsx:155
+msgid "Automatically set timezone"
+msgstr "자동으로 시간대를 설정합니다"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:217
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "사용 가능한 여유 공간: $0. 설치에 필요합니다: $1."
@@ -183,6 +202,7 @@ msgstr ""
 #: src/components/storage/InstallationDestination.jsx:403
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:119
 #: src/components/storage/ReclaimSpaceModal.jsx:228
+#: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/review/Hostname.jsx:150 src/components/Error.jsx:289
 msgid "Cancel"
 msgstr "취소"
@@ -238,6 +258,14 @@ msgstr ""
 msgid "Completed"
 msgstr "완료되었습니다"
 
+#: src/components/datetime/CustomNTPModal.jsx:269
+msgid "Configure NTP servers"
+msgstr "NTP 서버 설정"
+
+#: src/components/datetime/CustomNTPModal.jsx:158
+msgid "Configure custom NTP servers"
+msgstr "사용자 정의 NTP 서버를 구성합니다"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:164
 msgid "Configure storage"
 msgstr "저장소 구성"
@@ -247,7 +275,7 @@ msgid "Configure storage again"
 msgstr "저장소를 다시 구성합니다"
 
 #: src/components/storage/DiskEncryption.jsx:124
-#: src/components/users/Accounts.jsx:184 src/components/users/Accounts.jsx:298
+#: src/components/users/Accounts.jsx:159 src/components/users/Accounts.jsx:315
 msgid "Confirm passphrase"
 msgstr "암호문을 확인합니다"
 
@@ -255,7 +283,7 @@ msgstr "암호문을 확인합니다"
 msgid "Continue"
 msgstr "진행"
 
-#: src/components/AnacondaWizardFooter.jsx:163
+#: src/components/AnacondaWizardFooter.jsx:161
 msgid "Continue installation"
 msgstr "설치를 계속합니다"
 
@@ -263,11 +291,11 @@ msgstr "설치를 계속합니다"
 msgid "Continue with installation"
 msgstr "설치를 계속합니다"
 
-#: src/components/users/Accounts.jsx:371
+#: src/components/users/Accounts.jsx:389
 msgid "Create Account"
 msgstr "계정 생성"
 
-#: src/components/users/Accounts.jsx:201
+#: src/components/users/Accounts.jsx:257
 msgid "Create account"
 msgstr "계정 생성"
 
@@ -278,6 +306,15 @@ msgstr "현재 설치됨: $0"
 #: src/components/storage/MountPointMapping.jsx:251
 msgid "Custom"
 msgstr "사용자 지정"
+
+#: src/components/datetime/DateAndTime.jsx:186
+msgid "Date"
+msgstr "날짜"
+
+#: src/components/datetime/DateAndTime.jsx:165
+#: src/components/datetime/DateAndTime.jsx:241
+msgid "Date and time"
+msgstr "날짜와 시간"
 
 #: src/components/review/StorageReview.jsx:318
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -308,7 +345,7 @@ msgstr "중복 장치."
 msgid "Duplicate mount point."
 msgstr "중복 적재 지점."
 
-#: src/components/users/Accounts.jsx:281
+#: src/components/users/Accounts.jsx:297
 msgid "Enable root account"
 msgstr "root 계정 활성화"
 
@@ -356,11 +393,19 @@ msgid ""
 msgstr ""
 "마무리하기: 시스템 구성이 완료되었습니다. 마무리 설치는 몇 분 걸립니다."
 
-#: src/components/users/Accounts.jsx:205
+#: src/components/users/Accounts.jsx:313
+msgid ""
+"For better security, avoid using the root account directly. Instead, use the "
+"local account above to manage the system."
+msgstr ""
+"보다 나은 보안을 위해, 직접 root 계정 사용하기를 피합니다. 대신에, 위의 로컬 "
+"계정을 사용하여 시스템을 관리하세요."
+
+#: src/components/users/Accounts.jsx:197
 msgid "Full name"
 msgstr "성명"
 
-#: src/components/users/Accounts.jsx:170
+#: src/components/users/Accounts.jsx:145
 msgid "Full name cannot contain colon characters"
 msgstr "이름에 쌍점(:)을 사용 할 수 없습니다"
 
@@ -368,7 +413,7 @@ msgstr "이름에 쌍점(:)을 사용 할 수 없습니다"
 msgid "Help us fix the issue!"
 msgstr "문제 해결에 도움을 주세요!"
 
-#: src/components/Password.jsx:244
+#: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "확인된 비밀번호 감추기"
 
@@ -376,7 +421,7 @@ msgstr "확인된 비밀번호 감추기"
 msgid "Hide passphrase"
 msgstr "암호문을 숨깁니다"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Hide password"
 msgstr "비밀번호 숨기기"
 
@@ -389,21 +434,21 @@ msgstr "호스트이름"
 msgid "How would you like to install?"
 msgstr "설치 하시겠습니까?"
 
-#: src/components/review/ReviewConfiguration.jsx:171
+#: src/components/review/ReviewConfiguration.jsx:189
 msgid "I understand that all existing data will be erased"
 msgstr "나는 모든 기존 자료가 제거 될 것이라는 점을 이해합니다"
 
-#: src/components/review/ReviewConfiguration.jsx:172
+#: src/components/review/ReviewConfiguration.jsx:190
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "나는 모든 기존 자료가 선택한 디스크에서 제거 될 것이라는 것을 이해합니다"
 
-#: src/components/review/ReviewConfiguration.jsx:176
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid "I understand that some existing data will be erased"
 msgstr "나는 일부 기존 자료가 제거 될 것이라는 점을 이해합니다"
 
-#: src/components/review/ReviewConfiguration.jsx:177
+#: src/components/review/ReviewConfiguration.jsx:195
 msgid "I understand that some partitions will be modified"
 msgstr "나는 일부 파티션이 수정 될 것이라는 점을 이해합니다"
 
@@ -452,7 +497,7 @@ msgstr "시스템 설치에 실패했습니다"
 msgid "Installation of the system failed: $0"
 msgstr "시스템 설치에 실패했습니다: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:128
+#: src/components/review/ReviewConfiguration.jsx:146
 msgid "Installation type"
 msgstr "설치 유형"
 
@@ -478,6 +523,10 @@ msgstr ""
 "템 또는 초기화를 포함합니다(예: LVM PV). 이와 같은 배열에서 기존 파티션은 무"
 "시됩니다."
 
+#: src/components/datetime/CustomNTPModal.jsx:96
+msgid "Invalid hostname"
+msgstr "잘못된 호스트명"
+
 #: src/components/storage/HelpAutopartOptions.jsx:7
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -494,7 +543,7 @@ msgstr "키보드"
 msgid "Keyboard layout during boot"
 msgstr "부팅 중에 키보드 나열"
 
-#: src/components/review/ReviewConfiguration.jsx:105
+#: src/components/review/ReviewConfiguration.jsx:123
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "언어"
@@ -566,6 +615,14 @@ msgstr "적재 지점 지정"
 msgid "Must be at least $0 characters"
 msgstr "적어도 $0 문자이어야 합니다"
 
+#: src/components/datetime/CustomNTPModal.jsx:161
+msgid "NTP Servers"
+msgstr "NTP 서버"
+
+#: src/components/datetime/CustomNTPModal.jsx:209
+msgid "NTS"
+msgstr "NTS"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "이름"
@@ -603,6 +660,10 @@ msgstr "선택한 디스크가 없음"
 msgid "No results found"
 msgstr "결과를 찾을 수 없습니다"
 
+#: src/components/review/ReviewConfiguration.jsx:67
+msgid "No user or root account has been configured"
+msgstr "사용자나 root 계정이 구성되지 않았습니다"
+
 #: src/components/storage/scenarios/UseFreeSpace.jsx:65
 msgid "Not enough free space on the selected disks."
 msgstr "선택한 디스크에 여유 공간이 충분하지 않습니다."
@@ -624,9 +685,13 @@ msgstr ""
 "주의: 이 배포판은 개발과 시험 목적을 위해서만 의도된 사전-출시된 것입니다. 심"
 "각한 작업 또는 생산환경에서 이 소프트웨를 사용하지 않도록 합니다."
 
-#: src/components/review/ReviewConfiguration.jsx:94
+#: src/components/review/ReviewConfiguration.jsx:112
 msgid "Operating system"
 msgstr "운영 체제"
+
+#: src/components/datetime/CustomNTPModal.jsx:165
+msgid "Options"
+msgstr "선택"
 
 #: src/components/localization/Keyboard.jsx:77
 msgid "Other keyboards"
@@ -639,7 +704,7 @@ msgstr "파티션 (고급)"
 #: src/components/storage/EncryptedDevices.jsx:169
 #: src/components/storage/EncryptedDevices.jsx:176
 #: src/components/storage/DiskEncryption.jsx:121
-#: src/components/users/Accounts.jsx:181 src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:156 src/components/users/Accounts.jsx:311
 msgid "Passphrase"
 msgstr "암호문"
 
@@ -647,7 +712,7 @@ msgstr "암호문"
 msgid "Passphrase did not match any locked device"
 msgstr "암호문은 잠금된 장치와 일치하지 않습니다"
 
-#: src/components/Password.jsx:257
+#: src/components/Password.jsx:261
 msgid "Passphrases must match"
 msgstr "암호문은 일치해야 합니다"
 
@@ -663,6 +728,10 @@ msgstr "로그 파일 $0를 문제로 첨부해 주세요."
 msgid "Please select at least one disk to continue"
 msgstr "계속 진행하려면 최소 하나의 디스크를 선택해야 합니다"
 
+#: src/components/datetime/CustomNTPModal.jsx:202
+msgid "Pool"
+msgstr "풀"
+
 #: src/components/HeaderKebab.jsx:74
 msgid "Powered by Anaconda"
 msgstr "아나콘다 제공"
@@ -675,12 +744,12 @@ msgstr "사전-출시"
 msgid "Proceed with installation"
 msgstr "설치로 진행합니다"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Quit"
 msgstr "종료"
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Quit installer?"
 msgstr "설치자 종료?"
 
@@ -712,8 +781,8 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "실제 호스트이름은 길이로 64 자 이하의 문자여야 합니다"
 
-#: src/components/AnacondaWizardFooter.jsx:120
-#: src/components/AnacondaWizardFooter.jsx:156 src/components/Error.jsx:256
+#: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/AnacondaWizardFooter.jsx:154 src/components/Error.jsx:256
 msgid "Reboot"
 msgstr "재시작"
 
@@ -725,7 +794,7 @@ msgstr ""
 "BitLocker-암호화된 파티션의 크기를 조절하려면 윈도우로 재시작 합니다. 설치를 "
 "위해 사용 가능한 여유 공간이 적어도 $0 를 만들어야 합니다."
 
-#: src/components/AnacondaWizardFooter.jsx:141
+#: src/components/AnacondaWizardFooter.jsx:139
 msgid "Reboot system?"
 msgstr "시스템 재시작?"
 
@@ -783,6 +852,10 @@ msgstr ""
 "설치를 위해 여유 공간을 확보하도록 기존 파일시스템을 제거하거나 크기를 조정합"
 "니다."
 
+#: src/components/datetime/CustomNTPModal.jsx:220
+msgid "Remove server"
+msgstr "서버 삭제"
+
 #: src/components/storage/ReclaimSpaceModal.jsx:140
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
@@ -838,11 +911,20 @@ msgstr "설치로 돌아가기"
 msgid "Return to storage editor"
 msgstr "저장소 편집기로 돌아갑니다"
 
-#: src/components/review/ReviewConfiguration.jsx:228
-#: src/components/review/ReviewConfiguration.jsx:229
+#: src/components/review/ReviewConfiguration.jsx:246
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Review and install"
 msgstr "검토하고 설치"
 
+#: src/components/review/ReviewConfiguration.jsx:75
+msgid "Root account is enabled"
+msgstr "root 계정이 비활성화 되었습니다"
+
+#: src/components/review/ReviewConfiguration.jsx:69
+msgid "Root account is enabled, but no user account has been configured"
+msgstr "root 계정이 활성화 되었지만, 사용자 계정이 구성되지 않았습니다"
+
+#: src/components/datetime/CustomNTPModal.jsx:248
 #: src/components/review/Hostname.jsx:148
 msgid "Save"
 msgstr "저장"
@@ -875,9 +957,17 @@ msgstr "선택"
 msgid "Select a device"
 msgstr "장치를 선택합니다"
 
+#: src/components/datetime/Timezone.jsx:190
+msgid "Select city"
+msgstr "도시 선택"
+
 #: src/components/storage/InstallationDestination.jsx:383
 msgid "Select destination"
 msgstr "선택 대상"
+
+#: src/components/datetime/Timezone.jsx:171
+msgid "Select region"
+msgstr "지역 선택"
 
 #: src/components/storage/MountPointMapping.jsx:129
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -886,6 +976,14 @@ msgstr "선택한 장치의 형식 '$0'은 다시 초기화 될 수 없습니다
 #: src/components/installation/Feedback.jsx:40
 msgid "Send us feedback on your installation"
 msgstr "자신의 설치에서 우리에게 응답을 제공하세요"
+
+#: src/components/datetime/CustomNTPModal.jsx:164
+msgid "Server"
+msgstr "서버"
+
+#: src/components/datetime/CustomNTPModal.jsx:194
+msgid "Server is not reachable"
+msgstr "서버에 접근 할 수 없습니다"
 
 #: src/components/review/Hostname.jsx:110
 msgid "Set custom hostname"
@@ -899,7 +997,11 @@ msgstr "다른 운영체제와 함께 디스크를 공유합니다"
 msgid "Share disk with other operating systems: $0"
 msgstr "다른 운영체제와 함께 디스크 공유합니다: $0"
 
-#: src/components/Password.jsx:244
+#: src/components/datetime/DateAndTime.jsx:206
+msgid "Show AM/PM"
+msgstr "오전/오후 표시"
+
+#: src/components/Password.jsx:248
 msgid "Show confirmed password"
 msgstr "확인된 비밀번호 표시"
 
@@ -907,13 +1009,19 @@ msgstr "확인된 비밀번호 표시"
 msgid "Show passphrase"
 msgstr "암호문을 표시합니다"
 
-#: src/components/Password.jsx:217
+#: src/components/Password.jsx:220
 msgid "Show password"
 msgstr "비밀번호 표시"
 
 #: src/components/review/StorageReview.jsx:218
 msgid "Size"
 msgstr "크기"
+
+#: src/components/users/Accounts.jsx:379
+msgid ""
+"Skipping account creation during installation. It will happen on first boot "
+"instead."
+msgstr "설치 중에 계정 생성 건너뛰기. 대신에 처음 시작(boot)에서 발생합니다."
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -935,14 +1043,14 @@ msgstr "일부 필수 파티션이 누락되었습니다: $0"
 msgid "Space"
 msgstr "공간"
 
-#: src/components/review/ReviewConfiguration.jsx:135
+#: src/components/review/ReviewConfiguration.jsx:153
 msgid "Storage"
 msgstr "저장소"
 
 #: src/components/installation/InstallationProgress.jsx:147
 #: src/components/storage/StorageConfiguration.jsx:92
 #: src/components/storage/StorageConfiguration.jsx:93
-#: src/components/steps.js:25
+#: src/components/steps.js:27
 msgid "Storage configuration"
 msgstr "저장소 구성"
 
@@ -990,7 +1098,7 @@ msgstr "제안된 키보드"
 msgid "Suggested languages"
 msgstr "제안된 언어"
 
-#: src/components/users/Accounts.jsx:310
+#: src/components/users/Accounts.jsx:327
 msgid "System"
 msgstr "시스템"
 
@@ -1038,10 +1146,6 @@ msgstr ""
 "및 그 이상을 설정 할 수 있습니다. 이는 고급 유틸리티로 사용되도록 하는 것이"
 "고 전형적인 설치에 사용하고자 하는 바는 아닙니다."
 
-#: src/components/users/Accounts.jsx:203
-msgid "This account will have administration privilege with sudo."
-msgstr "이 계정은 sudo와 함께 관리자 권한을 갖습니다."
-
 #: src/components/review/Hostname.jsx:74
 msgid "This hostname can't be submitted"
 msgstr "이와 같은 호스트이름은 제출 될 수 없습니다"
@@ -1061,6 +1165,14 @@ msgstr "시간이 좀 걸릴 수 있습니다"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:445
 msgid "This will take a few moments"
 msgstr "시간이 좀 걸릴 수 있습니다"
+
+#: src/components/datetime/DateAndTime.jsx:197
+msgid "Time"
+msgstr "시간"
+
+#: src/components/datetime/Timezone.jsx:144
+msgid "Timezone"
+msgstr "시간대"
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "To begin using $0, reboot your system."
@@ -1123,15 +1235,19 @@ msgstr "전체 디스크 사용"
 msgid "Use free space"
 msgstr "여유 공간 사용"
 
+#: src/components/users/Accounts.jsx:183
+msgid "Use local account"
+msgstr "로컬 계정 사용"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
 msgid "Use the RAID device for automatic partitioning"
 msgstr "자동 파티션을 위해 레이드 장치를 사용합니다"
 
-#: src/components/users/Accounts.jsx:224
+#: src/components/users/Accounts.jsx:228
 msgid "User name"
 msgstr "사용자 이름"
 
-#: src/components/users/Accounts.jsx:158
+#: src/components/users/Accounts.jsx:133
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1139,11 +1255,11 @@ msgstr ""
 "사용자 이름은 다음만 포함해야 합니다: a~z 문자, 0-9 숫자, 줄표 $0, 마침표 "
 "$1, 밑줄 $2"
 
-#: src/components/users/Accounts.jsx:155
+#: src/components/users/Accounts.jsx:130
 msgid "User name must not be a reserved word"
 msgstr "사용자 이름은 예약된 단어가 아니어야 합니다"
 
-#: src/components/users/Accounts.jsx:152
+#: src/components/users/Accounts.jsx:127
 msgid "User names must be shorter than 33 characters"
 msgstr "사용자 이름은 33 자보다 짧아야 합니다"
 
@@ -1171,7 +1287,12 @@ msgstr ""
 "당신은 여기에서 충분한 공간을 확보하고 설치자가 잔여 부분을 다루거나 파티션"
 "을 수동으로 설정 할 수 있습니다."
 
-#: src/components/AnacondaWizardFooter.jsx:145
+#: src/components/datetime/DateAndTime.jsx:156
+msgid "You must be connected to a network to enable automatic date and time."
+msgstr ""
+"자동으로 날짜 및 시간을 활성화 하려면 네트워크에 연결되어 있어야 합니다."
+
+#: src/components/AnacondaWizardFooter.jsx:143
 msgid "Your progress will not be saved."
 msgstr "당신의 진행 상황은 저장되지 않습니다."
 
@@ -1233,6 +1354,9 @@ msgstr "$0로 축소"
 #: src/components/storage/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "실행취소"
+
+#~ msgid "This account will have administration privilege with sudo."
+#~ msgstr "이 계정은 sudo와 함께 관리자 권한을 갖습니다."
 
 #~ msgid "Clear search input"
 #~ msgstr "검색 입력 초기화"
@@ -1945,9 +2069,6 @@ msgstr "실행취소"
 #~ msgid "Add Layout"
 #~ msgstr "레이아웃 추가"
 
-#~ msgid "Add NTP server"
-#~ msgstr "NTP 서버 추가"
-
 #~ msgid "Add NTP server address"
 #~ msgstr "NTP 서버 주소 추가"
 
@@ -2367,9 +2488,6 @@ msgstr "실행취소"
 #~ msgid "Configure NTP"
 #~ msgstr "NTP 설정"
 
-#~ msgid "Configure NTP servers"
-#~ msgstr "NTP 서버 설정"
-
 #~ msgid "Configure Network Time Servers"
 #~ msgstr "네트워크 시간 서버를 구성합니다"
 
@@ -2498,9 +2616,6 @@ msgstr "실행취소"
 
 #~ msgid "DISTRIBUTION INSTALLATION"
 #~ msgstr "배포판 설치"
-
-#~ msgid "DNS"
-#~ msgstr "DNS"
 
 #~ msgctxt "GUI|Password"
 #~ msgid "D_isable root account"
@@ -3278,9 +3393,6 @@ msgstr "실행취소"
 #~ msgid "Invalid group name."
 #~ msgstr "그룹 이름이 잘못되었습니다."
 
-#~ msgid "Invalid host name"
-#~ msgstr "잘못된 호스트명"
-
 #~ msgid ""
 #~ "Invalid input. Specify the Desired Capacity in whole or decimal numbers, "
 #~ "with an appropriate unit."
@@ -3535,9 +3647,6 @@ msgstr "실행취소"
 #~ msgid "NTP configuration"
 #~ msgstr "NTP 설정"
 
-#~ msgid "NTP servers:"
-#~ msgstr "NTP 서버:"
-
 #, python-brace-format
 #~ msgid "NVDIMM device {namespace}"
 #~ msgstr "NVDIMM 장치 {namespace}"
@@ -3782,9 +3891,6 @@ msgstr "실행취소"
 #~ msgid "Optional comma-separated list of mount options for the NFS mount"
 #~ msgstr "NFS 적재를 위해 추가적으로 쉼표-구분된 적재 옵션의 목록"
 
-#~ msgid "Options"
-#~ msgstr "선택"
-
 #~ msgid ""
 #~ "Or, assign new mount points to existing partitions after selecting them "
 #~ "below."
@@ -4006,9 +4112,6 @@ msgstr "실행취소"
 
 #~ msgid "Please wait... software metadata still loading."
 #~ msgstr "잠시만 기다려 주십시오... 소프트웨어 메타자료가 아직 적재 중입니다."
-
-#~ msgid "Pool"
-#~ msgstr "풀"
 
 #~ msgid "Port"
 #~ msgstr "포트"
@@ -4265,9 +4368,6 @@ msgstr "실행취소"
 #~ msgid "Remove"
 #~ msgstr "제거"
 
-#~ msgid "Remove NTP server"
-#~ msgstr "NTP 서버 삭제"
-
 #~ msgid "Remove the selected mount point(s)."
 #~ msgstr "선택한 적재 지점을 제거합니다."
 
@@ -4350,9 +4450,6 @@ msgstr "실행취소"
 
 #~ msgid "Root Selection"
 #~ msgstr "root 선택"
-
-#~ msgid "Root account is disabled"
-#~ msgstr "root 계정이 비활성화되어 있음"
 
 #~ msgid "Root password"
 #~ msgstr "root 비밀번호"
@@ -4522,9 +4619,6 @@ msgstr "실행취소"
 
 #~ msgid "Service level"
 #~ msgstr "서버스 수준"
-
-#~ msgid "Set Date & Time"
-#~ msgstr "날짜와 시간 설정"
 
 #~ msgctxt "GUI|Subscription|Set System Purpose"
 #~ msgid "Set System Purpose"
@@ -6073,10 +6167,6 @@ msgstr "실행취소"
 #~ "\tchroot %(mountpoint)s\n"
 #~ "\n"
 
-#~ msgctxt "GUI|Date and Time"
-#~ msgid "_AM/PM"
-#~ msgstr "오전/오후(_A)"
-
 #~ msgctxt "GUI|Summary Dialog"
 #~ msgid "_Accept Changes"
 #~ msgstr "변경 적용(_A)"
@@ -6714,10 +6804,6 @@ msgstr "실행취소"
 #~ msgid "_Select the type of device you wish to add"
 #~ msgstr "추가하고자 하는 장치 유형을 선택 (_S)"
 
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_Server:"
-#~ msgstr "서버(_S):"
-
 #~ msgctxt "GUI|Selected Disks Dialog"
 #~ msgid "_Set as Boot Device"
 #~ msgstr "부트 장치로 설정(_S)"
@@ -7206,9 +7292,6 @@ msgstr "실행취소"
 #~ msgid "Select no disk"
 #~ msgstr "선택한 디스크가 없음"
 
-#~ msgid "Select none"
-#~ msgstr "선택 없음"
-
 #~ msgid ""
 #~ "Select the device(s) to install to. The installation requires $0 of "
 #~ "available space. Storage will be automatically partitioned."
@@ -7673,20 +7756,11 @@ msgstr "실행취소"
 #~ msgid "Log messages"
 #~ msgstr "로그 메시지"
 
-#~ msgid "Time zone"
-#~ msgstr "시간대"
-
 #~ msgid "Set time"
 #~ msgstr "시간 설정"
 
 #~ msgid "Manually"
 #~ msgstr "사용자에 의한"
-
-#~ msgid "Automatically using NTP"
-#~ msgstr "NTP를 사용하여 자동적으로"
-
-#~ msgid "Automatically using specific NTP servers"
-#~ msgstr "지정된 NTP 서버를 사용하여 자동적으로"
 
 #~ msgid "Pick date"
 #~ msgstr "날짜 선택"
@@ -7945,9 +8019,6 @@ msgstr "실행취소"
 
 #~ msgid "org.fedoraproject.AnacondaInstaller"
 #~ msgstr "org.fedoraproject.AnacondaInstaller"
-
-#~ msgid "no NTP servers have been configured"
-#~ msgstr "NTP 서버가 설정되어 있지 않습니다"
 
 #~ msgid "Error setting up installation from HDD"
 #~ msgstr "HDD에서 설치를 설정하는 중 오류가 발생했습니다."
