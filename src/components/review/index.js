@@ -22,6 +22,8 @@ import { ReviewConfiguration } from "./ReviewConfiguration.jsx";
 const _ = cockpit.gettext;
 
 export class Page {
+    _description = "Review your installation settings and start the installation process.";
+
     constructor () {
         this.component = ReviewConfiguration;
         this.id = "anaconda-screen-review";

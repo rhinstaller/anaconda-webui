@@ -24,6 +24,8 @@ import { StorageConfiguration } from "./StorageConfiguration.jsx";
 const _ = cockpit.gettext;
 
 export class Page {
+    _description = "Automatic partitioning configuration, disk encryption, and storage options.";
+
     constructor (isBootIso, storageScenarioId) {
         this.component = StorageConfiguration;
         this.id = "anaconda-screen-storage-configuration";

@@ -24,6 +24,8 @@ import { InstallationMethod } from "./InstallationMethod.jsx";
 const _ = cockpit.gettext;
 
 export class Page {
+    _description = "Choose the target device(s) for the installation and the partitioning scenario.";
+
     constructor () {
         this.component = InstallationMethod;
         this.id = "anaconda-screen-method";

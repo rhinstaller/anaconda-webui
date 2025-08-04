@@ -18,6 +18,8 @@
 import { InstallationProgress } from "./InstallationProgress.jsx";
 
 export class Page {
+    _description = "Monitor the installation progress and completion.";
+
     constructor () {
         this.component = InstallationProgress;
         this.id = "anaconda-screen-progress";

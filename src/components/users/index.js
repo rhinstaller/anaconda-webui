@@ -22,6 +22,8 @@ import { Accounts } from "./Accounts.jsx";
 const _ = cockpit.gettext;
 
 export class Page {
+    _description = "Set up user accounts and administrator passwords for your system.";
+
     constructor () {
         this.component = Accounts;
         this.id = "anaconda-screen-accounts";
