@@ -22,6 +22,8 @@ import { DateAndTimePage } from "./DateAndTime.jsx";
 const _ = cockpit.gettext;
 
 export class Page {
+    _description = "Configure your system's timezone, date, and time settings. You can also set up network time synchronization.";
+
     constructor () {
         this.component = DateAndTimePage;
         this.id = "anaconda-screen-date-time";
