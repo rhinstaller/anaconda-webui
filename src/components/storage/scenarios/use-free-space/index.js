@@ -34,6 +34,7 @@ export const scenario = {
     action: ReclaimSpace,
     buttonVariant: "primary",
     canReclaimSpace: true,
+    docsLabel: "Use free space",
     getAvailability: useAvailabilityUseFreeSpace,
     getButtonLabel: () => _("Install"),
     getDetail: () => _("Keep current disk layout and use available space, to dual-boot with another OS."),
