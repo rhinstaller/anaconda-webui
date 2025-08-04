@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - 'src/components/storage/scenarios/**'
-      - 'docs/generate-storage-scenarios-docs.js'
+      - 'src/components/*/**.jsx'
+      - 'docs/generate-docs.js'
   push:
     branches: [main]
     paths:
       - 'src/components/storage/scenarios/**'
-      - 'docs/generate-storage-scenarios-docs.js'
+      - 'src/components/*/**.jsx'
+      - 'docs/generate-docs.js'
 
 jobs:
   check-docs:
@@ -25,12 +27,12 @@ jobs:
           node-version: '18'
 
       - name: Generate documentation
-        run: make docs-scenarios
+        run: make docs
 
       - name: Check for documentation changes
         id: check_changes
         run: |
-          if git diff --quiet docs/storage-scenarios.rst; then
+          if git diff --quiet docs/installation-steps.rst; then
             echo "✅ Documentation is up to date"
             echo "changes=false" >> $GITHUB_OUTPUT
           else
@@ -38,13 +40,13 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
             echo ""
             echo "=== Documentation changes needed ==="
-            git diff docs/storage-scenarios.rst
+            git diff docs/installation-steps.rst
           fi
 
       - name: Fail if documentation is outdated
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          echo "::error::Documentation is outdated. Please run 'make docs-scenarios' and commit the changes."
+          echo "::error::Documentation is outdated. Please run 'make docs' and commit the changes."
           exit 1
 
       - name: Success message

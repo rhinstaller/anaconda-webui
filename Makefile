@@ -115,12 +115,12 @@ watch:
 rsync:
 	RSYNC=$${RSYNC:-test-updates} make watch
 
-# Generate documentation for storage scenarios
-# NOTE: Run this and commit changes when modifying scenarios - CI will check if docs are current
-.PHONY: docs-scenarios
-docs-scenarios:
-	node docs/generate-storage-scenarios-docs.js
-	@echo "Storage scenarios documentation generated in docs/"
+# Generate comprehensive installation documentation (includes steps and storage scenarios)
+# NOTE: Run this and commit changes when modifying UI components - CI will check if docs are current
+.PHONY: docs
+docs:
+	node docs/generate-docs.js
+	@echo "Installation documentation generated in docs/"
 
 install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
