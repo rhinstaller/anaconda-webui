@@ -220,7 +220,7 @@ class LanguageSelector extends React.Component {
     }
 }
 
-const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
+export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
     const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
@@ -262,11 +262,3 @@ const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
         </>
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = InstallationLanguage;
-        this.id = SCREEN_ID;
-        this.label = _("Welcome");
-    }
-}

@@ -15,8 +15,6 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import cockpit from "cockpit";
-
 import { useContext, useEffect, useState } from "react";
 
 import { AvailabilityState } from "../helpers.js";
@@ -29,10 +27,6 @@ import {
     useMountPointConstraints,
     useOriginalDevices,
 } from "../../../../hooks/Storage.jsx";
-
-import { helpConfiguredStorage } from "../HelpAutopartOptions.jsx";
-
-const _ = cockpit.gettext;
 
 export const useAvailabilityConfiguredStorage = (args) => {
     const newMountPoints = args?.newMountPoints;
@@ -93,20 +87,4 @@ export const useAvailabilityConfiguredStorage = (args) => {
     }, [appliedPartitioning, devices, mountPointConstraints, newMountPoints, storageScenarioId]);
 
     return scenarioAvailability;
-};
-
-/**
- * @description Uses storage configuration created through the external Cockpit storage
- * editor tool for non-default layouts. This option only appears when you have
- * configured and confirmed a valid storage layout through cockpit-storage.
- */
-export const scenarioConfiguredStorage = {
-    buttonVariant: "danger",
-    getAvailability: useAvailabilityConfiguredStorage,
-    getButtonLabel: () => _("Install"),
-    getDetail: helpConfiguredStorage,
-    getLabel: () => _("Use configured storage"),
-    id: "use-configured-storage",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
 };

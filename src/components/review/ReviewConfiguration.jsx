@@ -87,7 +87,7 @@ const AccountsDescription = () => {
     }
 };
 
-const ReviewConfiguration = ({ setIsFormValid }) => {
+export const ReviewConfiguration = ({ setIsFormValid }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
@@ -253,12 +253,3 @@ const CustomFooter = ({ setIsFormValid }) => {
         />
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = ReviewConfiguration;
-        this.id = SCREEN_ID;
-        this.label = _("Review and install");
-        this.title = _("Review and install");
-    }
-}

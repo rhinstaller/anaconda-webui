@@ -2,14 +2,14 @@ import cockpit from "cockpit";
 
 import { debug } from "../helpers/log.js";
 
-import { Page as PageDateAndTime } from "./datetime/DateAndTime.jsx";
-import { Page as PageProgress } from "./installation/InstallationProgress.jsx";
-import { Page as PageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
-import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
-import { Page as PageInstallationMethod } from "./storage/installation-method/InstallationMethod.jsx";
-import { Page as PageMountPointMapping } from "./storage/mount-point-mapping/MountPointMapping.jsx";
-import { Page as PageStorageConfiguration } from "./storage/storage-configuration/StorageConfiguration.jsx";
-import { Page as PageAccounts } from "./users/Accounts.jsx";
+import { Page as PageDateAndTime } from "./datetime/index.js";
+import { Page as PageProgress } from "./installation/index.js";
+import { Page as PageInstallationLanguage } from "./localization/index.js";
+import { Page as PageReviewConfiguration } from "./review/index.js";
+import { Page as PageInstallationMethod } from "./storage/installation-method/index.js";
+import { Page as PageMountPointMapping } from "./storage/mount-point-mapping/index.js";
+import { Page as PageStorageConfiguration } from "./storage/storage-configuration/index.js";
+import { Page as PageAccounts } from "./users/index.js";
 
 const _ = cockpit.gettext;
 

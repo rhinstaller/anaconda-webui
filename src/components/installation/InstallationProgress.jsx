@@ -56,7 +56,7 @@ const progressStepsMap = {
     SYSTEM_CONFIGURATION: 3,
 };
 
-const InstallationProgress = ({ onCritFail }) => {
+export const InstallationProgress = ({ onCritFail }) => {
     const [status, setStatus] = useState();
     const [statusMessage, setStatusMessage] = useState("");
     const [steps, setSteps] = useState();
@@ -242,11 +242,3 @@ const InstallationProgress = ({ onCritFail }) => {
         </Flex>
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = InstallationProgress;
-        this.id = SCREEN_ID;
-        this.isFinal = true;
-    }
-}

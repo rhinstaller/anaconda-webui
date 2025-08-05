@@ -331,7 +331,7 @@ const RootAccount = ({
     );
 };
 
-const Accounts = ({
+export const Accounts = ({
     dispatch,
     idPrefix,
     setIsFormValid,
@@ -381,11 +381,3 @@ const CustomFooter = () => {
         />
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = Accounts;
-        this.id = "anaconda-screen-accounts";
-        this.label = _("Create Account");
-    }
-}
