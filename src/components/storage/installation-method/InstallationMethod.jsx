@@ -27,25 +27,25 @@ import {
 
 import {
     applyStorage,
-} from "../../apis/storage_partitioning.js";
+} from "../../../apis/storage_partitioning.js";
 
 import {
     DialogsContext,
     FooterContext,
     StorageContext,
-} from "../../contexts/Common.jsx";
+} from "../../../contexts/Common.jsx";
 
 import {
     getNewPartitioning,
     useHomeReuseOptions,
     usePartitioningReset,
-} from "../../hooks/Storage.jsx";
+} from "../../../hooks/Storage.jsx";
 
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
+import { scenarios } from "../scenarios/index.js";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
 import { ReclaimSpaceModal } from "./ReclaimSpaceModal.jsx";
-import { scenarios } from "./scenarios/index.js";
 
 const _ = cockpit.gettext;
 

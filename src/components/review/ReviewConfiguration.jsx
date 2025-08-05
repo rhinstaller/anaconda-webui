@@ -40,7 +40,7 @@ import {
 import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
-import { useScenario } from "../storage/InstallationScenario.jsx";
+import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
 import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";

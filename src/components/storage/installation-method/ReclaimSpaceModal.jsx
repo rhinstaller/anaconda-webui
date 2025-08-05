@@ -47,13 +47,13 @@ import {
     UndoIcon
 } from "@patternfly/react-icons";
 
-import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../apis/storage_partitioning_automatic_resizable.js";
+import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/storage_partitioning_automatic_resizable.js";
 
-import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../helpers/storage.js";
+import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../../helpers/storage.js";
 
-import { StorageContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
-import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "../../hooks/Storage.jsx";
+import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "../../../hooks/Storage.jsx";
 
 import { ModalError } from "cockpit-components-inline-notification.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";

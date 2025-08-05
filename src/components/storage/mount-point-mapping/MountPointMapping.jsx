@@ -38,7 +38,7 @@ import { TrashIcon } from "@patternfly/react-icons";
 import {
     applyStorage,
     setManualPartitioningRequests
-} from "../../apis/storage_partitioning.js";
+} from "../../../apis/storage_partitioning.js";
 
 import {
     getDeviceAncestors,
@@ -47,19 +47,19 @@ import {
     getUsableDevicesManualPartitioning,
     hasDuplicateFields,
     isDuplicateRequestField,
-} from "../../helpers/storage.js";
+} from "../../../helpers/storage.js";
 import {
     checkIfArraysAreEqual,
-} from "../../helpers/utils.js";
+} from "../../../helpers/utils.js";
 
-import { StorageContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
-import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../hooks/Storage.jsx";
+import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 
 import "./MountPointMapping.scss";
 

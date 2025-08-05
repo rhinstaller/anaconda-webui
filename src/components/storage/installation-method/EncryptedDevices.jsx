@@ -40,9 +40,9 @@ import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
 import {
     findExistingSystems,
     unlockDevice,
-} from "../../apis/storage_devicetree.js";
+} from "../../../apis/storage_devicetree.js";
 
-import { getDevicesAction } from "../../actions/storage-actions.js";
+import { getDevicesAction } from "../../../actions/storage-actions.js";
 
 import { FormHelper } from "cockpit-components-form-helper.jsx";
 import { InlineNotification } from "cockpit-components-inline-notification.jsx";

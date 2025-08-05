@@ -6,9 +6,9 @@ import { Page as PageDateAndTime } from "./datetime/DateAndTime.jsx";
 import { Page as PageProgress } from "./installation/InstallationProgress.jsx";
 import { Page as PageInstallationLanguage } from "./localization/InstallationLanguage.jsx";
 import { Page as PageReviewConfiguration } from "./review/ReviewConfiguration.jsx";
-import { Page as PageInstallationMethod } from "./storage/InstallationMethod.jsx";
-import { Page as PageMountPointMapping } from "./storage/MountPointMapping.jsx";
-import { Page as PageStorageConfiguration } from "./storage/StorageConfiguration.jsx";
+import { Page as PageInstallationMethod } from "./storage/installation-method/InstallationMethod.jsx";
+import { Page as PageMountPointMapping } from "./storage/mount-point-mapping/MountPointMapping.jsx";
+import { Page as PageStorageConfiguration } from "./storage/storage-configuration/StorageConfiguration.jsx";
 import { Page as PageAccounts } from "./users/Accounts.jsx";
 
 const _ = cockpit.gettext;
