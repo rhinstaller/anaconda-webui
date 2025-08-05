@@ -25,24 +25,24 @@ import {
     Title,
 } from "@patternfly/react-core";
 
-import { setStorageScenarioAction } from "../../actions/storage-actions.js";
+import { setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
 import {
     getLockedLUKSDevices,
-} from "../../helpers/storage.js";
+} from "../../../helpers/storage.js";
 
 import {
     StorageContext,
-} from "../../contexts/Common.jsx";
+} from "../../../contexts/Common.jsx";
 
 import {
     useOriginalDevices,
     useOriginalDeviceTree,
-} from "../../hooks/Storage.jsx";
+} from "../../../hooks/Storage.jsx";
 
-import { StorageReview } from "../review/StorageReview.jsx";
+import { StorageReview } from "../../review/StorageReview.jsx";
+import { scenarios, useScenariosAvailability } from "../scenarios/index.js";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
-import { scenarios, useScenariosAvailability } from "./scenarios/index.js";
 
 import "./InstallationScenario.scss";
 

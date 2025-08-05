@@ -41,24 +41,24 @@ import { SyncAltIcon } from "@patternfly/react-icons";
 import {
     runStorageTask,
     scanDevicesWithTask,
-} from "../../apis/storage.js";
-import { setSelectedDisks } from "../../apis/storage_disks_selection.js";
-import { resetPartitioning } from "../../apis/storage_partitioning.js";
+} from "../../../apis/storage.js";
+import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
+import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 
-import { getDevicesAction, getDiskSelectionAction } from "../../actions/storage-actions.js";
+import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
-import { debug as loggerDebug } from "../../helpers/log.js";
-import { getDeviceChildren } from "../../helpers/storage.js";
-import { checkIfArraysAreEqual } from "../../helpers/utils.js";
+import { debug as loggerDebug } from "../../../helpers/log.js";
+import { getDeviceChildren } from "../../../helpers/storage.js";
+import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
-import { StorageContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
 import {
     useDiskTotalSpace,
     useOriginalDevices,
     useOriginalExistingSystems,
     useRequiredSize,
-} from "../../hooks/Storage.jsx";
+} from "../../../hooks/Storage.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 

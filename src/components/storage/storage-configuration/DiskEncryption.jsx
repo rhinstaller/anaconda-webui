@@ -35,12 +35,12 @@ import {
 
 import {
     setLuksEncryptionDataAction
-} from "../../actions/storage-actions.js";
+} from "../../../actions/storage-actions.js";
 
-import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../../contexts/Common.jsx";
 
-import { Keyboard } from "../localization/Keyboard.jsx";
-import { PasswordFormFields, ruleLength } from "../Password.jsx";
+import { Keyboard } from "../../localization/Keyboard.jsx";
+import { PasswordFormFields, ruleLength } from "../../Password.jsx";
 
 import "./DiskEncryption.scss";
 

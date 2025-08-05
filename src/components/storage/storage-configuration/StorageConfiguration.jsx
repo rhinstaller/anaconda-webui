@@ -20,13 +20,13 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useWizardFooter } from "@patternfly/react-core";
 
-import { applyStorage } from "../../apis/storage_partitioning.js";
+import { applyStorage } from "../../../apis/storage_partitioning.js";
 
-import { StorageContext } from "../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
-import { usePartitioningReset } from "../../hooks/Storage.jsx";
+import { usePartitioningReset } from "../../../hooks/Storage.jsx";
 
-import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const _ = cockpit.gettext;
