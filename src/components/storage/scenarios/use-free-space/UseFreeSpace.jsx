@@ -20,19 +20,19 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
 import { Checkbox } from "@patternfly/react-core";
 
-import { AvailabilityState } from "./helpers.js";
+import { AvailabilityState } from "../helpers.js";
 
 import {
     DialogsContext,
     StorageContext,
-} from "../../../contexts/Common.jsx";
+} from "../../../../contexts/Common.jsx";
 
 import {
     useDiskFreeSpace,
     useDiskTotalSpace,
     usePlannedExistingSystems,
     useRequiredSize,
-} from "../../../hooks/Storage.jsx";
+} from "../../../../hooks/Storage.jsx";
 
 import { helpUseFreeSpace } from "../HelpAutopartOptions.jsx";
 
