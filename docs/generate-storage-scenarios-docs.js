@@ -7,6 +7,7 @@
 
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -101,21 +102,23 @@ ${"-".repeat(title.length)}
     return rst;
 }
 
+function findScenarioFiles() {
+    const gitGrepOutput = execSync('find src/components/storage/scenarios/ -name "*.jsx"', {
+        encoding: 'utf8',
+        cwd: path.join(__dirname, '..')
+    });
+
+    return gitGrepOutput
+        .trim()
+        .split('\n')
+        .filter(file => file.length > 0)
+        .map(file => path.join(__dirname, '..', file));
+}
+
+
 // Main function
 function main () {
-    const scenariosDir = path.join(__dirname, "../src/components/storage/scenarios");
-    const outputDir = __dirname;
-
-    // Ensure output directory exists
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-    }
-
-    const scenarioFiles = fs.readdirSync(scenariosDir)
-            .filter(file => file.endsWith(".jsx") && !file.startsWith("."))
-            .filter(file => file !== "index.js" && file !== "helpers.js")
-            .map(file => path.join(scenariosDir, file));
-
+    const scenarioFiles = findScenarioFiles();
     const scenarios = scenarioFiles
             .map(extractScenarioInfo)
             .filter(Boolean)
@@ -123,7 +126,7 @@ function main () {
 
     // Generate documentation
     const rstContent = generateRstDocumentation(scenarios);
-    const rstFile = path.join(outputDir, "storage-scenarios.rst");
+    const rstFile = path.join(__dirname, "storage-scenarios.rst");
     fs.writeFileSync(rstFile, rstContent);
 }
 

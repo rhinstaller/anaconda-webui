@@ -19,16 +19,16 @@ import cockpit from "cockpit";
 
 import { useContext, useEffect, useState } from "react";
 
-import { AvailabilityState } from "./helpers.js";
+import { AvailabilityState } from "../helpers.js";
 
 import {
     StorageContext,
-} from "../../../contexts/Common.jsx";
+} from "../../../../contexts/Common.jsx";
 
 import {
     useDiskTotalSpace,
     useRequiredSize,
-} from "../../../hooks/Storage.jsx";
+} from "../../../../hooks/Storage.jsx";
 
 import { helpEraseAll } from "../HelpAutopartOptions.jsx";
 

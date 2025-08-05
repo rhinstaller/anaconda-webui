@@ -19,23 +19,23 @@ import cockpit from "cockpit";
 
 import { useContext, useEffect, useState } from "react";
 
-import { getAutopartReuseDBusRequest } from "../../../apis/storage_partitioning.js";
+import { getAutopartReuseDBusRequest } from "../../../../apis/storage_partitioning.js";
 
-import { debug as loggerDebug } from "../../../helpers/log.js";
+import { debug as loggerDebug } from "../../../../helpers/log.js";
 import {
     bootloaderTypes,
     hasReusableFedoraWithWindowsOS,
     isCompleteOSOnDisks,
-} from "../../../helpers/storage.js";
-import { AvailabilityState } from "./helpers.js";
+} from "../../../../helpers/storage.js";
+import { AvailabilityState } from "../helpers.js";
 
-import { StorageContext } from "../../../contexts/Common.jsx";
+import { StorageContext } from "../../../../contexts/Common.jsx";
 
 import {
     useHomeReuseOptions,
     useOriginalDevices,
     useOriginalExistingSystems,
-} from "../../../hooks/Storage.jsx";
+} from "../../../../hooks/Storage.jsx";
 
 import { helpHomeReuse } from "../HelpAutopartOptions.jsx";
 
