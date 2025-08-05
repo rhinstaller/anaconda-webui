@@ -15,8 +15,6 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import cockpit from "cockpit";
-
 import { useContext, useEffect, useState } from "react";
 
 import { getAutopartReuseDBusRequest } from "../../../../apis/storage_partitioning.js";
@@ -37,13 +35,9 @@ import {
     useOriginalExistingSystems,
 } from "../../../../hooks/Storage.jsx";
 
-import { helpHomeReuse } from "../HelpAutopartOptions.jsx";
-
-const _ = cockpit.gettext;
-
 const debug = loggerDebug.bind(null, "home reuse:");
 
-const useAvailabilityHomeReuse = () => {
+export const useAvailabilityHomeReuse = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
@@ -149,21 +143,4 @@ const useAvailabilityHomeReuse = () => {
     }, [devices, originalExistingSystems, reuseEFIPart, selectedDisks, scheme]);
 
     return scenarioAvailability;
-};
-
-/**
- * @description Reinstalls Fedora while preserving your existing home directory and user data.
- * Use when you want to refresh your Fedora installation while keeping all your personal files
- * and settings. This option only appears when exactly one existing Fedora system is detected
- * and the system has only the default mount points.
- */
-export const scenarioReinstallFedora = {
-    buttonVariant: "danger",
-    getAvailability: useAvailabilityHomeReuse,
-    getButtonLabel: () => _("Reinstall Fedora"),
-    getDetail: helpHomeReuse,
-    getLabel: () => _("Reinstall Fedora"),
-    id: "home-reuse",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
 };

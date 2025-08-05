@@ -725,7 +725,7 @@ const useExistingPartitioning = () => {
     return usedPartitioning === partitioning.path;
 };
 
-const MountPointMapping = ({
+export const MountPointMapping = ({
     setIsFormValid,
     setStepNotification,
 }) => {
@@ -745,7 +745,7 @@ const MountPointMapping = ({
 const CustomFooter = ({ setStepNotification }) => {
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
-    const step = new Page().id;
+    const step = SCREEN_ID;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         return applyStorage({
             devices,
@@ -767,13 +767,3 @@ const CustomFooter = ({ setStepNotification }) => {
 
     return <AnacondaWizardFooter onNext={onNext} />;
 };
-
-export class Page {
-    constructor (isBootIso, storageScenarioId) {
-        this.component = MountPointMapping;
-        this.id = SCREEN_ID;
-        this.label = _("Manual disk configuration");
-        this.isHidden = storageScenarioId !== "mount-point-mapping";
-        this.title = _("Manual disk configuration: Mount point mapping");
-    }
-}

@@ -30,11 +30,9 @@ import {
     useRequiredSize,
 } from "../../../../hooks/Storage.jsx";
 
-import { helpEraseAll } from "../HelpAutopartOptions.jsx";
-
 const _ = cockpit.gettext;
 
-const useAvailabilityEraseAll = () => {
+export const useAvailabilityEraseAll = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
 
     const { diskSelection } = useContext(StorageContext);
@@ -64,20 +62,4 @@ const useAvailabilityEraseAll = () => {
     }, [diskTotalSpace, requiredSize, selectedDisks]);
 
     return scenarioAvailability;
-};
-
-/**
- * @description Completely erases all data on the selected disks and
- * automatically creates a new partition layout.
- * Use this for clean installations when you do not need to preserve any existing data.
- */
-export const scenarioEraseAll = {
-    buttonVariant: "danger",
-    getAvailability: useAvailabilityEraseAll,
-    getButtonLabel: () => _("Erase data and install"),
-    getDetail: helpEraseAll,
-    getLabel: () => _("Use entire disk"),
-    id: "erase-all",
-    // CLEAR_PARTITIONS_ALL = 1
-    initializationMode: 1,
 };

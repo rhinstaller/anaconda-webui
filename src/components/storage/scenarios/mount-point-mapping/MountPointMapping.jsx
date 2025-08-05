@@ -30,11 +30,9 @@ import {
     useUsablePartitions,
 } from "../../../../hooks/Storage.jsx";
 
-import { helpMountPointMapping } from "../HelpAutopartOptions.jsx";
-
 const _ = cockpit.gettext;
 
-const useAvailabilityMountPointMapping = () => {
+export const useAvailabilityMountPointMapping = () => {
     const [scenarioAvailability, setScenarioAvailability] = useState();
     const mountPointConstraints = useMountPointConstraints();
     const { diskSelection } = useContext(StorageContext);
@@ -81,21 +79,4 @@ const getMissingNonmountablePartitions = (usablePartitions, mountPointConstraint
             .map(constraint => constraint.description);
 
     return missingNonmountablePartitions;
-};
-
-/**
- * @description Allows you to manually assign mount points to specific devices
- * for complete control over the partition layout.
- * Use this if you have custom storage requirements or want to reuse existing
- * partitions selectively.
- */
-export const scenarioMountPointMapping = {
-    buttonVariant: "danger",
-    getAvailability: useAvailabilityMountPointMapping,
-    getButtonLabel: () => _("Apply mount point assignment and install"),
-    getDetail: helpMountPointMapping,
-    getLabel: () => _("Mount point assignment"),
-    id: "mount-point-mapping",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
 };

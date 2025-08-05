@@ -214,7 +214,7 @@ const DateAndTimeSection = ({ locale, setSectionValid, timezone }) => {
     );
 };
 
-const DateAndTimePage = ({ setIsFormValid }) => {
+export const DateAndTimePage = ({ setIsFormValid }) => {
     const [dateTimeValid, setDateTimeValid] = useState(false);
     const [timezoneLabel, setTimezoneLabel] = useState("");
     const [timezoneValid, setTimezoneValid] = useState(false);
@@ -233,11 +233,3 @@ const DateAndTimePage = ({ setIsFormValid }) => {
         </Form>
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = DateAndTimePage;
-        this.id = SCREEN_ID;
-        this.label = _("Date and time");
-    }
-}

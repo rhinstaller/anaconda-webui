@@ -36,7 +36,7 @@ function extractScenarioInfo (filePath) {
                 .trim();
 
         // Extract scenario ID from the export statement
-        const exportMatch = content.match(/export const scenario\w+ = \{[\s\S]*?id:\s*"([^"]+)"/);
+        const exportMatch = content.match(/export const scenario = \{[\s\S]*?id:\s*"([^"]+)"/);
         if (!exportMatch) {
             return null;
         }
@@ -102,8 +102,8 @@ ${"-".repeat(title.length)}
     return rst;
 }
 
-function findScenarioFiles() {
-    const gitGrepOutput = execSync('find src/components/storage/scenarios/ -name "*.jsx"', {
+function findIndexFiles() {
+    const gitGrepOutput = execSync('find src/components/storage/scenarios/ -name "index.js"', {
         encoding: 'utf8',
         cwd: path.join(__dirname, '..')
     });
@@ -118,7 +118,7 @@ function findScenarioFiles() {
 
 // Main function
 function main () {
-    const scenarioFiles = findScenarioFiles();
+    const scenarioFiles = findIndexFiles();
     const scenarios = scenarioFiles
             .map(extractScenarioInfo)
             .filter(Boolean)

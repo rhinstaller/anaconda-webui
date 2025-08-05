@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { scenarioEraseAll } from "./erase-all/EraseAll.jsx";
-import { scenarioMountPointMapping } from "./mount-point-mapping/MountPointMapping.jsx";
-import { scenarioReinstallFedora } from "./reinstall-fedora/ReinstallFedora.jsx";
-import { scenarioConfiguredStorage } from "./use-configured-storage/UseConfiguredStorage.jsx";
-import { scenarioUseFreeSpace } from "./use-free-space/UseFreeSpace.jsx";
+import { scenario as scenarioEraseAll } from "./erase-all/index.js";
+import { scenario as scenarioMountPointMapping } from "./mount-point-mapping/index.js";
+import { scenario as scenarioReinstallFedora } from "./reinstall-fedora/index.js";
+import { scenario as scenarioConfiguredStorage } from "./use-configured-storage/index.js";
+import { scenario as scenarioUseFreeSpace } from "./use-free-space/index.js";
 
 export const useScenariosAvailability = () => {
     const scenarioReinstallFedoraAvailability = scenarioReinstallFedora.getAvailability();

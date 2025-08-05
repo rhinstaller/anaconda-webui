@@ -15,8 +15,6 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import cockpit from "cockpit";
-
 import React, { useContext, useEffect, useMemo } from "react";
 import { useWizardFooter } from "@patternfly/react-core";
 
@@ -24,14 +22,12 @@ import { applyStorage } from "../../../apis/storage_partitioning.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
 
-import { usePartitioningReset } from "../../../hooks/Storage.jsx";
-
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
-const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-storage-configuration";
 
-const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification }) => {
+export const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification }) => {
     const { luks, partitioning } = useContext(StorageContext);
 
     // Display custom footer
@@ -60,7 +56,7 @@ const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification })
 };
 
 const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
-    const step = new Page().id;
+    const step = SCREEN_ID;
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
         setIsFormDisabled(true);
         return applyStorage({
@@ -83,15 +79,3 @@ const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
 
     return <AnacondaWizardFooter onNext={onNext} />;
 };
-
-export class Page {
-    constructor (isBootIso, storageScenarioId) {
-        this.component = StorageConfiguration;
-        this.id = "anaconda-screen-storage-configuration";
-        this.isHidden = ["mount-point-mapping", "use-configured-storage", "home-reuse"].includes(storageScenarioId);
-        this.label = _("Storage configuration");
-        this.title = _("Storage configuration");
-        /* Reset partitioning on page load to prevent stacking planned changes */
-        this.usePageInit = usePartitioningReset;
-    }
-}

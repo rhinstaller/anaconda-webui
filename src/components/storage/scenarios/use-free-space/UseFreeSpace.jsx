@@ -34,8 +34,6 @@ import {
     useRequiredSize,
 } from "../../../../hooks/Storage.jsx";
 
-import { helpUseFreeSpace } from "../HelpAutopartOptions.jsx";
-
 const _ = cockpit.gettext;
 
 export const useAvailabilityUseFreeSpace = (args) => {
@@ -79,7 +77,7 @@ export const useAvailabilityUseFreeSpace = (args) => {
     return scenarioAvailability;
 };
 
-const ReclaimSpace = ({ availability }) => {
+export const ReclaimSpace = ({ availability }) => {
     const { isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked } = useContext(DialogsContext);
 
     useEffect(() => {
@@ -98,7 +96,7 @@ const ReclaimSpace = ({ availability }) => {
     );
 };
 
-const ScenarioLabel = ({ isReview }) => {
+const LabelUserFreeSpace = ({ isReview }) => {
     const existingSystems = usePlannedExistingSystems();
 
     if (isReview && existingSystems?.length) {
@@ -108,20 +106,6 @@ const ScenarioLabel = ({ isReview }) => {
     return _("Share disk with other operating systems");
 };
 
-/**
- * @description Installs using only unallocated free space, preserving existing partitions
- * and data. Use when you want to dual-boot with existing operating systems. This option only
- * appears when existing partitions are detected on the selected disks.
- */
-export const scenarioUseFreeSpace = {
-    action: ReclaimSpace,
-    buttonVariant: "primary",
-    canReclaimSpace: true,
-    getAvailability: useAvailabilityUseFreeSpace,
-    getButtonLabel: () => _("Install"),
-    getDetail: helpUseFreeSpace,
-    getLabel: (params) => <ScenarioLabel isReview={params?.isReview} />,
-    id: "use-free-space",
-    // CLEAR_PARTITIONS_NONE = 0
-    initializationMode: 0,
+export const getLabelUseFreeSpace = (isReview) => {
+    return <LabelUserFreeSpace isReview={isReview} />;
 };

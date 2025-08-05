@@ -38,7 +38,6 @@ import {
 import {
     getNewPartitioning,
     useHomeReuseOptions,
-    usePartitioningReset,
 } from "../../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
@@ -48,8 +47,9 @@ import { InstallationScenario } from "./InstallationScenario.jsx";
 import { ReclaimSpaceModal } from "./ReclaimSpaceModal.jsx";
 
 const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-installation-method";
 
-const InstallationMethod = ({
+export const InstallationMethod = ({
     dispatch,
     idPrefix,
     isEfi,
@@ -141,7 +141,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
                 setIsNextClicked(true);
             } else {
                 setIsFormDisabled(true);
-                const step = new Page().id;
+                const step = SCREEN_ID;
                 await applyStorage({
                     onFail: ex => {
                         setIsFormDisabled(false);
@@ -201,13 +201,3 @@ const InstallationMethodFooterHelper = () => {
         </HelperText>
     );
 };
-
-export class Page {
-    constructor () {
-        this.component = InstallationMethod;
-        this.id = "anaconda-screen-method";
-        this.label = _("Installation method");
-        /* Reset partitioning on page load to prevent stacking planned changes */
-        this.usePageInit = usePartitioningReset;
-    }
-}
