@@ -43,7 +43,7 @@ def cmd_cli():
             # print ssh command
             ssh_args = f"-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p {machine.ssh_port}"
             print(
-                f"ssh -o ControlPath={machine.ssh_master} {ssh_args} {machine.ssh_user}@{machine.ssh_address}"
+                f"ssh -o ControlPath={machine.ssh_control_path} {ssh_args} {machine.ssh_user}@{machine.ssh_address}"
             )
             # print Cockpit web address
             print(
