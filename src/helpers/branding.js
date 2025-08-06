@@ -48,6 +48,7 @@ export const getLogoPath = (osRelease) => {
  */
 export const getAvailableBranding = () => {
     return {
+        bazzite: "Bazzite",
         default: "PatternFly Defaults",
         fedora: "Fedora",
     };

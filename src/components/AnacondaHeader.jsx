@@ -56,7 +56,7 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
     const logoAlt = osRelease?.PRETTY_NAME ? `${osRelease.PRETTY_NAME} logo` : "Logo";
 
     return (
-        <PageSection hasBodyWrapper={false}>
+        <PageSection className="anaconda-header" hasBodyWrapper={false}>
             <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
                 {logoPath && <img src={logoPath} className="logo" alt={logoAlt} />}
                 <Content>
