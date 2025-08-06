@@ -242,6 +242,13 @@ class StorageUtils(StorageDestination):
         udevadm settle
         """, timeout=90)
         self._wait_for_mdraid_clean()
+        # Assemble the mdraid device: do this to early detect mdraid regression
+        # Remove once: https://bugzilla.redhat.com/show_bug.cgi?id=2385871 is fixed
+        self.machine.execute("""
+        set -ex
+        mdadm --assemble --scan
+        udevadm settle
+        """, timeout=30)
 
     def _wait_for_mdraid_clean(self):
         m = self.machine
