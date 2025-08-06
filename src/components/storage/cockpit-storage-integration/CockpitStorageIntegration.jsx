@@ -33,7 +33,7 @@ import {
     PageSection,
     Tooltip
 } from "@patternfly/react-core";
-import { ArrowLeftIcon, ExclamationTriangleIcon } from "@patternfly/react-icons";
+import { ArrowLeftIcon, ExclamationTriangleIcon, TimesIcon } from "@patternfly/react-icons";
 
 import {
     getDeviceAncestors
@@ -164,7 +164,6 @@ export const CockpitStorageIntegration = ({
               aria-label={_("Configure storage")}
               className={backdropClass + " " + idPrefix + "-modal-page-section"}
               isOpen={isConfirmed}
-              onClose={() => setShowDialog(true)}
               showClose={false}
               variant={ModalVariant.large}>
                 <Banner screenReaderText="Warning banner" status="warning">
@@ -176,6 +175,9 @@ export const CockpitStorageIntegration = ({
                             }
                         </FlexItem>
                     </Flex>
+                    <Button variant="plain" aria-label={_("Close storage editor")} onClick={() => setShowStorage(false)}>
+                        <TimesIcon />
+                    </Button>
                 </Banner>
                 <div className={idPrefix + "-page-section-cockpit-storage"}>
                     <PageSection hasBodyWrapper={false}>
