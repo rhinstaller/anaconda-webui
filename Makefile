@@ -134,7 +134,8 @@ install: $(DIST_TEST) po/LINGUAS
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
 	cp src/scripts/cockpit-coproc-wrapper.sh $(DESTDIR)/usr/libexec/anaconda/
-	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo.svg
+	# Install distribution-specific logos
+	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo-fedora.svg
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 

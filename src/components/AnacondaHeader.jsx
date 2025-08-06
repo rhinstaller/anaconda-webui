@@ -27,7 +27,9 @@ import { InfoCircleIcon } from "@patternfly/react-icons";
 
 import { getIsFinal } from "../apis/runtime";
 
-import { NetworkContext } from "../contexts/Common.jsx";
+import { getLogoPath } from "../helpers/branding.js";
+
+import { NetworkContext, OsReleaseContext } from "../contexts/Common.jsx";
 
 import { HeaderKebab } from "./HeaderKebab.jsx";
 
@@ -39,6 +41,7 @@ const N_ = cockpit.noop;
 export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCritFail, reportLinkURL, setShowStorage, showStorage, title }) => {
     const [beta, setBeta] = useState();
     const network = useContext(NetworkContext);
+    const osRelease = useContext(OsReleaseContext);
     const isConnected = network.connected;
 
     useEffect(() => {
@@ -48,10 +51,14 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
         );
     }, [onCritFail]);
 
+    // Get the appropriate logo path based on the distribution
+    const logoPath = getLogoPath(osRelease);
+    const logoAlt = osRelease?.PRETTY_NAME ? `${osRelease.PRETTY_NAME} logo` : "Logo";
+
     return (
         <PageSection hasBodyWrapper={false}>
             <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
-                <img src="./logo.svg" className="logo" />
+                {logoPath && <img src={logoPath} className="logo" alt={logoAlt} />}
                 <Content>
                     <Content component="h1">{title}</Content>
                 </Content>
