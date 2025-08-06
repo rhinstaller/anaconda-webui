@@ -8,7 +8,6 @@
   --tint: black;
 }
 
-/* Dark theme overrides */
 .pf-v6-theme-dark {
   /* Use light for dark mode brand color */
   --fedora-brand: var(--fedora-blue);
@@ -16,8 +15,9 @@
   --tint: white;
 }
 
-/* Override PatternFly brand variables when Fedora branding is active */
 :root.branding-fedora {
+  /* Override PatternFly brand variables when Fedora branding is active */
+
   /* Remap base brand colors */
   --pf-t--global--color--brand--default: var(--fedora-brand);
   /* Increase tint when hovering */
@@ -25,37 +25,7 @@
   /* Clicked should be same as hover */
   --pf-t--global--icon--color--brand--clicked: var(--pf-t--global--color--brand--hover);
 
-  /* Fedora doesn't ship the on-dark version of the SVG, but we can fake it */
-  .logo {
-    filter: invert(1) grayscale(1) brightness(2.5);
-    mix-blend-mode: screen;
-  }
-
-  /* Override the top header to have a Fedora blue */
-  .pf-v6-c-page__main-group > .pf-v6-c-page__main-section:first-child {
-    --_text: white;
+  .anaconda-header {
     background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--fedora-blue-dark) 100%);
-
-    .pf-v6-c-content {
-      --pf-v6-c-content--Color: var(--_text);
-    }
-  }
-
-  /* Have the kebab toggle inherit the text color, for better color contrast */
-  #toggle-kebab {
-    path {
-      fill: var(--_text);
-    }
-
-    &:hover path {
-      fill: color-mix(in lch, var(--_text) 75%, transparent);
-    }
-  }
-}
-
-/* Special-case some light-mode optimizations */
-:root.branding-fedora:not(.pf-v6-theme-dark) {
-  .pf-v6-c-wizard__nav-link.pf-m-current::before {
-    --pf-v6-c-wizard__nav-link--m-current--before--BackgroundColor: var(--fedora-blue);
   }
 }

@@ -28,8 +28,10 @@ export const getBrandingName = (osRelease) => {
     // Check for official Fedora distributions
     if (osRelease.ID === "fedora") return "fedora";
 
+    // Check for specific distribution IDs that have their own branding
+    if (osRelease.ID === "bazzite") return "bazzite";
+
     // Future: Add more distributions here as branding is implemented
-    // Example: if (osRelease.ID === "bazzite") return "bazzite";
 };
 
 /**
@@ -65,6 +67,7 @@ export const getLogoPath = (osRelease) => {
  */
 export const getAvailableBranding = () => {
     return {
+        bazzite: "Bazzite",
         default: "PatternFly Defaults",
         fedora: "Fedora",
     };
