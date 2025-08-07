@@ -38,7 +38,10 @@ class Progress():
             tries=timeout / delay
         )
         if self.browser.is_present('#critical-error-bz-report-modal'):
-            raise AssertionError('Error during installation')
+            text = self.browser.text('#critical-error-bz-report-modal-details')
+            raise AssertionError(
+                f"Critical error encountered during installation: {text}"
+            )
 
         self.browser.wait_visible(self._reboot_selector)
 
