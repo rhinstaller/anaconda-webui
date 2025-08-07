@@ -124,6 +124,12 @@ docs:
 
 install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
+	# Install distribution-specific logos
+	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo-fedora.svg
+	# Install branding CSS for consumption by other Cockpit modules
+	mkdir -p $(DESTDIR)/usr/share/cockpit/static/branding
+	mv dist/anaconda-branding.css $(DESTDIR)/usr/share/cockpit/static/branding/anaconda-branding.css
+	# Install the main web UI files
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
@@ -134,8 +140,6 @@ install: $(DIST_TEST) po/LINGUAS
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
 	cp src/scripts/cockpit-coproc-wrapper.sh $(DESTDIR)/usr/libexec/anaconda/
-	# Install distribution-specific logos
-	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo-fedora.svg
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 
