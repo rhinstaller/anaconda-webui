@@ -18,8 +18,9 @@ Supported Distributions
 Built-in Branding
 -----------------
 
-- **Fedora**: Custom blue theme with Fedora-specific colors and styling
-- **Bazzite**: Gaming-focused purple theme with Bazzite branding
+- **Fedora**
+- **Bazzite**
+- **Bluefin**
 
 **Important**: Fedora-based remixes (like Bazzite, Nobara) are intentionally **not** detected as Fedora to allow them to use their own distinct branding.
 

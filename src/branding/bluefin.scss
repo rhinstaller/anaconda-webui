@@ -1,0 +1,27 @@
+:root {
+    /* Bluefin brand colors - official blue theme */
+    --color-blue: #4285f4;
+    --color-blue-light: #8a97f7;
+    /* Use main blue for light mode brand color */
+    --bluefin-brand: var(--color-blue);
+    /* In light mode, darken */
+    --tint: black;
+}
+
+/* Override PatternFly brand variables when Bluefin branding is active */
+:root.branding-bluefin {
+    /* Remap base brand colors */
+    --pf-t--global--color--brand--default: var(--bluefin-brand);
+    /* Increase tint when hovering */
+    --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%);
+    /* Clicked should be same as hover */
+    --pf-t--global--color--brand--clicked: var(--pf-t--global--color--brand--hover);
+
+  .anaconda-header {
+    background: linear-gradient(90deg, var(--color-blue) 0%, var(--color-blue-light) 100%);
+  }
+
+  .logo {
+    background-image: url('../../static/branding/pixmaps/fedora-logo-sprite.svg');
+  }
+}
