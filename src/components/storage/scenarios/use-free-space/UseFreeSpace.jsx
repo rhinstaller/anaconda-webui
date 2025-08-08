@@ -81,15 +81,15 @@ export const ReclaimSpace = ({ availability }) => {
     const { isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked } = useContext(DialogsContext);
 
     useEffect(() => {
-        setIsReclaimSpaceCheckboxChecked(availability.enforceAction);
-    }, [availability.enforceAction, setIsReclaimSpaceCheckboxChecked]);
+        setIsReclaimSpaceCheckboxChecked(availability?.enforceAction);
+    }, [availability?.enforceAction, setIsReclaimSpaceCheckboxChecked]);
 
     return (
         <Checkbox
           id="reclaim-space-checkbox"
           isChecked={isReclaimSpaceCheckboxChecked}
-          isDisabled={availability.enforceAction}
-          label={!availability.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
+          isDisabled={availability?.enforceAction}
+          label={!availability?.enforceAction ? _("Reclaim additional space") : _("Reclaim space (required)")}
           name="reclaim-space"
           onChange={(_, value) => setIsReclaimSpaceCheckboxChecked(value)}
         />
