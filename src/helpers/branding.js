@@ -30,6 +30,7 @@ export const getBrandingName = (osRelease) => {
 
     // Check for specific distribution IDs that have their own branding
     if (osRelease.ID === "bazzite") return "bazzite";
+    if (osRelease.ID === "bluefin") return "bluefin";
 
     // Future: Add more distributions here as branding is implemented
 };
