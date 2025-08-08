@@ -24,8 +24,6 @@ import {
 
 import { SystemTypeContext } from "../../contexts/Common.jsx";
 
-import feedbackQRcode from "../../../images/qr-code-feedback.svg";
-
 import "./Feedback.scss";
 
 const _ = cockpit.gettext;
@@ -35,7 +33,7 @@ export const Feedback = () => {
 
     return (
         <Flex className="feedback-section">
-            <img className="feedback-qr-code" src={feedbackQRcode} />
+            <img className="feedback-qr-code" src="./feedback-qr-code.svg" />
             <Content>
                 <Content component="h3">{_("Send us feedback on your installation")}</Content>
                 <Content component="p" className="feedback-hint">{_("Scan the QR code with your phone or visit:")}</Content>
