@@ -89,6 +89,15 @@ export const getFormatData = ({ diskName }) => {
 };
 
 /**
+ * @param {Array[string]} mountPoints A list of mount points
+ *
+ * @returns {Promise}           Resolves total file system free space on given mount points
+ */
+export const getFileSystemFreeSpace = ({ mountPoints }) => {
+    return new DeviceTree().callViewer("GetFileSystemFreeSpace", [mountPoints]);
+};
+
+/**
  * @param {int} requiredSpace A required space in bytes
  *
  * @returns {Promise}           Resolves the total free space on the given disks
