@@ -38,7 +38,23 @@ async function generateBrandingCSS (outputPath) {
         const result = await esbuild.build({
             bundle: true,
             entryPoints: [tempEntry],
-            plugins: [sassPlugin({ quietDeps: true })],
+            plugins: [
+                // Custom plugin to handle missing URL references
+                {
+                    name: "ignore-missing-urls",
+                    setup (build) {
+                        // Ignore missing files that are URL references
+                        build.onResolve({ filter: /.*\.svg$/ }, (args) => {
+                            if (args.path.includes("static/branding/pixmaps")) {
+                                return { external: true };
+                            }
+                        });
+                    }
+                },
+                sassPlugin({
+                    quietDeps: true
+                })
+            ],
             write: false,
         });
 
@@ -99,7 +115,7 @@ const context = await esbuild.context({
     bundle: true,
     entryPoints: ["./src/index.js"],
     external: [
-        "*.woff", "*.woff2", "*.jpg",
+        "*.woff", "*.woff2", "*.jpg", ".*svg",
         "@patternfly/react-core/src/components/assets/*.svg",
         "@patternfly/react-core/src/demos/assets/*svg"
     ], // Allow external font files which live in ../../static/fonts

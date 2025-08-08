@@ -124,11 +124,12 @@ docs:
 
 install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
-	# Install distribution-specific logos
-	ln -sTfr $(DESTDIR)/usr/share/pixmaps/fedora-logo-sprite.svg $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)/logo-fedora.svg
 	# Install branding CSS for consumption by other Cockpit modules
 	mkdir -p $(DESTDIR)/usr/share/cockpit/static/branding
 	mv dist/anaconda-branding.css $(DESTDIR)/usr/share/cockpit/static/branding/anaconda-branding.css
+	# Install distribution-specific logos via symlink
+	mkdir -p $(DESTDIR)/usr/share/cockpit/static/branding
+	ln -sfr $(DESTDIR)/usr/share/pixmaps $(DESTDIR)/usr/share/cockpit/static/branding/pixmaps
 	# Install the main web UI files
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda

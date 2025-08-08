@@ -29,27 +29,3 @@ export const loadBrandingCSS = async (brandingName) => {
     // Dynamically import the built-in branding SCSS file
     await import(`../branding/${brandingName}.scss`);
 };
-
-/**
- * Gets the appropriate logo path based on the distribution
- * @param {Object} osRelease - OS release information (from /etc/os-release)
- * @returns {string|null} Path to the logo file
- */
-export const getLogoPath = (osRelease) => {
-    const idLike = osRelease?.ID_LIKE || osRelease?.ID;
-
-    // Use distribution-specific logo (must be symlinked by Makefile)
-    return `./logo-${idLike}.svg`;
-};
-
-/**
- * Gets available branding configurations
- * @returns {Object} Object with branding names as keys and display names as values
- */
-export const getAvailableBranding = () => {
-    return {
-        bazzite: "Bazzite",
-        default: "PatternFly Defaults",
-        fedora: "Fedora",
-    };
-};
