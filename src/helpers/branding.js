@@ -27,5 +27,6 @@ export const loadBrandingCSS = async (brandingName) => {
     }
 
     // Dynamically import the built-in branding SCSS file
+    await import("../branding/default.scss");
     await import(`../branding/${brandingName}.scss`);
 };

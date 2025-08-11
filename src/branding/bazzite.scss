@@ -1,34 +1,6 @@
-:root {
-  /* Bazzite brand colors - gaming-focused purple theme */
-  --bazzite-purple: oklch(55.2% 0.174 286.3deg);
-  --bazzite-purple-dark: oklch(40.1% 0.174 286.3deg);
-  /* Use darker purple for light mode brand color */
-  --bazzite-brand: var(--bazzite-purple-dark);
-  /* In light mode, darken */
-  --tint: black;
-}
-
-/* Dark theme overrides */
-.pf-v6-theme-dark {
-  /* Use lighter purple for dark mode brand color */
-  --bazzite-brand: var(--bazzite-purple);
-  /* In dark mode, lighten instead of darken */
-  --tint: white;
-}
-
 :root.branding-bazzite {
-  /* Override PatternFly brand variables when Bazzite branding is active */
-
-  /* Remap base brand colors */
-  --pf-t--global--color--brand--default: var(--bazzite-brand);
-  /* Increase tint when hovering */
-  --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%);
-  /* Clicked should be same as hover */
-  --pf-t--global--color--brand--clicked: var(--pf-t--global--color--brand--hover);
-
-  .anaconda-header {
-    background: radial-gradient(circle at 2.5rem, var(--bazzite-purple) 32px, var(--bazzite-purple-dark) 100%);
-  }
+  --brand-default-dark: oklch(40.1% 0.174 286.3deg);
+  --brand-default: oklch(55.2% 0.174 286.3deg);
 
   .logo {
     background-image: url('../../static/branding/pixmaps/fedora-logo-sprite.svg');

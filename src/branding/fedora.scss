@@ -1,33 +1,6 @@
-:root {
-  /* Fedora blue aliases for reuse */
-  --fedora-blue: oklch(68.48% 0.1147 241.35deg);
-  --fedora-blue-dark: oklch(53.77% 0.1229 257.17deg);
-  /* Use dark for light mode brand color */
-  --fedora-brand: var(--fedora-blue-dark);
-  /* In light mode, darken */
-  --tint: black;
-}
-
-.pf-v6-theme-dark {
-  /* Use light for dark mode brand color */
-  --fedora-brand: var(--fedora-blue);
-  /* In dark mode, lighten instead of darken */
-  --tint: white;
-}
-
 :root.branding-fedora {
-  /* Override PatternFly brand variables when Fedora branding is active */
-
-  /* Remap base brand colors */
-  --pf-t--global--color--brand--default: var(--fedora-brand);
-  /* Increase tint when hovering */
-  --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%);
-  /* Clicked should be same as hover */
-  --pf-t--global--icon--color--brand--clicked: var(--pf-t--global--color--brand--hover);
-
-  .anaconda-header {
-    background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--fedora-blue-dark) 100%);
-  }
+  --brand-default: oklch(68.48% 0.1147 241.35deg);
+  --brand-default-dark: oklch(53.77% 0.1229 257.17deg);
 
   .logo {
     background-image: url('../../static/branding/pixmaps/fedora-logo-sprite.svg');

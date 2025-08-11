@@ -22,8 +22,6 @@ Built-in Branding
 - **Bazzite**
 - **Bluefin**
 
-**Important**: Fedora-based remixes (like Bazzite, Nobara) are intentionally **not** detected as Fedora to allow them to use their own distinct branding.
-
 Adding New Distribution Branding
 =================================
 
@@ -33,13 +31,11 @@ To add complete branding (colors + logo) for a new distribution (e.g., Bazzite, 
 
    .. code-block:: scss
 
-      :root {
-        /* Your distribution's brand colors */
-        --distro-primary: #color;
-        --distro-secondary: #color;
-      }
+      :root.branding-bluefin {
+          --brand-default: #8a97f7;
+          --brand-default-dark: #4285f4;
 
-      body {
-        --pf-t--global--color--brand--default: var(--distro-primary);
-        /* ... additional overrides ... */
+        .logo {
+          background-image: url('../../static/branding/pixmaps/fedora-logo-sprite.svg');
+        }
       }
