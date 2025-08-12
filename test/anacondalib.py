@@ -36,7 +36,7 @@ from testlib import MachineCase, wait  # pylint: disable=import-error
 from users import Users
 from utils import add_public_key
 
-pixel_tests_ignore = [".logo", "#betanag-icon"]
+pixel_tests_ignore = [".logo", "#betanag-icon", "#anaconda-screen-review-target-system-timezone"]
 
 
 class VirtInstallMachineCase(MachineCase):
