@@ -93,6 +93,13 @@ const addLogAttachmentCommentToReportURL = (reportURL) => {
     return newUrl.href;
 };
 
+const addOSPrettyNameCommentToReportURL = (reportURL, prettyName) => {
+    const newUrl = new URL(reportURL);
+    const comment = newUrl.searchParams.get("comment") || "";
+    newUrl.searchParams.set("comment", "\n\n" + cockpit.format(_('Issue was detected on "$0"'), prettyName) + comment);
+    return newUrl.href;
+};
+
 export const BZReportModal = ({
     buttons,
     description,
@@ -118,9 +125,14 @@ export const BZReportModal = ({
                 ));
     }, []);
 
+    const {
+        PRETTY_NAME: prettyName,
+    } = useContext(OsReleaseContext);
+
     const openBZIssue = (reportURL) => {
         reportURL = ensureMaximumReportURLLength(reportURL);
         reportURL = addLogAttachmentCommentToReportURL(reportURL);
+        reportURL = addOSPrettyNameCommentToReportURL(reportURL, prettyName);
 
         if (isBootIso) {
             window.open(reportURL);
