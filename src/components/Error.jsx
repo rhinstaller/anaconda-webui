@@ -93,6 +93,15 @@ const addLogAttachmentCommentToReportURL = (reportURL) => {
     return newUrl.href;
 };
 
+const addOSPrettyNameCommentToReportURL = (reportURL, prettyName) => {
+    const newUrl = new URL(reportURL);
+    const comment = newUrl.searchParams.get("comment") || "";
+    // we don't want to translate this string. It is meant for support engineers / debugging purposes.
+    const sysInfo = cockpit.format(`---[ System & Environment Information ]---\nOS: ${prettyName}`);
+    newUrl.searchParams.set("comment", comment + "\n\n" + sysInfo + "\n\n");
+    return newUrl.href;
+};
+
 export const BZReportModal = ({
     buttons,
     description,
@@ -118,9 +127,14 @@ export const BZReportModal = ({
                 ));
     }, []);
 
+    const {
+        PRETTY_NAME: prettyName,
+    } = useContext(OsReleaseContext);
+
     const openBZIssue = (reportURL) => {
         reportURL = ensureMaximumReportURLLength(reportURL);
         reportURL = addLogAttachmentCommentToReportURL(reportURL);
+        reportURL = addOSPrettyNameCommentToReportURL(reportURL, prettyName);
 
         if (isBootIso) {
             window.open(reportURL);
