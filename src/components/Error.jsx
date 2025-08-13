@@ -96,6 +96,7 @@ const addLogAttachmentCommentToReportURL = (reportURL) => {
 const addOSPrettyNameCommentToReportURL = (reportURL, prettyName) => {
     const newUrl = new URL(reportURL);
     const comment = newUrl.searchParams.get("comment") || "";
+    // eslint-disable-next-line quotes
     newUrl.searchParams.set("comment", "\n\n" + cockpit.format(_('Issue was detected on "$0"'), prettyName) + comment);
     return newUrl.href;
 };
