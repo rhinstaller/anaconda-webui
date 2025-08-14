@@ -87,7 +87,7 @@ const AccountsDescription = () => {
     }
 };
 
-export const ReviewConfiguration = ({ setIsFormValid }) => {
+export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => {
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
@@ -168,7 +168,7 @@ export const ReviewConfiguration = ({ setIsFormValid }) => {
                           term={_("Storage")}
                           description={
                               <Stack hasGutter>
-                                  <StorageReview />
+                                  <StorageReview setStepNotification={setStepNotification} />
                               </Stack>
                           }
                         />

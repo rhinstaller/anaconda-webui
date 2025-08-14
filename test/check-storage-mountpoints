@@ -282,6 +282,63 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             ignore=pixel_tests_ignore,
         )
 
+    def _testPayloadSizeCheck_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # BIOS boot partition, /boot partition, /
+        disk1 = "/dev/vda"
+        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
+
+    @disk_images([("", 15)])
+    @nondestructive
+    def testPayloadSizeCheck(self):
+        """
+        Description:
+            Test the case when the partitions set for the system are too small for the size
+            of the payload.
+
+        Expected results:
+            - A warning about insufficient space is showed to the user on the review screen
+            - The warning does not prevent continuing with the installation
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        dev = "vda"
+        s.select_mountpoint([(dev, True)])
+
+        # make an assignment with not enough space on partitions
+        s.select_mountpoint_row_device(1, f"{dev}3")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+
+        i.reach(i.steps.REVIEW)
+
+        # check that there is the warning
+        b.wait_in_text(
+            f"#{i.steps.REVIEW}-step-notification",
+            "Not enough free space on assigned mount points"
+        )
+        # check that it is possible to continue on the next page (install)
+        b.click(f"#{i.steps.REVIEW}-next-confirmation-checkbox")
+        i.check_next_disabled(False)
+
+        i.click_step_on_sidebar(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([(dev, True)])
+
+        # make an assignment with enough space on partitions
+        s.select_mountpoint_row_device(1, f"{dev}4")
+        s.select_mountpoint_row_device(2, f"{dev}2")
+
+        b.wait_not_present(f"#{i.steps.REVIEW}-step-notification")
+
     def _testMBRParttable_partition_disk(self):
         storage = Storage(self.browser, self.machine)
         move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
