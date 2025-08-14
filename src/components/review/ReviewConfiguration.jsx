@@ -18,16 +18,19 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
+    Button,
     Checkbox,
     DescriptionList,
     Flex, FlexItem,
     Stack,
+    useWizardContext,
     useWizardFooter,
 } from "@patternfly/react-core";
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
+    FooterContext,
     LanguageContext,
     OsReleaseContext,
     StorageContext,
@@ -37,7 +40,12 @@ import {
     UsersContext,
 } from "../../contexts/Common.jsx";
 
-import { useOriginalDevices, usePlannedActions } from "../../hooks/Storage.jsx";
+import {
+    useFreeSystemMountPointsSpace,
+    useOriginalDevices,
+    usePlannedActions,
+    useRequiredSize,
+} from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
@@ -89,14 +97,71 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
-    const { getLabel } = useScenario();
+    const { getLabel, id: scenarioId } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
+    const [hasValidSpaceCheck, setHasValidSpaceCheck] = useState(true);
+    const freeSpace = useFreeSystemMountPointsSpace();
+    const requiredSize = useRequiredSize();
+    const { setIsFormDisabled } = useContext(FooterContext);
+    const { goToStepById } = useWizardContext();
+
+    useEffect(() => {
+        const step = SCREEN_ID;
+        const hasInsufficientSpace = requiredSize > freeSpace;
+        const fixupPage = scenarioId === "mount-point-mapping"
+            ? "anaconda-screen-mount-point-mapping"
+            : "anaconda-screen-method";
+
+        if (hasInsufficientSpace) {
+            const title = _("Not enough available free space");
+            const message = cockpit.format(
+                _("$0 is required, but only $1 is available."),
+                cockpit.format_bytes(requiredSize),
+                cockpit.format_bytes(freeSpace)
+            );
+            const actionLinks = (
+                <Button
+                  id={`${SCREEN_ID}-change-partition-layout`}
+                  variant="link"
+                  isInline
+                  onClick={() => {
+                      // Reset form state like the wizard does during navigation
+                      setIsFormValid(false);
+                      setIsFormDisabled(true);
+                      cockpit.location.go([fixupPage]);
+                      goToStepById(fixupPage);
+                  }}
+                >
+                    {_("Change partition layout")}
+                </Button>
+            );
+            setStepNotification({ actionLinks, message, step, title });
+        } else {
+            setStepNotification();
+        }
+
+        setHasValidSpaceCheck(!hasInsufficientSpace);
+    }, [
+        requiredSize,
+        freeSpace,
+        goToStepById,
+        setIsFormDisabled,
+        setIsFormValid,
+        setStepNotification,
+        setHasValidSpaceCheck,
+        scenarioId,
+    ]);
 
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter setIsFormValid={setIsFormValid} />, [setIsFormValid]);
+    const getFooter = useMemo(() => (
+        <CustomFooter
+          setIsFormValid={setIsFormValid}
+          hasValidSpaceCheck={hasValidSpaceCheck}
+        />
+    ), [setIsFormValid, hasValidSpaceCheck]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -166,7 +231,7 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
                           term={_("Storage")}
                           description={
                               <Stack hasGutter>
-                                  <StorageReview setStepNotification={setStepNotification} />
+                                  <StorageReview isReviewScreen />
                               </Stack>
                           }
                         />
@@ -221,7 +286,7 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ setIsFormValid }) => {
+const CustomFooter = ({ hasValidSpaceCheck, setIsFormValid }) => {
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
     const scenarioConfirmationLabel = useConfirmationCheckboxLabel();
@@ -239,8 +304,9 @@ const CustomFooter = ({ setIsFormValid }) => {
     );
 
     useEffect(() => {
-        setIsFormValid(isConfirmed || installationIsClean);
-    }, [setIsFormValid, isConfirmed, installationIsClean]);
+        const isConfirmationValid = isConfirmed || installationIsClean;
+        setIsFormValid(isConfirmationValid && hasValidSpaceCheck);
+    }, [setIsFormValid, isConfirmed, installationIsClean, hasValidSpaceCheck]);
 
     return (
         <AnacondaWizardFooter

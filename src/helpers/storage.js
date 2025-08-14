@@ -189,6 +189,8 @@ export const unitMultiplier = {
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
 
+export const systemMountPoints = ["/", "/usr"];
+
 export const isBootloaderDevice = ({ device, devices }) => {
     const fmt = devices[device].formatData?.type?.v;
     const mntPt = devices[device].formatData?.attrs?.v?.["mount-point"];
