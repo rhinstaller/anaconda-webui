@@ -49,9 +49,9 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
     }, [onCritFail]);
 
     return (
-        <PageSection hasBodyWrapper={false}>
+        <PageSection className="anaconda-header" hasBodyWrapper={false}>
             <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
-                <img src="./logo.svg" className="logo" />
+                <div className="logo" />
                 <Content>
                     <Content component="h1">{title}</Content>
                 </Content>

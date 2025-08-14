@@ -1,0 +1,27 @@
+:root {
+  /* In light mode, darken */
+  --tint: black;
+}
+
+:root.pf-v6-theme-dark {
+  /* In dark mode, lighten instead of darken */
+  --tint: white;
+
+}
+
+:root:not(.pf-v6-theme-dark) {
+  /* Override PatternFly brand variables when branding is active */
+  --pf-t--global--color--brand--default: var(--brand-default-dark) !important;
+}
+
+:root.pf-v6-theme-dark {
+  /* Override PatternFly brand variables when branding is active */
+  --pf-t--global--color--brand--default: var(--brand-default) !important;
+}
+
+:root {
+  /* Increase tint when hovering */
+  --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%) !important;
+  /* Clicked should be same as hover */
+  --pf-t--global--color--brand--clicked: var(--pf-t--global--color--brand--hover) !important;
+}
