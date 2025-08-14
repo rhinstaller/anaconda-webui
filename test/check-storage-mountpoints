@@ -289,7 +289,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # BIOS boot partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
 
     @disk_images([("", 15)])
     @nondestructive
@@ -301,12 +301,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         Expected results:
             - A warning about insufficient space is showed to the user on the review screen
-            - The warning does not prevent continuing with the installation
+            - The warning prevents continuing with the installation
+            - There are hints beside the checked mount points in case of failed check
         """
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="mount-point-mapping")
         s = Storage(b, m)
+        r = Review(b, m)
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
@@ -314,30 +316,68 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         s.select_mountpoint([(dev, True)])
 
-        # make an assignment with not enough space on partitions
+        # perform assignment with not enough space on mount points
+        # single mount point used to count the required space
         s.select_mountpoint_row_device(1, f"{dev}3")
         s.select_mountpoint_row_device(2, f"{dev}2")
 
         i.reach(i.steps.REVIEW)
 
-        # check that there is the warning
-        b.wait_in_text(
-            f"#{i.steps.REVIEW}-step-notification",
-            "Not enough free space on assigned mount points"
-        )
-        # check that it is possible to continue on the next page (install)
+        r.check_size_error()
+
+        # check that there is a hint with required size beside the device
+        r.check_disk_row(dev, "/", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_mount_point_helper_text(dev, "/", "Needs at least 2.60 GB")
+
+        # check that it is not possible to continue on the next page (install)
+        i.check_next_disabled()
         b.click(f"#{i.steps.REVIEW}-next-confirmation-checkbox")
-        i.check_next_disabled(False)
+        i.check_next_disabled()
+
+        ##### go back on sidebar to installation method and update the assignment
 
         i.click_step_on_sidebar(i.steps.INSTALLATION_METHOD)
 
         s.select_mountpoint([(dev, True)])
 
-        # make an assignment with enough space on partitions
-        s.select_mountpoint_row_device(1, f"{dev}4")
-        s.select_mountpoint_row_device(2, f"{dev}2")
+        # modify assignment adding small "/usr", still not enough space on mount points
+        # two mount points used to count the required space
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(3, "/usr")
+        s.select_mountpoint_row_device(3, f"{dev}4")
+        s.select_mountpoint_row_reformat(3)
 
-        b.wait_not_present(f"#{i.steps.REVIEW}-step-notification")
+        i.reach(i.steps.REVIEW)
+
+        r.check_size_error()
+
+        # check that there is a hint suitable for multiple devices
+        r.check_disk_row(dev, "/", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_mount_point_helper_text(dev, "/", "May need more free space")
+        r.check_disk_row(dev, "/usr", f"{dev}4", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_mount_point_helper_text(dev, "/usr", "May need more free space")
+
+        # check that it is not possible to continue on the next page (install)
+        i.check_next_disabled()
+        b.click(f"#{i.steps.REVIEW}-next-confirmation-checkbox")
+        i.check_next_disabled()
+
+        ###### go back by alert button and update the assignment
+
+        b.click(f"#{i.steps.REVIEW}-change-partition-layout")
+
+        # modify assignment adding big enough "/usr"
+        # two mount points used to count the required space
+        s.select_mountpoint_row_device(3, f"{dev}5")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_size_error(False)
+
+        # check that it is possible to continue on the next page (install)
+        i.check_next_disabled()
+        b.click(f"#{i.steps.REVIEW}-next-confirmation-checkbox")
+        i.check_next_disabled(False)
 
     def _testMBRParttable_partition_disk(self):
         storage = Storage(self.browser, self.machine)
