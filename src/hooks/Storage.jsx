@@ -40,7 +40,7 @@ import {
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors, hasReusableFedoraWithWindowsOS } from "../helpers/storage.js";
+import { getDeviceAncestors, hasReusableFedoraWithWindowsOS, systemMountPoints } from "../helpers/storage.js";
 
 import { FooterContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
@@ -94,7 +94,7 @@ export const useFreeSystemMountPointsSpace = () => {
 
     useEffect(() => {
         const update = async () => {
-            const freeMountPointsSpace = await getFileSystemFreeSpace({ mountPoints: ["/", "/usr"] });
+            const freeMountPointsSpace = await getFileSystemFreeSpace({ mountPoints: systemMountPoints });
 
             setFreeMountPointsSpace(freeMountPointsSpace);
         };

@@ -113,3 +113,15 @@ class Review(NetworkDBus, StorageDBus):
 
     def check_checkbox_not_present(self):
         self.browser.wait_not_present(f"#{self._step}-next-confirmation-checkbox")
+
+    def check_disk_mount_point_helper_text(self, disk, mount_point, text=None, present=True):
+        if present:
+            self.browser.wait_in_text(f"#helper-disk-{disk}[data-path='{mount_point}'] .pf-v6-c-helper-text__item.pf-m-error", text)
+        else:
+            self.browser.wait_not_present(f"#helper-disk-{disk}[data-path='{mount_point}'] .pf-v6-c-helper-text__item.pf-m-error")
+
+    def check_size_error(self, present=True):
+        if present:
+            self.browser.wait_in_text(f"#{self._step}-step-notification", "Not enough available free space")
+        else:
+            self.browser.wait_not_present(f"#{self._step}-step-notification")
