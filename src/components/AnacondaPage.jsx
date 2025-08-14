@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 import React, { cloneElement, useContext, useEffect, useRef, useState } from "react";
 import { Alert, Stack, Title } from "@patternfly/react-core";
 
-import { error, warn } from "../helpers/log.js";
+import { error } from "../helpers/log.js";
 
 import { OsReleaseContext } from "../contexts/Common.jsx";
 
@@ -54,12 +54,8 @@ export const AnacondaPage = ({
             return;
         }
 
-        if (stepNotification?.variant === "warning") {
-            warn(stepNotification?.step, stepNotification?.message);
-        } else {
-            error(stepNotification?.step, stepNotification?.message);
-        }
-    }, [stepNotification?.step, stepNotification?.message, stepNotification?.variant]);
+        error(stepNotification?.step, stepNotification?.title, stepNotification?.message);
+    }, [stepNotification?.step, stepNotification?.message, stepNotification?.title]);
 
     useEffect(() => {
         if (!isFormDisabled && !showPageRef.current) {
@@ -83,9 +79,12 @@ export const AnacondaPage = ({
                 <Alert
                   id={step + "-step-notification"}
                   isInline
-                  title={stepNotification.message}
+                  title={stepNotification.title || stepNotification.message}
                   variant={stepNotification.variant || "danger"}
-                />}
+                  actionLinks={stepNotification.actionLinks}
+                >
+                    {stepNotification.title && stepNotification.message}
+                </Alert>}
             {cloneElement(children, { idPrefix: step, setStepNotification })}
         </Stack>
     );
