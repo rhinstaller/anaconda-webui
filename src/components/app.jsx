@@ -22,6 +22,7 @@ import {
 } from "@patternfly/react-core";
 
 import { clients } from "../apis";
+import { getRunningThreads } from "../apis/boss.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
@@ -39,6 +40,7 @@ import { ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
+const POLLING_INTERVAL = 1000; // 1 second
 
 export const ApplicationLoading = () => (
     <PageSection className="installation-page--loading" hasBodyWrapper={false} type={PageSectionTypes.wizard}>
@@ -47,15 +49,11 @@ export const ApplicationLoading = () => (
 );
 
 export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
-    const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress();
+    const storeInitialized = useStoreInitialized({ address, dispatch, onCritFail });
 
     useEffect(() => {
-        if (!address) {
-            return;
-        }
-
         // Before unload ask the user for verification
         const preventExit = () => {
             return "";
@@ -77,12 +75,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
 
         // Attach a click event listener to detect external link clicks
         document.addEventListener("click", allowExternalNavigation);
-
-        Promise.all(clients.map(Client => new Client(address, dispatch).init()))
-                .then(() => {
-                    setStoreInitialized(true);
-                }, onCritFail({ context: N_("Reading information about the computer failed.") }));
-    }, [address, dispatch, onCritFail]);
+    }, []);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!address || !storeInitialized) {
@@ -143,26 +136,76 @@ const useOsRelease = ({ onCritFail }) => {
 };
 
 const useAddress = () => {
-    const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
+
+    useEffect(() => {
+        const file = cockpit.file("/run/anaconda/bus.address");
+        const watchFile = () => {
+            file.read().then((data) => {
+                if (data) {
+                    setAddress(data.trim());
+                } else {
+                    setTimeout(watchFile, POLLING_INTERVAL);
+                }
+            }, () => {
+                setTimeout(watchFile, POLLING_INTERVAL);
+            });
+        };
+        watchFile();
+    }, []);
+
+    return address;
+};
+
+const useStoreInitialized = ({ address, dispatch, onCritFail }) => {
+    const [storeInitialized, setStoreInitialized] = useState(false);
+    const [backendReady, setBackendReady] = useState(false);
+
+    useEffect(() => {
+        if (!address) {
+            return;
+        }
+
+        const _clients = clients.map(Client => new Client(address, dispatch));
+        for (const Client of _clients) {
+            debug(`Initializing client: ${Client}`);
+        }
+    }, [address, dispatch]);
+
+    useEffect(() => {
+        if (clients.some(Client => !Client.instance)) {
+            return;
+        }
+
+        const interval = setInterval(async () => {
+            try {
+                const threads = await getRunningThreads();
+                if (threads.length === 0) {
+                    setBackendReady(true);
+                    clearInterval(interval);
+                }
+            } catch (error) {
+                // If the API call fails, we assume the backend is not ready yet
+                console.info("Backend is not ready yet, retrying...", error);
+            }
+        }, POLLING_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [address, dispatch]);
 
     useEffect(() => {
         if (!backendReady) {
             return;
         }
 
-        cockpit.file("/run/anaconda/bus.address").watch(address => {
-            setAddress(address);
-        });
-    }, [backendReady]);
+        Promise.all(clients.map(Client => new Client()
+                .init()))
+                .then(() => {
+                    setStoreInitialized(true);
+                }, onCritFail({ context: N_("Reading information about the computer failed.") }));
+    }, [backendReady, onCritFail]);
 
-    useEffect(() => {
-        cockpit.file("/run/anaconda/backend_ready").watch(
-            res => setBackendReady(res !== null)
-        );
-    }, []);
-
-    return address;
+    return storeInitialized;
 };
 
 export const ApplicationWithErrorBoundary = () => {
