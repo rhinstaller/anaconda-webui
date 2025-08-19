@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
-import React, { cloneElement, useContext, useEffect } from "react";
+import React, { cloneElement, useContext, useEffect, useState } from "react";
 import {
     Alert,
     Button,
@@ -41,6 +41,7 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
 import { error } from "../helpers/log.js";
+import { getAnacondaVersion } from "../helpers/product.js";
 
 import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -93,12 +94,17 @@ const addLogAttachmentCommentToReportURL = (reportURL) => {
     return newUrl.href;
 };
 
-const addOSPrettyNameCommentToReportURL = (reportURL, prettyName) => {
+const addDebugInfoToReportURL = (reportURL, debugInfoArray) => {
+    // debugInfoArray MUST be an array of arrays in the format
+    // [["label1", "value1"], ["label2", "value2"], ...]
     const newUrl = new URL(reportURL);
     const comment = newUrl.searchParams.get("comment") || "";
     // we don't want to translate this string. It is meant for support engineers / debugging purposes.
-    const sysInfo = cockpit.format(`---[ System & Environment Information ]---\nOS: ${prettyName}`);
-    newUrl.searchParams.set("comment", comment + "\n\n" + sysInfo + "\n\n");
+    const debugInfo = cockpit.format([
+        "---[ System & Environment Information ]---",
+        ...debugInfoArray.map((item) => `${item[0]}: ${item[1]}`)
+    ].join("\n"));
+    newUrl.searchParams.set("comment", comment + "\n\n" + debugInfo + "\n\n");
     return newUrl.href;
 };
 
@@ -131,10 +137,22 @@ export const BZReportModal = ({
         PRETTY_NAME: prettyName,
     } = useContext(OsReleaseContext);
 
+    // anaconda version is also used on AboutModalVersions
+    // should we add it to a context?
+    const [anacondaVersion, setAnacondaVersion] = useState("");
+    useEffect(() => {
+        getAnacondaVersion().then(setAnacondaVersion);
+    }, []);
+
+    const debugInfoArray = [
+        ["OS", prettyName],
+        ["Anaconda version", anacondaVersion],
+    ];
+
     const openBZIssue = (reportURL) => {
         reportURL = ensureMaximumReportURLLength(reportURL);
         reportURL = addLogAttachmentCommentToReportURL(reportURL);
-        reportURL = addOSPrettyNameCommentToReportURL(reportURL, prettyName);
+        reportURL = addDebugInfoToReportURL(reportURL, debugInfoArray);
 
         if (isBootIso) {
             window.open(reportURL);
