@@ -101,14 +101,19 @@ dist_noinst_DATA = \
 	package.json \
 	build.js
 
+VERSION.txt: $(SPEC)
+	rpmspec -q --queryformat "%{version}\n" $(SPEC) | head -1 > $@
+
 $(SPEC): packaging/$(SPEC).in $(NODE_MODULES_TEST)
 	provides=$$(npm ls --omit dev --package-lock-only --depth=Infinity | grep -Eo '[^[:space:]]+@[^[:space:]]+' | sort -u | sed 's/^/Provides: bundled(npm(/; s/\(.*\)@/\1)) = /'); \
 	awk -v p="$$provides" '{gsub(/%{VERSION}/, "$(VERSION)"); gsub(/%{NPM_PROVIDES}/, p)}1' $< > $@
 
 $(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) package.json build.js
-	$(MAKE) package-lock.json && NODE_ENV=production ./build.js
+	$(MAKE) VERSION.txt && \
+	$(MAKE) package-lock.json && \
+	NODE_ENV=production ./build.js
 
-watch:
+watch: VERSION.txt
 	rm -f dist/*
 	NODE_ENV=$(NODE_ENV) ESBUILD_WATCH=true ./build.js
 
@@ -154,7 +159,7 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
-		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) $(TEST_NPMS) \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) $(TEST_NPMS) VERSION.txt \
 		dist/
 
 srpm: $(TARFILE) $(SPEC)

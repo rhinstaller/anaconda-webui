@@ -60,6 +60,7 @@ const context = await esbuild.context({
         ".js": "jsx",
         ".py": "text",
         ".svg": "dataurl",
+        ".txt": "text",
     },
     minify: production,
     nodePaths,
@@ -73,6 +74,7 @@ const context = await esbuild.context({
                 { from: ["./images/qr-code-feedback.svg"], to: ["./qr-code-feedback.svg"] },
                 { from: ["./src/manifest.json"], to: ["./manifest.json"] },
                 { from: ["./src/index.html"], to: ["./index.html"] },
+                { from: ["./VERSION.txt"], to: ["./VERSION.txt"] },
             ]
         }),
         sassPlugin({
