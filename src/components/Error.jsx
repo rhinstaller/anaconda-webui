@@ -41,7 +41,7 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
 import { error } from "../helpers/log.js";
-import { getAnacondaVersion } from "../helpers/product.js";
+import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
 import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -144,9 +144,12 @@ export const BZReportModal = ({
         getAnacondaVersion().then(setAnacondaVersion);
     }, []);
 
+    const anacondaUIVersion = getAnacondaUIVersion();
+
     const debugInfoArray = [
         ["OS", prettyName],
         ["Anaconda version", anacondaVersion],
+        ["Anaconda UI version", anacondaUIVersion],
     ];
 
     const openBZIssue = (reportURL) => {

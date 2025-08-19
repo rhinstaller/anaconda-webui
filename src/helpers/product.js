@@ -16,8 +16,14 @@
  */
 import cockpit from "cockpit";
 
+import VERSION from "../../VERSION.txt";
+
 export const getAnacondaVersion = () => {
     return cockpit
             .spawn(["anaconda", "--version"])
             .then((content) => content.split(" ").slice(-1)[0].replace("\n", ""));
+};
+
+export const getAnacondaUIVersion = () => {
+    return VERSION.trim().replace("\n", "");
 };
