@@ -12,13 +12,8 @@ if [ -f test/images/"$TEST_COMPOSE".iso ]; then
     exit 0
 fi
 
-# Construct ISO URL from the compose directory
-ISO_FOLDER="https://kojipkgs.fedoraproject.org/compose/${RELEASE}/${TEST_COMPOSE}/compose/Server/x86_64/iso/"
-
-if ! curl -L --silent --fail --output /dev/null --head -- "$ISO_FOLDER"; then
-    echo "Specified compose $TEST_COMPOSE does not exist"
-    exit 1
-fi
+COMPOSE_BASE_URL=$(python3 test/helpers/compose_path.py "$TEST_COMPOSE")
+ISO_FOLDER="${COMPOSE_BASE_URL}/compose/Server/x86_64/iso"
 
 ISO=$(curl -L --silent ${ISO_FOLDER} | grep -oP 'href="\K[^"]+' | grep -E '\.iso' | head -n1 | tr -d '\n')
 URL="$ISO_FOLDER/$ISO"

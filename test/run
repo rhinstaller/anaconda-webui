@@ -63,7 +63,8 @@ esac
 # If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
 if [ -n "${TEST_COMPOSE-}" ]; then
     DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
-    COMPOSE_A_PACKAGES="https://kojipkgs.fedoraproject.org/compose/$DIRECTORY/$TEST_COMPOSE/compose/Everything/x86_64/os/Packages/a/"
+    COMPOSE_BASE_URL=$(python3 test/helpers/compose_path.py "$TEST_COMPOSE")
+    COMPOSE_A_PACKAGES="${COMPOSE_BASE_URL}compose/Everything/x86_64/os/Packages/a/"
     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
 
     # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag

@@ -11,9 +11,12 @@ import sys
 
 BOTS_DIR = os.path.realpath(f'{__file__}/../../bots')
 sys.path.append(BOTS_DIR)
+TEST_HELPERS_DIR = os.path.realpath(f'{__file__}/../helpers')
+sys.path.append(TEST_HELPERS_DIR)
 
 missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi"
 
+from compose_path import get_compose_url
 from machine.machine_core import machine_virtual
 
 
@@ -41,8 +44,8 @@ def vm_install(image, compose, verbose, quick):
         if compose:
             machine.execute("sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/*.repo")
 
-            version = image.split("-")[-1]
-            repo_url = f"https://kojipkgs.fedoraproject.org/compose/{version}/{compose}/compose/Everything/x86_64/os/"
+            compose_base_url = get_compose_url(compose)
+            repo_url = f"{compose_base_url}/compose/Everything/x86_64/os/"
             machine.execute(f"dnf -y config-manager addrepo --set=baseurl={repo_url}")
 
         # Pull cockpit dependencies from the image default compose
