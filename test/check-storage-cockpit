@@ -163,7 +163,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r = Review(b, m)
 
         vgname = "fedoravg"
-        dev = "vda"
+        dev = "/dev/vda"
 
         self.reachCockpitStorage()
         self.cockpitCreateBootloaderPartitions()
@@ -529,7 +529,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
         self.dialog_wait_open()
         self.dialog_set_val("level", "raid0")
-        self.dialog_set_val("disks", {"vdb1": True, "vdc1": True})
+        self.dialog_set_val("disks", {"/dev/vdb1": True, "/dev/vdc1": True})
         self.dialog_set_val("name", "SOMERAID")
         self.dialog_apply()
         self.dialog_wait_close()
@@ -576,7 +576,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_header("Storage"), "Create MDRAID device")
         self.dialog_wait_open()
         self.dialog_set_val("level", "raid0")
-        self.dialog_set_val("disks", {"vda": True, "vdb": True, "vdc": True})
+        self.dialog_set_val("disks", {"/dev/vda": True, "/dev/vdb": True, "/dev/vdc": True})
         self.dialog_set_val("name", "SOMERAID")
         self.dialog_apply()
         self.dialog_wait_close()
@@ -651,7 +651,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb, and vdc
-        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
+        self._createRAID({"/dev/vda": True, "/dev/vdb": True, "/dev/vdc": True}, "raid0", "SOMERAID")
 
         s.exit_cockpit_storage()
 
@@ -671,7 +671,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.enter_cockpit_storage()
 
         # Create RAID device on vda, vdb
-        self._createRAID({"vda": True, "vdb": True}, "raid0", "SOMERAID")
+        self._createRAID({"/dev/vda": True, "/dev/vdb": True}, "raid0", "SOMERAID")
 
         s.exit_cockpit_storage()
 
@@ -692,7 +692,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # Create RAID device on vda, vdb, and vdc, then delete it and create a new one with another name
         # before returning to installation
-        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID")
+        self._createRAID({"/dev/vda": True, "/dev/vdb": True, "/dev/vdc": True}, "raid0", "SOMERAID")
 
         b.switch_to_top()
         s.return_to_installation()
@@ -701,7 +701,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_frame("cockpit-storage")
         self._delete_storage(4)
 
-        self._createRAID({"vda": True, "vdb": True, "vdc": True}, "raid0", "SOMERAID2")
+        self._createRAID({"/dev/vda": True, "/dev/vdb": True, "/dev/vdc": True}, "raid0", "SOMERAID2")
 
         s.exit_cockpit_storage()
         s.check_disk_selected("MDRAID-SOMERAID2")
