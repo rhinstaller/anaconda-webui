@@ -20,9 +20,9 @@ jobs:
       matrix:
         include:
           - name: 'fedora-rawhide'
-            compose_url: 'https://kojipkgs.fedoraproject.org/compose/rawhide/latest-Fedora-Rawhide/COMPOSE_ID'
+            latest_compose: 'latest-Fedora-Rawhide'
           - name: 'fedora-43'
-            compose_url: 'https://kojipkgs.fedoraproject.org/compose/branched/latest-Fedora-43/COMPOSE_ID'
+            latest_compose: 'latest-Fedora-43'
       # Skip matrix if specific compose_id is provided
       fail-fast: false
     # Only run matrix when no specific compose_id is provided
@@ -31,11 +31,19 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Get compose ID
+        id: get-compose
+        run: |
+          # Use Python script to determine the correct path for the latest compose
+          LATEST_COMPOSE_URL=$(python3 test/helpers/compose_path.py "${{ matrix.latest_compose }}")
+          COMPOSE_ID=$(curl -s "${LATEST_COMPOSE_URL}/COMPOSE_ID")
+          echo "compose_id=$COMPOSE_ID" >> $GITHUB_OUTPUT
+
       - name: Trigger compose scenario for ${{ matrix.name }}
         run: |
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
-          export TEST_COMPOSE=$(curl -s ${{ matrix.compose_url }})
+          export TEST_COMPOSE=${{ steps.get-compose.outputs.compose_id }}
           echo "Testing against ${{ matrix.name }} compose: $TEST_COMPOSE"
           if [ "${{ github.event.inputs.staging }}" = "true" ]; then
             make test-compose-staging
