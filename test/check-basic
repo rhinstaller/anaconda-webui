@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
+from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import get_pretty_name
 
@@ -209,6 +210,43 @@ class TestBasic(VirtInstallMachineCase):
         self.assertIn(
             "myNonExistingFunction is not defined",
             m.execute("journalctl -b -t anaconda-webui")
+        )
+
+    def testBrandingBazzite(self):
+        """
+        Description:
+            Test that the Bazzite branding is shown correctly
+
+        Expected results:
+            - The Bazzite CSS is loaded and applied
+            - The Bazzite CSS is also applied to Cockpit Storage
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        # Adjust os-release to mimic Bazzite
+        self.sed_file(
+            r's/^ID=.*/ID=bazzite/; s/^PRETTY_NAME=.*/PRETTY_NAME="Bazzite Linux"/; /^ID_LIKE=/b; $aID_LIKE=fedora',
+            "/etc/os-release",
+        )
+
+        i.open()
+
+        # Check that the Bazzite CSS is loaded
+        b.assert_pixels(
+            "#app",
+            "bazzite-branding",
+        )
+
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.enter_cockpit_storage()
+        self.browser.switch_to_top()
+
+        b.assert_pixels(
+            "#app",
+            "bazzite-branding-cockpit-storage",
         )
 
 

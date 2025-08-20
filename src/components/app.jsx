@@ -35,6 +35,7 @@ import { read_os_release as readOsRelease } from "os-release.js";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
+import { BrandingLoader } from "./BrandingLoader.jsx";
 import { ErrorBoundary } from "./Error.jsx";
 
 const _ = cockpit.gettext;
@@ -182,21 +183,24 @@ export const ApplicationWithErrorBoundary = () => {
 
     return (
         <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
-            <Page className="no-masthead-sidebar" data-debug={conf.Anaconda.debug}>
-                <ErrorBoundary
-                  backendException={errorBeforeBoundary}
-                  showStorage={showStorage}
-                >
-                    <Application
-                      dispatch={dispatch}
-                      isFetching={state.misc.isFetching}
-                      osRelease={osRelease}
+            <BrandingLoader>
+                <Page className="no-masthead-sidebar" data-debug={conf.Anaconda.debug}>
+                    <ErrorBoundary
+                      backendException={errorBeforeBoundary}
                       showStorage={showStorage}
-                      setShowStorage={setShowStorage}
-                      state={state}
-                    />
-                </ErrorBoundary>
-            </Page>
+                    >
+                        <Application
+                          conf={conf}
+                          dispatch={dispatch}
+                          isFetching={state.misc.isFetching}
+                          osRelease={osRelease}
+                          showStorage={showStorage}
+                          setShowStorage={setShowStorage}
+                          state={state}
+                        />
+                    </ErrorBoundary>
+                </Page>
+            </BrandingLoader>
         </MainContextWrapper>
     );
 };
