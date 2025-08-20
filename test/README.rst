@@ -209,6 +209,7 @@ You can set these environment variables to configure the test suite::
 
     TEST_OS    The OS to run the tests in.  Currently supported values:
                   "fedora-rawhide-boot"
+                  "fedora-43-boot"
 
                This will download the ISO from the Cockpit image server unless TEST_COMPOSE is set.
 
