@@ -120,6 +120,9 @@ class Review(NetworkDBus, StorageDBus):
         else:
             self.browser.wait_not_present(f"#helper-disk-{disk}[data-path='{mount_point}'] .pf-v6-c-helper-text__item.pf-m-error")
 
+    def check_available_size_error_value(self, size):
+        self.browser.wait_in_text(f"#{self._step}-step-notification", f"but only {size}")
+
     def check_size_error(self, present=True):
         if present:
             self.browser.wait_in_text(f"#{self._step}-step-notification", "Not enough available free space")
