@@ -27,6 +27,7 @@ import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
 import { readConf } from "../helpers/conf.js";
 import { debug } from "../helpers/log.js";
+import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
 import { MainContextWrapper } from "../contexts/Common.jsx";
 
@@ -165,6 +166,18 @@ const useAddress = () => {
     return address;
 };
 
+const useAppVersion = () => {
+    const initialState = {
+        webui: getAnacondaUIVersion(),
+    };
+    const [appVersion, setAppVersion] = useState(initialState);
+
+    useEffect(() => {
+        getAnacondaVersion().then(value => setAppVersion(obj => ({ ...obj, backend: value })));
+    }, []);
+    return appVersion;
+};
+
 export const ApplicationWithErrorBoundary = () => {
     const [showStorage, setShowStorage] = useState(false);
     const [state, dispatch] = useReducerWithThunk(reducer, initialState);
@@ -175,13 +188,14 @@ export const ApplicationWithErrorBoundary = () => {
     );
     const conf = useConf({ onCritFail });
     const osRelease = useOsRelease({ onCritFail });
+    const appVersion = useAppVersion();
 
     if (!conf || !osRelease) {
         return <ApplicationLoading />;
     }
 
     return (
-        <MainContextWrapper state={state} osRelease={osRelease} conf={conf}>
+        <MainContextWrapper state={state} osRelease={osRelease} conf={conf} appVersion={appVersion}>
             <Page className="no-masthead-sidebar" data-debug={conf.Anaconda.debug}>
                 <ErrorBoundary
                   backendException={errorBeforeBoundary}

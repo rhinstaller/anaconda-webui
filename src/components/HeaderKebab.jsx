@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     AboutModal,
     Button,
@@ -37,9 +37,7 @@ import {
     ExternalLinkAltIcon
 } from "@patternfly/react-icons";
 
-import { getAnacondaVersion } from "../helpers/product.js";
-
-import { OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
+import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import { UserIssue } from "./Error.jsx";
 import { CockpitStorageIntegration, ModifyStorage } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
@@ -49,11 +47,7 @@ import "./HeaderKebab.scss";
 const _ = cockpit.gettext;
 
 const AboutModalVersions = () => {
-    const [anacondaVersion, setAnacondaVersion] = useState("");
-
-    useEffect(() => {
-        getAnacondaVersion().then(content => setAnacondaVersion(content));
-    }, []);
+    const { backend: anacondaVersion } = useContext(AppVersionContext);
 
     return (
         <DescriptionList isHorizontal id="about-modal-versions">
