@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
-import React, { cloneElement, useContext, useEffect, useState } from "react";
+import React, { cloneElement, useContext, useEffect } from "react";
 import {
     Alert,
     Button,
@@ -41,9 +41,8 @@ import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
 import { error } from "../helpers/log.js";
-import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
-import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
+import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import "./Error.scss";
 
@@ -137,19 +136,12 @@ export const BZReportModal = ({
         PRETTY_NAME: prettyName,
     } = useContext(OsReleaseContext);
 
-    // anaconda version is also used on AboutModalVersions
-    // should we add it to a context?
-    const [anacondaVersion, setAnacondaVersion] = useState("");
-    useEffect(() => {
-        getAnacondaVersion().then(setAnacondaVersion);
-    }, []);
-
-    const anacondaUIVersion = getAnacondaUIVersion();
+    const appVersion = useContext(AppVersionContext);
 
     const debugInfoArray = [
         ["OS", prettyName],
-        ["Anaconda version", anacondaVersion],
-        ["Anaconda UI version", anacondaUIVersion],
+        ["Anaconda version", appVersion.backend],
+        ["Anaconda UI version", appVersion.webui],
     ];
 
     const openBZIssue = (reportURL) => {

@@ -35,6 +35,7 @@ export const UserInterfaceContext = createContext(null);
 export const NetworkContext = createContext(null);
 export const TimezoneContext = createContext(null);
 export const DialogsContext = createContext(null);
+export const AppVersionContext = createContext(null);
 
 export const FormGroupHelpPopover = ({ helpContent }) => {
     return (
@@ -71,7 +72,7 @@ const ModuleContextWrapper = ({ children, state }) => {
     );
 };
 
-const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
+const SystemInfoContextWrapper = ({ appVersion, children, conf, osRelease }) => {
     const [desktopVariant, setDesktopVariant] = useState();
 
     useEffect(() => {
@@ -93,7 +94,9 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
                 <StorageDefaultsContext.Provider value={{ defaultScheme }}>
                     <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
                         <UserInterfaceContext.Provider value={conf["User Interface"]}>
-                            {children}
+                            <AppVersionContext.Provider value={appVersion}>
+                                {children}
+                            </AppVersionContext.Provider>
                         </UserInterfaceContext.Provider>
                     </TargetSystemRootContext.Provider>
                 </StorageDefaultsContext.Provider>
@@ -102,10 +105,10 @@ const SystemInfoContextWrapper = ({ children, conf, osRelease }) => {
     );
 };
 
-export const MainContextWrapper = ({ children, conf, osRelease, state }) => {
+export const MainContextWrapper = ({ appVersion, children, conf, osRelease, state }) => {
     return (
         <ModuleContextWrapper state={state}>
-            <SystemInfoContextWrapper osRelease={osRelease} conf={conf}>
+            <SystemInfoContextWrapper osRelease={osRelease} conf={conf} appVersion={appVersion}>
                 <WithDialogs>
                     {children}
                 </WithDialogs>
