@@ -48,11 +48,11 @@ class TestStorageUseFreeSpace(VirtInstallMachineCase):
         s.check_scenario_selected("use-free-space")
         i.next()
         i.reach(i.steps.REVIEW)
-        r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux 13 for x86_64")
+        r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
 
         i.reach_on_sidebar(i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
-        r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux 13 for x86_64")
+        r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
         r.check_disk_row("vda", "/", "vda3, LVM", "3.22 GB", True, "xfs")
 
 
