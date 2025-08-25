@@ -18,6 +18,8 @@ import cockpit from "cockpit";
 
 import React, { useContext } from "react";
 import {
+    HelperText,
+    HelperTextItem,
     List,
     ListItem,
     Stack,
@@ -30,6 +32,7 @@ import {
     getParentPartitions,
     hasEncryptedAncestor,
     isBootloaderDevice,
+    systemMountPoints,
 } from "../../helpers/storage.js";
 
 import {
@@ -37,11 +40,13 @@ import {
 } from "../../contexts/Common.jsx";
 
 import {
+    useFreeSystemMountPointsSpace,
     useOriginalDevices,
     useOriginalExistingSystems,
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
+    useRequiredSize,
 } from "../../hooks/Storage.jsx";
 
 import { ListingTable } from "cockpit-components-table.jsx";
@@ -53,7 +58,7 @@ import "./StorageReview.scss";
 const _ = cockpit.gettext;
 const idPrefix = "storage-review";
 
-export const StorageReview = () => {
+export const StorageReview = ({ isReviewScreen = false }) => {
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
 
@@ -64,6 +69,7 @@ export const StorageReview = () => {
                     <DeviceRow
                       key={disk}
                       disk={disk}
+                      isReviewScreen={isReviewScreen}
                     />
                 );
             })}
@@ -71,19 +77,31 @@ export const StorageReview = () => {
     );
 };
 
-const DeviceRow = ({ disk }) => {
+const DeviceRow = ({ disk, isReviewScreen }) => {
     const { partitioning } = useContext(StorageContext);
     const originalDevices = useOriginalDevices();
     const actions = usePlannedActions();
     const mountPoints = usePlannedMountPoints();
     const devices = usePlannedDevices();
+    const requiredSize = useRequiredSize();
+    const freeSpace = useFreeSystemMountPointsSpace();
 
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
     const reusedMountPoints = requests.find(request => request["reused-mount-points"])?.["reused-mount-points"];
+    const plannedSystemMountPoints = Object.entries(mountPoints).filter(mp => systemMountPoints.includes(mp[0]));
 
     if (!deviceData) {
         return null;
+    }
+
+    let insufficientSizeMessage = "";
+    if (requiredSize > freeSpace) {
+        if (Object.keys(plannedSystemMountPoints).length === 1) {
+            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSize));
+        } else if (Object.keys(plannedSystemMountPoints).length > 1) {
+            insufficientSizeMessage = _("May need more free space");
+        }
     }
 
     const getDeviceRow = ([mount, device]) => {
@@ -117,14 +135,27 @@ const DeviceRow = ({ disk }) => {
             }
         };
 
+        const helperText = (
+            systemMountPoints.includes(mount) && insufficientSizeMessage
+                ? (
+                    <HelperText id={`helper-disk-${disk}`} data-path={mount}>
+                        <HelperTextItem variant="error">
+                            {insufficientSizeMessage}
+                        </HelperTextItem>
+                    </HelperText>
+                )
+                : ""
+        );
+
         return (
             {
                 columns: [
-                    { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 20 },
-                    { title: size, width: 20 },
-                    { title: action, width: 20 },
-                    { title: hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "", width: 20 },
-                    { title: mount, with: 20 },
+                    { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 17 },
+                    { title: size, width: 15 },
+                    { title: action, width: 17 },
+                    { title: hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "", width: 17 },
+                    { title: mount, width: 17 },
+                    ...(isReviewScreen ? [{ title: helperText, width: 17 }] : []),
                 ],
                 props: { key: device },
             }
@@ -159,6 +190,7 @@ const DeviceRow = ({ disk }) => {
                     },
                     { title: "" },
                     { title: "" },
+                    ...(isReviewScreen ? [{ title: "" }] : []),
                 ],
                 props: {
                     key: device + actionType,
@@ -219,6 +251,7 @@ const DeviceRow = ({ disk }) => {
                   { props: { screenReaderText: _("Actions") } },
                   { props: { screenReaderText: _("Encrypted") } },
                   { props: { screenReaderText: _("Mount point") } },
+                  ...(isReviewScreen ? [{ props: { screenReaderText: _("Helper text") } }] : []),
               ]}
               gridBreakPoint=""
               id={idPrefix + "-table-" + disk}
