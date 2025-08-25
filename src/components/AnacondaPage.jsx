@@ -54,8 +54,8 @@ export const AnacondaPage = ({
             return;
         }
 
-        error(stepNotification?.step, stepNotification?.message);
-    }, [stepNotification?.step, stepNotification?.message]);
+        error(stepNotification?.step, stepNotification?.title, stepNotification?.message);
+    }, [stepNotification?.step, stepNotification?.message, stepNotification?.title]);
 
     useEffect(() => {
         if (!isFormDisabled && !showPageRef.current) {
@@ -79,9 +79,12 @@ export const AnacondaPage = ({
                 <Alert
                   id={step + "-step-notification"}
                   isInline
-                  title={stepNotification.message}
-                  variant="danger"
-                />}
+                  title={stepNotification.title || stepNotification.message}
+                  variant={stepNotification.variant || "danger"}
+                  actionLinks={stepNotification.actionLinks}
+                >
+                    {stepNotification.title && stepNotification.message}
+                </Alert>}
             {cloneElement(children, { idPrefix: step, setStepNotification })}
         </Stack>
     );
