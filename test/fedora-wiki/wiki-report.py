@@ -76,7 +76,6 @@ class WikiReport:
                         compose=self.compose,
                         dist="Fedora",
                         env=fedora_testcase['environment'] if 'environment' in fedora_testcase else f"{testcase['arch']} {testcase['firmware']}",
-                        release="42",
                         user="anaconda-bot",
                         section=section,
                         status="pass",
