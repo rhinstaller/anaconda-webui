@@ -145,9 +145,10 @@ export const BZReportModal = ({
     ];
 
     const openBZIssue = (reportURL) => {
-        reportURL = ensureMaximumReportURLLength(reportURL);
         reportURL = addLogAttachmentCommentToReportURL(reportURL);
         reportURL = addDebugInfoToReportURL(reportURL, debugInfoArray);
+        // this should be the last modification on reportURL
+        reportURL = ensureMaximumReportURLLength(reportURL);
 
         if (isBootIso) {
             window.open(reportURL);
