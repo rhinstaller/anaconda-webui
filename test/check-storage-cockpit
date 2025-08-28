@@ -147,6 +147,37 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         s.exit_cockpit_storage()
 
+    def _createLVMVolumes(self, browser, dev, vgname, root_size=6010):
+        self.reachCockpitStorage()
+        self.cockpitCreateBootloaderPartitions()
+
+        self.click_devices_dropdown("Create LVM2 volume group")
+        self.dialog({"name": vgname, "disks": {dev: True}})
+
+        self.click_card_row("Storage", name=vgname)
+
+        browser.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "root", "size": root_size})
+        self.click_card_row("LVM2 logical volumes", 1)
+        self.click_card_dropdown("Unformatted data", "Format")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        browser.click(self.card_parent_link())
+
+        browser.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "home", "size": 8120})
+        self.click_card_row("LVM2 logical volumes", 1)
+        self.click_card_dropdown("Unformatted data", "Format")
+        self.dialog({"type": "ext4", "mount_point": "/home"})
+
+        browser.click(self.card_parent_link())
+
+        browser.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
+        self.dialog({"name": "swap", "size": 898})
+        self.click_card_row("LVM2 logical volumes", 3)
+        self.click_card_dropdown("Unformatted data", "Format")
+        self.dialog({"type": "swap"})
+
     @nondestructive
     def testLVM(self):
         """
@@ -162,38 +193,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        vgname = "fedoravg"
-        dev = "/dev/vda"
-
-        self.reachCockpitStorage()
-        self.cockpitCreateBootloaderPartitions()
-
-        self.click_devices_dropdown("Create LVM2 volume group")
-        self.dialog({"name": vgname, "disks": {dev: True}})
-
-        self.click_card_row("Storage", name=vgname)
-
-        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
-        self.dialog({"name": "root", "size": 6010})
-        self.click_card_row("LVM2 logical volumes", 1)
-        self.click_card_dropdown("Unformatted data", "Format")
-        self.dialog({"type": "ext4", "mount_point": "/"})
-
-        b.click(self.card_parent_link())
-
-        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
-        self.dialog({"name": "home", "size": 8120})
-        self.click_card_row("LVM2 logical volumes", 1)
-        self.click_card_dropdown("Unformatted data", "Format")
-        self.dialog({"type": "ext4", "mount_point": "/home"})
-
-        b.click(self.card_parent_link())
-
-        b.click(self.card_button("LVM2 logical volumes", "Create new logical volume"))
-        self.dialog({"name": "swap", "size": 898})
-        self.click_card_row("LVM2 logical volumes", 3)
-        self.click_card_dropdown("Unformatted data", "Format")
-        self.dialog({"type": "swap"})
+        self._createLVMVolumes(b, "/dev/vda", "fedoravg")
 
         # Exit the cockpit-storage iframe
         b.switch_to_top()
@@ -294,6 +294,161 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self._testStandardPartition("xfs")
 
     @nondestructive
+    def testPayloadSizeCheckExt4(self):
+        """
+        Description:
+            Test free space check on partitions with XFS filesystem"
+
+        Expected results:
+            - A warning about insufficient space is showed to the user on the review screen
+            - The warning prevents continuing with the installation
+            - There are hints beside the checked mount points in case of failed check
+            - The link for changing partitioning layout moves user to the right page
+        """
+        self._testPayloadSizeCheck("ext4")
+
+    @nondestructive
+    def testPayloadSizeCheckXFS(self):
+        """
+        Description:
+            Test free space check on partitions with ext4 filesystem"
+
+        Expected results:
+            - A warning about insufficient space is showed to the user on the review screen
+            - The warning prevents continuing with the installation
+            - There are hints beside the checked mount points in case of failed check
+            - The link for changing partitioning layout moves user to the right page
+        """
+        self._testPayloadSizeCheck("xfs")
+
+    def _testPayloadSizeCheck(self, rootfs_format):
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.wait_scenario_visible("use-configured-storage", False)
+        s.check_disk_selected(dev)
+        s.enter_cockpit_storage()
+
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1, "type": "biosboot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"size": 1000, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"size": 1300, "type": rootfs_format, "mount_point": "/"})
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_size_error()
+        # The value starts with 1 (is non-zero)
+        r.check_available_size_error_value("1")
+
+        # check that there is a hint with required size beside the device
+        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
+        r.check_disk_row(dev, "/", f"{dev}3", "1.30 GB", False)
+        r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
+
+        i.check_next_disabled()
+
+        # Test going back from the alert to the proper page
+        b.click(f"#{i.steps.REVIEW}-change-partition-layout")
+
+        s.wait_scenario_available("use-configured-storage")
+
+    @nondestructive
+    def testPayloadSizeCheckBtrfs(self):
+        """
+        Description:
+            Test free space check on partitions with btrfs filesystem"
+
+        Expected results:
+            - A warning about insufficient space is showed to the user on the review screen
+            - The warning prevents continuing with the installation
+            - There are hints beside the checked mount points in case of failed check
+            - The link for changing partitioning layout moves user to the right page
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self._createBtrfsSubvolumes(b, vol_size=1700)
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_size_error()
+        # The value starts with 1 (is non-zero)
+        r.check_available_size_error_value("1")
+
+        # check that there is a hint with required size beside the device
+        dev = "vda"
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+
+        r.check_disk_row(dev, "/", "vda3", "1.70 GB", False, None, False, 4)
+        r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
+
+        i.check_next_disabled()
+
+    @nondestructive
+    def testPayloadSizeCheckLVM(self):
+        """
+        Description:
+            Test free space check on partitions on LVM logical volume"
+
+        Expected results:
+            - A warning about insufficient space is showed to the user on the review screen
+            - The warning prevents continuing with the installation
+            - There are hints beside the checked mount points in case of failed check
+            - The link for changing partitioning layout moves user to the right page
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self._createLVMVolumes(b, "/dev/vda", "fedoravg", root_size=1700)
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_size_error()
+        # The value starts with 1 (is non-zero)
+        r.check_available_size_error_value("1")
+
+        # check that there is a hint with required size beside the device
+        dev = "vda"
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+
+        r.check_disk_row(dev, "/", "vda3, LVM", "1.70 GB", False)
+        r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
+
+        i.check_next_disabled()
+
+    @nondestructive
     @run_boot("efi")
     def testBtrfsTopLevelVolume(self):
         """
@@ -342,6 +497,32 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
         self.assertTrue("/mnt/sysroot auto noauto,subvol=/ 0 0" in fstab)
 
+    def _createBtrfsSubvolumes(self, browser, vol_size=None):
+        tmp_mount = "/btrfs-mount-test"
+
+        self.reachCockpitStorage()
+        self.cockpitCreateBootloaderPartitions()
+
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        if vol_size:
+            self.dialog({"type": "btrfs", "size": vol_size})
+        else:
+            self.dialog({"type": "btrfs"})
+
+        self.click_card_row("Storage", name="top-level")
+
+        browser.click(self.card_button("btrfs subvolume", "Mount"))
+        self.dialog({"mount_point": tmp_mount})
+
+        browser.click(self.card_button("btrfs subvolume", "Create subvolume"))
+        self.dialog({"name": "root", "mount_point": "/"})
+
+        browser.click(self.card_button("btrfs subvolume", "Create subvolume"))
+        self.dialog({"name": "unused"})
+
+        browser.click(self.card_button("btrfs subvolume", "Create subvolume"))
+        self.dialog({"name": "home", "mount_point": "/home"})
+
     @nondestructive
     def testBtrfsSubvolumes(self):
         """
@@ -359,27 +540,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        tmp_mount = "/btrfs-mount-test"
-
-        self.reachCockpitStorage()
-        self.cockpitCreateBootloaderPartitions()
-
-        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
-        self.dialog({"type": "btrfs"})
-
-        self.click_card_row("Storage", name="top-level")
-
-        b.click(self.card_button("btrfs subvolume", "Mount"))
-        self.dialog({"mount_point": tmp_mount})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "root", "mount_point": "/"})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "unused"})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "home", "mount_point": "/home"})
+        self._createBtrfsSubvolumes(b)
 
         s.exit_cockpit_storage()
 
@@ -420,27 +581,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        tmp_mount = "/btrfs-mount-test"
-
-        self.reachCockpitStorage()
-        self.cockpitCreateBootloaderPartitions()
-
-        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
-        self.dialog({"type": "btrfs"})
-
-        self.click_card_row("Storage", name="top-level")
-
-        b.click(self.card_button("btrfs subvolume", "Mount"))
-        self.dialog({"mount_point": tmp_mount})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "root", "mount_point": "/"})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "unused"})
-
-        b.click(self.card_button("btrfs subvolume", "Create subvolume"))
-        self.dialog({"name": "home", "mount_point": "/home"})
+        self._createBtrfsSubvolumes(b)
 
         s.exit_cockpit_storage()
 

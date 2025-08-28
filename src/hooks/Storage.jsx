@@ -23,6 +23,7 @@ import {
     getDiskFreeSpace,
     getDiskTotalSpace,
     getFormatTypeData,
+    getFreeSpaceForSystem,
     getMountPointConstraints,
     getRequiredDeviceSize,
 } from "../apis/storage_devicetree.js";
@@ -39,7 +40,7 @@ import {
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors, hasReusableFedoraWithWindowsOS } from "../helpers/storage.js";
+import { getDeviceAncestors, hasReusableFedoraWithWindowsOS, systemMountPoints } from "../helpers/storage.js";
 
 import { FooterContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
@@ -81,6 +82,26 @@ export const useDiskFreeSpace = () => {
     }, [selectedDisks, devices]);
 
     return diskFreeSpace;
+};
+
+export const useFreeSpaceForSystem = () => {
+    const [freeSpaceForSystem, setFreeSpaceForSystem] = useState();
+
+    const devices = useOriginalDevices();
+    const { diskSelection } = useContext(StorageContext);
+    const selectedDisks = diskSelection.selectedDisks;
+    const plannedDeviceTree = useDeviceTree();
+
+    useEffect(() => {
+        const update = async () => {
+            const freeSpaceForSystem = await getFreeSpaceForSystem({ mountPoints: systemMountPoints });
+
+            setFreeSpaceForSystem(freeSpaceForSystem);
+        };
+        update();
+    }, [selectedDisks, devices, plannedDeviceTree]);
+
+    return freeSpaceForSystem;
 };
 
 export const useUsablePartitions = () => {
