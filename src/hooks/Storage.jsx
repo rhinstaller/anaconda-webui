@@ -22,8 +22,8 @@ import {
 import {
     getDiskFreeSpace,
     getDiskTotalSpace,
-    getFileSystemFreeSpace,
     getFormatTypeData,
+    getFreeSpaceForSystem,
     getMountPointConstraints,
     getRequiredDeviceSize,
 } from "../apis/storage_devicetree.js";
@@ -84,8 +84,8 @@ export const useDiskFreeSpace = () => {
     return diskFreeSpace;
 };
 
-export const useFreeSystemMountPointsSpace = () => {
-    const [freeMountPointsSpace, setFreeMountPointsSpace] = useState();
+export const useFreeSpaceForSystem = () => {
+    const [freeSpaceForSystem, setFreeSpaceForSystem] = useState();
 
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
@@ -94,14 +94,14 @@ export const useFreeSystemMountPointsSpace = () => {
 
     useEffect(() => {
         const update = async () => {
-            const freeMountPointsSpace = await getFileSystemFreeSpace({ mountPoints: systemMountPoints });
+            const freeSpaceForSystem = await getFreeSpaceForSystem({ mountPoints: systemMountPoints });
 
-            setFreeMountPointsSpace(freeMountPointsSpace);
+            setFreeSpaceForSystem(freeSpaceForSystem);
         };
         update();
     }, [selectedDisks, devices, plannedDeviceTree]);
 
-    return freeMountPointsSpace;
+    return freeSpaceForSystem;
 };
 
 export const useUsablePartitions = () => {

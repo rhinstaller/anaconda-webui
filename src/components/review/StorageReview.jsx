@@ -40,7 +40,7 @@ import {
 } from "../../contexts/Common.jsx";
 
 import {
-    useFreeSystemMountPointsSpace,
+    useFreeSpaceForSystem,
     useOriginalDevices,
     useOriginalExistingSystems,
     usePlannedActions,
@@ -84,7 +84,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     const mountPoints = usePlannedMountPoints();
     const devices = usePlannedDevices();
     const requiredSize = useRequiredSize();
-    const freeSpace = useFreeSystemMountPointsSpace();
+    const freeSpace = useFreeSpaceForSystem();
 
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
