@@ -91,10 +91,10 @@ export const getFormatData = ({ diskName }) => {
 /**
  * @param {Array[string]} mountPoints A list of mount points
  *
- * @returns {Promise}           Resolves total file system free space on given mount points
+ * @returns {Promise}           Resolves total file system free space for system on given mount points
  */
-export const getFileSystemFreeSpace = ({ mountPoints }) => {
-    return new DeviceTree().callViewer("GetFileSystemFreeSpace", [mountPoints]);
+export const getFreeSpaceForSystem = ({ mountPoints }) => {
+    return new DeviceTree().callViewer("GetFreeSpaceForSystem", [mountPoints]);
 };
 
 /**

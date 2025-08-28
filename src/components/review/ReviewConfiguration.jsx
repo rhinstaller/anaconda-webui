@@ -41,7 +41,7 @@ import {
 } from "../../contexts/Common.jsx";
 
 import {
-    useFreeSystemMountPointsSpace,
+    useFreeSpaceForSystem,
     useOriginalDevices,
     usePlannedActions,
     useRequiredSize,
@@ -105,7 +105,7 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const [hasValidSpaceCheck, setHasValidSpaceCheck] = useState(true);
-    const freeSpace = useFreeSystemMountPointsSpace();
+    const freeSpace = useFreeSpaceForSystem();
     const requiredSize = useRequiredSize();
     const { setIsFormDisabled } = useContext(FooterContext);
     const { goToStepById } = useWizardContext();
