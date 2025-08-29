@@ -140,6 +140,9 @@ export const CockpitStorageIntegration = ({
             iframe.contentWindow.addEventListener("error", exception => {
                 onCritFail({ context: _("Storage plugin failed"), isFrontend: true })({ message: exception.error.message, stack: exception.error.stack });
             });
+            // set overflow-y to auto in order to allow scrolling if a menu gets positioned outside
+            // the bounds of the viewport
+            iframe.contentDocument.body.style["overflow-y"] = "auto";
         }
     }, [isIframeMounted, onCritFail]);
 
