@@ -35,7 +35,7 @@ class TestUsers(VirtInstallMachineCase):
             - The root account can be enabled and a root password set
             - The user can skip creating a user account
             - The user can skip enabling the root account
-            - The user can skip both and proceed to the next step
+            - The user can't skip both
         """
         b = self.browser
         i = Installer(b, self.machine)
@@ -82,13 +82,7 @@ class TestUsers(VirtInstallMachineCase):
         i.reach_on_sidebar(i.steps.ACCOUNTS)
         u.enable_user_account(False)
         u.enable_root_account(False)
-        i.next()
-        r.check_account("No user or root account has been configured")
-        assert u.dbus_get_root_locked()
-        assert not u.dbus_get_is_root_password_set()
-        users = u.dbus_get_users()
-        assert "tester" not in users
-
+        i.check_next_disabled()
 
     @staticmethod
     def _test_user_name(user, installer, valid, invalid):
