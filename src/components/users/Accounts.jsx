@@ -338,11 +338,25 @@ export const Accounts = ({
 }) => {
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
+    const accounts = useContext(UsersContext);
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
 
     useEffect(() => {
-        setIsFormValid(isUserValid && isRootValid);
-    }, [setIsFormValid, isUserValid, isRootValid]);
+        const skipRootCreation = !accounts.isRootEnabled;
+        const skipAccountCreation = accounts.skipAccountCreation;
+
+        setIsFormValid(
+            (skipAccountCreation || isUserValid) &&
+            (skipRootCreation || isRootValid) &&
+            !(skipRootCreation && skipAccountCreation)
+        );
+    }, [
+        accounts.isRootEnabled,
+        accounts.skipAccountCreation,
+        isRootValid,
+        isUserValid,
+        setIsFormValid,
+    ]);
 
     // Display custom footer
     const getFooter = useMemo(() => <CustomFooter />, []);
@@ -376,7 +390,7 @@ const CustomFooter = () => {
 
     return (
         <AnacondaWizardFooter
-          footerHelperText={(!accounts.isRootEnabled && !accounts.userName) ? _("Skipping account creation during installation. It will happen on first boot instead.") : null}
+          footerHelperText={(!accounts.isRootEnabled && accounts.skipAccountCreation) ? _("You have to enable the root account or create a local user account to proceed.") : null}
           onNext={onNext}
         />
     );

@@ -71,9 +71,7 @@ const ReviewDescriptionList = ({ children }) => {
 const AccountsDescription = () => {
     const accounts = useContext(UsersContext);
 
-    if (accounts.skipAccountCreation && !accounts.isRootEnabled) {
-        return _("No user or root account has been configured");
-    } else if (accounts.skipAccountCreation && accounts.isRootEnabled) {
+    if (accounts.skipAccountCreation && accounts.isRootEnabled) {
         return _("Root account is enabled, but no user account has been configured");
     } else if (!accounts.skipAccountCreation && !accounts.isRootEnabled) {
         return accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName;
