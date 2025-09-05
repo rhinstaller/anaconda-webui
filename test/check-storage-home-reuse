@@ -172,7 +172,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         self._remove_unknown_mountpoints("vda")
         self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
 
-    @disk_images([("fedora-rawhide", 15), ("fedora-41", 15)])
+    @disk_images([("fedora-rawhide", 15), ("fedora-42", 15)])
     def testHomeReuseFedoraEncrypted(self):
         """
         Description:
@@ -212,7 +212,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
     def _testMultipleRoots_partition_disk(self):
         self._remove_unknown_mountpoints("vda")
 
-    @disk_images([("fedora-rawhide", 15), ("fedora-41", 15), ("ubuntu-stable", 15)])
+    @disk_images([("fedora-rawhide", 15), ("fedora-42", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
     def testMultipleRoots(self):
@@ -278,7 +278,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         WindowsOS(machine=self.machine).partition_disk()
         self._remove_unknown_mountpoints("vdb")
 
-    @disk_images([("", 20), ("fedora-41", 15)])
+    @disk_images([("", 20), ("fedora-42", 15)])
     def testNonLinuxSystem(self):
         """
         Description:
@@ -325,7 +325,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
         self._remove_unknown_mountpoints("vdb")
 
-    @disk_images([("", 15), ("fedora-41", 15)])
+    @disk_images([("", 15), ("fedora-42", 15)])
     def testMBRParttable(self):
         """
         Description:
