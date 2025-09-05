@@ -34,7 +34,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     # FIXME: Re-enable bios test, it's currently failing in CI to detect the BIOS boot partition
     # @run_boot("bios", "efi")
     @run_boot("efi")
-    @disk_images([("", 15), ("fedora-41", "15")])
+    @disk_images([("", 15), ("fedora-42", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
     def testBasic(self):
@@ -286,7 +286,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         storage = Storage(self.browser, self.machine)
         move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
 
-    @disk_images([("", 15), ("fedora-41", 15)])
+    @disk_images([("", 15), ("fedora-42", 15)])
     def testMBRParttable(self):
         """
         Description:
