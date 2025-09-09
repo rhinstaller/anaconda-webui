@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 03:29+0000\n"
+"POT-Creation-Date: 2025-09-09 03:25+0000\n"
 "PO-Revision-Date: 2025-08-12 03:41+0000\n"
 "Last-Translator: naly zzwd <xeanhort007@gmail.com>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
@@ -67,11 +67,15 @@ msgstr ""
 "$0 és una partició estesa MBR que conté particions lògiques. Eliminar totes "
 "les particions lògiques també eliminarà automàticament la partició estesa."
 
+#: src/components/review/ReviewConfiguration.jsx:121
+msgid "$0 is required, but only $1 is available."
+msgstr ""
+
 #: src/components/localization/Keyboard.jsx:149
 msgid "$0 layouts detected"
 msgstr "$0 disposicions detectades"
 
-#: src/components/review/StorageReview.jsx:260
+#: src/components/review/StorageReview.jsx:293
 msgid "$0 will be deleted"
 msgstr "$0 se suprimirà"
 
@@ -101,11 +105,11 @@ msgstr ""
 msgid "About"
 msgstr "Quant a"
 
-#: src/components/review/ReviewConfiguration.jsx:146
+#: src/components/review/ReviewConfiguration.jsx:209
 msgid "Account"
 msgstr "Compte"
 
-#: src/components/review/StorageReview.jsx:219
+#: src/components/review/StorageReview.jsx:251
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:160
 msgid "Actions"
 msgstr "Accions"
@@ -219,6 +223,12 @@ msgstr "Canvia destinació"
 msgid "Change hostname"
 msgstr "Canvia el nom d'amfitrió"
 
+#: src/components/review/ReviewConfiguration.jsx:138
+#, fuzzy
+#| msgid "Change destination"
+msgid "Change partition layout"
+msgstr "Canvia destinació"
+
 #: src/components/localization/Keyboard.jsx:161
 msgid "Change system keyboard layout"
 msgstr "Canvia la disposició del teclat del sistema"
@@ -327,7 +337,7 @@ msgstr ""
 msgid "Date and time"
 msgstr "Estableix l'hora i la data"
 
-#: src/components/review/StorageReview.jsx:318
+#: src/components/review/StorageReview.jsx:351
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "La supressió de certes particions pot impedir que $0 arrenqui: $1"
 
@@ -343,7 +353,7 @@ msgstr "El destí està xifrat"
 msgid "Detected valid storage layout:"
 msgstr "S'ha detectat una disposició d'emmagatzematge vàlida:"
 
-#: src/components/review/StorageReview.jsx:217
+#: src/components/review/StorageReview.jsx:249
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:639
 msgid "Device"
 msgstr "Dispositiu"
@@ -364,7 +374,7 @@ msgstr "Habilita el compte root"
 msgid "Encrypt my data"
 msgstr "Xifra les meves dades"
 
-#: src/components/review/StorageReview.jsx:220
+#: src/components/review/StorageReview.jsx:252
 msgid "Encrypted"
 msgstr "Xifrat"
 
@@ -423,6 +433,10 @@ msgstr "El nom complet no pot contenir el caràcter dos punts"
 msgid "Help us fix the issue!"
 msgstr "Ajudeu-nos a solucionar el problema!"
 
+#: src/components/review/StorageReview.jsx:254
+msgid "Helper text"
+msgstr ""
+
 #: src/components/Password.jsx:248
 msgid "Hide confirmed password"
 msgstr "Amaga la contrasenya confirmada"
@@ -444,21 +458,21 @@ msgstr "Nom d'amfitrió"
 msgid "How would you like to install?"
 msgstr "Com t'agradaria instal·lar?"
 
-#: src/components/review/ReviewConfiguration.jsx:204
+#: src/components/review/ReviewConfiguration.jsx:267
 msgid "I understand that all existing data will be erased"
 msgstr "Entenc que totes les dades existents s'esborraran"
 
-#: src/components/review/ReviewConfiguration.jsx:205
+#: src/components/review/ReviewConfiguration.jsx:268
 msgid ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr ""
 "Entenc que totes les dades existents s'esborraran dels discs seleccionats"
 
-#: src/components/review/ReviewConfiguration.jsx:209
+#: src/components/review/ReviewConfiguration.jsx:272
 msgid "I understand that some existing data will be erased"
 msgstr "Entenc que s'esborraran algunes dades existents"
 
-#: src/components/review/ReviewConfiguration.jsx:210
+#: src/components/review/ReviewConfiguration.jsx:273
 msgid "I understand that some partitions will be modified"
 msgstr "Entenc que algunes particions seran modificades"
 
@@ -508,7 +522,7 @@ msgstr "La instal·lació del sistema ha fallat"
 msgid "Installation of the system failed: $0"
 msgstr "La instal·lació del sistema ha fallat: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:161
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Installation type"
 msgstr "Tipus d'instal·lació"
 
@@ -556,7 +570,7 @@ msgstr "Teclat"
 msgid "Keyboard layout during boot"
 msgstr "Disposició del teclat durant l'arrencada"
 
-#: src/components/review/ReviewConfiguration.jsx:132
+#: src/components/review/ReviewConfiguration.jsx:195
 #: src/components/localization/InstallationLanguage.jsx:237
 msgid "Language"
 msgstr "Idioma"
@@ -599,6 +613,11 @@ msgstr "Configuració manual del disc: mapatge de punts de muntatge"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Pot contenir lletres, números i guions."
 
+#: src/components/review/StorageReview.jsx:103
+#, fuzzy
+msgid "May need more free space"
+msgstr "S'està instal·lant programari"
+
 #: src/components/Password.jsx:76
 msgid "Medium"
 msgstr "Mitjà"
@@ -618,7 +637,7 @@ msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr ""
 "S'ha detectat més d'una disposició. Suprimiu-ne d'addicionals per continuar"
 
-#: src/components/review/StorageReview.jsx:221
+#: src/components/review/StorageReview.jsx:253
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:638
 msgid "Mount point"
 msgstr "Punt de muntatge"
@@ -647,6 +666,10 @@ msgstr "DNS"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:157
 msgid "Name"
 msgstr "Nom"
+
+#: src/components/review/StorageReview.jsx:101
+msgid "Needs at least $0"
+msgstr ""
 
 #: src/components/Error.jsx:160
 msgid ""
@@ -682,11 +705,11 @@ msgstr "No s'ha seleccionat cap disc"
 msgid "No results found"
 msgstr "No s'han trobat resultats"
 
-#: src/components/review/ReviewConfiguration.jsx:75
+#: src/components/review/ReviewConfiguration.jsx:119
 #, fuzzy
-#| msgid "no NTP servers have been configured"
-msgid "No user or root account has been configured"
-msgstr "no s'ha configurat cap servidor NTP"
+#| msgid "Not enough free space on selected disks."
+msgid "Not enough available free space"
+msgstr "No hi ha prou espai lliure als discs seleccionats."
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:63
 msgid "Not enough free space on the selected disks."
@@ -696,7 +719,7 @@ msgstr "No hi ha prou espai lliure als discs seleccionats."
 msgid "Not enough space on selected disks."
 msgstr "No hi ha prou espai als discs seleccionats."
 
-#: src/components/review/StorageReview.jsx:362
+#: src/components/review/StorageReview.jsx:395
 msgid "Note"
 msgstr "Nota"
 
@@ -710,7 +733,7 @@ msgstr ""
 "propòsits de desenvolupament i proves. No utilitzeu aquest programari per a "
 "cap treball crític ni per a entorns de producció."
 
-#: src/components/review/ReviewConfiguration.jsx:121
+#: src/components/review/ReviewConfiguration.jsx:184
 msgid "Operating system"
 msgstr "Sistema operatiu"
 
@@ -933,7 +956,7 @@ msgstr "No s'ha pogut tornar a escanejar els discs."
 msgid "Resize"
 msgstr "Redimensiona"
 
-#: src/components/review/StorageReview.jsx:324
+#: src/components/review/StorageReview.jsx:357
 msgid "Resizing the following partitions from $0: $1"
 msgstr "S'estan redimensionant les particions següents des de $0: $1"
 
@@ -949,13 +972,13 @@ msgstr "Torna a l'editor d'emmagatzematge"
 msgid "Review and install"
 msgstr "Revisar i instal·lar"
 
-#: src/components/review/ReviewConfiguration.jsx:83
+#: src/components/review/ReviewConfiguration.jsx:89
 #, fuzzy
 #| msgid "Root account is disabled."
 msgid "Root account is enabled"
 msgstr "El compte de root està inhabilitat."
 
-#: src/components/review/ReviewConfiguration.jsx:77
+#: src/components/review/ReviewConfiguration.jsx:83
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 
@@ -1058,15 +1081,9 @@ msgstr "Mostra la paraula de pas"
 msgid "Show password"
 msgstr "Mostra la contrasenya"
 
-#: src/components/review/StorageReview.jsx:218
+#: src/components/review/StorageReview.jsx:250
 msgid "Size"
 msgstr "Mida"
-
-#: src/components/users/Accounts.jsx:379
-msgid ""
-"Skipping account creation during installation. It will happen on first boot "
-"instead."
-msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:152
 msgid "Software installation"
@@ -1088,7 +1105,7 @@ msgstr "Falten algunes particions necessàries: $0"
 msgid "Space"
 msgstr "Espai"
 
-#: src/components/review/ReviewConfiguration.jsx:168
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Storage"
 msgstr "Emmagatzematge"
 
@@ -1224,7 +1241,7 @@ msgstr "Això trigarà uns instants"
 msgid "Time"
 msgstr "Zona horària: %s\n"
 
-#: src/components/review/ReviewConfiguration.jsx:139
+#: src/components/review/ReviewConfiguration.jsx:202
 #: src/components/datetime/Timezone.jsx:148
 #, fuzzy
 #| msgid "Timezone: %s\n"
@@ -1334,7 +1351,7 @@ msgstr "Benvinguts"
 msgid "Welcome to Fedora Linux"
 msgstr "Benvingut a Fedora Linux"
 
-#: src/components/AnacondaPage.jsx:93
+#: src/components/AnacondaPage.jsx:96
 msgid "Welcome. Let's install $0 now."
 msgstr "Benvinguts. Instal·lem $0 ara."
 
@@ -1350,6 +1367,12 @@ msgid ""
 msgstr ""
 "Podeu alliberar prou espai aquí i deixar que l'instal·lador gestioni la "
 "resta o configurar manualment les particions."
+
+#: src/components/users/Accounts.jsx:393
+msgid ""
+"You have to enable the root account or create a local user account to "
+"proceed."
+msgstr ""
 
 #: src/components/datetime/DateAndTime.jsx:156
 msgid "You must be connected to a network to enable automatic date and time."
@@ -1367,7 +1390,7 @@ msgstr "pas completat"
 msgid "current step"
 msgstr "pas actual"
 
-#: src/components/review/StorageReview.jsx:143
+#: src/components/review/StorageReview.jsx:174
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:396
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:409
 msgid "delete"
@@ -1377,11 +1400,11 @@ msgstr "suprimeix"
 msgid "edit"
 msgstr "edita"
 
-#: src/components/review/StorageReview.jsx:126
+#: src/components/review/StorageReview.jsx:156
 msgid "encrypt"
 msgstr "xifra"
 
-#: src/components/review/StorageReview.jsx:126
+#: src/components/review/StorageReview.jsx:156
 msgid "encrypted"
 msgstr "xifrat"
 
@@ -1389,11 +1412,11 @@ msgstr "xifrat"
 msgid "extended partition"
 msgstr "Partició estesa"
 
-#: src/components/review/StorageReview.jsx:102
+#: src/components/review/StorageReview.jsx:120
 msgid "format as $0"
 msgstr "format com a $0"
 
-#: src/components/review/StorageReview.jsx:106
+#: src/components/review/StorageReview.jsx:124
 msgid "mount"
 msgstr "munta"
 
@@ -1401,7 +1424,7 @@ msgstr "munta"
 msgid "pending step"
 msgstr "pas pendent"
 
-#: src/components/review/StorageReview.jsx:148
+#: src/components/review/StorageReview.jsx:179
 msgid "resized from $0"
 msgstr "redimensionat des de $0"
 
@@ -1417,6 +1440,11 @@ msgstr "encongeix a $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:390
 msgid "undo"
 msgstr "desfer"
+
+#, fuzzy
+#~| msgid "no NTP servers have been configured"
+#~ msgid "No user or root account has been configured"
+#~ msgstr "no s'ha configurat cap servidor NTP"
 
 #~ msgid "This account will have administration privilege with sudo."
 #~ msgstr "Aquest compte tindrà privilegi d'administració amb sudo."
@@ -1588,10 +1616,6 @@ msgstr "desfer"
 #, fuzzy
 #~ msgid "Install on the custom mount points?"
 #~ msgstr "Assigna manualment els punts de muntatge"
-
-#, fuzzy
-#~ msgid "Install on the free space?"
-#~ msgstr "S'està instal·lant programari"
 
 #, fuzzy
 #~ msgid "Install using the configured storage?"
@@ -7159,11 +7183,6 @@ msgstr "desfer"
 #~| msgid "_Save Passphrase"
 #~ msgid "Incorrect passphrase"
 #~ msgstr "De_sa la contrasenya"
-
-#, fuzzy
-#~| msgid "Not enough free space on selected disks."
-#~ msgid "Not enough free space."
-#~ msgstr "No hi ha prou espai lliure als discs seleccionats."
 
 #, fuzzy
 #~| msgid "Not enough free space on selected disks."
