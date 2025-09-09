@@ -241,7 +241,8 @@ const CustomNTPModal = ({ onClose }) => {
             <ModalFooter>
                 <Button
                   id={SCREEN_ID + "-ntp-modal-save-button"}
-                  isDisabled={ntpSources.filter(src => src.isAvailable === undefined).length > 0}
+                  isDisabled={ntpSources.filter(src => (
+                      src.isAvailable === undefined || src.hostname.v === "")).length > 0}
                   onClick={handleConfirm}
                   variant="primary"
                 >
