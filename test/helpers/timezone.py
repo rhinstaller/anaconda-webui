@@ -132,6 +132,12 @@ class DateTimeDBus():
             get-property {self.TIMEZONE_SERVICE} {self.TIMEZONE_OBJECT_PATH} \
             {self.TIMEZONE_INTERFACE} NTPEnabled')
 
+    def dbus_set_ntp_enabled(self, value):
+        val_str = "true" if value else "false"
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property {self.TIMEZONE_SERVICE} {self.TIMEZONE_OBJECT_PATH} \
+            {self.TIMEZONE_INTERFACE} NTPEnabled b {val_str}')
+
     def dbus_get_timezone(self):
         out = self.machine.execute(f'busctl --address="{self._bus_address}" \
             get-property {self.TIMEZONE_SERVICE} {self.TIMEZONE_OBJECT_PATH} \

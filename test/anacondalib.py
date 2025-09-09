@@ -33,6 +33,7 @@ from machine_install import VirtInstallMachine
 from progress import Progress
 from storage import Storage
 from testlib import MachineCase, wait  # pylint: disable=import-error
+from timezone import DateAndTime
 from users import Users
 from utils import add_public_key
 
@@ -86,6 +87,7 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetStorage)
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
+            self.addCleanup(self.resetTimezone)
 
         super().setUp()
 
@@ -160,6 +162,12 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         users = Users(b, m)
         users.dbus_clear_users()
+
+    def resetTimezone(self):
+        m = self.machine
+        b = self.browser
+        dt = DateAndTime(b, m)
+        dt.dbus_set_ntp_enabled(True)
 
     def addAllDisks(self):
         # Add installation target disks
