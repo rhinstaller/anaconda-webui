@@ -123,6 +123,12 @@ class TestDateAndTime(VirtInstallMachineCase):
         dt.check_timezone_label("MESZ, UTC+2")
         self.assertEqual(dt.dbus_get_timezone(), "Europe/Prague")
 
+        # Test timezone with multiple cities
+        dt.select_region("America")
+        dt.select_city("Argentina/Buenos_Aires")
+        dt.check_timezone_label("GMT-3, UTC-3")
+        self.assertEqual(dt.dbus_get_timezone(), "America/Argentina/Buenos_Aires")
+
     def testTimezoneAndTimeFormat(self):
         """
         Description:

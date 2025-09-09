@@ -69,9 +69,9 @@ export const TimezoneSection = ({ locale, setSectionValid, setTimezoneLabel }) =
 
     useEffect(() => {
         if (timezone && typeof timezone === "string" && timezone.includes("/")) {
-            const [reg, cty] = timezone.split("/");
+            const [reg, ...cty] = timezone.split("/");
             setRegion(reg);
-            setCity(cty);
+            setCity(cty.join("/"));
         }
     }, [timezone]);
 
