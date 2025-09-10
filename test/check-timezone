@@ -77,6 +77,8 @@ class TestDateAndTime(VirtInstallMachineCase):
 
         i.open()
         i.reach(i.steps.DATE_TIME)
+        dt.set_auto_date_time(True)
+        dt.dbus_clear_time_sources()
 
         b.click(f"#{i.steps.DATE_TIME}-configure-ntp")
         dt.check_ntp_server_enabled("2.fedora.pool.ntp.org", 0)
