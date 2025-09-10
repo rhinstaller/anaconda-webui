@@ -144,6 +144,11 @@ class DateTimeDBus():
             {self.TIMEZONE_INTERFACE} Timezone')
         return out.split('"')[1]
 
+    def dbus_clear_time_sources(self):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property {self.TIMEZONE_SERVICE} {self.TIMEZONE_OBJECT_PATH} \
+            {self.TIMEZONE_INTERFACE} TimeSources "aa{{sv}}" {0}')
+
 class DateAndTime(DateTime, Timezone, TimeFormat, DateTimeDBus):
     def __init__(self, browser, machine):
         DateTime.__init__(self, browser, machine)
