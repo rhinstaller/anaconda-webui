@@ -17,15 +17,12 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import {
-    Button,
-    Checkbox,
-    DescriptionList,
-    Flex, FlexItem,
-    Stack,
-    useWizardContext,
-    useWizardFooter,
-} from "@patternfly/react-core";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 

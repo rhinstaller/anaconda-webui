@@ -19,19 +19,13 @@ import cockpit from "cockpit";
 import { DateTime } from "luxon";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Checkbox,
-    Flex,
-    FlexItem,
-    FormGroup,
-    MenuToggle,
-    Select,
-    SelectList,
-    SelectOption,
-    Stack,
-    StackItem,
-    Title,
-} from "@patternfly/react-core";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { MenuToggle } from "@patternfly/react-core/dist/esm/components/MenuToggle/index.js";
+import { Select, SelectList, SelectOption } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
     setTimezone,

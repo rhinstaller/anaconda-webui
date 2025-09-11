@@ -19,12 +19,8 @@ import cockpit from "cockpit";
 import { usePageLocation } from "hooks";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    PageSection,
-    PageSectionTypes,
-    Wizard,
-    WizardStep,
-} from "@patternfly/react-core";
+import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
+import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import { FooterContext, StorageContext, UserInterfaceContext } from "../contexts/Common.jsx";
 

@@ -20,23 +20,15 @@ import cockpit from "cockpit";
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
 import React, { cloneElement, useContext, useEffect } from "react";
-import {
-    Alert,
-    Button,
-    Content,
-    ContentVariants,
-    Divider,
-    Form,
-    FormGroup,
-    HelperText,
-    HelperTextItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalVariant
-} from "@patternfly/react-core";
-import { DisconnectedIcon, ExternalLinkAltIcon } from "@patternfly/react-icons";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/index.js";
+import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { DisconnectedIcon } from "@patternfly/react-icons/dist/esm/icons/disconnected-icon";
+import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
 
 import { createBugzillaEnterBug } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";

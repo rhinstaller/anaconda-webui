@@ -19,33 +19,23 @@ import cockpit from "cockpit";
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    ActionList,
-    Alert,
-    Button,
-    Content,
-    Flex,
-    FlexItem,
-    HelperText,
-    HelperTextItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalVariant,
-    Panel,
-    Popover,
-    Slider,
-    Stack,
-} from "@patternfly/react-core";
-import {
-    CompressArrowsAltIcon,
-    HddIcon,
-    LockIcon,
-    OutlinedQuestionCircleIcon,
-    TrashIcon,
-    UndoIcon
-} from "@patternfly/react-icons";
+import { ActionList } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Panel } from "@patternfly/react-core/dist/esm/components/Panel/index.js";
+import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
+import { Slider } from "@patternfly/react-core/dist/esm/components/Slider/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
+import { CompressArrowsAltIcon } from "@patternfly/react-icons/dist/esm/icons/compress-arrows-alt-icon";
+import { HddIcon } from "@patternfly/react-icons/dist/esm/icons/hdd-icon";
+import { LockIcon } from "@patternfly/react-icons/dist/esm/icons/lock-icon";
+import { OutlinedQuestionCircleIcon } from "@patternfly/react-icons/dist/esm/icons/outlined-question-circle-icon";
+import { TrashIcon } from "@patternfly/react-icons/dist/esm/icons/trash-icon";
+import { UndoIcon } from "@patternfly/react-icons/dist/esm/icons/undo-icon";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/storage_partitioning_automatic_resizable.js";
 

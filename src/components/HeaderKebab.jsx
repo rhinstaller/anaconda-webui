@@ -17,25 +17,15 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useState } from "react";
-import {
-    AboutModal,
-    Button,
-    DescriptionList,
-    DescriptionListDescription,
-    DescriptionListGroup,
-    DescriptionListTerm,
-    Dropdown,
-    DropdownItem,
-    DropdownList,
-    Flex,
-    MenuToggle,
-    Stack,
-    StackItem
-} from "@patternfly/react-core";
-import {
-    EllipsisVIcon,
-    ExternalLinkAltIcon
-} from "@patternfly/react-icons";
+import { AboutModal } from "@patternfly/react-core/dist/esm/components/AboutModal/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { Dropdown, DropdownItem, DropdownList } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { MenuToggle } from "@patternfly/react-core/dist/esm/components/MenuToggle/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
+import { EllipsisVIcon } from "@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon";
+import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
 
 import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 

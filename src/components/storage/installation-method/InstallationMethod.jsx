@@ -17,13 +17,9 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import {
-    Form,
-    HelperText,
-    HelperTextItem,
-    useWizardContext,
-    useWizardFooter,
-} from "@patternfly/react-core";
+import { Form } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import {
     applyStorage,

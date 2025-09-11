@@ -17,20 +17,11 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useState } from "react";
-import {
-    ActionList,
-    ActionListGroup,
-    ActionListItem,
-    Button,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalVariant,
-    Stack,
-    useWizardContext,
-    WizardFooterWrapper
-} from "@patternfly/react-core";
+import { ActionList, ActionListGroup, ActionListItem } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { useWizardContext, WizardFooterWrapper } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { exitGui } from "../helpers/exit.js";
 

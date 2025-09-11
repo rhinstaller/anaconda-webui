@@ -17,13 +17,12 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Content, ContentVariants,
-    Flex,
-    Label,
-    PageSection, Popover, PopoverPosition
-} from "@patternfly/react-core";
-import { InfoCircleIcon } from "@patternfly/react-icons";
+import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
+import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
+import { Popover, PopoverPosition } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { InfoCircleIcon } from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
 import { getIsFinal } from "../apis/runtime";
 

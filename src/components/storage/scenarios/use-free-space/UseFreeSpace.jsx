@@ -18,7 +18,7 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import { Checkbox } from "@patternfly/react-core";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 
 import { AvailabilityState } from "../helpers.js";
 

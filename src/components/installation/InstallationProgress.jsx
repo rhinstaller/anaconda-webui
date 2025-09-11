@@ -17,20 +17,14 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-    Button,
-    Content,
-    Flex,
-    FlexItem,
-    ProgressStep,
-    ProgressStepper,
-} from "@patternfly/react-core";
-import {
-    CheckCircleIcon,
-    ExclamationCircleIcon,
-    InProgressIcon,
-    PendingIcon
-} from "@patternfly/react-icons";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { ProgressStep, ProgressStepper } from "@patternfly/react-core/dist/esm/components/ProgressStepper/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { CheckCircleIcon } from "@patternfly/react-icons/dist/esm/icons/check-circle-icon";
+import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-circle-icon";
+import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
+import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
 import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
 

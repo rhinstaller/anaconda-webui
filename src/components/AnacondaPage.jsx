@@ -17,7 +17,9 @@
 import cockpit from "cockpit";
 
 import React, { cloneElement, useContext, useEffect, useRef, useState } from "react";
-import { Alert, Stack, Title } from "@patternfly/react-core";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { error } from "../helpers/log.js";
 

@@ -18,17 +18,11 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import {
-    ActionList,
-    Button,
-    HelperText,
-    HelperTextItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Stack,
-} from "@patternfly/react-core";
+import { ActionList } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
     runStorageTask,

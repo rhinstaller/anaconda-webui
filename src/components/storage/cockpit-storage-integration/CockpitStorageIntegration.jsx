@@ -18,22 +18,17 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Banner,
-    Button,
-    Content,
-    DropdownItem,
-    Flex,
-    FlexItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalVariant,
-    PageSection,
-    Tooltip
-} from "@patternfly/react-core";
-import { ArrowLeftIcon, ExclamationTriangleIcon, TimesIcon } from "@patternfly/react-icons";
+import { Banner } from "@patternfly/react-core/dist/esm/components/Banner/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { DropdownItem } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
+import { Tooltip } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { ArrowLeftIcon } from "@patternfly/react-icons/dist/esm/icons/arrow-left-icon";
+import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-triangle-icon";
+import { TimesIcon } from "@patternfly/react-icons/dist/esm/icons/times-icon";
 
 import {
     getDeviceAncestors

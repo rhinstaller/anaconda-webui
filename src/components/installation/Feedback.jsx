@@ -17,10 +17,8 @@
 import cockpit from "cockpit";
 
 import React, { useContext } from "react";
-import {
-    Content,
-    Flex,
-} from "@patternfly/react-core";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import { SystemTypeContext } from "../../contexts/Common.jsx";
 

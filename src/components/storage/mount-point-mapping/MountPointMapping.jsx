@@ -18,22 +18,16 @@
 import cockpit from "cockpit";
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import {
-    Button,
-    Flex,
-    FlexItem,
-    HelperText,
-    HelperTextItem,
-    Label,
-    MenuToggle,
-    Select,
-    SelectGroup,
-    SelectOption,
-    Switch,
-    TextInput,
-    useWizardFooter
-} from "@patternfly/react-core";
-import { TrashIcon } from "@patternfly/react-icons";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
+import { MenuToggle } from "@patternfly/react-core/dist/esm/components/MenuToggle/index.js";
+import { Select, SelectGroup, SelectOption } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Switch } from "@patternfly/react-core/dist/esm/components/Switch/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { TrashIcon } from "@patternfly/react-icons/dist/esm/icons/trash-icon";
 
 import {
     applyStorage,
