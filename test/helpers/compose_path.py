@@ -22,8 +22,8 @@ def get_compose_url(compose_id):
         # Fedora versioned (e.g., latest-Fedora-43) -> try branched first, then numbered
         match = re.match(r'.*Fedora-([0-9]+)$', compose_id)
         version = match.group(1)
-        release = "branched"
-        fallback_release = version
+        release = version
+        fallback_release = "branched"
     elif re.match(r'^(latest-)?Fedora-Rawhide', compose_id):
         # Rawhide compose (with or without latest-) -> try rawhide first, then branched
         release = "rawhide"
