@@ -1,30 +1,5 @@
-:root {
-  /* Fedora blue aliases for reuse */
-  --fedora-blue: oklch(68.48% 0.1147 241.35deg);
-  --fedora-blue-dark: oklch(53.77% 0.1229 257.17deg);
-  /* Use dark for light mode brand color */
-  --fedora-brand: var(--fedora-blue-dark);
-  /* In light mode, darken */
-  --tint: black;
-}
-
-/* Intentionally in body so it definitely overrides PF values set in :root */
-body {
-  /* Remap base brand colors */
-  --pf-t--global--color--brand--default: var(--fedora-brand);
-  /* Increase tint when hovering */
-  --pf-t--global--color--brand--hover: color-mix(in oklch, var(--pf-t--global--color--brand--default), var(--tint) 10%);
-  /* Clicked should be same as hover */
-  --pf-t--global--icon--color--brand--clicked: var(--pf-t--global--color--brand--hover);
-}
-
-/* Dark theme overrides */
-.pf-v6-theme-dark {
-  /* Use light for dark mode brand color */
-  --fedora-brand: var(--fedora-blue);
-  /* In dark mode, lighten instead of darken */
-  --tint: white;
-}
+/* The branding colors for Fedora Linux are defined in cockpit/branding/fedora/branding.css
+   Here are some further customizations to make the UI look better with those colors. */
 
 /* Fedora doesn't ship the on-dark version of the SVG, but we can fake it */
 .logo {
@@ -35,7 +10,7 @@ body {
 /* Override the top header to have a Fedora blue */
 .pf-v6-c-page__main-group > .pf-v6-c-page__main-section:first-child {
   --_text: white;
-  background: radial-gradient(circle at 2.5rem, var(--fedora-blue) 32px, var(--fedora-blue-dark) 100%);
+  background: radial-gradient(circle at 2.5rem, var(--brand-default-light) 32px, var(--brand-default) 100%);
 
   .pf-v6-c-content {
     --pf-v6-c-content--Color: var(--_text);
@@ -56,6 +31,6 @@ body {
 /* Special-case some light-mode optimizations */
 html:not(.pf-v6-theme-dark) {
   .pf-v6-c-wizard__nav-link.pf-m-current::before {
-    --pf-v6-c-wizard__nav-link--m-current--before--BackgroundColor: var(--fedora-blue);
+    --pf-v6-c-wizard__nav-link--m-current--before--BackgroundColor: var(--brand-default-light);
   }
 }
