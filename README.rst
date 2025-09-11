@@ -1,6 +1,15 @@
 Anaconda Web UI
 ===============
 
+Communicate with the team
+-------------------------
+
+We're happy to hear from you! Here's how to reach us:
+
+- For **bug reports** and **feature requests**, `open a ticket on Bugzilla <https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&component=anaconda-webui>`_.
+- For **real-time chat**, `join our Matrix room (#anaconda @ FedoraProject.org) <https://matrix.to/#/%23anaconda:fedoraproject.org>`_.
+- For general help and longer discussions, `start or read a topic on our forum <https://discussion.fedoraproject.org/tag/anaconda>`_.
+
 Getting the source
 ------------------
 
