@@ -15,10 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 import React from "react";
-import {
-    DescriptionListDescription,
-    DescriptionListGroup, DescriptionListTerm,
-} from "@patternfly/react-core";
+import { DescriptionListDescription, DescriptionListGroup, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 
 export const ReviewDescriptionListItem = ({ description, id, term }) => {
     return (

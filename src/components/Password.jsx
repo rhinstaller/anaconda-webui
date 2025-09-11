@@ -20,24 +20,16 @@ import cockpit from "cockpit";
 import { debounce } from "throttle-debounce";
 
 import React, { useEffect, useMemo, useState } from "react";
-import {
-    Button,
-    FormGroup,
-    FormHelperText,
-    FormSection,
-    HelperText,
-    HelperTextItem,
-    InputGroup,
-    InputGroupItem,
-    TextInput,
-} from "@patternfly/react-core";
-import {
-    CheckCircleIcon,
-    ExclamationCircleIcon,
-    ExclamationTriangleIcon,
-    EyeIcon,
-    EyeSlashIcon
-} from "@patternfly/react-icons";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { FormGroup, FormHelperText, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { InputGroup, InputGroupItem } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { CheckCircleIcon } from "@patternfly/react-icons/dist/esm/icons/check-circle-icon";
+import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-circle-icon";
+import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-triangle-icon";
+import { EyeIcon } from "@patternfly/react-icons/dist/esm/icons/eye-icon";
+import { EyeSlashIcon } from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
 
 // eslint-disable-next-line camelcase
 import { password_quality } from "cockpit-components-password.jsx";

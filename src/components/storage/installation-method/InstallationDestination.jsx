@@ -17,26 +17,16 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-    Alert,
-    Button,
-    Divider,
-    Flex,
-    FlexItem,
-    FormGroup,
-    FormSection,
-    Menu,
-    MenuContent,
-    MenuItem,
-    MenuList,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Stack,
-    Title
-} from "@patternfly/react-core";
-import { SyncAltIcon } from "@patternfly/react-icons";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/index.js";
+import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { Menu, MenuContent, MenuItem, MenuList } from "@patternfly/react-core/dist/esm/components/Menu/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
+import { SyncAltIcon } from "@patternfly/react-icons/dist/esm/icons/sync-alt-icon";
 
 import {
     runStorageTask,

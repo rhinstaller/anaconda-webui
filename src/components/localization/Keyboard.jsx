@@ -18,12 +18,10 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Alert,
-    Button,
-    Content,
-    Flex,
-} from "@patternfly/react-core";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import {
     getKeyboardConfiguration,

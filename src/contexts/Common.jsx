@@ -17,8 +17,8 @@
 import cockpit from "cockpit";
 
 import React, { createContext, useEffect, useState } from "react";
-import { Popover, PopoverPosition } from "@patternfly/react-core";
-import { HelpIcon } from "@patternfly/react-icons";
+import { Popover, PopoverPosition } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
+import { HelpIcon } from "@patternfly/react-icons/dist/esm/icons/help-icon";
 
 import { WithDialogs } from "dialogs.jsx";
 

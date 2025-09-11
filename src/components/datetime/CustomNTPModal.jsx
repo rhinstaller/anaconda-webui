@@ -17,18 +17,17 @@
 import cockpit from "cockpit";
 
 import React, { useEffect, useState } from "react";
-import {
-    Button, Checkbox,
-    Flex, FlexItem,
-    HelperText, HelperTextItem,
-    Modal, ModalBody, ModalFooter, ModalHeader,
-    Spinner,
-    Stack,
-    TextInput,
-    ValidatedOptions,
-} from "@patternfly/react-core";
-import { TrashIcon } from "@patternfly/react-icons";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { ValidatedOptions } from "@patternfly/react-core/dist/esm/helpers/constants.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
+import { TrashIcon } from "@patternfly/react-icons/dist/esm/icons/trash-icon";
+import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table/dist/esm/index.js";
 
 import {
     checkNTPServer,

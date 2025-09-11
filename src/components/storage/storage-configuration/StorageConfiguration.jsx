@@ -16,7 +16,7 @@
  */
 
 import React, { useContext, useEffect, useMemo } from "react";
-import { useWizardFooter } from "@patternfly/react-core";
+import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import { applyStorage } from "../../../apis/storage_partitioning.js";
 

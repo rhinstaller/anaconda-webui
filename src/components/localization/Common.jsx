@@ -17,18 +17,11 @@
 import cockpit from "cockpit";
 
 import React, { useState } from "react";
-import {
-    Button,
-    Menu,
-    MenuContent,
-    MenuGroup,
-    MenuItem,
-    MenuList,
-    TextInputGroup,
-    TextInputGroupMain,
-    TextInputGroupUtilities,
-} from "@patternfly/react-core";
-import { SearchIcon, TimesIcon } from "@patternfly/react-icons";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Menu, MenuContent, MenuGroup, MenuItem, MenuList } from "@patternfly/react-core/dist/esm/components/Menu/index.js";
+import { TextInputGroup, TextInputGroupMain, TextInputGroupUtilities } from "@patternfly/react-core/dist/esm/components/TextInputGroup/index.js";
+import { SearchIcon } from "@patternfly/react-icons/dist/esm/icons/search-icon";
+import { TimesIcon } from "@patternfly/react-icons/dist/esm/icons/times-icon";
 
 import { warn as loggerWarn } from "../../helpers/log.js";
 const _ = cockpit.gettext;

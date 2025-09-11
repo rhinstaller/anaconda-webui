@@ -18,12 +18,9 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import {
-    FormGroup,
-    FormSection,
-    Radio,
-    Title,
-} from "@patternfly/react-core";
+import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 
 import { setStorageScenarioAction } from "../../../actions/storage-actions.js";
 

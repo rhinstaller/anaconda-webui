@@ -17,13 +17,9 @@
 import cockpit from "cockpit";
 
 import React, { useContext } from "react";
-import {
-    HelperText,
-    HelperTextItem,
-    List,
-    ListItem,
-    Stack,
-} from "@patternfly/react-core";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
+import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
     checkDeviceOnStorageType,

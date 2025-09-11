@@ -20,18 +20,12 @@ import cockpit from "cockpit";
 import { debounce } from "throttle-debounce";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import {
-    Checkbox,
-    Form,
-    FormGroup,
-    FormHelperText,
-    FormSection,
-    HelperText,
-    HelperTextItem,
-    InputGroup,
-    TextInput,
-    useWizardFooter,
-} from "@patternfly/react-core";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { Form, FormGroup, FormHelperText, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { InputGroup } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import {
     guessUsernameFromFullName,

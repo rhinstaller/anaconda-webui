@@ -18,20 +18,14 @@
 import cockpit from "cockpit";
 
 import React, { useContext } from "react";
-import {
-    Alert,
-    Checkbox,
-    Content,
-    ContentVariants,
-    EmptyState,
-    EmptyStateFooter,
-    Form,
-    FormGroup,
-    FormSection,
-    Spinner,
-    TextInput,
-    Title,
-} from "@patternfly/react-core";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { EmptyState, EmptyStateFooter } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { Form, FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 
 import {
     setLuksEncryptionDataAction

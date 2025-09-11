@@ -18,24 +18,17 @@
 import cockpit from "cockpit";
 
 import React, { useState } from "react";
-import {
-    ActionList,
-    ActionListItem,
-    Alert,
-    Button,
-    Flex,
-    FlexItem,
-    Form,
-    FormGroup,
-    InputGroup,
-    InputGroupItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    TextInput
-} from "@patternfly/react-core";
-import { EyeIcon, EyeSlashIcon, LockIcon } from "@patternfly/react-icons";
+import { ActionList, ActionListItem } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { InputGroup, InputGroupItem } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { EyeIcon } from "@patternfly/react-icons/dist/esm/icons/eye-icon";
+import { EyeSlashIcon } from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
+import { LockIcon } from "@patternfly/react-icons/dist/esm/icons/lock-icon";
 
 import {
     findExistingSystems,

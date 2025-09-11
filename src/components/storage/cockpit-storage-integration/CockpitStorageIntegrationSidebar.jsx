@@ -18,17 +18,12 @@
 import cockpit from "cockpit";
 
 import React from "react";
-import {
-    Card,
-    CardBody,
-    Content,
-    Flex,
-    FlexItem,
-    List,
-    ListItem,
-    PageSection,
-    Title
-} from "@patternfly/react-core";
+import { Card, CardBody } from "@patternfly/react-core/dist/esm/components/Card/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
+import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import {
     useMountPointConstraints,

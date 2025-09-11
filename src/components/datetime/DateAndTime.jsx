@@ -19,17 +19,15 @@ import cockpit from "cockpit";
 import { DateTime } from "luxon";
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import {
-    Checkbox,
-    DatePicker, Flex,
-    FlexItem, Form,
-    FormGroup,
-    Popover,
-    Stack,
-    StackItem, Switch,
-    TimePicker,
-    Title
-} from "@patternfly/react-core";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
+import { DatePicker } from "@patternfly/react-core/dist/esm/components/DatePicker/index.js";
+import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
+import { Switch } from "@patternfly/react-core/dist/esm/components/Switch/index.js";
+import { TimePicker } from "@patternfly/react-core/dist/esm/components/TimePicker/index.js";
+import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
+import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
     getNTPEnabled,

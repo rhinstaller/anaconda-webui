@@ -17,24 +17,13 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Button,
-    DescriptionListDescription,
-    DescriptionListGroup,
-    DescriptionListTerm,
-    Flex,
-    FlexItem,
-    Form,
-    FormGroup,
-    FormHelperText,
-    HelperText,
-    HelperTextItem,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    TextInput
-} from "@patternfly/react-core";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { DescriptionListDescription, DescriptionListGroup, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { Form, FormGroup, FormHelperText } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import { setHostname } from "../../apis/network.js";
 
