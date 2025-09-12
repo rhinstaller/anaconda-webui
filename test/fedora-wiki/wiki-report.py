@@ -37,7 +37,6 @@ class WikiReport:
         self.report_path = report_path
         self.report = self.parse_json_report()
         self.compose_id = self.report["metadata"]["compose"]
-        self.compose = self.compose_id.split("-")[-1]
         self.wiki_hostname = "stg.fedoraproject.org" if staging else "fedoraproject.org"
 
     def get_passed_testcases(self):
@@ -73,7 +72,6 @@ class WikiReport:
                     ResTuple(
                         bot=True,
                         cid=self.compose_id,
-                        compose=self.compose,
                         dist="Fedora",
                         env=fedora_testcase['environment'] if 'environment' in fedora_testcase else f"{testcase['arch']} {testcase['firmware']}",
                         user="anaconda-bot",
