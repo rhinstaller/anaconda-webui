@@ -11,22 +11,23 @@ def get_compose_url(compose_id):
     Determine the correct compose base URL with fallback.
 
     Args:
-        compose_id (str): The compose ID (e.g., 'Fedora-43-20250819.n.0', 'Fedora-Rawhide-20250819.n.0', 'latest-Fedora-43', 'latest-Fedora-Rawhide')
+        compose_id (str): The compose ID (e.g., 'Fedora-43-20250819.n.0', 'Fedora-Rawhide-20250819.n.0')
 
     Returns:
         str: The correct compose base URL
     """
     # Determine the release path based on compose ID pattern
     release = "branched"  # Default release path
-    if re.match(r'^(latest-)Fedora-([0-9]+)$', compose_id):
-        # Fedora versioned (e.g., latest-Fedora-43) -> try branched first, then numbered
-        match = re.match(r'.*Fedora-([0-9]+)$', compose_id)
+    fallback_release=None
+    if re.match(r'^Fedora-Rawhide', compose_id):
+        # Rawhide compose -> try rawhide first, then branched
+        release = "rawhide"
+    elif re.match(r'^Fedora-([0-9]+)', compose_id):
+        # Fedora versioned (e.g., Fedora-43-20250819.n.0) -> try versioned first, then branched
+        match = re.match(r'^Fedora-([0-9]+)', compose_id)
         version = match.group(1)
         release = version
         fallback_release = "branched"
-    elif re.match(r'^(latest-)?Fedora-Rawhide', compose_id):
-        # Rawhide compose (with or without latest-) -> try rawhide first, then branched
-        release = "rawhide"
 
     # For actual compose IDs, return path with /compose/ (for compose access)
     primary_url = f"https://kojipkgs.fedoraproject.org/compose/{release}/{compose_id}"
