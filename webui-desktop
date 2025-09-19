@@ -119,10 +119,6 @@ get_default_browser() {
 prepare_firefox_cmd() {
     INSTALLER_USER=$1
 
-    export MOZ_APP_TITLE=""
-    export MOZ_APP_REMOTINGNAME="liveinst"
-    export MOZ_GTK_TITLEBAR_DECORATION=client
-
     # prepare empty firefox profile dir with theme based on the passed profile id
     FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
     FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR}/anaconda/firefox-profile"
@@ -141,8 +137,11 @@ prepare_firefox_cmd() {
 
     pkexec --user "${INSTALLER_USER}" cp -a "${THEME_PATH}/." ${FIREFOX_PROFILE_PATH}
 
+    # set environment for Firefox
+    BROWSER_ENV=(MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" MOZ_GTK_TITLEBAR_DECORATION=client)
+
     # FIXME: is this hardcoded resolution necessary ?
-    BROWSER=(/usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
+    BROWSER=(/usr/bin/env "${BROWSER_ENV[@]}" /usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
 
     declare -p BROWSER
 }
