@@ -257,6 +257,10 @@ class StorageUtils(StorageDestination):
         done
         """, timeout=30)
 
+    def get_luks_device_name(self, device):
+        ret = self.machine.execute(f'cryptsetup luksUUID {device}')
+        return f"luks-{ret.strip()}"
+
     def create_luks_partition(self, device, passphrase, luks_name, fsformat="", close_luks=True):
         self.machine.execute(f"""
         set -ex
