@@ -798,5 +798,83 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
 
 
+    def _testEncryptedHomeSecondDisk_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk1 = "/dev/vda"
+        disk2 = "/dev/vdb"
+        # On disk1: EFI, /boot (ext4), and root (xfs)
+        s.partition_disk(disk1, [("512MiB", "efi"), ("1GiB", "ext4"), ("", "xfs")])
+        # On disk2: whole-disk LUKS with xfs inside (no partition table)
+        m.execute(f"wipefs -a {disk2}")
+        s.create_luks_partition(disk2, "homepass", "encrypted-home", "xfs")
+
+    @run_boot("efi")
+    @disk_images([("", 15), ("", 10)])
+    @nondestructive
+    def testEncryptedHomeSecondDisk(self):
+        """
+        Description:
+            Test encrypted /home reuse on a separate disk via 'Mount point mapping'.
+
+        Expected results:
+            - The 'Unlock' dialog is available and used to unlock the /home disk
+            - The user can assign /boot, /boot/efi, and / on disk1
+            - The user can assign /home to the unlocked encrypted device on disk2
+            - The review screen shows /home as encrypted and mounted (not reformatted)
+
+        References:
+            - https://bugzilla.redhat.com/show_bug.cgi?id=2396646
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev1 = "vda"
+        dev2 = "vdb"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([(dev1, True), (dev2, True)])
+
+        # Unlock the encrypted second disk (home)
+        s.unlock_all_encrypted()
+        s.unlock_device("homepass", [f"{dev2}"], [f"{dev2}"])
+
+        # Proceed to mount point mapping with both disks selected
+        s.select_mountpoint()
+
+        # Assign /, /boot/efi and /boot on disk1
+        s.select_mountpoint_row_device(1, f"{dev1}3")
+        next_idx = 2
+        if self.is_efi:
+            s.select_mountpoint_row_device(next_idx, f"{dev1}1")
+            s.check_mountpoint_row_format_type(next_idx, "EFI System Partition")
+            next_idx += 1
+        s.select_mountpoint_row_device(next_idx, f"{dev1}2")
+        s.check_mountpoint_row_format_type(next_idx, "ext4")
+        next_idx += 1
+
+        # Add and assign /home to the unlocked encrypted device on disk2
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(next_idx, "/home")
+        luks_device = s.get_luks_device_name(f"/dev/{dev2}")
+        s.select_mountpoint_row_device(next_idx, luks_device)
+
+        # Verify review shows /home as encrypted and mounted on disk2
+        i.reach(i.steps.REVIEW)
+        r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev1, "/boot/efi", f"{dev1}1", "537 MB", False, "efi")
+        r.check_disk_row(dev1, "/boot", f"{dev1}2", "1.07 GB", False, "ext4")
+        r.check_disk_row(dev1, "/", f"{dev1}3", "14.5", True, "xfs")
+
+        r.check_disk(dev2, "10.7 GB vdb (Virtio Block Device)")
+        r.check_disk_row(dev2, "/home", "", "10.7", False, "xfs", is_encrypted=True, action="mount")
+
+
 if __name__ == '__main__':
     test_main()

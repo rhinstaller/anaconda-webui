@@ -18,7 +18,7 @@
 import { checkIfArraysAreEqual } from "./utils.js";
 
 /* Get the list of IDs of all the ancestors of the given device
- * (including the device itself)
+ * (excluding the device itself)
  * @param {Object} deviceData - The device data object
  * @param {string} device - The ID of the device
  * @returns {Array}
@@ -36,7 +36,7 @@ export const getDeviceAncestors = (deviceData, device) => {
 };
 
 /* Get the list of IDs of all the descendants of the given device
- * (including the device itself)
+ * (excluding the device itself)
  * @param {string} device - The ID of the device
  * @param {Object} deviceData - The device data object
  * @returns {Array}
@@ -56,11 +56,9 @@ export const getDeviceChildren = ({ device, deviceData }) => {
  */
 export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
     // check for selected disks and their children devices for locked LUKS devices
-    const relevantDevs = [];
-    selectedDisks.forEach(device => {
-        const children = getDeviceChildren({ device, deviceData });
-        relevantDevs.push(...children);
-    });
+    const relevantDevs = selectedDisks.flatMap(disk => (
+        [disk, ...getDeviceChildren({ device: disk, deviceData })]
+    ));
 
     return Object.keys(deviceData).filter(d => {
         return (
