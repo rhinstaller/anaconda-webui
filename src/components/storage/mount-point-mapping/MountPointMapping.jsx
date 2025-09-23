@@ -326,7 +326,6 @@ export const DeviceColumnSelect = ({
 
     return (
         <Select
-          menuAppendTo="inline"
           isGrouped={Object.keys(optionGroups).length > 1}
           isOpen={isOpen}
           selected={device}
@@ -340,6 +339,7 @@ export const DeviceColumnSelect = ({
               handleRequestChange({ deviceSpec: "", mountPoint: request["mount-point"], requestIndex });
               setIsOpen(false);
           }}
+          popperProps={{ appendTo: "inline" }}
           shouldFocusToggleOnSelect
           toggle={toggleRef => (
               <MenuToggle
