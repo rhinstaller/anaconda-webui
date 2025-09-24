@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, disk_images
+from installer import Installer
+from progress import Progress
+from testlib import test_main  # pylint: disable=import-error
+from utils import get_pretty_name
+
+
+class TestPayloadDNF_E2E(VirtInstallMachineCase):
+    @disk_images([("", 15)])
+    def testDefaultClosestMirror(self):
+        """
+        Description:
+            Perform a simple installation using the default DNF payload
+            with the closest mirror source.
+
+        Expected results:
+            - The system installs successfully and boots to Fedora.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        p = Progress(b)
+
+        i.open()
+        i.reach(i.steps.REVIEW)
+
+        # Begin installation, wait for completion
+        i.begin_installation(needs_confirmation=False)
+        p.wait_done(timeout=2400)
+
+        # Reboot into installed system
+        self.handleReboot()
+
+        # Sanity check: verify we booted into Fedora
+        pretty_name = get_pretty_name(m)
+        self.assertIn("Fedora Linux", pretty_name)
+
+
+if __name__ == '__main__':
+    test_main()

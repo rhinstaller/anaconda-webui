@@ -135,6 +135,9 @@ class VirtInstallMachine(VirtMachine):
         else:
             location = f"{iso_path}"
 
+        # FIXME: Disable SELinux on DNF installation as it needs relabelling other wise ssh logins are prevented
+        selinux = "inst.noselinux " if os.environ.get("TEST_PAYLOAD", "liveimg").lower() == "dnf" else ""
+
         boot_arg = "--boot uefi " if self.is_efi else ""
         try:
             self._execute(
@@ -149,7 +152,7 @@ class VirtInstallMachine(VirtMachine):
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
+                f"'inst.sshd inst.webui.remote {selinux} inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"

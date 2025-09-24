@@ -28,6 +28,10 @@ RUN_OPTS=""
 ALL_TESTS="$(test/common/run-tests --test-dir test -l)"
 
 RE_EXPENSIVE='E2E'
+RE_DNF_PAYLOAD='PayloadDNF'
+
+# Pre-filtered test sets for common patterns
+BASIC_TESTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep -vE "$RE_DNF_PAYLOAD")"
 
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
@@ -46,17 +50,21 @@ case "${TEST_SCENARIO:=}" in
             TEST_FEDORA_WIKI_STAGING="true"
         fi
         ;;
+    *dnf*)
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_DNF_PAYLOAD")"
+        export TEST_PAYLOAD="dnf"
+        ;;
     *expensive*)
-        RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE")"
+        RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE" | grep -vE "$RE_DNF_PAYLOAD")"
         ;;
     *storage*)
-        RUN_OPTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep "Storage" | grep -v "Cockpit")"
+        RUN_OPTS="$(echo "$BASIC_TESTS" | grep "Storage" | grep -v "Cockpit")"
         ;;
     *other*)
-        RUN_OPTS="$(echo "$ALL_TESTS" | grep -Ev "$RE_EXPENSIVE" | grep -v "Cockpit" | grep -v "Storage")"
+        RUN_OPTS="$(echo "$BASIC_TESTS" | grep -v "Cockpit" | grep -v "Storage")"
         ;;
     *cockpit*)
-        RUN_OPTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep "Cockpit")"
+        RUN_OPTS="$(echo "$BASIC_TESTS" | grep "Cockpit")"
         ;;
     *)
         RUN_OPTS="$ALL_TESTS"
