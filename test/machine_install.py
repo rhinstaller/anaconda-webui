@@ -73,19 +73,18 @@ class VirtInstallMachine(VirtMachine):
         return http_updates_img_port
 
     def _serve_payload(self):
-        payload_cached_path = os.path.realpath(self.payload_path)
-        payload_cached_dir = os.path.dirname(payload_cached_path)
-        payload_cached_name = os.path.basename(payload_cached_path)
-
+        serve_dir = os.path.realpath(self.payload_path)
         http_payload_port = self._get_free_port()
-        self.http_payload_server = subprocess.Popen(["python3", "-m", "http.server", "-d", payload_cached_dir, str(http_payload_port)])
+        self.http_payload_server = subprocess.Popen(["python3", "-m", "http.server", "-d", serve_dir, str(http_payload_port)])
         self._wait_http_server_running(http_payload_port)
-
-        return payload_cached_name, http_payload_port
+        return http_payload_port
 
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
-        payload_cached_name, http_payload_port = self._serve_payload()
-        content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/{payload_cached_name}"'
+        payload_mode = os.environ.get("TEST_PAYLOAD", "liveimg").lower()
+        content = ""
+        if payload_mode == "liveimg":
+            http_payload_port = self._serve_payload()
+            content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/liveimg.tar.gz"'
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
@@ -102,9 +101,9 @@ class VirtInstallMachine(VirtMachine):
         self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
         self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
 
-        self.payload_path = os.path.join(BOTS_DIR, f"./images/{self.os}-anaconda-payload")
+        self.payload_path = os.path.join(ROOT_DIR, f"tmp/{self.os}-anaconda-payload")
         if not os.path.exists(self.payload_path):
-            raise FileNotFoundError(f"Missing payload file {self.payload_path}; use 'make payload'.")
+            raise FileNotFoundError(f"Missing payload in {self.payload_path}; use 'make payload'.")
 
         update_img_global_file = os.path.join(ROOT_DIR, f"updates-{self.os}.img")
         update_img_file = os.path.join(ROOT_DIR, f"{self.label}-updates.img")
