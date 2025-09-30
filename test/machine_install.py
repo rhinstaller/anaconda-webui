@@ -85,6 +85,10 @@ class VirtInstallMachine(VirtMachine):
         if payload_mode == "liveimg":
             http_payload_port = self._serve_payload()
             content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/liveimg.tar.gz"'
+        elif payload_mode == "dnf":
+            http_payload_port = self._serve_payload()
+            content = f'repo --name webuitests --baseurl="http://10.0.2.2:{http_payload_port}/repo/"\n'
+            content += '%packages\n@core\n@anaconda-tools\n@critical-path-base\n%end\n'
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
