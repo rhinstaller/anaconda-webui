@@ -210,6 +210,10 @@ prepare-test-deps: bots test/common test/reference payload images
 .PHONY: payload
 payload: bots
 	bots/image-download $(PAYLOAD)
+	@echo "Unpacking $(PAYLOAD) to tmp for local serving"
+	@rm -rf tmp/$(PAYLOAD) && mkdir -p tmp/$(PAYLOAD)
+	@tar -C tmp/$(PAYLOAD) -xzf bots/images/$(PAYLOAD)
+	@echo "Payload unpacked into tmp/$(PAYLOAD)"
 
 .PHONY: images
 images: bots
