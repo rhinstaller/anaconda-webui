@@ -25,6 +25,7 @@ import { WithDialogs } from "dialogs.jsx";
 export const FooterContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
+export const PayloadContext = createContext(null);
 export const RuntimeContext = createContext(null);
 export const StorageContext = createContext(null);
 export const StorageDefaultsContext = createContext(null);
@@ -61,9 +62,11 @@ const ModuleContextWrapper = ({ children, state }) => {
                 <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
                     <UsersContext.Provider value={state.users}>
                         <NetworkContext.Provider value={state.network}>
-                            <TimezoneContext.Provider value={state.timezone}>
-                                {children}
-                            </TimezoneContext.Provider>
+                            <PayloadContext.Provider value={state.payload}>
+                                <TimezoneContext.Provider value={state.timezone}>
+                                    {children}
+                                </TimezoneContext.Provider>
+                            </PayloadContext.Provider>
                         </NetworkContext.Provider>
                     </UsersContext.Provider>
                 </StorageContext.Provider>

@@ -1,0 +1,89 @@
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+
+HELPERS_DIR = os.path.dirname(__file__)
+sys.path.append(HELPERS_DIR)
+
+from steps import SOFTWARE_SELECTION
+
+PAYLOADS_SERVICE = "org.fedoraproject.Anaconda.Modules.Payloads"
+PAYLOADS_INTERFACE = PAYLOADS_SERVICE
+PAYLOADS_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Payloads"
+
+PAYLOAD_DNF_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Payload.DNF"
+
+
+class PayloadDNFDBus():
+    def __init__(self, machine):
+        self.machine = machine
+        self._bus_address = self.machine.execute("cat /run/anaconda/bus.address")
+
+    def _get_active_payload(self):
+        """Get the active payload object path."""
+        ret = self.machine.execute(
+            f'busctl --address="{self._bus_address}" '
+            f'get-property '
+            f'{PAYLOADS_SERVICE} '
+            f'{PAYLOADS_OBJECT_PATH} '
+            f'{PAYLOADS_INTERFACE} ActivePayload'
+        )
+        return ret.split('s ')[1].strip().strip('"')
+
+    def dbus_set_packages_selection(self, environment):
+        """Set the packages selection via D-Bus.
+
+        :param environment: environment ID to set
+        """
+        payload_path = self._get_active_payload()
+
+        # Build the structure for busctl: a{sv} (dictionary of string to variant)
+        # Format: a{sv} N "key1" s "value1" "key2" as N "value2_1" ...
+        # For empty array, use "as 0"
+        # Structure: a{sv} 2 "environment" s "server-product-environment" "groups" as 0
+        self.machine.execute(
+            f'busctl --address="{self._bus_address}" '
+            f'set-property '
+            f'{PAYLOADS_SERVICE} '
+            f'{payload_path} '
+            f'{PAYLOAD_DNF_INTERFACE} '
+            f'PackagesSelection '
+            f'a{{sv}} 2 "environment" s "{environment}" "groups" as 0'
+        )
+
+    def dbus_reset_to_default_environment(self, environment="server-product-environment"):
+        """Reset packages selection to default environment with empty groups.
+
+        :param environment: environment ID to set (default: server-product-environment)
+        """
+        self.dbus_set_packages_selection(environment)
+
+
+class PayloadDNF():
+    def __init__(self, browser):
+        self.browser = browser
+        self._step = SOFTWARE_SELECTION
+
+    def check_selected_environment(self, environment):
+        env_id = f"{self._step}-environment-{environment}"
+        self.browser.wait_visible(f"#{env_id}.pf-m-selected")
+
+    def select_environment(self, environment):
+        env_id = f"{self._step}-environment-{environment}"
+        self.browser.click(f"#{env_id}")
+        self.browser.wait_visible(f"#{env_id}.pf-m-selected")
+

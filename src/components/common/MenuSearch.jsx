@@ -42,6 +42,7 @@ const renderOptions = (options, scrollRef, selection, search) => {
             return (
                 <MenuItem
                   id={option.id}
+                  description={option.itemDescription}
                   isAriaDisabled={option.isAriaDisabled}
                   isSelected={isSelected}
                   itemId={option.itemId}

@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with This program; If not, see <http://www.gnu.org/licenses/>.
+
+import os
+import sys
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+HELPERS_DIR = os.path.join(os.path.dirname(__file__), "helpers")
+sys.path.append(HELPERS_DIR)
+from payload_dnf import PayloadDNF
+
+
+@nondestructive
+class TestPayloadDNF(VirtInstallMachineCase):
+    def testEnvironments(self):
+        """
+        Description:
+            Ensure software selection page loads environments and preselects the default environment.
+            Then select another environment.
+
+        Expected results:
+            - The list has at least one environment.
+            - The default environment (server) is selected.
+            - Can select another environment (workstation).
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        dnf = PayloadDNF(b)
+
+        i.open()
+        i.reach(i.steps.SOFTWARE_SELECTION)
+
+        # Check that server environment is selected by default
+        dnf.check_selected_environment("server-product-environment")
+
+        # Select workstation environment
+        dnf.select_environment("workstation-product-environment")
+
+
+if __name__ == '__main__':
+    test_main()

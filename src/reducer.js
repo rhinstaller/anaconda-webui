@@ -74,6 +74,13 @@ export const miscInitialState = {
     isFetching: false,
 };
 
+/* Initial state for the payload store substate */
+export const payloadInitialState = {
+    environments: [],
+    selection: null,
+    type: null,
+};
+
 /* Initial state for the users store substate */
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
@@ -93,6 +100,7 @@ export const initialState = {
     localization: localizationInitialState,
     misc: miscInitialState,
     network: networkInitialState,
+    payload: payloadInitialState,
     runtime: runtimeInitialState,
     storage: storageInitialState,
     timezone: timezoneInitialState,
@@ -123,6 +131,7 @@ export const reducer = (state, action) => {
         localization: localizationReducer(state.localization, action),
         misc: miscReducer(state.misc, action),
         network: networkReducer(state.network, action),
+        payload: payloadReducer(state.payload, action),
         runtime: runtimeReducer(state.runtime, action),
         storage: storageReducer(state.storage, action),
         timezone: timezoneReducer(state.timezone, action),
@@ -232,6 +241,18 @@ export const timezoneReducer = (state = timezoneInitialState, action) => {
         return { ...state, timezone: action.payload.timezone };
     } else if (action.type === "SET_ALL_VALID_TIMEZONES") {
         return { ...state, allValidTimezones: action.payload.allValidTimezones };
+    } else {
+        return state;
+    }
+};
+
+export const payloadReducer = (state = payloadInitialState, action) => {
+    if (action.type === "SET_PAYLOAD_SELECTION") {
+        return { ...state, selection: action.payload.selection };
+    } else if (action.type === "SET_PAYLOAD_ENVIRONMENTS") {
+        return { ...state, environments: action.payload.environments || [] };
+    } else if (action.type === "SET_PAYLOAD_TYPE") {
+        return { ...state, type: action.payload.type };
     } else {
         return state;
     }
