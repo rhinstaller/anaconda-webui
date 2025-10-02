@@ -6,6 +6,7 @@ import { Page as PageDateAndTime } from "./datetime/index.js";
 import { Page as PageProgress } from "./installation/index.js";
 import { Page as PageInstallationLanguage } from "./localization/index.js";
 import { Page as PageReviewConfiguration } from "./review/index.js";
+import { Page as PageSoftwareSelection } from "./software/index.js";
 import { Page as PageInstallationMethod } from "./storage/installation-method/index.js";
 import { Page as PageMountPointMapping } from "./storage/mount-point-mapping/index.js";
 import { Page as PageStorageConfiguration } from "./storage/storage-configuration/index.js";
@@ -19,6 +20,7 @@ export const getSteps = (userInterfaceConfig, ...args) => {
     const stepsOrder = [
         new PageInstallationLanguage(...args),
         new PageDateAndTime(...args),
+        new PageSoftwareSelection(...args),
         new PageInstallationMethod(...args),
         new PageStorageConfiguration(...args),
         {
