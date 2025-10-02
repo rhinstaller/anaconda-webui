@@ -1,0 +1,98 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase, run_boot
+from installer import Installer
+from review import Review
+from storage import Storage
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
+    def _testPreserveHome_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        tmp_mount = "/tmp/btrfs-mount-test"
+        # GPT: 1: EFI, 2: btrfs volume
+        s.partition_disk(disk, [("100MiB", "efi"), ("", "btrfs")])
+
+        m.execute(f"""
+        set -ex
+        mkdir -p {tmp_mount}
+        mount {disk}2 {tmp_mount}
+        btrfs subvolume create {tmp_mount}/root
+        btrfs subvolume create {tmp_mount}/home
+        umount {tmp_mount}
+        rmdir {tmp_mount}
+        """)
+
+    @run_boot("efi")
+    def testPreserveHome(self):
+        """
+        Description:
+            EFI install using mount point assignment. Map / to btrfs subvolume 'root',
+            preserve existing btrfs subvolume 'home'
+
+        Expected results:
+            - /boot/efi present
+            - / on btrfs subvolume reformatted
+            - /home preserved
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Select the disk and enter mount point mapping
+        s.select_mountpoint([(dev, True)])
+
+        # Assign root, efi, boot and home
+        # Row 1: /
+        s.select_mountpoint_row_device(1, "root")
+        # Row 2: /boot or /boot/efi depending on firmware; we're EFI-only
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.check_mountpoint_row_format_type(2, "EFI System Partition")
+
+        s.remove_mountpoint_row(3, 3)  # Remove default /boot row
+
+        # Add /home row, select home subvol, do NOT reformat
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_device(3, "home")
+        s.select_mountpoint_row_mountpoint(3, "/home")
+
+        # Review and install
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev, "/boot/efi", f"{dev}1", "105 MB", False)
+        r.check_disk_row(dev, "/", f"{dev}2", "16.0 GB", True, "btrfs")
+        r.check_disk_row(dev, "/home", f"{dev}2", "16.0 GB", False)
+
+        self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
+
+
+if __name__ == '__main__':
+    test_main()
