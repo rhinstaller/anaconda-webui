@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { FooterContext, StorageContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { FooterContext, PayloadContext, StorageContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
@@ -37,6 +37,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const [isFormValid, setIsFormValid] = useState(false);
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(StorageContext).systemType === "BOOT_ISO";
+    const payload = useContext(PayloadContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
 
@@ -48,7 +49,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
         setIsFormValid,
     };
 
-    const stepsOrder = getSteps(userInterfaceConfig, isBootIso, storageScenarioId);
+    const stepsOrder = getSteps(userInterfaceConfig, isBootIso, storageScenarioId, payload.type);
     const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
 
     useEffect(() => {
