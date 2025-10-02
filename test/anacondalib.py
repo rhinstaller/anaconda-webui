@@ -30,6 +30,7 @@ sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
 from installer import Installer
 from language import Language
 from machine_install import VirtInstallMachine
+from payload_dnf import PayloadDNFDBus
 from progress import Progress
 from storage import Storage
 from testlib import MachineCase, wait  # pylint: disable=import-error
@@ -88,6 +89,8 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
             self.addCleanup(self.resetTimezone)
+            if os.environ.get("TEST_PAYLOAD", None) == "dnf":
+                self.addCleanup(self.resetPayloadDNF)
 
         super().setUp()
 
@@ -215,6 +218,11 @@ class VirtInstallMachineCase(MachineCase):
         m = self.machine
 
         m.execute("systemctl restart webui-cockpit-ws.service")
+
+    def resetPayloadDNF(self):
+        m = self.machine
+        dnf_dbus = PayloadDNFDBus(m)
+        dnf_dbus.dbus_reset_to_default_environment("server-product-environment")
 
     def downloadLogs(self):
         if not self.ext_logging:
