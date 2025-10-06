@@ -1,0 +1,54 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from network import Network
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestNetwork(VirtInstallMachineCase):
+    def testAPSimulation(self):
+        """
+        Description:
+            Test the simulation of wireless devices and AP in the guest works
+
+        Expected results:
+            - AP with given SSID is created in the machine
+        """
+        b = self.browser
+        i = Installer(b, self.machine)
+        n = Network(b, self.machine)
+
+        test_ssid = "test ssid1"
+        iface0 = "wlan0"
+        iface1 = "wlan1"
+
+        n.create_wifi_devices(2)
+        n.create_ap(test_ssid, interface=iface1)
+
+        self.addCleanup(n.remove_ap)
+        self.addCleanup(n.remove_wifi_devices)
+
+        i.open()
+        i.reach(i.steps.ACCOUNTS)
+
+        n.check_ssids(iface1, [test_ssid])
+
+
+if __name__ == '__main__':
+    test_main()
