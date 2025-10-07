@@ -20,7 +20,7 @@ import os
 from anacondalib import VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme, rsync_directory
 
@@ -86,7 +86,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
 
         if self.is_efi:
             r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
         r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
         r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
@@ -125,7 +125,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         dev = encrypted_disk.split("/")[-1]
         dev_fedora = new_disk
 
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1MiB", "efi"), ("1GiB", "ext4"), ("", None)])
+        s.partition_disk(disk, [("1MiB", "biosboot"), ("1MiB", "efi"), (BOOT_PARTITION_DEFAULT_SIZE, "ext4"), ("", None)])
 
         # Create standard encrypted btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the Fedora encrypted layout
@@ -204,9 +204,9 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}3", action="delete")
         r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-        r.check_disk_row(dev, "/boot", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}4", "15.0 GB", True, "btrfs", is_encrypted=True)
-        r.check_disk_row(dev, "/home", f"{dev}4", "15.0 GB", False, "btrfs", is_encrypted=True, action="mount")
+        r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}4", "13.9 GB", True, "btrfs", is_encrypted=True)
+        r.check_disk_row(dev, "/home", f"{dev}4", "13.9 GB", False, "btrfs", is_encrypted=True, action="mount")
 
     def _testMultipleRoots_partition_disk(self):
         self._remove_unknown_mountpoints("vda")
@@ -268,7 +268,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (Virtio Block Device)")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
-        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
         r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "12.8 GB", True, "btrfs", is_encrypted=False)
         r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
@@ -329,7 +329,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
         self._remove_unknown_mountpoints("vdb")
 
-    @disk_images([("", 15), ("fedora-42", 15)])
+    @disk_images([("", 20), ("fedora-42", 15)])
     def testMBRParttable(self):
         """
         Description:
@@ -375,12 +375,12 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev_mbr, f"16.1 GB {dev_mbr} (Virtio Block Device)")
+        r.check_disk(dev_mbr, f"21.5 GB {dev_mbr} (Virtio Block Device)")
         r.check_disk_row(dev_mbr, parent=f"{dev_mbr}1", action="delete")
         r.check_disk_row(dev_mbr, "/home", f"{dev_mbr}2", "14.0 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
 
     def _testWindowsSingleDisk_partition_disk(self):
         storage = Storage(self.browser, self.machine)
@@ -440,7 +440,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
 
 
 if __name__ == '__main__':
