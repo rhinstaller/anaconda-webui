@@ -19,7 +19,7 @@ from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from password import Password
 from review import Review
-from storage import Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_workstation_iso
 
@@ -58,8 +58,8 @@ class TestReview(VirtInstallMachineCase):
 
         # check selected disks are shown
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs")
-        r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs")
+        r.check_disk_row("vda", "/boot", "vda2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs")
+        r.check_disk_row("vda", "/", "vda3, LVM", "14.0 GB", True, "xfs")
 
         # check storage configuration
         r.check_storage_config("Use entire disk")
@@ -87,8 +87,8 @@ class TestReview(VirtInstallMachineCase):
         # check selected disks are shown
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row("vda", "",    "vda1", "1.05 MB", True, "biosboot")
-        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", True, "xfs", is_encrypted=False)
-        r.check_disk_row("vda", "/", "vda3, LVM", "15.0 GB", True, "xfs", is_encrypted=True)
+        r.check_disk_row("vda", "/boot", "vda2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row("vda", "/", "vda3, LVM", "13.9 GB", True, "xfs", is_encrypted=True)
 
         # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
         b.mouse("#app", "mouseenter")

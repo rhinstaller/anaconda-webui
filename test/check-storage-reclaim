@@ -18,7 +18,7 @@
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, Storage
 from testlib import (
     nondestructive,
     test_main,
@@ -34,7 +34,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             disk,
             [
                 ("1MiB", "biosboot"),
-                ("4GiB", "ext4"),
+                ("6GiB", "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
                 ("", "btrfs", "-f", "-L", f"{btrfsname}B"),
             ],
@@ -51,7 +51,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             disk,
             [
                 ("1MiB", "biosboot"),
-                ("1GiB", "ext4"),
+                (BOOT_PARTITION_DEFAULT_SIZE, "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
             ],
         )
@@ -95,7 +95,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row(dev, "/", "vda5, LVM", "8.59 GB", True, "xfs")
+        r.check_disk_row(dev, "/", "vda5, LVM", "6.44 GB", True, "xfs")
 
     def _testReclaimSpaceDeleteBtrfsSubvolumes_partition_disk(self):
         b = self.browser
@@ -135,9 +135,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         # Check that all partitions are present
         s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
         s.reclaim_check_device_row("vda1", "", "biosboot", "1.05 MB")
-        s.reclaim_check_device_row("vda2", "", "ext4", "4.29 GB")
+        s.reclaim_check_device_row("vda2", "", "ext4", "6.44 GB")
         s.reclaim_check_device_row("vda3", "", "btrfs", "5.37 GB")
-        s.reclaim_check_device_row("vda4", "", "btrfs", "6.44 GB")
+        s.reclaim_check_device_row("vda4", "", "btrfs", "4.29 GB")
 
         # Check that deleting a disk will delete all contained partitions
         s.reclaim_remove_device("vda (Virtio")
@@ -163,8 +163,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.next(True)
 
         # Remove one partition and allocate enough space for the installation
-        s.reclaim_remove_device("vda4")
-        s.reclaim_check_action_present("vda4", "delete", True)
+        s.reclaim_remove_device("vda2")
+        s.reclaim_check_action_present("vda2", "delete", True)
         s.reclaim_check_available_space("6.44 GB")
 
         # Check that deleting a parent disk which contains partitions marked for deletion
@@ -177,7 +177,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row("vda", parent="vda4", action="delete")
+        r.check_disk_row("vda", parent="vda2", action="delete")
 
     def _testReclaimSpaceShrinkBtrfsSubvolumes_partition_disk(self):
         b = self.browser
@@ -223,13 +223,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             s.reclaim_check_action_button_present(device, "shrink", True, True)
 
         # Shrink a partition too much and expect a warning
-        s.reclaim_shrink_device("vda2", "0.100", "4.29")
+        s.reclaim_shrink_device("vda2", "0.100", "6.44")
         s.reclaim_modal_submit_and_check_warning("Unable to schedule resizing of vda2")
         s.reclaim_undo_action("vda2")
 
         # Shrink a partition
-        s.reclaim_shrink_device("vda2", "1", "4.29")
-        s.reclaim_check_available_space("3.30 GB")
+        s.reclaim_shrink_device("vda2", "1", "6.44")
+        s.reclaim_check_available_space("5.44 GB")
 
         # Undo the shrink actions
         for device in ["vda2"]:
@@ -239,12 +239,12 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_available_space("2.06 MB")
 
         # Shrink one partition and allocate enough space for the installation
-        s.reclaim_shrink_device("vda2", "1", "4.29")
+        s.reclaim_shrink_device("vda2", "1", "6.44")
 
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 4.29 GB")
+        r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 6.44 GB")
 
     def _testExtendedPartitionEFI_partition_disk(self):
         b = self.browser

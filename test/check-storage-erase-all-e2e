@@ -76,7 +76,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
         vda3_luks = next(part for part in vda3["children"] if part["type"] == "crypt")
         vda3_root = next(part for part in vda3_luks["children"] if "/" in part["mountpoints"])
-        self.assertEqual(vda3_root["size"], "14G")
+        self.assertEqual(vda3_root["size"], "13G")
 
     @disk_images([("", 15), ("debian-testing", 15)])
     def testGuidedMultiSelect(self):
@@ -117,7 +117,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         vda = next(dev for dev in block_devs if dev["name"] == "vda")
         vda3 = next(part for part in vda["children"] if part["name"] == "vda3")
         vda3_root = next(part for part in vda3["children"] if "/" in part["mountpoints"])
-        self.assertEqual(vda3_root["size"], "14G")
+        self.assertEqual(vda3_root["size"], "13G")
 
         vdb = next(dev for dev in block_devs if dev["name"] == "vdb")
         vdb_mountpoints = [part["mountpoints"] for part in vdb["children"]]
