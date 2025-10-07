@@ -25,7 +25,7 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 @nondestructive
 class TestStorageUseFreeSpace(VirtInstallMachineCase):
 
-    @disk_images([("debian-testing", 15)])
+    @disk_images([("debian-testing", 20)])
     def testBasic(self):
         """
         Description:
@@ -53,7 +53,7 @@ class TestStorageUseFreeSpace(VirtInstallMachineCase):
         i.reach_on_sidebar(i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
-        r.check_disk_row("vda", "/", "vda3, LVM", "3.22 GB", True, "xfs")
+        r.check_disk_row("vda", "/", "vda3, LVM", "7.51 GB", True, "xfs")
 
 
 if __name__ == '__main__':
