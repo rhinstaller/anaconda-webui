@@ -92,6 +92,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
                     ? (
                         <Keyboard
                           idPrefix={idPrefix}
+                          isGnome={isGnome}
                           setIsFormValid={setIsFormValid}
                         />
                     )
