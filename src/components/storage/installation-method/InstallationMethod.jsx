@@ -43,7 +43,7 @@ import { InstallationScenario } from "./InstallationScenario.jsx";
 import { ReclaimSpaceModal } from "./ReclaimSpaceModal.jsx";
 
 const _ = cockpit.gettext;
-const SCREEN_ID = "anaconda-screen-installation-method";
+const SCREEN_ID = "anaconda-screen-method";
 
 export const InstallationMethod = ({
     dispatch,
