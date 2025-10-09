@@ -31,6 +31,8 @@ import {
     setLuksEncryptionDataAction
 } from "../../../actions/storage-actions.js";
 
+import { getLocaleById } from "../../../helpers/localization.js";
+
 import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../../contexts/Common.jsx";
 
 import { Keyboard } from "../../localization/Keyboard.jsx";
@@ -65,7 +67,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
     const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
     const { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap } = useContext(LanguageContext);
-    const selectedKeyboard = keyboardLayouts.find(k => k["layout-id"]?.v === virtualConsoleKeymap);
+    const selectedKeyboard = getLocaleById(keyboardLayouts, virtualConsoleKeymap);
     // Warn if the selected layout in the compositor is different from the vconsole layout
     // For reading the compositorSelectedLayout we need localed support so skip this check for gnome
     const showVConsoleMismatchAlert = !isGnome && compositorSelectedLayout !== virtualConsoleKeymap;
@@ -102,6 +104,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
                     : (
                         <TextInput
                           value={selectedKeyboard ? selectedKeyboard.description.v : ""}
+                          id={idPrefix + "-keyboard-layout"}
                           readOnlyVariant="default"
                         />
                     )}
@@ -113,6 +116,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
               title={_("This layout will be used for unlocking your system on boot")} />
             {showVConsoleMismatchAlert && (
                 <Alert
+                  id={idPrefix + "-vconsole-mismatch-alert"}
                   isInline
                   isPlain
                   variant="warning"

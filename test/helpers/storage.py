@@ -210,6 +210,16 @@ class StorageEncryption():
     def unlock_all_encrypted(self):
         self.browser.click(f"#{INSTALLATION_METHOD}-unlock-devices-btn")
 
+    def check_disk_encryption_keyboard_layout(self, expected_layout):
+        self.browser.wait_val("#disk-encryption-keyboard-layout", expected_layout)
+
+    def check_disk_encryption_vconsole_mismatch_alert(self, present=True):
+        """Check if the virtual console mismatch alert is present or not"""
+        if present:
+            self.browser.wait_visible("#disk-encryption-vconsole-mismatch-alert")
+        else:
+            self.browser.wait_not_present("#disk-encryption-vconsole-mismatch-alert")
+
 
 class StorageUtils(StorageDestination):
     def __init__(self, browser, machine):
