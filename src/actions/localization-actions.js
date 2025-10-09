@@ -25,6 +25,7 @@ import {
     getLocaleData,
     getLocales,
     getVirtualConsoleKeymap,
+    getXLayouts,
 } from "../apis/localization.js";
 
 export const getLanguagesAction = () => {
@@ -78,9 +79,10 @@ export const getKeyboardLayoutsAction = () => {
         const keyboardLayouts = await getKeyboardLayouts();
         const compositorSelectedLayout = await getCompositorSelectedLayout();
         const virtualConsoleKeymap = await getVirtualConsoleKeymap();
+        const xlayouts = await getXLayouts();
 
         dispatch({
-            payload: { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap },
+            payload: { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap, xlayouts },
             type: "GET_KEYBOARD_LAYOUTS"
         });
     };
