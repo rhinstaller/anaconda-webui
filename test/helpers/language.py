@@ -79,6 +79,9 @@ class Keyboard():
         self._keyboard_search = f".{self._step}-keyboard-search .pf-v6-c-text-input-group__text-input"
 
     def select_keyboard(self, keyboard, keyboard_name=None, is_common=True):
+        self.browser.click(f"#{self._step}-change-system-keyboard-layout-modal-open-button")
+        self.browser.wait_visible(f"#{self._step}-change-system-keyboard-layout-modal")
+
         common_prefix = "common" if is_common else "alpha"
         if self.browser.val(self._keyboard_search) != "":
             self.input_keyboard_search("")
@@ -87,15 +90,16 @@ class Keyboard():
             self.input_keyboard_search(keyboard_name)
 
         self.browser.click(f"#{self._step}-keyboard-option-{common_prefix}-{keyboard}")
+        self.browser.click(f"#{self._step}-change-system-keyboard-layout-modal-save-button")
+        self.browser.wait_not_present(f"#{self._step}-change-system-keyboard-layout-modal")
 
     def input_keyboard_search(self, text):
         self.browser.set_input_text(self._keyboard_search, text)
 
     def check_selected_keyboard(self, keyboard, is_common=True):
-        common_prefix = "common" if is_common else "alpha"
-        self.browser.wait_visible(f"#{self._step}-keyboard-option-{common_prefix}-{keyboard}.pf-m-selected")
+        self.browser.wait_in_text("p", keyboard)
 
-    def check_selected_keyboard_on_device(self, expected_layout, expected_variant=None):
+    def check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
         result = self.machine.execute("localectl status")
         layout = None
         variant = None
@@ -106,12 +110,22 @@ class Keyboard():
             if "X11 Variant" in line:
                 variant = line.split(":")[-1].strip()
 
-        assert layout == expected_layout, f"Expected layout '{expected_layout}', but got '{layout}'"
+        # Convert comma-separated string to list
+        actual_layouts = [l.strip() for l in layout.split(",")] if layout else []
+        actual_variants = [v.strip() for v in variant.split(",")] if variant else []
 
-        if expected_variant:
-            assert variant == expected_variant, f"Expected variant '{expected_variant}', but got '{variant}'"
+        # Convert expected_layouts to list if it's a string
+        if isinstance(expected_layouts, str):
+            expected_layouts = [expected_layouts]
+        if expected_variants and isinstance(expected_variants, str):
+            expected_variants = [expected_variants]
+
+        assert actual_layouts == expected_layouts, f"Expected layouts {expected_layouts}, but got {actual_layouts}"
+
+        if expected_variants:
+            assert actual_variants == expected_variants, f"Expected variants {expected_variants}, but got {actual_variants}"
         else:
-            assert not variant, f"Expected no variant, but got '{variant}'"
+            assert not actual_variants, f"Expected no variants, but got {actual_variants}"
 
 class LanguageDBus():
     def __init__(self, machine):
@@ -145,6 +159,21 @@ class LanguageDBus():
             {LOCALIZATION_SERVICE} \
             {LOCALIZATION_OBJECT_PATH} \
             {LOCALIZATION_INTERFACE} SetCompositorLayouts asas 1 '{layouts[0]}' 0")
+
+    def dbus_reset_xlayouts(self):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {LOCALIZATION_SERVICE} \
+            {LOCALIZATION_OBJECT_PATH} \
+            {LOCALIZATION_INTERFACE} XLayouts as 0')
+
+    def dbus_reset_virtual_console_keymap(self):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property \
+            {LOCALIZATION_SERVICE} \
+            {LOCALIZATION_OBJECT_PATH} \
+            {LOCALIZATION_INTERFACE} VirtualConsoleKeymap s ""')
+
 
 class Language(Locale, Keyboard, LanguageDBus):
     def __init__(self, browser, machine):
