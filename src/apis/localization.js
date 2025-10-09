@@ -76,6 +76,10 @@ export class LocalizationClient {
                     await this.dispatch(getKeyboardLayoutsAction());
                     break;
                 case "PropertiesChanged":
+                    if ((args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "XLayouts")) ||
+                        (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "VirtualConsoleKeymap"))) {
+                        await this.dispatch(getKeyboardLayoutsAction());
+                    }
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
 
@@ -211,6 +215,13 @@ export const getKeyboardLayouts = async () => {
  */
 export const getVirtualConsoleKeymap = () => {
     return getProperty("VirtualConsoleKeymap");
+};
+
+/**
+ * @returns {Promise<string[]>}   Current X keyboard layouts
+ */
+export const getXLayouts = () => {
+    return getProperty("XLayouts");
 };
 
 /**

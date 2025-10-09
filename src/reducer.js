@@ -48,7 +48,8 @@ export const localizationInitialState = {
     compositorLayouts: [],
     keyboardLayouts: [],
     language: "",
-    languages: {}
+    languages: {},
+    xlayouts: []
 };
 
 /* Intial state for the network store substate */
@@ -190,6 +191,7 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             compositorSelectedLayout: action.payload.compositorSelectedLayout,
             keyboardLayouts: action.payload.keyboardLayouts,
             virtualConsoleKeymap: action.payload.virtualConsoleKeymap,
+            xlayouts: action.payload.xlayouts,
         };
     } else {
         return state;

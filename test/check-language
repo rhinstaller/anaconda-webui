@@ -213,32 +213,84 @@ class TestLanguage(VirtInstallMachineCase):
     def testKeyboardLayoutSelection(self):
         """
         Description:
-            Test that the keyboard layout selection is working correctly
+            Test that the multi-keyboard layout selection is working correctly
 
         Expected results:
             - The default keyboard selection is 'English (US)'
-            - The keyboard layout can be changed
+            - The user can add multiple keyboard layouts
+            - The user can reorder the layout selection
+            - Language changes do not affect keyboard layouts
+            - Non-ASCII keyboards show appropriate warnings when set as default
+            - The user can make any keyboard layout the default
+            - The default keyboard layout is used for virtual console (LUKS password) and shown as such in
+              the disk encryption screen
         """
 
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         l = Language(b, m)
+        s = Storage(b, m)
 
+        # Ensure test runs in English to avoid translation issues
         l.dbus_set_language("en_US.UTF-8")
         i.open()
 
+        # Verify we're in English
+        b.wait_in_text("h2", "Welcome. Let's install Fedora now.")
+
         l.check_selected_keyboard("us")
-        l.check_selected_keyboard_on_device("us")
+        l.check_selected_keyboards_on_device("us")
 
         # Changing language should not change the keyboard layout
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
-        l.check_selected_keyboard_on_device("us")
+        l.check_selected_keyboards_on_device("us")
 
-        # Select a different keyboard layout
-        l.select_keyboard("de__nodeadkeys_", "Deutsch (ohne Akzenttasten)", is_common=True)
-        l.check_selected_keyboard_on_device("de", expected_variant="nodeadkeys")
+        # Reset language back to English for the rest of the test
+        l.select_locale("en_US")
+        l.check_selected_locale("en_US")
+
+        # Select a second keyboard layout (it gets appended)
+        l.select_keyboard("de__nodeadkeys_", "German (no dead keys)", is_common=True)
+        l.check_selected_keyboards_on_device(["us", "de"], expected_variants=["", "nodeadkeys"])
+
+        # Select non-ASCII keyboard warning
+        l.select_keyboard("ara", "Arabic", is_common=True)
+        l.check_selected_keyboards_on_device(["us", "de", "ara"], expected_variants=["", "nodeadkeys", ""])
+
+        # Make Arabic keyboard the default (current) to trigger the ASCII warning
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-open-button")
+        l.browser.wait_visible(f"#{l._step}-change-system-keyboard-layout-modal")
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-make-current-2")
+        l.browser.wait_visible(f"#{l._step}-change-system-keyboard-layout-modal .pf-v6-c-alert")
+
+        # Test moving keyboard up/down (reordering)
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-move-up-2")
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-save-button")
+        l.browser.wait_not_present(f"#{l._step}-change-system-keyboard-layout-modal")
+        # Verify the order: Arabic (default), German, US
+        l.check_selected_keyboards_on_device(["ara", "de", "us"], expected_variants=["", "nodeadkeys", ""])
+
+        # Test disk encryption integration
+        # Navigate to disk encryption screen
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
+        i.reach(i.steps.STORAGE_CONFIGURATION)
+        s.set_encryption_selected(True)
+
+        # Check that the disk encryption screen shows Arabic as the keyboard layout (first/default)
+        s.check_disk_encryption_keyboard_layout("Arabic")
+
+        # Change compositor layout to German while keeping virtual console as Arabic
+        # and check that the mismatch alert appears
+        m.execute("localectl set-x11-keymap de")
+        s.check_disk_encryption_vconsole_mismatch_alert(present=True)
+
+        # Reset compositor layout back to Arabic and check that the mismatch alert disappears
+        m.execute("localectl set-x11-keymap ara")
+        s.check_disk_encryption_vconsole_mismatch_alert(present=False)
+
 
 
 if __name__ == '__main__':
