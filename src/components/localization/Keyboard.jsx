@@ -42,6 +42,7 @@ const buildMenuItem = (keyboard) => {
     const {
         description,
         "is-common": isCommon,
+        "supports-ascii": supportsAscii,
         "layout-id": layoutId,
     } = keyboard;
 
@@ -72,6 +73,9 @@ const buildMenuItem = (keyboard) => {
 const buildMenuGroup = (keyboards, showCommon) => ({
     id: SCREEN_ID + "-keyboard-group-" + (showCommon ? "common" : "other") + "-keyboards",
     itemChildren: keyboards
+            // only offer layouts that support ASCII input, until we properly
+            // handle switched layout configurations
+            .filter(keyboard => keyboard["supports-ascii"]?.v === true)
             .filter(keyboard => keyboard["is-common"].v === showCommon)
             .map(keyboard => buildMenuItem(keyboard)),
     itemLabel: showCommon ? _("Suggested keyboards") : _("Other keyboards"),
