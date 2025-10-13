@@ -111,6 +111,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [vconsoleLayout, setVconsoleLayout] = useState();
     const [xlayouts, setXlayouts] = useState([]);
+    const { keyboardLayouts } = useContext(LanguageContext);
 
     useEffect(() => {
         const onFail = ex => {
@@ -126,10 +127,18 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
             setVconsoleLayout(vconsole);
             setXlayouts(xlayouts);
 
-            setIsFormValid(xlayouts.length === 1);
             if (xlayouts.length > 1) {
+                setIsFormValid(false);
                 setKeyboardAlert(_("More than one layout detected. Remove additional layouts to proceed"));
             } else {
+                const selectedKeyboard = keyboardLayouts.find(({ "layout-id": layoutId }) => layoutId?.v === xlayouts[0]);
+                const selectedKeyboardSupportsAscii = selectedKeyboard?.["supports-ascii"]?.v === true;
+                if (!selectedKeyboardSupportsAscii) {
+                    setIsFormValid(false);
+                    setKeyboardAlert(_("The selected layout does not support ASCII input. Please select a different layout to proceed."));
+                    return;
+                }
+                setIsFormValid(true);
                 setKeyboardAlert();
             }
         };
@@ -140,7 +149,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
 
         window.addEventListener("focus", onFocus);
         return () => window.removeEventListener("focus", onFocus);
-    }, [setIsFormValid]);
+    }, [keyboardLayouts, setIsFormValid]);
 
     const layout = (
         xlayouts?.length === 1
