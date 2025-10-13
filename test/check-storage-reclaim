@@ -469,7 +469,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(True)
 
-        s.reclaim_shrink_device("vda1", "7.10", rowIndex=3, ariaLabel="zmenšit")
+        s.reclaim_shrink_device("vda1", "7,10", rowIndex=3, ariaLabel="zmenšit")
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)

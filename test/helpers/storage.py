@@ -577,14 +577,14 @@ class StorageReclaimDialog():
         )
         self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
         if current_size is not None:
-            self.browser.wait_val("#reclaim-space-modal-shrink-slider input", current_size)
+            self.browser.wait_val("#reclaim-space-modal-shrink-input", current_size)
         # HACK: there is some race here which steals the focus from the input and selects the page text instead
         for _ in range(3):
-            self.browser.focus('#reclaim-space-modal-shrink-slider input')
+            self.browser.focus('#reclaim-space-modal-shrink-input')
             time.sleep(1)
-            if self.browser.eval_js('document.activeElement == document.querySelector("#reclaim-space-modal-shrink-slider input")'):
+            if self.browser.eval_js('document.activeElement == document.querySelector("#reclaim-space-modal-shrink-input")'):
                 break
-        self.browser.set_input_text("#reclaim-space-modal-shrink-slider input", new_size)
+        self.browser.set_input_text("#reclaim-space-modal-shrink-input", new_size)
         self.browser.click("#reclaim-space-modal-shrink-button")
         self.browser.wait_not_present("#reclaim-space-modal-shrink-slider")
         self.reclaim_check_action_present(device, ariaLabel, rowIndex=rowIndex)

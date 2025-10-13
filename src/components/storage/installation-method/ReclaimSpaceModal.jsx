@@ -24,10 +24,12 @@ import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { InputGroup, InputGroupItem, InputGroupText } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { Panel } from "@patternfly/react-core/dist/esm/components/Panel/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { Slider } from "@patternfly/react-core/dist/esm/components/Slider/index.js";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { CompressArrowsAltIcon } from "@patternfly/react-icons/dist/esm/icons/compress-arrows-alt-icon";
@@ -458,11 +460,14 @@ const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction })
 
 const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     const [value, setValue] = useState(device.total.v);
+    const originalValue = cockpit.format_bytes(device.total.v, { separate: true })[0];
     const originalUnit = cockpit.format_bytes(device.total.v, { separate: true })[1];
-    const inputValue = cockpit.format_bytes(value, { separate: true })[0];
+    const [inputValue, setInputValue] = useState(originalValue);
+
     // Patternfly slider accepts only english locale for the input value
     // FIXME: https://github.com/patternfly/patternfly/issues/7889
-    const inputNormalized = inputValue.replace(",", ".");
+    // Therefore let's use a seperate TextInput component for the input value
+    const normalizedValue = inputValue.toString().replace(",", ".");
 
     const shrinkButton = <Button variant="plain" isAriaDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
 
@@ -472,30 +477,46 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
           id={idPrefix + "-shrink"}
           hasAutoWidth
           bodyContent={() => (
-              <Flex alignItems={{ default: "alignItemsFlexStart" }} spaceItems={{ default: "spaceItemsMd" }}>
+              <Flex
+                alignItems={{ default: "alignItemsFlexStart" }}
+                spaceItems={{ default: "spaceItemsMd" }}
+              >
                   <Slider
                     areCustomStepsContinuous
                     className={idPrefix + "-shrink-slider"}
                     id={idPrefix + "-shrink-slider"}
                     inputLabel={originalUnit}
-                    inputValue={inputNormalized}
-                    isInputVisible
                     value={value * 100 / device.total.v}
                     showBoundaries={false}
-                    onChange={(_, sliderValue, inputValue) => {
-                        if (inputValue !== undefined) {
-                            // Ensure that the boundary is respected
-                            const newInputValue = Math.min(device.total.v, inputValue * unitMultiplier[originalUnit]);
-                            setValue(newInputValue);
-                        } else if (sliderValue !== undefined) {
-                            setValue(Math.round((sliderValue / 100) * device.total.v));
-                        }
+                    onChange={(_, sliderValue) => {
+                        const newValue = Math.round((sliderValue / 100) * device.total.v);
+                        setValue(newValue);
+                        setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
                     }}
                     customSteps={[
                         { label: "0", value: 0 },
                         { label: cockpit.format_bytes(device.total.v), value: 100 },
                     ]}
                   />
+                  <InputGroup>
+                      <InputGroupItem>
+                          <TextInput
+                            value={inputValue}
+                            onChange={(_event, val) => setInputValue(val)}
+                            onBlur={() => {
+                                const newValue = Math.min(device.total.v, Math.max(0, normalizedValue * unitMultiplier[originalUnit]));
+                                if (Number.isNaN(newValue)) {
+                                    setInputValue(cockpit.format_bytes(value, originalUnit, { separate: true })[0]);
+                                    return;
+                                }
+                                setValue(newValue);
+                                setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
+                            }}
+                            id={idPrefix + "-shrink-input"}
+                          />
+                      </InputGroupItem>
+                      <InputGroupText>{originalUnit}</InputGroupText>
+                  </InputGroup>
                   <Button
                     id={idPrefix + "-shrink-button"}
                     variant="primary"
