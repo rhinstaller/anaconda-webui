@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
+from language import Language
 from review import Review
 from storage import BOOT_PARTITION_DEFAULT_SIZE, Storage
 from testlib import (
@@ -438,11 +439,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             Test reclaiming space from an existing Ubuntu system by resizing partitions
 
         Expected results:
+            - The shrink operation works also with locales that use a comma as decimal separator
             - The review screen shows the affected system when partitions from an existing system are resized
         """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
+        l = Language(b, m)
         s = Storage(b, m)
         r = Review(b, m)
 
@@ -459,6 +462,18 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         # Don't specify the exact original size as this might change with image refreshes
         r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from")
         r.check_resized_system("Ubuntu", ["vda1"])
+
+        i.reach_on_sidebar(i.steps.LANGUAGE)
+        l.select_locale("cs_CZ", is_common=False)
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.reclaim_set_checkbox(True)
+        i.next(True)
+
+        s.reclaim_shrink_device("vda1", "7.10", rowIndex=3, ariaLabel="zmenšit")
+        s.reclaim_modal_submit()
+
+        i.reach(i.steps.REVIEW)
+        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z")
 
 
 if __name__ == '__main__':
