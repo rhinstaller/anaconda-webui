@@ -458,7 +458,12 @@ const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction })
 
 const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     const [value, setValue] = useState(device.total.v);
-    const originalUnit = cockpit.format_bytes(device.total.v).split(" ")[1];
+    const originalUnit = cockpit.format_bytes(device.total.v, { separate: true })[1];
+    const inputValue = cockpit.format_bytes(value, { separate: true })[0];
+    // Patternfly slider accepts only english locale for the input value
+    // FIXME: https://github.com/patternfly/patternfly/issues/7889
+    const inputNormalized = inputValue.replace(",", ".");
+
     const shrinkButton = <Button variant="plain" isAriaDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
 
     return (
@@ -473,7 +478,7 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
                     className={idPrefix + "-shrink-slider"}
                     id={idPrefix + "-shrink-slider"}
                     inputLabel={originalUnit}
-                    inputValue={cockpit.format_bytes(value, originalUnit).split(" ")[0]}
+                    inputValue={inputNormalized}
                     isInputVisible
                     value={value * 100 / device.total.v}
                     showBoundaries={false}
