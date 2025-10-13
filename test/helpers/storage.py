@@ -569,11 +569,11 @@ class StorageReclaimDialog():
         self.browser.click("button:contains('Reclaim space')")
         self.browser.wait_in_text("#reclaim-space-modal .pf-v6-c-alert", warning)
 
-    def reclaim_shrink_device(self, device, new_size, current_size=None, rowIndex=None):
+    def reclaim_shrink_device(self, device, new_size, current_size=None, rowIndex=None, ariaLabel="shrink"):
         self.browser.click(
             "#reclaim-space-modal-table "
             f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
-            f"tr:contains('{device}') button[aria-label='shrink']"
+            f"tr:contains('{device}') button[aria-label='{ariaLabel}']"
         )
         self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
         if current_size is not None:
@@ -587,14 +587,14 @@ class StorageReclaimDialog():
         self.browser.set_input_text("#reclaim-space-modal-shrink-slider input", new_size)
         self.browser.click("#reclaim-space-modal-shrink-button")
         self.browser.wait_not_present("#reclaim-space-modal-shrink-slider")
-        self.reclaim_check_action_present(device, "shrink", rowIndex=rowIndex)
+        self.reclaim_check_action_present(device, ariaLabel, rowIndex=rowIndex)
 
     def reclaim_check_action_present(self, device, action, present=True, rowIndex=None):
         selector = (
             "#reclaim-space-modal-table "
             f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
             f"tr:contains('{device}') "
-            "td[data-label=Actions]"
+            "td:nth-child(5) "  # Actions column
         )
         if present:
             self.browser.wait_in_text(selector, action)
@@ -619,7 +619,7 @@ class StorageReclaimDialog():
         self.browser.set_checked("#reclaim-space-checkbox", value)
 
     def reclaim_modal_submit(self):
-        self.browser.click("button:contains('Reclaim space')")
+        self.browser.click("button.pf-m-warning")
         self.browser.wait_not_present("#reclaim-space-modal")
 
     def reclaim_modal_cancel(self):
