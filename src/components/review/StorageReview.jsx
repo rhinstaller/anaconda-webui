@@ -166,9 +166,9 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
         let sizeText = "";
         let actionDescriptionText = actionDescription;
 
-        if (actionDescription === "destroy device") {
+        if (actionType === "destroy") {
             actionDescriptionText = _("delete");
-        } else if (actionDescription === "resize device") {
+        } else if (actionType === "resize") {
             const prevSize = cockpit.format_bytes(originalDevices[device].size.v);
             sizeText = cockpit.format_bytes(devices[device].size.v);
 
@@ -224,7 +224,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     const actionRows = actions.filter(action => {
         // Show only delete actions for partitions to not overload the summary with deleted children
         if (
-            !["destroy device", "resize device"].includes(action["action-description"].v) ||
+            !["destroy", "resize"].includes(action["action-type"].v) ||
             action["object-description"].v !== "partition"
         ) {
             return false;
