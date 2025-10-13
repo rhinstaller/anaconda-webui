@@ -87,8 +87,8 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         if self.is_efi:
             r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
         r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}4", "12.8 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}4", "12.8 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk_row(dev, "/", f"{dev}4", "11.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}4", "11.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
     @disk_images([("fedora-rawhide", 15)])
@@ -269,8 +269,8 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}3", action="delete")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
         r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "12.8 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "12.8 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}4", "11.8 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}4", "11.8 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
 
     def _testNonLinuxSystem_partition_disk(self):
