@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 import React, { useContext, useState } from "react";
 import { AboutModal } from "@patternfly/react-core/dist/esm/components/AboutModal/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { DescriptionList, DescriptionListDescription, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Dropdown, DropdownItem, DropdownList } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
 import { MenuToggle } from "@patternfly/react-core/dist/esm/components/MenuToggle/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
@@ -37,14 +37,14 @@ import "./HeaderKebab.scss";
 const _ = cockpit.gettext;
 
 const AboutModalVersions = () => {
-    const { backend: anacondaVersion } = useContext(AppVersionContext);
+    const version = useContext(AppVersionContext);
 
     return (
         <DescriptionList isHorizontal id="about-modal-versions">
-            <DescriptionListGroup>
-                <DescriptionListTerm>Anaconda</DescriptionListTerm>
-                <DescriptionListDescription>{anacondaVersion}</DescriptionListDescription>
-            </DescriptionListGroup>
+            <DescriptionListTerm id="backend-dt">Anaconda</DescriptionListTerm>
+            <DescriptionListDescription id="backend-dd">{version.backend}</DescriptionListDescription>
+            <DescriptionListTerm id="webui-dt">Anaconda WebUI</DescriptionListTerm>
+            <DescriptionListDescription id="webui-dd">{version.webui}</DescriptionListDescription>
         </DescriptionList>
     );
 };
