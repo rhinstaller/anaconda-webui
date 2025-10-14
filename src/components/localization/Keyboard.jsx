@@ -26,6 +26,7 @@ import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import {
     getKeyboardConfiguration,
     setCompositorLayouts,
+    setVirtualConsoleKeymap,
     setXLayouts,
 } from "../../apis/localization.js";
 
@@ -98,6 +99,7 @@ export const KeyboardSelector = () => {
           ariaLabelSearch={_("Search keyboard layout")}
           handleOnSelect={(_event, item) => {
               setCompositorLayouts({ layouts: [item] });
+              setVirtualConsoleKeymap({ keymap: item });
               setXLayouts({ layouts: [item] });
           }}
           menuType="keyboard"
@@ -183,17 +185,18 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
 };
 
 const KeyboardNonGnome = () => {
-    const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
+    const { keyboardLayouts, virtualConsoleKeymap } = useContext(LanguageContext);
     const keyboards = keyboardLayouts;
 
     useEffect(() => {
-        if (compositorSelectedLayout && keyboards.find(({ "layout-id": layoutId }) => layoutId?.v === compositorSelectedLayout)) {
+        if (virtualConsoleKeymap && keyboards.find(({ "layout-id": layoutId }) => layoutId?.v === virtualConsoleKeymap)) {
             return;
         }
 
         setCompositorLayouts({ layouts: ["us"] });
+        setVirtualConsoleKeymap({ keymap: "us" });
         setXLayouts({ layouts: ["us"] });
-    }, [keyboards, compositorSelectedLayout]);
+    }, [keyboards, virtualConsoleKeymap]);
 
     return (
         <KeyboardSelector />
