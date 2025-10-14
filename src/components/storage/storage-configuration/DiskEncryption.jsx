@@ -64,8 +64,11 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
     const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
-    const { compositorSelectedLayout, keyboardLayouts } = useContext(LanguageContext);
-    const selectedKeyboard = keyboardLayouts.find(k => k["layout-id"]?.v === compositorSelectedLayout);
+    const { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap } = useContext(LanguageContext);
+    const selectedKeyboard = keyboardLayouts.find(k => k["layout-id"]?.v === virtualConsoleKeymap);
+    // Warn if the selected layout in the compositor is different from the vconsole layout
+    // For reading the compositorSelectedLayout we need localed support so skip this check for gnome
+    const showVConsoleMismatchAlert = !isGnome && compositorSelectedLayout !== virtualConsoleKeymap;
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -108,6 +111,13 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
               isPlain
               variant="info"
               title={_("This layout will be used for unlocking your system on boot")} />
+            {showVConsoleMismatchAlert && (
+                <Alert
+                  isInline
+                  isPlain
+                  variant="warning"
+                  title={_("The active keyboard layout in the compositor differs from the default layout selected for the target system.")}
+                />)}
             <PasswordFormFields
               idPrefix={idPrefix}
               policy={luksPolicy}
