@@ -205,3 +205,17 @@ export const getKeyboardLayouts = async () => {
         }
     }
 };
+
+/**
+ * @returns {Promise<string>}   Current virtual console keymap
+ */
+export const getVirtualConsoleKeymap = () => {
+    return getProperty("VirtualConsoleKeymap");
+};
+
+/**
+ * @param {string} keymap       VC keymap name (see `localectl list-keymaps`)
+ */
+export const setVirtualConsoleKeymap = ({ keymap }) => {
+    return setProperty("VirtualConsoleKeymap", cockpit.variant("s", keymap));
+};

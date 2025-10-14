@@ -189,6 +189,7 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             ...state,
             compositorSelectedLayout: action.payload.compositorSelectedLayout,
             keyboardLayouts: action.payload.keyboardLayouts,
+            virtualConsoleKeymap: action.payload.virtualConsoleKeymap,
         };
     } else {
         return state;
