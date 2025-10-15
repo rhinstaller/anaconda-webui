@@ -64,6 +64,12 @@ export class LocalizationClient {
     async initData () {
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
+        // Load default XLayouts from backend, this does not configure vconsole
+        await setXKeyboardDefaults();
+        const xlayouts = await getXLayouts();
+        if (xlayouts.length) {
+            await setVirtualConsoleKeymap({ keymap: xlayouts[0] });
+        }
         await this.dispatch(getKeyboardLayoutsAction());
     }
 
@@ -88,7 +94,8 @@ export class LocalizationClient {
                          * but the returned KeyboardLayouts still are translated with the previous locale.
                          * Workaround this by dispatching the KeyboardLayouts action with small delay.
                          */
-                        setTimeout(() => {
+                        setTimeout(async () => {
+                            await setXKeyboardDefaults();
                             this.dispatch(getKeyboardLayoutsAction());
                         }, 500);
                     } else {
@@ -222,6 +229,14 @@ export const getVirtualConsoleKeymap = () => {
  */
 export const getXLayouts = () => {
     return getProperty("XLayouts");
+};
+
+export const setXKeyboardDefaults = async () => {
+    // FIXME: Reset XLayouts before calling SetXKeyboardDefaults. Without this reset, the
+    // backend would see existing layouts and think they came from
+    // kickstart, preventing new defaults from being applied.
+    await setXLayouts({ layouts: [] });
+    await callClient("SetXKeyboardDefaults");
 };
 
 /**
