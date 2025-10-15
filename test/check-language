@@ -219,7 +219,7 @@ class TestLanguage(VirtInstallMachineCase):
             - The default keyboard selection is 'English (US)'
             - The user can add multiple keyboard layouts
             - The user can reorder the layout selection
-            - Language changes do not affect keyboard layouts
+            - Language changes set sensible keyboard defaults for the selected language
             - Non-ASCII keyboards show appropriate warnings when set as default
             - The user can make any keyboard layout the default
             - The default keyboard layout is used for virtual console (LUKS password) and shown as such in
@@ -242,14 +242,18 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboard("us")
         l.check_selected_keyboards_on_device("us")
 
-        # Changing language should not change the keyboard layout
-        l.select_locale("de_DE")
-        l.check_selected_locale("de_DE")
-        l.check_selected_keyboards_on_device("us")
+        # Changing language should set sensible keyboard defaults
+        l.select_locale("ru_RU")
+        l.check_selected_locale("ru_RU")
+        l.check_selected_keyboard("us")
+        l.check_selected_keyboard("ru")
+        l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
 
         # Reset language back to English for the rest of the test
         l.select_locale("en_US")
         l.check_selected_locale("en_US")
+        l.check_selected_keyboard("ru", present=False)
+        l.check_selected_keyboards_on_device("us")
 
         # Select a second keyboard layout (it gets appended)
         l.select_keyboard("de__nodeadkeys_", "German (no dead keys)", is_common=True)
