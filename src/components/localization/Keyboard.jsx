@@ -51,9 +51,6 @@ import "./Keyboard.scss";
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
-// Constants
-const DEFAULT_LAYOUT = "us";
-
 const buildMenuItem = (keyboard) => {
     const {
         description,
@@ -367,17 +364,7 @@ const KeyboardNonGnome = ({ setIsFormValid }) => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [open, setOpen] = useState(false);
-    const { keyboardLayouts, virtualConsoleKeymap, xlayouts } = useContext(LanguageContext);
-
-    useEffect(() => {
-        if (virtualConsoleKeymap && getLocaleById(keyboardLayouts, virtualConsoleKeymap)) {
-            return;
-        }
-
-        setCompositorLayouts({ layouts: [DEFAULT_LAYOUT] });
-        setVirtualConsoleKeymap({ keymap: DEFAULT_LAYOUT });
-        setXLayouts({ layouts: [DEFAULT_LAYOUT] });
-    }, [keyboardLayouts, virtualConsoleKeymap]);
+    const { xlayouts } = useContext(LanguageContext);
 
     useEffect(() => {
         setIsFormValid(xlayouts.length >= 1);
