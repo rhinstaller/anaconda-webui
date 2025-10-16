@@ -563,11 +563,14 @@ class StorageReclaimDialog():
         self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='delete']")
 
     def reclaim_check_action_button_present(self, device, action, present=True, disabled=False):
+        if action == "shrink":
+            disabled = ":disabled" if disabled else ":not(:disabled)"
+        else:
+            disabled = "[aria-disabled='true']" if disabled else ":not([aria-disabled='true'])"
         selector = (
             "#reclaim-space-modal-table "
             f"tr:contains('{device}') "
-            f"button[aria-label='{action}']"
-            f"{'[aria-disabled=true]' if disabled else ':not([aria-disabled=true])'}"
+            f"button[aria-label='{action}']{disabled}"
         )
 
         if present:
