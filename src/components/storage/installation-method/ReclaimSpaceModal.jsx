@@ -469,7 +469,7 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     // Therefore let's use a seperate TextInput component for the input value
     const normalizedValue = inputValue.toString().replace(",", ".");
 
-    const shrinkButton = <Button variant="plain" isAriaDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
+    const shrinkButton = <Button variant="plain" isDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
 
     return (
         <Popover
