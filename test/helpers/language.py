@@ -48,6 +48,7 @@ class Locale():
             self.input_locale_search(locale_name)
 
         self.browser.click(f"#{self._step}-language-option-{common_prefix}-{locale}")
+        self.check_selected_locale(locale, is_common)
 
     @log_step()
     def get_locale_search(self):

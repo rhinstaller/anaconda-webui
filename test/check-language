@@ -89,7 +89,6 @@ class TestLanguage(VirtInstallMachineCase):
 
         i.open()
         lang.select_locale("de_DE")
-        lang.check_selected_locale("de_DE")
 
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("erase-all")
@@ -148,7 +147,6 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Select the 'German' language
         l.select_locale("de_DE")
-        l.check_selected_locale("de_DE")
         l.check_selected_keyboard("de (nodeadkeys)")
 
         # Pixel test the language step
@@ -170,24 +168,20 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Expect language direction to be set to RTL for selected languages
         l.select_locale("he_IL", is_common=False)
-        l.check_selected_locale("he_IL", is_common=False)
         b.wait_attr("html", "dir", "rtl")
         b.wait_attr("html", "lang", "he")
 
         # Expect language direction to be set to LTR when switching to EN_US from RTL language
         # as this has special handling
         l.select_locale("en_US", locale_name="English (United States)")
-        l.check_selected_locale("en_US")
         b.wait_attr("html", "dir", "ltr")
 
         l.select_locale("de_DE")
-        l.check_selected_locale("de_DE")
         b.wait_attr("html", "dir", "ltr")
         b.wait_attr("html", "lang", "de")
 
         # Check one locale with underscore in HTML / Web locale name
         l.select_locale("zh_TW", locale_name="繁體中文 (台灣)", is_common=False)
-        l.check_selected_locale("zh_TW", is_common=False)
         b.wait_attr("html", "dir", "ltr")
         b.wait_attr("html", "lang", "zh-tw")
 
@@ -246,7 +240,6 @@ class TestLanguage(VirtInstallMachineCase):
         # Changing language should set sensible keyboard defaults
         l.input_locale_search('Russian')
         l.select_locale("ru_RU")
-        l.check_selected_locale("ru_RU")
         l.check_selected_keyboard("us")
         l.check_selected_keyboard("ru")
         l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
@@ -254,7 +247,6 @@ class TestLanguage(VirtInstallMachineCase):
         # Reset language back to English for the rest of the test
         l.input_locale_search('')
         l.select_locale("en_US")
-        l.check_selected_locale("en_US")
         l.check_selected_keyboard("ru", present=False)
         l.check_selected_keyboards_on_device("us")
 
