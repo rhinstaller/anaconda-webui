@@ -49,7 +49,6 @@ export const localizationInitialState = {
     keyboardLayouts: [],
     language: "",
     languages: {},
-    virtualConsoleKeymap: "",
     xlayouts: [],
 };
 
@@ -191,7 +190,6 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             ...state,
             compositorSelectedLayout: action.payload.compositorSelectedLayout,
             keyboardLayouts: action.payload.keyboardLayouts,
-            virtualConsoleKeymap: action.payload.virtualConsoleKeymap,
             xlayouts: action.payload.xlayouts,
         };
     } else {
