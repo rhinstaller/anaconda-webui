@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 
 import { setLocale } from "../../apis/boss.js";
@@ -25,6 +25,7 @@ import {
     getKeyboardConfiguration,
     setLanguage,
     setXKeyboardDefaults,
+    setXLayouts,
 } from "../../apis/localization.js";
 
 import {
@@ -224,19 +225,12 @@ export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) =>
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
     const [vconsoleLayout, setVconsoleLayout] = useState();
+    const langRef = useRef(language);
 
     useEffect(() => {
         // For GNOME, keyboard layout and vc keymap are always set through the compositorSelectedLayout
         setIsFormValid(language !== "" && (isGnome || vconsoleLayout !== ""));
     }, [isGnome, language, setIsFormValid, vconsoleLayout]);
-
-    useEffect(() => {
-        if (isGnome) {
-            return;
-        }
-        // Load default XLayouts from backend, this does not configure vconsole
-        setXKeyboardDefaults();
-    }, [isGnome]);
 
     useEffect(() => {
         const onFail = ex => {
@@ -262,8 +256,21 @@ export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) =>
         if (isGnome) {
             return;
         }
-        // When language changes, choose sensible defaults for X keyboard layouts
-        setXKeyboardDefaults();
+        if (langRef.current === language) {
+            setXKeyboardDefaults();
+            return;
+        }
+        langRef.current = language;
+
+        const setDefaultKeyboards = async () => {
+            // When language changes, choose sensible defaults for X keyboard layouts
+            // Reset XLayouts before calling SetXKeyboardDefaults. Without this reset, the
+            // backend would see existing layouts and think they came from
+            // kickstart, preventing new defaults from being applied.
+            await setXLayouts({ layouts: [] });
+            await setXKeyboardDefaults();
+        };
+        setDefaultKeyboards();
     }, [isGnome, language]);
 
     return (
