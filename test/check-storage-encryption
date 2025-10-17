@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from language import Language
 from password import Password
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
@@ -40,11 +41,15 @@ class TestStorageEncryption(VirtInstallMachineCase):
         """
         b = self.browser
         i = Installer(b, self.machine)
+        l = Language(b, self.machine)
         s = Storage(b, self.machine)
         p = Password(b, s.encryption_id_prefix)
 
         i.open()
+
         # Language selection
+        l.check_selected_locale("en_US")
+        l.check_selected_keyboard("us")
 
         i.reach(i.steps.INSTALLATION_METHOD)
 
@@ -70,6 +75,7 @@ class TestStorageEncryption(VirtInstallMachineCase):
         encrypt = True
         s.set_encryption_selected(encrypt)
 
+        b.wait_val("#disk-encryption-keyboard-layout", "English (US)")
         # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
         b.mouse("#app", "mouseenter")
 
