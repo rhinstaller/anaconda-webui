@@ -161,7 +161,7 @@ const LayoutActionButtons = ({ index, modalId, setSelected, totalItems }) => {
     );
 };
 
-const KeyboardDialog = ({ currentLayouts = [], isOpen, onClose, onSaved, setIsFormValid }) => {
+const KeyboardDialog = ({ currentLayouts = [], onClose, onSaved }) => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const cssClasses = {
         listRow: "change-system-keyboard-layout-modal-list-row"
@@ -179,16 +179,8 @@ const KeyboardDialog = ({ currentLayouts = [], isOpen, onClose, onSaved, setIsFo
     );
 
     useEffect(() => {
-        if (isOpen) {
-            setSelected(currentLayouts);
-            setIsFormValid(currentLayouts.length >= 1);
-            setAlert();
-        }
-    }, [isOpen, currentLayouts, setIsFormValid]);
-
-    useEffect(() => {
-        setIsFormValid(selected.length >= 1);
-    }, [selected, setIsFormValid]);
+        setAlert();
+    }, [selected]);
 
     const addLayout = (_e, item) => {
         const id = typeof item === "string" ? item : item?.itemId || item?.key;
@@ -209,7 +201,7 @@ const KeyboardDialog = ({ currentLayouts = [], isOpen, onClose, onSaved, setIsFo
     return (
         <Modal
           id={modalId}
-          isOpen={isOpen}
+          isOpen
           position="top"
           variant={ModalVariant.large}
         >
@@ -425,12 +417,12 @@ const KeyboardNonGnome = () => {
               title={keyboardAlert}
               variant="danger"
             />}
+            {open &&
             <KeyboardDialog
-              isOpen={open}
               onClose={() => setOpen(false)}
               onSaved={handleSaved}
               currentLayouts={xlayouts}
-            />
+            />}
         </>
     );
 };
