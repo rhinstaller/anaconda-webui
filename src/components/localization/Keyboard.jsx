@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
@@ -34,12 +34,14 @@ import StarIcon from "@patternfly/react-icons/dist/esm/icons/star-icon";
 import TrashIcon from "@patternfly/react-icons/dist/esm/icons/trash-icon";
 
 import {
-    getKeyboardConfiguration,
     setCompositorLayouts,
-    setVirtualConsoleKeymap,
     setXKeyboardDefaults,
     setXLayouts,
 } from "../../apis/localization.js";
+
+import {
+    getKeyboardConfigurationAction,
+} from "../../actions/localization-actions.js";
 
 import { getLocaleById } from "../../helpers/localization.js";
 
@@ -51,6 +53,21 @@ import "./Keyboard.scss";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
+
+const SelectedKeyboards = ({ xlayouts }) => (
+    <Content component="p">
+        {xlayouts.length === 1
+            ? xlayouts[0]
+            : (
+                <span>
+                    <strong>{xlayouts[0]}</strong>
+                    {xlayouts.slice(1).map((layout, index) => (
+                        <span key={`${layout}-${index}`}>, {layout}</span>
+                    ))}
+                </span>
+            )}
+    </Content>
+);
 
 const buildMenuItem = (keyboard) => {
     const {
@@ -278,62 +295,31 @@ const KeyboardDialog = ({ currentLayouts = [], onClose, onSaved }) => {
     );
 };
 
-export const KeyboardGnome = ({ setIsFormValid }) => {
+export const KeyboardGnome = ({ dispatch }) => {
     const [keyboardAlert, setKeyboardAlert] = useState();
-    const [vconsoleLayout, setVconsoleLayout] = useState();
-    const [xlayouts, setXlayouts] = useState([]);
-    const { keyboardLayouts } = useContext(LanguageContext);
+    const { plannedXlayouts } = useContext(LanguageContext);
 
     useEffect(() => {
-        const onFail = ex => {
-            setIsFormValid(false);
-            setKeyboardAlert(ex.message);
-            setVconsoleLayout();
-            setXlayouts([]);
-        };
-        const onSuccess = (res) => {
-            const vconsole = res[1];
-            const xlayouts = res[0];
+        if (plannedXlayouts?.length > 1) {
+            setKeyboardAlert(_("More than one layout detected. Remove additional layouts to proceed"));
+        } else {
+            setKeyboardAlert();
+        }
+    }, [plannedXlayouts]);
 
-            setVconsoleLayout(vconsole);
-            setXlayouts(xlayouts);
-
-            if (xlayouts.length > 1) {
-                setIsFormValid(false);
-                setKeyboardAlert(_("More than one layout detected. Remove additional layouts to proceed"));
-            } else {
-                const selectedKeyboard = getLocaleById(keyboardLayouts, xlayouts[0]);
-                const selectedKeyboardSupportsAscii = selectedKeyboard?.["supports-ascii"]?.v === true;
-                if (!selectedKeyboardSupportsAscii) {
-                    setIsFormValid(false);
-                    setKeyboardAlert(_("The selected layout does not support ASCII input. Please select a different layout to proceed."));
-                    return;
-                }
-                setIsFormValid(true);
-                setKeyboardAlert();
-            }
-        };
+    useEffect(() => {
         const onFocus = () => {
-            getKeyboardConfiguration({ onFail, onSuccess });
+            dispatch(getKeyboardConfigurationAction());
         };
-        onFocus();
 
         window.addEventListener("focus", onFocus);
         return () => window.removeEventListener("focus", onFocus);
-    }, [keyboardLayouts, setIsFormValid]);
-
-    const layout = (
-        xlayouts?.length === 1
-            ? vconsoleLayout
-            : xlayouts.length === 0
-                ? _("Unusable layout")
-                : cockpit.format(_("$0 layouts detected"), xlayouts.length)
-    );
+    }, [dispatch]);
 
     return (
         <>
             <Flex alignItems="center" flexWrap={{ default: "nowrap" }}>
-                <Content component="p">{layout}</Content>
+                <SelectedKeyboards xlayouts={plannedXlayouts} />
                 <Button
                   variant="link"
                   component="a"
@@ -357,51 +343,41 @@ const KeyboardNonGnome = () => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [open, setOpen] = useState(false);
-    const { language, xlayouts } = useContext(LanguageContext);
-    const firstXLayout = xlayouts?.[0];
+    const { language, plannedXlayouts, xlayouts } = useContext(LanguageContext);
+    const langRef = useRef(language);
 
     useEffect(() => {
-        // Load default XLayouts from backend, this does not configure vconsole
+        // On initial load, if no X layouts, set sensible defaults
+        if (xlayouts?.length > 0) {
+            return;
+        }
         setXKeyboardDefaults();
-    }, []);
+    }, [xlayouts]);
 
     useEffect(() => {
         // When language changes, choose sensible defaults for X keyboard layouts
+        if (langRef.current === language) {
+            return;
+        }
+        langRef.current = language;
         setXKeyboardDefaults();
     }, [language]);
-
-    useEffect(() => {
-        // When X keyboard layouts change, set VC keymap to first layout
-        if (firstXLayout) {
-            setVirtualConsoleKeymap({ keymap: firstXLayout });
-        }
-    }, [firstXLayout]);
-
-    const selectedKeyboards = xlayouts.length === 1
-        ? xlayouts[0]
-        : (
-            <span>
-                <strong>{xlayouts[0]}</strong>
-                {xlayouts.slice(1).map((layout, index) => (
-                    <span key={`${layout}-${index}`}>, {layout}</span>
-                ))}
-            </span>
-        );
 
     const handleSaved = async (selectedLayouts) => {
         try {
             await setCompositorLayouts({ layouts: selectedLayouts });
             await setXLayouts({ layouts: selectedLayouts });
-            await setVirtualConsoleKeymap({ keymap: selectedLayouts?.[0] });
         } catch (ex) {
             setKeyboardAlert(ex?.message);
         }
     };
 
+    const selectedKeyboards = <SelectedKeyboards xlayouts={plannedXlayouts} />;
+
     return (
         <>
             <Flex alignItems="center" flexWrap={{ default: "nowrap" }}>
-                <Content component="p">{selectedKeyboards}</Content>
+                {selectedKeyboards}
                 <Button
                   id={modalId + "-open-button"}
                   variant="link"
@@ -421,16 +397,41 @@ const KeyboardNonGnome = () => {
             <KeyboardDialog
               onClose={() => setOpen(false)}
               onSaved={handleSaved}
-              currentLayouts={xlayouts}
+              currentLayouts={plannedXlayouts}
             />}
         </>
     );
 };
 
-export const Keyboard = ({ isGnome, setIsFormValid }) => {
-    if (isGnome) {
-        return <KeyboardGnome setIsFormValid={setIsFormValid} />;
-    } else {
-        return <KeyboardNonGnome />;
+export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotification }) => {
+    const { plannedVconsole, plannedXlayouts } = useContext(LanguageContext);
+
+    useEffect(() => {
+        setIsKeyboardValid(plannedVconsole !== "" && (!isGnome || plannedXlayouts.length === 1));
+    }, [plannedVconsole, plannedXlayouts, isGnome, setIsKeyboardValid]);
+
+    if (!plannedXlayouts?.length) {
+        return null;
     }
+
+    const keyboardAlert = (
+        <Alert
+          isInline
+          isPlain
+          title={_("No valid VConsole keymap can be obtained for the selected keyboard layout(s). Please make a different keyboard layout selection.")}
+          variant="danger"
+        />
+    );
+    const keyboard = (
+        isGnome
+            ? <KeyboardGnome dispatch={dispatch} />
+            : <KeyboardNonGnome setStepNotification={setStepNotification} />
+    );
+
+    return (
+        <>
+            {keyboard}
+            {plannedVconsole === "" && keyboardAlert}
+        </>
+    );
 };

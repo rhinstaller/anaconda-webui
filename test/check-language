@@ -245,7 +245,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
 
         # Reset language back to English for the rest of the test
-        l.input_locale_search('')
+        l.input_locale_search("English")
         l.select_locale("en_US")
         l.check_selected_keyboard("ru", present=False)
         l.check_selected_keyboards_on_device("us")
@@ -274,7 +274,22 @@ class TestLanguage(VirtInstallMachineCase):
         l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-save-button")
         l.browser.wait_not_present(f"#{l._step}-change-system-keyboard-layout-modal")
         # Verify the order: Arabic (default), German, US
+        l.check_selected_keyboard("us")
+        l.check_selected_keyboard("de")
+        l.check_selected_keyboard("ara")
         l.check_selected_keyboards_on_device(["ara", "de", "us"], expected_variants=["", "nodeadkeys", ""])
+
+        # Create a valid selection to test disk encryption
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-open-button")
+        l.browser.wait_in_text(f"#{l._step}-change-system-keyboard-layout-modal-list li:nth-child(1)", "ara")
+        l.browser.wait_in_text(f"#{l._step}-change-system-keyboard-layout-modal-list li:nth-child(2)", "de")
+        l.browser.wait_in_text(f"#{l._step}-change-system-keyboard-layout-modal-list li:nth-child(3)", "us")
+        l.browser.wait_visible(f"#{l._step}-change-system-keyboard-layout-modal")
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-make-current-1")
+        l.browser.wait_not_present(f"#{l._step}-change-system-keyboard-layout-modal .pf-v6-c-alert")
+        l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-save-button")
+        l.browser.wait_not_present(f"#{l._step}-change-system-keyboard-layout-modal")
+        l.check_selected_keyboards_on_device(["de", "ara", "us"], expected_variants=["nodeadkeys", "", ""])
 
         # Test disk encryption integration
         # Navigate to disk encryption screen
@@ -282,19 +297,7 @@ class TestLanguage(VirtInstallMachineCase):
         s.set_scenario("erase-all")
         i.reach(i.steps.STORAGE_CONFIGURATION)
         s.set_encryption_selected(True)
-
-        # Check that the disk encryption screen shows Arabic as the keyboard layout (first/default)
-        s.check_disk_encryption_keyboard_layout("Arabic")
-
-        # Change compositor layout to German while keeping virtual console as Arabic
-        # and check that the mismatch alert appears
-        m.execute("localectl set-x11-keymap de")
-        s.check_disk_encryption_vconsole_mismatch_alert(present=True)
-
-        # Reset compositor layout back to Arabic and check that the mismatch alert disappears
-        m.execute("localectl set-x11-keymap ara")
-        s.check_disk_encryption_vconsole_mismatch_alert(present=False)
-
+        s.check_disk_encryption_keyboard_layout("de-nodeadkeys")
 
 
 if __name__ == '__main__':
