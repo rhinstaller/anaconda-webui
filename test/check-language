@@ -167,7 +167,7 @@ class TestLanguage(VirtInstallMachineCase):
         self.assertIn('string "de_DE.UTF-8"', language_new)
 
         # Expect language direction to be set to RTL for selected languages
-        l.select_locale("he_IL", is_common=False)
+        l.select_locale("he_IL", locale_name="Hebrew", is_common=False)
         b.wait_attr("html", "dir", "rtl")
         b.wait_attr("html", "lang", "he")
 
@@ -238,8 +238,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboards_on_device("us")
 
         # Changing language should set sensible keyboard defaults
-        l.input_locale_search('Russian')
-        l.select_locale("ru_RU")
+        l.select_locale("ru_RU", locale_name="Russian")
         l.check_selected_keyboard("us")
         l.check_selected_keyboard("ru")
         l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
