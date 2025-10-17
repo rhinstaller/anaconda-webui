@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 
 import { setLocale } from "../../apis/boss.js";
@@ -217,15 +217,20 @@ class LanguageSelector extends React.Component {
     }
 }
 
-export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
-    const { commonLocales, keyboardLayouts, language, languages, virtualConsoleKeymap } = useContext(LanguageContext);
+export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotification }) => {
+    const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
+    const [isLanguageValid, setIsLanguageValid] = useState(false);
+    const [isKeyboardValid, setIsKeyboardValid] = useState(false);
 
     useEffect(() => {
-        // For GNOME, keyboard layout and vc keymap are always set through the compositorSelectedLayout
-        setIsFormValid(language !== "" && (!isGnome || virtualConsoleKeymap !== ""));
-    }, [isGnome, language, virtualConsoleKeymap, setIsFormValid]);
+        setIsLanguageValid(language !== "");
+    }, [language, setIsFormValid]);
+
+    useEffect(() => {
+        setIsFormValid(isLanguageValid && isKeyboardValid);
+    }, [isLanguageValid, isKeyboardValid, setIsFormValid]);
 
     return (
         <>
@@ -251,8 +256,10 @@ export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) =>
                       label={_("Keyboard")}
                     >
                         <Keyboard
+                          dispatch={dispatch}
                           isGnome={isGnome}
-                          setIsFormValid={setIsFormValid}
+                          setIsKeyboardValid={setIsKeyboardValid}
+                          setStepNotification={setStepNotification}
                         />
                     </FormGroup>
                 )}
