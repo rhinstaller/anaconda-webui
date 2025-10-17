@@ -70,10 +70,6 @@ if [ -n "${TEST_COMPOSE-}" ]; then
     COMPOSE_A_PACKAGES="${COMPOSE_BASE_URL}/compose/Everything/x86_64/os/Packages/a/"
     ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
 
-    # FIXME: Checkout only test/helpers directory and test/check-* files to the corresponding tag
-    # Other files are infra related and we need to keep them from main to utilize the wiki-report logic
-    git checkout $ANACONDA_WEBUI_TAG -- test/helpers test/check-* test/reference
-
     # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
     echo "FIXME" > test/reference-image
 
