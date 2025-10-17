@@ -17,14 +17,13 @@
 
 import {
     getCommonLocales,
-    getCompositorSelectedLayout,
+    getKeyboardConfiguration,
     getKeyboardLayouts,
     getLanguage,
     getLanguageData,
     getLanguages,
     getLocaleData,
     getLocales,
-    getVirtualConsoleKeymap,
     getXLayouts,
 } from "../apis/localization.js";
 
@@ -77,13 +76,36 @@ export const getCommonLocalesAction = () => {
 export const getKeyboardLayoutsAction = () => {
     return async (dispatch) => {
         const keyboardLayouts = await getKeyboardLayouts();
-        const compositorSelectedLayout = await getCompositorSelectedLayout();
-        const virtualConsoleKeymap = await getVirtualConsoleKeymap();
-        const xlayouts = await getXLayouts();
 
-        dispatch({
-            payload: { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap, xlayouts },
+        return dispatch({
+            payload: { keyboardLayouts },
             type: "GET_KEYBOARD_LAYOUTS"
+        });
+    };
+};
+
+export const getKeyboardConfigurationAction = () => {
+    return async (dispatch) => {
+        const xlayouts = await getXLayouts();
+        let resultDispatched = false;
+
+        getKeyboardConfiguration({
+            onSuccess: (keyboardConfiguration) => {
+                // The API triggers the onSuccess callback two times, we want to dispatch only once
+                if (resultDispatched) {
+                    return;
+                }
+                resultDispatched = true;
+
+                dispatch({
+                    payload: {
+                        plannedVconsole: keyboardConfiguration[1],
+                        plannedXlayouts: keyboardConfiguration[0],
+                        xlayouts,
+                    },
+                    type: "GET_PLANNED_KEYBOARD_CONFIGURATION"
+                });
+            }
         });
     };
 };

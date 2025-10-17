@@ -75,7 +75,7 @@ class TestStorageEncryption(VirtInstallMachineCase):
         encrypt = True
         s.set_encryption_selected(encrypt)
 
-        b.wait_val("#disk-encryption-keyboard-layout", "English (US)")
+        b.wait_val("#disk-encryption-keyboard-layout", "us")
         # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
         b.mouse("#app", "mouseenter")
 
