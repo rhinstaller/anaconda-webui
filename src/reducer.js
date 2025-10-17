@@ -49,7 +49,8 @@ export const localizationInitialState = {
     keyboardLayouts: [],
     language: "",
     languages: {},
-    xlayouts: []
+    virtualConsoleKeymap: "",
+    xlayouts: [],
 };
 
 /* Intial state for the network store substate */
