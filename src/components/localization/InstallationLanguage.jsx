@@ -218,13 +218,14 @@ class LanguageSelector extends React.Component {
 }
 
 export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
-    const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
+    const { commonLocales, keyboardLayouts, language, languages, virtualConsoleKeymap } = useContext(LanguageContext);
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
 
     useEffect(() => {
-        setIsFormValid(language !== "");
-    }, [language, setIsFormValid]);
+        // For GNOME, keyboard layout and vc keymap are always set through the compositorSelectedLayout
+        setIsFormValid(language !== "" && (!isGnome || virtualConsoleKeymap !== ""));
+    }, [isGnome, language, virtualConsoleKeymap, setIsFormValid]);
 
     return (
         <>
