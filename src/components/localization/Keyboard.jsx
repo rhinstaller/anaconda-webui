@@ -37,6 +37,7 @@ import {
     getKeyboardConfiguration,
     setCompositorLayouts,
     setVirtualConsoleKeymap,
+    setXKeyboardDefaults,
     setXLayouts,
 } from "../../apis/localization.js";
 
@@ -364,12 +365,30 @@ const KeyboardNonGnome = ({ setIsFormValid }) => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [open, setOpen] = useState(false);
-    const { xlayouts } = useContext(LanguageContext);
+    const { language, xlayouts } = useContext(LanguageContext);
+    const firstXLayout = xlayouts?.[0];
 
     useEffect(() => {
-        setIsFormValid(xlayouts.length >= 1);
-        setKeyboardAlert(xlayouts.length ? undefined : _("No keyboard layout detected. Add at least one layout to proceed"));
-    }, [xlayouts, setIsFormValid]);
+        // Load default XLayouts from backend, this does not configure vconsole
+        setXKeyboardDefaults();
+    }, []);
+
+    useEffect(() => {
+        // When language changes, choose sensible defaults for X keyboard layouts
+        setXKeyboardDefaults();
+    }, [language]);
+
+    useEffect(() => {
+        // When X keyboard layouts change, set VC keymap to first layout
+        if (firstXLayout) {
+            setVirtualConsoleKeymap({ keymap: firstXLayout });
+        }
+    }, [firstXLayout]);
+
+    useEffect(() => {
+        setIsFormValid(firstXLayout !== undefined);
+        setKeyboardAlert(firstXLayout !== undefined ? undefined : _("No keyboard layout detected. Add at least one layout to proceed"));
+    }, [firstXLayout, setIsFormValid]);
 
     const selectedKeyboards = xlayouts.length === 1
         ? xlayouts[0]
