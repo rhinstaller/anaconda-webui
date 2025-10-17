@@ -64,12 +64,6 @@ export class LocalizationClient {
     async initData () {
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
-        // Load default XLayouts from backend, this does not configure vconsole
-        await setXKeyboardDefaults();
-        const xlayouts = await getXLayouts();
-        if (xlayouts.length) {
-            await setVirtualConsoleKeymap({ keymap: xlayouts[0] });
-        }
         await this.dispatch(getKeyboardLayoutsAction());
     }
 
@@ -95,7 +89,6 @@ export class LocalizationClient {
                          * Workaround this by dispatching the KeyboardLayouts action with small delay.
                          */
                         setTimeout(async () => {
-                            await setXKeyboardDefaults();
                             this.dispatch(getKeyboardLayoutsAction());
                         }, 500);
                     } else {
