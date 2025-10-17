@@ -243,6 +243,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboards_on_device("us")
 
         # Changing language should set sensible keyboard defaults
+        l.input_locale_search('Russian')
         l.select_locale("ru_RU")
         l.check_selected_locale("ru_RU")
         l.check_selected_keyboard("us")
@@ -250,6 +251,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
 
         # Reset language back to English for the rest of the test
+        l.input_locale_search('')
         l.select_locale("en_US")
         l.check_selected_locale("en_US")
         l.check_selected_keyboard("ru", present=False)
@@ -257,10 +259,15 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Select a second keyboard layout (it gets appended)
         l.select_keyboard("de__nodeadkeys_", "German (no dead keys)", is_common=True)
+        l.check_selected_keyboard("us")
+        l.check_selected_keyboard("de (nodeadkeys)")
         l.check_selected_keyboards_on_device(["us", "de"], expected_variants=["", "nodeadkeys"])
 
         # Select non-ASCII keyboard warning
         l.select_keyboard("ara", "Arabic", is_common=True)
+        l.check_selected_keyboard("us")
+        l.check_selected_keyboard("de (nodeadkeys)")
+        l.check_selected_keyboard("ara")
         l.check_selected_keyboards_on_device(["us", "de", "ara"], expected_variants=["", "nodeadkeys", ""])
 
         # Make Arabic keyboard the default (current) to trigger the ASCII warning

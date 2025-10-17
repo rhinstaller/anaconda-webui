@@ -125,10 +125,14 @@ class Keyboard():
 
         assert actual_layouts == expected_layouts, f"Expected layouts {expected_layouts}, but got {actual_layouts}"
 
-        if expected_variants:
-            assert actual_variants == expected_variants, f"Expected variants {expected_variants}, but got {actual_variants}"
-        else:
-            assert not actual_variants, f"Expected no variants, but got {actual_variants}"
+        try:
+            if expected_variants:
+                assert actual_variants == expected_variants, f"Expected variants {expected_variants}, but got {actual_variants}"
+            else:
+                assert not actual_variants, f"Expected no variants, but got {actual_variants}"
+        except AssertionError:
+            # Try one more time for rubustness
+            self.check_selected_keyboards_on_device(expected_layouts, expected_variants)
 
 class LanguageDBus():
     def __init__(self, machine):
