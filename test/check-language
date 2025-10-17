@@ -149,6 +149,7 @@ class TestLanguage(VirtInstallMachineCase):
         # Select the 'German' language
         l.select_locale("de_DE")
         l.check_selected_locale("de_DE")
+        l.check_selected_keyboard("de (nodeadkeys)")
 
         # Pixel test the language step
         b.assert_pixels(
