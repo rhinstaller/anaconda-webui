@@ -361,7 +361,7 @@ export const KeyboardGnome = ({ setIsFormValid }) => {
     );
 };
 
-const KeyboardNonGnome = ({ setIsFormValid }) => {
+const KeyboardNonGnome = () => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [open, setOpen] = useState(false);
@@ -384,11 +384,6 @@ const KeyboardNonGnome = ({ setIsFormValid }) => {
             setVirtualConsoleKeymap({ keymap: firstXLayout });
         }
     }, [firstXLayout]);
-
-    useEffect(() => {
-        setIsFormValid(firstXLayout !== undefined);
-        setKeyboardAlert(firstXLayout !== undefined ? undefined : _("No keyboard layout detected. Add at least one layout to proceed"));
-    }, [firstXLayout, setIsFormValid]);
 
     const selectedKeyboards = xlayouts.length === 1
         ? xlayouts[0]
@@ -434,7 +429,6 @@ const KeyboardNonGnome = ({ setIsFormValid }) => {
               isOpen={open}
               onClose={() => setOpen(false)}
               onSaved={handleSaved}
-              setIsFormValid={setIsFormValid}
               currentLayouts={xlayouts}
             />
         </>
@@ -445,6 +439,6 @@ export const Keyboard = ({ isGnome, setIsFormValid }) => {
     if (isGnome) {
         return <KeyboardGnome setIsFormValid={setIsFormValid} />;
     } else {
-        return <KeyboardNonGnome setIsFormValid={setIsFormValid} />;
+        return <KeyboardNonGnome />;
     }
 };
