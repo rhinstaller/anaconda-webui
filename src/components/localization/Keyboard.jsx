@@ -36,8 +36,6 @@ import TrashIcon from "@patternfly/react-icons/dist/esm/icons/trash-icon";
 import {
     getKeyboardConfiguration,
     setCompositorLayouts,
-    setVirtualConsoleKeymap,
-    setXKeyboardDefaults,
     setXLayouts,
 } from "../../apis/localization.js";
 
@@ -357,25 +355,7 @@ const KeyboardNonGnome = () => {
     const modalId = SCREEN_ID + "-change-system-keyboard-layout-modal";
     const [keyboardAlert, setKeyboardAlert] = useState();
     const [open, setOpen] = useState(false);
-    const { language, xlayouts } = useContext(LanguageContext);
-    const firstXLayout = xlayouts?.[0];
-
-    useEffect(() => {
-        // Load default XLayouts from backend, this does not configure vconsole
-        setXKeyboardDefaults();
-    }, []);
-
-    useEffect(() => {
-        // When language changes, choose sensible defaults for X keyboard layouts
-        setXKeyboardDefaults();
-    }, [language]);
-
-    useEffect(() => {
-        // When X keyboard layouts change, set VC keymap to first layout
-        if (firstXLayout) {
-            setVirtualConsoleKeymap({ keymap: firstXLayout });
-        }
-    }, [firstXLayout]);
+    const { xlayouts } = useContext(LanguageContext);
 
     const selectedKeyboards = xlayouts.length === 1
         ? xlayouts[0]
@@ -392,7 +372,6 @@ const KeyboardNonGnome = () => {
         try {
             await setCompositorLayouts({ layouts: selectedLayouts });
             await setXLayouts({ layouts: selectedLayouts });
-            await setVirtualConsoleKeymap({ keymap: selectedLayouts?.[0] });
         } catch (ex) {
             setKeyboardAlert(ex?.message);
         }

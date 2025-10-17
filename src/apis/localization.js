@@ -76,8 +76,7 @@ export class LocalizationClient {
                     await this.dispatch(getKeyboardLayoutsAction());
                     break;
                 case "PropertiesChanged":
-                    if ((args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "XLayouts")) ||
-                        (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "VirtualConsoleKeymap"))) {
+                    if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "XLayouts")) {
                         await this.dispatch(getKeyboardLayoutsAction());
                     }
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
@@ -211,13 +210,6 @@ export const getKeyboardLayouts = async () => {
 };
 
 /**
- * @returns {Promise<string>}   Current virtual console keymap
- */
-export const getVirtualConsoleKeymap = () => {
-    return getProperty("VirtualConsoleKeymap");
-};
-
-/**
  * @returns {Promise<string[]>}   Current X keyboard layouts
  */
 export const getXLayouts = () => {
@@ -225,16 +217,11 @@ export const getXLayouts = () => {
 };
 
 export const setXKeyboardDefaults = async () => {
-    // FIXME: Reset XLayouts before calling SetXKeyboardDefaults. Without this reset, the
-    // backend would see existing layouts and think they came from
-    // kickstart, preventing new defaults from being applied.
-    await setXLayouts({ layouts: [] });
     await callClient("SetXKeyboardDefaults");
-};
-
-/**
- * @param {string} keymap       VC keymap name (see `localectl list-keymaps`)
- */
-export const setVirtualConsoleKeymap = ({ keymap }) => {
-    return setProperty("VirtualConsoleKeymap", cockpit.variant("s", keymap));
+    // FIXME: SetXKeyboardDefaults does not trigger events for changes in xlayouts
+    // Remove when https://github.com/rhinstaller/anaconda/pull/6707 is merged
+    return setTimeout(
+        () => new LocalizationClient().dispatch(getKeyboardLayoutsAction()),
+        500
+    );
 };
