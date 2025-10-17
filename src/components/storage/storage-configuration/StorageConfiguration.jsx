@@ -27,7 +27,7 @@ import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
 
-export const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotification }) => {
+export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, setStepNotification }) => {
     const { luks, partitioning } = useContext(StorageContext);
 
     // Display custom footer
@@ -50,6 +50,7 @@ export const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotifica
     return (
         <DiskEncryption
           dispatch={dispatch}
+          onCritFail={onCritFail}
           setIsFormValid={setIsFormValid}
         />
     );

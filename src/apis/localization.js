@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import { getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardConfigurationAction, getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
 
 import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
@@ -65,6 +65,7 @@ export class LocalizationClient {
         await this.dispatch(getLanguageAction());
         await this.dispatch(getLanguagesAction());
         await this.dispatch(getKeyboardLayoutsAction());
+        await this.dispatch(getKeyboardConfigurationAction());
     }
 
     startEventMonitor () {
@@ -73,13 +74,10 @@ export class LocalizationClient {
             async (path, iface, signal, args) => {
                 switch (signal) {
                 case "CompositorSelectedLayoutChanged":
-                    await this.dispatch(getKeyboardLayoutsAction());
+                case "CompositorLayoutsChanged":
+                    await this.dispatch(getKeyboardConfigurationAction());
                     break;
                 case "PropertiesChanged":
-                    if ((args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "XLayouts")) ||
-                        (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "VirtualConsoleKeymap"))) {
-                        await this.dispatch(getKeyboardLayoutsAction());
-                    }
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
 
@@ -89,6 +87,7 @@ export class LocalizationClient {
                          * Workaround this by dispatching the KeyboardLayouts action with small delay.
                          */
                         setTimeout(async () => {
+                            this.dispatch(getKeyboardConfigurationAction());
                             this.dispatch(getKeyboardLayoutsAction());
                         }, 500);
                     } else {
@@ -161,10 +160,6 @@ export const setXLayouts = ({ layouts }) => {
     return setProperty("XLayouts", cockpit.variant("as", layouts));
 };
 
-export const getCompositorSelectedLayout = () => {
-    return callClient("GetCompositorSelectedLayout");
-};
-
 export const setCompositorLayouts = ({ layouts }) => {
     return callClient("SetCompositorLayouts", [layouts, []]);
 };
@@ -211,13 +206,6 @@ export const getKeyboardLayouts = async () => {
 };
 
 /**
- * @returns {Promise<string>}   Current virtual console keymap
- */
-export const getVirtualConsoleKeymap = () => {
-    return getProperty("VirtualConsoleKeymap");
-};
-
-/**
  * @returns {Promise<string[]>}   Current X keyboard layouts
  */
 export const getXLayouts = () => {
@@ -230,11 +218,4 @@ export const setXKeyboardDefaults = async () => {
     // kickstart, preventing new defaults from being applied.
     await setXLayouts({ layouts: [] });
     await callClient("SetXKeyboardDefaults");
-};
-
-/**
- * @param {string} keymap       VC keymap name (see `localectl list-keymaps`)
- */
-export const setVirtualConsoleKeymap = ({ keymap }) => {
-    return setProperty("VirtualConsoleKeymap", cockpit.variant("s", keymap));
 };
