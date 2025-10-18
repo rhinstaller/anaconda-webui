@@ -73,11 +73,11 @@ export class LocalizationClient {
             async (path, iface, signal, args) => {
                 switch (signal) {
                 case "CompositorSelectedLayoutChanged":
-                    await this.dispatch(getKeyboardLayoutsAction());
+                    await this.dispatch(getKeyboardLayoutsAction({ fetchAvailableKeyboards: false }));
                     break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "XLayouts")) {
-                        await this.dispatch(getKeyboardLayoutsAction());
+                        await this.dispatch(getKeyboardLayoutsAction({ fetchAvailableKeyboards: false }));
                     }
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
                         await this.dispatch(getLanguageAction());
