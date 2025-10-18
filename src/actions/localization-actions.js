@@ -24,7 +24,6 @@ import {
     getLanguages,
     getLocaleData,
     getLocales,
-    getVirtualConsoleKeymap,
     getXLayouts,
 } from "../apis/localization.js";
 
@@ -74,15 +73,21 @@ export const getCommonLocalesAction = () => {
     };
 };
 
-export const getKeyboardLayoutsAction = () => {
+export const getKeyboardLayoutsAction = (args) => {
     return async (dispatch) => {
-        const keyboardLayouts = await getKeyboardLayouts();
+        const payload = {};
+        if (args?.fetchAvailableKeyboards !== false) {
+            const keyboardLayouts = await getKeyboardLayouts();
+            payload.keyboardLayouts = keyboardLayouts;
+        }
         const compositorSelectedLayout = await getCompositorSelectedLayout();
-        const virtualConsoleKeymap = await getVirtualConsoleKeymap();
         const xlayouts = await getXLayouts();
 
+        payload.compositorSelectedLayout = compositorSelectedLayout;
+        payload.xlayouts = xlayouts;
+
         dispatch({
-            payload: { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap, xlayouts },
+            payload,
             type: "GET_KEYBOARD_LAYOUTS"
         });
     };
