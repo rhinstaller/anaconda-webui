@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Menu, MenuContent, MenuGroup, MenuItem, MenuList } from "@patternfly/react-core/dist/esm/components/Menu/index.js";
 import { TextInputGroup, TextInputGroupMain, TextInputGroupUtilities } from "@patternfly/react-core/dist/esm/components/TextInputGroup/index.js";
@@ -29,17 +29,9 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 const warn = loggerWarn.bind(null, SCREEN_ID + ":");
 
-const renderOptions = (options, selection, search) => {
+const renderOptions = (options, scrollRef, selection, search) => {
     return options.map(option => {
         const isSelected = selection && option.itemId === selection;
-        // Creating a ref that will be applied to the selected language and cause it to scroll into view.
-        const scrollRef = (isSelected)
-            ? (ref) => {
-                if (ref) {
-                    ref.scrollIntoView({ block: "center" });
-                }
-            }
-            : undefined;
 
         switch (option.itemType) {
         case "menu-item":
@@ -54,7 +46,7 @@ const renderOptions = (options, selection, search) => {
                   isSelected={isSelected}
                   itemId={option.itemId}
                   key={option.key || option.id}
-                  ref={scrollRef}
+                  {...(isSelected ? { ref: scrollRef } : {})}
                   style={isSelected ? { backgroundColor: "var(--pf-v6-c-menu__list-item--hover--BackgroundColor)" } : undefined}
                 >
                     {option.itemLang
@@ -67,7 +59,7 @@ const renderOptions = (options, selection, search) => {
                 </MenuItem>
             );
         case "menu-group": {
-            const itemChildren = renderOptions(option.itemChildren, selection, search);
+            const itemChildren = renderOptions(option.itemChildren, scrollRef, selection, search);
 
             if (itemChildren.filter((item) => item !== null).length === 0) {
                 return null; // Skip empty groups
@@ -93,7 +85,18 @@ const renderOptions = (options, selection, search) => {
 export const MenuSearch = ({ ariaLabelSearch, handleOnSelect, menuType, options, selection }) => {
     const [search, setSearch] = useState("");
     const prefix = SCREEN_ID + "-" + menuType;
-    const menuListContent = renderOptions(options, selection, search);
+    const scrollRef = useRef(null);
+    const didScroll = useRef(false);
+
+    // Scroll only once when the menu is opened and the selected item is available.
+    useLayoutEffect(() => {
+        if (scrollRef.current && !didScroll.current) {
+            scrollRef.current.scrollIntoView({ block: "center" });
+            didScroll.current = true;
+        }
+    });
+
+    const menuListContent = renderOptions(options, scrollRef, selection, search);
 
     return (
         <>
