@@ -34,6 +34,7 @@ import StarIcon from "@patternfly/react-icons/dist/esm/icons/star-icon";
 import TrashIcon from "@patternfly/react-icons/dist/esm/icons/trash-icon";
 
 import {
+    applyKeyboardWithTask,
     getKeyboardConfiguration,
     setCompositorLayouts,
     setXLayouts,
@@ -372,8 +373,13 @@ const KeyboardNonGnome = () => {
         try {
             await setCompositorLayouts({ layouts: selectedLayouts });
             await setXLayouts({ layouts: selectedLayouts });
+
+            await applyKeyboardWithTask({
+                onFail: (ex) => setKeyboardAlert(ex?.message || _("Failed to apply keyboard settings")),
+                onSuccess: () => setKeyboardAlert(),
+            });
         } catch (ex) {
-            setKeyboardAlert(ex?.message);
+            setKeyboardAlert(ex?.message || _("Failed to save layouts"));
         }
     };
 

@@ -22,6 +22,7 @@ import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form
 
 import { setLocale } from "../../apis/boss.js";
 import {
+    applyKeyboardWithTask,
     getKeyboardConfiguration,
     setLanguage,
     setXKeyboardDefaults,
@@ -253,14 +254,7 @@ export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) =>
     }, [setIsFormValid, setStepNotification, xlayouts]);
 
     useEffect(() => {
-        if (isGnome) {
-            return;
-        }
-        if (langRef.current === language) {
-            setXKeyboardDefaults();
-            return;
-        }
-        langRef.current = language;
+        if (isGnome) return;
 
         const setDefaultKeyboards = async () => {
             // When language changes, choose sensible defaults for X keyboard layouts
@@ -269,9 +263,25 @@ export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) =>
             // kickstart, preventing new defaults from being applied.
             await setXLayouts({ layouts: [] });
             await setXKeyboardDefaults();
+            await applyKeyboardWithTask({
+                onFail: (ex) => setStepNotification(ex?.message || _("Failed to apply keyboard settings")),
+                onSuccess: () => setStepNotification(),
+            });
         };
+
+        if (langRef.current === language) {
+            setXKeyboardDefaults().then(() =>
+                applyKeyboardWithTask({
+                    onFail: (ex) => setStepNotification(ex?.message || _("Failed to apply keyboard settings")),
+                    onSuccess: () => setStepNotification(),
+                })
+            );
+            return;
+        }
+
+        langRef.current = language;
         setDefaultKeyboards();
-    }, [isGnome, language]);
+    }, [isGnome, language, setStepNotification]);
 
     return (
         <>

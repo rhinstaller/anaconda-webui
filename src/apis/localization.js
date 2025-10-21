@@ -218,10 +218,37 @@ export const getXLayouts = () => {
 
 export const setXKeyboardDefaults = async () => {
     await callClient("SetXKeyboardDefaults");
-    // FIXME: SetXKeyboardDefaults does not trigger events for changes in xlayouts
-    // Remove when https://github.com/rhinstaller/anaconda/pull/6707 is merged
-    return setTimeout(
-        () => new LocalizationClient().dispatch(getKeyboardLayoutsAction()),
-        500
-    );
+};
+
+export const applyKeyboardWithTask = async ({ onFail = () => {}, onSuccess = () => {} } = {}) => {
+    try {
+        const task = await callClient("ApplyKeyboardWithTask");
+        const taskProxy = new LocalizationClient().client.proxy(
+            "org.fedoraproject.Anaconda.Task",
+            task
+        );
+
+        const getTaskResult = async () => {
+            try {
+                const result = await taskProxy.GetResult();
+                onSuccess(result.v);
+            } catch (ex) {
+                onFail(ex);
+            }
+        };
+
+        const addEventListeners = () => {
+            taskProxy.addEventListener("Stopped", () => {
+                taskProxy.Finish().catch(onFail);
+            });
+            taskProxy.addEventListener("Succeeded", getTaskResult);
+        };
+
+        taskProxy.wait(() => {
+            addEventListeners();
+            taskProxy.Start().catch(onFail);
+        });
+    } catch (ex) {
+        onFail(ex);
+    }
 };
