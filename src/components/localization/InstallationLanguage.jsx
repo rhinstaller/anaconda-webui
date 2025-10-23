@@ -17,12 +17,16 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 
 import { setLocale } from "../../apis/boss.js";
 import {
+    applyKeyboardWithTask,
+    getKeyboardConfiguration,
     setLanguage,
+    setXKeyboardDefaults,
+    setXLayouts,
 } from "../../apis/localization.js";
 
 import {
@@ -218,14 +222,66 @@ class LanguageSelector extends React.Component {
 }
 
 export const InstallationLanguage = ({ setIsFormValid, setStepNotification }) => {
-    const { commonLocales, keyboardLayouts, language, languages, virtualConsoleKeymap } = useContext(LanguageContext);
+    const { commonLocales, keyboardLayouts, language, languages, xlayouts } = useContext(LanguageContext);
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
+    const [vconsoleLayout, setVconsoleLayout] = useState();
+    const langRef = useRef(language);
 
     useEffect(() => {
         // For GNOME, keyboard layout and vc keymap are always set through the compositorSelectedLayout
-        setIsFormValid(language !== "" && (!isGnome || virtualConsoleKeymap !== ""));
-    }, [isGnome, language, virtualConsoleKeymap, setIsFormValid]);
+        setIsFormValid(language !== "" && (isGnome || vconsoleLayout !== ""));
+    }, [isGnome, language, setIsFormValid, vconsoleLayout]);
+
+    useEffect(() => {
+        const onFail = ex => {
+            setVconsoleLayout();
+            setStepNotification(ex.message);
+        };
+        const onSuccess = (res) => {
+            const vconsole = res[1];
+            setVconsoleLayout(vconsole);
+
+            if (vconsole === "") {
+                // No valid vconsole can be generated from the selected keyboard layouts
+                // TODO: Give a more helpful message to the users
+                setStepNotification({ message: _("Invalid keyboard selection"), step: SCREEN_ID });
+            } else {
+                setStepNotification();
+            }
+        };
+        getKeyboardConfiguration({ onFail, onSuccess });
+    }, [setIsFormValid, setStepNotification, xlayouts]);
+
+    useEffect(() => {
+        if (isGnome) return;
+
+        const setDefaultKeyboards = async () => {
+            // When language changes, choose sensible defaults for X keyboard layouts
+            // Reset XLayouts before calling SetXKeyboardDefaults. Without this reset, the
+            // backend would see existing layouts and think they came from
+            // kickstart, preventing new defaults from being applied.
+            await setXLayouts({ layouts: [] });
+            await setXKeyboardDefaults();
+            await applyKeyboardWithTask({
+                onFail: (ex) => setStepNotification(ex?.message || _("Failed to apply keyboard settings")),
+                onSuccess: () => setStepNotification(),
+            });
+        };
+
+        if (langRef.current === language) {
+            setXKeyboardDefaults().then(() =>
+                applyKeyboardWithTask({
+                    onFail: (ex) => setStepNotification(ex?.message || _("Failed to apply keyboard settings")),
+                    onSuccess: () => setStepNotification(),
+                })
+            );
+            return;
+        }
+
+        langRef.current = language;
+        setDefaultKeyboards();
+    }, [isGnome, language, setStepNotification]);
 
     return (
         <>

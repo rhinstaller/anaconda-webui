@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
@@ -28,12 +28,16 @@ import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 
 import {
+    getKeyboardConfiguration
+} from "../../../apis/localization.js";
+
+import {
     setLuksEncryptionDataAction
 } from "../../../actions/storage-actions.js";
 
-import { getLocaleById } from "../../../helpers/localization.js";
+import { error } from "../../../helpers/log.js";
 
-import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../../contexts/Common.jsx";
+import { RuntimeContext, StorageContext, SystemTypeContext } from "../../../contexts/Common.jsx";
 
 import { Keyboard } from "../../localization/Keyboard.jsx";
 import { PasswordFormFields, ruleLength } from "../../Password.jsx";
@@ -66,11 +70,21 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
     const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
-    const { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap } = useContext(LanguageContext);
-    const selectedKeyboard = getLocaleById(keyboardLayouts, virtualConsoleKeymap);
-    // Warn if the selected layout in the compositor is different from the vconsole layout
-    // For reading the compositorSelectedLayout we need localed support so skip this check for gnome
-    const showVConsoleMismatchAlert = !isGnome && compositorSelectedLayout !== virtualConsoleKeymap;
+    const [vconsoleLayout, setVconsoleLayout] = useState();
+
+    useEffect(() => {
+        const onFail = ex => {
+            setIsFormValid(false);
+            setVconsoleLayout();
+            error("Failed to get keyboard configuration:", ex.message);
+        };
+        const onSuccess = (res) => {
+            const vconsole = res[1];
+            setVconsoleLayout(vconsole);
+            setIsFormValid(true);
+        };
+        getKeyboardConfiguration({ onFail, onSuccess });
+    }, [setIsFormValid]);
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -103,7 +117,7 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
                     )
                     : (
                         <TextInput
-                          value={selectedKeyboard ? selectedKeyboard.description.v : ""}
+                          value={vconsoleLayout}
                           id={idPrefix + "-keyboard-layout"}
                           readOnlyVariant="default"
                         />
@@ -114,14 +128,6 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
               isPlain
               variant="info"
               title={_("This layout will be used for unlocking your system on boot")} />
-            {showVConsoleMismatchAlert && (
-                <Alert
-                  id={idPrefix + "-vconsole-mismatch-alert"}
-                  isInline
-                  isPlain
-                  variant="warning"
-                  title={_("The active keyboard layout in the compositor differs from the default layout selected for the target system.")}
-                />)}
             <PasswordFormFields
               idPrefix={idPrefix}
               policy={luksPolicy}

@@ -103,7 +103,7 @@ class Keyboard():
         else:
             self.browser.wait_not_present(f"p:contains('{keyboard}')")
 
-    def check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
+    def _check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
         result = self.machine.execute("localectl status")
         layout = None
         variant = None
@@ -124,16 +124,21 @@ class Keyboard():
         if expected_variants and isinstance(expected_variants, str):
             expected_variants = [expected_variants]
 
-        assert actual_layouts == expected_layouts, f"Expected layouts {expected_layouts}, but got {actual_layouts}"
+        if actual_layouts != expected_layouts:
+            return False
 
-        try:
-            if expected_variants:
-                assert actual_variants == expected_variants, f"Expected variants {expected_variants}, but got {actual_variants}"
-            else:
-                assert not actual_variants, f"Expected no variants, but got {actual_variants}"
-        except AssertionError:
-            # Try one more time for rubustness
-            self.check_selected_keyboards_on_device(expected_layouts, expected_variants)
+        if expected_variants:
+            if actual_variants != expected_variants:
+                return False
+        else:
+            if actual_variants:
+                return False
+
+        return True
+
+    def check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
+        self.browser.wait(lambda: self._check_selected_keyboards_on_device(expected_layouts, expected_variants))
+
 
 class LanguageDBus():
     def __init__(self, machine):
