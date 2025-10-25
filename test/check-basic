@@ -117,7 +117,8 @@ class TestBasic(VirtInstallMachineCase):
 
         # Obtain pretty name and versions from the CLI
         pretty_name = get_pretty_name(m)
-        version = m.execute("anaconda --version | cut -d ' ' -f 2 | tail -1")
+        backend_version = m.execute("anaconda --version | cut -d ' ' -f 2 | tail -1").strip()
+        webui_version = m.execute("cat /usr/local/share/cockpit/anaconda-webui/VERSION.txt").strip().split()[0]
 
         # Click on the kebab
         b.click("#toggle-kebab")
@@ -132,8 +133,10 @@ class TestBasic(VirtInstallMachineCase):
         b.wait_in_text("#about-modal-subtitle", "Powered by Anaconda")
 
         # Expect About modal body to be shown
-        b.wait_in_text("#about-modal-versions dt", "Anaconda")
-        b.wait_in_text("#about-modal-versions dd", version.strip())
+        b.wait_in_text("#backend-dt", "Anaconda")
+        b.wait_in_text("#backend-dd", backend_version)
+        b.wait_in_text("#webui-dt", "Anaconda WebUI")
+        b.wait_in_text("#webui-dd", webui_version)
 
         # Expect button link for Anaconda project page to be shown
         b.wait_in_text("#anaconda-page-button", "Anaconda project page")
@@ -142,7 +145,7 @@ class TestBasic(VirtInstallMachineCase):
         b.assert_pixels(
             ".pf-v6-c-about-modal-box",
             "about-modal",
-            ignore=["#about-modal-versions dd"],
+            ignore=["#backend-dd","#webui-dd"],
         )
 
         # Close about modal
