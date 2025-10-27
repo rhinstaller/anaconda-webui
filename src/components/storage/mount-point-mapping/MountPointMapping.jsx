@@ -177,9 +177,24 @@ const updatePartitioningRequests = ({ newRequests, partitioning, requests }) => 
         }
     });
 
+    // Filter out requests that have empty mount points and are not being managed by the frontend
+    // This specifically handles nested btrfs subvolumes that shouldn't be included
+    const filteredRequests = backendRequests.filter(request => {
+        const isManagedByFrontend = newRequests.some(r => r["device-spec"] === request["device-spec"]);
+
+        // Always include requests managed by frontend
+        if (isManagedByFrontend) {
+            return true;
+        }
+
+        // For unmanaged requests, only include if they have a mount point
+        // This excludes nested subvolumes with empty mount points
+        return request["mount-point"] && request["mount-point"].trim() !== "";
+    });
+
     return setManualPartitioningRequests({
         partitioning,
-        requests: requestsToDbus(backendRequests),
+        requests: requestsToDbus(filteredRequests),
     });
 };
 
