@@ -28,9 +28,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-14 03:25+0000\n"
-"PO-Revision-Date: 2025-08-12 03:41+0000\n"
-"Last-Translator: naly zzwd <xeanhort007@gmail.com>\n"
+"POT-Creation-Date: 2025-10-28 03:34+0000\n"
+"PO-Revision-Date: 2025-10-20 12:18+0000\n"
+"Last-Translator: David Medina <dmedinacpnl@gmail.com>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/ca/>\n"
 "Language: ca\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:180
 #: src/components/storage/installation-method/InstallationDestination.jsx:301
@@ -59,7 +59,7 @@ msgstr "$0 instal·lació"
 msgid "$0 installer"
 msgstr "$0 instal·lador"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:251
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:253
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -69,9 +69,9 @@ msgstr ""
 
 #: src/components/review/ReviewConfiguration.jsx:118
 msgid "$0 is required, but only $1 is available."
-msgstr ""
+msgstr "Es requereix $0, però només hi ha $1 disponible."
 
-#: src/components/localization/Keyboard.jsx:150
+#: src/components/localization/Keyboard.jsx:330
 msgid "$0 layouts detected"
 msgstr "$0 disposicions detectades"
 
@@ -100,6 +100,8 @@ msgstr ""
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
+"Un compte d'usuari estàndard amb accés d'administrador per fer canvis a tot "
+"el sistema."
 
 #: src/components/HeaderKebab.jsx:121
 msgid "About"
@@ -109,16 +111,14 @@ msgstr "Quant a"
 msgid "Account"
 msgstr "Compte"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:150
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:152
 #: src/components/review/StorageReview.jsx:247
 msgid "Actions"
 msgstr "Accions"
 
 #: src/components/datetime/CustomNTPModal.jsx:235
-#, fuzzy
-#| msgid "Add NTP server"
 msgid "Add another server..."
-msgstr "Afegeix un servidor NTP"
+msgstr "Afegeix un altre servidor..."
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:657
 msgid "Add mount"
@@ -177,13 +177,14 @@ msgstr ""
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
+"Estableix automàticament la data i l'hora mitjançant servidors de temps"
 
 #: src/components/datetime/Timezone.jsx:152
 #: src/components/datetime/Timezone.jsx:153
 msgid "Automatically set timezone"
-msgstr ""
+msgstr "Estableix la zona horària automàticament"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:207
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:209
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Espai lliure disponible: $0. La instal·lació requereix: $1."
 
@@ -205,8 +206,9 @@ msgstr ""
 
 #: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/storage/installation-method/InstallationDestination.jsx:393
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:218
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
+#: src/components/localization/Keyboard.jsx:274
 #: src/components/review/Hostname.jsx:139 src/components/Error.jsx:309
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -224,12 +226,12 @@ msgid "Change hostname"
 msgstr "Canvia el nom d'amfitrió"
 
 #: src/components/review/ReviewConfiguration.jsx:135
-#, fuzzy
-#| msgid "Change destination"
 msgid "Change partition layout"
-msgstr "Canvia destinació"
+msgstr "Canvia la disposició de la partició"
 
-#: src/components/localization/Keyboard.jsx:162
+#: src/components/localization/Keyboard.jsx:208
+#: src/components/localization/Keyboard.jsx:342
+#: src/components/localization/Keyboard.jsx:410
 msgid "Change system keyboard layout"
 msgstr "Canvia la disposició del teclat del sistema"
 
@@ -239,7 +241,7 @@ msgid ""
 msgstr ""
 "Els canvis fets aquí afectaran immediatament el sistema. No hi ha 'desfer'."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:52
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:54
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:438
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:444
 msgid "Checking storage configuration"
@@ -259,10 +261,8 @@ msgid "Close"
 msgstr "Tanca"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:173
-#, fuzzy
-#| msgid "Storage editor"
 msgid "Close storage editor"
-msgstr "Editor d'emmagatzematge"
+msgstr "Tanca l'editor d'emmagatzematge"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:293
 msgid ""
@@ -280,10 +280,8 @@ msgid "Configure NTP servers"
 msgstr "Configura els servidors NTP"
 
 #: src/components/datetime/CustomNTPModal.jsx:157
-#, fuzzy
-#| msgid "Configure NTP servers"
 msgid "Configure custom NTP servers"
-msgstr "Configura els servidors NTP"
+msgstr "Configurar els servidors NTP personalitzats"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:159
 msgid "Configure storage"
@@ -293,7 +291,7 @@ msgstr "Configura l'emmagatzematge"
 msgid "Configure storage again"
 msgstr "Torneu a configurar l'emmagatzematge"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:119
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:133
 #: src/components/users/Accounts.jsx:153 src/components/users/Accounts.jsx:309
 msgid "Confirm passphrase"
 msgstr "Confirmeu la paraula de pas"
@@ -328,14 +326,12 @@ msgstr "Personalitzat"
 
 #: src/components/datetime/DateAndTime.jsx:184
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/components/datetime/DateAndTime.jsx:163
 #: src/components/datetime/index.js:30
-#, fuzzy
-#| msgid "Set Date & Time"
 msgid "Date and time"
-msgstr "Estableix l'hora i la data"
+msgstr "Data i hora"
 
 #: src/components/review/StorageReview.jsx:347
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
@@ -370,7 +366,7 @@ msgstr "Punt de muntatge duplicat."
 msgid "Enable root account"
 msgstr "Habilita el compte root"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:77
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:82
 msgid "Encrypt my data"
 msgstr "Xifra les meves dades"
 
@@ -378,7 +374,7 @@ msgstr "Xifra les meves dades"
 msgid "Encrypted"
 msgstr "Xifrat"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:129
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:143
 msgid "Encryption"
 msgstr "Xifratge"
 
@@ -394,10 +390,14 @@ msgstr "Detalls de l'error"
 msgid "Exit to live desktop"
 msgstr "Surt de l'escriptori live"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:255
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:250
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "Partició estesa"
+
+#: src/components/localization/Keyboard.jsx:197
+msgid "Failed to save layouts"
+msgstr "No s'ha pogut desar les disposicions"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:93
 msgid "Fedora linux requires at least $0 of disk space."
@@ -415,11 +415,17 @@ msgstr ""
 "Finalitzant: La configuració del sistema s'ha completat. Finalitzar la "
 "instal·lació pot trigar uns moments."
 
+#: src/components/localization/Keyboard.jsx:213
+msgid "Find layout"
+msgstr "Cerca una disposició"
+
 #: src/components/users/Accounts.jsx:307
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
 msgstr ""
+"Per a una millor seguretat, eviteu utilitzar directament el compte root. En "
+"comptes d'això, utilitzeu el compte local anterior per gestionar el sistema."
 
 #: src/components/users/Accounts.jsx:191
 msgid "Full name"
@@ -435,7 +441,7 @@ msgstr "Ajudeu-nos a solucionar el problema!"
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
-msgstr ""
+msgstr "Text d'ajuda"
 
 #: src/components/Password.jsx:240
 msgid "Hide confirmed password"
@@ -549,8 +555,6 @@ msgstr ""
 "existent en aquesta matriu s'ignorarà."
 
 #: src/components/datetime/CustomNTPModal.jsx:95
-#, fuzzy
-#| msgid "Invalid host name"
 msgid "Invalid hostname"
 msgstr "El nom d'amfitrió no és vàlid"
 
@@ -562,15 +566,15 @@ msgstr ""
 "Mantén la disposició actual del disc i utilitza l'espai disponible, per a "
 "arrencar amb dual-boot amb un altre sistema operatiu."
 
-#: src/components/localization/InstallationLanguage.jsx:250
+#: src/components/localization/InstallationLanguage.jsx:251
 msgid "Keyboard"
 msgstr "Teclat"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:89
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:94
 msgid "Keyboard layout during boot"
 msgstr "Disposició del teclat durant l'arrencada"
 
-#: src/components/localization/InstallationLanguage.jsx:234
+#: src/components/localization/InstallationLanguage.jsx:235
 #: src/components/review/ReviewConfiguration.jsx:192
 msgid "Language"
 msgstr "Idioma"
@@ -580,7 +584,7 @@ msgstr "Idioma"
 msgid "Launch storage editor"
 msgstr "Inicieu l'editor d'emmagatzematge"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:146
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:148
 msgid "Location"
 msgstr "Ubicació"
 
@@ -601,6 +605,11 @@ msgstr ""
 "noms d'usuari. Els fitxers adjunts d'incidències de Bugzilla es marquen com "
 "a privats per defecte."
 
+#: src/components/localization/Keyboard.jsx:117
+#: src/components/localization/Keyboard.jsx:121
+msgid "Make current"
+msgstr "Estableix com a actual"
+
 #: src/components/storage/mount-point-mapping/index.js:31
 msgid "Manual disk configuration"
 msgstr "Configuració manual del disc"
@@ -614,9 +623,8 @@ msgid "May contain letters, numbers, and dashes."
 msgstr "Pot contenir lletres, números i guions."
 
 #: src/components/review/StorageReview.jsx:99
-#, fuzzy
 msgid "May need more free space"
-msgstr "S'està instal·lant programari"
+msgstr "Pot necessitar més espai lliure"
 
 #: src/components/Password.jsx:68
 msgid "Medium"
@@ -632,7 +640,7 @@ msgstr ""
 "No coincideix el dispositiu pare i la selecció del reformat del dispositiu "
 "fill."
 
-#: src/components/localization/Keyboard.jsx:131
+#: src/components/localization/Keyboard.jsx:303
 msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr ""
 "S'ha detectat més d'una disposició. Suprimiu-ne d'addicionals per continuar"
@@ -647,29 +655,35 @@ msgstr "Punt de muntatge"
 msgid "Mount point assignment"
 msgstr "Assignació del punt de muntatge"
 
+#: src/components/localization/Keyboard.jsx:139
+#: src/components/localization/Keyboard.jsx:143
+msgid "Move down"
+msgstr "Moure cap avall"
+
+#: src/components/localization/Keyboard.jsx:128
+#: src/components/localization/Keyboard.jsx:132
+msgid "Move up"
+msgstr "Moure cap a dalt"
+
 #: src/components/Password.jsx:43
 msgid "Must be at least $0 characters"
 msgstr "Ha de tenir com a mínim $0 caràcters"
 
 #: src/components/datetime/CustomNTPModal.jsx:160
-#, fuzzy
-#| msgid "NTP servers:"
 msgid "NTP Servers"
-msgstr "Servidors NTP:"
+msgstr "Servidors NTP"
 
 #: src/components/datetime/CustomNTPModal.jsx:208
-#, fuzzy
-#| msgid "DNS"
 msgid "NTS"
-msgstr "DNS"
+msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:147
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:149
 msgid "Name"
 msgstr "Nom"
 
 #: src/components/review/StorageReview.jsx:97
 msgid "Needs at least $0"
-msgstr ""
+msgstr "Necessita com a mínim $0"
 
 #: src/components/Error.jsx:152
 msgid ""
@@ -688,7 +702,7 @@ msgstr ""
 msgid "Next"
 msgstr "Següent"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:152
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:154
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:637
 msgid "No devices"
 msgstr "Sense dispositius"
@@ -701,15 +715,17 @@ msgstr "No hi ha discs disponibles"
 msgid "No disks selected"
 msgstr "No s'ha seleccionat cap disc"
 
+#: src/components/localization/Keyboard.jsx:234
+msgid "No layouts selected yet"
+msgstr "Encara no s'ha seleccionat cap disposició"
+
 #: src/components/localization/Common.jsx:135
 msgid "No results found"
 msgstr "No s'han trobat resultats"
 
 #: src/components/review/ReviewConfiguration.jsx:116
-#, fuzzy
-#| msgid "Not enough free space on selected disks."
 msgid "Not enough available free space"
-msgstr "No hi ha prou espai lliure als discs seleccionats."
+msgstr "No hi ha prou espai lliure disponible"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:63
 msgid "Not enough free space on the selected disks."
@@ -738,13 +754,10 @@ msgid "Operating system"
 msgstr "Sistema operatiu"
 
 #: src/components/datetime/CustomNTPModal.jsx:164
-#, fuzzy
-#| msgctxt "GUI|Keyboard Layout"
-#| msgid "_Options"
 msgid "Options"
-msgstr "_Opcions"
+msgstr "Opcions"
 
-#: src/components/localization/Keyboard.jsx:78
+#: src/components/localization/Keyboard.jsx:91
 msgid "Other keyboards"
 msgstr "Altres teclats"
 
@@ -754,7 +767,7 @@ msgstr "Particions (avançat)"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:162
 #: src/components/storage/installation-method/EncryptedDevices.jsx:169
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:116
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:130
 #: src/components/users/Accounts.jsx:150 src/components/users/Accounts.jsx:305
 msgid "Passphrase"
 msgstr "Contrasenya"
@@ -837,7 +850,7 @@ msgstr "El nom d'amfitrió real ha de tenir 64 caràcters o menys"
 msgid "Reboot"
 msgstr "Reiniciar"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:519
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:545
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -858,9 +871,9 @@ msgstr "Reinicieu al sistema instal·lat"
 msgid "Reclaim additional space"
 msgstr "Recupera espai addicional"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:124
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:215
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:126
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:146
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:217
 msgid "Reclaim space"
 msgstr "Recuperar espai"
 
@@ -888,6 +901,8 @@ msgstr "Torneu a instal·lar Fedora"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:445
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/localization/Keyboard.jsx:150
+#: src/components/localization/Keyboard.jsx:154
 msgid "Remove"
 msgstr "Suprimeix"
 
@@ -899,7 +914,7 @@ msgstr ""
 "Elimina totes les particions dels dispositius seleccionats, inclosos els "
 "sistemes operatius existents."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:128
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:130
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
@@ -907,12 +922,10 @@ msgstr ""
 "espai per a la instal·lació."
 
 #: src/components/datetime/CustomNTPModal.jsx:219
-#, fuzzy
-#| msgid "Remove NTP server"
 msgid "Remove server"
-msgstr "Suprimeix el servidor NTP"
+msgstr "Suprimeix el servidor"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:130
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:132
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -952,7 +965,7 @@ msgstr "Re-escaneja els dispositius"
 msgid "Rescanning of the disks failed."
 msgstr "No s'ha pogut tornar a escanejar els discs."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:499
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:525
 msgid "Resize"
 msgstr "Redimensiona"
 
@@ -973,16 +986,16 @@ msgid "Review and install"
 msgstr "Revisar i instal·lar"
 
 #: src/components/review/ReviewConfiguration.jsx:86
-#, fuzzy
-#| msgid "Root account is disabled."
 msgid "Root account is enabled"
-msgstr "El compte de root està inhabilitat."
+msgstr "El compte root està habilitat"
 
 #: src/components/review/ReviewConfiguration.jsx:80
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
+"El compte root està habilitat, però no s'ha configurat cap compte d'usuari"
 
 #: src/components/datetime/CustomNTPModal.jsx:248
+#: src/components/localization/Keyboard.jsx:271
 #: src/components/review/Hostname.jsx:137
 msgid "Save"
 msgstr "Desa"
@@ -995,11 +1008,11 @@ msgstr "Escaneja el codi QR amb el teu telèfon o visita:"
 msgid "Search for a language"
 msgstr "Cerca un idioma"
 
-#: src/components/localization/Keyboard.jsx:98
+#: src/components/localization/Keyboard.jsx:217
 msgid "Search keyboard layout"
 msgstr "Cerca la disposició del teclat"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:133
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:147
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
@@ -1016,21 +1029,20 @@ msgid "Select a device"
 msgstr "Seleccioneu un dispositiu"
 
 #: src/components/datetime/Timezone.jsx:188
-#, fuzzy
-#| msgid "Select"
 msgid "Select city"
-msgstr "Selecciona"
+msgstr "Selecciona la ciutat"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:373
 msgid "Select destination"
 msgstr "Seleccioneu la destinació"
 
 #: src/components/datetime/Timezone.jsx:169
-#, fuzzy
-#| msgctxt "GUI|Software Source"
-#| msgid "_On the network:"
 msgid "Select region"
-msgstr "_A la xarxa:"
+msgstr "Selecciona la regió"
+
+#: src/components/localization/Keyboard.jsx:227
+msgid "Selected (top = current)"
+msgstr "Seleccionat (superior = actual)"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -1041,14 +1053,12 @@ msgid "Send us feedback on your installation"
 msgstr "Envieu-nos comentaris sobre la vostra instal·lació"
 
 #: src/components/datetime/CustomNTPModal.jsx:163
-#, fuzzy
-#| msgid "NTP servers:"
 msgid "Server"
-msgstr "Servidors NTP:"
+msgstr "Servidor"
 
 #: src/components/datetime/CustomNTPModal.jsx:193
 msgid "Server is not reachable"
-msgstr ""
+msgstr "El servidor no és accessible"
 
 #: src/components/review/Hostname.jsx:99
 msgid "Set custom hostname"
@@ -1063,11 +1073,8 @@ msgid "Share disk with other operating systems: $0"
 msgstr "Comparteix el disc amb altres sistemes operatius: $0"
 
 #: src/components/datetime/DateAndTime.jsx:204
-#, fuzzy
-#| msgctxt "GUI|Date and Time"
-#| msgid "_AM/PM"
 msgid "Show AM/PM"
-msgstr "_AM/PM"
+msgstr "Mostra AM/PM"
 
 #: src/components/Password.jsx:240
 msgid "Show confirmed password"
@@ -1101,7 +1108,7 @@ msgstr ""
 msgid "Some required partitions are missing: $0"
 msgstr "Falten algunes particions necessàries: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:149
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:151
 msgid "Space"
 msgstr "Espai"
 
@@ -1157,7 +1164,7 @@ msgstr "S'ha instal·lat correctament"
 msgid "Successfully unlocked $0."
 msgstr "S'ha desbloquejat $0 correctament."
 
-#: src/components/localization/Keyboard.jsx:78
+#: src/components/localization/Keyboard.jsx:91
 msgid "Suggested keyboards"
 msgstr "Teclats suggerits"
 
@@ -1181,6 +1188,14 @@ msgstr ""
 "Configuració del sistema: Instal·lació del programari completada. Ara s'està "
 "configurant el sistema."
 
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:123
+msgid ""
+"The active keyboard layout in the compositor differs from the default layout "
+"selected for the target system."
+msgstr ""
+"La disposició del teclat activa al compositor és diferent de la disposició "
+"predeterminada seleccionada per al sistema destí."
+
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:57
 msgid ""
 "The installation needs $0 of disk space; however, the capacity of the "
@@ -1197,13 +1212,29 @@ msgstr "L'instal·lador no pot continuar a causa d'un error crític."
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "L'instal·lador no pot continuar a causa d'un error crític: $0"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:48
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:50
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
 msgstr ""
 "La contrasenya que heu proporcionat conté caràcters que no són ASCII. Pot "
 "ser que no pugueu commutar entre disposicions de teclat quan la teclegeu."
+
+#: src/components/localization/Keyboard.jsx:256
+msgid ""
+"The selected default keyboard layout does not support ASCII characters. "
+"Please choose an ASCII-capable layout as the default."
+msgstr ""
+"La disposició de teclat predeterminada seleccionada no admet caràcters "
+"ASCII. Trieu una disposició compatible amb ASCII com a predeterminada."
+
+#: src/components/localization/Keyboard.jsx:309
+msgid ""
+"The selected layout does not support ASCII input. Please select a different "
+"layout to proceed."
+msgstr ""
+"La disposició seleccionada no admet l'entrada d'ASCII. Seleccioneu una altra "
+"disposició per continuar."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid ""
@@ -1223,11 +1254,11 @@ msgstr "Aquest nom d'amfitrió no es pot enviar"
 msgid "This is unstable, pre-release software"
 msgstr "Aquesta és una versió de programari inestable i prèvia al llançament"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:116
 msgid "This layout will be used for unlocking your system on boot"
 msgstr "Aquesta disposició s'utilitzarà per desblocar el sistema a l'arrencada"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:56
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:58
 msgid "This may take a moment"
 msgstr "Això pot trigar una estona"
 
@@ -1236,17 +1267,13 @@ msgid "This will take a few moments"
 msgstr "Això trigarà uns instants"
 
 #: src/components/datetime/DateAndTime.jsx:195
-#, fuzzy
-#| msgid "Timezone: %s\n"
 msgid "Time"
-msgstr "Zona horària: %s\n"
+msgstr "Hora"
 
 #: src/components/datetime/Timezone.jsx:142
 #: src/components/review/ReviewConfiguration.jsx:199
-#, fuzzy
-#| msgid "Timezone: %s\n"
 msgid "Timezone"
-msgstr "Zona horària: %s\n"
+msgstr "Zona horària"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1264,15 +1291,15 @@ msgstr ""
 "Per a utilitzar aquesta opció, redimensioneu o suprimiu les particions "
 "existents per a alliberar almenys $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:148
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:150
 msgid "Type"
 msgstr "Tipus"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:95
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:97
 msgid "Unable to schedule deletion of $0"
 msgstr "No s'ha pogut programar la supressió de $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:97
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:99
 msgid "Unable to schedule resizing of $0"
 msgstr "No s'ha pogut programar el canvi de mida de $0"
 
@@ -1293,7 +1320,7 @@ msgstr ""
 msgid "Unlock encrypted devices"
 msgstr "Desbloquejar dispositius xifrats"
 
-#: src/components/localization/Keyboard.jsx:149
+#: src/components/localization/Keyboard.jsx:329
 msgid "Unusable layout"
 msgstr "Disposició no usable"
 
@@ -1310,10 +1337,8 @@ msgid "Use free space"
 msgstr "Usa l'espai lliure"
 
 #: src/components/users/Accounts.jsx:177
-#, fuzzy
-#| msgid "Create account"
 msgid "Use local account"
-msgstr "Crea un compte"
+msgstr "Utilitza un compte local"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
 msgid "Use the RAID device for automatic partitioning"
@@ -1355,7 +1380,7 @@ msgstr "Benvingut a Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Benvinguts. Instal·lem $0 ara."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:517
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
 "No es poden redimensionar les particions de Windows amb xifratge BitLocker"
@@ -1373,10 +1398,13 @@ msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
 msgstr ""
+"Heu d'habilitar el compte root o crear un compte d'usuari local per "
+"continuar."
 
 #: src/components/datetime/DateAndTime.jsx:154
 msgid "You must be connected to a network to enable automatic date and time."
 msgstr ""
+"Heu d'estar connectat a una xarxa per activar la data i l'hora automàtiques."
 
 #: src/components/AnacondaWizardFooter.jsx:134
 msgid "Your progress will not be saved."
@@ -1390,8 +1418,8 @@ msgstr "pas completat"
 msgid "current step"
 msgstr "pas actual"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:386
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:399
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:388
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:401
 #: src/components/review/StorageReview.jsx:170
 msgid "delete"
 msgstr "suprimeix"
@@ -1408,7 +1436,7 @@ msgstr "xifra"
 msgid "encrypted"
 msgstr "xifrat"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:246
 msgid "extended partition"
 msgstr "Partició estesa"
 
@@ -1428,18 +1456,25 @@ msgstr "pas pendent"
 msgid "resized from $0"
 msgstr "redimensionat des de $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:462
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:466
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:472
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:476
 msgid "shrink"
 msgstr "encongeix"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:420
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:422
 msgid "shrink to $0"
 msgstr "encongeix a $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:380
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "desfer"
+
+#, fuzzy
+#~| msgid "More than one layout detected. Remove additional layouts to proceed"
+#~ msgid "No keyboard layout detected. Add at least one layout to proceed"
+#~ msgstr ""
+#~ "S'ha detectat més d'una disposició. Suprimiu-ne d'addicionals per "
+#~ "continuar"
 
 #, fuzzy
 #~| msgid "no NTP servers have been configured"
@@ -3038,9 +3073,6 @@ msgstr "desfer"
 
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "No s'ha pogut desar la configuració del gestor d'arrencada"
-
-#~ msgid "Failed to save storage configuration"
-#~ msgstr "No s'ha pogut desar la configuració de l'emmagatzematge"
 
 #, fuzzy
 #~| msgid "Failed to set up installation source; check the repo url."
@@ -4670,9 +4702,6 @@ msgstr "desfer"
 #~ msgid "Selected Device"
 #~ msgstr "Dispositiu seleccionat"
 
-#~ msgid "Selected Layouts"
-#~ msgstr "Disposicions seleccionades"
-
 #~ msgid ""
 #~ "Selected disks {} contain volume group '{}' that also uses further "
 #~ "unselected disks. You must select or de-select all these disks as a set."
@@ -6226,10 +6255,6 @@ msgstr "desfer"
 #~ msgctxt "GUI|Storage"
 #~ msgid "_Add a disk..."
 #~ msgstr "_Afegeix un disc..."
-
-#~ msgctxt "GUI|Keyboard Layout"
-#~ msgid "_Add layout"
-#~ msgstr "_Afegeix una disposició"
 
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "_Add mount point"

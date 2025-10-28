@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-14 03:25+0000\n"
+"POT-Creation-Date: 2025-10-28 03:34+0000\n"
 "PO-Revision-Date: 2024-11-18 02:57+0000\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -50,7 +50,7 @@ msgstr "התקנת $0"
 msgid "$0 installer"
 msgstr "תוכנית ההתקנה של $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:251
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:253
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -60,7 +60,7 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/localization/Keyboard.jsx:150
+#: src/components/localization/Keyboard.jsx:330
 #, fuzzy
 #| msgid "$0 selected"
 #| msgid_plural "$0 selected"
@@ -98,7 +98,7 @@ msgstr "על אודות"
 msgid "Account"
 msgstr "חשבון"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:150
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:152
 #: src/components/review/StorageReview.jsx:247
 msgid "Actions"
 msgstr "פעולות"
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Automatically set timezone"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:207
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:209
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "מקום פנוי זמין: $0. דרישות ההתקנה: $1."
 
@@ -187,8 +187,9 @@ msgstr ""
 
 #: src/components/datetime/CustomNTPModal.jsx:251
 #: src/components/storage/installation-method/InstallationDestination.jsx:393
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:218
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
+#: src/components/localization/Keyboard.jsx:274
 #: src/components/review/Hostname.jsx:139 src/components/Error.jsx:309
 msgid "Cancel"
 msgstr "ביטול"
@@ -211,7 +212,9 @@ msgstr "החלפת שם מארח"
 msgid "Change partition layout"
 msgstr "החלפת יעד"
 
-#: src/components/localization/Keyboard.jsx:162
+#: src/components/localization/Keyboard.jsx:208
+#: src/components/localization/Keyboard.jsx:342
+#: src/components/localization/Keyboard.jsx:410
 msgid "Change system keyboard layout"
 msgstr ""
 
@@ -220,7 +223,7 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr "שינויים שבוצעו כאן ישפיעו על המערכת ישירות. אי אפשר לסגת."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:52
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:54
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:438
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:444
 msgid "Checking storage configuration"
@@ -274,7 +277,7 @@ msgstr "הגדרת אחסון"
 msgid "Configure storage again"
 msgstr "הגדרת האחסון שוב"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:119
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:133
 #: src/components/users/Accounts.jsx:153 src/components/users/Accounts.jsx:309
 msgid "Confirm passphrase"
 msgstr "אישור מילת צופן"
@@ -353,7 +356,7 @@ msgstr "נקודת עגינה כפולה."
 msgid "Enable root account"
 msgstr "הפעלת חשבון root"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:77
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:82
 msgid "Encrypt my data"
 msgstr "הצפנת הנתונים שלי"
 
@@ -361,7 +364,7 @@ msgstr "הצפנת הנתונים שלי"
 msgid "Encrypted"
 msgstr "מוצפן"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:129
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:143
 msgid "Encryption"
 msgstr "הצפנה"
 
@@ -377,12 +380,18 @@ msgstr "פרטי השגיאה"
 msgid "Exit to live desktop"
 msgstr "יציאה לשולחן העבודה החי"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:255
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:250
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 #, fuzzy
 #| msgid "Recommended partitions:"
 msgid "Extended partition"
 msgstr "מחיצות מומלצות:"
+
+#: src/components/localization/Keyboard.jsx:197
+#, fuzzy
+#| msgid "Failed to save storage configuration"
+msgid "Failed to save layouts"
+msgstr "שמירת תצורת האחסון נכשלה"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:93
 msgid "Fedora linux requires at least $0 of disk space."
@@ -397,6 +406,13 @@ msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
 msgstr "סיום: הגדרת המערכת הושלמה. סיום ההתקנה עשוי לארוך מספר רגעים."
+
+#: src/components/localization/Keyboard.jsx:213
+#, fuzzy
+#| msgctxt "GUI|Keyboard Layout"
+#| msgid "_Add layout"
+msgid "Find layout"
+msgstr "ה_וספת פריסה"
 
 #: src/components/users/Accounts.jsx:307
 msgid ""
@@ -539,18 +555,18 @@ msgstr ""
 "לשמור על פריסת הכונן הנוכחית ולהשתמש במקום הפנוי כדי לאפשר עלייה בררנית עם "
 "מערכת הפעלה אחרת."
 
-#: src/components/localization/InstallationLanguage.jsx:250
+#: src/components/localization/InstallationLanguage.jsx:251
 #, fuzzy
 #| msgctxt "GUI|Spoke"
 #| msgid "_Keyboard"
 msgid "Keyboard"
 msgstr "_מקלדת"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:89
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:94
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/localization/InstallationLanguage.jsx:234
+#: src/components/localization/InstallationLanguage.jsx:235
 #: src/components/review/ReviewConfiguration.jsx:192
 msgid "Language"
 msgstr "שפה"
@@ -560,7 +576,7 @@ msgstr "שפה"
 msgid "Launch storage editor"
 msgstr "הפעלת עורך אחסון"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:146
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:148
 msgid "Location"
 msgstr "מיקום"
 
@@ -576,6 +592,11 @@ msgstr ""
 msgid ""
 "Logs may contain sensitive information like IP addresses or usernames. "
 "Attachments on Bugzilla issues are marked private by default."
+msgstr ""
+
+#: src/components/localization/Keyboard.jsx:117
+#: src/components/localization/Keyboard.jsx:121
+msgid "Make current"
 msgstr ""
 
 #: src/components/storage/mount-point-mapping/index.js:31
@@ -608,7 +629,7 @@ msgstr ""
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "חוסר התאמה בין בחירת הפרמוט המחודש של התקן ההורה והתקן הצאצא."
 
-#: src/components/localization/Keyboard.jsx:131
+#: src/components/localization/Keyboard.jsx:303
 msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr ""
 
@@ -621,6 +642,16 @@ msgstr "נקודת עיגון"
 #: src/components/storage/scenarios/mount-point-mapping/index.js:35
 msgid "Mount point assignment"
 msgstr "הקצאה של נקודות עיגון"
+
+#: src/components/localization/Keyboard.jsx:139
+#: src/components/localization/Keyboard.jsx:143
+msgid "Move down"
+msgstr ""
+
+#: src/components/localization/Keyboard.jsx:128
+#: src/components/localization/Keyboard.jsx:132
+msgid "Move up"
+msgstr ""
 
 #: src/components/Password.jsx:43
 msgid "Must be at least $0 characters"
@@ -638,7 +669,7 @@ msgstr "שרתי NTP:"
 msgid "NTS"
 msgstr "DNS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:147
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:149
 msgid "Name"
 msgstr "שם"
 
@@ -662,7 +693,7 @@ msgstr "הרשת לא זמינה. יש להגדיר את הרשת כדי לדו�
 msgid "Next"
 msgstr "הבא"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:152
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:154
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:637
 msgid "No devices"
 msgstr "אין התקנים"
@@ -674,6 +705,13 @@ msgstr "אין כוננים זמינים"
 #: src/components/storage/installation-method/InstallationDestination.jsx:344
 msgid "No disks selected"
 msgstr "לא נבחרו כוננים"
+
+#: src/components/localization/Keyboard.jsx:234
+#, fuzzy
+#| msgid "$0 selected"
+#| msgid_plural "$0 selected"
+msgid "No layouts selected yet"
+msgstr "נבחר אחד"
 
 #: src/components/localization/Common.jsx:135
 msgid "No results found"
@@ -714,7 +752,7 @@ msgstr "מערכת הפעלה"
 msgid "Options"
 msgstr "אפשרויות"
 
-#: src/components/localization/Keyboard.jsx:78
+#: src/components/localization/Keyboard.jsx:91
 #, fuzzy
 #| msgctxt "GUI|Spoke"
 #| msgid "_Keyboard"
@@ -727,7 +765,7 @@ msgstr "מחיצות (מתקדם)"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:162
 #: src/components/storage/installation-method/EncryptedDevices.jsx:169
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:116
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:130
 #: src/components/users/Accounts.jsx:150 src/components/users/Accounts.jsx:305
 msgid "Passphrase"
 msgstr "מילת צופן"
@@ -811,7 +849,7 @@ msgstr "שם המארח האמיתי חייב להיות באורך 64 תווי�
 msgid "Reboot"
 msgstr "הפעלה מחדש"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:519
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:545
 #, fuzzy
 #| msgid "Reboot into Windows to resize BitLocker-encrypted partitions. "
 msgid ""
@@ -831,9 +869,9 @@ msgstr "הפעלה מחדש למערכת המותקנת"
 msgid "Reclaim additional space"
 msgstr "השבת נפח נוסף"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:124
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:215
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:126
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:146
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:217
 msgid "Reclaim space"
 msgstr "השבת נפח"
 
@@ -861,6 +899,8 @@ msgstr "התקנת פדורה מחדש"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:445
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/localization/Keyboard.jsx:150
+#: src/components/localization/Keyboard.jsx:154
 msgid "Remove"
 msgstr "הסרה"
 
@@ -870,7 +910,7 @@ msgid ""
 "systems."
 msgstr "להסיר את כל המחיצות בהתקנים הנבחרים, כולל מערכות הפעלה קיימות."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:128
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:130
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr "להסיר או לשנות מערכות קבצים קיימות כדי לפנות מקום להתקנה."
@@ -881,7 +921,7 @@ msgstr "להסיר או לשנות מערכות קבצים קיימות כדי �
 msgid "Remove server"
 msgstr "הסרת שרת NTP"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:130
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:132
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -917,7 +957,7 @@ msgstr "סריקת התקנים מחדש"
 msgid "Rescanning of the disks failed."
 msgstr "סריקת הכוננים מחדש נכשלה."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:499
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:525
 msgid "Resize"
 msgstr "שינוי גודל"
 
@@ -948,6 +988,7 @@ msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 
 #: src/components/datetime/CustomNTPModal.jsx:248
+#: src/components/localization/Keyboard.jsx:271
 #: src/components/review/Hostname.jsx:137
 msgid "Save"
 msgstr "שמירה"
@@ -962,13 +1003,13 @@ msgstr "אפשר לסרוק את קוד ה־QR עם הטלפון שלך או ל�
 msgid "Search for a language"
 msgstr "נא לבחור שפה"
 
-#: src/components/localization/Keyboard.jsx:98
+#: src/components/localization/Keyboard.jsx:217
 #, fuzzy
 #| msgid "Choose a language"
 msgid "Search keyboard layout"
 msgstr "נא לבחור שפה"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:133
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:147
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr "אפשר להגן על הנתונים שלך עם הצפנה מבוססת כונן. חל רק על מחיצות חדשות"
@@ -997,6 +1038,12 @@ msgstr "בחירת יעד"
 #| msgid "Select none"
 msgid "Select region"
 msgstr "לא לבחור בכלום"
+
+#: src/components/localization/Keyboard.jsx:227
+#, fuzzy
+#| msgid "Selected Layouts"
+msgid "Selected (top = current)"
+msgstr "פריסות שנבחרו"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:123
 msgid "Selected device's format '$0' cannot be reformatted."
@@ -1070,7 +1117,7 @@ msgstr "התקנת תוכנות: הגדרת האחסון הושלמה. התוכ�
 msgid "Some required partitions are missing: $0"
 msgstr "חלק מהמחיצות הנחוצות חסרות: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:149
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:151
 msgid "Space"
 msgstr "מקום"
 
@@ -1121,7 +1168,7 @@ msgstr "ההתקנה הצליחה"
 msgid "Successfully unlocked $0."
 msgstr "השחרור של $0 הצליח."
 
-#: src/components/localization/Keyboard.jsx:78
+#: src/components/localization/Keyboard.jsx:91
 #, fuzzy
 #| msgid "Choose a language"
 msgid "Suggested keyboards"
@@ -1147,6 +1194,12 @@ msgid ""
 "being configured."
 msgstr "הגדרות מערכת: התקנת התוכנות הושלמה. המערכת מוגדרת כעת."
 
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:123
+msgid ""
+"The active keyboard layout in the compositor differs from the default layout "
+"selected for the target system."
+msgstr ""
+
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:57
 msgid ""
 "The installation needs $0 of disk space; however, the capacity of the "
@@ -1161,13 +1214,25 @@ msgstr "תוכנית ההתקנה לא תוכל להמשיך עקב תקלה מ�
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "תוכנית ההתקנה לא תוכל להמשיך עקב שגיאה משמעותית: $0"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:48
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:50
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
 msgstr ""
 "מילת הצופן שסיפקת מכילה תווים מחוץ לטווח ה־ASCII. יתכן שלא תהיה לך אפשרות "
 "להחליף בין פריסות מקלדת בזמן ההקלדה."
+
+#: src/components/localization/Keyboard.jsx:256
+msgid ""
+"The selected default keyboard layout does not support ASCII characters. "
+"Please choose an ASCII-capable layout as the default."
+msgstr ""
+
+#: src/components/localization/Keyboard.jsx:309
+msgid ""
+"The selected layout does not support ASCII input. Please select a different "
+"layout to proceed."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid ""
@@ -1184,11 +1249,11 @@ msgstr "אי אפשר להגיש את שם המשתמש הזה"
 msgid "This is unstable, pre-release software"
 msgstr "זו תוכנה בלתי יציבה, לפני יציאה לאור"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:116
 msgid "This layout will be used for unlocking your system on boot"
 msgstr ""
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:56
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:58
 msgid "This may take a moment"
 msgstr "פעולה זו עלולה לארוך זמן מה"
 
@@ -1225,15 +1290,15 @@ msgstr ""
 "כדי להשתמש באפשרות הזאת, יש לשנות גודל או להסיר מחיצות קיימות כדי לפנות "
 "לפחות $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:148
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:150
 msgid "Type"
 msgstr "סוג"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:95
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:97
 msgid "Unable to schedule deletion of $0"
 msgstr "לא ניתן לתזמן את המחיקה של $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:97
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:99
 msgid "Unable to schedule resizing of $0"
 msgstr "לא ניתן תזמן את שינוי הגודל של $0"
 
@@ -1252,7 +1317,7 @@ msgstr ""
 msgid "Unlock encrypted devices"
 msgstr "שחרור התקנים מוצפנים"
 
-#: src/components/localization/Keyboard.jsx:149
+#: src/components/localization/Keyboard.jsx:329
 #, fuzzy
 #| msgid "Available Layouts"
 msgid "Unusable layout"
@@ -1322,7 +1387,7 @@ msgstr "ברוך בואך לפדורה"
 msgid "Welcome. Let's install $0 now."
 msgstr "ברוך בואך. עכשיו נתקין את $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:517
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "אי אפשר לשנות גודל של מחיצות Windows עם הצפנת BitLocker"
 
@@ -1355,8 +1420,8 @@ msgstr "שלב שהושלם"
 msgid "current step"
 msgstr "שלב נוכחי"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:386
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:399
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:388
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:401
 #: src/components/review/StorageReview.jsx:170
 msgid "delete"
 msgstr "מחיקה"
@@ -1373,7 +1438,7 @@ msgstr "הצפנה"
 msgid "encrypted"
 msgstr "מוצפן"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:246
 #, fuzzy
 #| msgid "Recommended partitions:"
 msgid "extended partition"
@@ -1395,16 +1460,16 @@ msgstr "שלב בהמתנה"
 msgid "resized from $0"
 msgstr "הגודל השתנה מ־$0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:462
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:466
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:472
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:476
 msgid "shrink"
 msgstr "כיווץ"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:420
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:422
 msgid "shrink to $0"
 msgstr "כיווץ לכדי $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:380
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "ביטול"
 
@@ -3018,9 +3083,6 @@ msgstr "ביטול"
 #~ msgid "Failed to save boot loader configuration"
 #~ msgstr "שמירת תצורת מנהל האתחול נכשלה"
 
-#~ msgid "Failed to save storage configuration"
-#~ msgstr "שמירת תצורת האחסון נכשלה"
-
 #~ msgid "Failed to set up installation source; check the NFS configuration."
 #~ msgstr "הכנת מקור ההתקנה נכשלה; יש לבדוק את הגדרת ה־NFS."
 
@@ -4627,9 +4689,6 @@ msgstr "ביטול"
 #~ msgid "Selected Device"
 #~ msgstr "התקן נבחר"
 
-#~ msgid "Selected Layouts"
-#~ msgstr "פריסות שנבחרו"
-
 #~ msgid ""
 #~ "Selected disks {} contain volume group '{}' that also uses further "
 #~ "unselected disks. You must select or de-select all these disks as a set."
@@ -6180,10 +6239,6 @@ msgstr "ביטול"
 #~ msgctxt "GUI|Storage"
 #~ msgid "_Add a disk..."
 #~ msgstr "_הוספת כונן…"
-
-#~ msgctxt "GUI|Keyboard Layout"
-#~ msgid "_Add layout"
-#~ msgstr "ה_וספת פריסה"
 
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "_Add mount point"
