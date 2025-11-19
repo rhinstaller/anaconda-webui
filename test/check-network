@@ -1,0 +1,155 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+import time
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from network import COCKPIT_CHECKPOINT_ROLLBACK_TIME, SYSROOT_PATH, WIRED_CONNECTION_NAME, Network
+from progress import Progress
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import check_cockpit_module_js_error
+
+
+class TestNetwork(VirtInstallMachineCase):
+
+    def testConnectionsPreInstall(self):
+        """
+        Description:
+            Test network configuration modifies profiles correctly.
+            A pre-installation phase variant - a shorter test assuming the connections
+            will be passed to the system correctly at the end of installation.
+
+        Expected results:
+            - Expected connection profiles in installer with expected values
+            - Network configuration modifies correct profiles
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+
+        iface = n.get_the_iface()
+        def_con_name = WIRED_CONNECTION_NAME
+        n.preinstall_connection_test(i, iface, def_con_name)
+
+    def testConnections(self):
+        """
+        Description:
+            Test network configuration modifies profiles correctly.
+
+        Expected results:
+            - Expected connection profiles in installer with expected values
+            - Network configuration modifies correct profiles
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+
+        iface = n.get_the_iface()
+        def_con_name = WIRED_CONNECTION_NAME
+        n.preinstall_connection_test(i, iface, def_con_name)
+
+        i.begin_installation(needs_confirmation=False)
+        p = Progress(b)
+        p.wait_done()
+
+        # Check profiles in installed system
+        n.check_con_profile_files(def_con_name, 1, root=SYSROOT_PATH, file_name=def_con_name)
+        # Check there is only single persistent profile
+        n.check_con_profile_files("", 1, root=SYSROOT_PATH)
+
+    def testConfigurationPreInstall(self):
+        """
+        Description:
+            Test configuration of settings of a device.
+
+        Expected results:
+            - Change breaking connection raises expected confirmation dialog
+            - The configured values are correctly applied to connection profile and device.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+
+        iface = n.get_the_iface()
+        def_con_name = WIRED_CONNECTION_NAME
+
+        n.disable_ipv4_on_iface(iface)
+
+        mtu_value = "1600"
+        n.set_mtu_on_iface(iface, mtu_value)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        dns_server = "8.8.8.8"
+        n.add_dns_server_to_iface(iface, dns_server)
+
+        n.check_con_settings([
+            [def_con_name, "ipv4.dns", dns_server, None],
+        ])
+
+        # Check that the checkpoint does not fail silently, ie check after
+        # checkpoint timeout
+        time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        n.check_con_settings([
+            [def_con_name, "ipv4.dns", dns_server, None],
+        ])
+
+    @nondestructive
+    def testCockpitJsErrorHandling(self):
+        """
+        Description:
+            Test that the installer can handle JS errors in the network module
+            and that it does not crash the installer
+
+        Setup:
+            - Generate a JS error in the network module
+
+        Expected results:
+            - The installer should not crash
+            - The installer should show a critical error dialog
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        n.enter_network()
+
+        check_cockpit_module_js_error(b, "Network")
+
+
+if __name__ == '__main__':
+    test_main()
