@@ -21,6 +21,8 @@ import { AboutModal } from "@patternfly/react-core/dist/esm/components/AboutModa
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { DescriptionList, DescriptionListDescription, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Dropdown, DropdownItem, DropdownList } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { MenuToggle } from "@patternfly/react-core/dist/esm/components/MenuToggle/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
@@ -91,10 +93,47 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
     );
 };
 
+const CockpitNetworkConfiguration = ({ setIsNetworkOpen }) => {
+    const idPrefix = "cockpit-network-configuration";
+
+    const handleClose = () => {
+        setIsNetworkOpen(false);
+    };
+
+    return (
+        <Modal
+          aria-label={_("Configure network")}
+          isOpen
+          onClose={handleClose}
+          showClose={false}
+          className={idPrefix + "-modal-page-section"}
+          variant={ModalVariant.large}>
+            <ModalHeader title={_("Network Configuration")} />
+            <ModalBody>
+                <div className={idPrefix + "-page-section-cockpit-network"}>
+                    <PageSection hasBodyWrapper={false}>
+                        <iframe
+                          src="/cockpit/@localhost/network/index.html"
+                          name="cockpit-network"
+                          id="cockpit-network-frame"
+                          className={idPrefix + "-iframe-cockpit-network"} />
+                    </PageSection>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button variant="secondary" onClick={handleClose}>
+                    {_("Close")}
+                </Button>
+            </ModalFooter>
+        </Modal>
+    );
+};
+
 export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
+    const [isNetworkOpen, setIsNetworkOpen] = useState(false);
 
     const onToggle = () => {
         setIsOpen(!isOpen);
@@ -111,7 +150,14 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
         setIsReportIssueOpen(true);
     };
 
+    const handleNetwork = () => {
+        setIsNetworkOpen(true);
+    };
+
     const dropdownItems = [
+        <DropdownItem id="about-modal-dropdown-item-network" key="network" onClick={handleNetwork}>
+            {_("Configure network")}
+        </DropdownItem>,
         <ModifyStorage
           currentStepId={currentStepId}
           key="modify-storage"
@@ -146,6 +192,9 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
                     {dropdownItems}
                 </DropdownList>
             </Dropdown>
+            {isNetworkOpen &&
+                <CockpitNetworkConfiguration
+                  setIsNetworkOpen={setIsNetworkOpen} />}
             {isAboutModalOpen &&
                 <AnacondaAboutModal
                   isModalOpen={isAboutModalOpen}
