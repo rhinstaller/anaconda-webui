@@ -109,9 +109,9 @@ const CockpitNetworkConfiguration = ({ setIsNetworkOpen }) => {
           className={idPrefix + "-modal-page-section"}
           variant={ModalVariant.large}>
             <ModalHeader title={_("Network Configuration")} />
-            <ModalBody>
-                <div className={idPrefix + "-page-section-cockpit-network"}>
-                    <PageSection hasBodyWrapper={false}>
+            <ModalBody style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                <div className={idPrefix + "-page-section-cockpit-network"} style={{ flex: 1 }}>
+                    <PageSection hasBodyWrapper={false} style={{ height: "100%" }}>
                         <iframe
                           src="/cockpit/@localhost/network/index.html"
                           name="cockpit-network"
