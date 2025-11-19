@@ -141,3 +141,15 @@ def move_standard_fedora_disk_to_win_disk(storage, machine, win_disk, fedora_dis
     uefi_part = 1
     move_standard_fedora_disk_to_disk(machine, fedora_disk, win_disk, root_part, boot_part,
                                       dst_efi_part_num=uefi_part)
+
+def check_cockpit_module_js_error(browser, module_name):
+    """Check handling of error trhown by running cockpit module."""
+    b = browser
+    msg = f"Unexpected {module_name} JS error"
+    b.wait_not_present("#critical-error-bz-report-modal.pf-v6-c-modal-box")
+    b.eval_js(f"window.setTimeout(function() {{throw new Error('{msg}')}}, 0);")
+    b.switch_to_top()
+    b.wait_in_text("#critical-error-bz-report-modal-details", msg)
+    b.wait_in_text("#critical-error-bz-report-modal header",
+                    "The installer cannot continue due to a critical error:"
+                    f" {module_name} plugin failed")

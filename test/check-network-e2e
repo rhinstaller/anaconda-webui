@@ -1,0 +1,83 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program; If not, see <http://www.gnu.org/licenses/>.
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network
+from progress import Progress
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestNetwork_E2E(VirtInstallMachineCase):
+
+    def testConnectionsE2E(self):
+        """
+        Description:
+            Test network configuration modifies profiles correctly.
+
+        Expected results:
+            - Expected connection profiles in installer with expected values
+            - Network configuration modifies correct profiles
+            - Test that the booted system has expected network configuration
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+
+        iface = n.get_the_iface()
+        def_con_name = WIRED_CONNECTION_NAME
+        n.preinstall_connection_test(i, iface, def_con_name)
+
+        mtu_value = "1600"
+        n.set_mtu_on_iface(iface, mtu_value)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        i.begin_installation(needs_confirmation=False)
+        p = Progress(b)
+        p.wait_done()
+
+        # Check profiles in installed system
+        n.check_con_profile_files(def_con_name, 1, root=SYSROOT_PATH, file_name=def_con_name)
+        # Check there is only single persistent profile
+        n.check_con_profile_files("", 1, root=SYSROOT_PATH)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        self.handleReboot()
+
+        # Check profiles in installed system
+        n.check_con_profile_files(def_con_name, 1, file_name=def_con_name)
+        # Check there is only single persistent profile
+        n.check_con_profile_files("", 1)
+
+        n.check_iface_state(iface, "GENERAL.CONNECTION", def_con_name)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+
+if __name__ == '__main__':
+    test_main()

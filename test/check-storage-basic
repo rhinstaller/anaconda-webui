@@ -21,6 +21,7 @@ from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import check_cockpit_module_js_error
 
 TEST_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.dirname(TEST_DIR)
@@ -213,12 +214,7 @@ class TestStorageBasic(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.enter_cockpit_storage()
 
-        b.wait_not_present("#critical-error-bz-report-modal.pf-v6-c-modal-box")
-
-        b.eval_js("window.setTimeout(function() {throw new Error('Unexpected storage JS error')}, 0);")
-        b.switch_to_top()
-        b.wait_in_text("#critical-error-bz-report-modal-details", "Unexpected storage JS error")
-        b.wait_in_text("#critical-error-bz-report-modal header", "The installer cannot continue due to a critical error: Storage plugin failed")
+        check_cockpit_module_js_error(b, "Storage")
 
     def _testDiskSelectionLVM_partition_disk(self):
         b = self.browser
