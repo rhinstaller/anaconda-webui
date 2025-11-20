@@ -49,8 +49,9 @@ export const localizationInitialState = {
     keyboardLayouts: [],
     language: "",
     languages: {},
-    virtualConsoleKeymap: "",
-    xlayouts: [],
+    plannedVconsole: undefined,
+    plannedXlayouts: undefined,
+    xlayouts: undefined,
 };
 
 /* Intial state for the network store substate */
@@ -187,11 +188,12 @@ export const localizationReducer = (state = localizationInitialState, action) =>
     } else if (action.type === "GET_LANGUAGE") {
         return { ...state, language: action.payload.language };
     } else if (action.type === "GET_KEYBOARD_LAYOUTS") {
+        return { ...state, keyboardLayouts: action.payload.keyboardLayouts };
+    } else if (action.type === "GET_PLANNED_KEYBOARD_CONFIGURATION") {
         return {
             ...state,
-            compositorSelectedLayout: action.payload.compositorSelectedLayout,
-            keyboardLayouts: action.payload.keyboardLayouts,
-            virtualConsoleKeymap: action.payload.virtualConsoleKeymap,
+            plannedVconsole: action.payload.plannedVconsole,
+            plannedXlayouts: action.payload.plannedXlayouts,
             xlayouts: action.payload.xlayouts,
         };
     } else {

@@ -31,11 +31,8 @@ import {
     setLuksEncryptionDataAction
 } from "../../../actions/storage-actions.js";
 
-import { getLocaleById } from "../../../helpers/localization.js";
+import { LanguageContext, RuntimeContext, StorageContext } from "../../../contexts/Common.jsx";
 
-import { LanguageContext, RuntimeContext, StorageContext, SystemTypeContext } from "../../../contexts/Common.jsx";
-
-import { Keyboard } from "../../localization/Keyboard.jsx";
 import { PasswordFormFields, ruleLength } from "../../Password.jsx";
 
 import "./DiskEncryption.scss";
@@ -65,12 +62,7 @@ const CheckDisksSpinner = (
 export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
-    const isGnome = useContext(SystemTypeContext).desktopVariant === "GNOME";
-    const { compositorSelectedLayout, keyboardLayouts, virtualConsoleKeymap } = useContext(LanguageContext);
-    const selectedKeyboard = getLocaleById(keyboardLayouts, virtualConsoleKeymap);
-    // Warn if the selected layout in the compositor is different from the vconsole layout
-    // For reading the compositorSelectedLayout we need localed support so skip this check for gnome
-    const showVConsoleMismatchAlert = !isGnome && compositorSelectedLayout !== virtualConsoleKeymap;
+    const { plannedVconsole } = useContext(LanguageContext);
 
     if (luks.passphrase === undefined) {
         return CheckDisksSpinner;
@@ -93,35 +85,17 @@ export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
             <FormGroup
               label={_("Keyboard layout during boot")}
             >
-                {isGnome
-                    ? (
-                        <Keyboard
-                          idPrefix={idPrefix}
-                          isGnome={isGnome}
-                          setIsFormValid={setIsFormValid}
-                        />
-                    )
-                    : (
-                        <TextInput
-                          value={selectedKeyboard ? selectedKeyboard.description.v : ""}
-                          id={idPrefix + "-keyboard-layout"}
-                          readOnlyVariant="default"
-                        />
-                    )}
+                <TextInput
+                  value={plannedVconsole}
+                  id={idPrefix + "-keyboard-layout"}
+                  readOnlyVariant="default"
+                />
             </FormGroup>
             <Alert
               isInline
               isPlain
               variant="info"
               title={_("This layout will be used for unlocking your system on boot")} />
-            {showVConsoleMismatchAlert && (
-                <Alert
-                  id={idPrefix + "-vconsole-mismatch-alert"}
-                  isInline
-                  isPlain
-                  variant="warning"
-                  title={_("The active keyboard layout in the compositor differs from the default layout selected for the target system.")}
-                />)}
             <PasswordFormFields
               idPrefix={idPrefix}
               policy={luksPolicy}

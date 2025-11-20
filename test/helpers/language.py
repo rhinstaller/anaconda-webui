@@ -21,6 +21,7 @@ sys.path.append(HELPERS_DIR)
 
 from step_logger import log_step
 from steps import LANGUAGE
+from testlib import wait
 
 LOCALIZATION_SERVICE = "org.fedoraproject.Anaconda.Modules.Localization"
 LOCALIZATION_INTERFACE = "org.fedoraproject.Anaconda.Modules.Localization"
@@ -103,7 +104,7 @@ class Keyboard():
         else:
             self.browser.wait_not_present(f"p:contains('{keyboard}')")
 
-    def check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
+    def _check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
         result = self.machine.execute("localectl status")
         layout = None
         variant = None
@@ -134,6 +135,17 @@ class Keyboard():
         except AssertionError:
             # Try one more time for rubustness
             self.check_selected_keyboards_on_device(expected_layouts, expected_variants)
+
+    def check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
+        def wrapped_check():
+            try:
+                self._check_selected_keyboards_on_device(expected_layouts, expected_variants)
+                return True
+            except AssertionError:
+                return False
+
+        wait(wrapped_check)
+
 
 class LanguageDBus():
     def __init__(self, machine):
