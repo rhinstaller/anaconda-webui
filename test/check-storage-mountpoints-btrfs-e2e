@@ -39,6 +39,15 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
         mount {disk}2 {tmp_mount}
         btrfs subvolume create {tmp_mount}/root
         btrfs subvolume create {tmp_mount}/home
+        # Create a nested subvolume in root to test bug 2394554
+        # First create the parent directories inside the root subvolume
+        root_mount="{tmp_mount}/root_mount"
+        mkdir -p "$root_mount"
+        mount -o subvol=root {disk}2 "$root_mount"
+        mkdir -p "$root_mount/var/lib"
+        btrfs subvolume create "$root_mount/var/lib/machines"
+        umount "$root_mount"
+        rmdir "$root_mount"
         umount {tmp_mount}
         rmdir {tmp_mount}
         """)
@@ -48,12 +57,18 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
         """
         Description:
             EFI install using mount point assignment. Map / to btrfs subvolume 'root',
-            preserve existing btrfs subvolume 'home'
+            preserve existing btrfs subvolume 'home'. The root subvolume contains a nested
+            subvolume 'root/var/lib/machines' to test that dependent devices are properly
+            handled when the parent is reformatted.
+
+        Related bug:
+            https://bugzilla.redhat.com/show_bug.cgi?id=2394554
 
         Expected results:
             - /boot/efi present
             - / on btrfs subvolume reformatted
             - /home preserved
+            - Nested subvolume root/var/lib/machines is properly handled when root is reformatted
         """
         b = self.browser
         m = self.machine
