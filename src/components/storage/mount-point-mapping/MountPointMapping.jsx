@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
@@ -31,22 +31,22 @@ import { TrashIcon } from "@patternfly/react-icons/dist/esm/icons/trash-icon";
 
 import {
     applyStorage,
+    gatherRequests,
     setManualPartitioningRequests
 } from "../../../apis/storage_partitioning.js";
 
 import {
+    filterPartitioningRequests,
     getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
-    getUsableDevicesManualPartitioning,
     hasDuplicateFields,
     isDuplicateRequestField,
+    requestsFromDbus,
+    requestsToDbus,
 } from "../../../helpers/storage.js";
-import {
-    checkIfArraysAreEqual,
-} from "../../../helpers/utils.js";
 
-import { StorageContext } from "../../../contexts/Common.jsx";
+import { FooterContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../../hooks/Storage.jsx";
 
@@ -141,19 +141,6 @@ const isReformatInvalid = (deviceData, request, requests) => {
     } else {
         return [false, ""];
     }
-};
-
-const requestsToDbus = (requests) => {
-    return requests.map(row => {
-        return {
-            "device-spec": cockpit.variant("s", row["device-spec"] || ""),
-            "format-options": cockpit.variant("s", row["format-options"] || ""),
-            "format-type": cockpit.variant("s", row["format-type"] || ""),
-            "mount-options": cockpit.variant("s", row["mount-options"] || ""),
-            "mount-point": cockpit.variant("s", row["mount-point"] || ""),
-            reformat: cockpit.variant("b", !!row.reformat),
-        };
-    });
 };
 
 /* Build the backend-requests object from the unapplied requests.
@@ -557,18 +544,17 @@ const RequestsTable = ({
     const deviceData = useOriginalDevices();
     const mountPointConstraints = useMountPointConstraints({ devices: deviceData, selectedDisks });
     const requests = partitioning?.requests;
-    const reusePartitioning = useExistingPartitioning();
     const [unappliedRequests, setUnappliedRequests] = useState();
     const allDevices = useMemo(() => {
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
-    const isLoadingPartitioning = !reusePartitioning || mountPointConstraints === undefined || !requests;
+    const isLoadingPartitioning = mountPointConstraints === undefined || !requests;
     const lockedLUKSDevices = useMemo(
         () => getLockedLUKSDevices(selectedDisks, deviceData),
         [deviceData, selectedDisks]
     );
 
-    // Add the required mount points to the initial requests
+    // Initialize unappliedRequests from partitioning.requests when they're ready
     useEffect(() => {
         if (isLoadingPartitioning || unappliedRequests !== undefined) {
             return;
@@ -576,7 +562,6 @@ const RequestsTable = ({
 
         const initialRequests = getInitialRequests(requests, mountPointConstraints);
         setUnappliedRequests(initialRequests);
-
         setIsFormValid(getRequestsValid(initialRequests, deviceData));
     }, [deviceData, setIsFormValid, partitioning.path, requests, isLoadingPartitioning, unappliedRequests, mountPointConstraints]);
 
@@ -680,43 +665,54 @@ const isUsableDevice = (devSpec, deviceData) => {
     return false;
 };
 
-const useExistingPartitioning = () => {
-    const { diskSelection, partitioning } = useContext(StorageContext);
-    const selectedDisks = diskSelection.selectedDisks;
-    const devices = useOriginalDevices();
-    const [usedPartitioning, setUsedPartitioning] = useState();
-
-    const reusePartitioning = useMemo(() => {
-        const usableDevices = getUsableDevicesManualPartitioning({ devices, selectedDisks });
-
-        // Disk devices are not allowed in the mount point assignment
-        const usedDevices = (partitioning?.requests?.map(r => r["device-spec"]) || []);
-        if (checkIfArraysAreEqual(usedDevices, usableDevices)) {
-            return true;
-        }
-        return false;
-    }, [devices, selectedDisks, partitioning.requests]);
+export const usePartitioningReuse = () => {
+    const { setIsFormDisabled } = useContext(FooterContext);
+    const { partitioning } = useContext(StorageContext);
+    const previousRequestsRef = useRef();
+    const mergedRequestsRef = useRef();
 
     useEffect(() => {
-        const _setPartitioningPath = async () => {
-            if (!reusePartitioning || partitioning?.method !== "MANUAL") {
-                /* Reset the bootloader drive before we schedule partitions
-                 * The bootloader drive is automatically set during the partitioning, so
-                 * make sure we always reset the previous value before we run another one,
-                 * so it can be automatically set again based on the current disk selection.
-                 * Otherwise, the partitioning can fail with an error.
-                 */
-                const path = await getNewPartitioning({ method: "MANUAL", storageScenarioId: "mount-point-mapping" });
-                setUsedPartitioning(path);
-            } else {
-                setUsedPartitioning(partitioning.path);
+        const _updateInitialRequests = async () => {
+            if (previousRequestsRef.current !== undefined) {
+                return;
             }
+
+            // Store previous requests before creating new partitioning
+            previousRequestsRef.current = partitioning?.requests || [];
+
+            const part = await getNewPartitioning({ method: "MANUAL", storageScenarioId: "mount-point-mapping" });
+            const newRequestsDbus = await gatherRequests({ partitioning: part });
+            const newRequests = requestsFromDbus(newRequestsDbus);
+
+            // Merge old requests into new requests by device-spec
+            const _mergedRequests = newRequests.map(newReq => {
+                if (!newReq["device-spec"]) {
+                    return newReq;
+                }
+                const oldReq = previousRequestsRef.current.find(old => old["device-spec"] === newReq["device-spec"]);
+                return oldReq || newReq;
+            });
+
+            mergedRequestsRef.current = _mergedRequests;
+
+            // Set merged requests on the new partitioning (context will auto-update)
+            await setManualPartitioningRequests({
+                partitioning: part,
+                requests: requestsToDbus(_mergedRequests),
+            });
         };
 
-        _setPartitioningPath();
-    }, [reusePartitioning, partitioning?.method, partitioning?.path]);
+        _updateInitialRequests();
+    }, [partitioning?.requests]);
 
-    return usedPartitioning === partitioning.path;
+    // Wait for partitioning.requests to be updated with merged requests
+    useEffect(() => {
+        if (!partitioning?.requests || !mergedRequestsRef.current) {
+            return;
+        }
+
+        setIsFormDisabled(false);
+    }, [partitioning?.requests, setIsFormDisabled]);
 };
 
 export const MountPointMapping = ({
@@ -740,7 +736,18 @@ const CustomFooter = ({ setStepNotification }) => {
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const step = SCREEN_ID;
-    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
+    const onNext = async ({ goToNextStep, setIsFormDisabled }) => {
+        const partitioningPath = partitioning.path;
+
+        // Before applying storage, filter requests from partitioning.requests
+        // partitioning.requests are in plain format, but filterPartitioningRequests handles both
+        const filteredRequests = filterPartitioningRequests(partitioning.requests || []);
+        // Convert to DBus format before sending to backend
+        await setManualPartitioningRequests({
+            partitioning: partitioningPath,
+            requests: requestsToDbus(filteredRequests),
+        });
+
         return applyStorage({
             devices,
             onFail: ex => {
@@ -755,7 +762,7 @@ const CustomFooter = ({ setStepNotification }) => {
                 setIsFormDisabled(false);
                 setStepNotification();
             },
-            partitioning: partitioning.path,
+            partitioning: partitioningPath,
         });
     };
 
