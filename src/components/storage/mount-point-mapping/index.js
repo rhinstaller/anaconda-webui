@@ -17,7 +17,7 @@
 
 import cockpit from "cockpit";
 
-import { MountPointMapping } from "./MountPointMapping.jsx";
+import { MountPointMapping, usePartitioningReuse } from "./MountPointMapping.jsx";
 
 const _ = cockpit.gettext;
 
@@ -30,5 +30,6 @@ export class Page {
         this.isHidden = storageScenarioId !== "mount-point-mapping";
         this.label = _("Manual disk configuration");
         this.title = _("Manual disk configuration: Mount point mapping");
+        this.usePageInit = usePartitioningReuse;
     }
 }
