@@ -15,7 +15,26 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cockpit from "cockpit";
+
 import { checkIfArraysAreEqual } from "./utils.js";
+
+export const requestsFromDbus = (requests) => {
+    return requests.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
+};
+
+export const requestsToDbus = (requests) => {
+    return requests.map(row => {
+        return {
+            "device-spec": cockpit.variant("s", row["device-spec"] || ""),
+            "format-options": cockpit.variant("s", row["format-options"] || ""),
+            "format-type": cockpit.variant("s", row["format-type"] || ""),
+            "mount-options": cockpit.variant("s", row["mount-options"] || ""),
+            "mount-point": cockpit.variant("s", row["mount-point"] || ""),
+            reformat: cockpit.variant("b", !!row.reformat),
+        };
+    });
+};
 
 /* Get the list of IDs of all the ancestors of the given device
  * (excluding the device itself)
@@ -186,6 +205,36 @@ export const unitMultiplier = {
 };
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
+
+/* Filter requests to remove devices that should not be sent to the backend.
+ * Removes:
+ * - Devices without mount points that are not bootloader devices
+ * Keeps:
+ * - Devices with mount points
+ * - Bootloader devices (efi, biosboot, etc.)
+ *
+ * Note: Devices whose parent is reformatted are already filtered by the frontend
+ * (via isChildReformatValid in isReformatInvalid), so we don't need to check here.
+ *
+ * @param {Array} requests - Array of request objects (DBus variant format or plain)
+ * @returns {Array} Filtered requests (same format as input)
+ */
+export const filterPartitioningRequests = (requests) => {
+    return requests.filter(request => {
+        // Handle both DBus variant format and plain format
+        const mountPoint = request["mount-point"]?.v || request["mount-point"];
+        const formatType = request["format-type"]?.v || request["format-type"];
+
+        const hasMountPoint = mountPoint &&
+                             mountPoint !== "" &&
+                             mountPoint !== "none";
+        const isBootloader = formatType &&
+                            bootloaderTypes.includes(formatType);
+
+        // Keep requests with mount points or bootloader devices
+        return hasMountPoint || isBootloader;
+    });
+};
 
 export const systemMountPoints = ["/", "/usr"];
 
