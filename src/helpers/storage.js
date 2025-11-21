@@ -15,7 +15,26 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
+import cockpit from "cockpit";
+
 import { checkIfArraysAreEqual } from "./utils.js";
+
+export const requestsFromDbus = (requests) => {
+    return requests.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
+};
+
+export const requestsToDbus = (requests) => {
+    return requests.map(row => {
+        return {
+            "device-spec": cockpit.variant("s", row["device-spec"] || ""),
+            "format-options": cockpit.variant("s", row["format-options"] || ""),
+            "format-type": cockpit.variant("s", row["format-type"] || ""),
+            "mount-options": cockpit.variant("s", row["mount-options"] || ""),
+            "mount-point": cockpit.variant("s", row["mount-point"] || ""),
+            reformat: cockpit.variant("b", !!row.reformat),
+        };
+    });
+};
 
 /* Get the list of IDs of all the ancestors of the given device
  * (excluding the device itself)
@@ -186,6 +205,31 @@ export const unitMultiplier = {
 };
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
+
+/* Filter requests to remove devices that should not be sent to the backend.
+ * Keeps:
+ * - Requests with reformat set to true or with specified mount points
+ *
+ * Note: Devices whose parent is reformatted are already filtered by the frontend
+ * (via isChildReformatValid in isReformatInvalid), so we don't need to check here.
+ *
+ * Note: The same filtering happens in TUI as well.
+ * (https://github.com/rhinstaller/anaconda/blob/98a9e05674dcf48b3545d6a4f5977e733c813acf/pyanaconda/ui/tui/spokes/storage.py#L717-L725)
+ *
+ * @param {Array} requests - Array of request objects (DBus variant format or plain)
+ * @returns {Array} Filtered requests (same format as input)
+ */
+export const filterPartitioningRequests = (requests) => {
+    return requests.filter(request => {
+        // Handle both DBus variant format and plain format
+        const mountPoint = request["mount-point"];
+        const hasMountPoint = mountPoint &&
+                             mountPoint !== "none";
+
+        // Keep requests with mount points or reformatted
+        return request.reformat || hasMountPoint;
+    });
+};
 
 export const systemMountPoints = ["/", "/usr"];
 
