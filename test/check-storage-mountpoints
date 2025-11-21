@@ -119,15 +119,16 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         applied_partitioning = s.dbus_get_applied_partitioning()
 
-        # When adding a new partition a new partitioning should be created
+        # When re-entering the mount points mapping page new partitioning should be created,
+        # but the previous selection should be preserved
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
-
-        disk = "/dev/vdb"
-        m.execute(f"sgdisk --new=0:0:0 {disk}")
-        s.rescan_disks()
         s.select_mountpoint([("vda", False), ("vdb", True)])
-        s.select_mountpoint_row_device(1, "root")
-        select_boot_mountpoints()
+        s.check_mountpoint_row(1, "/", "root", True)
+        next_idx = 2
+        if self.is_efi:
+            s.check_mountpoint_row(next_idx, "/boot/efi", f"{dev}2", False)
+            next_idx += 1
+        s.check_mountpoint_row(next_idx, "/boot", f"{dev}3", False)
 
         i.next()
         new_applied_partitioning = s.dbus_get_applied_partitioning()
@@ -142,6 +143,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # https://bugzilla.redhat.com/show_bug.cgi?id=2239836
         i.back()
 
+        disk = "/dev/vdb"
+        m.execute(f"sgdisk --new=0:0:0 {disk}")
         m.execute(f"mkswap {disk}5")
         s.rescan_disks()
         s.select_mountpoint([("vda", False), ("vdb", True)])
