@@ -24,10 +24,10 @@ import { SearchIcon } from "@patternfly/react-icons/dist/esm/icons/search-icon";
 import { TimesIcon } from "@patternfly/react-icons/dist/esm/icons/times-icon";
 
 import { warn as loggerWarn } from "../../helpers/log.js";
-const _ = cockpit.gettext;
 
-const SCREEN_ID = "anaconda-screen-language";
-const warn = loggerWarn.bind(null, SCREEN_ID + ":");
+import "./MenuSearch.scss";
+
+const _ = cockpit.gettext;
 
 const renderOptions = (options, scrollRef, selection, search) => {
     return options.map(option => {
@@ -76,15 +76,15 @@ const renderOptions = (options, scrollRef, selection, search) => {
             );
         }
         default:
-            warn(`Unknown item type: ${option.itemType}`);
+            loggerWarn(`Unknown item type: ${option.itemType}`);
             return null;
         }
     });
 };
 
-export const MenuSearch = ({ ariaLabelSearch, handleOnSelect, menuType, options, selection }) => {
+export const MenuSearch = ({ ariaLabelSearch, handleOnSelect, menuType, options, screenId, selection }) => {
     const [search, setSearch] = useState("");
-    const prefix = SCREEN_ID + "-" + menuType;
+    const prefix = screenId + "-" + menuType;
     const scrollRef = useRef(null);
     const didScroll = useRef(false);
 

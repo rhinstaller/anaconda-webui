@@ -34,7 +34,7 @@ import { error as loggerError } from "../../helpers/log.js";
 
 import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
-import { MenuSearch } from "./Common.jsx";
+import { MenuSearch } from "../common/MenuSearch.jsx";
 import { Keyboard } from "./Keyboard.jsx";
 
 import "./InstallationLanguage.scss";
@@ -211,6 +211,7 @@ class LanguageSelector extends React.Component {
               handleOnSelect={handleOnSelect}
               menuType="language"
               options={options}
+              screenId={SCREEN_ID}
               selection={this.props.language}
             />
         );
