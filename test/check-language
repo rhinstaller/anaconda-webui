@@ -54,7 +54,7 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Expect the backend set language to be preselected and the WebUI translated
         lang.check_selected_locale("de_DE")
-        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
+        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora Linux installieren.")
 
     def _testBackendTranslations_partition_disk(self):
         b = self.browser
@@ -119,7 +119,7 @@ class TestLanguage(VirtInstallMachineCase):
         i.open()
 
         # Expect the default language - this is en at this point - adjust the test when better guess is implemented
-        b.wait_in_text("h2", "Welcome. Let's install Fedora now.")
+        b.wait_in_text("h2", "Welcome. Let's install Fedora Linux now.")
 
         l.check_selected_locale("en_US")
 
@@ -158,7 +158,7 @@ class TestLanguage(VirtInstallMachineCase):
             ignore=[*pixel_tests_ignore, ".pf-v6-c-menu__item-text"],
         )
 
-        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora installieren.")
+        b.wait_in_text("h2", "Willkommen. Lassen Sie uns nun Fedora Linux installieren.")
         # TODO: Add checks for plural translations when these are present
 
         # Check that the language is updated in the backend
@@ -232,7 +232,7 @@ class TestLanguage(VirtInstallMachineCase):
         i.open()
 
         # Verify we're in English
-        b.wait_in_text("h2", "Welcome. Let's install Fedora now.")
+        b.wait_in_text("h2", "Welcome. Let's install Fedora Linux now.")
 
         l.check_selected_keyboard("us")
         l.check_selected_keyboards_on_device("us")

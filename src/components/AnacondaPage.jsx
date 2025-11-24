@@ -95,5 +95,5 @@ export const AnacondaPage = ({
 const InitialPageTitle = () => {
     const osRelease = useContext(OsReleaseContext);
 
-    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.REDHAT_SUPPORT_PRODUCT);
+    return cockpit.format(_("Welcome. Let's install $0 now."), osRelease.NAME);
 };
