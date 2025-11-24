@@ -1,0 +1,39 @@
+// Adjust menu height for smaller screens
+@media (max-height: 768px) {
+  .pf-v6-c-menu.pf-m-scrollable {
+    --pf-v6-c-menu--m-scrollable__content--MaxHeight: 12rem;
+  }
+}
+
+// Search input spacing
+[class$="-search"] {
+    margin-bottom: var(--pf-t--global--spacer--sm);
+}
+
+// Menu border styling
+[class$="-menu"] {
+    border: var(--pf-t--global--border--width--regular) solid var(--pf-t--global--border--color--brand--default);
+}
+
+/*
+While this is something that needs to be fixed globally in an overrides,
+we're only using the component here, so we have a local, namespaced fix,
+to prevent surprises elsewhere. However, if we use the widget elsewhere,
+it would also need this fix, so this is definitely a fix for PF
+overrides, not a local fix.
+*/
+[id$="-menu"] {
+  // Oddly, the spacing here isn't consistent with the reference on the website;
+  // it should be balanced on the top and bottom, not all just on the top
+  .pf-v6-c-menu__group-title {
+    padding-block: var(--pf-t--global--spacer--sm);
+
+    // As the top is smaller, it needs a little more space between it and
+    // the rest of the elements. The first one doesn't need this, however,
+    // so we only apply it to all headings that aren't the first one
+    .pf-v6-c-menu__group:not(:first-of-type) & {
+      margin-block-start: var(--pf-t--global--spacer--sm);
+    }
+  }
+}
+
