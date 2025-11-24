@@ -6,11 +6,12 @@ This document describes the step-by-step process for installing the system using
 
 1. **Welcome**
 2. **Date and time**
-3. **Installation method**
-4. **Storage configuration**
-5. **Create Account**
-6. **Review and install**
-7. **Installation progress**
+3. **Software selection**
+4. **Installation method**
+5. **Storage configuration**
+6. **Create Account**
+7. **Review and install**
+8. **Installation progress**
 
 Detailed Step Descriptions
 =============================
@@ -25,7 +26,12 @@ Select the language & keyboard to use during installation and for the target sys
 
 Configure your system's timezone, date, and time settings. You can also set up network time synchronization.
 
-3. Installation method
+3. Software selection
+---------------------
+
+Select packages to install by choosing a base environment.
+
+4. Installation method
 ----------------------
 
 Choose the target device(s) for the installation and the partitioning scenario.
@@ -68,22 +74,22 @@ Uses storage configuration created through the external Cockpit storage editor t
 
 Installs using only unallocated free space, preserving existing partitions and data. Use when you want to dual-boot with existing operating systems. This option only appears when existing partitions are detected on the selected disks.
 
-4. Storage configuration
+5. Storage configuration
 ------------------------
 
 Automatic partitioning configuration, disk encryption, and storage options.
 
-5. Create Account
+6. Create Account
 -----------------
 
 Set up user accounts and administrator passwords for your system.
 
-6. Review and install
+7. Review and install
 ---------------------
 
 Review your installation settings and start the installation process.
 
-7. Installation progress
+8. Installation progress
 ------------------------
 
 Monitor the installation progress and completion.
