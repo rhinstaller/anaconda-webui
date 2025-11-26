@@ -37,7 +37,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     const [isFormValid, setIsFormValid] = useState(false);
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(StorageContext).systemType === "BOOT_ISO";
-    const payload = useContext(PayloadContext);
+    const payloadType = useContext(PayloadContext).type;
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
 
@@ -49,7 +49,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
         setIsFormValid,
     };
 
-    const stepsOrder = getSteps(userInterfaceConfig, isBootIso, storageScenarioId, payload.type);
+    const stepsOrder = getSteps(userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
     const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
 
     useEffect(() => {
