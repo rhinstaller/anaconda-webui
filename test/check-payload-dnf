@@ -29,16 +29,19 @@ from payload_dnf import PayloadDNF
 
 @nondestructive
 class TestPayloadDNF(VirtInstallMachineCase):
-    def testEnvironments(self):
+    def testEnvironmentPackages(self):
         """
         Description:
             Ensure software selection page loads environments and preselects the default environment.
-            Then select another environment.
+            Then select another environment and verify that default package groups change.
+            Also verify that package selection can be customized by the user.
 
         Expected results:
             - The list has at least one environment.
             - The default environment (server) is selected.
             - Can select another environment (workstation).
+            - Default groups change when environment changes.
+            - User can customize package selection by selecting/deselecting groups.
         """
         b = self.browser
         m = self.machine
@@ -50,9 +53,21 @@ class TestPayloadDNF(VirtInstallMachineCase):
 
         # Check that server environment is selected by default
         dnf.check_selected_environment("server-product-environment")
+        # Check that container-management is the first item in the optional groups for server
+        dnf.check_first_optional_group("container-management")
+        # And it's not selected by default
+        dnf.check_not_selected_group("container-management")
+        # Select container-management group
+        dnf.select_group("container-management")
 
         # Select workstation environment
         dnf.select_environment("workstation-product-environment")
+        # Group selection is reset when environment changes
+        dnf.check_not_selected_group("container-management")
+        dnf.check_not_selected_group("domain-client")
+        # Check that domain-client is the first item in the optional groups for workstation
+        dnf.check_first_optional_group("domain-client")
+        dnf.select_group("domain-client")
 
 
 if __name__ == '__main__':
