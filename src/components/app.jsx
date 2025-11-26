@@ -193,9 +193,7 @@ const useAppVersion = () => {
             try {
                 const value = await getAnacondaVersion();
                 setAppVersion(obj => ({ ...obj, backend: value }));
-            } catch (error) {
-                // Silently fail - version is not critical
-                console.error("Failed to get Anaconda version:", error);
+            } catch (err) {
             }
         })();
     }, []);
