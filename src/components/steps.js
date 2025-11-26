@@ -14,24 +14,24 @@ import { Page as PageAccounts } from "./users/index.js";
 
 const _ = cockpit.gettext;
 
-export const getSteps = (userInterfaceConfig, ...args) => {
-    const mountPointMappingStep = new PageMountPointMapping(...args);
+export const getSteps = (userInterfaceConfig, args) => {
+    const mountPointMappingStep = new PageMountPointMapping(args);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
-        new PageInstallationLanguage(...args),
-        new PageDateAndTime(...args),
-        new PageSoftwareSelection(...args),
-        new PageInstallationMethod(...args),
-        new PageStorageConfiguration(...args),
+        new PageInstallationLanguage(args),
+        new PageDateAndTime(args),
+        new PageSoftwareSelection(args),
+        new PageInstallationMethod(args),
+        new PageStorageConfiguration(args),
         {
             id: "anaconda-screen-storage-configuration-manual",
             isHidden: mountPointMappingStep.isHidden,
             label: _("Storage configuration"),
             steps: [mountPointMappingStep],
         },
-        new PageAccounts(...args),
-        new PageReviewConfiguration(...args),
-        new PageProgress(...args),
+        new PageAccounts(args),
+        new PageReviewConfiguration(args),
+        new PageProgress(args),
     ];
 
     /* Screens can be hidden in two ways:
