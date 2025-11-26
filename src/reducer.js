@@ -77,6 +77,7 @@ export const miscInitialState = {
 /* Initial state for the payload store substate */
 export const payloadInitialState = {
     environments: [],
+    groups: [],
     selection: null,
     type: null,
 };
@@ -253,6 +254,8 @@ export const payloadReducer = (state = payloadInitialState, action) => {
         return { ...state, environments: action.payload.environments || [] };
     } else if (action.type === "SET_PAYLOAD_TYPE") {
         return { ...state, type: action.payload.type };
+    } else if (action.type === "SET_PAYLOAD_GROUPS") {
+        return { ...state, groups: action.payload.groups };
     } else {
         return state;
     }

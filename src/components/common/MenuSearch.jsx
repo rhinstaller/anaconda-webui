@@ -31,7 +31,15 @@ const _ = cockpit.gettext;
 
 const renderOptions = (options, scrollRef, selection, search) => {
     return options.map(option => {
-        const isSelected = selection && option.itemId === selection;
+        // Support both single selection (string) and multiple selection (array)
+        let isSelected = false;
+        if (selection) {
+            if (Array.isArray(selection)) {
+                isSelected = selection.includes(option.itemId);
+            } else {
+                isSelected = option.itemId === selection;
+            }
+        }
 
         switch (option.itemType) {
         case "menu-item":

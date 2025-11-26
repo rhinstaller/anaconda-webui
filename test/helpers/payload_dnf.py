@@ -87,3 +87,25 @@ class PayloadDNF():
         self.browser.click(f"#{env_id}")
         self.browser.wait_visible(f"#{env_id}.pf-m-selected")
 
+    def check_not_selected_group(self, group):
+        """Check that the specified groups are not selected."""
+        group_id = f"{self._step}-group-{group}"
+        self.browser.wait_visible(f"#{group_id}:not(.pf-m-selected)")
+
+    def check_group_selected(self, group):
+        """Check if a specific group is selected."""
+        group_id = f"{self._step}-group-{group}"
+        self.browser.wait_visible(f"#{group_id}.pf-m-selected")
+
+    def select_group(self, group):
+        """Select a group by clicking on it."""
+        group_id = f"{self._step}-group-{group}"
+        self.browser.click(f"#{group_id}")
+        self.check_group_selected(group)
+
+    def check_first_optional_group(self, group):
+        """Check that a specific group is the first item in the optional groups menu."""
+        optional_groups_id = f"{self._step}-optional-groups"
+        group_id = f"{self._step}-group-{group}"
+        # Check that the optional groups menu exists
+        self.browser.wait_visible(f"#{optional_groups_id} li:first-of-type #{group_id}")
