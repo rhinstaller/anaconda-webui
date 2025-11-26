@@ -54,18 +54,18 @@ const ChangeHostname = ({ initHostname }) => {
         validateHostname(value);
         setCurrentHostname(value);
     };
-    const onSubmit = (event) => {
-        setHostname({ hostname: currentHostname })
-                .then(() => {
-                    handleModalToggle();
-                })
-                .catch(() => {
-                    setError(_("This hostname can't be submitted"));
-                });
-
+    const onSubmit = async (event) => {
         if (event) {
             event.preventDefault();
         }
+
+        try {
+            await setHostname({ hostname: currentHostname });
+            handleModalToggle();
+        } catch (error) {
+            setError(_("This hostname can't be submitted"));
+        }
+
         return false;
     };
 

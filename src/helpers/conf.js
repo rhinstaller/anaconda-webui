@@ -73,9 +73,12 @@ export const parseIni = content => {
     return dataStore;
 };
 
-export const readConf = () => {
+export const readConf = async () => {
     const confFile = cockpit.file(CONF_PATH, { superuser: "try", });
-    return confFile.read()
-            .then(parseIni)
-            .finally(confFile.close);
+    try {
+        const content = await confFile.read();
+        return parseIni(content);
+    } finally {
+        confFile.close();
+    }
 };

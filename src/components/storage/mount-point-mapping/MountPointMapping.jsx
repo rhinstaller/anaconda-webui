@@ -593,14 +593,18 @@ const RequestsTable = ({
         setIsFormValid(getRequestsValid(newRequests, deviceData));
 
         /* Sync newRequests to the backend */
-        updatePartitioningRequests({
-            newRequests,
-            partitioning: partitioning.path,
-            requests
-        }).catch(ex => {
-            setStepNotification(ex);
-            setIsFormValid(false);
-        });
+        (async () => {
+            try {
+                await updatePartitioningRequests({
+                    newRequests,
+                    partitioning: partitioning.path,
+                    requests
+                });
+            } catch (ex) {
+                setStepNotification(ex);
+                setIsFormValid(false);
+            }
+        })();
 
         setUnappliedRequests(newRequests);
     }, [setIsFormValid, deviceData, unappliedRequests, requests, partitioning.path, setStepNotification]);
