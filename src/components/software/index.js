@@ -24,10 +24,10 @@ const _ = cockpit.gettext;
 export class Page {
     _description = "Select packages to install by choosing a base environment.";
 
-    constructor (...args) {
+    constructor ({ payloadType }) {
         this.component = SoftwareSelection;
         this.id = "anaconda-screen-software-selection";
-        this.isHidden = args[2] !== "DNF";
+        this.isHidden = payloadType !== "DNF";
         this.label = _("Software selection");
         this.title = _("Software selection");
     }
