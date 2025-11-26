@@ -118,7 +118,13 @@ export const runStorageTask = ({ onFail, onSuccess, task }) => {
         task
     );
     const addEventListeners = () => {
-        taskProxy.addEventListener("Stopped", () => taskProxy.Finish().catch(onFail));
+        taskProxy.addEventListener("Stopped", async () => {
+            try {
+                await taskProxy.Finish();
+            } catch (error) {
+                onFail(error);
+            }
+        });
         taskProxy.addEventListener("Succeeded", () => {
             if (succeededEmitted) {
                 return;
@@ -129,7 +135,13 @@ export const runStorageTask = ({ onFail, onSuccess, task }) => {
     };
     taskProxy.wait(() => {
         addEventListeners();
-        taskProxy.Start().catch(onFail);
+        (async () => {
+            try {
+                await taskProxy.Start();
+            } catch (error) {
+                onFail(error);
+            }
+        })();
     });
 };
 

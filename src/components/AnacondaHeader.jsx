@@ -41,10 +41,14 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
     const isConnected = network.connected;
 
     useEffect(() => {
-        getIsFinal().then(
-            isFinal => setBeta(!isFinal),
-            onCritFail({ context: N_("Reading installer version information failed.") })
-        );
+        (async () => {
+            try {
+                const isFinal = await getIsFinal();
+                setBeta(!isFinal);
+            } catch {
+                onCritFail({ context: N_("Reading installer version information failed.") });
+            }
+        })();
     }, [onCritFail]);
 
     return (

@@ -16,20 +16,22 @@
  */
 import cockpit from "cockpit";
 
-export const _callClient = (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
-    return new Client().client.call(OBJECT_PATH, INTERFACE_NAME, ...args).then(res => res[0]);
+export const _callClient = async (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
+    const res = await new Client().client.call(OBJECT_PATH, INTERFACE_NAME, ...args);
+    return res[0];
 };
 
-export const _setProperty = (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
-    return new Client().client.call(
+export const _setProperty = async (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
+    return await new Client().client.call(
         OBJECT_PATH, "org.freedesktop.DBus.Properties", "Set", [INTERFACE_NAME, ...args]
     );
 };
 
-export const _getProperty = (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
-    return new Client().client.call(
+export const _getProperty = async (Client, OBJECT_PATH, INTERFACE_NAME, ...args) => {
+    const res = await new Client().client.call(
         OBJECT_PATH, "org.freedesktop.DBus.Properties", "Get", [INTERFACE_NAME, ...args]
-    ).then(res => res[0].v);
+    );
+    return res[0].v;
 };
 
 /**

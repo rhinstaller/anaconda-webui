@@ -18,10 +18,9 @@ import cockpit from "cockpit";
 
 import VERSION from "../../VERSION.txt";
 
-export const getAnacondaVersion = () => {
-    return cockpit
-            .spawn(["anaconda", "--version"])
-            .then((content) => content.split(" ").slice(-1)[0].replace("\n", ""));
+export const getAnacondaVersion = async () => {
+    const content = await cockpit.spawn(["anaconda", "--version"]);
+    return content.split(" ").slice(-1)[0].replace("\n", "");
 };
 
 export const getAnacondaUIVersion = () => {

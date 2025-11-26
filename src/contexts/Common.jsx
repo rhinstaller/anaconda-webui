@@ -79,13 +79,15 @@ const SystemInfoContextWrapper = ({ appVersion, children, conf, osRelease }) => 
     const [desktopVariant, setDesktopVariant] = useState();
 
     useEffect(() => {
-        cockpit.spawn(["ps", "-eo", "comm"]).then(res => {
+        const detectDesktopVariant = async () => {
+            const res = await cockpit.spawn(["ps", "-eo", "comm"]);
             if (res.includes("gnome-shell")) {
                 setDesktopVariant("GNOME");
             } else {
                 setDesktopVariant("UNKNOWN");
             }
-        });
+        };
+        detectDesktopVariant();
     }, []);
 
     const systemType = conf?.["Installation System"].type;

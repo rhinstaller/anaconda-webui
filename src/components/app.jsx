@@ -77,10 +77,14 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         // Attach a click event listener to detect external link clicks
         document.addEventListener("click", allowExternalNavigation);
 
-        Promise.all(clients.map(Client => new Client(address, dispatch).init()))
-                .then(() => {
-                    setStoreInitialized(true);
-                }, onCritFail({ context: N_("Reading information about the computer failed.") }));
+        (async () => {
+            try {
+                await Promise.all(clients.map(Client => new Client(address, dispatch).init()));
+                setStoreInitialized(true);
+            } catch (error) {
+                onCritFail({ context: N_("Reading information about the computer failed.") })(error);
+            }
+        })();
     }, [address, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
@@ -125,7 +129,14 @@ const useConf = ({ onCritFail }) => {
     const [conf, setConf] = useState();
 
     useEffect(() => {
-        readConf().then(setConf, onCritFail({ context: N_("Reading installer configuration failed.") }));
+        (async () => {
+            try {
+                const result = await readConf();
+                setConf(result);
+            } catch (error) {
+                onCritFail({ context: N_("Reading installer configuration failed.") })(error);
+            }
+        })();
     }, [onCritFail]);
 
     return conf;
@@ -135,7 +146,14 @@ const useOsRelease = ({ onCritFail }) => {
     const [osRelease, setOsRelease] = useState();
 
     useEffect(() => {
-        readOsRelease().then(setOsRelease, onCritFail({ context: N_("Reading information about the OS failed.") }));
+        (async () => {
+            try {
+                const result = await readOsRelease();
+                setOsRelease(result);
+            } catch (error) {
+                onCritFail({ context: N_("Reading information about the OS failed.") })(error);
+            }
+        })();
     }, [onCritFail]);
 
     return osRelease;
@@ -171,7 +189,13 @@ const useAppVersion = () => {
     const [appVersion, setAppVersion] = useState(initialState);
 
     useEffect(() => {
-        getAnacondaVersion().then(value => setAppVersion(obj => ({ ...obj, backend: value })));
+        (async () => {
+            try {
+                const value = await getAnacondaVersion();
+                setAppVersion(obj => ({ ...obj, backend: value }));
+            } catch (err) {
+            }
+        })();
     }, []);
     return appVersion;
 };

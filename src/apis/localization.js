@@ -177,13 +177,25 @@ export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
     };
 
     const addEventListeners = () => {
-        taskProxy.addEventListener("Stopped", () => taskProxy.Finish().catch(onFail));
+        taskProxy.addEventListener("Stopped", async () => {
+            try {
+                await taskProxy.Finish();
+            } catch (error) {
+                onFail(error);
+            }
+        });
         taskProxy.addEventListener("Succeeded", getTaskResult);
     };
 
     taskProxy.wait(() => {
         addEventListeners();
-        taskProxy.Start().catch(onFail);
+        (async () => {
+            try {
+                await taskProxy.Start();
+            } catch (error) {
+                onFail(error);
+            }
+        })();
     });
 };
 

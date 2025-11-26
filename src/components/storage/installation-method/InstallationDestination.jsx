@@ -213,27 +213,34 @@ const LocalDisksSelect = ({
     );
 };
 
-const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
+const rescanDisks = async (setIsRescanningDisks, dispatch, errorHandler) => {
     setIsRescanningDisks(true);
-    scanDevicesWithTask()
-            .then(task => {
-                return runStorageTask({
-                    onFail: exc => {
-                        setIsRescanningDisks(false);
-                        errorHandler(exc);
-                    },
-                    onSuccess: () => resetPartitioning()
-                            .then(() => Promise.all([
-                                dispatch(getDevicesAction()),
-                                dispatch(getDiskSelectionAction())
-                            ]))
-                            .finally(() => {
-                                setIsRescanningDisks(false);
-                            })
-                            .catch(errorHandler),
-                    task
-                });
-            });
+    try {
+        const task = await scanDevicesWithTask();
+        await runStorageTask({
+            onFail: exc => {
+                setIsRescanningDisks(false);
+                errorHandler(exc);
+            },
+            onSuccess: async () => {
+                try {
+                    await resetPartitioning();
+                    await Promise.all([
+                        dispatch(getDevicesAction()),
+                        dispatch(getDiskSelectionAction())
+                    ]);
+                } catch (exc) {
+                    errorHandler(exc);
+                } finally {
+                    setIsRescanningDisks(false);
+                }
+            },
+            task
+        });
+    } catch (exc) {
+        setIsRescanningDisks(false);
+        errorHandler(exc);
+    }
 };
 
 export const InstallationDestination = ({

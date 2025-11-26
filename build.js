@@ -33,7 +33,7 @@ function watchDirs (dir, onChange) {
         }
         onChange(path.join(dir, fname));
     };
-
+// eslint-disable-next-line promise/prefer-await-to-callbacks
     fs.watch(dir, {}, (ev, path) => callback(ev, dir, path));
 
     // watch all subdirectories in dir

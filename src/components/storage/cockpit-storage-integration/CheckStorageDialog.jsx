@@ -295,12 +295,15 @@ const unlockDevices = ({ devices, dispatch, onCritFail, onFail, setNextCheckStep
 
     debug("luks step started");
 
-    Promise.all(devicesToUnlock.map(unlockDevice))
-            .catch(onFail)
-            .then(() => {
-                setNextCheckStep();
-                dispatch(getDevicesAction());
-            });
+    (async () => {
+        try {
+            await Promise.all(devicesToUnlock.map(unlockDevice));
+            setNextCheckStep();
+            dispatch(getDevicesAction());
+        } catch (error) {
+            onFail(error);
+        }
+    })();
 };
 
 const waitForUnlockedDevices = ({ devices, setNextCheckStep }) => {
@@ -323,17 +326,26 @@ const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
 
     // When the dialog is shown rescan to get latest configured storage
     // and check if we need to prepare manual partitioning
-    scanDevicesWithTask()
-            .then(task => {
-                return runStorageTask({
-                    onFail,
-                    onSuccess: () => resetPartitioning()
-                            .then(() => dispatch(getDevicesAction()))
-                            .then(setNextCheckStep)
-                            .catch(onFail),
-                    task
-                });
+    (async () => {
+        try {
+            const task = await scanDevicesWithTask();
+            runStorageTask({
+                onFail,
+                onSuccess: async () => {
+                    try {
+                        await resetPartitioning();
+                        await dispatch(getDevicesAction());
+                        setNextCheckStep();
+                    } catch (error) {
+                        onFail(error);
+                    }
+                },
+                task
             });
+        } catch (error) {
+            onFail(error);
+        }
+    })();
 };
 
 const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
