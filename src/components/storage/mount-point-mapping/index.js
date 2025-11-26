@@ -24,7 +24,7 @@ const _ = cockpit.gettext;
 export class Page {
     _description = "Manual configuration of disk partitions and mount points for advanced storage setups.";
 
-    constructor (isBootIso, storageScenarioId) {
+    constructor ({ storageScenarioId }) {
         this.component = MountPointMapping;
         this.id = "anaconda-screen-mount-point-mapping";
         this.isHidden = storageScenarioId !== "mount-point-mapping";
