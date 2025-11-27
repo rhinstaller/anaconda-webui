@@ -23,7 +23,7 @@ import "cockpit-dark-theme";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import { convertToCockpitLang } from "./helpers/language";
+import { convertToCockpitLang } from "./helpers/language.js";
 
 import { ApplicationWithErrorBoundary } from "./components/app.jsx";
 

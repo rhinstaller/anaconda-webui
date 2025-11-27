@@ -19,7 +19,7 @@ import cockpit from "cockpit";
 import React, { useCallback, useEffect, useState } from "react";
 import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
-import { clients } from "../apis";
+import { clients } from "../apis/index.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
