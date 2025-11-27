@@ -18,7 +18,7 @@
 import os
 import sys
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
@@ -53,6 +53,13 @@ class TestPayloadDNF(VirtInstallMachineCase):
 
         # Check that server environment is selected by default
         dnf.check_selected_environment("server-product-environment")
+
+        # Pixel test the software selection page
+        b.assert_pixels(
+            "#app",
+            "software-selection",
+            ignore=pixel_tests_ignore
+        )
         # Check that container-management is the first item in the optional groups for server
         dnf.check_first_optional_group("container-management")
         # And it's not selected by default
