@@ -47,7 +47,7 @@ import {
 
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { ReviewDescriptionListItem } from "./Common";
+import { ReviewDescriptionListItem } from "./Common.jsx";
 
 import "./StorageReview.scss";
 
