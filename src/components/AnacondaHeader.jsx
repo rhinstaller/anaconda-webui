@@ -24,7 +24,7 @@ import { Popover, PopoverPosition } from "@patternfly/react-core/dist/esm/compon
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { InfoCircleIcon } from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
-import { getIsFinal } from "../apis/runtime";
+import { getIsFinal } from "../apis/runtime.js";
 
 import { NetworkContext } from "../contexts/Common.jsx";
 
