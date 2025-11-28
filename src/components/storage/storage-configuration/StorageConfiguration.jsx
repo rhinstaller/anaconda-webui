@@ -15,7 +15,7 @@
  * along with This program; If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import { applyStorage } from "../../../apis/storage_partitioning.js";
@@ -23,6 +23,7 @@ import { applyStorage } from "../../../apis/storage_partitioning.js";
 import { StorageContext } from "../../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
+import { createWarningNotification } from "../Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
@@ -57,21 +58,36 @@ export const StorageConfiguration = ({ dispatch, setIsFormValid, setStepNotifica
 
 const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
     const step = SCREEN_ID;
+    const [partitioningApplied, setPartitioningApplied] = useState(false);
+
     const onNext = ({ goToNextStep, setIsFormDisabled }) => {
+        // If partitioning was already applied, proceed to next step
+        if (partitioningApplied) {
+            setPartitioningApplied(false);
+            setStepNotification();
+            goToNextStep();
+            setIsFormDisabled(false);
+            return Promise.resolve();
+        }
+
         setIsFormDisabled(true);
         return applyStorage({
             luks,
             onFail: ex => {
                 setIsFormDisabled(false);
+                setPartitioningApplied(false);
                 setStepNotification({ step, ...ex });
             },
-            onSuccess: () => {
-                goToNextStep();
+            onSuccess: (validationReport) => {
+                const warningNotification = createWarningNotification(validationReport, step);
 
-                // Reset the state after the onNext call. Otherwise,
-                // React will try to render the current step again.
+                setStepNotification(warningNotification);
+                setPartitioningApplied(!!warningNotification);
+
+                if (!warningNotification) {
+                    goToNextStep();
+                }
                 setIsFormDisabled(false);
-                setStepNotification();
             },
             partitioning,
         });
