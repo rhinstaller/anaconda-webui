@@ -97,6 +97,7 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
     const [isNetworkOpen, setIsNetworkOpen] = useState(false);
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     const onToggle = () => {
         setIsOpen(!isOpen);
@@ -118,9 +119,14 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
     };
 
     const dropdownItems = [
-        <DropdownItem id="about-modal-dropdown-item-network" key="network" onClick={handleNetwork}>
-            {_("Configure network")}
-        </DropdownItem>,
+        ...(isBootIso
+            ? [
+                <DropdownItem id="about-modal-dropdown-item-network" key="network" onClick={handleNetwork}>
+                    {_("Configure network")}
+                </DropdownItem>
+            ]
+            : []
+        ),
         <ModifyStorage
           currentStepId={currentStepId}
           key="modify-storage"
