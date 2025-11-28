@@ -143,6 +143,11 @@ class Network():
         b.click("#toggle-kebab")
         b.click("#about-modal-dropdown-item-network")
 
+    def check_no_network_ui(self):
+        b = self.browser
+        b.click("#toggle-kebab")
+        b.wait_not_present("#about-modal-dropdown-item-network")
+
     def enter_network(self):
         b = self.browser
         self.configure_network()

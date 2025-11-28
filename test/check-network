@@ -19,7 +19,8 @@ from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network, remove_anaconda_default_connections
 from progress import Progress
-from testlib import test_main  # pylint: disable=import-error
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+from utils import pretend_live_workstation_iso
 
 
 class TestNetwork(VirtInstallMachineCase):
@@ -28,6 +29,26 @@ class TestNetwork(VirtInstallMachineCase):
         super().setUp()
         # FIXME WORKAROUND
         remove_anaconda_default_connections(self.machine)
+
+    @nondestructive
+    def testHidenOnLiveISO(self):
+        """
+        Description:
+            Test that the network configuration is not accessible on Live ISO
+
+        Expected results:
+            - The UI elements for accessing network configuration are not present
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        pretend_live_workstation_iso(self, i, m)
+
+        i.open()
+
+        n.check_no_network_ui()
 
     def testConnectionsPreInstall(self):
         """
