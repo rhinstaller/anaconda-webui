@@ -227,6 +227,26 @@ export const partitioningConfigureWithTask = ({ partitioning }) => {
     );
 };
 
+const partitioningValidate = async ({ onFail, onSuccess, partitioning }) => {
+    const tasks = await new StorageClient().client.call(
+        partitioning,
+        INTERFACE_NAME_PARTITIONING,
+        "ValidateWithTask", []
+    );
+    return runStorageTask({
+        onFail,
+        onSuccess: async () => {
+            const taskProxy = new StorageClient().client.proxy(
+                "org.fedoraproject.Anaconda.Task",
+                tasks[0]
+            );
+            const result = await taskProxy.GetResult();
+            return onSuccess(result.v);
+        },
+        task: tasks[0],
+    });
+};
+
 export const resetPartitioning = () => {
     return callClient("ResetPartitioning", []);
 };
@@ -287,13 +307,24 @@ export const applyStorage = async ({ devices, luks, onFail, onSuccess, partition
         await setBootloaderDrive({ drive: "" });
     }
 
-    const tasks = await partitioningConfigureWithTask({ partitioning });
+    const configureTasks = await partitioningConfigureWithTask({ partitioning });
+
+    const onConfigureTaskSuccess = async () => {
+        try {
+            await applyPartitioning({ partitioning });
+            await partitioningValidate({
+                onFail,
+                onSuccess,
+                partitioning,
+            });
+        } catch (error) {
+            onFail(error);
+        }
+    };
 
     runStorageTask({
         onFail,
-        onSuccess: () => applyPartitioning({ partitioning })
-                .then(onSuccess)
-                .catch(onFail),
-        task: tasks[0]
+        onSuccess: onConfigureTaskSuccess,
+        task: configureTasks[0],
     });
 };

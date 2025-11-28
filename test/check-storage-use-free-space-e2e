@@ -34,6 +34,8 @@ class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
         Expected results:
             - The installer should be able to install the system using free space
+            - A warning is shown when partition sizes are below recommended minimums
+            - The warning can be bypassed by clicking Next again
         """
         b = self.browser
         m = self.machine
@@ -44,8 +46,16 @@ class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.check_scenario_selected("use-free-space")
+        # Click Next to reach storage configuration
         i.next()
         s.check_encryption_selected(False)
+
+        if self.is_efi:
+            # Click Next to apply storage and trigger validation
+            i.next(should_fail=True)
+            # Wait for warning notification about /boot/efi partition size
+            b.wait_in_text(f"#{i.steps.STORAGE_CONFIGURATION}-step-notification",
+                           "Your /boot/efi partition is less than 500 MiB which is lower than recommended for a normal Fedora install.")
         i.reach(i.steps.REVIEW)
         r.check_checkbox_not_present()
 

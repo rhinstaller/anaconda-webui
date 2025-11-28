@@ -37,6 +37,7 @@ import {
 } from "../../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
+import { createWarningNotification } from "../Common.jsx";
 import { scenarios } from "../scenarios/index.js";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
@@ -103,6 +104,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     const [isNextClicked, setIsNextClicked] = useState(false);
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
+    const [partitioningApplied, setPartitioningApplied] = useState(false);
     const nextRef = useRef();
     const { partitioning, storageScenarioId } = useContext(StorageContext);
     const homeReuseOptions = useHomeReuseOptions();
@@ -136,20 +138,33 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
             } else if (storageScenarioId !== "home-reuse") {
                 setIsNextClicked(true);
             } else {
+                // If partitioning was already applied, proceed to next step
+                if (partitioningApplied) {
+                    setPartitioningApplied(false);
+                    setStepNotification();
+                    goToNextStep();
+                    setIsFormDisabled(false);
+                    return;
+                }
+
                 setIsFormDisabled(true);
                 const step = SCREEN_ID;
                 await applyStorage({
                     onFail: ex => {
                         setIsFormDisabled(false);
+                        setPartitioningApplied(false);
                         setStepNotification({ step, ...ex });
                     },
-                    onSuccess: () => {
-                        goToNextStep();
+                    onSuccess: (validationReport) => {
+                        const warningNotification = createWarningNotification(validationReport, step);
 
-                        // Reset the state after the onNext call. Otherwise,
-                        // React will try to render the current step again.
+                        setStepNotification(warningNotification);
+                        setPartitioningApplied(!!warningNotification);
+
+                        if (!warningNotification) {
+                            goToNextStep();
+                        }
                         setIsFormDisabled(false);
-                        setStepNotification();
                     },
                     partitioning: part,
                 });
