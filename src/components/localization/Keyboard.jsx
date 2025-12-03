@@ -407,7 +407,7 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotific
     const { plannedVconsole, plannedXlayouts } = useContext(LanguageContext);
 
     useEffect(() => {
-        setIsKeyboardValid(plannedVconsole !== "" && (!isGnome || plannedXlayouts.length === 1));
+        setIsKeyboardValid((plannedVconsole ?? "") !== "" && (!isGnome || plannedXlayouts?.length === 1));
     }, [plannedVconsole, plannedXlayouts, isGnome, setIsKeyboardValid]);
 
     if (!plannedXlayouts?.length) {
