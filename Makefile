@@ -92,7 +92,7 @@ po/LINGUAS:
 #
 all: $(DIST_TEST)
 
-dist_libexec_SCRIPTS = webui-desktop browser-ext
+dist_libexec_SCRIPTS = webui-desktop browser-ext gnome-control-center-ext
 # makes sure it gets built as part of `make` and `make dist`
 dist_noinst_DATA = \
 	$(DIST_TEST) \
@@ -138,6 +138,7 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/libexec/anaconda
 	cp webui-desktop $(DESTDIR)/usr/libexec/anaconda
 	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
+	cp gnome-control-center-ext $(DESTDIR)/usr/libexec/anaconda
 	cp src/scripts/cockpit-coproc-wrapper.sh $(DESTDIR)/usr/libexec/anaconda/
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
