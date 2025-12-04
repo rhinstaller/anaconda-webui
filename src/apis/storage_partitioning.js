@@ -69,13 +69,14 @@ export const createPartitioning = ({ method }) => {
  *
  * @returns {Promise}           The device tree object
  */
-export const getDeviceTree = ({ partitioning }) => {
-    return new StorageClient().client.call(
+export const getDeviceTree = async ({ partitioning }) => {
+    const res = await new StorageClient().client.call(
         partitioning,
         INTERFACE_NAME_PARTITIONING,
         "GetDeviceTree",
         []
-    ).then(res => res[0]);
+    );
+    return res[0];
 };
 
 /**
@@ -94,12 +95,10 @@ export const partitioningSetPassphrase = ({ partitioning, passphrase }) => {
  * @param {string} partitioning     DBus path to a partitioning
  * @param {boolean} encrypt         True if partitions should be encrypted, False otherwise
  */
-export const partitioningSetEncrypt = ({ encrypt, partitioning }) => {
-    return getPartitioningRequest({ partitioning })
-            .then(request => {
-                request.encrypted = cockpit.variant("b", encrypt);
-                return setPartitioningRequest({ partitioning, request });
-            });
+export const partitioningSetEncrypt = async ({ encrypt, partitioning }) => {
+    const request = await getPartitioningRequest({ partitioning });
+    request.encrypted = cockpit.variant("b", encrypt);
+    return setPartitioningRequest({ partitioning, request });
 };
 
 /* Create DBus request object for home reuse partitioning
@@ -148,19 +147,17 @@ export const partitioningSetHomeReuse = async ({ homeReuseOptions, partitioning 
 /**
  * @returns {Promise}           The request of automatic partitioning
  */
-export const getPartitioningRequest = ({ partitioning }) => {
-    return (
-        new StorageClient().client.call(
-            partitioning,
-            "org.freedesktop.DBus.Properties",
-            "Get",
-            [
-                INTERFACE_NAME_PARTITIONING_AUTOMATIC,
-                "Request",
-            ]
-        )
-                .then(res => res[0].v)
+export const getPartitioningRequest = async ({ partitioning }) => {
+    const res = await new StorageClient().client.call(
+        partitioning,
+        "org.freedesktop.DBus.Properties",
+        "Get",
+        [
+            INTERFACE_NAME_PARTITIONING_AUTOMATIC,
+            "Request",
+        ]
     );
+    return res[0].v;
 };
 
 /**
@@ -168,19 +165,17 @@ export const getPartitioningRequest = ({ partitioning }) => {
  *
  * @returns {Promise}               The partitioning method
  */
-export const getPartitioningMethod = ({ partitioning }) => {
-    return (
-        new StorageClient().client.call(
-            partitioning,
-            "org.freedesktop.DBus.Properties",
-            "Get",
-            [
-                INTERFACE_NAME_PARTITIONING,
-                "PartitioningMethod",
-            ]
-        )
-                .then(res => res[0].v)
+export const getPartitioningMethod = async ({ partitioning }) => {
+    const res = await new StorageClient().client.call(
+        partitioning,
+        "org.freedesktop.DBus.Properties",
+        "Get",
+        [
+            INTERFACE_NAME_PARTITIONING,
+            "PartitioningMethod",
+        ]
     );
+    return res[0].v;
 };
 
 /**
@@ -273,13 +268,14 @@ export const setManualPartitioningRequests = ({ partitioning, requests }) => {
  *
  * @returns {Promise}           The gathered requests for manual partitioning
  */
-export const gatherRequests = ({ partitioning }) => {
-    return new StorageClient().client.call(
+export const gatherRequests = async ({ partitioning }) => {
+    const res = await new StorageClient().client.call(
         partitioning,
         INTERFACE_NAME_PARTITIONING_MANUAL,
         "GatherRequests",
         []
-    ).then(res => res[0]);
+    );
+    return res[0];
 };
 
 export const applyStorage = async ({ devices, luks, onFail, onSuccess, partitioning }) => {

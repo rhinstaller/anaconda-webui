@@ -92,52 +92,51 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
     const [inProgress, setInProgress] = useState(false);
     const idPrefix = "unlock-device-dialog";
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         setInProgress(true);
-        return Promise.allSettled(
-            lockedLUKSDevices.map(device => (
-                unlockDevice({ device, passphrase })
-            ))
-        ).then(
-            res => {
-                if (res.every(r => r.status === "fulfilled")) {
-                    if (res.every(r => r.value)) {
-                        // Refresh the list of existing systems after unlocking the devices
-                        findExistingSystems({
-                            onFail: exc => setDialogWarning(exc.message),
-                            onSuccess: () => {
-                                onClose();
-                                dispatch(getDevicesAction());
-                            },
-                        });
-                    } else {
-                        const unlockedDevs = res.reduce((acc, r, i) => {
-                            if (r.value) {
-                                acc.push(lockedLUKSDevices[i]);
-                            }
-                            return acc;
-                        }, []);
-                        if (unlockedDevs.length > 0) {
-                            setDialogSuccess(cockpit.format(_("Successfully unlocked $0."), unlockedDevs.join(", ")));
-                            setDialogWarning(undefined);
-                            setPassphrase("");
-                        } else {
-                            setDialogSuccess(undefined);
-                            setDialogWarning(_("Passphrase did not match any locked device"));
-                        }
-                        setInProgress(false);
-                    }
+        try {
+            const res = await Promise.allSettled(
+                lockedLUKSDevices.map(device => (
+                    unlockDevice({ device, passphrase })
+                ))
+            );
 
-                    // Blivet does not send a signal when a device is unlocked,
-                    // so we need to refresh the device data manually.
-                    dispatch(getDevicesAction());
+            if (res.every(r => r.status === "fulfilled")) {
+                if (res.every(r => r.value)) {
+                    // Refresh the list of existing systems after unlocking the devices
+                    findExistingSystems({
+                        onFail: exc => setDialogWarning(exc.message),
+                        onSuccess: () => {
+                            onClose();
+                            dispatch(getDevicesAction());
+                        },
+                    });
+                } else {
+                    const unlockedDevs = res.reduce((acc, r, i) => {
+                        if (r.value) {
+                            acc.push(lockedLUKSDevices[i]);
+                        }
+                        return acc;
+                    }, []);
+                    if (unlockedDevs.length > 0) {
+                        setDialogSuccess(cockpit.format(_("Successfully unlocked $0."), unlockedDevs.join(", ")));
+                        setDialogWarning(undefined);
+                        setPassphrase("");
+                    } else {
+                        setDialogSuccess(undefined);
+                        setDialogWarning(_("Passphrase did not match any locked device"));
+                    }
+                    setInProgress(false);
                 }
-            },
-            exc => {
-                setDialogWarning(exc.message);
-                setInProgress(false);
+
+                // Blivet does not send a signal when a device is unlocked,
+                // so we need to refresh the device data manually.
+                dispatch(getDevicesAction());
             }
-        );
+        } catch (exc) {
+            setDialogWarning(exc.message);
+            setInProgress(false);
+        }
     };
 
     return (

@@ -8,7 +8,7 @@
     "parserOptions": {
         "ecmaVersion": 2022
     },
-    "plugins": ["react", "react-hooks", "simple-import-sort", "sort-destructure-keys"],
+    "plugins": ["react", "react-hooks", "simple-import-sort", "sort-destructure-keys", "promise"],
     "rules": {
         "comma-dangle": "off",
         "indent": ["error", 4,
@@ -55,7 +55,10 @@
         "react/prop-types": "off",
 
         "react-hooks/exhaustive-deps": "error",
-        "react-hooks/rules-of-hooks": "error"
+        "react-hooks/rules-of-hooks": "error",
+
+        "promise/prefer-await-to-then": "error",
+        "promise/prefer-await-to-callbacks": "error"
     },
     "globals": {
         "require": false,

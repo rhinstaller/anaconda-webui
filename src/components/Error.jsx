@@ -117,11 +117,10 @@ export const BZReportModal = ({
         // Let's make sure we have the latest logs from journal saved to /tmp/journal.log
         // Let's not confuse users with syslog
         // See https://issues.redhat.com/browse/INSTALLER-4210
-        cockpit.spawn(["journalctl", "-a"])
-                .then((output) => (
-                    cockpit.file(JOURNAL_LOG)
-                            .replace(output)
-                ));
+        (async () => {
+            const output = await cockpit.spawn(["journalctl", "-a"]);
+            await cockpit.file(JOURNAL_LOG).replace(output);
+        })();
     }, []);
 
     const {
