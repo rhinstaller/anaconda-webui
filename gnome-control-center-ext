@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# Copyright (C) 2025  Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published
+# by the Free Software Foundation; either version 2.1 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Panel name argument is mandatory
+if [[ -z "$1" ]]; then
+    echo "Error: Panel name argument is required" >&2
+    exit 1
+fi
+
+PANEL="$1"
+
+# Use gapplication to activate existing instance (brings window to front if running)
+# This handles single-instance app activation automatically
+gapplication launch org.gnome.Settings 2>/dev/null
+
+# Launch with panel argument
+# Since gnome-control-center is single-instance, this will switch panels in existing window
+exec /usr/bin/gnome-control-center "$PANEL"
