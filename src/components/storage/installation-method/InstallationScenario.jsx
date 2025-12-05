@@ -150,8 +150,8 @@ export const InstallationScenario = ({
     const showLuksUnlock = lockedLUKSDevices?.length > 0;
 
     useEffect(() => {
-        setIsScenarioValid(!noScenariosAvailable);
-    }, [noScenariosAvailable, setIsScenarioValid]);
+        setIsScenarioValid(!!storageScenarioId);
+    }, [storageScenarioId, setIsScenarioValid]);
 
     if (noScenariosAvailable && !showLuksUnlock) {
         return null;
