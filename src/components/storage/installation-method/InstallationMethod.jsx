@@ -58,6 +58,13 @@ export const InstallationMethod = ({
     setStepNotification,
 }) => {
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
+    const [isDestinationValid, setIsDestinationValid] = useState(false);
+    const [isScenarioValid, setIsScenarioValid] = useState(false);
+
+    // Calculate overall form validity based on both children's validation states
+    useEffect(() => {
+        setIsFormValid(isDestinationValid && isScenarioValid);
+    }, [isDestinationValid, isScenarioValid, setIsFormValid]);
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -81,7 +88,7 @@ export const InstallationMethod = ({
               idPrefix={idPrefix}
               isFirstScreen={isFirstScreen}
               isFormDisabled={isFormDisabled}
-              setIsFormValid={setIsFormValid}
+              setIsDestinationValid={setIsDestinationValid}
               setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />
@@ -92,7 +99,7 @@ export const InstallationMethod = ({
                   isFirstScreen={isFirstScreen}
                   isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
-                  setIsFormValid={setIsFormValid}
+                  setIsScenarioValid={setIsScenarioValid}
                 />
             </DialogsContext.Provider>
         </Form>
