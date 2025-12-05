@@ -297,16 +297,7 @@ const KeyboardDialog = ({ currentLayouts = [], onClose, onSaved }) => {
 };
 
 export const KeyboardGnome = ({ dispatch }) => {
-    const [keyboardAlert, setKeyboardAlert] = useState();
     const { plannedXlayouts } = useContext(LanguageContext);
-
-    useEffect(() => {
-        if (plannedXlayouts?.length > 1) {
-            setKeyboardAlert(_("More than one layout detected. Remove additional layouts to proceed"));
-        } else {
-            setKeyboardAlert();
-        }
-    }, [plannedXlayouts]);
 
     useEffect(() => {
         const onFocus = () => {
@@ -329,13 +320,6 @@ export const KeyboardGnome = ({ dispatch }) => {
                     {_("Change system keyboard layout")}
                 </Button>
             </Flex>
-            {keyboardAlert &&
-            <Alert
-              isInline
-              isPlain
-              title={keyboardAlert}
-              variant="danger"
-            />}
         </>
     );
 };
@@ -408,7 +392,7 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotific
     const { plannedVconsole, plannedXlayouts } = useContext(LanguageContext);
 
     useEffect(() => {
-        setIsKeyboardValid((plannedVconsole ?? "") !== "" && (!isGnome || plannedXlayouts?.length === 1));
+        setIsKeyboardValid((plannedVconsole ?? "") !== "" && (plannedXlayouts?.length > 0));
     }, [plannedVconsole, plannedXlayouts, isGnome, setIsKeyboardValid]);
 
     if (!plannedXlayouts?.length) {
