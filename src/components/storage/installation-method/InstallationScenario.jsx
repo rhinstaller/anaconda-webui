@@ -34,7 +34,6 @@ import {
 
 import {
     useOriginalDevices,
-    useOriginalDeviceTree,
 } from "../../../hooks/Storage.jsx";
 
 import { StorageReview } from "../../review/StorageReview.jsx";
@@ -61,8 +60,7 @@ const InstallationScenarioSelector = ({
     idPrefix,
     isFormDisabled,
 }) => {
-    const { mountPoints } = useOriginalDeviceTree();
-    const { storageScenarioId } = useContext(StorageContext);
+    const { appliedPartitioning, storageScenarioId } = useContext(StorageContext);
     const scenarioAvailability = useScenariosAvailability();
     const scenarioAvailabilityLoading = scenarioAvailability === undefined;
 
@@ -73,10 +71,9 @@ const InstallationScenarioSelector = ({
             return;
         }
 
-        // If we detect mount points, there is an still an applied partitioning
-        // and we should wait for the reset to take effect in the backend before deciding on the
-        // selected scenario
-        if (Object.keys(mountPoints).length > 0 && storageScenarioId !== "use-configured-storage") {
+        // If there is still an applied partitioning we should wait for the
+        // reset to take effect in the backend before deciding on the selected scenario
+        if (appliedPartitioning && storageScenarioId !== "use-configured-storage") {
             return;
         }
 
@@ -92,7 +89,7 @@ const InstallationScenarioSelector = ({
         if (selectedScenarioId) {
             dispatch(setStorageScenarioAction(selectedScenarioId));
         }
-    }, [dispatch, mountPoints, scenarioAvailability, scenarioAvailabilityLoading, storageScenarioId]);
+    }, [appliedPartitioning, dispatch, scenarioAvailability, scenarioAvailabilityLoading, storageScenarioId]);
 
     const onScenarioToggled = (scenarioId) => {
         dispatch(setStorageScenarioAction(scenarioId));
