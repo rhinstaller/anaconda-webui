@@ -135,7 +135,7 @@ export const InstallationScenario = ({
     idPrefix,
     isFirstScreen,
     isFormDisabled,
-    setIsFormValid,
+    setIsScenarioValid,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
@@ -153,8 +153,8 @@ export const InstallationScenario = ({
     const showLuksUnlock = lockedLUKSDevices?.length > 0;
 
     useEffect(() => {
-        setIsFormValid(!noScenariosAvailable);
-    }, [noScenariosAvailable, setIsFormValid]);
+        setIsScenarioValid(!noScenariosAvailable);
+    }, [noScenariosAvailable, setIsScenarioValid]);
 
     if (noScenariosAvailable && !showLuksUnlock) {
         return null;
