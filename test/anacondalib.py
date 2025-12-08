@@ -82,6 +82,10 @@ class VirtInstallMachineCase(MachineCase):
         elif not self.is_efi and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
 
+        if "TestPayloadDNF" in self.__class__.__name__:
+            if os.environ.get("TEST_PAYLOAD", None) != "dnf":
+                self.skipTest("Skipping DNF payload test when not using DNF payload")
+
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
             self.addCleanup(self.resetUsers)
