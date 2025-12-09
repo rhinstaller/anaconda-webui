@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-02 03:43+0000\n"
+"POT-Creation-Date: 2025-12-09 03:42+0000\n"
 "PO-Revision-Date: 2025-06-01 02:21+0000\n"
 "Last-Translator: hsu zangmen <chzang55@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -79,9 +79,10 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/localization/Keyboard.jsx:330
-msgid "$0 layouts detected"
-msgstr "偵測到 $0 配置"
+#: src/components/storage/Common.jsx:58
+msgid "$0 warning"
+msgid_plural "$0 warnings"
+msgstr[0] ""
 
 #: src/components/review/StorageReview.jsx:289
 msgid "$0 will be deleted"
@@ -131,9 +132,25 @@ msgstr "加入 NTP 伺服器"
 msgid "Add mount"
 msgstr "增加掛載"
 
+#: src/components/software/SoftwareSelection.jsx:134
+#, fuzzy
+#| msgid "Additional software for selected environment"
+msgid "Add-ons for your chosen environment"
+msgstr "所選環境的額外軟體"
+
+#: src/components/software/SoftwareSelection.jsx:143
+msgid "Add-ons not specific to your environment"
+msgstr ""
+
 #: src/components/localization/InstallationLanguage.jsx:157
 msgid "Additional languages"
 msgstr "額外語言"
+
+#: src/components/software/SoftwareSelection.jsx:168
+#, fuzzy
+#| msgid "Additional software for selected environment"
+msgid "Additional software for the selected environment"
+msgstr "所選環境的額外軟體"
 
 #: src/components/Error.jsx:215
 msgid ""
@@ -190,6 +207,10 @@ msgstr "可用空間: $0。 安裝需要: $1。"
 msgid "Back"
 msgstr "返回"
 
+#: src/components/software/SoftwareSelection.jsx:75
+msgid "Base environment"
+msgstr "基礎環境"
+
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
@@ -204,7 +225,7 @@ msgstr ""
 #: src/components/storage/installation-method/InstallationDestination.jsx:393
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
-#: src/components/localization/Keyboard.jsx:274
+#: src/components/localization/Keyboard.jsx:292
 #: src/components/review/Hostname.jsx:139 src/components/Error.jsx:309
 msgid "Cancel"
 msgstr "取消"
@@ -227,9 +248,9 @@ msgstr "更改主機名稱"
 msgid "Change partition layout"
 msgstr "更改目標位置"
 
-#: src/components/localization/Keyboard.jsx:208
-#: src/components/localization/Keyboard.jsx:342
-#: src/components/localization/Keyboard.jsx:410
+#: src/components/localization/Keyboard.jsx:225
+#: src/components/localization/Keyboard.jsx:329
+#: src/components/localization/Keyboard.jsx:387
 msgid "Change system keyboard layout"
 msgstr "變更系統鍵盤配置"
 
@@ -238,18 +259,22 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr "在此進行的變更將立即對系統生效。 這沒有反悔的機會。"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:54
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:51
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:438
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:444
 msgid "Checking storage configuration"
 msgstr "正在檢查儲存組態"
 
-#: src/components/localization/Common.jsx:115
+#: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "清除搜尋"
 
 #: src/components/Error.jsx:207
 msgid "Click \"$0\" to open Bugzilla in a new window."
+msgstr ""
+
+#: src/components/storage/Common.jsx:38
+msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:193
@@ -290,7 +315,7 @@ msgstr "正在配置存儲"
 msgid "Configure storage again"
 msgstr "重新設定儲存裝置"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:133
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:107
 #: src/components/users/Accounts.jsx:153 src/components/users/Accounts.jsx:309
 msgid "Confirm passphrase"
 msgstr "確認密碼"
@@ -367,7 +392,7 @@ msgstr "重複的掛載點。"
 msgid "Enable root account"
 msgstr "啟用 root 帳號(_E)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:82
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:74
 msgid "Encrypt my data"
 msgstr "加密我的資料"
 
@@ -375,7 +400,7 @@ msgstr "加密我的資料"
 msgid "Encrypted"
 msgstr "已加密"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:143
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:117
 msgid "Encryption"
 msgstr "加密"
 
@@ -396,7 +421,7 @@ msgstr "退出至 live 桌面"
 msgid "Extended partition"
 msgstr "延伸分割區"
 
-#: src/components/localization/Keyboard.jsx:197
+#: src/components/localization/Keyboard.jsx:214
 #, fuzzy
 #| msgid "Failed to save storage configuration"
 msgid "Failed to save layouts"
@@ -416,7 +441,7 @@ msgid ""
 "may take a few moments."
 msgstr "最後階段：系統設置已經完成。 最後階段可能要一些時間。"
 
-#: src/components/localization/Keyboard.jsx:213
+#: src/components/localization/Keyboard.jsx:230
 #, fuzzy
 #| msgctxt "GUI|Keyboard Layout"
 #| msgid "_Add layout"
@@ -565,15 +590,15 @@ msgid ""
 "OS."
 msgstr "保持目前硬碟佈局並使用可用空間，以與其他作業系統進行雙重開機。"
 
-#: src/components/localization/InstallationLanguage.jsx:251
+#: src/components/localization/InstallationLanguage.jsx:257
 msgid "Keyboard"
 msgstr "鍵盤"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:94
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:86
 msgid "Keyboard layout during boot"
 msgstr "開機時的鍵盤配置"
 
-#: src/components/localization/InstallationLanguage.jsx:235
+#: src/components/localization/InstallationLanguage.jsx:241
 #: src/components/review/ReviewConfiguration.jsx:192
 msgid "Language"
 msgstr "語言"
@@ -601,8 +626,8 @@ msgid ""
 "Attachments on Bugzilla issues are marked private by default."
 msgstr ""
 
-#: src/components/localization/Keyboard.jsx:117
-#: src/components/localization/Keyboard.jsx:121
+#: src/components/localization/Keyboard.jsx:134
+#: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
 msgstr ""
 
@@ -635,7 +660,7 @@ msgstr ""
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "父裝置與子裝置的重新格式化選擇不匹配。"
 
-#: src/components/localization/Keyboard.jsx:303
+#: src/components/localization/Keyboard.jsx:305
 msgid "More than one layout detected. Remove additional layouts to proceed"
 msgstr "偵測到多於一個佈局。 請移除其他佈局以繼續"
 
@@ -649,13 +674,13 @@ msgstr "掛載點"
 msgid "Mount point assignment"
 msgstr "掛載點分配"
 
-#: src/components/localization/Keyboard.jsx:139
-#: src/components/localization/Keyboard.jsx:143
+#: src/components/localization/Keyboard.jsx:156
+#: src/components/localization/Keyboard.jsx:160
 msgid "Move down"
 msgstr ""
 
-#: src/components/localization/Keyboard.jsx:128
-#: src/components/localization/Keyboard.jsx:132
+#: src/components/localization/Keyboard.jsx:145
+#: src/components/localization/Keyboard.jsx:149
 msgid "Move up"
 msgstr ""
 
@@ -710,15 +735,21 @@ msgstr "沒有可用的硬碟"
 msgid "No disks selected"
 msgstr "尚未選取磁碟"
 
-#: src/components/localization/Keyboard.jsx:234
+#: src/components/localization/Keyboard.jsx:252
 #, fuzzy
 #| msgid "$0 layouts detected"
 msgid "No layouts selected yet"
 msgstr "偵測到 $0 配置"
 
-#: src/components/localization/Common.jsx:138
+#: src/components/common/MenuSearch.jsx:147
 msgid "No results found"
 msgstr "未找到結果"
+
+#: src/components/localization/Keyboard.jsx:422
+msgid ""
+"No valid VConsole keymap can be obtained for the selected keyboard "
+"layout(s). Please make a different keyboard layout selection."
+msgstr ""
 
 #: src/components/review/ReviewConfiguration.jsx:116
 #, fuzzy
@@ -755,7 +786,7 @@ msgstr "作業系統"
 msgid "Options"
 msgstr "選項"
 
-#: src/components/localization/Keyboard.jsx:91
+#: src/components/localization/Keyboard.jsx:108
 msgid "Other keyboards"
 msgstr "其他鍵盤"
 
@@ -765,7 +796,7 @@ msgstr "分割區（進階）"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:162
 #: src/components/storage/installation-method/EncryptedDevices.jsx:169
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:130
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:104
 #: src/components/users/Accounts.jsx:150 src/components/users/Accounts.jsx:305
 msgid "Passphrase"
 msgstr "密碼"
@@ -898,8 +929,8 @@ msgstr "重新安裝 Fedora"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:432
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
-#: src/components/localization/Keyboard.jsx:150
-#: src/components/localization/Keyboard.jsx:154
+#: src/components/localization/Keyboard.jsx:167
+#: src/components/localization/Keyboard.jsx:171
 msgid "Remove"
 msgstr "移除"
 
@@ -989,7 +1020,7 @@ msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 
 #: src/components/datetime/CustomNTPModal.jsx:248
-#: src/components/localization/Keyboard.jsx:271
+#: src/components/localization/Keyboard.jsx:289
 #: src/components/review/Hostname.jsx:137
 msgid "Save"
 msgstr "儲存"
@@ -1002,11 +1033,23 @@ msgstr "使用您的手機掃描 QR code 並造訪："
 msgid "Search for a language"
 msgstr "搜尋語言"
 
-#: src/components/localization/Keyboard.jsx:217
+#: src/components/software/SoftwareSelection.jsx:171
+#, fuzzy
+#| msgid "No additional software to select."
+msgid "Search for additional software"
+msgstr "未選取額外軟體。"
+
+#: src/components/software/SoftwareSelection.jsx:78
+#, fuzzy
+#| msgid "Search for a language"
+msgid "Search for an environment"
+msgstr "搜尋語言"
+
+#: src/components/localization/Keyboard.jsx:234
 msgid "Search keyboard layout"
 msgstr "搜尋鍵盤配置"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:147
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:121
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr "使用硬碟加密來保護您的資料。 此設定僅適用於新分割區"
@@ -1036,7 +1079,7 @@ msgstr "選取安裝目的地"
 msgid "Select region"
 msgstr "選擇無"
 
-#: src/components/localization/Keyboard.jsx:227
+#: src/components/localization/Keyboard.jsx:245
 #, fuzzy
 #| msgid "Selected Layouts"
 msgid "Selected (top = current)"
@@ -1109,6 +1152,10 @@ msgid ""
 "being installed onto your device."
 msgstr "軟體選擇：儲存空間設定完成。 該軟體正在安裝至您的裝置上。"
 
+#: src/components/software/index.js:31 src/components/software/index.js:32
+msgid "Software selection"
+msgstr "軟體選擇"
+
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:61
 msgid "Some required partitions are missing: $0"
 msgstr "缺少部分必要的分割區：$0"
@@ -1124,7 +1171,7 @@ msgstr "儲存"
 #: src/components/installation/InstallationProgress.jsx:141
 #: src/components/storage/storage-configuration/index.js:32
 #: src/components/storage/storage-configuration/index.js:33
-#: src/components/steps.js:27
+#: src/components/steps.js:29
 msgid "Storage configuration"
 msgstr "儲存裝置組態"
 
@@ -1164,7 +1211,7 @@ msgstr "安裝成功"
 msgid "Successfully unlocked $0."
 msgstr "已成功解鎖 $0。"
 
-#: src/components/localization/Keyboard.jsx:91
+#: src/components/localization/Keyboard.jsx:108
 msgid "Suggested keyboards"
 msgstr "建議的鍵盤"
 
@@ -1186,12 +1233,6 @@ msgid ""
 "being configured."
 msgstr "系統組態：軟體安裝完成。 現在正在設定系統。"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:123
-msgid ""
-"The active keyboard layout in the compositor differs from the default layout "
-"selected for the target system."
-msgstr ""
-
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:57
 #, fuzzy
 #| msgid ""
@@ -1210,22 +1251,16 @@ msgstr "安裝程式由於嚴重錯誤而無法繼續。"
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "安裝程式由於嚴重錯誤而無法繼續：$0"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:50
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:47
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
 msgstr "您提供的密語包含非 ASCII 字元。在輸入時您可能無法切換鍵盤布局。"
 
-#: src/components/localization/Keyboard.jsx:256
+#: src/components/localization/Keyboard.jsx:274
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
-msgstr ""
-
-#: src/components/localization/Keyboard.jsx:309
-msgid ""
-"The selected layout does not support ASCII input. Please select a different "
-"layout to proceed."
 msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
@@ -1245,11 +1280,11 @@ msgstr "此主機名稱無法被提交"
 msgid "This is unstable, pre-release software"
 msgstr "這是尚未穩定的預先發行軟體"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:116
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:98
 msgid "This layout will be used for unlocking your system on boot"
 msgstr "此配置將用於啟動時解鎖系統"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:58
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:55
 msgid "This may take a moment"
 msgstr "這可能需要一段時間"
 
@@ -1274,7 +1309,7 @@ msgstr "時區：%s\n"
 msgid "To begin using $0, reboot your system."
 msgstr "若要開始使用 $0，請重新啟動您的系統。"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:210
 msgid "To continue, select the devices to install to."
 msgstr "若要繼續。請選擇要安裝的設備。"
 
@@ -1310,10 +1345,6 @@ msgstr "解鎖 LUKS 加密分割區以保留現有資料並顯示更多安裝方
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 msgid "Unlock encrypted devices"
 msgstr "解鎖加密裝置"
-
-#: src/components/localization/Keyboard.jsx:329
-msgid "Unusable layout"
-msgstr "無法使用的配置"
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:34
 msgid "Use configured storage"
@@ -1457,6 +1488,12 @@ msgstr "已縮小至 $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "復原"
+
+#~ msgid "$0 layouts detected"
+#~ msgstr "偵測到 $0 配置"
+
+#~ msgid "Unusable layout"
+#~ msgstr "無法使用的配置"
 
 #, fuzzy
 #~| msgid "More than one layout detected. Remove additional layouts to proceed"
@@ -2137,9 +2174,6 @@ msgstr "復原"
 #~ msgid "Additional software for Selected Environment"
 #~ msgstr "所選環境的額外軟體"
 
-#~ msgid "Additional software for selected environment"
-#~ msgstr "所選環境的額外軟體"
-
 #~ msgid "Administrator"
 #~ msgstr "管理員權限"
 
@@ -2310,9 +2344,6 @@ msgstr "復原"
 #~ msgstr "網路遮罩的格式不良"
 
 #~ msgid "Base Environment"
-#~ msgstr "基礎環境"
-
-#~ msgid "Base environment"
 #~ msgstr "基礎環境"
 
 #~ msgid "Beta Warn"
@@ -3721,9 +3752,6 @@ msgstr "復原"
 #~ msgid "No *.iso files found in device root folder"
 #~ msgstr "裝置根基資料夾中找不到 *.iso 檔"
 
-#~ msgid "No additional software to select."
-#~ msgstr "未選取額外軟體。"
-
 #~ msgid "No credentials (discovery authentication disabled)"
 #~ msgstr "無憑證 (已停用探查用身份核對)"
 
@@ -4647,9 +4675,6 @@ msgstr "復原"
 #~ msgid ""
 #~ "Snapshot: origin \"{}\" of snapshot \"{}\" is not a valid thin LV device."
 #~ msgstr "快照： \"{}\" 快照的 \"{}\" 來源在限縮 LV 裝置中無效。"
-
-#~ msgid "Software selection"
-#~ msgstr "軟體選擇"
 
 #~ msgid "Some packages, groups or modules are broken."
 #~ msgstr "有些軟體包、群組、模組可能損壞。"
