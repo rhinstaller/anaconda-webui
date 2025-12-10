@@ -241,7 +241,7 @@ export const InstallationDestination = ({
     idPrefix,
     isFirstScreen,
     onCritFail,
-    setIsFormValid,
+    setIsDestinationValid,
 }) => {
     const refUsableDisks = useRef();
     const { diskSelection } = useContext(StorageContext);
@@ -276,8 +276,8 @@ export const InstallationDestination = ({
     const selectedDisksCnt = diskSelection.selectedDisks.length;
 
     useEffect(() => {
-        setIsFormValid(selectedDisksCnt > 0);
-    }, [selectedDisksCnt, setIsFormValid]);
+        setIsDestinationValid(selectedDisksCnt > 0);
+    }, [selectedDisksCnt, setIsDestinationValid]);
 
     const headingLevel = isFirstScreen ? "h3" : "h2";
 
