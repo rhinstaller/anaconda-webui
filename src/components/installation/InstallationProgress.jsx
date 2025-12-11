@@ -60,62 +60,77 @@ export const InstallationProgress = ({ onCritFail }) => {
     const osRelease = useContext(OsReleaseContext);
 
     useEffect(() => {
-        installWithTasks()
-                .then(tasks => {
-                    const taskProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.Task",
-                        tasks[0]
-                    );
-                    const categoryProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.TaskCategory",
-                        tasks[0]
-                    );
+        (async () => {
+            try {
+                const tasks = await installWithTasks();
+                const taskProxy = new BossClient().client.proxy(
+                    "org.fedoraproject.Anaconda.Task",
+                    tasks[0]
+                );
+                const categoryProxy = new BossClient().client.proxy(
+                    "org.fedoraproject.Anaconda.TaskCategory",
+                    tasks[0]
+                );
 
-                    const addEventListeners = () => {
-                        taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
-                            if (step === 0) {
-                                getSteps({ task: tasks[0] })
-                                        .then(
-                                            ret => setSteps(ret.v),
-                                            onCritFail()
-                                        );
+                const addEventListeners = () => {
+                    taskProxy.addEventListener("ProgressChanged", async (_, step, message) => {
+                        if (step === 0) {
+                            try {
+                                const ret = await getSteps({ task: tasks[0] });
+                                setSteps(ret.v);
+                            } catch (error) {
+                                onCritFail()(error);
                             }
-                            if (message) {
-                                setStatusMessage(message);
-                                refStatusMessage.current = message;
-                            }
-                        });
-                        taskProxy.addEventListener("Failed", () => {
-                            setStatus("danger");
-                        });
-                        taskProxy.addEventListener("Stopped", () => {
-                            taskProxy.Finish().catch(onCritFail({
-                                context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
-                            }));
-                        });
-                        categoryProxy.addEventListener("CategoryChanged", (_, category) => {
-                            const step = progressStepsMap[category];
-                            setCurrentProgressStep(current => {
-                                if (step !== undefined && step >= current) {
-                                    return step;
-                                }
-                                return current;
-                            });
-                        });
-                        taskProxy.addEventListener("Succeeded", () => {
-                            setStatus("success");
-                            setCurrentProgressStep(4);
-                        });
-                    };
-                    taskProxy.wait(() => {
-                        addEventListeners();
-                        taskProxy.Start().catch(onCritFail({
-                            context: _("Installation of the system failed"),
-                        }));
+                        }
+                        if (message) {
+                            setStatusMessage(message);
+                            refStatusMessage.current = message;
+                        }
                     });
-                }, onCritFail({
+                    taskProxy.addEventListener("Failed", () => {
+                        setStatus("danger");
+                    });
+                    taskProxy.addEventListener("Stopped", async () => {
+                        try {
+                            await taskProxy.Finish();
+                        } catch (error) {
+                            onCritFail({
+                                context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
+                            })(error);
+                        }
+                    });
+                    categoryProxy.addEventListener("CategoryChanged", (_, category) => {
+                        const step = progressStepsMap[category];
+                        setCurrentProgressStep(current => {
+                            if (step !== undefined && step >= current) {
+                                return step;
+                            }
+                            return current;
+                        });
+                    });
+                    taskProxy.addEventListener("Succeeded", () => {
+                        setStatus("success");
+                        setCurrentProgressStep(4);
+                    });
+                };
+                taskProxy.wait(() => {
+                    addEventListeners();
+                    (async () => {
+                        try {
+                            await taskProxy.Start();
+                        } catch (error) {
+                            onCritFail({
+                                context: _("Installation of the system failed"),
+                            })(error);
+                        }
+                    })();
+                });
+            } catch (error) {
+                onCritFail({
                     context: _("Installation of the system failed"),
-                }));
+                })(error);
+            }
+        })();
     }, [onCritFail]);
 
     if (steps === undefined) {

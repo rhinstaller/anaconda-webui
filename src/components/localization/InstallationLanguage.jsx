@@ -166,37 +166,41 @@ class LanguageSelector extends React.Component {
     render () {
         const { languages } = this.props;
 
-        const handleOnSelect = (_event, item) => {
+        const handleOnSelect = async (_event, item) => {
             for (const languageItem in languages) {
                 for (const localeItem of languages[languageItem].locales) {
                     if (getLocaleId(localeItem) === item) {
                         setLangCookie({ cockpitLang: convertToCockpitLang({ lang: getLocaleId(localeItem) }) });
-                        setLanguage({ lang: getLocaleId(localeItem) })
-                                .then(() => setLocale({ locale: getLocaleId(localeItem) }))
-                                .catch(ex => {
-                                    this.props.setStepNotification(ex);
-                                });
+                        try {
+                            await setLanguage({ lang: getLocaleId(localeItem) });
+                            setLocale({ locale: getLocaleId(localeItem) });
+                        } catch (ex) {
+                            this.props.setStepNotification(ex);
+                        }
                         this.setState({ lang: item });
-                        fetch("po.js").then(response => response.text())
-                                .then(body => {
-                                    // always reset old translations
-                                    cockpit.locale(null);
-                                    // en_US is always null
-                                    if (body.trim() === "") {
-                                        cockpit.locale({
-                                            "": {
-                                                language: "en_US",
-                                                "language-direction": "ltr",
-                                            }
-                                        });
-                                    } else {
-                                        // eslint-disable-next-line no-eval
-                                        eval(body);
+                        try {
+                            const response = await fetch("po.js");
+                            const body = await response.text();
+                            // always reset old translations
+                            cockpit.locale(null);
+                            // en_US is always null
+                            if (body.trim() === "") {
+                                cockpit.locale({
+                                    "": {
+                                        language: "en_US",
+                                        "language-direction": "ltr",
                                     }
-
-                                    const langEvent = new CustomEvent("cockpit-lang");
-                                    window.dispatchEvent(langEvent);
                                 });
+                            } else {
+                                // eslint-disable-next-line no-eval
+                                eval(body);
+                            }
+
+                            const langEvent = new CustomEvent("cockpit-lang");
+                            window.dispatchEvent(langEvent);
+                        } catch (ex) {
+                            // Silently handle fetch errors
+                        }
                         return;
                     }
                 }

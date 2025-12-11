@@ -59,14 +59,14 @@ export class BossClient {
  *
  * @returns {Promise}           Resolves the total number of tasks
  */
-export const getSteps = ({ task }) => {
-    return new BossClient().client.call(
+export const getSteps = async ({ task }) => {
+    const ret = await new BossClient().client.call(
         task,
         "org.freedesktop.DBus.Properties",
         "Get",
         ["org.fedoraproject.Anaconda.Task", "Steps"]
-    )
-            .then(ret => ret[0]);
+    );
+    return ret[0];
 };
 
 /**

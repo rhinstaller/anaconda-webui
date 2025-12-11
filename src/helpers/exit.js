@@ -18,15 +18,17 @@ import cockpit from "cockpit";
 
 import { debug, error } from "./log.js";
 
-export const exitGui = () => {
+export const exitGui = async () => {
     const pidFile = cockpit.file("/run/anaconda/webui_script.pid", { superuser: "try" });
     let pid;
-    pidFile.read()
-            .then(content => {
-                pid = content.trim();
-                debug("Killing WebUI process, PID: ", pid);
-                return cockpit.spawn(["kill", pid]);
-            })
-            .catch(exc => error("Failed to kill WebUI process, PID: ", pid, exc.message))
-            .finally(pidFile.close);
+    try {
+        const content = await pidFile.read();
+        pid = content.trim();
+        debug("Killing WebUI process, PID: ", pid);
+        await cockpit.spawn(["kill", pid]);
+    } catch (exc) {
+        error("Failed to kill WebUI process, PID: ", pid, exc.message);
+    } finally {
+        pidFile.close();
+    }
 };
