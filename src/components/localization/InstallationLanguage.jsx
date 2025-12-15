@@ -115,10 +115,8 @@ class LanguageSelector extends React.Component {
 
         const suggestedItems = commonLocales
                 .map(findLocaleWithId)
+                .filter(locale => locale !== undefined)
                 .sort((a, b) => {
-                    if (!a || !b) {
-                        return 0;
-                    }
                     // Sort alphabetically by native name but keep the default locale at the top
                     if (getLocaleId(a) === this.initiallySelectedLanguage) {
                         return -1;
