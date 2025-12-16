@@ -140,8 +140,7 @@ prepare_firefox_cmd() {
     # set environment for Firefox
     BROWSER_ENV=(MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" MOZ_GTK_TITLEBAR_DECORATION=client)
 
-    # FIXME: is this hardcoded resolution necessary ?
-    BROWSER=(/usr/bin/env "${BROWSER_ENV[@]}" /usr/bin/firefox --new-instance --window-size "1024,768" --profile "${FIREFOX_PROFILE_PATH}")
+    BROWSER=(/usr/bin/env "${BROWSER_ENV[@]}" /usr/bin/firefox --new-instance --profile "${FIREFOX_PROFILE_PATH}")
 
     declare -p BROWSER
 }
