@@ -36,7 +36,7 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         # the 'Reinstall Fedora' option to get hidden
         # Also remove /var/ mount point from /etc/fstab
         self.machine.execute("""
-            mount /dev/vda4 /mnt;
+            mount /dev/vda3 /mnt;
             btrfs subvolume delete /mnt/var/lib/machines;
             btrfs subvolume delete /mnt/var;
             sed -i '/var/d' /mnt/root/etc/fstab;
@@ -81,12 +81,12 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         self.home_mount_options = m.execute(f"""
         # Mark existing root by a file
         mkdir /m
-        mount -o subvol=root,compress=zstd:1 {disk}4 /m
+        mount -o subvol=root,compress=zstd:1 {disk}3 /m
         grep /home /m/etc/fstab | tr -s ' ' | cut -d ' ' -f 4
         touch /m/{old_root_file}
         umount /m
         # Mark existing home by a file
-        mount -o subvol=home,compress=zstd:1 {disk}4 /m
+        mount -o subvol=home,compress=zstd:1 {disk}3 /m
         touch /m/{old_home_file}
         umount /m
         rmdir /m

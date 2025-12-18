@@ -390,11 +390,11 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
-        s.reclaim_remove_device("vda4")
+        s.reclaim_remove_device("vda3")
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)
-        r.check_affected_system("Fedora Linux", [("vda4", ["home", "root", "var"])])
+        r.check_affected_system("Fedora Linux", [("vda3", ["boot", "home", "root", "var"])])
         r.check_some_erased_checkbox_label()
 
 
