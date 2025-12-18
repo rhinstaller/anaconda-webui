@@ -86,7 +86,7 @@ def move_standard_fedora_disk_to_disk(machine, src_disk, dst_disk,
 
     # Copy data from the first disk / to the new disk
     mkdir -p /mnt-fedora
-    mount /dev/{src_disk}4 /mnt-fedora
+    mount /dev/{src_disk}3 /mnt-fedora
     """)
 
     rsync_directory(machine, "/mnt-fedora", "/mnt")
@@ -104,14 +104,6 @@ def move_standard_fedora_disk_to_disk(machine, src_disk, dst_disk,
     echo "UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_root_part_num}) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
     echo "UUID=$(blkid -s UUID -o value /dev/{dst_disk}{dst_boot_part_num}) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
     {efi_fstab_record}
-
-    umount -l /mnt-fedora
-    umount -l /mnt
-
-    # Do the same for /boot
-    mount /dev/{dst_disk}{dst_boot_part_num} /mnt
-    mount /dev/{src_disk}3 /mnt-fedora
-    rsync -aAXHv /mnt-fedora/ /mnt/
 
     umount -l /mnt-fedora
     umount -l /mnt
