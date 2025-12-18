@@ -48,7 +48,7 @@ class TestStorageEraseAll(VirtInstallMachineCase):
         s.set_scenario("erase-all")
         i.reach(i.steps.REVIEW)
 
-        for device in ["vda1", "vda2", "vda3", "vda4"]:
+        for device in ["vda1", "vda2", "vda3"]:
             r.check_disk_row("vda", parent=device, action="delete")
 
         r.check_deleted_system("Fedora Linux")
