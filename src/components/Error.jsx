@@ -242,11 +242,11 @@ const addExceptionDataToReportURL = (url, exception) => {
     const stackTrace = exception.frontendException?.stack ? "\n\nStackTrace: " + exception.frontendException.stack : "";
     newUrl.searchParams.append(
         "short_desc",
-        "WebUI: " + context + name + backendMessage + frontendMessage
+        context + name + backendMessage + frontendMessage
     );
     newUrl.searchParams.append(
         "comment",
-        "Installer WebUI Critical Error:\n" + context + name + backendMessage + bothSeparator + frontendMessage + stackTrace
+        "Installer Critical Error:\n" + context + name + backendMessage + bothSeparator + frontendMessage + stackTrace
     );
     return newUrl.href;
 };
