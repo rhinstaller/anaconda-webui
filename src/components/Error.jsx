@@ -42,14 +42,14 @@ const _ = cockpit.gettext;
 const JOURNAL_LOG = "/tmp/journal.log";
 const WEBUI_LOG = "/tmp/anaconda-webui.log";
 
-const useBugzillaPrefiledReportURL = () => {
+const useBugzillaPrefiledReportURL = (component) => {
     const {
         REDHAT_BUGZILLA_PRODUCT: product,
         REDHAT_BUGZILLA_PRODUCT_VERSION: version,
     } = useContext(OsReleaseContext);
     const { systemType } = useContext(SystemTypeContext);
     const isBootIso = systemType === "BOOT_ISO";
-    const href = createBugzillaEnterBug({ product, version });
+    const href = createBugzillaEnterBug({ product, version }, component);
 
     if (!isBootIso) {
         return href.replace("https", "extlink");
@@ -279,7 +279,9 @@ const quitButton = (isBootIso) => {
 };
 
 const CriticalError = ({ exception }) => {
-    const reportLinkURL = useBugzillaPrefiledReportURL();
+    const hasFrontendException = !!exception.frontendException;
+    const component = hasFrontendException ? "anaconda-webui" : "anaconda";
+    const reportLinkURL = useBugzillaPrefiledReportURL(component);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const context = exception.backendException?.contextData?.context || exception.frontendException?.contextData?.context;
     const description = context
@@ -292,7 +294,7 @@ const CriticalError = ({ exception }) => {
           description={description}
           reportLinkURL={addExceptionDataToReportURL(reportLinkURL, exception)}
           idPrefix={idPrefix}
-          isFrontendException={!!exception.frontendException}
+          isFrontendException={hasFrontendException}
           title={_("Installation failed")}
           titleIconVariant="danger"
           detailsLabel={_("Error details")}
