@@ -17,6 +17,7 @@
 
 import cockpit from "cockpit";
 
+import StackTrace from "stacktrace-js";
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
 import React, { cloneElement, useContext, useEffect } from "react";
@@ -337,30 +338,24 @@ export class ErrorBoundary extends React.Component {
 
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
-        window.onerror = (message, source, lineno, colno, _error) => {
+        const errorHandler = async (_error) => {
             error("ErrorBoundary caught an error:", _error);
-            this.setState({ frontendException: _error, hasError: true });
-            return true;
-        };
-
-        window.onunhandledrejection = (event) => {
-            error("ErrorBoundary caught an error:", event.reason);
-            this.setState({ frontendException: event.reason, hasError: true });
-            return true;
-        };
-    }
-
-    static getDerivedStateFromError (_error) {
-        if (_error) {
-            return {
-                backendException: _error,
+            const arrayStackFrame = await StackTrace.fromError(_error);
+            const stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
+            this.setState({
+                frontendException: { message: _error.message, stack },
                 hasError: true
-            };
-        }
+            });
+            return true;
+        };
+        window.onerror = async (message, source, lineno, colno, _error) => errorHandler(_error);
+        window.onunhandledrejection = (event) => errorHandler(event.reason);
     }
 
-    componentDidCatch (_error, info) {
-        error("ComponentDidCatch: ErrorBoundary caught an error:", _error, info);
+    // React Error Boundary: Catches React rendering errors synchronously
+    // This prevents errors from propagating and crashing the page before window.onerror fires
+    static getDerivedStateFromError () {
+        return { hasError: true };
     }
 
     onCritFailBackend = (arg) => {
