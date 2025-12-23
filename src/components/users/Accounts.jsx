@@ -378,8 +378,9 @@ export const Accounts = ({
 const CustomFooter = () => {
     const accounts = useContext(UsersContext);
 
-    const onNext = ({ goToNextStep }) => {
-        applyAccounts(accounts).then(goToNextStep);
+    const onNext = async ({ goToNextStep }) => {
+        await applyAccounts(accounts);
+        goToNextStep();
     };
 
     return (
