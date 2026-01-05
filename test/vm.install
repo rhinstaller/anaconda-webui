@@ -14,7 +14,8 @@ sys.path.append(BOTS_DIR)
 TEST_HELPERS_DIR = os.path.realpath(f'{__file__}/../helpers')
 sys.path.append(TEST_HELPERS_DIR)
 
-missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi"
+# FIXME: python3-bugzilla should be removed from missing_packages once it's included in boot.iso
+missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
 
 from compose_path import get_compose_url
 from machine.machine_core import machine_virtual
