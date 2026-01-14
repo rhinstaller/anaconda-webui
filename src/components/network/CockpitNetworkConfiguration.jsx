@@ -16,7 +16,7 @@
  */
 import cockpit from "cockpit";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
@@ -25,8 +25,22 @@ import "./CockpitNetworkConfiguration.scss";
 
 const _ = cockpit.gettext;
 
-export const CockpitNetworkConfiguration = ({ setIsNetworkOpen }) => {
+export const CockpitNetworkConfiguration = ({
+    onCritFail,
+    setIsNetworkOpen,
+}) => {
+    const [isIframeMounted, setIsIframeMounted] = useState(false);
+    const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "cockpit-network-configuration";
+
+    useEffect(() => {
+        if (isIframeMounted) {
+            const iframe = document.getElementById("cockpit-network-frame");
+            iframe.contentWindow.addEventListener("error", exception => {
+                onCritFail({ context: _("Network plugin failed"), isFrontend: true })({ message: exception.error.message, stack: exception.error.stack });
+            });
+        }
+    }, [isIframeMounted, onCritFail]);
 
     const handleClose = () => {
         setIsNetworkOpen(false);
@@ -49,6 +63,7 @@ export const CockpitNetworkConfiguration = ({ setIsNetworkOpen }) => {
                           src="/cockpit/@localhost/network/index.html"
                           name="cockpit-network"
                           id="cockpit-network-frame"
+                          onLoad={handleIframeLoad}
                           className={idPrefix + "-iframe-cockpit-network"} />
                     </PageSection>
                 </div>

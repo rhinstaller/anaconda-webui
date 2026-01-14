@@ -162,8 +162,10 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
                 </DropdownList>
             </Dropdown>
             {isNetworkOpen &&
-                <CockpitNetworkConfiguration
-                  setIsNetworkOpen={setIsNetworkOpen} />}
+            <CockpitNetworkConfiguration
+              setIsNetworkOpen={setIsNetworkOpen}
+              onCritFail={onCritFail}
+            />}
             {isAboutModalOpen &&
                 <AnacondaAboutModal
                   isModalOpen={isAboutModalOpen}
