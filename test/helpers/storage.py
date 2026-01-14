@@ -60,9 +60,9 @@ class StorageDestination():
     def check_os_detected(self, disk, value, detected=True):
         disk_sel_selector = f"#{INSTALLATION_METHOD}-target-disk-{disk}"
         if detected:
-            self.browser.wait_visible(f"{disk_sel_selector}:contains({value})")
+            self.browser.wait_in_text(disk_sel_selector, value)
         else:
-            self.browser.wait_not_present(f"{disk_sel_selector}:contains({value})")
+            self.browser.wait_not_in_text(disk_sel_selector, value)
 
     @log_step()
     def wait_no_disks(self):
@@ -87,9 +87,9 @@ class StorageDestination():
 
     def check_constraint(self, constraint, required=True):
         if required:
-            self.browser.wait_visible(f"ul.cockpit-storage-integration-requirements-hint-list:first-of-type li:contains('{constraint}')")
+            self.browser.wait_in_text("ul.cockpit-storage-integration-requirements-hint-list:first-of-type", constraint)
         else:
-            self.browser.wait_visible(f"ul.cockpit-storage-integration-requirements-hint-list:nth-of-type(2) li:contains('{constraint}')")
+            self.browser.wait_in_text("ul.cockpit-storage-integration-requirements-hint-list:nth-of-type(2)", constraint)
 
     def confirm_entering_cockpit_storage(self):
         self.browser.click("#cockpit-storage-integration-enter-storage-confirm")
@@ -189,11 +189,11 @@ class StorageEncryption():
         # The devices that were successfully unlocked should not not be present
         # in the 'Locked devices' form field
         for device in successfully_unlocked_devices:
-            b.wait_not_present(f"#unlock-device-dialog-luks-devices:contains({device})")
+            b.wait_not_in_text("#unlock-device-dialog-luks-devices", device)
 
         # The locked devices should be present in the 'Locked devices' form field
         for device in list(set(encrypted_devices) - set(successfully_unlocked_devices)):
-            b.wait_visible(f"#unlock-device-dialog-luks-devices:contains({device})")
+            b.wait_in_text("#unlock-device-dialog-luks-devices", device)
 
         # The devices that were successfully unlocked should appear in the info alert
         if len(successfully_unlocked_devices) > 0:
