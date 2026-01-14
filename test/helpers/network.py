@@ -146,7 +146,10 @@ class Network():
     def check_no_network_ui(self):
         b = self.browser
         b.click("#toggle-kebab")
+        # Wait for the dropdown menu to be visible before checking for the specific item
+        b.wait_visible("#toggle-kebab[aria-expanded='true'], .pf-c-dropdown__menu")
         b.wait_not_present("#about-modal-dropdown-item-network")
+        b.click("#toggle-kebab")
 
     def enter_network(self):
         b = self.browser

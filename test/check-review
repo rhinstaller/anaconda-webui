@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from network import Network
 from password import Password
 from review import Review
 from storage import BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
@@ -38,6 +39,7 @@ class TestReview(VirtInstallMachineCase):
             - The review step shows the correct information after setting encryption
             - The hostname is not shown for Live ISO
             - The timezone is not shown for Live ISO
+            - The UI elements for accessing network configuration are not present
         """
 
         b = self.browser
@@ -46,12 +48,16 @@ class TestReview(VirtInstallMachineCase):
         s = Storage(b, m)
         p = Password(b, s.encryption_id_prefix)
         r = Review(b, m)
+        n = Network(b, m)
 
         pretend_live_workstation_iso(self, i, m)
         i.open()
         # After clicking 'Next' on the storage step, partitioning is done, thus changing the available space on the disk
         # Since this is a non-destructive test we need to make sure the we reset partitioning to how it was before the test started
         i.reach(i.steps.REVIEW)
+
+        # check network configuration is not accessible on Live ISO
+        n.check_no_network_ui()
 
         # check language is shown
         r.check_language("English (United States)")
