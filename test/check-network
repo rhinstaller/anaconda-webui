@@ -103,6 +103,40 @@ class TestNetwork(VirtInstallMachineCase):
         #n.check_con_profile_files("", 2, root=SYSROOT_PATH)
         n.check_con_profile_files("", 1, root=SYSROOT_PATH)
 
+    @nondestructive
+    def testCockpitJsErrorHandling(self):
+        """
+        Description:
+            Test that the installer can handle JS errors in the network module
+            and that it does not crash the installer
+
+        Setup:
+            - Generate a JS error in the network module
+
+        Expected results:
+            - The installer should not crash
+            - The installer should show a critical error dialog
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        n.enter_network()
+
+        msg = "Unexpected network JS error"
+        plugin_name = "Network"
+
+        b.wait_not_present("#critical-error-bz-report-modal.pf-v6-c-modal-box")
+        b.eval_js(f"window.setTimeout(function() {{throw new Error('{msg}')}}, 0);")
+        b.switch_to_top()
+        b.wait_in_text("#critical-error-bz-report-modal-details", msg)
+        b.wait_in_text("#critical-error-bz-report-modal header",
+                       "The installer cannot continue due to a critical error:"
+                       f" {plugin_name} plugin failed")
+
 
 if __name__ == '__main__':
     test_main()
