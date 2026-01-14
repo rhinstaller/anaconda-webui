@@ -183,6 +183,9 @@ class VirtInstallMachineCase(MachineCase):
         for index, (disk, size) in enumerate(self.disk_images):
             target = f"vd{chr(97 + index)}"
             backing_file = os.path.join(BOTS_DIR, f"./images/{disk}") if disk else None
+            # Download the image if it doesn't exist
+            if backing_file and not os.path.exists(backing_file):
+                subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), disk])
             self.add_disk(size, backing_file, target)
 
         # Select the disk as boot device
