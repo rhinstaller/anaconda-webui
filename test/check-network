@@ -20,7 +20,7 @@ from installer import Installer
 from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network, remove_anaconda_default_connections
 from progress import Progress
 from testlib import nondestructive, test_main  # pylint: disable=import-error
-from utils import pretend_live_workstation_iso
+from utils import check_cockpit_module_js_error, pretend_live_workstation_iso
 
 
 class TestNetwork(VirtInstallMachineCase):
@@ -126,16 +126,7 @@ class TestNetwork(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         n.enter_network()
 
-        msg = "Unexpected network JS error"
-        plugin_name = "Network"
-
-        b.wait_not_present("#critical-error-bz-report-modal.pf-v6-c-modal-box")
-        b.eval_js(f"window.setTimeout(function() {{throw new Error('{msg}')}}, 0);")
-        b.switch_to_top()
-        b.wait_in_text("#critical-error-bz-report-modal-details", msg)
-        b.wait_in_text("#critical-error-bz-report-modal header",
-                       "The installer cannot continue due to a critical error:"
-                       f" {plugin_name} plugin failed")
+        check_cockpit_module_js_error(b, "Network")
 
 
 if __name__ == '__main__':
