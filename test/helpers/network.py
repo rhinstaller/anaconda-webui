@@ -185,8 +185,6 @@ class Network():
         # There is single non-persistent connection created in initramfs
         n.check_con_profile_files(con_name, 1, persistent=False)
         # There is no persistent profile
-        # FIXME WORKAROUND - remove anaconda default file
-        #n.check_con_profile_files("", 1)
         n.check_con_profile_files("", 0)
 
         n.check_con_settings([
@@ -207,8 +205,6 @@ class Network():
         # The connection was made persistent after editing
         n.check_con_profile_files(con_name, 1, file_name=con_name)
         # Check there is only single persistent profile
-        # FIXME WORKAROUND - remove anaconda default file
-        #n.check_con_profile_files("", 2)
         n.check_con_profile_files("", 1)
 
         i.reach(i.steps.REVIEW)
@@ -220,11 +216,3 @@ class Network():
         n.check_con_settings([
             [con_name, "connection.autoconnect", "yes", None]
         ])
-
-def remove_anaconda_default_connections(machine):
-    """Workaround - remove anaconda default connections"""
-    # If there is no network configuration via boot options
-    bootopts_config = machine.execute("grep ip= /proc/cmdline || true")
-    if not bootopts_config:
-        # Remove default anaconda profiles
-        machine.execute("nmcli con del $(grep ^id= /etc/NetworkManager/system-connections/* | cut -d '=' -f 2)")
