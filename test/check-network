@@ -17,18 +17,13 @@
 
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
-from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network, remove_anaconda_default_connections
+from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network
 from progress import Progress
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import check_cockpit_module_js_error
 
 
 class TestNetwork(VirtInstallMachineCase):
-
-    def setUp(self):
-        super().setUp()
-        # FIXME WORKAROUND
-        remove_anaconda_default_connections(self.machine)
 
     def testConnectionsPreInstall(self):
         """
@@ -79,8 +74,6 @@ class TestNetwork(VirtInstallMachineCase):
         # Check profiles in installed system
         n.check_con_profile_files(def_con_name, 1, root=SYSROOT_PATH, file_name=def_con_name)
         # Check there is only single persistent profile
-        # FIXME WORKAROUND
-        #n.check_con_profile_files("", 2, root=SYSROOT_PATH)
         n.check_con_profile_files("", 1, root=SYSROOT_PATH)
 
     @nondestructive
