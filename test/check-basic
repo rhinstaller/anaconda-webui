@@ -201,7 +201,7 @@ class TestBasic(VirtInstallMachineCase):
         b.eval_js("window.setTimeout(function() { myNonExistingFunction()}, 0);")
         b.wait_in_text("#critical-error-bz-report-modal-details", "myNonExistingFunction is not defined")
 
-        b.wait_visible("a:contains('Report issue'):not([disabled])")
+        b.wait_visible("button:contains('Next'):disabled")
         b.assert_pixels(
             "#critical-error-bz-report-modal",
             "js-error-modal",
