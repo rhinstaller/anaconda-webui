@@ -15,6 +15,7 @@
 
 import os
 import sys
+import time
 
 from testlib import wait
 
@@ -29,6 +30,11 @@ WIRED_CONNECTION_NAME = "Wired Connection"
 
 SYSROOT_PATH = "/mnt/sysimage"
 NM_SYSTEM_CONNECTIONS_PATH = "/etc/NetworkManager/system-connections"
+
+# cockpit/pkg/networkmanager/interfaces.js
+COCKPIT_CHECKPOINT_SETTLE_TIME = 1
+COCKPIT_CHECKPOINT_ROLLBACK_TIME = 7
+
 
 class NetworkDBus():
     def __init__(self, machine):
@@ -219,3 +225,86 @@ class Network():
         n.check_con_settings([
             [con_name, "connection.autoconnect", "yes", None]
         ])
+
+    def configure_iface_setting(self, setting_title):
+        b = self.browser
+        b.click(f"dt:contains('{setting_title}') + dd button")
+
+    def wait_for_iface_setting(self, setting_title, setting_value):
+        b = self.browser
+        b.wait_in_text(f"dt:contains('{setting_title}') + dd", setting_value)
+
+    def wait_for_connectivity_check(self):
+        # FIXME: this should wait for the Close button becoming clickable
+        # based on events from cockpit module (TBD)
+        time.sleep(COCKPIT_CHECKPOINT_SETTLE_TIME+0.2)
+
+    def set_mtu_on_iface(self, iface, mtu):
+        n = self
+        n.enter_network()
+        n.select_iface(iface)
+        n.set_mtu(mtu)
+        n.wait_for_iface_setting("MTU", mtu)
+        n.wait_for_connectivity_check()
+        n.exit_network()
+
+    def set_mtu(self, mtu):
+        b = self.browser
+        self.configure_iface_setting("MTU")
+        b.wait_visible("#network-mtu-settings-dialog")
+        # wait until dialog initialized
+        b.wait_visible("#network-mtu-settings-dialog button[aria-label=Close]")
+        b.wait_visible("#network-mtu-settings-custom")
+        b.set_checked('#network-mtu-settings-custom', val=True)
+        b.set_input_text('#network-mtu-settings-input', mtu)
+        b.click("#network-mtu-settings-save")
+        b.wait_not_present("#network-mtu-settings-dialog")
+
+    def wait_onoff(self, sel: str, *, val: bool) -> None:
+        self.browser.wait_visible(sel + " input[type=checkbox]" + (":checked" if val else ":not(:checked)"))
+
+    def toggle_onoff(self, sel: str) -> None:
+        self.browser.click(sel + " input[type=checkbox]")
+
+    def add_dns_server_to_iface(self, iface, ip):
+        n = self
+        n.enter_network()
+        n.select_iface(iface)
+        n.add_dns_server(ip)
+        n.wait_for_connectivity_check()
+        n.exit_network()
+
+    def add_dns_server(self, ip):
+        b = self.browser
+        self.configure_iface_setting('IPv4')
+        b.wait_visible("#network-ip-settings-dialog")
+        self.wait_onoff("[data-field=dns]", val=True)
+        self.toggle_onoff("[data-field=dns]")
+        self.wait_onoff("[data-field=dns_search]", val=False)
+        b.click("#network-ip-settings-dns-add")
+        b.set_input_text("#network-ip-settings-dns-server-0", ip)
+        b.click("#network-ip-settings-save")
+        b.wait_not_present("#network-ip-settings-dialog")
+
+    def keep_connection(self):
+        # Wait for dialog to appear and dismiss it
+        b = self.browser
+        with b.wait_timeout(60):
+            b.click("#confirm-breaking-change-popup button:contains('Keep connection')")
+        b.wait_not_present("#confirm-breaking-change-popup")
+
+    def disable_ipv4_on_iface(self, iface):
+        n = self
+        n.enter_network()
+        n.select_iface(iface)
+        self.disable_ipv4()
+        n.keep_connection()
+        n.exit_network()
+
+    def disable_ipv4(self):
+        b = self.browser
+        self.configure_iface_setting('IPv4')
+        b.wait_visible("#network-ip-settings-dialog")
+        b.select_from_dropdown("#network-ip-settings-select-method", "disabled")
+        b.click("#network-ip-settings-save")
+        b.wait_not_present("#network-ip-settings-dialog")

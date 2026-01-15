@@ -45,6 +45,13 @@ class TestNetwork_E2E(VirtInstallMachineCase):
         def_con_name = WIRED_CONNECTION_NAME
         n.preinstall_connection_test(i, iface, def_con_name)
 
+        mtu_value = "1600"
+        n.set_mtu_on_iface(iface, mtu_value)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
         i.begin_installation(needs_confirmation=False)
         p = Progress(b)
         p.wait_done()
@@ -54,6 +61,10 @@ class TestNetwork_E2E(VirtInstallMachineCase):
         # Check there is only single persistent profile
         n.check_con_profile_files("", 1, root=SYSROOT_PATH)
 
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
         self.handleReboot()
 
         # Check profiles in installed system
@@ -62,6 +73,10 @@ class TestNetwork_E2E(VirtInstallMachineCase):
         n.check_con_profile_files("", 1)
 
         n.check_iface_state(iface, "GENERAL.CONNECTION", def_con_name)
+
+        n.check_con_settings([
+            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
 
 
 if __name__ == '__main__':
