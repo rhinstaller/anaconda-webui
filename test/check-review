@@ -17,6 +17,7 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from network import Network
 from password import Password
 from review import Review
 from storage import BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
@@ -38,6 +39,7 @@ class TestReview(VirtInstallMachineCase):
             - The review step shows the correct information after setting encryption
             - The hostname is not shown for Live ISO
             - The timezone is not shown for Live ISO
+            - The UI elements for accessing network configuration are not present
         """
 
         b = self.browser
@@ -46,6 +48,7 @@ class TestReview(VirtInstallMachineCase):
         s = Storage(b, m)
         p = Password(b, s.encryption_id_prefix)
         r = Review(b, m)
+        n = Network(b, m)
 
         pretend_live_workstation_iso(self, i, m)
         i.open()
@@ -69,6 +72,9 @@ class TestReview(VirtInstallMachineCase):
 
         # check timezone is not visible for Live ISO
         r.check_timezone_not_present()
+
+        # check network configuration is not accessible on Live ISO
+        n.check_no_network_ui()
 
         # Pixel test the review step
         b.assert_pixels(

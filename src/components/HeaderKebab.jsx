@@ -30,6 +30,7 @@ import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/exte
 import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import { UserIssue } from "./Error.jsx";
+import { CockpitNetworkConfiguration } from "./network/CockpitNetworkConfiguration.jsx";
 import { CockpitStorageIntegration, ModifyStorage } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
 
 import "./HeaderKebab.scss";
@@ -95,6 +96,8 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
+    const [isNetworkOpen, setIsNetworkOpen] = useState(false);
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     const onToggle = () => {
         setIsOpen(!isOpen);
@@ -111,7 +114,19 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
         setIsReportIssueOpen(true);
     };
 
+    const handleNetwork = () => {
+        setIsNetworkOpen(true);
+    };
+
     const dropdownItems = [
+        ...(isBootIso
+            ? [
+                <DropdownItem id="about-modal-dropdown-item-network" key="network" onClick={handleNetwork}>
+                    {_("Configure network")}
+                </DropdownItem>
+            ]
+            : []
+        ),
         <ModifyStorage
           currentStepId={currentStepId}
           key="modify-storage"
@@ -146,6 +161,11 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
                     {dropdownItems}
                 </DropdownList>
             </Dropdown>
+            {isNetworkOpen &&
+            <CockpitNetworkConfiguration
+              setIsNetworkOpen={setIsNetworkOpen}
+              onCritFail={onCritFail}
+            />}
             {isAboutModalOpen &&
                 <AnacondaAboutModal
                   isModalOpen={isAboutModalOpen}
