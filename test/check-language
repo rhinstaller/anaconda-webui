@@ -199,11 +199,11 @@ class TestLanguage(VirtInstallMachineCase):
         i.open()
         # Set language to Macedonian that is now in the installer translated languages
         # Go to review page after it
-        l.dbus_set_language("mk_MK.UTF-8")
+        l.dbus_set_language("kk_KK.UTF-8")
         i.reach(i.steps.REVIEW)
 
-        # test the macedonian language selected
-        r.check_language("mk_MK.UTF-8")
+        # test the language selected
+        r.check_language("kk_KK.UTF-8")
 
     def testKeyboardLayoutSelection(self):
         """
