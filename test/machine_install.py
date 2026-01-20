@@ -142,6 +142,8 @@ class VirtInstallMachine(VirtMachine):
         selinux = "inst.noselinux " if os.environ.get("TEST_PAYLOAD", "liveimg").lower() == "dnf" else ""
 
         boot_arg = "--boot uefi " if self.is_efi else ""
+        extra_boot_args = os.environ.get("TEST_EXTRA_BOOT_ARGS", "")
+        extra_boot_args_option = f"--extra-args '{extra_boot_args}' " if extra_boot_args else ""
         try:
             self._execute(
                 "virt-install "
@@ -163,6 +165,7 @@ class VirtInstallMachine(VirtMachine):
                 f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80 "
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
+                f"{extra_boot_args_option}"
                 f"--disk=none "
                 f"--location {location} &"
             )
