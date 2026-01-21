@@ -50,6 +50,7 @@ import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext 
 
 import createBugzillaBug from "../scripts/create-bugzilla-bug.py";
 import validateBugzillaApiKeyScript from "../scripts/validate-bugzilla-api-key.py";
+import { ExternalLink } from "./common/ExternalLink.jsx";
 
 import "./Error.scss";
 
@@ -184,13 +185,9 @@ const BZManualReportLink = ({ component }) => {
         <Content>
             {fmtToFragments(
                 _("Report an issue or provide feedback by opening the Bugzilla bug entry form $0."),
-                <a
-                  href={manualReportLinkURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <ExternalLink href={manualReportLinkURL}>
                     {_("here")}
-                </a>
+                </ExternalLink>
             )}
         </Content>
     );
@@ -207,13 +204,9 @@ const BZManualReportOption = ({ component, exception }) => {
         <Content>
             {fmtToFragments(
                 _("Prefer to report manually? $0"),
-                <a
-                  href={manualReportLinkURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <ExternalLink href={manualReportLinkURL}>
                     {_("Open Bugzilla bug entry form")}
-                </a>
+                </ExternalLink>
             )}
         </Content>
     );
@@ -258,13 +251,9 @@ const BZAPIKeyEntryForm = ({
                         {fmtToFragments(
                             _("You can generate the API key for your Bugzilla account $0."),
                             (
-                                <a
-                                  href={apiKeyUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
+                                <ExternalLink href={apiKeyUrl}>
                                     {_("here")}
-                                </a>
+                                </ExternalLink>
                             )
                         )}
                     </HelperTextItem>
@@ -384,13 +373,9 @@ const BZReportDetailsForm = ({
                 <Content>
                     {fmtToFragments(
                         _("If you do not consent to automatic log file upload, you can $0 instead. Manual reporting allows you to review and selectively attach log files yourself."),
-                        <a
-                          href={manualReportLinkURL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <ExternalLink href={manualReportLinkURL}>
                             {_("report the issue manually")}
-                        </a>
+                        </ExternalLink>
                     )}
                 </Content>
             </Alert>
