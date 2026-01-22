@@ -95,10 +95,6 @@ fi
 
 # test runs in kernel_t context and triggers massive amounts of SELinux
 # denials; SELinux gets disabled, but would still trigger unexpected messages
-# we create huge VMs, so we need to reduce parallelism on CI
-if [ -z "${TEST_JOBS-}" ]; then
-  TEST_JOBS=4
-fi
 if [ -z "${TEST_OS-}" ]; then
   TEST_OS=fedora-rawhide-boot
 fi
@@ -115,8 +111,8 @@ echo "<pool type='dir'>
 </pool>" > /tmp/storage-pool.xml
 virsh pool-define --file /tmp/storage-pool.xml
 
-export TEST_JOBS TEST_OS
-J=$(($TEST_JOBS/4)); [ $J -ge 1 ] || J=1; TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ --jobs $J $RUN_OPTS
+export TEST_OS
+TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ $RUN_OPTS
 exit_code=$?
 
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
