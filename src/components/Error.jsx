@@ -447,17 +447,16 @@ const BZExceptionReportFlow = ({
                 ));
     }, []);
 
-    // Ensure bugSummary is set when exception changes (only if not already set by user)
+    // Pre-fill bugSummary when exception changes
     useEffect(() => {
         if (exception) {
             const summary = buildBugSummary(exception);
-            // Only update if summary is non-empty and current summary is empty (preserve user edits)
-            if (summary && !bugSummary) {
+            if (summary) {
                 setBugSummary(summary);
                 setBugDescription(summary);
             }
         }
-    }, [exception, bugSummary]);
+    }, [exception]);
 
     const handleNext = async () => {
         setBugCreationError(null);
