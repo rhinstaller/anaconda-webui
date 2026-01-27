@@ -101,7 +101,7 @@ class VirtInstallMachine(VirtMachine):
             os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
     def start(self):
-        self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+        self.is_bios = os.environ.get("TEST_FIRMWARE", "efi") == "bios"
         self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
 
         self.payload_path = os.path.join(ROOT_DIR, f"tmp/{self.os}-anaconda-payload")
@@ -141,7 +141,7 @@ class VirtInstallMachine(VirtMachine):
         # FIXME: Disable SELinux on DNF installation as it needs relabelling other wise ssh logins are prevented
         selinux = "inst.noselinux " if os.environ.get("TEST_PAYLOAD", "liveimg").lower() == "dnf" else ""
 
-        boot_arg = "--boot uefi " if self.is_efi else ""
+        boot_arg = "--boot uefi " if not self.is_bios else ""
         try:
             self._execute(
                 "virt-install "

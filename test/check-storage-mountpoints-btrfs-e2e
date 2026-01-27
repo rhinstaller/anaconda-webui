@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program; If not, see <http://www.gnu.org/licenses/>.
 
-from anacondalib import VirtInstallMachineCase, run_boot
+from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -52,7 +52,6 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
         rmdir {tmp_mount}
         """)
 
-    @run_boot("efi")
     def testPreserveHome(self):
         """
         Description:
