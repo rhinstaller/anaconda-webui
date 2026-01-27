@@ -52,9 +52,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
-"PO-Revision-Date: 2025-12-12 03:47+0000\n"
-"Last-Translator: Aleksey Fedorov <aleksejfedorov963@gmail.com>\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
+"PO-Revision-Date: 2026-01-23 03:57+0000\n"
+"Last-Translator: Igor Gorbounov <igor.gorbounov@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/ru/>\n"
 "Language: ru\n"
@@ -63,7 +63,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:180
 #: src/components/storage/installation-method/InstallationDestination.jsx:301
@@ -168,19 +168,6 @@ msgstr "Дополнительные языки"
 msgid "Additional software for the selected environment"
 msgstr "Дополнительное ПО для выбранного вами окружения"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-"После создания задачи (issue) нажмите «Добавить вложение» («Add attachment») "
-"и прикрепите файлы: $0 и $1."
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-"После создания задачи (issue) нажмите «Добавить вложение» («Add attachment») "
-"и прикрепите файл: $0."
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
@@ -213,6 +200,10 @@ msgstr ""
 "Назначение разделов точкам монтирования. Полезно для предварительно "
 "настроенных пользовательских компоновок."
 
+#: src/components/Error.jsx:371
+msgid "Automatic log file upload"
+msgstr "Автоматическая загрузка файла журнала"
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr "Автоматическая установка даты и времени с исп. серверов времени"
@@ -226,13 +217,25 @@ msgstr "Автоматическая установка часового поя�
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Доступное пространство: $0. Требуется для установки: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Назад"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Базовое окружение"
+
+#: src/components/Error.jsx:359
+msgid "Brief description of the issue"
+msgstr "Краткое описание проблемы"
+
+#: src/components/Error.jsx:348
+msgid "Bug report details"
+msgstr "Подробности сообщения об ошибке"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr "Ключ API Bugzilla"
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -251,7 +254,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -293,10 +296,6 @@ msgstr "Проверка настроек устройств хранения"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "Сбросить поиск"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr "Нажмите «$0», чтобы открыть Bugzilla в новом окне."
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -385,6 +384,10 @@ msgstr "Дата и время"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Удаление некоторых разделов может помешать загрузке $0: $1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Описание"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "Назначение"
@@ -392,6 +395,10 @@ msgstr "Назначение"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "Место назначения зашифровано"
+
+#: src/components/Error.jsx:298
+msgid "Detailed description of the issue"
+msgstr "Подробное описание проблемы"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -426,11 +433,23 @@ msgstr "Зашифровано"
 msgid "Encryption"
 msgstr "Шифрование"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+"Чтобы создать отчет об ошибке, введите свой API-ключ Bugzilla. На следующем "
+"шаге вы сможете просмотреть и отредактировать сведения об ошибке."
+
+#: src/components/Error.jsx:310
+msgid "Environment"
+msgstr "Окружение"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "Стереть данные и установить"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "Сведения об ошибке"
 
@@ -442,6 +461,10 @@ msgstr "Выйти на рабочий стол"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "Расширенный раздел"
+
+#: src/components/Error.jsx:339
+msgid "Failed to report issue"
+msgstr "Не удалось сообщить о проблеме"
 
 #: src/components/localization/Keyboard.jsx:214
 msgid "Failed to save layouts"
@@ -483,10 +506,6 @@ msgstr "Полное имя"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "Полное имя не может содержать двоеточий"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr "Помогите нам решить проблему!"
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -540,6 +559,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Если Вы настраиваете разделы, необходимо следующее:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -561,7 +587,7 @@ msgid "Install"
 msgstr "Установить"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "Установка не удалась"
 
@@ -642,19 +668,6 @@ msgstr "Местоположение"
 msgid "Locked devices"
 msgstr "Заблокированные устройства"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr "Войдите в Bugzilla или создайте новую учетную запись."
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-"Журналы могут содержать конфиденциальную информацию, например IP-адреса или "
-"имена пользователей. Вложения в задачах Bugzilla по умолчанию помечаются как "
-"приватные."
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -730,7 +743,7 @@ msgstr "Имя"
 msgid "Needs at least $0"
 msgstr "Требуется как минимум $0"
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -738,11 +751,11 @@ msgstr ""
 "Сеть недоступна. Настройте сеть в меню верхней панели, чтобы сообщить о "
 "проблеме."
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Сеть недоступна. Настройте сеть, чтобы сообщить о проблеме."
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "Далее"
 
@@ -802,6 +815,10 @@ msgstr ""
 "это программное обеспечение для какой-либо важной работы или в условиях "
 "производства."
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "Операционная система"
@@ -837,7 +854,7 @@ msgstr "Парольные фразы должны совпадать"
 msgid "Pending"
 msgstr "Ожидание"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "Прикрепите файл журнала $0 к сообщению о проблеме."
 
@@ -857,12 +874,16 @@ msgstr "На основе Anaconda"
 msgid "Pre-release"
 msgstr "Предварительный выпуск"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "Приступить к установке"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Выход"
 
@@ -899,7 +920,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Настоящее имя узла должно состоять из 64 символов или меньше"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "Перезагрузить"
 
@@ -996,9 +1017,20 @@ msgstr "Заменить текущую установку, сохранив ф�
 msgid "Report Issue"
 msgstr "Сообщить о проблеме"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "Сообщить о проблеме"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "Сообщить о проблеме"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1175,6 +1207,10 @@ msgstr "Некоторые необходимые разделы отсутст�
 msgid "Space"
 msgstr "Пространство"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "Хранилище"
@@ -1254,11 +1290,11 @@ msgstr ""
 "Для установки требуется $0 дискового пространства, однако емкость выбранных "
 "дисков составляет лишь $1."
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "Установка не может быть продолжена из-за критической ошибки."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Установка не может быть продолжена из-за критической ошибки: $0"
 
@@ -1289,6 +1325,20 @@ msgstr ""
 "в качестве расширенной утилиты и не предназначен для использования в обычной "
 "установке."
 
+#: src/components/Error.jsx:382
+#, fuzzy
+#| msgid ""
+#| "Logs may contain sensitive information like IP addresses or usernames. "
+#| "Attachments on Bugzilla issues are marked private by default."
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
+"Журналы могут содержать конфиденциальную информацию, например IP-адреса или "
+"имена пользователей. Вложения в задачах Bugzilla по умолчанию помечаются как "
+"приватные."
+
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
 msgstr "Это имя узла не может быть представлено"
@@ -1318,6 +1368,10 @@ msgstr "Время"
 #: src/components/review/ReviewConfiguration.jsx:199
 msgid "Timezone"
 msgstr "Часовой пояс"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1404,6 +1458,12 @@ msgstr "Имя пользователя не должно быть зарезе�
 msgid "User names must be shorter than 33 characters"
 msgstr "Имена пользователей должны быть короче 33 символов"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "Инициализация..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Простой"
@@ -1420,6 +1480,12 @@ msgstr "Добро пожаловать в Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Добро пожаловать. Давайте установим $0."
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
@@ -1432,6 +1498,10 @@ msgid ""
 msgstr ""
 "Вы можете либо освободить достаточно места и позволить программе установки "
 "справиться с остальным, либо вручную настроить разделы."
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1485,6 +1555,10 @@ msgstr "расширенный раздел"
 msgid "format as $0"
 msgstr "форматировать как $0"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "монтировать"
@@ -1492,6 +1566,10 @@ msgstr "монтировать"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "предстоящий шаг"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -1509,6 +1587,27 @@ msgstr "уменьшить до $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "отменить"
+
+#~ msgid ""
+#~ "After creating the issue, click 'Add attachment' and attach file $0 and "
+#~ "$1."
+#~ msgstr ""
+#~ "После создания задачи (issue) нажмите «Добавить вложение» («Add "
+#~ "attachment») и прикрепите файлы: $0 и $1."
+
+#~ msgid "After creating the issue, click 'Add attachment' and attach file $0."
+#~ msgstr ""
+#~ "После создания задачи (issue) нажмите «Добавить вложение» («Add "
+#~ "attachment») и прикрепите файл: $0."
+
+#~ msgid "Click \"$0\" to open Bugzilla in a new window."
+#~ msgstr "Нажмите «$0», чтобы открыть Bugzilla в новом окне."
+
+#~ msgid "Help us fix the issue!"
+#~ msgstr "Помогите нам решить проблему!"
+
+#~ msgid "Log in to Bugzilla, or create a new account."
+#~ msgstr "Войдите в Bugzilla или создайте новую учетную запись."
 
 #~ msgid "More than one layout detected. Remove additional layouts to proceed"
 #~ msgstr ""
@@ -2484,9 +2583,6 @@ msgstr "отменить"
 #~ msgid "Automatic"
 #~ msgstr "Автоматически"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "Автоматическое разбиение не удалось."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Автоматическое разбиение диска"
 
@@ -2514,9 +2610,6 @@ msgstr "отменить"
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Неверный формат маски сети"
-
-#~ msgid "Base Environment"
-#~ msgstr "Базовое окружение"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Предупреждение о тестовой версии"
@@ -2889,12 +2982,6 @@ msgstr "отменить"
 #~ msgid "Deployment starting: {}"
 #~ msgstr "Начинается развёртывание: {}"
 
-#~ msgid "Description"
-#~ msgstr "Описание"
-
-#~ msgid "Description goes here."
-#~ msgstr "Описание."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "_Требуемый объем:"
@@ -2917,9 +3004,6 @@ msgstr "отменить"
 
 #~ msgid "Device configuration"
 #~ msgstr "Конфигурация устройства"
-
-#~ msgid "Device description"
-#~ msgstr "Описание устройства"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "Сбой при обнаружении устройств."

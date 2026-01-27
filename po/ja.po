@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-09-11 01:36+0000\n"
 "Last-Translator: \"Rinrin.rs\" <rinrin0413.valley@gmail.com>\n"
 "Language-Team: Japanese <https://translate.fedoraproject.org/projects/"
@@ -182,15 +182,6 @@ msgstr "使用可能な言語"
 msgid "Additional software for the selected environment"
 msgstr "選択した環境のその他のソフトウェア"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "ストレージエディターで行った変更は全て即座に反映されます。"
@@ -222,6 +213,12 @@ msgstr ""
 "パーティションをマウントポイントに割り当てます。カスタムレイアウトを事前設定"
 "している場合に便利です。"
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "自動パーティション分割に失敗しました。"
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
@@ -235,13 +232,29 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "利用可能な空き領域: $0。 インストールに必要な領域: $1。"
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "戻る"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "ベース環境"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "説明。"
+
+#: src/components/Error.jsx:348
+#, fuzzy
+#| msgid "Error details"
+msgid "Bug report details"
+msgstr "エラーの詳細"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -260,7 +273,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "取り消し"
 
@@ -311,10 +324,6 @@ msgstr "ストレージ設定をチェック中..."
 #| msgid "Clear input value"
 msgid "Clear search"
 msgstr "入力した値をクリアします"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr ""
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -409,6 +418,10 @@ msgstr "日付と時刻の設定"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "説明"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "インストール先"
@@ -416,6 +429,12 @@ msgstr "インストール先"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "インストール先は暗号化されています"
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "デバイスの説明"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -452,11 +471,23 @@ msgstr "暗号化"
 msgid "Encryption"
 msgstr "暗号化"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "ベース環境"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "データを消去してインストールします"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "エラーの詳細"
 
@@ -470,6 +501,12 @@ msgstr "ライブデスクトップに戻る"
 #| msgid "Recommended partitions:"
 msgid "Extended partition"
 msgstr "推奨されるパーティション:"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Report issue"
+msgid "Failed to report issue"
+msgstr "Issueを報告する"
 
 #: src/components/localization/Keyboard.jsx:214
 #, fuzzy
@@ -513,10 +550,6 @@ msgstr "フルネーム"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "フルネームにはコロン ':' を使用できません"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr ""
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -570,6 +603,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "パーティション構成をする場合は以下が必要になります:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -589,7 +629,7 @@ msgid "Install"
 msgstr "インストール"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "インストールに失敗しました"
 
@@ -668,16 +708,6 @@ msgstr "場所"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:159
 msgid "Locked devices"
 msgstr "ロックされたデバイス"
-
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr ""
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
 
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
@@ -758,7 +788,7 @@ msgstr "名前"
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -766,13 +796,13 @@ msgstr ""
 "ネットワークが利用できません。 問題を報告するには、上のバーのメニューでネット"
 "ワークを構成します。"
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "ネットワークが利用できません。 問題を報告するには、ネットワークを設定してくだ"
 "さい。"
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "次へ"
 
@@ -834,6 +864,10 @@ msgstr ""
 "注記: これは、開発およびテストのみを目的としたプレリリースのソフトウェアで"
 "す。このソフトウェアは、重要な作業や実稼働環境では使用しないでください。"
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "オペレーティングシステム"
@@ -872,7 +906,7 @@ msgstr "パスワードは一致する必要があります"
 msgid "Pending"
 msgstr "保留中"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "ログファイル $0 をIssueに添付してください。"
 
@@ -892,12 +926,16 @@ msgstr "Powered by Anaconda"
 msgid "Pre-release"
 msgstr "プレリリース"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "インストールを継続"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "終了"
 
@@ -934,7 +972,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "ホスト名は、64 文字以下の長さにする必要があります。"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "再起動"
 
@@ -1037,9 +1075,20 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Issueを報告する"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "Issueを報告する"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "Issueを報告する"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1243,6 +1292,10 @@ msgstr "いくつかのパーティションが見つかりません: $0"
 msgid "Space"
 msgstr "領域"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "ストレージ"
@@ -1327,11 +1380,11 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "重大なエラーが発生したため、インストーラーは続行できません。"
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "重大なエラーが発生したため、インストーラーは続行できません: $0"
 
@@ -1358,6 +1411,13 @@ msgstr ""
 "ストレージエディターではパーティションのリサイズ、削除、作成が可能です。LVM "
 "の設定なども可能です。これは高度なユーティリティであり、通常のインストールで"
 "使用することは想定されていません。"
+
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
 
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
@@ -1391,6 +1451,10 @@ msgstr "タイムゾーン: %s\n"
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
 msgstr "タイムゾーン: %s\n"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1483,6 +1547,12 @@ msgstr "ユーザ名は指定された文字のみを使用してください"
 msgid "User names must be shorter than 33 characters"
 msgstr "ユーザー名は 33 文字未満にしてください"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "初期化中..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "弱い"
@@ -1501,6 +1571,12 @@ msgstr "Fedora へようこそ"
 msgid "Welcome. Let's install $0 now."
 msgstr "ようこそ。今すぐ $0 をインストールしましょう。"
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "BitLocker で暗号化された Windows パーティションはリサイズできません"
@@ -1512,6 +1588,10 @@ msgid ""
 msgstr ""
 "ここでインストールに十分な領域を確保して、あとはインストーラーに任せることも"
 "できますし、手動でパーティションを構成することもできます。"
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1565,6 +1645,10 @@ msgstr "推奨されるパーティション:"
 msgid "format as $0"
 msgstr "$0 としてフォーマットする"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "マウント"
@@ -1572,6 +1656,10 @@ msgstr "マウント"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "保留中の手順"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -2538,9 +2626,6 @@ msgstr ""
 #~ msgid "Automatic"
 #~ msgstr "自動"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "自動パーティション分割に失敗しました。"
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "自動パーティション設定が選択されました"
 
@@ -2568,9 +2653,6 @@ msgstr ""
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "不正なネットマスク形式です"
-
-#~ msgid "Base Environment"
-#~ msgstr "ベース環境"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Beta 警告"
@@ -2939,12 +3021,6 @@ msgstr ""
 #~ msgid "Deployment starting: {}"
 #~ msgstr "デプロイ開始: {}"
 
-#~ msgid "Description"
-#~ msgstr "説明"
-
-#~ msgid "Description goes here."
-#~ msgstr "説明。"
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "要求される容量(_C):"
@@ -2965,9 +3041,6 @@ msgstr ""
 
 #~ msgid "Device configuration"
 #~ msgstr "デバイスの設定"
-
-#~ msgid "Device description"
-#~ msgstr "デバイスの説明"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "デバイスの検索に失敗しました。"

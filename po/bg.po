@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2023-11-06 12:15+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bulgarian <https://translate.fedoraproject.org/projects/"
@@ -149,15 +149,6 @@ msgstr "Налични езици"
 msgid "Additional software for the selected environment"
 msgstr "Допълнителен софтуер за избраната среда"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
@@ -191,6 +182,12 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "Автоматичното разделяне се провали."
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
@@ -204,13 +201,28 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Назад"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Основна среда"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "Описанието ще е тук."
+
+#: src/components/Error.jsx:348
+#, fuzzy
+msgid "Bug report details"
+msgstr "Подробности за грешката: "
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -225,7 +237,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 #, fuzzy
 msgid "Cancel"
 msgstr "_Отказване"
@@ -273,10 +285,6 @@ msgstr "Проверка конфигурацията на устройства�
 
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
-msgstr ""
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
 msgstr ""
 
 #: src/components/storage/Common.jsx:38
@@ -382,6 +390,10 @@ msgstr "Задаване дата и час"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Описание"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 #, fuzzy
 msgid "Destination"
@@ -392,6 +404,12 @@ msgstr "Описание"
 #| msgid "The container is encrypted."
 msgid "Destination is encrypted"
 msgstr "Контейнерът е криптиран."
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "Описание на устройството"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -431,12 +449,24 @@ msgstr "Криптирай"
 msgid "Encryption"
 msgstr "Криптиране"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "Основна среда"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 #, fuzzy
 msgid "Erase data and install"
 msgstr "Изтрий дисковете и инсталирай"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 #, fuzzy
 msgid "Error details"
 msgstr "Подробности за грешката: "
@@ -451,6 +481,12 @@ msgstr ""
 #| msgid "Standard Partition"
 msgid "Extended partition"
 msgstr "Стандартен дял"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Failed to save storage configuration"
+msgid "Failed to report issue"
+msgstr "Записването на конфигурацията на сториджа се провали"
 
 #: src/components/localization/Keyboard.jsx:214
 #, fuzzy
@@ -493,10 +529,6 @@ msgstr "Пълно име"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "Пълното име не може да съдържа двоеточие"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr ""
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -556,6 +588,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr ""
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -576,7 +615,7 @@ msgid "Install"
 msgstr "_Инсталиране"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 #, fuzzy
 msgid "Installation failed"
 msgstr "Инсталация"
@@ -666,16 +705,6 @@ msgstr "Действие"
 msgid "Locked devices"
 msgstr "Конфигуриране на устройство {}"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr ""
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -758,17 +787,17 @@ msgstr "Име"
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr ""
 
@@ -831,6 +860,10 @@ msgid ""
 "production environments."
 msgstr ""
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 #, fuzzy
 msgid "Operating system"
@@ -874,7 +907,7 @@ msgstr "Парола"
 msgid "Pending"
 msgstr ""
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr ""
 
@@ -898,6 +931,10 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 #, fuzzy
 #| msgid "Failed to set up installation source"
@@ -905,7 +942,7 @@ msgid "Proceed with installation"
 msgstr "Неуспех при задаване източника за инсталиране"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Изход"
 
@@ -944,7 +981,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr ""
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr ""
 
@@ -1049,10 +1086,21 @@ msgstr ""
 msgid "Report Issue"
 msgstr ""
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
 msgstr ""
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "testing status..."
+msgid "Reporting issue..."
+msgstr "тестване на състоянието..."
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 #, fuzzy
@@ -1271,6 +1319,10 @@ msgstr ""
 msgid "Space"
 msgstr "Няма пространство"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 #, fuzzy
 msgid "Storage"
@@ -1360,12 +1412,12 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 #, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr "Инсталирането не може да продължи. Системата ще бъде рестартирана."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 #, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Инсталирането не може да продължи. Системата ще бъде рестартирана."
@@ -1387,6 +1439,13 @@ msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
 "not intended to be used in a typical installation."
+msgstr ""
+
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
 msgstr ""
 
 #: src/components/review/Hostname.jsx:63
@@ -1424,6 +1483,10 @@ msgstr "Часова зона: %s\n"
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
 msgstr "Часова зона: %s\n"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 #, fuzzy
@@ -1522,6 +1585,10 @@ msgstr ""
 msgid "User names must be shorter than 33 characters"
 msgstr "Името на хоста трябва да е дълго не повече от 255 символа."
 
+#: src/components/Error.jsx:582
+msgid "Validating..."
+msgstr ""
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Лесна"
@@ -1540,6 +1607,12 @@ msgstr "Добре дошли във Fedora"
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
@@ -1548,6 +1621,10 @@ msgstr ""
 msgid ""
 "You can either free up enough space here and let the installer handle the "
 "rest or manually set up partitions."
+msgstr ""
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
 #: src/components/users/Accounts.jsx:387
@@ -1607,6 +1684,10 @@ msgstr "Стандартен дял"
 msgid "format as $0"
 msgstr ""
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 #, fuzzy
 msgid "mount"
@@ -1614,6 +1695,10 @@ msgstr "Добавяне подредба"
 
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
+msgstr ""
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
@@ -2448,9 +2533,6 @@ msgstr ""
 #~ msgid "Automatic"
 #~ msgstr "Автоматично"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "Автоматичното разделяне се провали."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Избрано е автоматично разделяне"
 
@@ -2475,9 +2557,6 @@ msgstr ""
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Грешен формат на мрежовата маска"
-
-#~ msgid "Base Environment"
-#~ msgstr "Основна среда"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Предупреждение за предварителна версия"
@@ -2815,12 +2894,6 @@ msgstr ""
 #~ msgid "Deployment starting: {}"
 #~ msgstr "Начало на разполагането: {}"
 
-#~ msgid "Description"
-#~ msgstr "Описание"
-
-#~ msgid "Description goes here."
-#~ msgstr "Описанието ще е тук."
-
 #~ msgid "Device Selection"
 #~ msgstr "Избор на устройства"
 
@@ -2830,9 +2903,6 @@ msgstr ""
 
 #~ msgid "Device configuration"
 #~ msgstr "Конфигурация на устройство"
-
-#~ msgid "Device description"
-#~ msgstr "Описание на устройството"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "Откриването на устройства не успя."
@@ -6425,9 +6495,6 @@ msgstr ""
 
 #~ msgid "summary"
 #~ msgstr "обобщение"
-
-#~ msgid "testing status..."
-#~ msgstr "тестване на състоянието..."
 
 #~ msgid "to begin installation"
 #~ msgstr "за начало на инсталирането"

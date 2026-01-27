@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-08-24 03:40+0000\n"
 "Last-Translator: Danni Lundgren <fedoraproject.footsie399@passmail.com>\n"
 "Language-Team: Danish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -148,15 +148,6 @@ msgstr "Tilgængelige sprog"
 msgid "Additional software for the selected environment"
 msgstr "Yderligere software til valgte miljø"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
@@ -190,6 +181,12 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "Automatisk partitionering mislykkedes."
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
@@ -203,13 +200,27 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Tilbage"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Grundmiljø"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "Beskrivelse kommer her."
+
+#: src/components/Error.jsx:348
+msgid "Bug report details"
+msgstr ""
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 #, fuzzy
@@ -237,7 +248,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 #, fuzzy
 msgid "Cancel"
 msgstr "_Annuller"
@@ -285,10 +296,6 @@ msgstr "Kontrollerer lagerkonfiguration..."
 
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
-msgstr ""
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
 msgstr ""
 
 #: src/components/storage/Common.jsx:38
@@ -396,6 +403,10 @@ msgstr "Angiv dato og klokkeslæt"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Beskrivelse"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 #, fuzzy
 msgid "Destination"
@@ -406,6 +417,12 @@ msgstr "Beskrivelse"
 #| msgid "The container is encrypted."
 msgid "Destination is encrypted"
 msgstr "Containeren er krypteret."
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "Enhedsbeskrivelse"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -447,12 +464,24 @@ msgstr "Kryptér"
 msgid "Encryption"
 msgstr "Kryptering"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "Grundmiljø"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 #, fuzzy
 msgid "Erase data and install"
 msgstr "_Begynd installation"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr ""
 
@@ -466,6 +495,12 @@ msgstr ""
 #| msgid "Standard Partition"
 msgid "Extended partition"
 msgstr "Standardpartition"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Failed to save storage configuration"
+msgid "Failed to report issue"
+msgstr "Kunne ikke gemme lagerkonfiguration"
 
 #: src/components/localization/Keyboard.jsx:214
 #, fuzzy
@@ -508,10 +543,6 @@ msgstr "Fulde navn"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "Det fulde navn må ikke indeholde kolon"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr ""
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -571,6 +602,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr ""
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -593,7 +631,7 @@ msgid "Install"
 msgstr "Installér"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 #, fuzzy
 msgid "Installation failed"
 msgstr "Installation"
@@ -681,16 +719,6 @@ msgstr "Placering"
 msgid "Locked devices"
 msgstr "for at skanne enheder igen"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr ""
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -773,17 +801,17 @@ msgstr "Navn"
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr ""
 
@@ -846,6 +874,10 @@ msgid ""
 "production environments."
 msgstr ""
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 #, fuzzy
 msgid "Operating system"
@@ -886,7 +918,7 @@ msgstr "Adgangskoderne er ikke ens."
 msgid "Pending"
 msgstr ""
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr ""
 
@@ -908,6 +940,10 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 #, fuzzy
 #| msgid "Failed to set up installation source"
@@ -915,7 +951,7 @@ msgid "Proceed with installation"
 msgstr "Kunne ikke indstille installationskilde"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Afslut"
 
@@ -956,7 +992,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Værtsnavnet må være højst 64 tegn langt."
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 #, fuzzy
 msgid "Reboot"
 msgstr "Genstarter."
@@ -1062,10 +1098,21 @@ msgstr ""
 msgid "Report Issue"
 msgstr ""
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
 msgstr ""
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "testing status..."
+msgid "Reporting issue..."
+msgstr "tester status..."
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 #, fuzzy
@@ -1285,6 +1332,10 @@ msgstr ""
 msgid "Space"
 msgstr "Ingen plads"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 #, fuzzy
 msgid "Storage"
@@ -1372,12 +1423,12 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 #, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr "Installationen kan ikke fortsætte og systemet genstartes"
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 #, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Installationen kan ikke fortsætte og systemet genstartes"
@@ -1401,6 +1452,13 @@ msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
 "not intended to be used in a typical installation."
+msgstr ""
+
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
 msgstr ""
 
 #: src/components/review/Hostname.jsx:63
@@ -1438,6 +1496,10 @@ msgstr "Tidszone: %s\n"
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
 msgstr "Tidszone: %s\n"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 #, fuzzy
@@ -1538,6 +1600,12 @@ msgstr "Brugernavn er reserveret til system: %s"
 msgid "User names must be shorter than 33 characters"
 msgstr "Navnet skal være kortere end 33 tegn."
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Installing."
+msgid "Validating..."
+msgstr "Installerer."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Svag"
@@ -1556,6 +1624,12 @@ msgstr "Velkommen til Fedora"
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
@@ -1564,6 +1638,10 @@ msgstr ""
 msgid ""
 "You can either free up enough space here and let the installer handle the "
 "rest or manually set up partitions."
+msgstr ""
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
 #: src/components/users/Accounts.jsx:387
@@ -1625,6 +1703,10 @@ msgstr "Standardpartition"
 msgid "format as $0"
 msgstr "Genformatér"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 #, fuzzy
 msgid "mount"
@@ -1632,6 +1714,10 @@ msgstr "Tilføj layout"
 
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
+msgstr ""
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
 msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
@@ -2447,9 +2533,6 @@ msgstr ""
 #~ msgid "Automatic"
 #~ msgstr "Automatisk"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "Automatisk partitionering mislykkedes."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Automatisk partitionering valgt"
 
@@ -2477,9 +2560,6 @@ msgstr ""
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Dårlig formatering af netmasken"
-
-#~ msgid "Base Environment"
-#~ msgstr "Grundmiljø"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Beta-advarsel"
@@ -2855,12 +2935,6 @@ msgstr ""
 #~ msgid "Deployment starting: {}"
 #~ msgstr "Udrulning starter: {}"
 
-#~ msgid "Description"
-#~ msgstr "Beskrivelse"
-
-#~ msgid "Description goes here."
-#~ msgstr "Beskrivelse kommer her."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "Ønskede _kapacitet:"
@@ -2881,9 +2955,6 @@ msgstr ""
 
 #~ msgid "Device configuration"
 #~ msgstr "Enhedskonfiguration"
-
-#~ msgid "Device description"
-#~ msgstr "Enhedsbeskrivelse"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "Opdagelse af enhed mislykkedes."
@@ -7281,9 +7352,6 @@ msgstr ""
 
 #~ msgid "summary"
 #~ msgstr "opsummering"
-
-#~ msgid "testing status..."
-#~ msgstr "tester status..."
 
 #~ msgid "to begin installation"
 #~ msgstr "for at starte installationen"

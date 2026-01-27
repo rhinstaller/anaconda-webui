@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-10-30 03:35+0000\n"
 "Last-Translator: Ondrej Sulek <feonsu@gmail.com>\n"
 "Language-Team: Slovak <https://translate.fedoraproject.org/projects/anaconda-"
@@ -143,17 +143,6 @@ msgstr "Dodatočné jazyky"
 msgid "Additional software for the selected environment"
 msgstr "Doplnkový softvér pre vybraté prostredie"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-"Po vytvorení problému kliknite na 'Pridať prílohu' a priložte súbor $0 a $1."
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-"Po vytvorení problému kliknite na 'Pridať prílohu' a priložte súbor $0."
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "Všetky zmeny vykonané v editore úložiska sa prejavia okamžite."
@@ -185,6 +174,12 @@ msgstr ""
 "Priradiť oddiely k bodom pripojenia. Užitočné pre predkonfigurované vlastné "
 "rozloženia."
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "Automatické rozdelenie diskov zlyhalo."
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr "Automaticky nastaviť dátum a čas pomocou časových serverov"
@@ -198,13 +193,29 @@ msgstr "Automaticky nastaviť časové pásmo"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Dostupné voľné miesto: $0. Inštalácia vyžaduje: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Späť"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Základné prostredie"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "Tu je popis."
+
+#: src/components/Error.jsx:348
+#, fuzzy
+#| msgid "Error details"
+msgid "Bug report details"
+msgstr "Podrobnosti o chybe"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -222,7 +233,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -263,10 +274,6 @@ msgstr "Kontroluje sa konfigurácia úložiska"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "Vymazať vyhľadávanie"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr "Kliknite na \"$0\" pre otvorenie Bugzilly v novom okne."
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -353,6 +360,10 @@ msgstr "Dátum a čas"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Odstránenie určitých oddielov môže $0 zabrániť spusteniu: $1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Popis"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "Cieľ"
@@ -360,6 +371,12 @@ msgstr "Cieľ"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "Cieľ je zašifrovaný"
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "Popis zariadenia"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -394,11 +411,23 @@ msgstr "Šifrované"
 msgid "Encryption"
 msgstr "Šifrovanie"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "Základné prostredie"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "Vymazať údaje a nainštalovať"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "Podrobnosti o chybe"
 
@@ -410,6 +439,12 @@ msgstr "Odísť do live desktopu"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "Rozšírený oddiel"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Report issue"
+msgid "Failed to report issue"
+msgstr "Nahlásiť problém"
 
 #: src/components/localization/Keyboard.jsx:214
 msgid "Failed to save layouts"
@@ -450,10 +485,6 @@ msgstr "Celé meno"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "Celé meno nemôže obsahovať znak dvojbodky"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr "Pomôžte nám opraviť tento problém!"
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -507,6 +538,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Ak konfigurujete oddiely, vyžaduje sa nasledovné:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -527,7 +565,7 @@ msgid "Install"
 msgstr "Inštalácia"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "Inštalácia zlyhala"
 
@@ -607,18 +645,6 @@ msgstr "Umiestnenie"
 msgid "Locked devices"
 msgstr "Zamknuté zariadenia"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr "Prihláste sa do Bugzilla alebo vytvorte nový účet."
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-"Logy môžu obsahovať citlivé informácie, ako sú IP adresy alebo používateľské "
-"mená. Prílohy k problémom v Bugzille sú štandardne označené ako súkromné."
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -693,7 +719,7 @@ msgstr "Názov"
 msgid "Needs at least $0"
 msgstr "Potrebuje minimálne $0"
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -701,12 +727,12 @@ msgstr ""
 "Sieť nie je k dispozícii. Ak chcete nahlásiť problém, nakonfigurujte sieť v "
 "ponuke na hornej lište."
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Sieť nie je k dispozícii. Ak chcete nahlásiť problém, nakonfigurujte sieť."
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "Ďalej"
 
@@ -763,6 +789,10 @@ msgstr ""
 "vývoja a testovania. Nepoužívajte tento softvér pre žiadnu kritickú prácu "
 "ani pre produkčné prostredia."
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "Operačný systém"
@@ -798,7 +828,7 @@ msgstr "Heslá sa musia zhodovať"
 msgid "Pending"
 msgstr "Čakajúce"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "Prosím, priložte súbor s logmi $0 k tomuto problému."
 
@@ -818,12 +848,16 @@ msgstr "Poháňané Anacondou"
 msgid "Pre-release"
 msgstr "Predčasné vydanie"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "Pokračovať v inštalácii"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Ukončiť"
 
@@ -860,7 +894,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Názov počítača musí mať 64 znakov alebo menej"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "Reštartovať"
 
@@ -958,9 +992,20 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Nahlásiť problém"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "Nahlásiť problém"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "Nahlásiť problém"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1141,6 +1186,10 @@ msgstr "Chýbajú niektoré požadované oddiely: $0"
 msgid "Space"
 msgstr "Miesto"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "Úložisko"
@@ -1220,11 +1269,11 @@ msgstr ""
 "Inštalácia vyžaduje $0 miesta na disku, ale kapacita vybraných diskov je "
 "však iba $1."
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "Inštalátor nemôže pokračovať kvôli kritickej chybe."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Inštalátor nemôže pokračovať kvôli kritickej chybe: $0"
 
@@ -1253,6 +1302,19 @@ msgstr ""
 "Editor úložiska umožňuje zmeniť veľkosť, odstrániť a vytvoriť oddiely. "
 "Umožňuje nastaviť LVM a oveľa viac. Je určený na použitie ako pokročilý "
 "nástroj a nie je určený na použitie v typickej inštalácii."
+
+#: src/components/Error.jsx:382
+#, fuzzy
+#| msgid ""
+#| "Logs may contain sensitive information like IP addresses or usernames. "
+#| "Attachments on Bugzilla issues are marked private by default."
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
+"Logy môžu obsahovať citlivé informácie, ako sú IP adresy alebo používateľské "
+"mená. Prílohy k problémom v Bugzille sú štandardne označené ako súkromné."
 
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
@@ -1283,6 +1345,10 @@ msgstr "Čas"
 #: src/components/review/ReviewConfiguration.jsx:199
 msgid "Timezone"
 msgstr "Časové pásmo"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1369,6 +1435,12 @@ msgstr "Používateľské meno nesmie byť rezervované slovo"
 msgid "User names must be shorter than 33 characters"
 msgstr "Používateľské meno musí byť kratšie ako 33 znakov"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "Inicializácia..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Slabé"
@@ -1385,6 +1457,12 @@ msgstr "Vitajte vo Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Vitajte. Poďme teraz nainštalovať $0."
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "Veľkosť oddielov Windows so šifrovaním BitLocker nie je možné zmeniť"
@@ -1396,6 +1474,10 @@ msgid ""
 msgstr ""
 "Tu môžete buď uvoľniť dostatok miesta a nechať inštalátor, aby sa postaral o "
 "zvyšok, alebo oddiely nastaviť manuálne."
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1449,6 +1531,10 @@ msgstr "rozšírený oddiel"
 msgid "format as $0"
 msgstr "naformátovať ako $0"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "pripojiť"
@@ -1456,6 +1542,10 @@ msgstr "pripojiť"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "čakajúci krok"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -1473,6 +1563,26 @@ msgstr "zmenšiť na $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "späť"
+
+#~ msgid ""
+#~ "After creating the issue, click 'Add attachment' and attach file $0 and "
+#~ "$1."
+#~ msgstr ""
+#~ "Po vytvorení problému kliknite na 'Pridať prílohu' a priložte súbor $0 a "
+#~ "$1."
+
+#~ msgid "After creating the issue, click 'Add attachment' and attach file $0."
+#~ msgstr ""
+#~ "Po vytvorení problému kliknite na 'Pridať prílohu' a priložte súbor $0."
+
+#~ msgid "Click \"$0\" to open Bugzilla in a new window."
+#~ msgstr "Kliknite na \"$0\" pre otvorenie Bugzilly v novom okne."
+
+#~ msgid "Help us fix the issue!"
+#~ msgstr "Pomôžte nám opraviť tento problém!"
+
+#~ msgid "Log in to Bugzilla, or create a new account."
+#~ msgstr "Prihláste sa do Bugzilla alebo vytvorte nový účet."
 
 #~ msgid "More than one layout detected. Remove additional layouts to proceed"
 #~ msgstr ""
@@ -2366,9 +2476,6 @@ msgstr "späť"
 #~ msgid "Automatic"
 #~ msgstr "Automaticky"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "Automatické rozdelenie diskov zlyhalo."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Bolo vybrané automatické rozdelenie diskov"
 
@@ -2396,9 +2503,6 @@ msgstr "späť"
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Nesprávny formát masky siete"
-
-#~ msgid "Base Environment"
-#~ msgstr "Základné prostredie"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Beta upozornenie"
@@ -2761,12 +2865,6 @@ msgstr "späť"
 #~ msgid "Deployment starting: {}"
 #~ msgstr "Nasadenie spustené: {}"
 
-#~ msgid "Description"
-#~ msgstr "Popis"
-
-#~ msgid "Description goes here."
-#~ msgstr "Tu je popis."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "Požadovaná _kapacita:"
@@ -2788,9 +2886,6 @@ msgstr "späť"
 
 #~ msgid "Device configuration"
 #~ msgstr "Konfigurácia zariadenia"
-
-#~ msgid "Device description"
-#~ msgstr "Popis zariadenia"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "Prieskum zariadení zlyhal."

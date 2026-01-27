@@ -37,8 +37,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
-"PO-Revision-Date: 2025-12-07 00:42+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
+"PO-Revision-Date: 2026-01-25 03:58+0000\n"
 "Last-Translator: 김인수 <simmon@nplob.com>\n"
 "Language-Team: Korean <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/ko/>\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:180
 #: src/components/storage/installation-method/InstallationDestination.jsx:301
@@ -148,15 +148,6 @@ msgstr "추가 할 수 있는 언어"
 msgid "Additional software for the selected environment"
 msgstr "선택한 환경을 위한 추가 소프트웨어"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr "사건 생성 후에, '첨부 추가' 를 누르고 파일 $0 및 $1를 첨부합니다."
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr "사건 생성 후에, '첨부 추가' 를 누르고 파일 $0 를 첨부합니다."
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "저장소 편집기에서 작성된 모든 변경은 즉시 영향을 미칩니다."
@@ -188,6 +179,10 @@ msgstr ""
 "파티션을 적재 지점에 할당합니다. 사전-구성된 사용자 정의 배열을 위해 유용합니"
 "다."
 
+#: src/components/Error.jsx:371
+msgid "Automatic log file upload"
+msgstr "자동 기록 파일 올려놓기"
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr "시간 서버를 사용하여, 자동으로 날짜 및 시간을 설정합니다"
@@ -201,13 +196,25 @@ msgstr "자동으로 시간대를 설정합니다"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "사용 가능한 여유 공간: $0. 설치에 필요합니다: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "뒤로"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "기본 환경"
+
+#: src/components/Error.jsx:359
+msgid "Brief description of the issue"
+msgstr "사건에 대한 간략한 설명"
+
+#: src/components/Error.jsx:348
+msgid "Bug report details"
+msgstr "결점 보고 세부 정보"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr "버그질라 API 키"
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -225,7 +232,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "취소"
 
@@ -266,10 +273,6 @@ msgstr "저장소 구성 확인 중"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "검색 지우기"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr "\"$0\" 눌러 새로운 창에 버그질라를 엽니다."
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -356,6 +359,10 @@ msgstr "날짜와 시간"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "특정 파티션의 삭제는 부팅에서 $0를 예방합니다: $1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "설명"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "대상"
@@ -363,6 +370,10 @@ msgstr "대상"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "대상이 암호화되었습니다"
+
+#: src/components/Error.jsx:298
+msgid "Detailed description of the issue"
+msgstr "사건에 대한 세부 설명"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -397,11 +408,23 @@ msgstr "암호화됨"
 msgid "Encryption"
 msgstr "암호화"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+"자신의 버그질라 API 키를 입력하고 결점 보고를 생성하세요. 당신은 다음 단계에"
+"서 결점을 상세하게 검토하고 편집 할 수 있습니다."
+
+#: src/components/Error.jsx:310
+msgid "Environment"
+msgstr "환경"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "자료를 지우고 설치합니다"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "오류 상세"
 
@@ -413,6 +436,10 @@ msgstr "라이브 데스크탑으로 종료"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "확장된 파티션"
+
+#: src/components/Error.jsx:339
+msgid "Failed to report issue"
+msgstr "사건에 대한 보고를 실패함"
 
 #: src/components/localization/Keyboard.jsx:214
 msgid "Failed to save layouts"
@@ -452,10 +479,6 @@ msgstr "성명"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "이름에 쌍점(:)을 사용 할 수 없습니다"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr "문제 해결에 도움을 주세요!"
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -508,6 +531,16 @@ msgstr "만약 비었으면, 호스트이름은 일시적이고 네트워크 정
 msgid "If you are configuring partitions the following are required:"
 msgstr "만약 당신이 파티션을 구성하는 경우 다음이 필요합니다:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+"만약 당신이 자동 기록 파일을 올려놓기에 동의하지 않으면, 대신에 $0 를 할 수 "
+"있습니다. 수동 보고는 당신이 기록 파일을 스스로 검토하고 선택적으로 첨부 할 "
+"수 있도록 합니다."
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -528,7 +561,7 @@ msgid "Install"
 msgstr "설치"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "설치에 실패했습니다"
 
@@ -609,18 +642,6 @@ msgstr "위치"
 msgid "Locked devices"
 msgstr "잠금된 장치"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr "버그질라에 로그인하거나, 신규 계정을 생성하세요."
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-"기록은 IP 주소나 사용자이름과 같이 민감한 정보가 있을 수 있습니다. 버그질라 "
-"사건 첨부는 기본 값으로 비공개 표시됩니다."
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -694,7 +715,7 @@ msgstr "이름"
 msgid "Needs at least $0"
 msgstr "최소 $0 가 필요합니다"
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -702,11 +723,11 @@ msgstr ""
 "네트워크를 사용 할 수 없습니다. 상단의 표시 메뉴에서 네트워크를 구성하고 문제"
 "를 보고하세요."
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr "네트워크를 사용 할 수 없습니다. 네트워크를 구성하고 문제를 보고하세요."
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "다음"
 
@@ -764,6 +785,10 @@ msgstr ""
 "주의: 이 배포판은 개발과 시험 목적을 위해서만 의도된 사전-출시된 것입니다. 심"
 "각한 작업 또는 생산환경에서 이 소프트웨를 사용하지 않도록 합니다."
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr "버그질라 결점 보고 양식을 엽니다"
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "운영 체제"
@@ -799,7 +824,7 @@ msgstr "암호문은 일치해야 합니다"
 msgid "Pending"
 msgstr "보류 중"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "로그 파일 $0를 문제로 첨부해 주세요."
 
@@ -819,12 +844,16 @@ msgstr "아나콘다 제공"
 msgid "Pre-release"
 msgstr "사전-출시"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr "수동으로 보고할까요? $0"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "설치로 진행합니다"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "종료"
 
@@ -861,7 +890,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "실제 호스트이름은 길이로 64 자 이하의 문자여야 합니다"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "재시작"
 
@@ -955,10 +984,20 @@ msgstr "현재 설치를 대체하지만 홈에 파일을 유지합니다."
 msgid "Report Issue"
 msgstr "문제를 보고합니다"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+"문제를 보고하거나 버그질라 결점 보고 양식 $0 를 열어서 응답을 제공해 주세요."
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
 msgstr "문제를 보고합니다"
+
+#: src/components/Error.jsx:602
+msgid "Reporting issue..."
+msgstr "문제 보고하기..."
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 msgid "Required"
@@ -1134,6 +1173,10 @@ msgstr "일부 필수 파티션이 누락되었습니다: $0"
 msgid "Space"
 msgstr "공간"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr "Stacktrace"
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "저장소"
@@ -1211,11 +1254,11 @@ msgstr ""
 "설치는 디스크 공간의 $0가 필요합니다; 하지만, 선택된 디스크의 공간은 $1만 있"
 "습니다."
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "설치는 심각한 오류로 인하여 계속 할 수 없습니다."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "설치자는 심각한 오류로 인해 계속 할 수 없습니다: $0"
 
@@ -1245,6 +1288,16 @@ msgstr ""
 "및 그 이상을 설정 할 수 있습니다. 이는 고급 유틸리티로 사용되도록 하는 것이"
 "고 전형적인 설치에 사용하고자 하는 바는 아닙니다."
 
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
+"이들 기록 파일은 IP 주소, 사용자이름, 또는 다른 시스템의 상세한 정보와 같이 "
+"민감한 정보가 있을 수 있습니다. 버그질라 사건 첨부는 기본 값으로 비공개 표시"
+"됩니다."
+
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
 msgstr "이와 같은 호스트이름은 제출 될 수 없습니다"
@@ -1273,6 +1326,10 @@ msgstr "시간"
 #: src/components/review/ReviewConfiguration.jsx:199
 msgid "Timezone"
 msgstr "시간대"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr "제목"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1359,6 +1416,10 @@ msgstr "사용자 이름은 예약된 단어가 아니어야 합니다"
 msgid "User names must be shorter than 33 characters"
 msgstr "사용자 이름은 33 자보다 짧아야 합니다"
 
+#: src/components/Error.jsx:582
+msgid "Validating..."
+msgstr "검증 중..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "취약"
@@ -1375,6 +1436,14 @@ msgstr "페도라 리눅스에 오신 것을 환영합니다"
 msgid "Welcome. Let's install $0 now."
 msgstr "환영합니다. 이제 $0를 설치해요."
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+"당신이 이와 같은 결점 보고를 제출 할 때에, 다음 기록 파일이 자동으로 올려질 "
+"것입니다: $0"
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "BitLocker로 암호화된 윈도우 파티션은 크기를 조절 할 수 없습니다"
@@ -1386,6 +1455,10 @@ msgid ""
 msgstr ""
 "당신은 여기에서 충분한 공간을 확보하고 설치자가 잔여 부분을 다루거나 파티션"
 "을 수동으로 설정 할 수 있습니다."
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr "당신은 자신의 버그질라 계정 $0 에서 API 키를 생성 할 수 있습니다."
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1437,6 +1510,10 @@ msgstr "확장된 파티션"
 msgid "format as $0"
 msgstr "$0로 초기화"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr "여기"
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "적재"
@@ -1444,6 +1521,10 @@ msgstr "적재"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "보류 단계"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr "사건을 수동으로 보고합니다"
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -1461,6 +1542,23 @@ msgstr "$0로 축소"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "실행취소"
+
+#~ msgid ""
+#~ "After creating the issue, click 'Add attachment' and attach file $0 and "
+#~ "$1."
+#~ msgstr "사건 생성 후에, '첨부 추가' 를 누르고 파일 $0 및 $1를 첨부합니다."
+
+#~ msgid "After creating the issue, click 'Add attachment' and attach file $0."
+#~ msgstr "사건 생성 후에, '첨부 추가' 를 누르고 파일 $0 를 첨부합니다."
+
+#~ msgid "Click \"$0\" to open Bugzilla in a new window."
+#~ msgstr "\"$0\" 눌러 새로운 창에 버그질라를 엽니다."
+
+#~ msgid "Help us fix the issue!"
+#~ msgstr "문제 해결에 도움을 주세요!"
+
+#~ msgid "Log in to Bugzilla, or create a new account."
+#~ msgstr "버그질라에 로그인하거나, 신규 계정을 생성하세요."
 
 #~ msgid "More than one layout detected. Remove additional layouts to proceed"
 #~ msgstr ""
@@ -2388,9 +2486,6 @@ msgstr "실행취소"
 #~ msgid "Automatic"
 #~ msgstr "자동"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "자동 파티션 구성이 실패했습니다."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "자동 파티션이 선택됨"
 
@@ -2418,9 +2513,6 @@ msgstr "실행취소"
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "잘못된 넷매스크 형식"
-
-#~ msgid "Base Environment"
-#~ msgstr "기본 환경"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Beta 경고"
@@ -2781,12 +2873,6 @@ msgstr "실행취소"
 #~ msgid "Deployment starting: {}"
 #~ msgstr "배포 시작 중: {}"
 
-#~ msgid "Description"
-#~ msgstr "설명"
-
-#~ msgid "Description goes here."
-#~ msgstr "여기에 설명이 있습니다."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "희망 용량(_C):"
@@ -2807,9 +2893,6 @@ msgstr "실행취소"
 
 #~ msgid "Device configuration"
 #~ msgstr "장치 구성"
-
-#~ msgid "Device description"
-#~ msgstr "장치 설명"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "장치 검색에 실패했습니다."
