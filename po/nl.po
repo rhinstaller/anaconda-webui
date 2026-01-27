@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-05-31 12:40+0000\n"
 "Last-Translator: Marvin Parlevliet <mrvnp@msn.com>\n"
 "Language-Team: Dutch <https://translate.fedoraproject.org/projects/anaconda-"
@@ -153,15 +153,6 @@ msgstr "Aanvullende talen"
 msgid "Additional software for the selected environment"
 msgstr "Extra software voor de geselecteerde omgeving"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "Alle wijzigingen in de opslageditor worden onmiddellijk toegepast."
@@ -193,6 +184,12 @@ msgstr ""
 "Partities toewijzen aan aankoppelpunten. Handig voor vooraf geconfigureerde, "
 "aangepaste indelingen."
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "Automatisch partitioneren mislukte."
+
 #: src/components/datetime/DateAndTime.jsx:145
 #, fuzzy
 #| msgid "Automatically using specific NTP servers"
@@ -210,13 +207,29 @@ msgstr "Automatisch met NTP"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Beschikbare vrije ruimte: $0. Benodigd voor installatie: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Terug"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Basisomgeving"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "Beschrijving kan hier."
+
+#: src/components/Error.jsx:348
+#, fuzzy
+#| msgid "Error details"
+msgid "Bug report details"
+msgstr "Foutdetails"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -235,7 +248,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -279,10 +292,6 @@ msgstr "Bezig met controleren van opslagconfiguratie"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "Zoekopdracht wissen"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr ""
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -378,6 +387,10 @@ msgstr ""
 "Het verwijderen van bepaalde partities kan ervoor zorgen dat $0 niet "
 "opstart: $1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Beschrijving"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "Bestemming"
@@ -385,6 +398,12 @@ msgstr "Bestemming"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "Bestemming is versleuteld"
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "Apparaatomschrijving"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -419,11 +438,23 @@ msgstr "Versleuteld"
 msgid "Encryption"
 msgstr "Versleutelen"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "Basisomgeving"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "Data wissen en installeren"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "Foutdetails"
 
@@ -435,6 +466,12 @@ msgstr "Afsluiten naar live desktop"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "Uitgebreide partitie"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Report issue"
+msgid "Failed to report issue"
+msgstr "Probleem melden"
 
 #: src/components/localization/Keyboard.jsx:214
 #, fuzzy
@@ -478,10 +515,6 @@ msgstr "Volledige naam"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "De volledige naam mag geen dubbele punten bevatten"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr ""
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -537,6 +570,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Wanneer u partities configureert, is het volgende vereist:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -557,7 +597,7 @@ msgid "Install"
 msgstr "Installeren"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "Installatie mislukt"
 
@@ -642,16 +682,6 @@ msgstr "Locatie"
 msgid "Locked devices"
 msgstr "Vergrendelde apparaten"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr ""
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -733,7 +763,7 @@ msgstr "Naam"
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -741,12 +771,12 @@ msgstr ""
 "Netwerk niet beschikbaar. Configureer het netwerk in het bovenste balkmenu "
 "om het probleem te melden."
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Netwerk niet beschikbaar. Configureer het netwerk om het probleem te melden."
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "Volgende"
 
@@ -807,6 +837,10 @@ msgstr ""
 "ontwikkelings- en testdoeleinden. Gebruik deze software NIET voor belangrijk "
 "werk of voor productieomgevingen."
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "Besturingssysteem"
@@ -842,7 +876,7 @@ msgstr "Wachtwoordzinnen moeten overeenkomen"
 msgid "Pending"
 msgstr "In afwachting"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "Voeg het logbestand $0 toe aan het probleem."
 
@@ -866,12 +900,16 @@ msgstr "Mogelijk gemaakt door Anaconda"
 msgid "Pre-release"
 msgstr "Pre-release"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "Doorgaan met installatie"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Afsluiten"
 
@@ -908,7 +946,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Een echte hostnaam moet 64 karakters of minder bevatten"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "Herstarten"
 
@@ -1008,9 +1046,20 @@ msgstr "Vervang huidige installatie, maar behoud bestanden in home-map."
 msgid "Report Issue"
 msgstr "Probleem melden"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "Probleem melden"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "Probleem melden"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1210,6 +1259,10 @@ msgstr "Een aantal vereiste partities zijn niet aanwezig: $0"
 msgid "Space"
 msgstr "Ruimte"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "Opslag"
@@ -1293,11 +1346,11 @@ msgstr ""
 "De installatie vereist $1 schijfruimte; de capaciteit van de geselecteerde "
 "schijven is slechts $0."
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "Het installatieprogramma kan niet doorgaan vanwege een kritieke fout."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr ""
 "Het installatieprogramma kan niet doorgaan vanwege een kritieke fout: $0"
@@ -1327,6 +1380,13 @@ msgstr ""
 "aangemaakt en verwijderd worden. Hiermee kan ook LVM en veel meer "
 "geconfigureerd worden. Dit is een geavanceerd hulpprogramma en niet bedoeld "
 "voor gebruik in een typische installatie."
+
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
 
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
@@ -1362,6 +1422,10 @@ msgstr "Tijdzone"
 #| msgid "Time zone"
 msgid "Timezone"
 msgstr "Tijdzone"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1451,6 +1515,12 @@ msgstr "Gebruikersnaam mag geen gereserveerd woord zijn"
 msgid "User names must be shorter than 33 characters"
 msgstr "Gebruikersnamen moeten korter zijn dan 33 karakters"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "Initialiseren..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Zwak"
@@ -1469,6 +1539,12 @@ msgstr "Welkom bij Fedora"
 msgid "Welcome. Let's install $0 now."
 msgstr "Welkom. Laten we nu $0 installeren."
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
@@ -1482,6 +1558,10 @@ msgid ""
 msgstr ""
 "U kunt kiezen om genoeg vrije ruimte te maken en het installatieprogramma de "
 "rest te laten regelen, of handmatig partities te configureren."
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1531,6 +1611,10 @@ msgstr "uitgebreide partitie"
 msgid "format as $0"
 msgstr "formatteren als $0"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "aankoppelen"
@@ -1538,6 +1622,10 @@ msgstr "aankoppelen"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "stap in afwachting"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -2522,9 +2610,6 @@ msgstr "ongedaan maken"
 #~ msgid "Automatic"
 #~ msgstr "Automatisch"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "Automatisch partitioneren mislukte."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Automatisch partitioneren geselecteerd"
 
@@ -2552,9 +2637,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Verkeerd formaat voor het netmasker"
-
-#~ msgid "Base Environment"
-#~ msgstr "Basisomgeving"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Beta waarschuwing"
@@ -2926,12 +3008,6 @@ msgstr "ongedaan maken"
 #~ msgid "Deployment starting: {}"
 #~ msgstr "Beginnen met opzetten: {}"
 
-#~ msgid "Description"
-#~ msgstr "Beschrijving"
-
-#~ msgid "Description goes here."
-#~ msgstr "Beschrijving kan hier."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "Gewenste _capaciteit:"
@@ -2952,9 +3028,6 @@ msgstr "ongedaan maken"
 
 #~ msgid "Device configuration"
 #~ msgstr "Apparaatconfiguratie"
-
-#~ msgid "Device description"
-#~ msgstr "Apparaatomschrijving"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "Apparaat opzoeken mislukte."

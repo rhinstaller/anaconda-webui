@@ -38,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-12-31 03:50+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <https://translate.fedoraproject.org/projects/"
@@ -154,18 +154,6 @@ msgstr "Idiomas adicionais"
 msgid "Additional software for the selected environment"
 msgstr "Software adicional para o ambiente selecionado"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-"Depois de criar o pedido, clique em 'Adicionar anexo' e anexe os ficheiros "
-"$0 e $1."
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-"Depois de criar o pedido, clique em 'Adicionar anexo' e anexe o ficheiro $0."
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
@@ -199,6 +187,12 @@ msgstr ""
 "Atribuir partições a pontos de montagem. Útil para esquemas personalizados "
 "pré-configurados."
 
+#: src/components/Error.jsx:371
+#, fuzzy
+#| msgid "Automatic partitioning failed."
+msgid "Automatic log file upload"
+msgstr "O particionamento automático falhou."
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
@@ -213,13 +207,29 @@ msgstr "Definir automaticamente o fuso horário"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Espaço livre disponível: $0. A instalação requer: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "Voltar"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
 msgstr "Ambiente base"
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "A descrição aparece aqui."
+
+#: src/components/Error.jsx:348
+#, fuzzy
+#| msgid "Error details"
+msgid "Bug report details"
+msgstr "Detalhes do erro"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
+msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
 msgid ""
@@ -238,7 +248,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -280,10 +290,6 @@ msgstr "A verificar a configuração do armazenamento"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "Limpar pesquisa"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr "Clique em \"$0\" para abrir o Bugzilla numa nova janela."
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -371,6 +377,10 @@ msgstr "Data e hora"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "A eliminação de certas partições pode impedir que $0 arranque: $1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "Descrição"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "Destino"
@@ -378,6 +388,12 @@ msgstr "Destino"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "O destino está encriptado"
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "Descrição do Dispositivo"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -412,11 +428,23 @@ msgstr "Encriptado"
 msgid "Encryption"
 msgstr "Encriptação"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+#, fuzzy
+#| msgid "Base Environment"
+msgid "Environment"
+msgstr "Ambiente Base"
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "Apagar dados e instalar"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "Detalhes do erro"
 
@@ -428,6 +456,12 @@ msgstr "Sair para a área de trabalho"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "Partição estendida"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Report issue"
+msgid "Failed to report issue"
+msgstr "Reportar problema"
 
 #: src/components/localization/Keyboard.jsx:214
 msgid "Failed to save layouts"
@@ -468,10 +502,6 @@ msgstr "Nome completo"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "O nome completo não pode conter caracteres de dois pontos"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr "Ajude-nos a resolver o problema!"
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -527,6 +557,13 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Se estiver a configurar as partições, o seguinte é necessário:"
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -546,7 +583,7 @@ msgid "Install"
 msgstr "Instalar"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "Falha ao instalar"
 
@@ -627,19 +664,6 @@ msgstr "Localização"
 msgid "Locked devices"
 msgstr "Dispositivos bloqueados"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr "Inicie sessão no Bugzilla ou crie uma nova conta."
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-"Os registos podem conter informações sensíveis, como endereços IP ou nomes "
-"de utilizador. Os anexos nos pedidos do Bugzilla são marcados como privados "
-"por defeito."
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -715,7 +739,7 @@ msgstr "Nome"
 msgid "Needs at least $0"
 msgstr "Requer pelo menos $0"
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -723,11 +747,11 @@ msgstr ""
 "Rede indisponível. Configure a rede no menu da barra superior para reportar "
 "o problema."
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Rede indisponível. Configure a rede para reportar o problema."
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "Seguinte"
 
@@ -786,6 +810,10 @@ msgstr ""
 "desenvolvimento e teste. NÃO utilize este software para trabalhos críticos "
 "ou em ambientes de produção."
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "Sistema operativo"
@@ -821,7 +849,7 @@ msgstr "As frases-passe têm de coincidir"
 msgid "Pending"
 msgstr "Pendente"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "Por favor adicione o ficheiro de registo $0 ao problema."
 
@@ -841,12 +869,16 @@ msgstr "Desenvolvido por Anaconda"
 msgid "Pre-release"
 msgstr "Pré-lançamento"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "Prosseguir com a instalação"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "Sair"
 
@@ -883,7 +915,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "O nome de anfitrião deve ter 64 ou menos caracteres"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "Reiniciar"
 
@@ -980,9 +1012,20 @@ msgstr "Substituir a instalação atual, porém manter arquivos na home."
 msgid "Report Issue"
 msgstr "Reportar Problema"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "Reportar problema"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "Reportar problema"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1160,6 +1203,10 @@ msgstr "Algumas partições necessárias estão faltando: $0"
 msgid "Space"
 msgstr "Espaço"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "Armazenamento"
@@ -1242,11 +1289,11 @@ msgstr ""
 "A instalação necessita de $0 de espaço em disco; no entanto, a capacidade "
 "dos discos selecionados é apenas de $1."
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "A instalação não pode continuar devido a um erro crítico."
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "A instalação não pode continuar devido a um erro crítico: $0"
 
@@ -1277,6 +1324,20 @@ msgstr ""
 "ferramenta avançada e não é recomendado para ser usado numa instalação "
 "típica."
 
+#: src/components/Error.jsx:382
+#, fuzzy
+#| msgid ""
+#| "Logs may contain sensitive information like IP addresses or usernames. "
+#| "Attachments on Bugzilla issues are marked private by default."
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
+"Os registos podem conter informações sensíveis, como endereços IP ou nomes "
+"de utilizador. Os anexos nos pedidos do Bugzilla são marcados como privados "
+"por defeito."
+
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
 msgstr "Este nome de anfitrião não pode ser submetido"
@@ -1306,6 +1367,10 @@ msgstr "Hora"
 #: src/components/review/ReviewConfiguration.jsx:199
 msgid "Timezone"
 msgstr "Fuso horário"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1392,6 +1457,12 @@ msgstr "O nome de utilizador não pode ser uma palavra reservada"
 msgid "User names must be shorter than 33 characters"
 msgstr "O nome dos utilizadores deve ser menor que 33 caracteres"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "A instalar..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "Fraco"
@@ -1408,6 +1479,12 @@ msgstr "Bem-vindo ao Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Bem-vindo. Vamos já instalar o $0."
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
@@ -1420,6 +1497,10 @@ msgid ""
 msgstr ""
 "Pode liberar espaço suficiente aqui e deixar o instalador tratar do resto ou "
 "configurar as partições manualmente."
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1473,6 +1554,10 @@ msgstr "partição estendida"
 msgid "format as $0"
 msgstr "formatar como $0"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "montar"
@@ -1480,6 +1565,10 @@ msgstr "montar"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "etapa pendente"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -1497,6 +1586,27 @@ msgstr "diminuir para $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:382
 msgid "undo"
 msgstr "desfazer"
+
+#~ msgid ""
+#~ "After creating the issue, click 'Add attachment' and attach file $0 and "
+#~ "$1."
+#~ msgstr ""
+#~ "Depois de criar o pedido, clique em 'Adicionar anexo' e anexe os "
+#~ "ficheiros $0 e $1."
+
+#~ msgid "After creating the issue, click 'Add attachment' and attach file $0."
+#~ msgstr ""
+#~ "Depois de criar o pedido, clique em 'Adicionar anexo' e anexe o ficheiro "
+#~ "$0."
+
+#~ msgid "Click \"$0\" to open Bugzilla in a new window."
+#~ msgstr "Clique em \"$0\" para abrir o Bugzilla numa nova janela."
+
+#~ msgid "Help us fix the issue!"
+#~ msgstr "Ajude-nos a resolver o problema!"
+
+#~ msgid "Log in to Bugzilla, or create a new account."
+#~ msgstr "Inicie sessão no Bugzilla ou crie uma nova conta."
 
 #~ msgid "More than one layout detected. Remove additional layouts to proceed"
 #~ msgstr ""
@@ -2411,9 +2521,6 @@ msgstr "desfazer"
 #~ msgid "Automatic"
 #~ msgstr "Automático"
 
-#~ msgid "Automatic partitioning failed."
-#~ msgstr "O particionamento automático falhou."
-
 #~ msgid "Automatic partitioning selected"
 #~ msgstr "Seleccionado particionamento automático"
 
@@ -2441,9 +2548,6 @@ msgstr "desfazer"
 
 #~ msgid "Bad format of the netmask"
 #~ msgstr "Formato inválido de máscara de rede"
-
-#~ msgid "Base Environment"
-#~ msgstr "Ambiente Base"
 
 #~ msgid "Beta Warn"
 #~ msgstr "Aviso de Beta"
@@ -2809,12 +2913,6 @@ msgstr "desfazer"
 #~ msgid "Deployment starting: {}"
 #~ msgstr "A iniciar a implementação: {}"
 
-#~ msgid "Description"
-#~ msgstr "Descrição"
-
-#~ msgid "Description goes here."
-#~ msgstr "A descrição aparece aqui."
-
 #~ msgctxt "GUI|Custom Partitioning|Add Dialog"
 #~ msgid "Desired _Capacity:"
 #~ msgstr "_Capacidade Desejada:"
@@ -2836,9 +2934,6 @@ msgstr "desfazer"
 
 #~ msgid "Device configuration"
 #~ msgstr "Configuração de dispositivo"
-
-#~ msgid "Device description"
-#~ msgstr "Descrição do Dispositivo"
 
 #~ msgid "Device discovery failed."
 #~ msgstr "A procura de dispositivo falhou."

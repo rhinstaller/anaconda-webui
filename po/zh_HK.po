@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-20 03:59+0000\n"
+"POT-Creation-Date: 2026-01-27 04:01+0000\n"
 "PO-Revision-Date: 2025-12-12 03:47+0000\n"
 "Last-Translator: Peter Chan <admin@hkphoto.org>\n"
 "Language-Team: Chinese (Hong Kong) <https://translate.fedoraproject.org/"
@@ -127,15 +127,6 @@ msgstr "其他語言"
 msgid "Additional software for the selected environment"
 msgstr "所選環境的附加軟件"
 
-#: src/components/Error.jsx:216
-msgid ""
-"After creating the issue, click 'Add attachment' and attach file $0 and $1."
-msgstr ""
-
-#: src/components/Error.jsx:215
-msgid "After creating the issue, click 'Add attachment' and attach file $0."
-msgstr ""
-
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:97
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "在儲存編輯器中所做的所有變更都會立即生效。"
@@ -165,6 +156,10 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr "將分割區分配給掛載點。對於預先配置的自訂佈局很有用。"
 
+#: src/components/Error.jsx:371
+msgid "Automatic log file upload"
+msgstr ""
+
 #: src/components/datetime/DateAndTime.jsx:145
 msgid "Automatically set date and time, using time servers"
 msgstr ""
@@ -178,12 +173,28 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "可用空間：$0。安裝需要：$1。"
 
-#: src/components/AnacondaWizardFooter.jsx:88
+#: src/components/AnacondaWizardFooter.jsx:88 src/components/Error.jsx:592
 msgid "Back"
 msgstr "後退"
 
 #: src/components/software/SoftwareSelection.jsx:75
 msgid "Base environment"
+msgstr ""
+
+#: src/components/Error.jsx:359
+#, fuzzy
+#| msgid "Description goes here."
+msgid "Brief description of the issue"
+msgstr "描述會在這裏出現。"
+
+#: src/components/Error.jsx:348
+#, fuzzy
+#| msgid "Error details"
+msgid "Bug report details"
+msgstr "錯誤詳細訊息"
+
+#: src/components/Error.jsx:246
+msgid "Bugzilla API key"
 msgstr ""
 
 #: src/components/AnacondaHeader.jsx:87
@@ -201,7 +212,7 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:220
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:114
 #: src/components/localization/Keyboard.jsx:292
-#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:312
+#: src/components/review/Hostname.jsx:139 src/components/Error.jsx:760
 msgid "Cancel"
 msgstr "取消"
 
@@ -241,10 +252,6 @@ msgstr "檢查儲存配置"
 #: src/components/common/MenuSearch.jsx:124
 msgid "Clear search"
 msgstr "清除搜尋"
-
-#: src/components/Error.jsx:208
-msgid "Click \"$0\" to open Bugzilla in a new window."
-msgstr ""
 
 #: src/components/storage/Common.jsx:38
 msgid "Click 'Next' again to proceed despite these warnings."
@@ -330,6 +337,10 @@ msgstr ""
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "刪除某些分割區可能會導致$0無法啟動：$1"
 
+#: src/components/Error.jsx:293
+msgid "Description"
+msgstr "細節"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:286
 msgid "Destination"
 msgstr "目標位置"
@@ -337,6 +348,12 @@ msgstr "目標位置"
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid "Destination is encrypted"
 msgstr "目標位置已加密"
+
+#: src/components/Error.jsx:298
+#, fuzzy
+#| msgid "Device description"
+msgid "Detailed description of the issue"
+msgstr "裝置描述"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:582
 msgid "Detected valid storage layout:"
@@ -371,11 +388,21 @@ msgstr "已加密"
 msgid "Encryption"
 msgstr "加密"
 
+#: src/components/Error.jsx:237
+msgid ""
+"Enter your Bugzilla API key to create a bug report. You will be able to "
+"review and edit the bug details in the next step."
+msgstr ""
+
+#: src/components/Error.jsx:310
+msgid "Environment"
+msgstr ""
+
 #: src/components/storage/scenarios/erase-all/index.js:32
 msgid "Erase data and install"
 msgstr "清除資料並安裝"
 
-#: src/components/Error.jsx:301
+#: src/components/Error.jsx:717
 msgid "Error details"
 msgstr "錯誤詳細訊息"
 
@@ -387,6 +414,12 @@ msgstr "退出到 live 桌面"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:257
 msgid "Extended partition"
 msgstr "擴充分區"
+
+#: src/components/Error.jsx:339
+#, fuzzy
+#| msgid "Report issue"
+msgid "Failed to report issue"
+msgstr "報告問題"
 
 #: src/components/localization/Keyboard.jsx:214
 msgid "Failed to save layouts"
@@ -423,10 +456,6 @@ msgstr "全名"
 #: src/components/users/Accounts.jsx:139
 msgid "Full name cannot contain colon characters"
 msgstr "全名不能包含冒號"
-
-#: src/components/Error.jsx:204
-msgid "Help us fix the issue!"
-msgstr ""
 
 #: src/components/review/StorageReview.jsx:250
 msgid "Helper text"
@@ -478,6 +507,13 @@ msgstr "如果為空，主機名將是臨時的並由網路資訊設定。"
 msgid "If you are configuring partitions the following are required:"
 msgstr "如果要配置分割區，則需要以下內容："
 
+#: src/components/Error.jsx:386
+msgid ""
+"If you do not consent to automatic log file upload, you can $0 instead. "
+"Manual reporting allows you to review and selectively attach log files "
+"yourself."
+msgstr ""
+
 #: src/components/AnacondaHeader.jsx:90
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
@@ -497,7 +533,7 @@ msgid "Install"
 msgstr "安裝"
 
 #: src/components/installation/InstallationProgress.jsx:132
-#: src/components/Error.jsx:299
+#: src/components/Error.jsx:748
 msgid "Installation failed"
 msgstr "安裝失敗"
 
@@ -574,16 +610,6 @@ msgstr "地點"
 msgid "Locked devices"
 msgstr "鎖定的設備"
 
-#: src/components/Error.jsx:211
-msgid "Log in to Bugzilla, or create a new account."
-msgstr ""
-
-#: src/components/Error.jsx:219
-msgid ""
-"Logs may contain sensitive information like IP addresses or usernames. "
-"Attachments on Bugzilla issues are marked private by default."
-msgstr ""
-
 #: src/components/localization/Keyboard.jsx:134
 #: src/components/localization/Keyboard.jsx:138
 msgid "Make current"
@@ -657,17 +683,17 @@ msgstr "名稱"
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/Error.jsx:153
+#: src/components/Error.jsx:625
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr "網路不可用。在頂部欄選單中配置網路以報告問題。"
 
-#: src/components/Error.jsx:154
+#: src/components/Error.jsx:626
 msgid "Network not available. Configure the network to report the issue."
 msgstr "網路不可用。配置網路以報告問題。"
 
-#: src/components/AnacondaWizardFooter.jsx:97
+#: src/components/AnacondaWizardFooter.jsx:97 src/components/Error.jsx:582
 msgid "Next"
 msgstr "下一個"
 
@@ -723,6 +749,10 @@ msgstr ""
 "注意：這是預發布的軟體，僅用於開發和測試目的。請勿將此軟體用於任何關鍵工作或"
 "生產環境。"
 
+#: src/components/Error.jsx:215
+msgid "Open Bugzilla bug entry form"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:181
 msgid "Operating system"
 msgstr "作業系統"
@@ -758,7 +788,7 @@ msgstr "密碼必須匹配"
 msgid "Pending"
 msgstr "待辦的"
 
-#: src/components/Error.jsx:85
+#: src/components/Error.jsx:97
 msgid "Please attach the log file $0 to the issue."
 msgstr "請將日誌檔案 $0 附加到該問題。"
 
@@ -778,12 +808,16 @@ msgstr "由 Anaconda 提供支持"
 msgid "Pre-release"
 msgstr "預發布"
 
+#: src/components/Error.jsx:209
+msgid "Prefer to report manually? $0"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:621
 msgid "Proceed with installation"
 msgstr "繼續安裝"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Quit"
 msgstr "退出"
 
@@ -818,7 +852,7 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "實際主機名稱必須不超過 64 個字符"
 
 #: src/components/AnacondaWizardFooter.jsx:110
-#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:277
+#: src/components/AnacondaWizardFooter.jsx:145 src/components/Error.jsx:737
 msgid "Reboot"
 msgstr "重啟"
 
@@ -909,9 +943,20 @@ msgstr "替換目前安裝，但將檔案保留在主目錄中。"
 msgid "Report Issue"
 msgstr "報告問題"
 
-#: src/components/Error.jsx:172 src/components/Error.jsx:208
-#: src/components/Error.jsx:324
+#: src/components/Error.jsx:186
+msgid ""
+"Report an issue or provide feedback by opening the Bugzilla bug entry form "
+"$0."
+msgstr ""
+
+#: src/components/Error.jsx:602 src/components/Error.jsx:769
 msgid "Report issue"
+msgstr "報告問題"
+
+#: src/components/Error.jsx:602
+#, fuzzy
+#| msgid "Report issue"
+msgid "Reporting issue..."
 msgstr "報告問題"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
@@ -1084,6 +1129,10 @@ msgstr "缺少一些必需的分區：$0"
 msgid "Space"
 msgstr "空間"
 
+#: src/components/Error.jsx:304
+msgid "Stacktrace"
+msgstr ""
+
 #: src/components/review/ReviewConfiguration.jsx:228
 msgid "Storage"
 msgstr "儲存"
@@ -1159,11 +1208,11 @@ msgid ""
 "selected disks is only $1."
 msgstr "安裝需要$0的磁碟空間；但所選磁碟的容量僅為$1。"
 
-#: src/components/Error.jsx:290
+#: src/components/Error.jsx:677
 msgid "The installer cannot continue due to a critical error."
 msgstr "由於嚴重錯誤，安裝程式無法繼續。"
 
-#: src/components/Error.jsx:289
+#: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "由於嚴重錯誤，安裝程式無法繼續：$0"
 
@@ -1187,6 +1236,13 @@ msgid ""
 msgstr ""
 "儲存編輯器可讓您調整大小、刪除和建立分割區。它可以設定 LVM 等等。它旨在用作高"
 "級實用程序，並不適合在典型的安裝中使用。"
+
+#: src/components/Error.jsx:382
+msgid ""
+"These log files may contain sensitive information such as IP addresses, "
+"usernames, or other system details. Attachments on Bugzilla issues are "
+"marked private by default."
+msgstr ""
 
 #: src/components/review/Hostname.jsx:63
 msgid "This hostname can't be submitted"
@@ -1216,6 +1272,10 @@ msgstr ""
 #: src/components/review/ReviewConfiguration.jsx:199
 msgid "Timezone"
 msgstr "時區"
+
+#: src/components/Error.jsx:351
+msgid "Title"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "To begin using $0, reboot your system."
@@ -1296,6 +1356,12 @@ msgstr "使用者名稱不能是保留字"
 msgid "User names must be shorter than 33 characters"
 msgstr "使用者名稱必須少於 33 個字符"
 
+#: src/components/Error.jsx:582
+#, fuzzy
+#| msgid "Initializing..."
+msgid "Validating..."
+msgstr "正在初始化..."
+
 #: src/components/Password.jsx:57
 msgid "Weak"
 msgstr "脆弱"
@@ -1312,6 +1378,12 @@ msgstr "歡迎使用 Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "歡迎。現在讓我們安裝$0。"
 
+#: src/components/Error.jsx:377
+msgid ""
+"When you submit this bug report, the following log files will be uploaded "
+"automatically: $0"
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:543
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "使用 BitLocker 加密的 Windows 分割區無法調整大小"
@@ -1321,6 +1393,10 @@ msgid ""
 "You can either free up enough space here and let the installer handle the "
 "rest or manually set up partitions."
 msgstr "您可以在此處釋放足夠的空間並讓安裝程式處理其餘部分，或手動設定分割區。"
+
+#: src/components/Error.jsx:259
+msgid "You can generate the API key for your Bugzilla account $0."
+msgstr ""
 
 #: src/components/users/Accounts.jsx:387
 msgid ""
@@ -1370,6 +1446,10 @@ msgstr "擴充分區"
 msgid "format as $0"
 msgstr "格式為 $0"
 
+#: src/components/Error.jsx:192 src/components/Error.jsx:266
+msgid "here"
+msgstr ""
+
 #: src/components/review/StorageReview.jsx:120
 msgid "mount"
 msgstr "掛載"
@@ -1377,6 +1457,10 @@ msgstr "掛載"
 #: src/components/installation/InstallationProgress.jsx:180
 msgid "pending step"
 msgstr "待處理步驟"
+
+#: src/components/Error.jsx:392
+msgid "report the issue manually"
+msgstr ""
 
 #: src/components/review/StorageReview.jsx:175
 msgid "resized from $0"
@@ -1767,15 +1851,6 @@ msgstr "撤銷"
 
 #~ msgid "Default spoke title"
 #~ msgstr "預設欲言標題"
-
-#~ msgid "Description"
-#~ msgstr "細節"
-
-#~ msgid "Description goes here."
-#~ msgstr "描述會在這裏出現。"
-
-#~ msgid "Device description"
-#~ msgstr "裝置描述"
 
 #~ msgid "Disconnected"
 #~ msgstr "已離線"
