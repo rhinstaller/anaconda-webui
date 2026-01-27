@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -33,7 +33,6 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     # FIXME: Re-enable bios test, it's currently failing in CI to detect the BIOS boot partition
     # @run_boot("bios", "efi")
-    @run_boot("efi")
     @disk_images([("", 15), ("fedora-42", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     @nondestructive
@@ -722,7 +721,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         umount /mnt
         """)
 
-    @run_boot("efi")
     @nondestructive
     def testExtendedPartition(self):
         """
@@ -754,7 +752,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         storage = Storage(self.browser, self.machine)
         move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
 
-    @run_boot("efi")
     @disk_images([("", 35), ("fedora-rawhide", 15)])
     def testWindowsSingleDiskHomeReuse(self):
         """
@@ -814,7 +811,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         m.execute(f"wipefs -a {disk2}")
         s.create_luks_partition(disk2, "homepass", "encrypted-home", "xfs")
 
-    @run_boot("efi")
     @disk_images([("", 15), ("", 10)])
     @nondestructive
     def testEncryptedHomeSecondDisk(self):
