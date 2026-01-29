@@ -48,6 +48,8 @@ class VirtInstallMachineCase(MachineCase):
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
+    run_on_vm_setups: list[str] = [""]
+    vm_setup = ""
 
     def partition_disk(self):
         """ Override this method to partition the disk """
@@ -75,6 +77,7 @@ class VirtInstallMachineCase(MachineCase):
     def setUp(self):
         method = getattr(self, self._testMethodName)
         boot_modes = getattr(method, "boot_modes", ["bios"])
+        self.run_on_vm_setups = getattr(method, "run_on_vm_setups", [""])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
         if self.is_efi and "efi" not in boot_modes:
@@ -85,6 +88,11 @@ class VirtInstallMachineCase(MachineCase):
         if "TestPayloadDNF" in self.__class__.__name__:
             if os.environ.get("TEST_PAYLOAD", None) != "dnf":
                 self.skipTest("Skipping DNF payload test when not using DNF payload")
+
+        self.vm_setup = os.environ.get("TEST_VM_SETUP", "")
+        if self.vm_setup not in self.run_on_vm_setups:
+            self.skipTest(f"Skipping for VM setup {self.vm_setup}"
+                          f", requires VM setups: {self.run_on_vm_setups}")
 
         # FIXME: running this in destructive tests fails because the SSH session closes before this is run
         if self.is_nondestructive():
@@ -355,5 +363,20 @@ def disk_images(disks):
     """
     def decorator(func):
         func.disk_images = list(disks)
+        return func
+    return decorator
+
+
+def run_on_vm_setups(*vm_setups):
+    """
+    Decorator to select tests for particular Virtual Machine setups.
+    The setup is configured via environment variables and defined
+    by TEST_VM_SETUP (see test/run).
+
+    :param vm_setups:  VM setups that this test should run on,
+                       include "" if it should run also on default setup
+    """
+    def decorator(func):
+        func.run_on_vm_setups = list(vm_setups)
         return func
     return decorator
