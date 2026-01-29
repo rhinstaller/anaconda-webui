@@ -17,7 +17,7 @@
 
 import time
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import VirtInstallMachineCase, run_on_vm_setups
 from installer import Installer
 from network import COCKPIT_CHECKPOINT_ROLLBACK_TIME, SYSROOT_PATH, WIRED_CONNECTION_NAME, Network
 from progress import Progress
@@ -46,9 +46,10 @@ class TestNetwork(VirtInstallMachineCase):
         i.open()
 
         iface = n.get_the_iface()
-        def_con_name = WIRED_CONNECTION_NAME
-        n.preinstall_connection_test(i, iface, def_con_name)
+        con_name = WIRED_CONNECTION_NAME
+        n.preinstall_connection_test(i, iface, con_name)
 
+    @run_on_vm_setups("", "bootopts-net1")
     def testConnections(self):
         """
         Description:
@@ -66,18 +67,25 @@ class TestNetwork(VirtInstallMachineCase):
         i.open()
 
         iface = n.get_the_iface()
-        def_con_name = WIRED_CONNECTION_NAME
-        n.preinstall_connection_test(i, iface, def_con_name)
+
+        if self.vm_setup == "bootopts-net1":
+            con_name = iface
+            configured = True
+        else:
+            con_name = WIRED_CONNECTION_NAME
+            configured = False
+        n.preinstall_connection_test(i, iface, con_name, configured=configured)
 
         i.begin_installation(needs_confirmation=False)
         p = Progress(b)
         p.wait_done()
 
         # Check profiles in installed system
-        n.check_con_profile_files(def_con_name, 1, root=SYSROOT_PATH, file_name=def_con_name)
+        n.check_con_profile_files(con_name, 1, root=SYSROOT_PATH, file_name=con_name)
         # Check there is only single persistent profile
         n.check_con_profile_files("", 1, root=SYSROOT_PATH)
 
+    @run_on_vm_setups("", "bootopts-net1")
     def testConfigurationPreInstall(self):
         """
         Description:
@@ -95,7 +103,10 @@ class TestNetwork(VirtInstallMachineCase):
         i.open()
 
         iface = n.get_the_iface()
-        def_con_name = WIRED_CONNECTION_NAME
+        if self.vm_setup == "bootopts-net1":
+            con_name = iface
+        else:
+            con_name = WIRED_CONNECTION_NAME
 
         n.disable_ipv4_on_iface(iface)
 
@@ -103,14 +114,14 @@ class TestNetwork(VirtInstallMachineCase):
         n.set_mtu_on_iface(iface, mtu_value)
 
         n.check_con_settings([
-            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+            [con_name, "802-3-ethernet.mtu", mtu_value, None],
         ])
 
         dns_server = "8.8.8.8"
         n.add_dns_server_to_iface(iface, dns_server)
 
         n.check_con_settings([
-            [def_con_name, "ipv4.dns", dns_server, None],
+            [con_name, "ipv4.dns", dns_server, None],
         ])
 
         # Check that the checkpoint does not fail silently, ie check after
@@ -118,11 +129,11 @@ class TestNetwork(VirtInstallMachineCase):
         time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
 
         n.check_con_settings([
-            [def_con_name, "802-3-ethernet.mtu", mtu_value, None],
+            [con_name, "802-3-ethernet.mtu", mtu_value, None],
         ])
 
         n.check_con_settings([
-            [def_con_name, "ipv4.dns", dns_server, None],
+            [con_name, "ipv4.dns", dns_server, None],
         ])
 
     @nondestructive

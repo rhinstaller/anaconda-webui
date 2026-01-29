@@ -183,7 +183,7 @@ class Network():
         else:
             b.wait_visible('#autoreconnect:not(:checked)')
 
-    def preinstall_connection_test(self, installer, iface, con_name):
+    def preinstall_connection_test(self, installer, iface, con_name, configured=False):
         n = self
         i = installer
 
@@ -191,10 +191,17 @@ class Network():
         n.check_iface_state(iface, "GENERAL.CONNECTION", con_name)
         n.check_iface_state(iface, "GENERAL.STATE", "connected", match_type="substr")
 
-        # There is single non-persistent connection created in initramfs
-        n.check_con_profile_files(con_name, 1, persistent=False)
-        # There is no persistent profile
-        n.check_con_profile_files("", 0)
+        # Connection was configured by boot options
+        if configured:
+            # The configured initramfs connection was persisted by the backend
+            n.check_con_profile_files(con_name, 1, file_name=con_name)
+            # Check there is only single persistent profile
+            n.check_con_profile_files("", 1)
+        else:
+            # There is single non-persistent connection created in initramfs
+            n.check_con_profile_files(con_name, 1, persistent=False)
+            # There is no persistent profile
+            n.check_con_profile_files("", 0)
 
         n.check_con_settings([
             [con_name, "connection.autoconnect", "yes", None]
@@ -202,6 +209,7 @@ class Network():
 
         n.enter_network()
         n.select_iface(iface)
+        # Edit the connection
         n.set_autoreconnect(False)
         n.exit_network()
 
@@ -211,7 +219,7 @@ class Network():
             [con_name, "connection.autoconnect", "no", None]
         ])
 
-        # The connection was made persistent after editing
+        # The connection is persistent after editing
         n.check_con_profile_files(con_name, 1, file_name=con_name)
         # Check there is only single persistent profile
         n.check_con_profile_files("", 1)
