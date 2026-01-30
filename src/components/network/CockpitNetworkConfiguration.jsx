@@ -13,11 +13,35 @@ import "./CockpitNetworkConfiguration.scss";
 
 const _ = cockpit.gettext;
 
+// Hook to track checkpoint status from the Cockpit networkmanager iframe
+const useNetworkStatus = () => {
+    const [hasActiveCheckpoint, setHasActiveCheckpoint] = useState(false);
+
+    useEffect(() => {
+        const checkpointState = window.sessionStorage.getItem("cockpit_has_checkpoint");
+        setHasActiveCheckpoint(checkpointState === "true");
+
+        const handleCheckpointEvent = (event) => {
+            if (event.key === "cockpit_has_checkpoint") {
+                setHasActiveCheckpoint(event.newValue === "true");
+            }
+        };
+
+        window.addEventListener("storage", handleCheckpointEvent);
+
+        return () => window.removeEventListener("storage", handleCheckpointEvent);
+    }, []);
+
+    return { hasActiveCheckpoint };
+};
+
 export const CockpitNetworkConfiguration = ({
     onCritFail,
     setIsNetworkOpen,
 }) => {
     const [isIframeMounted, setIsIframeMounted] = useState(false);
+    const { hasActiveCheckpoint } = useNetworkStatus();
+    const backdropClass = useMaybeBackdrop();
     const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "cockpit-network-configuration";
 
@@ -31,6 +55,10 @@ export const CockpitNetworkConfiguration = ({
     }, [isIframeMounted, onCritFail]);
 
     const handleClose = () => {
+        // Prevent closing if there's an active checkpoint
+        if (hasActiveCheckpoint) {
+            return;
+        }
         setIsNetworkOpen(false);
     };
 
@@ -57,8 +85,12 @@ export const CockpitNetworkConfiguration = ({
                 </div>
             </ModalBody>
             <ModalFooter>
-                <Button variant="secondary" onClick={handleClose}>
-                    {_("Close")}
+                <Button
+                  variant="secondary"
+                  onClick={handleClose}
+                  isLoading={hasActiveCheckpoint}
+                  isDisabled={hasActiveCheckpoint}>
+                    {hasActiveCheckpoint ? _("Applying changes...") : _("Close")}
                 </Button>
             </ModalFooter>
         </Modal>
