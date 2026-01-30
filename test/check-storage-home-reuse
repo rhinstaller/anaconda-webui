@@ -17,7 +17,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images, run_boot
+from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
 from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
@@ -385,7 +385,6 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
         self._remove_unknown_mountpoints("vdb")
 
-    @run_boot("efi")
     @disk_images([("", 35), ("fedora-rawhide", 15)])
     def testWindowsSingleDisk(self):
         """

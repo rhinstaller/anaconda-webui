@@ -43,8 +43,8 @@ pixel_tests_ignore = ["#anaconda-screen-review-target-system-timezone"]
 
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
-    boot_modes = ["bios"]
-    is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+    boot_modes = ["efi"]
+    is_bios = os.environ.get("TEST_FIRMWARE", "efi") == "bios"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
@@ -74,13 +74,13 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        boot_modes = getattr(method, "boot_modes", ["bios"])
+        boot_modes = getattr(method, "boot_modes", ["efi"])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
-        if self.is_efi and "efi" not in boot_modes:
-            self.skipTest("Skipping for EFI boot mode")
-        elif not self.is_efi and "bios" not in boot_modes:
+        if self.is_bios and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
+        elif not self.is_bios and "efi" not in boot_modes:
+            self.skipTest("Skipping for EFI boot mode")
 
         if "TestPayloadDNF" in self.__class__.__name__:
             if os.environ.get("TEST_PAYLOAD", None) != "dnf":
@@ -291,7 +291,7 @@ class VirtInstallMachineCase(MachineCase):
 
         # FIXME: https://bugzilla.redhat.com/show_bug.cgi?id=2325707
         # This should be removed from the test
-        if self.is_efi:
+        if not self.is_bios:
             # Add efibootmgr entry for the second OS
             distro_name = self.disk_images[0][0].split("-")[0]
             m.execute(f"efibootmgr -c -d /dev/vda -p 15 -L {distro_name} -l '/EFI/{distro_name}/shimx64.efi'")
@@ -303,7 +303,7 @@ class VirtInstallMachineCase(MachineCase):
     def appendResultsToReport(self):
         with open(self.report_file, "r+") as f:
             test_name = f"{self.__class__.__name__}.{self._testMethodName}"
-            firmware = "UEFI" if self.is_efi else "BIOS"
+            firmware = "BIOS" if self.is_bios else "UEFI"
             arch = "x86_64"
             error = super().getError()
             status = "fail" if error else "pass"
@@ -334,10 +334,10 @@ class VirtInstallMachineCase(MachineCase):
 def run_boot(*modes):
     """
     Decorator to run tests only on specific boot modes ('bios', 'efi').
-    The VirtMachine has self.is_efi = True/False set.
-    We need to skip the test if self.is_efi is True but 'efi' is not in the modes list.
+    The VirtMachine has self.is_bios = True/False set.
+    We need to skip the test if self.is_bios is True but 'bios' is not in the modes list.
 
-    The absence of the decorator is equivalent to run_boot("bios").
+    The absence of the decorator is equivalent to run_boot("efi").
 
     :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
     """
