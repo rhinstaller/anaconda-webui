@@ -15,7 +15,6 @@
 
 import os
 import sys
-import time
 
 from testlib import wait
 
@@ -32,7 +31,6 @@ SYSROOT_PATH = "/mnt/sysimage"
 NM_SYSTEM_CONNECTIONS_PATH = "/etc/NetworkManager/system-connections"
 
 # cockpit/pkg/networkmanager/interfaces.js
-COCKPIT_CHECKPOINT_SETTLE_TIME = 1
 COCKPIT_CHECKPOINT_ROLLBACK_TIME = 7
 
 
@@ -242,18 +240,12 @@ class Network():
         b = self.browser
         b.wait_in_text(f"dt:contains('{setting_title}') + dd", setting_value)
 
-    def wait_for_connectivity_check(self):
-        # FIXME: this should wait for the Close button becoming clickable
-        # based on events from cockpit module (TBD)
-        time.sleep(COCKPIT_CHECKPOINT_SETTLE_TIME+0.2)
-
     def set_mtu_on_iface(self, iface, mtu):
         n = self
         n.enter_network()
         n.select_iface(iface)
         n.set_mtu(mtu)
         n.wait_for_iface_setting("MTU", mtu)
-        n.wait_for_connectivity_check()
         n.exit_network()
 
     def set_mtu(self, mtu):
@@ -279,7 +271,6 @@ class Network():
         n.enter_network()
         n.select_iface(iface)
         n.add_dns_server(ip)
-        n.wait_for_connectivity_check()
         n.exit_network()
 
     def add_dns_server(self, ip):
