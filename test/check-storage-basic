@@ -54,7 +54,8 @@ class TestStorageBasic(VirtInstallMachineCase):
         # Check the auto-selected disk's details
         s.check_disk_selected("vda", selected=True, size="16.1 GB")
 
-        # Pixel test the storage step
+        # Wait for the form to be ready before taking a screenshot
+        i.check_next_disabled(False)
         b.assert_pixels(
             "#app",
             "storage-step-basic",
