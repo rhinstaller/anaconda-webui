@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2023 Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
 import cockpit from "cockpit";
 
 import { debug } from "../helpers/log.js";

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2023 Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
 import { BossClient } from "./boss.js";
 import { LocalizationClient } from "./localization.js";
 import { NetworkClient } from "./network.js";
