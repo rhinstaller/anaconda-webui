@@ -1,6 +1,9 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+import os
+from collections import UserDict
+
 import steps
 from step_logger import log_step
 from storage import StorageEncryption
