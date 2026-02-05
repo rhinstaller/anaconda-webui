@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Copyright (C) 2023 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set -eu
 
 # This script implements the coproc approach for the systemd service
