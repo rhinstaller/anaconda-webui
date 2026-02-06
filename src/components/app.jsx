@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
 import { clients } from "../apis/index.js";
@@ -36,7 +36,7 @@ export const ApplicationLoading = () => (
 export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
-    const address = useAddress();
+    const address = useAddress(onCritFail);
 
     useEffect(() => {
         if (!address) {
@@ -129,7 +129,7 @@ const useOsRelease = ({ onCritFail }) => {
     return osRelease;
 };
 
-const useAddress = () => {
+const useAddress = (onCritFail) => {
     const [backendReady, setBackendReady] = useState(false);
     const [address, setAddress] = useState();
 
@@ -143,11 +143,27 @@ const useAddress = () => {
         });
     }, [backendReady]);
 
+    const wasReadyRef = useRef(false);
+
     useEffect(() => {
         cockpit.file("/run/anaconda/backend_ready").watch(
-            res => setBackendReady(res !== null)
+            (content) => {
+                const isReady = content !== null;
+
+                if (isReady) {
+                    wasReadyRef.current = true;
+                }
+
+                setBackendReady(isReady);
+
+                if (!isReady && wasReadyRef.current && onCritFail) {
+                    onCritFail()({
+                        message: _("The Anaconda installation has stopped unexpectedly."),
+                    });
+                }
+            }
         );
-    }, []);
+    }, [onCritFail]);
 
     return address;
 };
