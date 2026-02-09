@@ -113,7 +113,7 @@ class TestNetwork(VirtInstallMachineCase):
         ])
 
         # Check that the checkpoint does not fail silently, ie check after
-        # checkpoint timeout
+        # checkpoint timeout (INSTALLER-4594)
         time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
 
         n.check_con_settings([
