@@ -58,15 +58,15 @@ export const buildBugSummary = (exception) => {
 };
 
 /**
- * Build bug description from initial description, stacktrace, and environment info
- * @param {Object} params - { initialDescription, stacktrace, environmentInfo }
+ * Build bug description from user description, stacktrace, and environment info
+ * @param {Object} params - { bugDescription, stacktrace, environmentInfo }
  * @returns {String} - The complete bug description
  */
-export const buildBugDescription = ({ environmentInfo, initialDescription, stacktrace }) => {
+export const buildBugDescription = ({ bugDescription, environmentInfo, stacktrace }) => {
     const sections = [];
 
-    if (initialDescription?.trim()) {
-        sections.push(initialDescription.trim());
+    if (bugDescription?.trim()) {
+        sections.push(bugDescription.trim());
     }
 
     if (stacktrace) {
