@@ -16,6 +16,7 @@ import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/compon
 import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { InputGroup, InputGroupItem } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { Tab, Tabs, TabTitleText } from "@patternfly/react-core/dist/esm/components/Tabs/index.js";
 import { TextArea } from "@patternfly/react-core/dist/esm/components/TextArea/index.js";
@@ -23,6 +24,8 @@ import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/
 import { ValidatedOptions } from "@patternfly/react-core/dist/esm/helpers/constants.js";
 import { DisconnectedIcon } from "@patternfly/react-icons/dist/esm/icons/disconnected-icon";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
+import { EyeIcon } from "@patternfly/react-icons/dist/esm/icons/eye-icon";
+import { EyeSlashIcon } from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
 
 import {
     BUGZILLA_BASE_URL,
@@ -211,6 +214,7 @@ const BZAPIKeyEntryForm = ({
 }) => {
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const apiKeyUrl = convertToExtlinkIfNeeded(`${BUGZILLA_BASE_URL}/userprefs.cgi?tab=apikey`, !isBootIso);
+    const [apiKeyHidden, setApiKeyHidden] = useState(true);
 
     return (
         <>
@@ -228,12 +232,25 @@ const BZAPIKeyEntryForm = ({
               isRequired
               fieldId={idPrefix + "-bugzilla-apikey"}
             >
-                <TextInput
-                  id={idPrefix + "-bugzilla-apikey"}
-                  value={bugzillaApiKey}
-                  onChange={(_event, val) => onApiKeyChange(val)}
-                  type="password"
-                />
+                <InputGroup>
+                    <InputGroupItem isFill>
+                        <TextInput
+                          id={idPrefix + "-bugzilla-apikey"}
+                          value={bugzillaApiKey}
+                          onChange={(_event, val) => onApiKeyChange(val)}
+                          type={apiKeyHidden ? "password" : "text"}
+                        />
+                    </InputGroupItem>
+                    <InputGroupItem>
+                        <Button
+                          variant="control"
+                          onClick={() => setApiKeyHidden(!apiKeyHidden)}
+                          aria-label={apiKeyHidden ? _("Show API key") : _("Hide API key")}
+                        >
+                            {apiKeyHidden ? <EyeIcon /> : <EyeSlashIcon />}
+                        </Button>
+                    </InputGroupItem>
+                </InputGroup>
                 <HelperText>
                     <HelperTextItem>
                         {fmtToFragments(
