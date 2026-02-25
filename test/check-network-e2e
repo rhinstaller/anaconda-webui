@@ -5,7 +5,7 @@
 
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
-from network import SYSROOT_PATH, WIRED_CONNECTION_NAME, Network
+from network import SYSROOT_PATH, Network
 from progress import Progress
 from testlib import test_main  # pylint: disable=import-error
 
@@ -30,8 +30,8 @@ class TestNetwork_E2E(VirtInstallMachineCase):
         i.open()
 
         iface = n.get_the_iface()
-        con_name = WIRED_CONNECTION_NAME
-        n.preinstall_connection_test(i, iface, con_name)
+        n.preinstall_connection_test(i, iface)
+        con_name = iface
 
         mtu_value = "1600"
         n.set_mtu_on_iface(iface, mtu_value)
