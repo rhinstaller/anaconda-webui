@@ -171,25 +171,28 @@ class Network():
         else:
             b.wait_visible('#autoreconnect:not(:checked)')
 
-    def preinstall_connection_test(self, installer, iface, con_name, configured=False):
+    def preinstall_connection_test(self, installer, iface, configured=False):
         n = self
         i = installer
 
-        # The automatic connection from initramfs is active on the iface.
-        n.check_iface_state(iface, "GENERAL.CONNECTION", con_name)
-        n.check_iface_state(iface, "GENERAL.STATE", "connected", match_type="substr")
-
-        # Connection was configured by boot options
         if configured:
+            # Connection was configured by boot options
+            con_name = iface
             # The configured initramfs connection was persisted by the backend
             n.check_con_profile_files(con_name, 1, file_name=con_name)
             # Check there is only single persistent profile
             n.check_con_profile_files("", 1)
         else:
+            # Automatic default connection was created by NM in initramfs
+            con_name = WIRED_CONNECTION_NAME
             # There is single non-persistent connection created in initramfs
             n.check_con_profile_files(con_name, 1, persistent=False)
             # There is no persistent profile
             n.check_con_profile_files("", 0)
+
+        # The connection is active on the iface.
+        n.check_iface_state(iface, "GENERAL.CONNECTION", con_name)
+        n.check_iface_state(iface, "GENERAL.STATE", "connected", match_type="substr")
 
         n.check_con_settings([
             [con_name, "connection.autoconnect", "yes", None]
@@ -200,6 +203,10 @@ class Network():
         # Edit the connection
         n.set_autoreconnect(False)
         n.exit_network()
+
+        # After editing, therefore persisting, the automatic default connection
+        # is updated by Cockpit (COCKPIT-1750)
+        con_name = iface
 
         n.wait_for_con_profile_file(con_name)
 
