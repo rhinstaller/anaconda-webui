@@ -35,7 +35,7 @@ import {
     createBugzillaEnterBug
 } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
-import { error } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 
 import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -507,6 +507,8 @@ const BZExceptionReportFlow = ({
             }
 
             const response = JSON.parse(result);
+
+            debug("ANACONDA_BUG_REPORT_ID=" + response.bug_id);
 
             // Success! Open the created bug
             const bugUrl = response.url;
