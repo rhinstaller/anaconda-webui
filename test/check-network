@@ -71,7 +71,10 @@ class TestNetwork(VirtInstallMachineCase):
         # Check there is only single persistent profile
         n.check_con_profile_files("", 1, root=SYSROOT_PATH)
 
-    @run_on_vm_setups("", "bootopts-net1")
+    # FIXME add "" vm_setup back when
+    # https://github.com/cockpit-project/cockpit/issues/22926 is fixed
+    #@run_on_vm_setups("", "bootopts-net1")
+    @run_on_vm_setups("bootopts-net1")
     def testConfigurationPreInstall(self):
         """
         Description:
