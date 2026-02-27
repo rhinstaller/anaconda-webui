@@ -373,7 +373,7 @@ const BZReportDetailsForm = ({
                     )}
                 </Content>
                 <Content>
-                    {_("These log files may contain sensitive information such as IP addresses, usernames, or other system details. Attachments on Bugzilla issues are marked private by default.")}
+                    {_("These log files may contain sensitive information such as IP addresses, usernames, or other system details.")}
                 </Content>
                 <Content>
                     {fmtToFragments(

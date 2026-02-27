@@ -67,7 +67,7 @@ for log_file in log_files:
             file_name=os.path.basename(log_file),
             content_type="text/plain",
             is_patch=False,
-            is_private=True
+            is_private=False
         )
 
         if attachment_id:
