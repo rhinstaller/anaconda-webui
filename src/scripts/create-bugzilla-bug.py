@@ -13,7 +13,8 @@
 #     "summary": "Bug summary",
 #     "description": "Full bug description",
 #     "log_files": ["/tmp/journal.log", "/tmp/anaconda-webui.log"],
-#     "api_key": "your-api-key-here"    # Required for authentication
+#     "api_key": "your-api-key-here",   # Required for authentication
+#     "groups": ["fedora_contrib_private"]  # Optional: restrict bug to these groups
 # }
 #
 # Outputs JSON to stdout:
@@ -41,18 +42,24 @@ summary = input_data.get("summary", "") or "Anaconda installer error"
 description = input_data.get("description", "")
 log_files = input_data.get("log_files", [])
 api_key = input_data.get("api_key")
+groups = input_data.get("groups")  # Optional: list of group names to restrict the bug to
 
 # Connect to Bugzilla with API key (authentication already validated)
 bz = bugzilla.Bugzilla(BUGZILLA_BASE_URL, api_key=api_key)
 
+# Build createbug kwargs; add groups only when user requested restricted access
+createbug_kwargs = {
+    "product": product,
+    "version": version,
+    "component": component,
+    "summary": summary,
+    "description": description,
+}
+if groups:
+    createbug_kwargs["groups"] = groups
+
 # Create the bug
-newbug = bz.createbug(
-    product=product,
-    version=version,
-    component=component,
-    summary=summary,
-    description=description
-)
+newbug = bz.createbug(**createbug_kwargs)
 
 bug_id = newbug.id
 
@@ -67,7 +74,7 @@ for log_file in log_files:
             file_name=os.path.basename(log_file),
             content_type="text/plain",
             is_patch=False,
-            is_private=True
+            is_private=False
         )
 
         if attachment_id:
