@@ -108,8 +108,7 @@ const addExceptionDataToReportURL = (url, exception, bugSummary, bugDescription,
     const newUrl = new URL(url);
 
     if (bugSummary) {
-        // Add "WebUI: " prefix for URL format (matching original behavior)
-        newUrl.searchParams.append("short_desc", "WebUI: " + bugSummary);
+        newUrl.searchParams.append("short_desc", bugSummary);
     }
 
     const stacktrace = exception?.frontendException?.stack;
