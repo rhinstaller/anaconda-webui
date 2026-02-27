@@ -12,6 +12,7 @@ import { fmt_to_fragments as fmtToFragments } from "utils";
 import React, { cloneElement, useContext, useEffect, useState } from "react";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
@@ -46,6 +47,9 @@ import { ExternalLink } from "./common/ExternalLink.jsx";
 import "./Error.scss";
 
 const _ = cockpit.gettext;
+// When "Restrict access to the report" is checked, the bug is restricted to this group (GTK uses the same default).
+const DEFAULT_RESTRICT_GROUP = "fedora_contrib_private";
+
 const JOURNAL_LOG = "/tmp/journal.log";
 const ANACONDA_LOG = "/tmp/anaconda.log";
 const STORAGE_LOG = "/tmp/storage.log";
@@ -320,11 +324,15 @@ const BZReportDetailsForm = ({
     exception,
     idPrefix,
     onDescriptionChange,
-    onSummaryChange
+    onRestrictAccessChange,
+    onSummaryChange,
+    restrictAccessToReport
 }) => {
     const component = componentFromException(exception);
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const manualReportLinkURL = useBugzillaPrefiledReportURL(component, exception);
     const logFiles = LOG_FILES.map(file => file.replace("/tmp/", ""));
+    const restrictAccessLearnMoreURL = `${BUGZILLA_BASE_URL}/userprefs.cgi?tab=permissions`;
 
     return (
         <>
@@ -360,6 +368,23 @@ const BZReportDetailsForm = ({
               idPrefix={idPrefix}
               onDescriptionChange={onDescriptionChange}
             />
+            <div className="pf-v5-u-pt-md">
+                <Checkbox
+                  id={idPrefix + "-restrict-access"}
+                  isChecked={restrictAccessToReport}
+                  label={_("Restrict access to the report")}
+                  description={fmtToFragments(
+                      _("Restricts the report to the $0 group. $1"),
+                      <strong>{DEFAULT_RESTRICT_GROUP}</strong>,
+                      (
+                          <ExternalLink href={convertToExtlinkIfNeeded(restrictAccessLearnMoreURL, !isBootIso)}>
+                              {_("Learn more about restricted access in the configuration")}
+                          </ExternalLink>
+                      )
+                  )}
+                  onChange={(_event, checked) => onRestrictAccessChange(checked)}
+                />
+            </div>
             <Divider />
             <Alert
               title={_("Automatic log file upload")}
@@ -373,7 +398,7 @@ const BZReportDetailsForm = ({
                     )}
                 </Content>
                 <Content>
-                    {_("These log files may contain sensitive information such as IP addresses, usernames, or other system details. Attachments on Bugzilla issues are marked private by default.")}
+                    {_("These log files may contain sensitive information such as IP addresses, usernames, or other system details.")}
                 </Content>
                 <Content>
                     {fmtToFragments(
@@ -425,6 +450,7 @@ const BZExceptionReportFlow = ({
     const [bugDescription, setBugDescription] = useState(
         buildBugSummary(exception)
     );
+    const [restrictAccessToReport, setRestrictAccessToReport] = useState(false);
 
     useEffect(() => {
         // Let's make sure we have the latest logs from journal saved to /tmp/journal.log
@@ -490,6 +516,9 @@ const BZExceptionReportFlow = ({
                 summary: bugSummary,
                 version,
             };
+            if (restrictAccessToReport) {
+                bugData.groups = [DEFAULT_RESTRICT_GROUP];
+            }
 
             const inputJson = JSON.stringify(bugData);
             let result;
@@ -554,7 +583,9 @@ const BZExceptionReportFlow = ({
                           exception={exception}
                           idPrefix={idPrefix}
                           onDescriptionChange={setBugDescription}
+                          onRestrictAccessChange={setRestrictAccessToReport}
                           onSummaryChange={setBugSummary}
+                          restrictAccessToReport={restrictAccessToReport}
                         />
                     )}
                 </Form>
