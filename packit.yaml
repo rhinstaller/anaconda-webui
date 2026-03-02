@@ -40,8 +40,10 @@ jobs:
 
   - job: koji_build
     trigger: commit
-    sidetag_group: anaconda-releases
-    dependents:
-      - anaconda
+    dist_git_branches:
+      - fedora-development
+
+  - job: bodhi_update
+    trigger: koji_build
     dist_git_branches:
       - fedora-development
