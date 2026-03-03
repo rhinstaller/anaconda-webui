@@ -806,12 +806,25 @@ export class ErrorBoundary extends React.Component {
     componentDidMount () {
         const errorHandler = async (_error) => {
             error("ErrorBoundary caught an error:", _error);
-            const arrayStackFrame = await StackTrace.fromError(_error);
-            const stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
-            this.setState({
-                frontendException: { message: _error.message, stack },
-                hasError: true
-            });
+            const hasStack = !!_error?.stack;
+            if (hasStack) {
+                let stack;
+                try {
+                    const arrayStackFrame = await StackTrace.fromError(_error);
+                    stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
+                } catch {
+                    stack = _error.stack;
+                }
+                this.setState({
+                    frontendException: { ..._error, stack },
+                    hasError: true
+                });
+            } else {
+                this.setState({
+                    backendException: { ..._error, contextData: {} },
+                    hasError: true
+                });
+            }
             return true;
         };
         window.onerror = async (message, source, lineno, colno, _error) => errorHandler(_error);
