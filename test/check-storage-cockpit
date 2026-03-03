@@ -577,7 +577,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         i.next(next_page=i.steps.CUSTOM_MOUNT_POINT)
 
-        s.check_mountpoint_row(1, "/", "root", True, "btrfs")
+        s.check_mountpoint_row(1, "/", "root", False, "btrfs")
         s.check_mountpoint_row(2, "/boot", "vda2", False, "ext4")
         s.check_mountpoint_row(3, "/home", "home", False, "btrfs")
 

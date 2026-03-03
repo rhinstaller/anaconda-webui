@@ -59,12 +59,17 @@ const getInitialRequests = (requests, mountPointConstraints) => {
     const constrainedRequests = mountPointConstraints.filter(constraint =>
         !!constraint["mount-point"].v).map(constraint => {
         const originalRequest = requests.find(request => request["mount-point"] === constraint["mount-point"].v);
-        const request = ({ "mount-point": constraint["mount-point"].v, reformat: constraint["mount-point"].v === "/" });
+        const mountPoint = constraint["mount-point"].v;
 
+        // If user already set device for this mount point the Request is consider complete, respect their choices
+        if (originalRequest?.["device-spec"]) {
+            return originalRequest;
+        }
+
+        const request = ({ "mount-point": mountPoint, reformat: mountPoint === "/" });
         if (originalRequest) {
             return { ...originalRequest, ...request };
         }
-
         return request;
     });
 
