@@ -16,54 +16,28 @@ jobs:
     permissions:
       statuses: write
     runs-on: ubuntu-latest
-    # Only run when no specific compose_id is provided
-    if: github.event.inputs.compose_id == '' || github.event.inputs.compose_id == null
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Install wikitcms
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip3 install wikitcms
-
-      - name: Get current event compose ID
+      - name: Get compose ID
         id: get-compose
         run: |
-          # Use Python script to get the current event compose ID from wiki
-          COMPOSE_ID=$(python3 test/fedora-wiki/get_current_compose.py)
-          echo "compose_id=$COMPOSE_ID" >> $GITHUB_OUTPUT
+          if [ -n "${{ github.event.inputs.compose_id }}" ]; then
+            echo "compose_id=${{ github.event.inputs.compose_id }}" >> $GITHUB_OUTPUT
+          else
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+            sudo pip3 install wikitcms
+            COMPOSE_ID=$(python3 test/fedora-wiki/get_current_compose.py)
+            echo "compose_id=$COMPOSE_ID" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Trigger compose scenario for current event
+      - name: Trigger compose tests
         run: |
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
           export TEST_COMPOSE=${{ steps.get-compose.outputs.compose_id }}
-          echo "Testing against current event compose: $TEST_COMPOSE"
-          if [ "${{ github.event.inputs.staging }}" = "true" ]; then
-            make test-compose-staging
-          else
-            make test-compose
-          fi
-
-  trigger-single:
-    environment: 'fedora-wiki'
-    permissions:
-      statuses: write
-    runs-on: ubuntu-latest
-    # Only run when specific compose_id is provided
-    if: github.event.inputs.compose_id != '' && github.event.inputs.compose_id != null
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v4
-
-      - name: Trigger the specified compose scenario
-        run: |
-          mkdir -p ~/.config/cockpit-dev
-          echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
-          export TEST_COMPOSE=${{ github.event.inputs.compose_id }}
-          echo "Testing against specified compose: $TEST_COMPOSE"
           if [ "${{ github.event.inputs.staging }}" = "true" ]; then
             make test-compose-staging
           else
