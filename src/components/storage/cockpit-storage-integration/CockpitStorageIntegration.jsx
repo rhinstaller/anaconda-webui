@@ -120,7 +120,7 @@ export const CockpitStorageIntegration = ({
         if (isIframeMounted) {
             const iframe = document.getElementById("cockpit-storage-frame");
             iframe.contentWindow.addEventListener("error", exception => {
-                onCritFail({ context: _("Storage plugin failed"), isFrontend: true })({ message: exception.error.message, stack: exception.error.stack });
+                onCritFail({ context: _("Storage plugin failed") })({ message: exception.error.message, stack: exception.error.stack });
             });
         }
     }, [isIframeMounted, onCritFail]);

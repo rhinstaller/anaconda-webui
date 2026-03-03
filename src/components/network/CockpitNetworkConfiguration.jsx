@@ -25,7 +25,7 @@ export const CockpitNetworkConfiguration = ({
         if (isIframeMounted) {
             const iframe = document.getElementById("cockpit-network-frame");
             iframe.contentWindow.addEventListener("error", exception => {
-                onCritFail({ context: _("Network plugin failed"), isFrontend: true })({ message: exception.error.message, stack: exception.error.stack });
+                onCritFail({ context: _("Network plugin failed") })({ message: exception.error.message, stack: exception.error.stack });
             });
         }
     }, [isIframeMounted, onCritFail]);
