@@ -763,6 +763,31 @@ export const UserIssue = ({ setIsReportIssueOpen }) => {
     );
 };
 
+/** Build exception state from _error and contextData. Copies message/name explicitly (Error props are non-enumerable). */
+const buildExceptionState = async (_error, contextData = {}) => {
+    const message = _error?.message ?? (typeof _error?.toString === "function" ? _error.toString() : String(_error));
+    const name = _error?.name;
+    const hasStack = !!_error?.stack;
+    if (hasStack) {
+        let stack;
+        try {
+            const arrayStackFrame = await StackTrace.fromError(_error);
+            stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
+        } catch (parseError) {
+            error("StackTrace.fromError failed, using raw stack", parseError);
+            stack = _error.stack;
+        }
+        return {
+            frontendException: { contextData, message, name, stack },
+            hasError: true
+        };
+    }
+    return {
+        backendException: { contextData, message, name },
+        hasError: true
+    };
+};
+
 export class ErrorBoundary extends React.Component {
     constructor (props) {
         super(props);
@@ -775,25 +800,8 @@ export class ErrorBoundary extends React.Component {
     componentDidMount () {
         const errorHandler = async (_error) => {
             error("ErrorBoundary caught an error:", _error);
-            const hasStack = !!_error?.stack;
-            if (hasStack) {
-                let stack;
-                try {
-                    const arrayStackFrame = await StackTrace.fromError(_error);
-                    stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
-                } catch {
-                    stack = _error.stack;
-                }
-                this.setState({
-                    frontendException: { ..._error, stack },
-                    hasError: true
-                });
-            } else {
-                this.setState({
-                    backendException: { ..._error, contextData: {} },
-                    hasError: true
-                });
-            }
+            const stateUpdate = await buildExceptionState(_error, {});
+            this.setState(stateUpdate);
             return true;
         };
         window.onerror = async (message, source, lineno, colno, _error) => errorHandler(_error);
@@ -807,15 +815,12 @@ export class ErrorBoundary extends React.Component {
     }
 
     onCritFailBackend = (arg) => {
-        const { context, isFrontEnd } = arg || {};
+        const { context } = arg || {};
 
-        return (_error) => {
+        return async (_error) => {
             error("ErrorBoundary caught an error:", _error, context);
-            if (isFrontEnd) {
-                this.setState({ frontendException: { ..._error, contextData: { context } }, hasError: true });
-            } else {
-                this.setState({ backendException: { ..._error, contextData: { context } }, hasError: true });
-            }
+            const stateUpdate = await buildExceptionState(_error, { context });
+            this.setState(stateUpdate);
         };
     };
 
