@@ -7,11 +7,12 @@ from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from network import SYSROOT_PATH, Network
 from progress import Progress
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestNetwork_E2E(VirtInstallMachineCase):
 
+    @timeout(1200)
     def testConnectionsE2E(self):
         """
         Description:

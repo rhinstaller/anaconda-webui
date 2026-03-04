@@ -11,7 +11,7 @@ from password import Password
 from progress import Progress
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 from utils import get_pretty_name
 
 TEST_DIR = os.path.dirname(__file__)
@@ -20,6 +20,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageEraseAll_E2E(VirtInstallMachineCase):
+    @timeout(1200)
     def testGuidedEncrypted(self):
         """
         Description:
@@ -67,6 +68,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         self.assertEqual(vda3_root["size"], "13G")
 
     @disk_images([("", 15), ("debian-testing", 15)])
+    @timeout(1200)
     def testGuidedMultiSelect(self):
         """
         Description:
@@ -118,6 +120,7 @@ class TestStorageEraseAll_E2E(VirtInstallMachineCase):
         # self.assertIn("Debian GNU/Linux", pretty_name)
 
     @disk_images([("", 15), ("", 15)])
+    @timeout(1200)
     def testGuidedMultiEmptyAll(self):
         """
         Description:

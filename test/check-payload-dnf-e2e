@@ -6,12 +6,13 @@
 from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from progress import Progress
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 from utils import get_pretty_name
 
 
 class TestPayloadDNF_E2E(VirtInstallMachineCase):
     @disk_images([("", 15)])
+    @timeout(1200)
     def testDefaultClosestMirror(self):
         """
         Description:

@@ -8,13 +8,14 @@ from installer import Installer
 from operating_systems import DualBootHelper_E2E
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageUseFreeSpace_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
     @disk_images([("debian-testing", 20)])
     @run_boot("bios", "efi")
+    @timeout(1200)
     def testScenarioUseFreeSpace(self):
         """
         Description:
