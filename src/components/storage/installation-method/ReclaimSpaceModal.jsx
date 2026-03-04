@@ -6,7 +6,7 @@ import cockpit from "cockpit";
 
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ActionList } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
@@ -18,6 +18,7 @@ import { Panel } from "@patternfly/react-core/dist/esm/components/Panel/index.js
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { Slider } from "@patternfly/react-core/dist/esm/components/Slider/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
+import { Tooltip } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { CompressArrowsAltIcon } from "@patternfly/react-icons/dist/esm/icons/compress-arrows-alt-icon";
@@ -367,7 +368,11 @@ const DeviceActions = ({ device, isExtendedPartition, level, setUnappliedActions
         <Flex spaceItems={{ default: "spaceItemsXs" }} className="reclaim-actions">
             <DeviceActionShrink {...deviceActionProps} />
             <DeviceActionDelete {...deviceActionProps} />
-            {hasUnappliedActions && <Button variant="plain" icon={<UndoIcon />} onClick={onUndo} aria-label={_("undo")} />}
+            {hasUnappliedActions && (
+                <Tooltip content={_("Undo last action")}>
+                    <Button variant="plain" icon={<UndoIcon />} onClick={onUndo} aria-label={_("undo")} />
+                </Tooltip>
+            )}
         </Flex>
     );
 };
@@ -385,13 +390,15 @@ const DeviceActionDelete = ({ device, hasBeenRemoved, newDeviceSize, onAction })
     // Do not show 'delete' text for disks directly, we show 'delete' text for the contained partitions
     const deleteText = device.type.v !== "disk" ? <DeleteText /> : "";
     const deleteButton = (
-        <Button
-          aria-label={_("delete")}
-          icon={<TrashIcon />}
-          isAriaDisabled={isRemoveDisabled}
-          onClick={onRemove}
-          variant="plain"
-        />
+        <Tooltip content={_("Delete partition")}>
+            <Button
+              aria-label={_("delete")}
+              icon={<TrashIcon />}
+              isAriaDisabled={isRemoveDisabled}
+              onClick={onRemove}
+              variant="plain"
+            />
+        </Tooltip>
     );
 
     if (newDeviceSize !== undefined) {
@@ -447,6 +454,9 @@ const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction })
 };
 
 const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
+    const shrinkButtonRef = useRef(null);
+    const shrinkButtonTooltipId = idPrefix + "-shrink-tooltip-" + device["device-id"].v;
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [value, setValue] = useState(device.total.v);
     const originalValue = cockpit.format_bytes(device.total.v, { separate: true })[0];
     const originalUnit = cockpit.format_bytes(device.total.v, { separate: true })[1];
@@ -457,66 +467,86 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     // Therefore let's use a seperate TextInput component for the input value
     const normalizedValue = inputValue.toString().replace(",", ".");
 
-    const shrinkButton = <Button variant="plain" isDisabled={isAriaDisabled} icon={<CompressArrowsAltIcon />} aria-label={_("shrink")} />;
+    const shrinkButton = (
+        <Button
+          ref={shrinkButtonRef}
+          variant="plain"
+          isAriaDisabled={isAriaDisabled}
+          icon={<CompressArrowsAltIcon />}
+          aria-label={_("shrink")}
+          aria-describedby={shrinkButtonTooltipId}
+        />
+    );
 
     return (
-        <Popover
-          aria-label={_("shrink")}
-          id={idPrefix + "-shrink"}
-          hasAutoWidth
-          bodyContent={() => (
-              <Flex
-                alignItems={{ default: "alignItemsFlexStart" }}
-                spaceItems={{ default: "spaceItemsMd" }}
-              >
-                  <Slider
-                    areCustomStepsContinuous
-                    className={idPrefix + "-shrink-slider"}
-                    id={idPrefix + "-shrink-slider"}
-                    inputLabel={originalUnit}
-                    value={value * 100 / device.total.v}
-                    showBoundaries={false}
-                    onChange={(_, sliderValue) => {
-                        const newValue = Math.round((sliderValue / 100) * device.total.v);
-                        setValue(newValue);
-                        setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
-                    }}
-                    customSteps={[
-                        { label: "0", value: 0 },
-                        { label: cockpit.format_bytes(device.total.v), value: 100 },
-                    ]}
-                  />
-                  <InputGroup>
-                      <InputGroupItem>
-                          <TextInput
-                            value={inputValue}
-                            onChange={(_event, val) => setInputValue(val)}
-                            onBlur={() => {
-                                const newValue = Math.min(device.total.v, Math.max(0, normalizedValue * unitMultiplier[originalUnit]));
-                                if (Number.isNaN(newValue)) {
-                                    setInputValue(cockpit.format_bytes(value, originalUnit, { separate: true })[0]);
-                                    return;
-                                }
-                                setValue(newValue);
-                                setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
-                            }}
-                            id={idPrefix + "-shrink-input"}
-                          />
-                      </InputGroupItem>
-                      <InputGroupText>{originalUnit}</InputGroupText>
-                  </InputGroup>
-                  <Button
-                    id={idPrefix + "-shrink-button"}
-                    variant="primary"
-                    isAriaDisabled={value === 0 || value === device.total.v}
-                    onClick={() => onShrink(value)}>
-                      {_("Resize")}
-                  </Button>
-              </Flex>
-          )}
-        >
-            {shrinkButton}
-        </Popover>
+        <>
+            <Popover
+              aria-label={_("shrink")}
+              id={idPrefix + "-shrink"}
+              hasAutoWidth
+              isVisible={isPopoverOpen}
+              onHide={() => setIsPopoverOpen(false)}
+              shouldOpen={(_event, show) => { if (!isAriaDisabled) { setIsPopoverOpen(true); show(_event, true) } }}
+              shouldClose={(_event, hide) => { setIsPopoverOpen(false); hide(_event) }}
+              bodyContent={() => (
+                  <Flex
+                    alignItems={{ default: "alignItemsFlexStart" }}
+                    spaceItems={{ default: "spaceItemsMd" }}
+                  >
+                      <Slider
+                        areCustomStepsContinuous
+                        className={idPrefix + "-shrink-slider"}
+                        id={idPrefix + "-shrink-slider"}
+                        inputLabel={originalUnit}
+                        value={value * 100 / device.total.v}
+                        showBoundaries={false}
+                        onChange={(_, sliderValue) => {
+                            const newValue = Math.round((sliderValue / 100) * device.total.v);
+                            setValue(newValue);
+                            setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
+                        }}
+                        customSteps={[
+                            { label: "0", value: 0 },
+                            { label: cockpit.format_bytes(device.total.v), value: 100 },
+                        ]}
+                      />
+                      <InputGroup>
+                          <InputGroupItem>
+                              <TextInput
+                                value={inputValue}
+                                onChange={(_event, val) => setInputValue(val)}
+                                onBlur={() => {
+                                    const newValue = Math.min(device.total.v, Math.max(0, normalizedValue * unitMultiplier[originalUnit]));
+                                    if (Number.isNaN(newValue)) {
+                                        setInputValue(cockpit.format_bytes(value, originalUnit, { separate: true })[0]);
+                                        return;
+                                    }
+                                    setValue(newValue);
+                                    setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
+                                }}
+                                id={idPrefix + "-shrink-input"}
+                              />
+                          </InputGroupItem>
+                          <InputGroupText>{originalUnit}</InputGroupText>
+                      </InputGroup>
+                      <Button
+                        id={idPrefix + "-shrink-button"}
+                        variant="primary"
+                        isAriaDisabled={value === 0 || value === device.total.v}
+                        onClick={() => onShrink(value)}>
+                          {_("Resize")}
+                      </Button>
+                  </Flex>
+              )}
+            >
+                {shrinkButton}
+            </Popover>
+            <Tooltip
+              id={shrinkButtonTooltipId}
+              content={_("Resize partition")}
+              triggerRef={shrinkButtonRef}
+            />
+        </>
     );
 };
 
