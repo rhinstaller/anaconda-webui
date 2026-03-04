@@ -8,7 +8,7 @@ from installer import Installer
 from review import Review
 from storage import Storage
 from storagelib import StorageCase  # pylint: disable=import-error
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
@@ -26,6 +26,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
 
     @disk_images([('', 15), ('', 15), ('', 15)])
+    @timeout(1200)
     def testRAIDonPartitions(self):
         """
         Description:
@@ -122,6 +123,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
 
     @disk_images([("", 15), ("", 15), ("", 15)])
     @run_boot("bios", "efi")
+    @timeout(1200)
     def testRAID0Scenario_0(self):
         """
         Description:
@@ -201,6 +203,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         self.assertEqual(raid_part["mountpoints"], ["/"])
         self.assertEqual(raid_part["size"], "30G")
 
+    @timeout(1200)
     def testSWAP(self):
         """
         Description:

@@ -7,7 +7,7 @@ from anacondalib import VirtInstallMachineCase, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
@@ -41,6 +41,7 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
         """)
 
     @run_boot("efi")
+    @timeout(1200)
     def testPreserveHome(self):
         """
         Description:

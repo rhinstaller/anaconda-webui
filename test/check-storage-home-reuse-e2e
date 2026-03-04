@@ -9,7 +9,7 @@ from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from progress import Progress
 from storage import Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 from utils import pretend_default_scheme
 
 TEST_DIR = os.path.dirname(__file__)
@@ -83,6 +83,7 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
         self._remove_unknown_mountpoints()
 
     @disk_images([("fedora-rawhide", 15)])
+    @timeout(1200)
     def testBasic(self):
         """
         Description:
