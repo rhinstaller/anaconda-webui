@@ -23,6 +23,7 @@ import {
 
 import { StorageContext, TargetSystemRootContext } from "../../../contexts/Common.jsx";
 
+import { useMaybeBackdrop } from "../../../hooks/CockpitIntegration.jsx";
 import {
     useMountPointConstraints,
     useOriginalDevices,
@@ -45,24 +46,6 @@ const ReturnToInstallationButton = ({ onAction }) => (
         {_("Return to installation")}
     </Button>
 );
-
-export const useMaybeBackdrop = () => {
-    const [hasDialogOpen, setHasDialogOpen] = useState(false);
-
-    useEffect(() => {
-        const handleStorageEvent = (event) => {
-            if (event.key === "cockpit_has_modal") {
-                setHasDialogOpen(event.newValue === "true");
-            }
-        };
-
-        window.addEventListener("storage", handleStorageEvent);
-
-        return () => window.removeEventListener("storage", handleStorageEvent);
-    }, []);
-
-    return hasDialogOpen ? "cockpit-has-modal" : "";
-};
 
 const CockpitStorageConfirmationModal = ({ handleCancelOpenModal, handleConfirmOpenModal, showConfirmation }) => {
     return (

@@ -9,6 +9,8 @@ import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
+import { useMaybeBackdrop } from "../../hooks/CockpitIntegration.jsx";
+
 import "./CockpitNetworkConfiguration.scss";
 
 const _ = cockpit.gettext;
@@ -69,7 +71,7 @@ export const CockpitNetworkConfiguration = ({
           isOpen
           onClose={handleClose}
           showClose={false}
-          className={idPrefix + "-modal-page-section"}
+          className={backdropClass + " " + idPrefix + "-modal-page-section"}
           variant={ModalVariant.large}>
             <ModalHeader title={_("Network Configuration")} />
             <ModalBody style={{ display: "flex", flexDirection: "column", height: "100%" }}>
