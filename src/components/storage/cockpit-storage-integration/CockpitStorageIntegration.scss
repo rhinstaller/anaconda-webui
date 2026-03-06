@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 @import "global-variables";
-@import "@patternfly/patternfly/components/Backdrop/backdrop";
+@import "../../../styles/cockpit-iframe-backdrop";
 
 .cockpit-storage-integration-modal-page-section {
     width: 100%;
@@ -78,26 +78,4 @@ ul.cockpit-storage-integration-requirements-hint-list {
     .pf-v6-c-helper-text__item-text {
         color: unset;
     }
-}
-
-// Simulate Backdrop behavior for modals in the iframe
-%iframe-zindex {
-  position: relative;
-  z-index: 10;
-}
-
-iframe {
-  @extend %iframe-zindex;
-}
-
-// Simulate a PF background scrim
-.cockpit-has-modal {
-  @extend %iframe-zindex;
-
-  &::after {
-    @extend .pf-v6-c-backdrop;
-    --pf-v6-c-backdrop--Position: absolute;
-    content: "";
-    z-index: 9;
-  }
 }
