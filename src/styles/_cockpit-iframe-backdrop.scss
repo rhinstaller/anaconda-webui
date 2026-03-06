@@ -1,0 +1,27 @@
+/*
+ * Copyright (C) 2026 Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+@import "@patternfly/patternfly/components/Backdrop/backdrop";
+
+// Simulate Backdrop behavior for modals in the iframe
+%iframe-zindex {
+  position: relative;
+  z-index: 10;
+}
+
+iframe {
+  @extend %iframe-zindex;
+}
+
+// Simulate a PF background scrim
+.cockpit-has-modal {
+  @extend %iframe-zindex;
+
+  &::after {
+    @extend .pf-v6-c-backdrop;
+    --pf-v6-c-backdrop--Position: absolute;
+    content: "";
+    z-index: 9;
+  }
+}
