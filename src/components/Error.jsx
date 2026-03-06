@@ -94,20 +94,6 @@ const addLogAttachmentCommentToReportURL = (reportURL) => {
     return newUrl.href;
 };
 
-const addDebugInfoToReportURL = (reportURL, debugInfoArray) => {
-    // debugInfoArray MUST be an array of arrays in the format
-    // [["label1", "value1"], ["label2", "value2"], ...]
-    const newUrl = new URL(reportURL);
-    const comment = newUrl.searchParams.get("comment") || "";
-    // we don't want to translate this string. It is meant for support engineers / debugging purposes.
-    const debugInfo = cockpit.format([
-        "---[ System & Environment Information ]---",
-        ...debugInfoArray.map((item) => `${item[0]}: ${item[1]}`)
-    ].join("\n"));
-    newUrl.searchParams.set("comment", comment + "\n\n" + debugInfo + "\n\n");
-    return newUrl.href;
-};
-
 const addExceptionDataToReportURL = (url, exception, bugSummary, bugDescription, environmentInfo) => {
     const newUrl = new URL(url);
 
@@ -127,12 +113,10 @@ const addExceptionDataToReportURL = (url, exception, bugSummary, bugDescription,
 
 const useBugzillaPrefiledReportURL = (component, exception) => {
     const {
-        PRETTY_NAME: prettyName,
         REDHAT_BUGZILLA_PRODUCT: product,
         REDHAT_BUGZILLA_PRODUCT_VERSION: version,
     } = useContext(OsReleaseContext);
     const { systemType } = useContext(SystemTypeContext);
-    const appVersion = useContext(AppVersionContext);
     const isBootIso = systemType === "BOOT_ISO";
     const environmentInfo = useEnvironmentInfo();
 
@@ -144,12 +128,6 @@ const useBugzillaPrefiledReportURL = (component, exception) => {
         const bugSummary = buildBugSummary(exception);
         const initialDescription = buildBugSummary(exception);
         href = addExceptionDataToReportURL(href, exception, bugSummary, initialDescription, environmentInfo);
-        const debugInfoArray = [
-            ["OS", prettyName],
-            ["Anaconda version", appVersion.backend],
-            ["Anaconda UI version", appVersion.webui],
-        ];
-        href = addDebugInfoToReportURL(href, debugInfoArray);
         href = addLogAttachmentCommentToReportURL(href);
         href = ensureMaximumReportURLLength(href);
     }
