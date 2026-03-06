@@ -27,13 +27,13 @@ import { ErrorBoundary } from "./Error.jsx";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const ApplicationLoading = () => (
+export const ApplicationLoading = ({ showTitle = false }) => (
     <PageSection className="installation-page--loading" hasBodyWrapper={false} type={PageSectionTypes.wizard}>
-        <EmptyStatePanel loading title={_("Initializing...")} />
+        <EmptyStatePanel loading title={showTitle ? _("Initializing...") : undefined} />
     </PageSection>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage, state }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
@@ -72,9 +72,12 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
     }, [address, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
+    // Only show "Initializing..." text after localization is loaded to avoid UI glitch when
+    // geolocation might set default language to something other than English
     if (!address || !storeInitialized) {
         debug("Loading initial data...");
-        return <ApplicationLoading />;
+        const localizationLoaded = state?.localization?.language !== "" && state?.localization?.language !== undefined;
+        return <ApplicationLoading showTitle={localizationLoaded} />;
     }
 
     // On live media rebooting the system will actually shut it off
@@ -193,7 +196,7 @@ export const ApplicationWithErrorBoundary = () => {
     const appVersion = useAppVersion();
 
     if (!conf || !osRelease) {
-        return <ApplicationLoading />;
+        return <ApplicationLoading showTitle={false} />;
     }
 
     return (
