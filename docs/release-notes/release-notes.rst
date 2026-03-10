@@ -1,5 +1,5 @@
-Release notes
-=============
+Release notes Web UI
+====================
 
 This document describes major Anaconda Web UI changes in Fedora releases.
 
