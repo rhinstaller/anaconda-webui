@@ -112,7 +112,7 @@ rsync:
 # NOTE: Run this and commit changes when modifying UI components - CI will check if docs are current
 .PHONY: docs
 docs:
-	node docs/generate-docs.js
+	node docs/copy-reference-images.js
 	@echo "Installation documentation generated in docs/"
 
 install: $(DIST_TEST) po/LINGUAS
