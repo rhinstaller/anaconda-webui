@@ -809,8 +809,8 @@ export class ErrorBoundary extends React.Component {
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
         const errorHandler = async (_error) => {
-            error("ErrorBoundary caught an error:", _error);
             const stateUpdate = await buildExceptionState(_error, {});
+            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
             this.setState(stateUpdate);
             return true;
         };
@@ -828,8 +828,8 @@ export class ErrorBoundary extends React.Component {
         const { context } = arg || {};
 
         return async (_error) => {
-            error("ErrorBoundary caught an error:", _error, context);
             const stateUpdate = await buildExceptionState(_error, { context });
+            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
             this.setState(stateUpdate);
         };
     };
