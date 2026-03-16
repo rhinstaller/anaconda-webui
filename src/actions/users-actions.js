@@ -3,7 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-import { getIsRootAccountLocked, getUsers } from "../apis/users.js";
+import {
+    getCanChangeRootPassword,
+    getIsRootAccountLocked,
+    getUsers,
+} from "../apis/users.js";
 
 export const setUsersAction = (users) => ({
     payload: { users },
@@ -11,12 +15,14 @@ export const setUsersAction = (users) => ({
 });
 
 export const getUsersAction = () => async (dispatch) => {
-    const [users, isRootAccountLocked] = await Promise.all([
+    const [users, isRootAccountLocked, canChangeRootPassword] = await Promise.all([
         getUsers(),
-        getIsRootAccountLocked()
+        getIsRootAccountLocked(),
+        getCanChangeRootPassword()
     ]);
     const userList = users ?? [];
     dispatch(setUsersAction({
+        canChangeRootPassword: !!canChangeRootPassword,
         isRootEnabled: !isRootAccountLocked,
         users: userList,
         usersSpecifiedByKickstart: userList.length > 0,
