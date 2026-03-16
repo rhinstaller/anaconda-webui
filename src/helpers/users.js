@@ -37,12 +37,14 @@ export const applyAccounts = async (accounts) => {
         await setUsers(users);
     }
 
-    await setIsRootAccountLocked(!accounts.isRootEnabled);
-    if (accounts.isRootEnabled) {
-        const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
-        await setCryptedRootPassword({ password: cryptedRootPw });
-    } else {
-        await clearRootPassword();
+    if (accounts.canChangeRootPassword) {
+        await setIsRootAccountLocked(!accounts.isRootEnabled);
+        if (accounts.isRootEnabled) {
+            const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
+            await setCryptedRootPassword({ password: cryptedRootPw });
+        } else {
+            await clearRootPassword();
+        }
     }
 };
 

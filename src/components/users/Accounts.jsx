@@ -282,7 +282,42 @@ const CreateAccount = ({
     );
 };
 
-const RootAccount = ({
+/**
+ * Readonly "Root" section when root was specified via kickstart
+ */
+const RootAccountReadonly = ({ idPrefix, setIsRootValid }) => {
+    const accounts = useContext(UsersContext);
+    const isRootAccountEnabled = accounts.isRootEnabled;
+
+    useEffect(() => {
+        setIsRootValid(true);
+    }, [setIsRootValid]);
+
+    return (
+        <FormSection title={_("System")}>
+            <Checkbox
+              id={idPrefix + "-enable-root-account"}
+              label={_("Enable root account")}
+              isChecked={isRootAccountEnabled}
+              isDisabled
+              onChange={() => {}}
+              body={isRootAccountEnabled
+                  ? (
+                      <FormHelperText>
+                          <HelperText>
+                              <HelperTextItem variant="default">
+                                  {_("Root password has been set.")}
+                              </HelperTextItem>
+                          </HelperText>
+                      </FormHelperText>
+                  )
+                  : null}
+            />
+        </FormSection>
+    );
+};
+
+const RootAccountEditable = ({
     idPrefix,
     setAccounts,
     setIsRootValid,
@@ -347,6 +382,27 @@ const RootAccount = ({
         >
             {rootAccountCheckbox(isRootAccountEnabled ? passphraseForm : null)}
         </FormSection>
+    );
+};
+
+const RootAccount = ({ idPrefix, setAccounts, setIsRootValid }) => {
+    const accounts = useContext(UsersContext);
+    const canChangeRootPassword = accounts.canChangeRootPassword !== false;
+
+    if (!canChangeRootPassword) {
+        return (
+            <RootAccountReadonly
+              idPrefix={idPrefix}
+              setIsRootValid={setIsRootValid}
+            />
+        );
+    }
+    return (
+        <RootAccountEditable
+          idPrefix={idPrefix}
+          setAccounts={setAccounts}
+          setIsRootValid={setIsRootValid}
+        />
     );
 };
 
