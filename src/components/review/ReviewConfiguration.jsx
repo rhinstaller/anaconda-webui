@@ -64,15 +64,22 @@ const ReviewDescriptionList = ({ children }) => {
 const AccountsDescription = () => {
     const accounts = useContext(UsersContext);
 
-    if (accounts.skipAccountCreation && accounts.isRootEnabled) {
+    const first = accounts.users?.[0];
+    const fullName = first?.gecos ?? "";
+    const userName = first?.name ?? "";
+    const userString = fullName ? `${fullName} (${userName})` : userName;
+
+    const noUserAccount = (accounts.users?.length ?? 0) === 0;
+
+    if (noUserAccount && accounts.isRootEnabled) {
         return _("Root account is enabled, but no user account has been configured");
-    } else if (!accounts.skipAccountCreation && !accounts.isRootEnabled) {
-        return accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName;
+    } else if (!noUserAccount && !accounts.isRootEnabled) {
+        return userString;
     } else {
         return (
             <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
                 <div>{_("Root account is enabled")}</div>
-                <div>{cockpit.format("User account: $0", accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName)}</div>
+                <div>{cockpit.format("User account: $0", userString)}</div>
             </Flex>
         );
     }

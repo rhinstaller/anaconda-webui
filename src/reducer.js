@@ -75,13 +75,11 @@ export const payloadInitialState = {
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
     confirmPassword: "",
-    fullName: "",
     isRootEnabled: false,
     password: "",
     rootConfirmPassword: "",
     rootPassword: "",
-    skipAccountCreation: false,
-    userName: "",
+    users: [],
 };
 
 /* Initial state for the global store */

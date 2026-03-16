@@ -4,11 +4,17 @@
  */
 import cockpit from "cockpit";
 
+import { getUsersAction } from "../actions/users-actions.js";
+
 import { error } from "../helpers/log.js";
-import { _callClient, _setProperty } from "./helpers.js";
+import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Users";
+
+const getProperty = (...args) => {
+    return _getProperty(UsersClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
 
 const setProperty = (...args) => {
     return _setProperty(UsersClient, OBJECT_PATH, INTERFACE_NAME, ...args);
@@ -40,6 +46,7 @@ export class UsersClient {
         this.client.addEventListener(
             "close", () => error("Users client closed")
         );
+        return this.dispatch(getUsersAction());
     }
 }
 
@@ -70,4 +77,12 @@ export const clearRootPassword = () => {
 
 export const guessUsernameFromFullName = (fullName) => {
     return callClient("GuessUsernameFromFullName", [fullName]);
+};
+
+export const getUsers = () => {
+    return getProperty("Users").then(arr => (arr || []).map(item => objectFromDbus(item)));
+};
+
+export const getIsRootAccountLocked = () => {
+    return getProperty("IsRootAccountLocked");
 };

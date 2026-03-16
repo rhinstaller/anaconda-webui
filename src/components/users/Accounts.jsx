@@ -67,14 +67,17 @@ const CreateAccount = ({
     idPrefix,
     setAccounts,
     setIsUserValid,
+    setSkipAccountCreation,
+    skipAccountCreation,
 }) => {
     const accounts = useContext(UsersContext);
-    const [fullName, setFullName] = useState(accounts.fullName);
-    const [checkFullName, setCheckFullName] = useState(accounts.fullName);
+    const firstUser = accounts.users?.[0] ?? {};
+    const [fullName, setFullName] = useState(firstUser.gecos ?? "");
+    const [checkFullName, setCheckFullName] = useState(firstUser.gecos ?? "");
     const [fullNameInvalidHint, setFullNameInvalidHint] = useState("");
     const [isFullNameValid, setIsFullNameValid] = useState(null);
-    const [userName, setUserName] = useState(accounts.userName);
-    const [checkUserName, setCheckUserName] = useState(accounts.userName);
+    const [userName, setUserName] = useState(firstUser.name ?? "");
+    const [checkUserName, setCheckUserName] = useState(firstUser.name ?? "");
     const [userNameInvalidHint, setUserNameInvalidHint] = useState("");
     const [isUserNameValid, setIsUserNameValid] = useState(null);
     const [password, setPassword] = useState(accounts.password);
@@ -82,7 +85,6 @@ const CreateAccount = ({
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
     const [guessingUserName, setGuessingUserName] = useState(false);
-    const [skipAccountCreation, setSkipAccountCreation] = useState(accounts.skipAccountCreation);
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -145,8 +147,17 @@ const CreateAccount = ({
     );
 
     useEffect(() => {
-        setAccounts({ confirmPassword, fullName, password, skipAccountCreation, userName });
+        if (skipAccountCreation) {
+            setAccounts({ confirmPassword, password, users: [] });
+            return;
+        }
+        const first = { ...(accounts.users?.[0] ?? {}), gecos: fullName, name: userName };
+        const users = accounts.users?.length
+            ? [first, ...accounts.users.slice(1)]
+            : (userName || fullName ? [first] : []);
+        setAccounts({ confirmPassword, password, users });
     }, [
+        accounts.users,
         confirmPassword,
         fullName,
         password,
@@ -322,10 +333,10 @@ export const Accounts = ({
     const [isRootValid, setIsRootValid] = useState();
     const accounts = useContext(UsersContext);
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
+    const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
-        const skipAccountCreation = accounts.skipAccountCreation;
 
         setIsFormValid(
             (skipAccountCreation || isUserValid) &&
@@ -334,10 +345,10 @@ export const Accounts = ({
         );
     }, [
         accounts.isRootEnabled,
-        accounts.skipAccountCreation,
         isRootValid,
         isUserValid,
         setIsFormValid,
+        skipAccountCreation,
     ]);
 
     // Display custom footer
@@ -353,6 +364,8 @@ export const Accounts = ({
               idPrefix={idPrefix + "-create-account"}
               setIsUserValid={setIsUserValid}
               setAccounts={setAccounts}
+              setSkipAccountCreation={setSkipAccountCreation}
+              skipAccountCreation={skipAccountCreation}
             />
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
@@ -370,9 +383,11 @@ const CustomFooter = () => {
         applyAccounts(accounts).then(goToNextStep);
     };
 
+    const noUserAccount = (accounts.users?.length ?? 0) === 0;
+
     return (
         <AnacondaWizardFooter
-          footerHelperText={(!accounts.isRootEnabled && accounts.skipAccountCreation) ? _("You have to enable the root account or create a local user account to proceed.") : null}
+          footerHelperText={(!accounts.isRootEnabled && noUserAccount) ? _("You have to enable the root account or create a local user account to proceed.") : null}
           onNext={onNext}
         />
     );
