@@ -86,3 +86,7 @@ export const getUsers = () => {
 export const getIsRootAccountLocked = () => {
     return getProperty("IsRootAccountLocked");
 };
+
+export const getCanChangeRootPassword = () => {
+    return getProperty("CanChangeRootPassword");
+};
