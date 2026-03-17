@@ -302,3 +302,30 @@ class Network():
         b.select_from_dropdown("#network-ip-settings-select-method", "disabled")
         b.click("#network-ip-settings-save")
         b.wait_not_present("#network-ip-settings-dialog")
+
+    def assert_default_nm_wired_connection_props(self, iface):
+        """Check the assumptions NM default Wired Connection.
+
+        The 'Wired Connection' is created in initramfs by NM as a default
+        connection. Cockpit has some assumptions about properties of the
+        connection when replacing it with persistent connection upon editing
+        (COCKPIT-1750)
+        This check should assert that these assumptions hold.
+        """
+        n = self
+
+        # The default connection name
+        con_name = WIRED_CONNECTION_NAME
+
+        # The connection is active on the iface.
+        n.check_iface_state(iface, "GENERAL.CONNECTION", con_name)
+        n.check_iface_state(iface, "GENERAL.STATE", "connected", match_type="substr")
+
+        # The connection is not persistent
+        n.check_con_profile_files(con_name, 1, persistent=False)
+        # The properties assumed by Cockpit
+        n.check_con_settings([
+            [con_name, "connection.interface-name", "", None],
+            [con_name, "connection.type", "802-3-ethernet", None],
+            [con_name, "connection.multi-connect", "3", None],
+        ])
