@@ -43,7 +43,7 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
 const SelectedKeyboards = ({ xlayouts }) => (
-    <Content component="p">
+    <Content component="p" id={SCREEN_ID + "-selected-keyboards"}>
         {xlayouts.length === 1
             ? xlayouts[0]
             : (
