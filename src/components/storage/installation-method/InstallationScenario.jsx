@@ -16,9 +16,7 @@ import {
     getLockedLUKSDevices,
 } from "../../../helpers/storage.js";
 
-import {
-    StorageContext,
-} from "../../../contexts/Common.jsx";
+import { StorageContext } from "../../../contexts/Common.jsx";
 
 import {
     useOriginalDevices,
@@ -26,6 +24,7 @@ import {
 
 import { StorageReview } from "../../review/StorageReview.jsx";
 import { scenarios, useScenariosAvailability } from "../scenarios/index.js";
+import { USE_CONFIGURED_STORAGE_SCENARIO_IDS } from "../scenarios/use-configured-storage/index.js";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./InstallationScenario.scss";
@@ -61,7 +60,7 @@ const InstallationScenarioSelector = ({
 
         // If there is still an applied partitioning we should wait for the
         // reset to take effect in the backend before deciding on the selected scenario
-        if (appliedPartitioning && storageScenarioId !== "use-configured-storage") {
+        if (appliedPartitioning && !USE_CONFIGURED_STORAGE_SCENARIO_IDS.includes(storageScenarioId)) {
             return;
         }
 

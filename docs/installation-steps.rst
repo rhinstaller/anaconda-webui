@@ -64,7 +64,6 @@ Reinstalls Fedora while preserving your existing home directory and user data. U
 
 **Use configured storage**
 
-Uses storage configuration created through the external Cockpit storage editor tool for non-default layouts. This option only appears when you have configured and confirmed a valid storage layout through cockpit-storage.
 
 .. figure:: images/storage-scenario-use-configured-storage.png
    :width: 500px
