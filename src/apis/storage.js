@@ -9,6 +9,7 @@ import {
     getDiskSelectionAction,
     getPartitioningDataAction,
     setAppliedPartitioningAction,
+    setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
 import { debug, error } from "../helpers/log.js";
@@ -85,6 +86,11 @@ export class StorageClient {
         if (partitioning.length !== 0) {
             const lastPartitioning = partitioning[partitioning.length - 1];
             await this.dispatch(getPartitioningDataAction({ partitioning: lastPartitioning }));
+        }
+        // When there is just one partitioning created when the module is initialized we can assume
+        // that it is the one specified in kickstart
+        if (partitioning.length === 1) {
+            this.dispatch(setStorageScenarioAction("use-configured-storage-kickstart"));
         }
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());

@@ -103,7 +103,8 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     const nextRef = useRef();
     const { partitioning, storageScenarioId } = useContext(StorageContext);
     const homeReuseOptions = useHomeReuseOptions();
-    const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
+    /** Scenarios do not create or apply existing partitioning on this step. */
+    const SCENARIOS_WITHOUT_PARTITIONING_CREATION = ["mount-point-mapping", "use-configured-storage"];
 
     useEffect(() => {
         if (nextRef.current !== true && newPartitioning === partitioning.path && isNextClicked) {
@@ -113,16 +114,18 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
     const onNext = async ({ setIsFormDisabled }) => {
-        if (method === "MANUAL") {
+        if (SCENARIOS_WITHOUT_PARTITIONING_CREATION.includes(storageScenarioId)) {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
         } else {
-            const part = await getNewPartitioning({
-                currentPartitioning: partitioning,
-                homeReuseOptions,
-                method,
-                storageScenarioId,
-            });
+            const part = storageScenarioId === "use-configured-storage-kickstart"
+                ? partitioning.path
+                : await getNewPartitioning({
+                    currentPartitioning: partitioning,
+                    homeReuseOptions,
+                    method: "AUTOMATIC",
+                    storageScenarioId,
+                });
             setNewPartitioning(part);
 
             const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
@@ -130,7 +133,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 
             if (willShowReclaimSpaceModal) {
                 setIsReclaimSpaceModalOpen(true);
-            } else if (storageScenarioId !== "home-reuse") {
+            } else if (!["home-reuse", "use-configured-storage-kickstart"].includes(storageScenarioId)) {
                 setIsNextClicked(true);
             } else {
                 // If partitioning was already applied, proceed to next step
