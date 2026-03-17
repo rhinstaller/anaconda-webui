@@ -21,6 +21,10 @@ ACCOUNTS_SCREEN = ACCOUNTS
 CREATE_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-create-account"
 ROOT_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-root-account"
 
+# Read-only mode (kickstart-defined users): data-testid selectors
+ACCOUNTS_READONLY_USERS = "[data-testid='accounts-users-readonly']"
+ACCOUNTS_READONLY_USER_ROW = "accounts-users-readonly-user"
+
 
 class UsersDBus():
     def __init__(self, machine):
@@ -116,6 +120,23 @@ class Users(UsersDBus):
         password = "password"
         p.set_password(password)
         p.set_password_confirm(password if valid else "X")
+
+    # Read-only mode (kickstart-defined users)
+
+    def check_readonly_users_section_visible(self):
+        """Assert the Accounts step shows the read-only user summary (kickstart-defined users)."""
+        self.browser.wait_visible(ACCOUNTS_READONLY_USERS)
+
+    def check_readonly_user_displayed(self, username, full_name=None):
+        """
+        Assert a user is listed in the read-only summary.
+        Optionally check the displayed text: 'Full Name (username)' or 'username'.
+        """
+        sel = f"[data-testid='{ACCOUNTS_READONLY_USER_ROW}-{username}']"
+        self.browser.wait_visible(sel)
+        if full_name is not None:
+            expected = f"{full_name} ({username})"
+            self.browser.wait_text(sel, expected)
 
 
 def create_user(browser, machine):

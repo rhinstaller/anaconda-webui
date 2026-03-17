@@ -1,0 +1,53 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from installer import Installer
+from testlib import test_main  # pylint: disable=import-error
+from users import Users
+
+
+class TestInteractiveDefaults(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {"machine1": {"kickstart_file_name": "TestInteractiveDefaults-testBasic.ks"}}
+
+    def testBasic(self):
+        """
+        Description:
+            Ensure that from
+            ``test/kickstarts/TestInteractiveDefaults-testBasic.ks`` are
+            collected and prefilled in the interactive installation.  The
+            backend does not allow automated installations yet (inst.ks) but we
+            can still verify
+            kickstart supplied data with the interactive defaults.
+
+        Expected results:
+            - Users specified in kickstart are correctly picked up on the Accounts step
+              and cannot be changed.
+            - Root settings cannot be changed when rootpw is in kickstart.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        u = Users(b, m)
+
+        i.open()
+        i.reach(i.steps.ACCOUNTS)
+
+        # Verify kickstart users (read-only) and locked root
+        u.check_readonly_users_section_visible()
+        u.check_readonly_user_displayed("alice", full_name="Alice Admin")
+        u.check_readonly_user_displayed("bob", full_name="Bob User")
+        u.check_readonly_user_displayed("carol", full_name="Carol Dev")
+        b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:disabled")
+        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-accounts", "users-kickstarted", ignore=pixel_tests_ignore)
+
+        i.reach(i.steps.REVIEW)
+        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
+
+
+if __name__ == "__main__":
+    test_main()
