@@ -7,17 +7,17 @@ import { useContext, useEffect, useState } from "react";
 
 import { AvailabilityState } from "../helpers.js";
 
-import {
-    StorageContext,
-} from "../../../../contexts/Common.jsx";
+import { StorageContext } from "../../../../contexts/Common.jsx";
 
 import {
     useMountPointConstraints,
     useOriginalDevices,
 } from "../../../../hooks/Storage.jsx";
 
+/** Shared availability for use-configured-storage (cockpit) and use-configured-storage-kickstart. args.scenarioId selects which. */
 export const useAvailabilityConfiguredStorage = (args) => {
     const newMountPoints = args?.newMountPoints;
+    const scenarioId = args?.scenarioId ?? "use-configured-storage";
     const [scenarioAvailability, setScenarioAvailability] = useState();
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const storageScenarioId = partitioning?.storageScenarioId;
@@ -27,9 +27,13 @@ export const useAvailabilityConfiguredStorage = (args) => {
     useEffect(() => {
         const availability = new AvailabilityState();
 
-        const currentPartitioningMatches = storageScenarioId === "use-configured-storage";
-        availability.showReview = true;
-        availability.hidden = !appliedPartitioning || !currentPartitioningMatches;
+        const currentPartitioningMatches = storageScenarioId === "use-configured-storage" ||
+            storageScenarioId === "use-configured-storage-kickstart";
+        availability.showReview = scenarioId !== "use-configured-storage-kickstart";
+        // Kickstart: always show the option, no inline storage review;
+        // cockpit: show when we have applied storage and scenario matches
+        availability.hidden = !currentPartitioningMatches ||
+         (!appliedPartitioning && scenarioId === "use-configured-storage");
 
         availability.available = (
             newMountPoints === undefined ||
@@ -72,7 +76,7 @@ export const useAvailabilityConfiguredStorage = (args) => {
             )
         );
         setScenarioAvailability(availability);
-    }, [appliedPartitioning, devices, mountPointConstraints, newMountPoints, storageScenarioId]);
+    }, [appliedPartitioning, devices, mountPointConstraints, newMountPoints, scenarioId, storageScenarioId]);
 
     return scenarioAvailability;
 };
