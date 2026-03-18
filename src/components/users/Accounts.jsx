@@ -12,8 +12,10 @@ import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/in
 import { Form, FormGroup, FormHelperText, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { InputGroup } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import {
     guessUsernameFromFullName,
@@ -35,6 +37,30 @@ import { PasswordFormFields, ruleLength } from "../Password.jsx";
 import "./Accounts.scss";
 
 const _ = cockpit.gettext;
+
+/** Read-only summary when user(s) are specified by kickstart (like GTK User Creation greyed out). */
+const UsersReadOnlySummary = ({ users }) => {
+    if (!users?.length) return null;
+    return (
+        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
+            {cockpit.ngettext(
+                _("The following user will be created:"),
+                _("The following users will be created:"),
+                users.length
+            )}
+            <List isPlain>
+                {users.map((u, i) => (
+                    <ListItem
+                      key={u.name ?? i}
+                      data-testid={`accounts-users-readonly-user-${u.name ?? i}`}
+                    >
+                        {u.gecos ? `${u.gecos} (${u.name || ""})` : (u.name || "—")}
+                    </ListItem>
+                ))}
+            </List>
+        </Flex>
+    );
+};
 
 const reservedNames = [
     "root",
@@ -335,13 +361,15 @@ export const Accounts = ({
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
     const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
+    const usersFromKickstart = accounts.usersSpecifiedByKickstart === true;
+
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
 
         setIsFormValid(
-            (skipAccountCreation || isUserValid) &&
+            (skipAccountCreation || isUserValid || usersFromKickstart) &&
             (skipRootCreation || isRootValid) &&
-            !(skipRootCreation && skipAccountCreation)
+            !(skipRootCreation && skipAccountCreation && !usersFromKickstart)
         );
     }, [
         accounts.isRootEnabled,
@@ -349,6 +377,7 @@ export const Accounts = ({
         isUserValid,
         setIsFormValid,
         skipAccountCreation,
+        usersFromKickstart,
     ]);
 
     // Display custom footer
@@ -360,13 +389,21 @@ export const Accounts = ({
           isHorizontal
           id={idPrefix}
         >
-            <CreateAccount
-              idPrefix={idPrefix + "-create-account"}
-              setIsUserValid={setIsUserValid}
-              setAccounts={setAccounts}
-              setSkipAccountCreation={setSkipAccountCreation}
-              skipAccountCreation={skipAccountCreation}
-            />
+            {usersFromKickstart
+                ? (
+                    <FormSection title={_("User creation")} data-testid="accounts-users-readonly">
+                        <UsersReadOnlySummary users={accounts.users} />
+                    </FormSection>
+                )
+                : (
+                    <CreateAccount
+                      idPrefix={idPrefix + "-create-account"}
+                      setIsUserValid={setIsUserValid}
+                      setAccounts={setAccounts}
+                      setSkipAccountCreation={setSkipAccountCreation}
+                      skipAccountCreation={skipAccountCreation}
+                    />
+                )}
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
               setIsRootValid={setIsRootValid}
