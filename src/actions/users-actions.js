@@ -15,8 +15,10 @@ export const getUsersAction = () => async (dispatch) => {
         getUsers(),
         getIsRootAccountLocked()
     ]);
+    const userList = users ?? [];
     dispatch(setUsersAction({
         isRootEnabled: !isRootAccountLocked,
-        users: users ?? []
+        users: userList,
+        usersSpecifiedByKickstart: userList.length > 0,
     }));
 };
