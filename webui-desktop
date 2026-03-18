@@ -30,6 +30,8 @@
 #
 set -eu
 
+BROWSER_HOME=""
+
 THEME_ID="default"
 WEBUI_REMOTE=0
 while getopts t:r: option
@@ -64,12 +66,15 @@ setup_user_environment() {
       # If PKEXEC_UID is set, use the user associated with it
       INSTALLER_USER=$(id -n -u "${PKEXEC_UID}")
     else
-      # Try to find another user who is not root and has /usr/bin/bash as their shell
-      INSTALLER_USER=$(grep '/usr/bin/bash' /etc/passwd | grep -v '^root' | cut -d: -f1 | head -n 1)
+      if id install-user >/dev/null 2>&1; then
+        INSTALLER_USER="install-user"
+      else
+        INSTALLER_USER=$(grep '/usr/bin/bash' /etc/passwd | grep -v '^root' | cut -d: -f1 | head -n 1)
 
-      # If no such user is found, use the current user running the script
-      if [ -z "${INSTALLER_USER:-}" ]; then
-        INSTALLER_USER=$(id -un)
+        # If no such user is found, use the current user running the script
+        if [ -z "${INSTALLER_USER:-}" ]; then
+          INSTALLER_USER=$(id -un)
+        fi
       fi
     fi
 
@@ -85,7 +90,7 @@ setup_user_environment() {
       echo "Home directory $HOME_DIR already exists." >&2
     fi
 
-    # Return the user and home directory for further use
+    # Return the user for further use
     echo "$INSTALLER_USER"
 }
 
@@ -121,7 +126,15 @@ prepare_firefox_cmd() {
 
     # prepare empty firefox profile dir with theme based on the passed profile id
     FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
-    FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR}/anaconda/firefox-profile"
+    INSTALLER_UID=$(id -u "${INSTALLER_USER}")
+    INSTALLER_RUNTIME_DIR="/run/user/${INSTALLER_UID}"
+
+    if [ -d "${INSTALLER_RUNTIME_DIR}" ]
+    then
+        FIREFOX_PROFILE_PATH="${INSTALLER_RUNTIME_DIR}/anaconda/firefox-profile"
+    else
+        FIREFOX_PROFILE_PATH="/tmp/anaconda-${INSTALLER_USER}/firefox-profile"
+    fi
 
     # make sure the profile directory exists and is empty
     if [ -d ${FIREFOX_PROFILE_PATH} ]
@@ -151,9 +164,15 @@ then
     /bin/sleep infinity &
     BLOCK_ON_PID=$!
 else
-    USER_INFO=$(setup_user_environment)
-    INSTALLER_USER=$(echo "$USER_INFO" | cut -d' ' -f1)
-    HOME_DIR=$(echo "$USER_INFO" | cut -d' ' -f2)
+    INSTALLER_USER=$(setup_user_environment)
+    INSTALLER_UID=$(id -u "${INSTALLER_USER}")
+
+    INSTALLER_XDG_RUNTIME_DIR="/run/user/${INSTALLER_UID}"
+    if [ ! -d "${INSTALLER_XDG_RUNTIME_DIR}" ]; then
+        mkdir -p "${INSTALLER_XDG_RUNTIME_DIR}"
+        chown "${INSTALLER_USER}" "${INSTALLER_XDG_RUNTIME_DIR}"
+        chmod 0700 "${INSTALLER_XDG_RUNTIME_DIR}"
+    fi
 
     # if we have netcat, use it for waiting until ws is up
     if type nc >/dev/null 2>&1; then
@@ -166,7 +185,29 @@ else
         sleep 3
     fi
 
-    readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" systemctl --user show-environment)
+    if user_env_output=$(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" systemctl --user show-environment 2>/dev/null); then
+        readarray -t user_environment <<< "$user_env_output"
+        USER_SESSION_AVAILABLE=1
+    else
+        echo "No systemd user session available, continuing without user session environment." >&2
+        user_environment=()
+        USER_SESSION_AVAILABLE=0
+    fi
+
+    USER_GRAPHICAL_SESSION_AVAILABLE=0
+    if [ "$USER_SESSION_AVAILABLE" = "1" ]; then
+        if printf '%s\n' "${user_environment[@]}" | grep -qE '^(DISPLAY|WAYLAND_DISPLAY)='; then
+            USER_GRAPHICAL_SESSION_AVAILABLE=1
+        fi
+    fi
+
+    if [ "$USER_GRAPHICAL_SESSION_AVAILABLE" = "1" ]; then
+        for var in DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS XAUTHORITY; do
+            if [ -n "${!var:-}" ] && ! printf '%s\n' "${user_environment[@]}" | grep -q "^${var}="; then
+                user_environment+=("${var}=${!var}")
+            fi
+        done
+    fi
 
     DEFAULT_BROWSER_CMD=$(get_default_browser)
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
@@ -180,9 +221,41 @@ else
 
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
-    HOME="$BROWSER_HOME" XDG_CURRENT_DESKTOP=GNOME \
-    pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
-    BLOCK_ON_PID=$!
+    chown "${INSTALLER_USER}" "${BROWSER_HOME}"
+    WEBUI_URL=http://"$WEBUI_ADDRESS""$URL_PATH"
+
+    if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+        if [ "$USER_GRAPHICAL_SESSION_AVAILABLE" = "1" ]; then
+            HOME="$BROWSER_HOME" \
+            pkexec --user "$INSTALLER_USER" env XDG_CURRENT_DESKTOP=GNOME "${user_environment[@]}" "${BROWSER[@]}" "$WEBUI_URL" &
+            BLOCK_ON_PID=$!
+        else
+            type dbus-run-session >/dev/null 2>&1
+
+            ROOT_XDG_RUNTIME_DIR="/run/user/0"
+            ROOT_WAYLAND_SOCKET="$(find "${ROOT_XDG_RUNTIME_DIR}" -maxdepth 1 -type s -name 'wl-sysinstall-*' | head -n 1)"
+
+            if [ -z "${ROOT_WAYLAND_SOCKET}" ]; then
+                echo "Error: root Wayland socket not found under ${ROOT_XDG_RUNTIME_DIR}" >&2
+                exit 1
+            fi
+
+            chmod 711 "${ROOT_XDG_RUNTIME_DIR}"
+            chmod a+rw "${ROOT_WAYLAND_SOCKET}"
+
+            HOME="$BROWSER_HOME" \
+            pkexec --user "$INSTALLER_USER" env \
+                XDG_CURRENT_DESKTOP=GNOME \
+                XDG_SESSION_TYPE=wayland \
+                XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" \
+                WAYLAND_DISPLAY="${ROOT_WAYLAND_SOCKET}" \
+                dbus-run-session -- "${BROWSER[@]}" "$WEBUI_URL" &
+            BLOCK_ON_PID=$!
+        fi
+    else
+        echo "Error: no graphical session detected (DISPLAY and WAYLAND_DISPLAY are unset)." >&2
+        exit 1
+    fi
 fi
 
 # Cleanup function
