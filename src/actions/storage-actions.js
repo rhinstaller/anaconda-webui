@@ -109,10 +109,12 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
                 const reqs = await gatherRequests({ partitioning });
 
                 props.requests = convertRequests(reqs);
-            } else {
+            } else if (props.method === "AUTOMATIC") {
                 const reqs = await getAutomaticPartitioningRequest({ partitioning });
 
                 props.requests = convertRequests([reqs]);
+            } else {
+                props.requests = [];
             }
         } else {
             props.requests = convertRequests(requests);
