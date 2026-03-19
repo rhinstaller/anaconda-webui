@@ -14,6 +14,7 @@ class InstallerSteps(UserDict):
     DATE_TIME = steps.DATE_TIME
     CUSTOM_MOUNT_POINT = steps.CUSTOM_MOUNT_POINT
     INSTALLATION_METHOD = steps.INSTALLATION_METHOD
+    NETWORK = steps.NETWORK
     SOFTWARE_SELECTION = steps.SOFTWARE_SELECTION
     LANGUAGE = steps.LANGUAGE
     PROGRESS = steps.PROGRESS
@@ -30,6 +31,7 @@ class InstallerSteps(UserDict):
         CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
         DATE_TIME = self.DATE_TIME
         INSTALLATION_METHOD = self.INSTALLATION_METHOD
+        NETWORK = self.NETWORK
         SOFTWARE_SELECTION = self.SOFTWARE_SELECTION
         LANGUAGE = self.LANGUAGE
         PROGRESS = self.PROGRESS
@@ -37,7 +39,8 @@ class InstallerSteps(UserDict):
         STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
 
         _steps_jump = {
-            LANGUAGE: [DATE_TIME],
+            LANGUAGE: [NETWORK],
+            NETWORK: [DATE_TIME],
             DATE_TIME: [SOFTWARE_SELECTION],
             SOFTWARE_SELECTION: [INSTALLATION_METHOD],
             STORAGE_CONFIGURATION: [ACCOUNTS],
