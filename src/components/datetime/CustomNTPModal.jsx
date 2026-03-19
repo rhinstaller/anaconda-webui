@@ -35,7 +35,7 @@ const CustomNTPModal = ({ onClose }) => {
     useEffect(() => {
         const loadNtpSources = async () => {
             let srcs = await getTimeSources();
-            const ntps = srcs.filter((s) => s.type?.v === "NTP" || s.type?.v === "POOL");
+            const ntps = srcs.filter((s) => s.type?.v === "SERVER" || s.type?.v === "POOL");
             if (ntps.length) {
                 srcs = ntps;
             } else {
@@ -73,7 +73,7 @@ const CustomNTPModal = ({ onClose }) => {
                 hostname: { v: hostname !== undefined ? hostname : source.hostname.v },
                 isAvailable: true, // Reset availability while editing
                 isNTS: isNTS !== undefined ? isNTS : source.isNTS,
-                type: { v: isPool !== undefined ? (isPool ? "POOL" : "NTP") : source.type.v },
+                type: { v: isPool !== undefined ? (isPool ? "POOL" : "SERVER") : source.type.v },
             };
             return updated;
         });
