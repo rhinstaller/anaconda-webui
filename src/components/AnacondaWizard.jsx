@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { FooterContext, PayloadContext, StorageContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { FooterContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
@@ -24,7 +24,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
     // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
     const { storageScenarioId } = useContext(StorageContext);
-    const isBootIso = useContext(StorageContext).systemType === "BOOT_ISO";
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const payloadType = useContext(PayloadContext).type;
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
