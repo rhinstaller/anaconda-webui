@@ -11,31 +11,11 @@ import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/ind
 
 import { useMaybeBackdrop } from "../../hooks/CockpitIntegration.jsx";
 
+import { useNetworkStatus } from "./useNetworkStatus.js";
+
 import "./CockpitNetworkConfiguration.scss";
 
 const _ = cockpit.gettext;
-
-// Hook to track checkpoint status from the Cockpit networkmanager iframe
-const useNetworkStatus = () => {
-    const [hasActiveCheckpoint, setHasActiveCheckpoint] = useState(false);
-
-    useEffect(() => {
-        const checkpointState = window.sessionStorage.getItem("cockpit_has_checkpoint");
-        setHasActiveCheckpoint(checkpointState === "true");
-
-        const handleCheckpointEvent = (event) => {
-            if (event.key === "cockpit_has_checkpoint") {
-                setHasActiveCheckpoint(event.newValue === "true");
-            }
-        };
-
-        window.addEventListener("storage", handleCheckpointEvent);
-
-        return () => window.removeEventListener("storage", handleCheckpointEvent);
-    }, []);
-
-    return { hasActiveCheckpoint };
-};
 
 export const CockpitNetworkConfiguration = ({
     onCritFail,
