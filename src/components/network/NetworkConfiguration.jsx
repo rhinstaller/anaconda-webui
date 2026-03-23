@@ -26,10 +26,13 @@ export const NetworkConfiguration = ({
     const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "network-configuration";
 
+    const hasModal = backdropClass !== "";
+    const isBlocked = hasActiveCheckpoint || hasModal;
+
     useEffect(() => {
-        setIsFormValid(!hasActiveCheckpoint);
-        setIsFormDisabled(hasActiveCheckpoint);
-    }, [hasActiveCheckpoint, setIsFormDisabled, setIsFormValid]);
+        setIsFormValid(!isBlocked);
+        setIsFormDisabled(isBlocked);
+    }, [isBlocked, setIsFormDisabled, setIsFormValid]);
 
     useEffect(() => {
         if (isIframeMounted) {
