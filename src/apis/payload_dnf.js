@@ -127,6 +127,10 @@ export const getPackagesSelection = async () => {
     return objectFromDbus(structure);
 };
 
+export const getPackagesKickstarted = async () => {
+    return getProperty("PackagesKickstarted");
+};
+
 export const setPackagesSelection = async ({ environment, groups } = {}) => {
     const currentSelection = await getPackagesSelection();
 

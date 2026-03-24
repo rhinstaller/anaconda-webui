@@ -72,6 +72,7 @@ export const miscInitialState = {
 export const payloadInitialState = {
     environments: [],
     groups: [],
+    packagesKickstarted: false,
     selection: null,
     type: null,
 };
@@ -246,7 +247,11 @@ export const timezoneReducer = (state = timezoneInitialState, action) => {
 
 export const payloadReducer = (state = payloadInitialState, action) => {
     if (action.type === "SET_PAYLOAD_SELECTION") {
-        return { ...state, selection: action.payload.selection };
+        return {
+            ...state,
+            packagesKickstarted: action.payload.packagesKickstarted,
+            selection: action.payload.selection,
+        };
     } else if (action.type === "SET_PAYLOAD_ENVIRONMENTS") {
         return { ...state, environments: action.payload.environments || [] };
     } else if (action.type === "SET_PAYLOAD_TYPE") {
