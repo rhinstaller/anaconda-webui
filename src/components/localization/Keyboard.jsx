@@ -376,7 +376,7 @@ const KeyboardNonGnome = () => {
     );
 };
 
-export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotification }) => {
+export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid }) => {
     const { plannedVconsole, plannedXlayouts } = useContext(LanguageContext);
 
     useEffect(() => {
@@ -398,7 +398,7 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotific
     const keyboard = (
         isGnome
             ? <KeyboardGnome dispatch={dispatch} />
-            : <KeyboardNonGnome setStepNotification={setStepNotification} />
+            : <KeyboardNonGnome />
     );
 
     return (

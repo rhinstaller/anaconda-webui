@@ -246,7 +246,6 @@ export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotifica
                           dispatch={dispatch}
                           isGnome={isGnome}
                           setIsKeyboardValid={setIsKeyboardValid}
-                          setStepNotification={setStepNotification}
                         />
                     </FormGroup>
                 )}
