@@ -27,7 +27,7 @@ import {
     applyAccounts,
 } from "../../helpers/users.js";
 
-import { RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
+import { PageContext, RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
@@ -316,8 +316,8 @@ const RootAccount = ({
 export const Accounts = ({
     dispatch,
     idPrefix,
-    setIsFormValid,
 }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const accounts = useContext(UsersContext);

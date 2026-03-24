@@ -11,7 +11,7 @@ import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import { getDefaultEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
 
-import { PayloadContext } from "../../contexts/Common.jsx";
+import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
 import { MenuSearch } from "../common/MenuSearch.jsx";
 
@@ -167,7 +167,8 @@ const GroupPackagesSelection = () => {
     );
 };
 
-export const SoftwareSelection = ({ setIsFormValid }) => {
+export const SoftwareSelection = () => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { environments, groups, selection } = useContext(PayloadContext);
     const environment = selection?.environment;
     const selectedGroups = selection?.groups;

@@ -11,21 +11,23 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { error } from "../helpers/log.js";
 
-import { OsReleaseContext } from "../contexts/Common.jsx";
+import { OsReleaseContext, PageContext } from "../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 
 export const AnacondaPage = ({
     children,
     isFirstScreen,
-    isFormDisabled,
-    setIsFormDisabled,
     showStorage,
     step,
     title,
     usePageInit,
 }) => {
-    const [stepNotification, setStepNotification] = useState();
+    const {
+        isFormDisabled = false,
+        setIsFormDisabled,
+        stepNotification,
+    } = useContext(PageContext) ?? {};
     const [showPage, setShowPage] = useState(!isFormDisabled);
     const showPageRef = useRef(showPage);
 
@@ -75,7 +77,7 @@ export const AnacondaPage = ({
                 >
                     {stepNotification.title && stepNotification.message}
                 </Alert>}
-            {cloneElement(children, { idPrefix: step, setStepNotification })}
+            {cloneElement(children, { idPrefix: step })}
         </Stack>
     );
 };

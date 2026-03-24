@@ -8,7 +8,7 @@ import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wiza
 
 import { applyStorage } from "../../../apis/storage_partitioning.js";
 
-import { StorageContext } from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 import { createWarningNotification } from "../Common.jsx";
@@ -16,7 +16,8 @@ import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
 
-export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, setStepNotification }) => {
+export const StorageConfiguration = ({ dispatch, onCritFail }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { luks, partitioning } = useContext(StorageContext);
 
     // Display custom footer
@@ -25,9 +26,8 @@ export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, set
             <CustomFooter
               luks={luks}
               partitioning={partitioning.path}
-              setStepNotification={setStepNotification}
             />,
-        [luks, partitioning.path, setStepNotification]
+        [luks, partitioning.path]
     );
 
     useWizardFooter(getFooter);
@@ -40,16 +40,16 @@ export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, set
         <DiskEncryption
           dispatch={dispatch}
           onCritFail={onCritFail}
-          setIsFormValid={setIsFormValid}
         />
     );
 };
 
-const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
+const CustomFooter = ({ luks, partitioning }) => {
+    const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
     const step = SCREEN_ID;
     const [partitioningApplied, setPartitioningApplied] = useState(false);
 
-    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
+    const onNext = ({ goToNextStep }) => {
         // If partitioning was already applied, proceed to next step
         if (partitioningApplied) {
             setPartitioningApplied(false);

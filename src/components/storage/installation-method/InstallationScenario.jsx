@@ -16,9 +16,7 @@ import {
     getLockedLUKSDevices,
 } from "../../../helpers/storage.js";
 
-import {
-    StorageContext,
-} from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import {
     useOriginalDevices,
@@ -46,8 +44,8 @@ export const useScenario = () => {
 const InstallationScenarioSelector = ({
     dispatch,
     idPrefix,
-    isFormDisabled,
 }) => {
+    const { isFormDisabled } = useContext(PageContext) ?? {};
     const { appliedPartitioning, storageScenarioId } = useContext(StorageContext);
     const scenarioAvailability = useScenariosAvailability();
     const scenarioAvailabilityLoading = scenarioAvailability === undefined;
@@ -119,7 +117,6 @@ export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFirstScreen,
-    isFormDisabled,
     setIsScenarioValid,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
@@ -161,7 +158,6 @@ export const InstallationScenario = ({
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isFormDisabled={isFormDisabled}
                 />
             </FormGroup>
         </FormSection>
