@@ -15,9 +15,9 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
-    FooterContext,
     LanguageContext,
     OsReleaseContext,
+    PageContext,
     StorageContext,
     SystemTypeContext,
     TimezoneContext,
@@ -61,7 +61,8 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => {
+export const ReviewConfiguration = () => {
+    const { setStepNotification } = useContext(PageContext) ?? {};
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
@@ -73,7 +74,6 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
     const [hasValidSpaceCheck, setHasValidSpaceCheck] = useState(true);
     const freeSpace = useFreeSpaceForSystem();
     const requiredSize = useRequiredSize();
-    const { setIsFormDisabled } = useContext(FooterContext);
     const { goToStepById } = useWizardContext();
 
     useEffect(() => {
@@ -96,9 +96,6 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
                   variant="link"
                   isInline
                   onClick={() => {
-                      // Reset form state like the wizard does during navigation
-                      setIsFormValid(false);
-                      setIsFormDisabled(true);
                       cockpit.location.go([fixupPage]);
                       goToStepById(fixupPage);
                   }}
@@ -116,8 +113,6 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
         requiredSize,
         freeSpace,
         goToStepById,
-        setIsFormDisabled,
-        setIsFormValid,
         setStepNotification,
         setHasValidSpaceCheck,
         scenarioId,
@@ -125,11 +120,8 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter
-          setIsFormValid={setIsFormValid}
-          hasValidSpaceCheck={hasValidSpaceCheck}
-        />
-    ), [setIsFormValid, hasValidSpaceCheck]);
+        <CustomFooter hasValidSpaceCheck={hasValidSpaceCheck} />
+    ), [hasValidSpaceCheck]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -254,7 +246,8 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ hasValidSpaceCheck, setIsFormValid }) => {
+const CustomFooter = ({ hasValidSpaceCheck }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
     const scenarioConfirmationLabel = useConfirmationCheckboxLabel();
