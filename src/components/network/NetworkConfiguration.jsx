@@ -40,6 +40,21 @@ export const NetworkConfiguration = ({
             iframe.contentWindow.addEventListener("error", exception => {
                 onCritFail({ context: _("Network plugin failed") })({ message: exception.error.message, stack: exception.error.stack });
             });
+
+            // Hide elements not needed in the installer context
+            const hideSelectors = ["#networking-graphs", ".cockpit-log-panel"];
+            const iframeDoc = iframe.contentDocument;
+            const observer = new MutationObserver(() => {
+                hideSelectors.forEach(sel => {
+                    const el = iframeDoc.querySelector(sel);
+                    if (el && el.style.display !== "none") {
+                        el.style.display = "none";
+                    }
+                });
+            });
+            observer.observe(iframeDoc.body, { childList: true, subtree: true });
+
+            return () => observer.disconnect();
         }
     }, [isIframeMounted, onCritFail]);
 
