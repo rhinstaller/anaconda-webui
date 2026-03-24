@@ -53,7 +53,10 @@ class LanguageSelector extends React.Component {
             }
             setLocale({ locale: this.props.language });
         } catch (e) {
-            this.props.setStepNotification(e);
+            this.props.setStepNotification({
+                step: SCREEN_ID,
+                ...e,
+            });
         }
     }
 
@@ -160,7 +163,10 @@ class LanguageSelector extends React.Component {
                         setLanguage({ lang: getLocaleId(localeItem) })
                                 .then(() => setLocale({ locale: getLocaleId(localeItem) }))
                                 .catch(ex => {
-                                    this.props.setStepNotification(ex);
+                                    this.props.setStepNotification({
+                                        step: SCREEN_ID,
+                                        ...ex,
+                                    });
                                 });
                         this.setState({ lang: item });
                         fetch("po.js").then(response => response.text())
