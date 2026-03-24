@@ -23,7 +23,7 @@ import "./AnacondaHeader.scss";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 
-export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCritFail, reportLinkURL, setShowStorage, showStorage, title }) => {
+export const AnacondaHeader = ({ currentStepId, dispatch, onCritFail, reportLinkURL, setShowStorage, showStorage, title }) => {
     const [beta, setBeta] = useState();
     const network = useContext(NetworkContext);
     const isConnected = network.connected;
@@ -47,7 +47,6 @@ export const AnacondaHeader = ({ currentStepId, dispatch, isFormDisabled, onCrit
                   currentStepId={currentStepId}
                   dispatch={dispatch}
                   isConnected={isConnected}
-                  isFormDisabled={isFormDisabled}
                   onCritFail={onCritFail}
                   reportLinkURL={reportLinkURL}
                   setShowStorage={setShowStorage}

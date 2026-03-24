@@ -15,7 +15,7 @@ import {
 
 import {
     DialogsContext,
-    FooterContext,
+    PageContext,
     StorageContext,
 } from "../../../contexts/Common.jsx";
 
@@ -39,12 +39,9 @@ export const InstallationMethod = ({
     idPrefix,
     isEfi,
     isFirstScreen,
-    isFormDisabled,
     onCritFail,
-    setIsFormDisabled,
-    setIsFormValid,
-    setStepNotification,
 }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
     const [isDestinationValid, setIsDestinationValid] = useState(false);
     const [isScenarioValid, setIsScenarioValid] = useState(false);
@@ -56,12 +53,8 @@ export const InstallationMethod = ({
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter
-          isFormDisabled={isFormDisabled}
-          isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked}
-          setStepNotification={setStepNotification}
-        />
-    ), [isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification]);
+        <CustomFooter isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked} />
+    ), [isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
 
     return (
@@ -75,9 +68,7 @@ export const InstallationMethod = ({
               dispatch={dispatch}
               idPrefix={idPrefix}
               isFirstScreen={isFirstScreen}
-              isFormDisabled={isFormDisabled}
               setIsDestinationValid={setIsDestinationValid}
-              setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />
             <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>
@@ -85,8 +76,6 @@ export const InstallationMethod = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFirstScreen={isFirstScreen}
-                  isFormDisabled={isFormDisabled}
-                  onCritFail={onCritFail}
                   setIsScenarioValid={setIsScenarioValid}
                 />
             </DialogsContext.Provider>
@@ -94,14 +83,15 @@ export const InstallationMethod = ({
     );
 };
 
-const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification }) => {
+const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
+    const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
     const [isReclaimSpaceModalOpen, setIsReclaimSpaceModalOpen] = useState(false);
     const [isNextClicked, setIsNextClicked] = useState(false);
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const [partitioningApplied, setPartitioningApplied] = useState(false);
     const nextRef = useRef();
-    const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { partitioning, storageScenarioId } = useContext(StorageContext) ?? {};
     const homeReuseOptions = useHomeReuseOptions();
     /** Scenarios do not create or apply existing partitioning on this step. */
     const SCENARIOS_WITHOUT_PARTITIONING_CREATION = ["mount-point-mapping", "use-configured-storage"];
@@ -113,7 +103,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
         }
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
-    const onNext = async ({ setIsFormDisabled }) => {
+    const onNext = async () => {
         if (SCENARIOS_WITHOUT_PARTITIONING_CREATION.includes(storageScenarioId)) {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
@@ -172,7 +162,6 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 
     const reclaimSpaceModal = (
         <ReclaimSpaceModal
-          isFormDisabled={isFormDisabled}
           onNext={goToNextStep}
           onClose={() => setIsReclaimSpaceModalOpen(false)}
         />
@@ -195,7 +184,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 };
 
 const InstallationMethodFooterHelper = () => {
-    const { isFormValid } = useContext(FooterContext);
+    const { isFormValid } = useContext(PageContext) ?? {};
 
     if (isFormValid) {
         return null;
