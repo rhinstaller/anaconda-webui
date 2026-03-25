@@ -22,7 +22,6 @@ import {
     SystemTypeContext,
     TimezoneContext,
     UserInterfaceContext,
-    UsersContext,
 } from "../../contexts/Common.jsx";
 
 import {
@@ -34,6 +33,7 @@ import {
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
+import { AccountsReviewDescription } from "../users/index.js";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
 import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
@@ -59,30 +59,6 @@ const ReviewDescriptionList = ({ children }) => {
             {children}
         </DescriptionList>
     );
-};
-
-const AccountsDescription = () => {
-    const accounts = useContext(UsersContext);
-
-    const first = accounts.users?.[0];
-    const fullName = first?.gecos ?? "";
-    const userName = first?.name ?? "";
-    const userString = fullName ? `${fullName} (${userName})` : userName;
-
-    const noUserAccount = (accounts.users?.length ?? 0) === 0;
-
-    if (noUserAccount && accounts.isRootEnabled) {
-        return _("Root account is enabled, but no user account has been configured");
-    } else if (!noUserAccount && !accounts.isRootEnabled) {
-        return userString;
-    } else {
-        return (
-            <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
-                <div>{_("Root account is enabled")}</div>
-                <div>{cockpit.format("User account: $0", userString)}</div>
-            </Flex>
-        );
-    }
 };
 
 export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => {
@@ -199,7 +175,7 @@ export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => 
                             <ReviewDescriptionListItem
                               id={`${SCREEN_ID}-target-system-account`}
                               term={_("Account")}
-                              description={<AccountsDescription />}
+                              description={<AccountsReviewDescription />}
                             />
                         </ReviewDescriptionList>}
                     {isBootIso &&

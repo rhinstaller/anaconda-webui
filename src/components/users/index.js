@@ -5,9 +5,11 @@
 
 import cockpit from "cockpit";
 
-import { Accounts } from "./Accounts.jsx";
+import { Accounts, AccountsReviewDescription } from "./Accounts.jsx";
 
 const _ = cockpit.gettext;
+
+export { AccountsReviewDescription };
 
 export class Page {
     _description = "Set up user accounts and administrator passwords for your system.";

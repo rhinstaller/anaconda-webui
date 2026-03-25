@@ -62,6 +62,35 @@ const UsersReadOnlySummary = ({ users }) => {
     );
 };
 
+/** Review step summary for account / root choices (see users `Page.review`). */
+export const AccountsReviewDescription = () => {
+    const accounts = useContext(UsersContext);
+    const hasUsers = (accounts.users?.length ?? 0) > 0;
+    const userSummary = hasUsers
+        ? (
+            <div data-testid="accounts-review-users">
+                <UsersReadOnlySummary users={accounts.users} />
+            </div>
+        )
+        : null;
+
+    if (accounts.isRootEnabled && !hasUsers) {
+        return _("Root account is enabled, but no user account has been configured");
+    }
+    if (!accounts.isRootEnabled && hasUsers) {
+        return userSummary;
+    }
+    if (accounts.isRootEnabled && hasUsers) {
+        return (
+            <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
+                <div>{_("Root account is enabled")}</div>
+                {userSummary}
+            </Flex>
+        );
+    }
+    return null;
+};
+
 const reservedNames = [
     "root",
     "bin",
