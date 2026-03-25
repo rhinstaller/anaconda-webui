@@ -34,6 +34,11 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 class VirtInstallMachine(VirtMachine):
     http_payload_server = None
 
+    def __init__(self, image, **kwargs):
+        # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
+        self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
+        super().__init__(image, **kwargs)
+
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
 
@@ -77,6 +82,12 @@ class VirtInstallMachine(VirtMachine):
         elif payload_mode == "dnf":
             http_payload_port = self._serve_payload()
             content = f'repo --name webuitests --baseurl="http://10.0.2.2:{http_payload_port}/repo/"\n'
+        ks_basename = self.kickstart_file_name
+        if ks_basename:
+            ks_extras_path = os.path.join(WEBUI_TEST_DIR, "kickstarts", ks_basename)
+            with open(ks_extras_path, encoding="utf-8") as ksf:
+                fragment = ksf.read().rstrip()
+            content = f"{content}\n\n{fragment}" if content else fragment
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
@@ -146,7 +157,9 @@ class VirtInstallMachine(VirtMachine):
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote {selinux} inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
+                f"'inst.sshd inst.webui.remote {selinux} "
+                f"inst.updates=http://10.0.2.2:{self.http_updates_img_port}/"
+                f"{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
