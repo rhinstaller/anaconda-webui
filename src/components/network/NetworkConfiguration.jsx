@@ -16,6 +16,7 @@ const _ = cockpit.gettext;
 
 export const NetworkConfiguration = ({
     onCritFail,
+    setIsFormDisabled,
     setIsFormValid,
 }) => {
     const [isIframeMounted, setIsIframeMounted] = useState(false);
@@ -26,7 +27,8 @@ export const NetworkConfiguration = ({
 
     useEffect(() => {
         setIsFormValid(!hasActiveCheckpoint);
-    }, [hasActiveCheckpoint, setIsFormValid]);
+        setIsFormDisabled(hasActiveCheckpoint);
+    }, [hasActiveCheckpoint, setIsFormDisabled, setIsFormValid]);
 
     useEffect(() => {
         if (isIframeMounted) {
