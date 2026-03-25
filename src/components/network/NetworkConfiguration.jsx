@@ -19,7 +19,7 @@ const _ = cockpit.gettext;
 export const NetworkConfiguration = ({
     onCritFail,
 }) => {
-    const { setIsFormValid } = useContext(PageContext) ?? {};
+    const { setIsFormDisabled, setIsFormValid } = useContext(PageContext) ?? {};
     const [isIframeMounted, setIsIframeMounted] = useState(false);
     const { hasActiveCheckpoint } = useNetworkStatus();
     const backdropClass = useMaybeBackdrop();
@@ -28,7 +28,8 @@ export const NetworkConfiguration = ({
 
     useEffect(() => {
         setIsFormValid(!hasActiveCheckpoint);
-    }, [hasActiveCheckpoint, setIsFormValid]);
+        setIsFormDisabled(hasActiveCheckpoint);
+    }, [hasActiveCheckpoint, setIsFormDisabled, setIsFormValid]);
 
     useEffect(() => {
         if (isIframeMounted) {
