@@ -182,6 +182,7 @@ class Installer():
 
     def click_step_on_sidebar(self, step=None):
         step = step or self.get_current_page()
+        self.browser.wait_visible(f"#{step}:not([disabled])")
         self.browser.click(f"#{step}")
 
     @log_step()
