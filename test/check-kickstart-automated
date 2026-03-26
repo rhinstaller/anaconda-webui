@@ -6,6 +6,7 @@
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from testlib import test_main  # pylint: disable=import-error
+from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
 
 
@@ -28,13 +29,29 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
             - Users specified in kickstart are correctly picked up on the Accounts step
               and cannot be changed.
             - Root settings cannot be changed when rootpw is in kickstart.
+            - Timezone and timesource lines from kickstart appear on the date & time screen;
+              NTP servers, pool, and NTS options are visible in the Configure NTP servers modal.
         """
         b = self.browser
         m = self.machine
         i = Installer(b, m)
         u = Users(b, m)
+        dt = DateAndTime(b, m)
 
         i.open()
+        i.reach(i.steps.DATE_TIME)
+
+        tz = dt.dbus_get_timezone()
+        region, city = tz.split("/", 1)
+        dt.check_region(region)
+        dt.check_city(city)
+        dt.check_auto_date_time(dt.dbus_get_ntp_enabled())
+        dt.check_ntp_modal_rows([
+            {"hostname": "ntp.cesnet.cz", "pool": False, "nts": False},
+            {"hostname": "nts-test.strangled.net", "pool": False, "nts": True},
+            {"hostname": "0.pool.ntp.org", "pool": True, "nts": False},
+        ])
+
         i.reach(i.steps.ACCOUNTS)
 
         # Verify kickstart users (read-only) and locked root
