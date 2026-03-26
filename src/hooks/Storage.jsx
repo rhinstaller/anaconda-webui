@@ -30,7 +30,7 @@ import {
 
 import { getDeviceAncestors, hasReusableFedoraWithWindowsOS, systemMountPoints } from "../helpers/storage.js";
 
-import { FooterContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
+import { PageContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -208,7 +208,7 @@ export const getNewPartitioning = async ({
 };
 
 export const usePartitioningReset = () => {
-    const { setIsFormDisabled } = useContext(FooterContext);
+    const { setIsFormDisabled } = useContext(PageContext);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const pageHasMounted = useRef(false);
     // Always reset the partitioning when entering the installation destination page

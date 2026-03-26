@@ -20,7 +20,7 @@ import {
 } from "../../helpers/language.js";
 import { error as loggerError } from "../../helpers/log.js";
 
-import { LanguageContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { LanguageContext, PageContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { MenuSearch } from "../common/MenuSearch.jsx";
 import { Keyboard } from "./Keyboard.jsx";
@@ -37,6 +37,8 @@ const getLocaleId = locale => locale["locale-id"].v;
 const getLocaleNativeName = locale => locale["native-name"].v;
 
 class LanguageSelector extends React.Component {
+    static contextType = PageContext;
+
     constructor (props) {
         super(props);
         this.initiallySelectedLanguage = props.language;
@@ -53,7 +55,10 @@ class LanguageSelector extends React.Component {
             }
             setLocale({ locale: this.props.language });
         } catch (e) {
-            this.props.setStepNotification(e);
+            this.context?.setStepNotification?.({
+                step: SCREEN_ID,
+                ...e,
+            });
         }
     }
 
@@ -160,7 +165,10 @@ class LanguageSelector extends React.Component {
                         setLanguage({ lang: getLocaleId(localeItem) })
                                 .then(() => setLocale({ locale: getLocaleId(localeItem) }))
                                 .catch(ex => {
-                                    this.props.setStepNotification(ex);
+                                    this.context?.setStepNotification?.({
+                                        step: SCREEN_ID,
+                                        ...ex,
+                                    });
                                 });
                         this.setState({ lang: item });
                         fetch("po.js").then(response => response.text())
@@ -204,7 +212,8 @@ class LanguageSelector extends React.Component {
     }
 }
 
-export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotification }) => {
+export const InstallationLanguage = ({ dispatch }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { commonLocales, keyboardLayouts, language, languages } = useContext(LanguageContext);
     const { desktopVariant } = useContext(SystemTypeContext);
     const isGnome = desktopVariant === "GNOME";
@@ -213,7 +222,7 @@ export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotifica
 
     useEffect(() => {
         setIsLanguageValid(language !== "");
-    }, [language, setIsFormValid]);
+    }, [language]);
 
     useEffect(() => {
         setIsFormValid(isLanguageValid && isKeyboardValid);
@@ -231,8 +240,6 @@ export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotifica
                       languages={languages}
                       commonLocales={commonLocales}
                       language={language}
-                      setIsFormValid={setIsFormValid}
-                      setStepNotification={setStepNotification}
                     />
                 </FormGroup>
 
@@ -246,7 +253,6 @@ export const InstallationLanguage = ({ dispatch, setIsFormValid, setStepNotifica
                           dispatch={dispatch}
                           isGnome={isGnome}
                           setIsKeyboardValid={setIsKeyboardValid}
-                          setStepNotification={setStepNotification}
                         />
                     </FormGroup>
                 )}

@@ -10,7 +10,7 @@ import { HelpIcon } from "@patternfly/react-icons/dist/esm/icons/help-icon";
 
 import { WithDialogs } from "dialogs.jsx";
 
-export const FooterContext = createContext(null);
+export const PageContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
 export const PayloadContext = createContext(null);

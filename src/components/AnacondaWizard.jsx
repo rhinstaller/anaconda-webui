@@ -10,19 +10,23 @@ import React, { useContext, useEffect, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { FooterContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { getSteps } from "./steps.js";
 
 export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail, setCurrentStepId, showStorage }) => {
-    // The Form should be disabled while backend checks are in progress
-    // or the page initialization is in progress
+    /**
+     * Wizard step page state (reset in `AnacondaWizard` `goToStep` on step change).
+     * - **isFormValid** / **setIsFormValid** — Required fields satisfied; reset when the step changes in the wizard.
+     * - **isFormDisabled** / **setIsFormDisabled** — Block input during init or async work
+     * - **stepNotification** / **setStepNotification** — Inline alert for the active step; cleared on step change.
+     */
     const [isFormDisabled, setIsFormDisabled] = useState(false);
-    // The Form should be marked as invalid when the user filled data
-    // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
+    const [stepNotification, setStepNotification] = useState(null);
+
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const payloadType = useContext(PayloadContext).type;
@@ -31,10 +35,16 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
 
     const componentProps = {
         dispatch,
-        isFormDisabled: isFormDisabled || isFetching,
         onCritFail,
+    };
+
+    const pageContextValue = {
+        isFormDisabled: isFormDisabled || isFetching,
+        isFormValid,
         setIsFormDisabled,
         setIsFormValid,
+        setStepNotification,
+        stepNotification,
     };
 
     const stepsOrder = getSteps(userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
@@ -66,8 +76,6 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 stepProps = {
                     children: (
                         <AnacondaPage
-                          isFormDisabled={isFormDisabled}
-                          setIsFormDisabled={setIsFormDisabled}
                           step={s.id}
                           title={s.title}
                           isFirstScreen={s.isFirstScreen}
@@ -99,6 +107,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
             // and disable the form so that the page can perform
             //  initialization before the user can interact with it
             setIsFormDisabled(true);
+            setStepNotification(null);
         }
 
         cockpit.location.go([newStep.id]);
@@ -130,12 +139,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
 
     return (
         <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
-            <FooterContext.Provider value={{
-                isFormDisabled: isFormDisabled || isFetching,
-                isFormValid,
-                setIsFormDisabled,
-                setIsFormValid,
-            }}>
+            <PageContext.Provider value={pageContextValue}>
                 <Wizard
                   className={"anaconda-wizard-step-" + currentStepId}
                   id="installation-wizard"
@@ -146,7 +150,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 >
                     {steps}
                 </Wizard>
-            </FooterContext.Provider>
+            </PageContext.Provider>
         </PageSection>
     );
 };

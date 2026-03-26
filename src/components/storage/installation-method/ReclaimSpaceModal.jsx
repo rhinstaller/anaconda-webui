@@ -31,7 +31,7 @@ import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/st
 
 import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../../helpers/storage.js";
 
-import { StorageContext } from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { useDiskFreeSpace, useOriginalDevices, useOriginalExistingSystems, useRequiredSize } from "../../../hooks/Storage.jsx";
 
@@ -43,7 +43,8 @@ import "./ReclaimSpaceModal.scss";
 const _ = cockpit.gettext;
 const idPrefix = "reclaim-space-modal";
 
-export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
+export const ReclaimSpaceModal = ({ onClose, onNext }) => {
+    const { isFormDisabled } = useContext(PageContext) ?? {};
     const { diskSelection, partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const [dialogError, setDialogError] = useState();
@@ -148,7 +149,7 @@ export const ReclaimSpaceModal = ({ isFormDisabled, onClose, onNext }) => {
                 </Stack>
             </ModalBody>
             <ModalFooter>
-                <ReclaimFooter isFormDisabled={isFormDisabled} unappliedActions={unappliedActions} onReclaim={onReclaim} onClose={onClose} />
+                <ReclaimFooter unappliedActions={unappliedActions} onReclaim={onReclaim} onClose={onClose} />
             </ModalFooter>
         </Modal>
     );
@@ -180,7 +181,8 @@ const getReclaimableSpaceFromAction = ({ action, devices, unappliedActions }) =>
     }
 };
 
-const ReclaimFooter = ({ isFormDisabled, onClose, onReclaim, unappliedActions }) => {
+const ReclaimFooter = ({ onClose, onReclaim, unappliedActions }) => {
+    const { isFormDisabled } = useContext(PageContext) ?? {};
     const devices = useOriginalDevices();
     const diskFreeSpace = useDiskFreeSpace();
     const requiredSize = useRequiredSize();

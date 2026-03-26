@@ -19,7 +19,7 @@ import {
     setLuksEncryptionDataAction
 } from "../../../actions/storage-actions.js";
 
-import { LanguageContext, RuntimeContext, StorageContext } from "../../../contexts/Common.jsx";
+import { LanguageContext, PageContext, RuntimeContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { PasswordFormFields, ruleLength } from "../../Password.jsx";
 
@@ -47,7 +47,8 @@ const CheckDisksSpinner = (
     </EmptyState>
 );
 
-export const DiskEncryption = ({ dispatch, setIsFormValid }) => {
+export const DiskEncryption = ({ dispatch }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { luks } = useContext(StorageContext);
     const luksPolicy = useContext(RuntimeContext).passwordPolicies.luks;
     const { plannedVconsole } = useContext(LanguageContext);

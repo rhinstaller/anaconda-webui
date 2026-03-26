@@ -31,7 +31,7 @@ import {
     isValidDate,
 } from "../../helpers/timezone.js";
 
-import { LanguageContext, NetworkContext } from "../../contexts/Common.jsx";
+import { LanguageContext, NetworkContext, PageContext } from "../../contexts/Common.jsx";
 
 import { CustomNTP } from "./CustomNTPModal.jsx";
 import { TimezoneSection } from "./Timezone.jsx";
@@ -200,7 +200,8 @@ const DateAndTimeSection = ({ locale, setSectionValid, timezone }) => {
     );
 };
 
-export const DateAndTimePage = ({ setIsFormValid }) => {
+export const DateAndTimePage = () => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const [dateTimeValid, setDateTimeValid] = useState(false);
     const [timezoneLabel, setTimezoneLabel] = useState("");
     const [timezoneValid, setTimezoneValid] = useState(false);

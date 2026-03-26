@@ -34,7 +34,7 @@ import {
     requestsToDbus,
 } from "../../../helpers/storage.js";
 
-import { FooterContext, StorageContext } from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../../hooks/Storage.jsx";
 
@@ -529,9 +529,8 @@ const getNewRequestProps = ({ deviceSpec, mountPoint, reformat, requests }) => {
 
 const RequestsTable = ({
     idPrefix,
-    setIsFormValid,
-    setStepNotification,
 }) => {
+    const { setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const { diskSelection, partitioning } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const deviceData = useOriginalDevices();
@@ -659,7 +658,7 @@ const isUsableDevice = (devSpec, deviceData) => {
 };
 
 export const usePartitioningReuse = () => {
-    const { setIsFormDisabled } = useContext(FooterContext);
+    const { setIsFormDisabled } = useContext(PageContext);
     const { partitioning } = useContext(StorageContext);
     const previousRequestsRef = useRef();
     const mergedRequestsRef = useRef();
@@ -708,28 +707,22 @@ export const usePartitioningReuse = () => {
     }, [partitioning?.requests, setIsFormDisabled]);
 };
 
-export const MountPointMapping = ({
-    setIsFormValid,
-    setStepNotification,
-}) => {
+export const MountPointMapping = () => {
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter setStepNotification={setStepNotification} />, [setStepNotification]);
+    const getFooter = useMemo(() => <CustomFooter />, []);
     useWizardFooter(getFooter);
 
     return (
-        <RequestsTable
-          idPrefix={SCREEN_ID + "-table"}
-          setStepNotification={setStepNotification}
-          setIsFormValid={setIsFormValid}
-        />
+        <RequestsTable idPrefix={SCREEN_ID + "-table"} />
     );
 };
 
-const CustomFooter = ({ setStepNotification }) => {
+const CustomFooter = () => {
+    const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const step = SCREEN_ID;
-    const onNext = async ({ goToNextStep, setIsFormDisabled }) => {
+    const onNext = async ({ goToNextStep }) => {
         const partitioningPath = partitioning.path;
 
         // Before applying storage, filter requests from partitioning.requests
