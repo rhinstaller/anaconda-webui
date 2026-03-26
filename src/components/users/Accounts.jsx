@@ -416,9 +416,9 @@ const RootAccountEditable = ({
 
 const RootAccount = ({ idPrefix, setAccounts, setIsRootValid }) => {
     const accounts = useContext(UsersContext);
-    const canChangeRootPassword = accounts.canChangeRootPassword !== false;
+    const canModifyRootConfiguration = accounts.canModifyRootConfiguration !== false;
 
-    if (!canChangeRootPassword) {
+    if (!canModifyRootConfiguration) {
         return (
             <RootAccountReadonly
               idPrefix={idPrefix}

@@ -42,11 +42,14 @@ export class UsersClient {
         this.dispatch = dispatch;
     }
 
-    init () {
+    /**
+     * @param {object} args  Bootstrap args from `Application` (`conf`, `automatedInstall`).
+     */
+    init (args = {}) {
         this.client.addEventListener(
             "close", () => error("Users client closed")
         );
-        return this.dispatch(getUsersAction());
+        return this.dispatch(getUsersAction(args));
     }
 }
 

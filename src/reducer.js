@@ -49,7 +49,13 @@ export const networkInitialState = {
 
 /* Intial state for the runtime store substate */
 export const runtimeInitialState = {
-    connected: null
+    // FIXME: When automated installs are supported, set this from the backend
+    // (e.g. D-Bus) via a dedicated action.  For now this is only used for
+    // conditional rendering of the read-only version of the account setting,
+    // but we rely on more specific information from the backend to determine
+    // that, so we can set this to true by default.
+    automatedInstall: true,
+    connected: null,
 };
 
 /* Initial state for the timezone store substate */
@@ -75,6 +81,7 @@ export const payloadInitialState = {
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
     canChangeRootPassword: true,
+    canModifyRootConfiguration: true,
     confirmPassword: "",
     isRootEnabled: false,
     password: "",

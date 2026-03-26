@@ -41,7 +41,7 @@ export class LocalizationClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener("close", () => error("Localization client closed"));
 
         this.startEventMonitor();

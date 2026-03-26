@@ -37,7 +37,7 @@ export class BossClient {
         this.address = address;
     }
 
-    init () {
+    init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener("close", () => error("Boss client closed"));
     }
 }

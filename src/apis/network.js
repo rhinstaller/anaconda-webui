@@ -39,7 +39,7 @@ export class NetworkClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener("close", () => error("Network client closed"));
 
         this.startEventMonitor();

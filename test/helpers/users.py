@@ -26,6 +26,13 @@ ACCOUNTS_READONLY_USERS = "[data-testid='accounts-users-readonly']"
 ACCOUNTS_READONLY_USER_ROW = "accounts-users-readonly-user"
 
 
+def override_user_interface_can_change_root(test, can_change_root):
+    """Patch `[User Interface] can_change_root` in `/run/anaconda/anaconda.conf` (restored after the test)."""
+    test.restore_file('/run/anaconda/anaconda.conf')
+    val = "True" if can_change_root else "False"
+    test.machine.execute(fr"sed -i 's/^can_change_root =.*/can_change_root = {val}/' /run/anaconda/anaconda.conf")
+
+
 class UsersDBus():
     def __init__(self, machine):
         self.machine = machine

@@ -42,7 +42,7 @@ export class PayloadsClient {
         this.dispatch = dispatch;
     }
 
-    init () {
+    init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener(
             "close", () => error("Payloads client closed")
         );

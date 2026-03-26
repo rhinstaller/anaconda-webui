@@ -9,20 +9,32 @@ import {
     getUsers,
 } from "../apis/users.js";
 
+import { canModifyRootConfiguration } from "../helpers/users.js";
+import { parseAnacondaConfBool } from "../helpers/utils.js";
+
 export const setUsersAction = (users) => ({
     payload: { users },
     type: "SET_USERS"
 });
 
-export const getUsersAction = () => async (dispatch) => {
+/** @param {{ automatedInstall?: boolean, conf?: object }} args  Bootstrap from `Application` / `UsersClient.init` */
+export const getUsersAction = (args = {}) => async (dispatch) => {
+    const { automatedInstall, conf } = args;
+    const canChangeRoot = parseAnacondaConfBool(conf?.["User Interface"]?.can_change_root);
     const [users, isRootAccountLocked, canChangeRootPassword] = await Promise.all([
         getUsers(),
         getIsRootAccountLocked(),
         getCanChangeRootPassword()
     ]);
     const userList = users ?? [];
+
     dispatch(setUsersAction({
         canChangeRootPassword: !!canChangeRootPassword,
+        canModifyRootConfiguration: canModifyRootConfiguration({
+            automatedInstall: !!automatedInstall,
+            canChangeRoot,
+            canChangeRootPassword,
+        }),
         isRootEnabled: !isRootAccountLocked,
         users: userList,
         usersSpecifiedByKickstart: userList.length > 0,

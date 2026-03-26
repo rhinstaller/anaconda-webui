@@ -18,3 +18,14 @@ export const checkIfArraysAreEqual = (array1, array2) => {
         array1Sorted.every((value, index) => value === array2Sorted[index])
     );
 };
+
+/**
+ * Parse booleans from `/run/anaconda/anaconda.conf` string values ("True" / "False").
+ *
+ * @param {string|undefined} raw
+ * @returns {boolean}
+ */
+export const parseAnacondaConfBool = (raw) => {
+    const t = raw?.trim().toLowerCase();
+    return t === "true" || t === "yes" || t === "1";
+};
