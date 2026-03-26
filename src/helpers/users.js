@@ -18,6 +18,43 @@ import { objectToDbus } from "../apis/helpers.js";
 
 import encryptUserPw from "../scripts/encrypt-user-pw.py";
 
+/**
+ * Whether the installer UI may change root password / lock state.
+ *
+ * Ported from Anaconda's shared UI helper (same control flow as
+ * `can_modify_root_configuration` in pyanaconda):
+ * https://github.com/rhinstaller/anaconda/blob/main/pyanaconda/ui/lib/users.py
+ *
+ * @param {object} opts
+ * @param {boolean} opts.automatedInstall  Same role as Anaconda `flags.automatedInstall`
+ * @param {boolean} opts.canChangeRoot     Same role as Anaconda `conf.ui.can_change_root`
+ * @param {boolean} opts.canChangeRootPassword  Users module `CanChangeRootPassword`
+ * @returns {boolean}
+ */
+export const canModifyRootConfiguration = ({
+    automatedInstall,
+    canChangeRoot,
+    canChangeRootPassword,
+}) => {
+    // Allow changes in the interactive mode.
+    if (!automatedInstall) {
+        return true;
+    }
+
+    // Does the configuration allow changes?
+    if (canChangeRoot) {
+        return true;
+    }
+
+    // Allow changes if the root account isn't
+    // already configured by the kickstart file.
+    if (canChangeRootPassword) {
+        return true;
+    }
+
+    return false;
+};
+
 const cryptUserPassword = async (password) => {
     const crypted = await python.spawn(encryptUserPw, password, { environ: ["LC_ALL=C.UTF-8"], err: "message" });
     return crypted;
@@ -37,7 +74,7 @@ export const applyAccounts = async (accounts) => {
         await setUsers(users);
     }
 
-    if (accounts.canChangeRootPassword) {
+    if (accounts.canModifyRootConfiguration) {
         await setIsRootAccountLocked(!accounts.isRootEnabled);
         if (accounts.isRootEnabled) {
             const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);

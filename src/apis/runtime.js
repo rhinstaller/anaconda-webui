@@ -35,7 +35,7 @@ export class RuntimeClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener(
             "close", () => error("Runtime client closed")
         );

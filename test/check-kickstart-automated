@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from testlib import test_main  # pylint: disable=import-error
-from users import Users
+from users import Users, override_user_interface_can_change_root
 
 
 class TestInteractiveDefaults(VirtInstallMachineCase):
@@ -47,6 +47,24 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
+
+    def testUserInterfaceCanChangeRootConf(self):
+        """
+        Description:
+            When anaconda.conf has ``can_change_root = True``, the Accounts
+            step the root enable control must not be disabled
+
+        Expected results:
+            - Root enable checkbox is not disabled
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage-kickstart")
+
+        override_user_interface_can_change_root(self, True)
+        i.open()
+        i.reach(i.steps.ACCOUNTS)
+        b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:not(:disabled)")
 
 
 if __name__ == "__main__":

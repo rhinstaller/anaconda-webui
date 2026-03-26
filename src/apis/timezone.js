@@ -46,7 +46,7 @@ export class TimezoneClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener("close", () => error("Timezone client closed"));
         // You can subscribe to DBus signals here if needed.
 

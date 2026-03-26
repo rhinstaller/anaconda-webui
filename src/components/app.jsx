@@ -33,7 +33,7 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+export const Application = ({ automatedInstall, conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
@@ -65,11 +65,11 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         // Attach a click event listener to detect external link clicks
         document.addEventListener("click", allowExternalNavigation);
 
-        Promise.all(clients.map(Client => new Client(address, dispatch).init()))
+        Promise.all(clients.map(Client => new Client(address, dispatch).init({ automatedInstall, conf })))
                 .then(() => {
                     setStoreInitialized(true);
                 }, onCritFail({ context: N_("Reading information about the computer failed.") }));
-    }, [address, dispatch, onCritFail]);
+    }, [address, automatedInstall, conf, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!address || !storeInitialized) {
@@ -101,7 +101,6 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               onCritFail={onCritFail}
               title={title}
               dispatch={dispatch}
-              conf={conf}
               setCurrentStepId={setCurrentStepId}
               showStorage={showStorage}
             />
@@ -204,12 +203,14 @@ export const ApplicationWithErrorBoundary = () => {
                   showStorage={showStorage}
                 >
                     <Application
+                      automatedInstall={state.runtime.automatedInstall}
+                      conf={conf}
                       dispatch={dispatch}
                       isFetching={state.misc.isFetching}
+                      onCritFail={onCritFail}
                       osRelease={osRelease}
                       showStorage={showStorage}
                       setShowStorage={setShowStorage}
-                      state={state}
                     />
                 </ErrorBoundary>
             </Page>
