@@ -1,3 +1,12 @@
+bootloader --timeout=1
+zerombr
+clearpart --all
+part biosboot --fstype=biosboot --size=1
+part /boot --fstype=xfs --size=1024
+part swap --size=1024
+part / --fstype=xfs --grow
+part /home --fstype=xfs --size=2048
+
 rootpw testcase
 user --name=alice --gecos="Alice Admin" --groups=wheel
 user --name=bob --gecos="Bob User"
