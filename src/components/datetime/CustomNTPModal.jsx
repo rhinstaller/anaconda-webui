@@ -244,7 +244,11 @@ const CustomNTPModal = ({ onClose }) => {
                 >
                     {_("Save")}
                 </Button>
-                <Button variant="link" onClick={onClose}>
+                <Button
+                  id={SCREEN_ID + "-ntp-modal-cancel-button"}
+                  variant="link"
+                  onClick={onClose}
+                >
                     {_("Cancel")}
                 </Button>
             </ModalFooter>

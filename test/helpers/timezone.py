@@ -36,6 +36,29 @@ class DateTime():
         b.wait_visible(f"#{self._step}-ntp-modal")
         b.wait_val(f"#{self._step}-ntp-table-row-{index}-hostname", hostname)
 
+    def check_ntp_modal_rows(self, expected_rows):
+        """Assert the NTP modal lists time sources as expected.
+
+        expected_rows: sequence of dicts with keys hostname (str), pool (bool), nts (bool).
+        """
+        b = self.browser
+        b.click(f"#{self._step}-configure-ntp")
+        b.wait_visible(f"#{self._step}-ntp-modal")
+        for i, row in enumerate(expected_rows):
+            b.wait_val(f"#{self._step}-ntp-table-row-{i}-hostname", row["hostname"])
+            pool_sel = f"#{self._step}-ntp-table-row-{i}-pool-checkbox"
+            nts_sel = f"#{self._step}-ntp-table-row-{i}-secure-checkbox"
+            if row["pool"]:
+                b.wait_visible(f"{pool_sel}:checked")
+            else:
+                b.wait_visible(f"{pool_sel}:not(:checked)")
+            if row["nts"]:
+                b.wait_visible(f"{nts_sel}:checked")
+            else:
+                b.wait_visible(f"{nts_sel}:not(:checked)")
+        b.click(f"#{self._step}-ntp-modal-cancel-button")
+        b.wait_not_present(f"#{self._step}-ntp-modal")
+
     def add_ntp_server(self, server, index):
         b = self.browser
         b.set_checked(f"#{self._step}-auto-date-time", True)
