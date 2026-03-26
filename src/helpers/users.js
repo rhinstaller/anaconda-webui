@@ -55,6 +55,20 @@ export const canModifyRootConfiguration = ({
     return false;
 };
 
+/**
+ * Whether the Accounts user-creation section may be edited when the Users module
+ * already lists accounts (e.g. kickstart / interactive defaults).
+ * Aligns with Anaconda’s use of `conf.ui.can_change_users` for the user spoke.
+ *
+ * @param {object} opts
+ * @param {boolean} opts.canChangeUsers Same role as Anaconda `conf.ui.can_change_users`
+ * @param {boolean} opts.usersSpecifiedByKickstart Installer already has user entries to show
+ * @returns {boolean}
+ */
+export const canModifyUserConfiguration = ({ canChangeUsers, usersSpecifiedByKickstart }) => {
+    return !usersSpecifiedByKickstart || canChangeUsers;
+};
+
 const cryptUserPassword = async (password) => {
     const crypted = await python.spawn(encryptUserPw, password, { environ: ["LC_ALL=C.UTF-8"], err: "message" });
     return crypted;
@@ -63,7 +77,7 @@ const cryptUserPassword = async (password) => {
 export const applyAccounts = async (accounts) => {
     if ((accounts.users?.length ?? 0) === 0) {
         await setUsers([]);
-    } else if (!accounts.usersSpecifiedByKickstart) {
+    } else if (!accounts.usersSpecifiedByKickstart || accounts.canModifyUserConfiguration) {
         const cryptedUserPw = await cryptUserPassword(accounts.password);
         const first = accounts.users?.[0] ?? {};
         const firstUserDbus = firstUserToDbus({ ...first, password: cryptedUserPw });

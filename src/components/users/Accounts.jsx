@@ -446,23 +446,26 @@ export const Accounts = ({
     const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
     const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
-    const usersFromKickstart = accounts.usersSpecifiedByKickstart === true;
+    const kickstartUsersReadOnly = accounts.usersSpecifiedByKickstart === true &&
+        accounts.canModifyUserConfiguration === false;
 
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
 
         setIsFormValid(
-            (skipAccountCreation || isUserValid || usersFromKickstart) &&
+            (skipAccountCreation || isUserValid || kickstartUsersReadOnly) &&
             (skipRootCreation || isRootValid) &&
-            !(skipRootCreation && skipAccountCreation && !usersFromKickstart)
+            !(skipRootCreation && skipAccountCreation && !kickstartUsersReadOnly)
         );
     }, [
         accounts.isRootEnabled,
+        accounts.canModifyUserConfiguration,
+        accounts.usersSpecifiedByKickstart,
         isRootValid,
         isUserValid,
         setIsFormValid,
         skipAccountCreation,
-        usersFromKickstart,
+        kickstartUsersReadOnly,
     ]);
 
     // Display custom footer
@@ -474,7 +477,7 @@ export const Accounts = ({
           isHorizontal
           id={idPrefix}
         >
-            {usersFromKickstart
+            {kickstartUsersReadOnly
                 ? (
                     <FormSection title={_("User creation")} data-testid="accounts-users-readonly">
                         <UsersReadOnlySummary users={accounts.users} />

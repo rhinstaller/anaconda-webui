@@ -82,6 +82,7 @@ export const payloadInitialState = {
 export const usersInitialState = {
     canChangeRootPassword: true,
     canModifyRootConfiguration: true,
+    canModifyUserConfiguration: true,
     confirmPassword: "",
     isRootEnabled: false,
     password: "",

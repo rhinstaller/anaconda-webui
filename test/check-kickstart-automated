@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from testlib import test_main  # pylint: disable=import-error
-from users import Users, override_user_interface_can_change_root
+from users import Users, override_user_interface_conf_keys
 
 
 class TestInteractiveDefaults(VirtInstallMachineCase):
@@ -48,23 +48,27 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
 
-    def testUserInterfaceCanChangeRootConf(self):
+    def testUserInterfaceCanChangeAccountsConf(self):
         """
         Description:
-            When anaconda.conf has ``can_change_root = True``, the Accounts
-            step the root enable control must not be disabled
+            Non-default ``can_change_root`` and ``can_change_users`` in ``anaconda.conf``
+            (both ``True``): root must stay interactive and the user section must show the
+            editable create-account UI instead of the kickstart read-only summary.
 
         Expected results:
+            - Read-only kickstart user summary is not shown; create-account controls are present
             - Root enable checkbox is not disabled
         """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage-kickstart")
 
-        override_user_interface_can_change_root(self, True)
+        override_user_interface_conf_keys(self, can_change_root=True, can_change_users=True)
         i.open()
         i.reach(i.steps.ACCOUNTS)
+
         b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:not(:disabled)")
+        b.wait_visible("#anaconda-screen-accounts-create-account-set-user-account:not(:disabled)")
 
 
 if __name__ == "__main__":
