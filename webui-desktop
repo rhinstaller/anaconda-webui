@@ -120,10 +120,12 @@ get_default_browser() {
 
 prepare_firefox_cmd() {
     INSTALLER_USER=$1
+    INSTALLER_XDG_RUNTIME_DIR=$2
 
     # prepare empty firefox profile dir with theme based on the passed profile id
+    # INSTALLER_XDG_RUNTIME_DIR is created by the caller before this runs.
     FIREFOX_THEME_DIR="/usr/share/anaconda/firefox-theme"
-    FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR}/anaconda/firefox-profile"
+    FIREFOX_PROFILE_PATH="${INSTALLER_XDG_RUNTIME_DIR}/anaconda/firefox-profile"
 
     # make sure the profile directory exists and is empty
     if [ -d ${FIREFOX_PROFILE_PATH} ]
@@ -179,7 +181,7 @@ else
     DEFAULT_BROWSER_CMD=$(get_default_browser)
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
     if [[ "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
-        eval "$(prepare_firefox_cmd "$INSTALLER_USER")"
+        eval "$(prepare_firefox_cmd "$INSTALLER_USER" "$INSTALLER_XDG_RUNTIME_DIR")"
         echo "Using Firefox browser command: ${BROWSER[@]}" >&2
     else
         BROWSER=(${DEFAULT_BROWSER_CMD})
