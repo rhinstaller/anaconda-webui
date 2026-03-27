@@ -212,9 +212,41 @@ else
 
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
-    HOME="$BROWSER_HOME" XDG_CURRENT_DESKTOP=GNOME \
-    pkexec --user $INSTALLER_USER env DISPLAY=$DISPLAY "${user_environment[@]}" "${BROWSER[@]}" http://"$WEBUI_ADDRESS""$URL_PATH" &
-    BLOCK_ON_PID=$!
+    chown "${INSTALLER_USER}" "${BROWSER_HOME}"
+    WEBUI_URL=http://"$WEBUI_ADDRESS""$URL_PATH"
+
+    if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+        if [ "$USER_GRAPHICAL_SESSION_AVAILABLE" = "1" ]; then
+            HOME="$BROWSER_HOME" \
+            pkexec --user "$INSTALLER_USER" env XDG_CURRENT_DESKTOP=GNOME "${user_environment[@]}" "${BROWSER[@]}" "$WEBUI_URL" &
+            BLOCK_ON_PID=$!
+        else
+            type dbus-run-session >/dev/null 2>&1 || { echo "Error: dbus-run-session is not ready, cannot continue." >&2; exit 1; }
+
+            ROOT_XDG_RUNTIME_DIR="/run/user/0"
+            ROOT_WAYLAND_SOCKET="$(find "${ROOT_XDG_RUNTIME_DIR}" -maxdepth 1 -type s -name 'wl-sysinstall-*' | head -n 1)"
+
+            if [ -z "${ROOT_WAYLAND_SOCKET}" ]; then
+                echo "Error: root Wayland socket not found under ${ROOT_XDG_RUNTIME_DIR}" >&2
+                exit 1
+            fi
+
+            chmod 711 "${ROOT_XDG_RUNTIME_DIR}"
+            chmod a+rw "${ROOT_WAYLAND_SOCKET}"
+
+            HOME="$BROWSER_HOME" \
+            pkexec --user "$INSTALLER_USER" env \
+                XDG_CURRENT_DESKTOP=GNOME \
+                XDG_SESSION_TYPE=wayland \
+                XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" \
+                WAYLAND_DISPLAY="${ROOT_WAYLAND_SOCKET}" \
+                dbus-run-session -- "${BROWSER[@]}" "$WEBUI_URL" &
+            BLOCK_ON_PID=$!
+        fi
+    else
+        echo "Error: no graphical session detected (DISPLAY and WAYLAND_DISPLAY are unset)." >&2
+        exit 1
+    fi
 fi
 
 # Cleanup function
