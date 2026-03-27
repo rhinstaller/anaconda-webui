@@ -16,56 +16,80 @@ jobs:
     permissions:
       statuses: write
     runs-on: ubuntu-latest
-    # Only run when no specific compose_id is provided
-    if: github.event.inputs.compose_id == '' || github.event.inputs.compose_id == null
+    outputs:
+      compose_id: ${{ steps.get-compose.outputs.compose_id }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Install wikitcms
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip3 install wikitcms
-
-      - name: Get current event compose ID
+      - name: Get compose ID
         id: get-compose
         run: |
-          # Use Python script to get the current event compose ID from wiki
-          COMPOSE_ID=$(python3 test/fedora-wiki/get_current_compose.py)
-          echo "compose_id=$COMPOSE_ID" >> $GITHUB_OUTPUT
+          if [ -n "${{ github.event.inputs.compose_id }}" ]; then
+            echo "compose_id=${{ github.event.inputs.compose_id }}" >> $GITHUB_OUTPUT
+          else
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+            sudo pip3 install wikitcms
+            COMPOSE_ID=$(python3 test/fedora-wiki/get_current_compose.py)
+            echo "compose_id=$COMPOSE_ID" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Trigger compose scenario for current event
+      - name: Trigger compose tests
         run: |
           mkdir -p ~/.config/cockpit-dev
           echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
           export TEST_COMPOSE=${{ steps.get-compose.outputs.compose_id }}
-          echo "Testing against current event compose: $TEST_COMPOSE"
           if [ "${{ github.event.inputs.staging }}" = "true" ]; then
             make test-compose-staging
           else
             make test-compose
           fi
 
-  trigger-single:
-    environment: 'fedora-wiki'
-    permissions:
-      statuses: write
+  verify:
+    needs: trigger
     runs-on: ubuntu-latest
-    # Only run when specific compose_id is provided
-    if: github.event.inputs.compose_id != '' && github.event.inputs.compose_id != null
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Trigger the specified compose scenario
+      - name: Wait for jobs and verify success from logs
         run: |
-          mkdir -p ~/.config/cockpit-dev
-          echo "${{ github.token }}" >> ~/.config/cockpit-dev/github-token
-          export TEST_COMPOSE=${{ github.event.inputs.compose_id }}
-          echo "Testing against specified compose: $TEST_COMPOSE"
-          if [ "${{ github.event.inputs.staging }}" = "true" ]; then
-            make test-compose-staging
-          else
-            make test-compose
-          fi
+          set -e
+          COMPOSE_ID="${{ needs.trigger.outputs.compose_id }}"
+          COMMIT_SHORT=$(git rev-parse --short HEAD)
+          TEST_OS=$(make -s print-test-os TEST_COMPOSE="$COMPOSE_ID")
+          SCENARIO_COMPOSE="${TEST_OS}-compose-${COMPOSE_ID}"
+          SCENARIO_COMPOSE_EFI="${TEST_OS}-efi-compose-${COMPOSE_ID}"
+          BASE="https://logs-cockpit.apps.ocp.cloud.ci.centos.org"
+          REPORT_SUCCESS_MARKER="Compose test report submitted successfully."
+          TIMEOUT=$((60 * 90))
+          INTERVAL=600
+          elapsed=0
+
+          check_log_success() {
+            local log
+            log=$(curl -sSfL --max-time 60 "$1" 2>/dev/null || true)
+            echo "$log" | grep -qF "$REPORT_SUCCESS_MARKER"
+          }
+
+          found_compose=0
+          found_compose_efi=0
+          while [ $elapsed -lt $TIMEOUT ]; do
+            for i in $(seq 0 15); do
+              ts=$(date -u -d "${i} minutes ago" +%Y%m%d-%H%M%S)
+              if [ $found_compose -eq 0 ]; then
+                url_compose="${BASE}/pull-0-${COMMIT_SHORT}-${ts}-${SCENARIO_COMPOSE}/log"
+                check_log_success "$url_compose" && found_compose=1
+              fi
+              if [ $found_compose_efi -eq 0 ]; then
+                url_compose_efi="${BASE}/pull-0-${COMMIT_SHORT}-${ts}-${SCENARIO_COMPOSE_EFI}/log"
+                check_log_success "$url_compose_efi" && found_compose_efi=1
+              fi
+              [ $found_compose -eq 1 ] && [ $found_compose_efi -eq 1 ] && exit 0
+            done
+            sleep $INTERVAL
+            elapsed=$((elapsed + INTERVAL))
+          done
+          echo "Timeout waiting for successful job logs."
+          exit 1
