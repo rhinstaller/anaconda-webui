@@ -87,7 +87,7 @@ setup_user_environment() {
       echo "Home directory $HOME_DIR already exists." >&2
     fi
 
-    # Return the user and home directory for further use
+    # Return the user for further use
     echo "$INSTALLER_USER"
 }
 
@@ -153,9 +153,7 @@ then
     /bin/sleep infinity &
     BLOCK_ON_PID=$!
 else
-    USER_INFO=$(setup_user_environment)
-    INSTALLER_USER=$(echo "$USER_INFO" | cut -d' ' -f1)
-    HOME_DIR=$(echo "$USER_INFO" | cut -d' ' -f2)
+    INSTALLER_USER=$(setup_user_environment)
 
     # if we have netcat, use it for waiting until ws is up
     if type nc >/dev/null 2>&1; then
