@@ -176,7 +176,14 @@ else
         sleep 3
     fi
 
-    readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" systemctl --user show-environment)
+    if user_env_output=$(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" systemctl --user show-environment 2>/dev/null); then
+        readarray -t user_environment <<< "$user_env_output"
+        USER_SESSION_AVAILABLE=1
+    else
+        echo "No systemd user session available, continuing without user session environment." >&2
+        user_environment=()
+        USER_SESSION_AVAILABLE=0
+    fi
 
     DEFAULT_BROWSER_CMD=$(get_default_browser)
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
