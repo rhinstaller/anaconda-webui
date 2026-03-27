@@ -154,6 +154,14 @@ then
     BLOCK_ON_PID=$!
 else
     INSTALLER_USER=$(setup_user_environment)
+    INSTALLER_UID=$(id -u "${INSTALLER_USER}")
+
+    INSTALLER_XDG_RUNTIME_DIR="/run/user/${INSTALLER_UID}"
+    if [ ! -d "${INSTALLER_XDG_RUNTIME_DIR}" ]; then
+        mkdir -p "${INSTALLER_XDG_RUNTIME_DIR}"
+        chown "${INSTALLER_USER}" "${INSTALLER_XDG_RUNTIME_DIR}"
+        chmod 0700 "${INSTALLER_XDG_RUNTIME_DIR}"
+    fi
 
     # if we have netcat, use it for waiting until ws is up
     if type nc >/dev/null 2>&1; then
@@ -166,7 +174,7 @@ else
         sleep 3
     fi
 
-    readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" systemctl --user show-environment)
+    readarray -t user_environment < <(pkexec --user "${INSTALLER_USER}" env XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" systemctl --user show-environment)
 
     DEFAULT_BROWSER_CMD=$(get_default_browser)
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
