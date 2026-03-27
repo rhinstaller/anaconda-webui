@@ -5,6 +5,8 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from review import Review
+from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
@@ -31,12 +33,15 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
             - Root settings cannot be changed when rootpw is in kickstart.
             - Timezone and timesource lines from kickstart appear on the date & time screen;
               NTP servers, pool, and NTS options are visible in the Configure NTP servers modal.
+            - Scenario is preset to 'Use configured storage' and the partitioning appears on the Review storage section.
         """
         b = self.browser
         m = self.machine
-        i = Installer(b, m)
+        i = Installer(b, m, scenario="use-configured-storage-kickstart")
         u = Users(b, m)
         dt = DateAndTime(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
 
         i.open()
         i.reach(i.steps.DATE_TIME)
@@ -52,6 +57,9 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
             {"hostname": "0.pool.ntp.org", "pool": True, "nts": False},
         ])
 
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.check_scenario_selected("use-configured-storage-kickstart")
+
         i.reach(i.steps.ACCOUNTS)
 
         # Verify kickstart users (read-only) and locked root
@@ -63,6 +71,16 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
         b.assert_pixels(".anaconda-wizard-step-anaconda-screen-accounts", "users-kickstarted", ignore=pixel_tests_ignore)
 
         i.reach(i.steps.REVIEW)
+
+        r.check_storage_config("Use configured storage")
+        dev1 = "vda"
+        r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev1, "", "vda1", "1.05 MB", True, "biosboot")
+        r.check_disk_row(dev1, "/", "vda5", "11.8 GB", True, "xfs")
+        r.check_disk_row(dev1, "/boot", "vda2", "1.07 GB", True, "xfs")
+        r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
+        r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")
+
         b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
 
     def testUserInterfaceCanChangeAccountsConf(self):

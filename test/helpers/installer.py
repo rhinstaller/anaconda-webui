@@ -53,7 +53,7 @@ class InstallerSteps(UserDict):
             _steps_jump[DATE_TIME] = INSTALLATION_METHOD
             _hidden_steps.append(SOFTWARE_SELECTION)
 
-        if scenario in ['use-configured-storage', 'home-reuse']:
+        if scenario in ['use-configured-storage', 'use-configured-storage-kickstart', 'home-reuse']:
             _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
             _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
         else:
