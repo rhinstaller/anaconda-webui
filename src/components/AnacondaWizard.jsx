@@ -56,6 +56,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
             let stepProps = {
                 id: s.id,
                 isAriaDisabled: isFormDisabled || isFetching,
+                isDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden || s.isFinal,
                 isVisited,
                 name: s.label,

@@ -3,6 +3,7 @@
 
 
 LANGUAGE = "anaconda-screen-language"
+NETWORK = "anaconda-screen-network"
 DATE_TIME = "anaconda-screen-date-time"
 INSTALLATION_METHOD = "anaconda-screen-method"
 SOFTWARE_SELECTION = "anaconda-screen-software-selection"
