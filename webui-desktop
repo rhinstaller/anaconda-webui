@@ -185,6 +185,21 @@ else
         USER_SESSION_AVAILABLE=0
     fi
 
+    USER_GRAPHICAL_SESSION_AVAILABLE=0
+    if [ "$USER_SESSION_AVAILABLE" = "1" ]; then
+        if printf '%s\n' "${user_environment[@]}" | grep -qE '^(DISPLAY|WAYLAND_DISPLAY)='; then
+            USER_GRAPHICAL_SESSION_AVAILABLE=1
+        fi
+    fi
+
+    if [ "$USER_GRAPHICAL_SESSION_AVAILABLE" = "1" ]; then
+        for var in DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS XAUTHORITY; do
+            if [ -n "${!var:-}" ] && ! printf '%s\n' "${user_environment[@]}" | grep -q "^${var}="; then
+                user_environment+=("${var}=${!var}")
+            fi
+        done
+    fi
+
     DEFAULT_BROWSER_CMD=$(get_default_browser)
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
     if [[ "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
