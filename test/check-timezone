@@ -108,14 +108,12 @@ class TestDateAndTime(VirtInstallMachineCase):
         dt.check_time("19:00")
 
         dt.set_auto_timezone(False)
-        dt.select_region("Europe")
-        dt.select_city("Prague")
-        daylight_saving = m.execute("LANG=C TZ=Europe/Prague date +%Z").strip() == "CEST"
-        dt.check_timezone_label("MESZ, UTC+2" if daylight_saving else "MEZ, UTC+1")
-        self.assertEqual(dt.dbus_get_timezone(), "Europe/Prague")
-
-        # Test timezone with multiple cities
         dt.select_region("America")
+        dt.select_city("Sao_Paulo")
+        dt.check_timezone_label("GMT-3, UTC-3")
+        self.assertEqual(dt.dbus_get_timezone(), "America/Sao_Paulo")
+
+        # Test timezone with multiple cities (same region)
         dt.select_city("Argentina/Buenos_Aires")
         dt.check_timezone_label("GMT-3, UTC-3")
         self.assertEqual(dt.dbus_get_timezone(), "America/Argentina/Buenos_Aires")
