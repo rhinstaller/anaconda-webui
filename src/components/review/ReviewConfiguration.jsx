@@ -17,7 +17,6 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
-    LanguageContext,
     OsReleaseContext,
     PageContext,
     PayloadContext,
@@ -36,6 +35,7 @@ import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
+import { InstallationLanguageReviewDescription } from "../localization/index.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
 import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
@@ -77,7 +77,6 @@ const ReviewDescriptionList = ({ children }) => {
 
 export const ReviewConfiguration = ({ automatedInstall }) => {
     const osRelease = useContext(OsReleaseContext);
-    const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
     const { getLabel } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
@@ -125,18 +124,8 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     ), [allReviewPagesComplete, reviewValidationPending]);
     useWizardFooter(getFooter);
 
-    const language = useMemo(() => {
-        for (const l of Object.keys(localizationData.languages)) {
-            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
-
-            if (locale) {
-                return locale;
-            }
-        }
-    }, [localizationData]);
-
     const languageDescription = localizationComplete
-        ? (language ? language["native-name"].v : localizationData.language)
+        ? <InstallationLanguageReviewDescription />
         : <IncompleteStepIndicator />;
 
     const timezoneDescription = datetimeComplete

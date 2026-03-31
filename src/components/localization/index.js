@@ -6,8 +6,11 @@
 import cockpit from "cockpit";
 
 import { InstallationLanguage } from "./InstallationLanguage.jsx";
+import { InstallationLanguageReviewDescription } from "./InstallationLanguageReviewDescription.jsx";
 
 const _ = cockpit.gettext;
+
+export { InstallationLanguageReviewDescription };
 
 export class Page {
     _description = "Select the language & keyboard to use during installation and for the target system.";
