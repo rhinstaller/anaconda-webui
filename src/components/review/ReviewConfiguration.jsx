@@ -232,8 +232,8 @@ const useConfirmationCheckboxLabel = () => {
 
     useEffect(() => {
         const allDevicesDeletedText = cockpit.ngettext(
-            _("I understand that all existing data will be erased"),
-            _("I understand that all existing data will be erased from the selected disks"),
+            "I understand that all existing data will be erased",
+            "I understand that all existing data will be erased from the selected disks",
             usableDisks.length
         );
 
