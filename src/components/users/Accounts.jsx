@@ -44,8 +44,8 @@ const UsersReadOnlySummary = ({ users }) => {
     return (
         <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
             {cockpit.ngettext(
-                _("The following user will be created:"),
-                _("The following users will be created:"),
+                "The following user will be created:",
+                "The following users will be created:",
                 users.length
             )}
             <List isPlain>
