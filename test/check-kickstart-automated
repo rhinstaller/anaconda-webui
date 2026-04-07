@@ -5,6 +5,7 @@
 
 from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
+from payload_dnf import PayloadDNF
 from review import Review
 from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
@@ -15,7 +16,7 @@ from users import Users, override_user_interface_conf_keys
 class TestInteractiveDefaults(VirtInstallMachineCase):
     """Destructive tests for kickstart-driven automated installations."""
 
-    provision = {"machine1": {"kickstart_file_name": "TestInteractiveDefaults-testBasic.ks"}}
+    provision = {"machine1": {"kickstart_file_name": "TestInteractiveDefaults-testBasic.ks", "payload_type": "dnf"}}
 
     def testBasic(self):
         """
@@ -34,6 +35,7 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
             - Timezone and timesource lines from kickstart appear on the date & time screen;
               NTP servers, pool, and NTS options are visible in the Configure NTP servers modal.
             - Scenario is preset to 'Use configured storage' and the partitioning appears on the Review storage section.
+            - Environment and groups from the ``%packages`` section in the kickstart appear on the Software selection step.
         """
         b = self.browser
         m = self.machine
@@ -56,6 +58,11 @@ class TestInteractiveDefaults(VirtInstallMachineCase):
             {"hostname": "nts-test.strangled.net", "pool": False, "nts": True},
             {"hostname": "0.pool.ntp.org", "pool": True, "nts": False},
         ])
+
+        i.reach(i.steps.SOFTWARE_SELECTION)
+        dnf = PayloadDNF(b)
+        dnf.check_selected_environment("workstation-product-environment")
+        dnf.check_group_selected("domain-client")
 
         i.reach(i.steps.INSTALLATION_METHOD)
         s.check_scenario_selected("use-configured-storage-kickstart")
