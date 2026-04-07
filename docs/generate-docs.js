@@ -390,7 +390,7 @@ async function generateDocs () {
 
         // Match pages with steps by ID
         const stepsWithPageData = orderedSteps.map(step => {
-            const matchingPage = pages.find(page => page.id === step.id);
+            const matchingPage = pages.find(page => page?.id === step.id);
             return {
                 ...step,
                 description: matchingPage?.description,

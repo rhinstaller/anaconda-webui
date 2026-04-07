@@ -8,8 +8,12 @@ import cockpit from "cockpit";
 import { usePartitioningReset } from "../../../hooks/Storage.jsx";
 
 import { InstallationMethod } from "./InstallationMethod.jsx";
+import { StorageInstallationReviewSummary } from "./StorageInstallationReviewSummary.jsx";
+import { StorageScenarioReviewDescription } from "./StorageScenarioReviewDescription.jsx";
 
 const _ = cockpit.gettext;
+
+export { StorageInstallationReviewSummary, StorageScenarioReviewDescription };
 
 export class Page {
     _description = "Choose the target device(s) for the installation and the partitioning scenario.";

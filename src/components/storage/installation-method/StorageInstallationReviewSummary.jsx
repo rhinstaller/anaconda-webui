@@ -4,17 +4,12 @@
  */
 
 import React from "react";
-import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
-import { IncompleteStepIndicator } from "../../review/Common.jsx";
-import { StorageReview, StorageReviewNote } from "../../review/StorageReview.jsx";
+import { StorageReview, StorageReviewNote } from "../StorageReview.jsx";
 
-export const StorageInstallationReviewSummary = ({ complete }) => (
+export const StorageInstallationReviewSummary = () => (
     <>
-        <Stack hasGutter>
-            <StorageReview isReviewScreen />
-            {!complete && <IncompleteStepIndicator />}
-        </Stack>
+        <StorageReview isReviewScreen />
         <StorageReviewNote />
     </>
 );

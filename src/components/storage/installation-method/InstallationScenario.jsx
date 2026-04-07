@@ -5,7 +5,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
@@ -22,9 +22,9 @@ import {
     useOriginalDevices,
 } from "../../../hooks/Storage.jsx";
 
-import { StorageReview } from "../../review/StorageReview.jsx";
 import { scenarios, useScenariosAvailability } from "../scenarios/index.js";
 import { USE_CONFIGURED_STORAGE_SCENARIO_IDS } from "../scenarios/use-configured-storage/index.js";
+import { StorageReview } from "../StorageReview.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./InstallationScenario.scss";
@@ -33,13 +33,10 @@ const _ = cockpit.gettext;
 
 export const useScenario = () => {
     const { storageScenarioId } = useContext(StorageContext);
-    const [scenario, setScenario] = useState({});
-
-    useEffect(() => {
-        setScenario(scenarios.find(s => s.id === storageScenarioId) || {});
-    }, [storageScenarioId]);
-
-    return scenario;
+    return useMemo(
+        () => scenarios.find(s => s.id === storageScenarioId) || {},
+        [storageScenarioId]
+    );
 };
 
 const InstallationScenarioSelector = ({
