@@ -22,7 +22,6 @@ import {
     PayloadContext,
     StorageContext,
     SystemTypeContext,
-    TimezoneContext,
     UserInterfaceContext,
 } from "../../contexts/Common.jsx";
 
@@ -34,6 +33,7 @@ import {
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { DateAndTimeReviewDescription } from "../datetime/index.js";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { InstallationLanguageReviewDescription } from "../localization/index.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
@@ -77,7 +77,6 @@ const ReviewDescriptionList = ({ children }) => {
 
 export const ReviewConfiguration = ({ automatedInstall }) => {
     const osRelease = useContext(OsReleaseContext);
-    const timezone = useContext(TimezoneContext)?.timezone;
     const { getLabel } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
@@ -129,7 +128,7 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         : <IncompleteStepIndicator />;
 
     const timezoneDescription = datetimeComplete
-        ? timezone
+        ? <DateAndTimeReviewDescription />
         : <IncompleteStepIndicator />;
 
     const softwareDescription = useMemo(() => {
