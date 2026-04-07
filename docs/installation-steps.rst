@@ -5,13 +5,14 @@ Installation Flow Overview
 This document describes the step-by-step process for installing the system using the Web UI.
 
 1. **Welcome**
-2. **Date and time**
-3. **Software selection**
-4. **Installation method**
-5. **Storage configuration**
-6. **Create Account**
-7. **Review and install**
-8. **Installation progress**
+2. **Network**
+3. **Date and time**
+4. **Software selection**
+5. **Installation method**
+6. **Storage configuration**
+7. **Create Account**
+8. **Review and install**
+9. **Installation progress**
 
 Detailed Step Descriptions
 =============================
@@ -21,17 +22,22 @@ Detailed Step Descriptions
 
 Select the language & keyboard to use during installation and for the target system.
 
-2. Date and time
+2. Network
+----------
+
+Configure network connections for the system.
+
+3. Date and time
 ----------------
 
 Configure your system's timezone, date, and time settings. You can also set up network time synchronization.
 
-3. Software selection
+4. Software selection
 ---------------------
 
 Select packages to install by choosing a base environment.
 
-4. Installation method
+5. Installation method
 ----------------------
 
 Choose the target device(s) for the installation and the partitioning scenario.
@@ -73,22 +79,22 @@ Reinstalls Fedora while preserving your existing home directory and user data. U
 
 Installs using only unallocated free space, preserving existing partitions and data. Use when you want to dual-boot with existing operating systems. This option only appears when existing partitions are detected on the selected disks.
 
-5. Storage configuration
+6. Storage configuration
 ------------------------
 
 Automatic partitioning configuration, disk encryption, and storage options.
 
-6. Create Account
+7. Create Account
 -----------------
 
 Set up user accounts and administrator passwords for your system.
 
-7. Review and install
+8. Review and install
 ---------------------
 
 Review your installation settings and start the installation process.
 
-8. Installation progress
+9. Installation progress
 ------------------------
 
 Monitor the installation progress and completion.
