@@ -1,7 +1,6 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import os
 from collections import UserDict
 
 import steps
@@ -21,7 +20,7 @@ class InstallerSteps(UserDict):
     REVIEW = steps.REVIEW
     STORAGE_CONFIGURATION = steps.STORAGE_CONFIGURATION
 
-    def __init__(self, hidden_steps=None, scenario=None):
+    def __init__(self, hidden_steps=None, scenario=None, machine=None):
         super().__init__()
 
         if (scenario == "mount-point-mapping"):
@@ -49,7 +48,8 @@ class InstallerSteps(UserDict):
         }
         _hidden_steps = hidden_steps or []
 
-        if os.environ.get("TEST_PAYLOAD", None) != "dnf":
+        payload_type = getattr(machine, "payload_type", "liveimg") if machine is not None else "liveimg"
+        if payload_type != "dnf":
             _steps_jump[DATE_TIME] = INSTALLATION_METHOD
             _hidden_steps.append(SOFTWARE_SELECTION)
 
@@ -82,7 +82,7 @@ class Installer():
     def __init__(self, browser, machine, hidden_steps=None, scenario=None):
         self.browser = browser
         self.machine = machine
-        self.steps = InstallerSteps(hidden_steps, scenario)
+        self.steps = InstallerSteps(hidden_steps, scenario, machine)
 
 
     @log_step(snapshot_before=True)

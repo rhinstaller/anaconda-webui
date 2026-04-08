@@ -17,6 +17,8 @@ from payload_dnf import PayloadDNF
 
 @nondestructive
 class TestPayloadDNF(VirtInstallMachineCase):
+    provision = {"machine1": {"payload_type": "dnf"}}
+
     def testEnvironmentPackages(self):
         """
         Description:

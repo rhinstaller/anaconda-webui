@@ -37,6 +37,8 @@ class VirtInstallMachine(VirtMachine):
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
+        self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
+
         super().__init__(image, **kwargs)
 
     def _execute(self, cmd):
@@ -73,21 +75,22 @@ class VirtInstallMachine(VirtMachine):
         self._wait_http_server_running(http_payload_port)
         return http_payload_port
 
+    def _payload_source(self, mode, port):
+        if mode == "liveimg":
+            return f'liveimg --url="http://10.0.2.2:{port}/liveimg.tar.gz"'
+        if mode == "dnf":
+            return f'repo --name webuitests --baseurl="http://10.0.2.2:{port}/repo/"\n'
+        raise ValueError(f"Unsupported payload_type value: {mode!r}")
+
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
-        payload_mode = os.environ.get("TEST_PAYLOAD", "liveimg").lower()
-        content = ""
-        if payload_mode == "liveimg":
-            http_payload_port = self._serve_payload()
-            content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/liveimg.tar.gz"'
-        elif payload_mode == "dnf":
-            http_payload_port = self._serve_payload()
-            content = f'repo --name webuitests --baseurl="http://10.0.2.2:{http_payload_port}/repo/"\n'
-        ks_basename = self.kickstart_file_name
-        if ks_basename:
-            ks_extras_path = os.path.join(WEBUI_TEST_DIR, "kickstarts", ks_basename)
-            with open(ks_extras_path, encoding="utf-8") as ksf:
-                fragment = ksf.read().rstrip()
-            content = f"{content}\n\n{fragment}" if content else fragment
+        port = self._serve_payload()
+        payload_source = self._payload_source(self.payload_type, port)
+        kickstart_file_content = ""
+        if self.kickstart_file_name:
+            path = os.path.join(WEBUI_TEST_DIR, "kickstarts", self.kickstart_file_name)
+            with open(path, encoding="utf-8") as ksf:
+                kickstart_file_content = ksf.read().rstrip()
+        content = f"{kickstart_file_content}\n\n{payload_source}" if kickstart_file_content else payload_source
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
@@ -139,7 +142,7 @@ class VirtInstallMachine(VirtMachine):
             location = f"{iso_path}"
 
         # FIXME: Disable SELinux on DNF installation as it needs relabelling other wise ssh logins are prevented
-        selinux = "inst.noselinux " if os.environ.get("TEST_PAYLOAD", "liveimg").lower() == "dnf" else ""
+        selinux = "inst.noselinux " if self.payload_type == "dnf" else ""
 
         boot_arg = "--boot uefi " if self.is_efi else ""
         extra_boot_args = os.environ.get("TEST_EXTRA_BOOT_ARGS", "")
