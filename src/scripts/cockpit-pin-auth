@@ -100,8 +100,7 @@ def decode_basic_header(response):
     assert response.startswith(starts), response
 
     val = base64.b64decode(response[len(starts):].encode()).decode()
-    user, password = val.split(':', 1)
-    return user, password.replace('\x00', '')
+    return val.replace('\x00', '')
 
 
 def main(args):
@@ -117,7 +116,7 @@ def main(args):
     password = ""
     try:
         response = read_auth_reply()
-        _user, password = decode_basic_header(response)
+        password = decode_basic_header(response)
     except (ValueError, TypeError, AssertionError) as e:
         send_problem_init("internal-error", str(e), {})
         raise
