@@ -1,0 +1,139 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Cockpit authentication handler that validates Basic credentials
+# against the PIN stored in /run/anaconda/remote-pin.
+
+import base64
+import json
+import logging
+import os
+import re
+import sys
+import time
+
+logger = logging.getLogger(__name__)
+PIN_FILE = "/run/anaconda/remote-pin"
+
+
+def send_frame(content: "dict[str, str]"):
+    data = json.dumps(content).encode()
+    os.write(1, str(len(data) + 1).encode())
+    os.write(1, b"\n\n")
+    os.write(1, data)
+
+
+def send_auth_command(challenge: "str | None", response: "str | None"):
+    cmd = {
+        "command": "authorize",
+    }
+
+    if challenge is not None:
+        cmd["cookie"] = f"session{os.getpid()}{time.time()}"
+        cmd["challenge"] = challenge
+    if response is not None:
+        cmd["response"] = response
+
+    send_frame(cmd)
+
+
+def send_problem_init(problem, message, auth_methods):
+    cmd = {"command": "init", "problem": problem}
+
+    if message:
+        cmd["message"] = message
+
+    if auth_methods:
+        cmd["auth-method-results"] = auth_methods
+
+    send_frame(cmd)
+
+
+def read_size(fd):
+    sep = b"\n"
+    size = 0
+    seen = 0
+
+    while True:
+        t = os.read(fd, 1)
+
+        if not t:
+            return 0
+
+        if t == sep:
+            break
+
+        size = (size * 10) + int(t)
+        seen = seen + 1
+
+        if seen > 7:
+            raise ValueError("Invalid frame: size too long")
+
+    return size
+
+
+def read_frame(fd):
+    size = read_size(fd)
+
+    data = b""
+    while size > 0:
+        d = os.read(fd, size)
+        size = size - len(d)
+        data += d
+
+    return data.decode()
+
+
+def read_auth_reply():
+    data = read_frame(1)
+    cmd = json.loads(data)
+    logger.debug("cmd %s", cmd)
+    response = cmd.get("response")
+    if cmd.get("command") != "authorize" or not cmd.get("cookie") or not response:
+        raise ValueError("Did not receive a valid authorize command")
+
+    return response
+
+
+def decode_basic_header(response):
+    b64_encoded_header = re.match(r"^Basic\s+(.+)\s*$", response)
+    if not b64_encoded_header:
+        raise ValueError(f"Invalid Basic auth header: {response}")
+
+    decoded = base64.b64decode(b64_encoded_header.group(1)).decode()
+    # Standard Basic auth format is user:password — extract password after the colon
+    _, pin = decoded.split(":", 1)
+    return pin.replace("\x00", "")
+
+
+def main():
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+
+    send_auth_command("*", None)
+
+    password = ""
+    try:
+        response = read_auth_reply()
+        password = decode_basic_header(response)
+    except (ValueError, TypeError, AssertionError) as e:
+        send_problem_init("internal-error", str(e), {})
+        raise
+
+    try:
+        with open(PIN_FILE) as f:
+            expected = f.read().strip()
+    except FileNotFoundError:
+        send_problem_init("internal-error", f"PIN file {PIN_FILE} not found", {})
+        return
+
+    if password != expected:
+        send_problem_init("authentication-failed", "PIN did not match", {"password": "denied"})
+        return
+
+    os.execlpe("python3", "python3", "-m", "cockpit.bridge", os.environ)
+
+
+if __name__ == "__main__":
+    main()
