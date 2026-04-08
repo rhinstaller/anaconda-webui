@@ -11,6 +11,8 @@ from utils import get_pretty_name
 
 
 class TestPayloadDNF_E2E(VirtInstallMachineCase):
+    provision = {"machine1": {"payload_type": "dnf"}}
+
     @disk_images([("", 15)])
     @timeout(1200)
     def testDefaultClosestMirror(self):

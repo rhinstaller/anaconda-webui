@@ -55,7 +55,6 @@ case "${TEST_SCENARIO:=}" in
         ;;
     *dnf*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_DNF_PAYLOAD")"
-        export TEST_PAYLOAD="dnf"
         ;;
     *expensive*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE" | grep -vE "$RE_DNF_PAYLOAD")"

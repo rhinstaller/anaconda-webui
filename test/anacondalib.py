@@ -73,10 +73,6 @@ class VirtInstallMachineCase(MachineCase):
         elif not self.is_efi and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
 
-        if "TestPayloadDNF" in self.__class__.__name__:
-            if os.environ.get("TEST_PAYLOAD", None) != "dnf":
-                self.skipTest("Skipping DNF payload test when not using DNF payload")
-
         self.vm_setup = os.environ.get("TEST_VM_SETUP", "")
         if self.vm_setup not in self.run_on_vm_setups:
             self.skipTest(f"Skipping for VM setup {self.vm_setup}"
@@ -89,8 +85,7 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
             self.addCleanup(self.resetTimezone)
-            if os.environ.get("TEST_PAYLOAD", None) == "dnf":
-                self.addCleanup(self.resetPayloadDNF)
+            self.addCleanup(self.resetPayloadDNF)
 
         super().setUp()
 
@@ -225,6 +220,8 @@ class VirtInstallMachineCase(MachineCase):
 
     def resetPayloadDNF(self):
         m = self.machine
+        if getattr(m, "payload_type", None) != "dnf":
+            return
         dnf_dbus = PayloadDNFDBus(m)
         dnf_dbus.dbus_reset_to_default_environment("server-product-environment")
 
