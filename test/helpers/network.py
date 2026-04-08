@@ -148,8 +148,7 @@ class Network():
     def enter_network(self):
         b = self.browser
         self.configure_network()
-        b._wait_present("iframe[name='cockpit-network']")
-        b.switch_to_frame("cockpit-network")
+        self._switch_to_frame("cockpit-network")
         b.wait_visible("#networking-interfaces")
 
     def exit_network(self):
@@ -245,6 +244,13 @@ class Network():
         n.wait_for_iface_setting("MTU", mtu)
         n.exit_network()
 
+    def set_mtu_on_iface_wizard(self, iface, mtu):
+        self._switch_to_frame()
+        self.select_iface(iface)
+        self.set_mtu(mtu)
+        self.wait_for_iface_setting("MTU", mtu)
+        self.browser.switch_to_top()
+
     def set_mtu(self, mtu):
         b = self.browser
         self.configure_iface_setting("MTU")
@@ -269,6 +275,12 @@ class Network():
         n.select_iface(iface)
         n.add_dns_server(ip)
         n.exit_network()
+
+    def add_dns_server_to_iface_wizard(self, iface, ip):
+        self._switch_to_frame()
+        self.select_iface(iface)
+        self.add_dns_server(ip)
+        self.browser.switch_to_top()
 
     def add_dns_server(self, ip):
         b = self.browser
@@ -296,6 +308,18 @@ class Network():
         self.disable_ipv4()
         n.keep_connection()
         n.exit_network()
+
+    def _switch_to_frame(self, name="network-configuration"):
+        b = self.browser
+        b._wait_present(f"iframe[name='{name}']")
+        b.switch_to_frame(name)
+
+    def disable_ipv4_on_iface_wizard(self, iface):
+        self._switch_to_frame()
+        self.select_iface(iface)
+        self.disable_ipv4()
+        self.keep_connection()
+        self.browser.switch_to_top()
 
     def disable_ipv4(self):
         b = self.browser
