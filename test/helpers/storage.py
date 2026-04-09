@@ -459,8 +459,8 @@ class StorageDBus():
             {STORAGE_OBJECT_PATH} \
             {STORAGE_INTERFACE} CreatedPartitioning')
 
-        res = ret[ret.find("[") + 1:ret.rfind("]")].split()
-        return [item.strip('"') for item in res]
+        data = ret.split(" ")
+        return [i.replace('"', '').replace('\n', '') for i in data[2:]]
 
     def dbus_set_initialization_mode(self, value):
         self.machine.execute(f'busctl --address="{self._bus_address}" \

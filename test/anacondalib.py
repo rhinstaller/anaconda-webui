@@ -210,7 +210,8 @@ class VirtInstallMachineCase(MachineCase):
         self.removeAllDisks()
         s.dbus_reset_scenario()
         # Create an AUTOMATIC partitioning because MANUAL partitioning tests might take the last created
-        s.dbus_create_partitioning("AUTOMATIC")
+        if len(s.dbus_get_created_partitioning()) != 0:
+            s.dbus_create_partitioning("AUTOMATIC")
         s.dbus_reset_selected_disks()
         # CLEAR_PARTITIONS_DEFAULT = -1
         s.dbus_set_initialization_mode(-1)
