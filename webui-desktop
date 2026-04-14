@@ -240,7 +240,8 @@ else
                 XDG_SESSION_TYPE=wayland \
                 XDG_RUNTIME_DIR="${INSTALLER_XDG_RUNTIME_DIR}" \
                 WAYLAND_DISPLAY="${ROOT_WAYLAND_SOCKET}" \
-                dbus-run-session -- "${BROWSER[@]}" "$WEBUI_URL" &
+                dbus-run-session -- "${BROWSER[@]}" "$WEBUI_URL" \
+                >/tmp/webui-browser.log 2>&1 &
             BLOCK_ON_PID=$!
         fi
     else
