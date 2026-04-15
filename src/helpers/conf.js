@@ -61,6 +61,26 @@ export const parseIni = content => {
     return dataStore;
 };
 
+/**
+ * Raw string value for one key under an INI section (e.g. `Runtime`, `automated_install`).
+ * @param {object} conf
+ * @param {string} section
+ * @param {string} key
+ * @returns {string|undefined}
+ */
+export const getInstallerConfValue = (conf, section, key) => conf?.[section]?.[key];
+
+/**
+ * Parse booleans from `/run/anaconda/anaconda.conf` string values ("True" / "False").
+ *
+ * @param {string|undefined} raw
+ * @returns {boolean}
+ */
+export const parseAnacondaConfBool = (raw) => {
+    const t = raw?.trim()?.toLowerCase();
+    return t === "true" || t === "yes" || t === "1";
+};
+
 export const readConf = () => {
     const confFile = cockpit.file(CONF_PATH, { superuser: "try", });
     return confFile.read()

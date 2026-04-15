@@ -11,7 +11,7 @@ import { clients } from "../apis/index.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
-import { readConf } from "../helpers/conf.js";
+import { getInstallerConfValue, parseAnacondaConfBool, readConf } from "../helpers/conf.js";
 import { debug } from "../helpers/log.js";
 import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
@@ -33,10 +33,11 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
-export const Application = ({ automatedInstall, conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
+    const automatedInstall = parseAnacondaConfBool(getInstallerConfValue(conf, "Runtime", "automated_install"));
 
     useEffect(() => {
         if (!address) {
@@ -96,6 +97,7 @@ export const Application = ({ automatedInstall, conf, dispatch, isFetching, onCr
                 />
             </PageGroup>
             <AnacondaWizard
+              automatedInstall={automatedInstall}
               currentStepId={currentStepId}
               isFetching={isFetching}
               onCritFail={onCritFail}
@@ -203,7 +205,6 @@ export const ApplicationWithErrorBoundary = () => {
                   showStorage={showStorage}
                 >
                     <Application
-                      automatedInstall={state.runtime.automatedInstall}
                       conf={conf}
                       dispatch={dispatch}
                       isFetching={state.misc.isFetching}

@@ -11,7 +11,7 @@ import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import { getDefaultEnvironment, resolveEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
 
-import { PageContext, PayloadContext, RuntimeContext } from "../../contexts/Common.jsx";
+import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
 import { MenuSearch } from "../common/MenuSearch.jsx";
 
@@ -167,10 +167,9 @@ const GroupPackagesSelection = () => {
     );
 };
 
-export const SoftwareSelection = () => {
+export const SoftwareSelection = ({ automatedInstall }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const { packagesKickstarted, selection } = useContext(PayloadContext);
-    const runtime = useContext(RuntimeContext);
     const environment = selection?.environment;
 
     /*
@@ -179,7 +178,7 @@ export const SoftwareSelection = () => {
      */
     useEffect(() => {
         const kickstarted =
-            packagesKickstarted === true && runtime?.automatedInstall === true;
+            packagesKickstarted === true && automatedInstall === true;
 
         (async () => {
             if (kickstarted && !environment) {
@@ -193,7 +192,7 @@ export const SoftwareSelection = () => {
             const resolved = await resolveEnvironment(environment);
             setIsFormValid(Boolean(resolved));
         })();
-    }, [environment, packagesKickstarted, runtime?.automatedInstall, setIsFormValid]);
+    }, [environment, packagesKickstarted, automatedInstall, setIsFormValid]);
 
     return (
         <Form>
