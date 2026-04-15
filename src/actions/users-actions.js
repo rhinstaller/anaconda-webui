@@ -9,8 +9,8 @@ import {
     getUsers,
 } from "../apis/users.js";
 
+import { parseAnacondaConfBool } from "../helpers/conf.js";
 import { canModifyRootConfiguration, canModifyUserConfiguration } from "../helpers/users.js";
-import { parseAnacondaConfBool } from "../helpers/utils.js";
 
 export const setUsersAction = (payload) => ({
     payload,
