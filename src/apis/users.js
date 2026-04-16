@@ -109,6 +109,10 @@ export const getIsRootAccountLocked = () => {
     return getProperty("IsRootAccountLocked");
 };
 
+export const getIsRootPasswordSet = () => {
+    return getProperty("IsRootPasswordSet");
+};
+
 export const getCanChangeRootPassword = () => {
     return getProperty("CanChangeRootPassword");
 };

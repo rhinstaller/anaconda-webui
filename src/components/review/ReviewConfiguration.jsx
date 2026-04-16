@@ -37,6 +37,7 @@ import { usePageComplete as useSoftwarePageComplete } from "../software/usePageC
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { usePageComplete as useStorageInstallationPageComplete } from "../storage/installation-method/usePageComplete.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
+import { usePageComplete as useUsersPageComplete } from "../users/usePageComplete.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
 import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
@@ -88,12 +89,15 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
     const softwareComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
     const storageComplete = useStorageInstallationPageComplete();
+    const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
+    const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 
     const allPagesComplete =
         localizationComplete &&
         datetimeComplete &&
         softwareComplete === true &&
-        storageComplete === true;
+        storageComplete === true &&
+        usersComplete;
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -142,6 +146,10 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         </>
     );
 
+    const accountDescription = usersComplete
+        ? <AccountsReviewDescription />
+        : <IncompleteStepIndicator />;
+
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
             <FlexItem>
@@ -176,14 +184,14 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                       term={_("Software selection")}
                       description={softwareDescription}
                     />}
-                    {!hiddenScreens.includes("anaconda-screen-accounts") &&
-                        <ReviewDescriptionList>
-                            <ReviewDescriptionListItem
-                              id={`${SCREEN_ID}-target-system-account`}
-                              term={_("Account")}
-                              description={<AccountsReviewDescription />}
-                            />
-                        </ReviewDescriptionList>}
+                    {!accountsPageHidden &&
+                    <ReviewDescriptionList>
+                        <ReviewDescriptionListItem
+                          id={`${SCREEN_ID}-target-system-account`}
+                          term={_("Account")}
+                          description={accountDescription}
+                        />
+                    </ReviewDescriptionList>}
                     {isBootIso &&
                         <ReviewDescriptionList>
                             <HostnameRow />
