@@ -13,20 +13,15 @@ from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
 
 
-class TestInteractiveDefaults(VirtInstallMachineCase):
+class TestKickstartAutomated(VirtInstallMachineCase):
     """Destructive tests for kickstart-driven automated installations."""
 
-    provision = {"machine1": {"kickstart_file_name": "TestInteractiveDefaults-testBasic.ks", "payload_type": "dnf"}}
+    provision = {"machine1": {"kickstart_file_name": "TestKickstartAutomated-testBasic.ks", "payload_type": "dnf"}}
 
     def testBasic(self):
         """
         Description:
-            Ensure that from
-            ``test/kickstarts/TestInteractiveDefaults-testBasic.ks`` are
-            collected and prefilled in the interactive installation.  The
-            backend does not allow automated installations yet (inst.ks) but we
-            can still verify
-            kickstart supplied data with the interactive defaults.
+            Boot with ``inst.ks=TestKickstartAutomated-testBasic.ks``
 
         Expected results:
             - Users specified in kickstart are correctly picked up on the Accounts step
