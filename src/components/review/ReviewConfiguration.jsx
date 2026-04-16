@@ -30,6 +30,8 @@ import {
     usePlannedActions,
 } from "../../hooks/Storage.jsx";
 
+import { EmptyStatePanel } from "cockpit-components-empty-state";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
@@ -87,22 +89,26 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const { environments, selection, type: payloadType } = useContext(PayloadContext) ?? {};
     const softwarePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
-    const softwareComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
+    const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
     const storageComplete = useStorageInstallationPageComplete();
     const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
     const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 
-    const allPagesComplete =
-        localizationComplete &&
-        datetimeComplete &&
-        softwareComplete === true &&
-        storageComplete === true &&
-        usersComplete;
+    const pages = [
+        { complete: localizationComplete, id: "anaconda-screen-language" },
+        { complete: datetimeComplete, id: "anaconda-screen-date-time" },
+        { complete: softwareSelectionComplete, id: "anaconda-screen-software-selection" },
+        { complete: storageComplete, id: "anaconda-screen-method" },
+        { complete: usersComplete, id: "anaconda-screen-accounts" },
+    ];
+    const reviewValidationPending = pages.some(p => p.complete === undefined);
+    const allReviewPagesComplete =
+        !reviewValidationPending && pages.every(p => p.complete === true);
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter allPagesComplete={allPagesComplete} />
-    ), [allPagesComplete]);
+        <CustomFooter pageValidationOk={allReviewPagesComplete && !reviewValidationPending} />
+    ), [allReviewPagesComplete, reviewValidationPending]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -124,7 +130,7 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         : <IncompleteStepIndicator />;
 
     const softwareDescription = useMemo(() => {
-        if (softwareComplete !== true) {
+        if (!softwareSelectionComplete) {
             return <IncompleteStepIndicator />;
         }
         const envId = selection?.environment;
@@ -133,7 +139,7 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         }
         const env = environments?.find(e => e.id === envId);
         return env?.name || envId;
-    }, [softwareComplete, environments, selection?.environment]);
+    }, [softwareSelectionComplete, environments, selection?.environment]);
 
     const installationTypeDescription = scenarioLabel;
     const storageDescription = (
@@ -152,70 +158,83 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
 
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-operating-system`}
-                          term={_("Operating system")}
-                          description={osRelease.PRETTY_NAME}
+            {reviewValidationPending
+                ? (
+                    <FlexItem id={`${SCREEN_ID}-validation-loading`}>
+                        <EmptyStatePanel
+                          loading
+                          title={_("Checking installation configuration...")}
                         />
-                    </ReviewDescriptionList>
-                </ReviewDescriptionList>
-            </FlexItem>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-system-language`}
-                          term={_("Language")}
-                          description={languageDescription}
-                        />
-                    </ReviewDescriptionList>
-                    {!hiddenScreens.includes("anaconda-screen-date-time") &&
-                    <ReviewDescriptionListItem
-                      id={`${SCREEN_ID}-target-system-timezone`}
-                      term={_("Timezone")}
-                      description={timezoneDescription}
-                    />}
-                    {!softwarePageHidden &&
-                    <ReviewDescriptionListItem
-                      id={`${SCREEN_ID}-target-system-software`}
-                      term={_("Software selection")}
-                      description={softwareDescription}
-                    />}
-                    {!accountsPageHidden &&
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-system-account`}
-                          term={_("Account")}
-                          description={accountDescription}
-                        />
-                    </ReviewDescriptionList>}
-                    {isBootIso &&
-                        <ReviewDescriptionList>
-                            <HostnameRow />
-                        </ReviewDescriptionList>}
-                </ReviewDescriptionList>
-            </FlexItem>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-system-mode`}
-                          term={_("Installation type")}
-                          description={installationTypeDescription}
-                        />
-                    </ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-storage`}
-                          term={_("Storage")}
-                          description={storageDescription}
-                        />
-                    </ReviewDescriptionList>
-                </ReviewDescriptionList>
-            </FlexItem>
+                    </FlexItem>
+                )
+                : (
+                    <>
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-operating-system`}
+                                      term={_("Operating system")}
+                                      description={osRelease.PRETTY_NAME}
+                                    />
+                                </ReviewDescriptionList>
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-language`}
+                                      term={_("Language")}
+                                      description={languageDescription}
+                                    />
+                                </ReviewDescriptionList>
+                                {!hiddenScreens.includes("anaconda-screen-date-time") &&
+                                <ReviewDescriptionListItem
+                                  id={`${SCREEN_ID}-target-system-timezone`}
+                                  term={_("Timezone")}
+                                  description={timezoneDescription}
+                                />}
+                                {!softwarePageHidden &&
+                                <ReviewDescriptionListItem
+                                  id={`${SCREEN_ID}-target-system-software`}
+                                  term={_("Software selection")}
+                                  description={softwareDescription}
+                                />}
+                                {!accountsPageHidden &&
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-account`}
+                                      term={_("Account")}
+                                      description={accountDescription}
+                                    />
+                                </ReviewDescriptionList>}
+                                {isBootIso &&
+                                    <ReviewDescriptionList>
+                                        <HostnameRow />
+                                    </ReviewDescriptionList>}
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-mode`}
+                                      term={_("Installation type")}
+                                      description={installationTypeDescription}
+                                    />
+                                </ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-storage`}
+                                      term={_("Storage")}
+                                      description={storageDescription}
+                                    />
+                                </ReviewDescriptionList>
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                    </>
+                )}
         </Flex>
     );
 };
@@ -263,7 +282,7 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ allPagesComplete }) => {
+const CustomFooter = ({ pageValidationOk }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
@@ -283,8 +302,8 @@ const CustomFooter = ({ allPagesComplete }) => {
 
     useEffect(() => {
         const isConfirmationValid = isConfirmed || installationIsClean;
-        setIsFormValid(isConfirmationValid && allPagesComplete);
-    }, [setIsFormValid, isConfirmed, installationIsClean, allPagesComplete]);
+        setIsFormValid(isConfirmationValid && pageValidationOk);
+    }, [setIsFormValid, isConfirmed, installationIsClean, pageValidationOk]);
 
     return (
         <AnacondaWizardFooter
