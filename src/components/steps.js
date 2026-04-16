@@ -18,7 +18,7 @@ import { Page as PageAccounts } from "./users/index.js";
 
 const _ = cockpit.gettext;
 
-export const getSteps = (userInterfaceConfig, args) => {
+export const getSteps = (automatedInstall, userInterfaceConfig, args) => {
     const mountPointMappingStep = new PageMountPointMapping(args);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
@@ -58,9 +58,7 @@ export const getSteps = (userInterfaceConfig, args) => {
                 return !isHidden;
             })
             .map((s, i) => {
-                if (i === 0) {
-                    s.isFirstScreen = true;
-                }
+                s.isFirstScreen = automatedInstall ? s.id === "anaconda-screen-review" : i === 0;
                 return s;
             });
 };
