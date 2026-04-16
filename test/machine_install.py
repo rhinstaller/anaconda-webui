@@ -39,7 +39,6 @@ class VirtInstallMachine(VirtMachine):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
-
         super().__init__(image, **kwargs)
 
     def _execute(self, cmd):
@@ -95,13 +94,7 @@ class VirtInstallMachine(VirtMachine):
         raise ValueError(f"Unsupported payload_type value: {mode!r}")
 
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
-        payload_source = self._payload_source()
-        kickstart_file_content = ""
-        if self.kickstart_file_name:
-            path = os.path.join(WEBUI_TEST_DIR, "kickstarts", self.kickstart_file_name)
-            with open(path, encoding="utf-8") as ksf:
-                kickstart_file_content = ksf.read().rstrip()
-        content = f"{kickstart_file_content}\n\n{payload_source}" if kickstart_file_content else payload_source
+        content = self._payload_source()
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
@@ -129,9 +122,14 @@ class VirtInstallMachine(VirtMachine):
         if not os.path.exists(update_img_global_file):
             raise FileNotFoundError("Missing updates.img file")
 
+        inst_ks_arg = ""
         if not self.is_live():
             # Configure the payload in interactive-defaults.ks
             self._write_interactive_defaults_ks(update_img_global_file, update_img_file)
+            if self.kickstart_file_name:
+                inst_ks_url = f"http://10.0.2.2:{self.http_install_port}/test/kickstarts/{self.kickstart_file_name}"
+                # Web UI rejects kickstart-driven installs without inst.pauseatsummary.
+                inst_ks_arg = f" inst.ks={inst_ks_url} inst.pauseatsummary"
 
         # If custom compose if specified for fetching the image then use that
         # else get the image from the bots directory
@@ -171,7 +169,7 @@ class VirtInstallMachine(VirtMachine):
                 "--noautoconsole "
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote {selinux} "
+                f"'inst.sshd inst.webui.remote {selinux}{inst_ks_arg} "
                 f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
                 f"{self.label}-updates.img' "
                 "--network none "
