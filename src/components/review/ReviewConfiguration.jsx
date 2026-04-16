@@ -5,11 +5,10 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
-import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
@@ -27,10 +26,8 @@ import {
 } from "../../contexts/Common.jsx";
 
 import {
-    useFreeSpaceForSystem,
     useOriginalDevices,
     usePlannedActions,
-    useRequiredSize,
 } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
@@ -38,6 +35,7 @@ import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageC
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
 import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
+import { usePageComplete as useStorageInstallationPageComplete } from "../storage/installation-method/usePageComplete.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
@@ -73,19 +71,14 @@ const ReviewDescriptionList = ({ children }) => {
 };
 
 export const ReviewConfiguration = ({ automatedInstall }) => {
-    const { setStepNotification } = useContext(PageContext) ?? {};
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
     const timezone = useContext(TimezoneContext)?.timezone;
-    const { getLabel, id: scenarioId } = useScenario();
+    const { getLabel } = useScenario();
     const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    const [hasValidSpaceCheck, setHasValidSpaceCheck] = useState(true);
-    const freeSpace = useFreeSpaceForSystem();
-    const requiredSize = useRequiredSize();
-    const { goToStepById } = useWizardContext();
     const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
@@ -94,58 +87,18 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const softwarePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
     const softwareComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
+    const storageComplete = useStorageInstallationPageComplete();
 
     const allPagesComplete =
         localizationComplete &&
         datetimeComplete &&
-        softwareComplete === true;
-
-    useEffect(() => {
-        const step = SCREEN_ID;
-        const hasInsufficientSpace = requiredSize > freeSpace;
-        const fixupPage = scenarioId === "mount-point-mapping"
-            ? "anaconda-screen-mount-point-mapping"
-            : "anaconda-screen-method";
-
-        if (hasInsufficientSpace) {
-            const title = _("Not enough available free space");
-            const message = cockpit.format(
-                _("$0 is required, but only $1 is available."),
-                cockpit.format_bytes(requiredSize),
-                cockpit.format_bytes(freeSpace)
-            );
-            const actionLinks = (
-                <Button
-                  id={`${SCREEN_ID}-change-partition-layout`}
-                  variant="link"
-                  isInline
-                  onClick={() => {
-                      cockpit.location.go([fixupPage]);
-                      goToStepById(fixupPage);
-                  }}
-                >
-                    {_("Change partition layout")}
-                </Button>
-            );
-            setStepNotification({ actionLinks, message, step, title });
-        } else {
-            setStepNotification();
-        }
-
-        setHasValidSpaceCheck(!hasInsufficientSpace);
-    }, [
-        requiredSize,
-        freeSpace,
-        goToStepById,
-        setStepNotification,
-        setHasValidSpaceCheck,
-        scenarioId,
-    ]);
+        softwareComplete === true &&
+        storageComplete === true;
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter allPagesComplete={allPagesComplete} hasValidSpaceCheck={hasValidSpaceCheck} />
-    ), [allPagesComplete, hasValidSpaceCheck]);
+        <CustomFooter allPagesComplete={allPagesComplete} />
+    ), [allPagesComplete]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -177,6 +130,17 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         const env = environments?.find(e => e.id === envId);
         return env?.name || envId;
     }, [softwareComplete, environments, selection?.environment]);
+
+    const installationTypeDescription = scenarioLabel;
+    const storageDescription = (
+        <>
+            <Stack hasGutter>
+                <StorageReview isReviewScreen />
+                {!storageComplete && <IncompleteStepIndicator />}
+            </Stack>
+            <StorageReviewNote />
+        </>
+    );
 
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
@@ -232,20 +196,15 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                         <ReviewDescriptionListItem
                           id={`${SCREEN_ID}-target-system-mode`}
                           term={_("Installation type")}
-                          description={scenarioLabel}
+                          description={installationTypeDescription}
                         />
                     </ReviewDescriptionList>
                     <ReviewDescriptionList>
                         <ReviewDescriptionListItem
                           id={`${SCREEN_ID}-target-storage`}
                           term={_("Storage")}
-                          description={
-                              <Stack hasGutter>
-                                  <StorageReview isReviewScreen />
-                              </Stack>
-                          }
+                          description={storageDescription}
                         />
-                        <StorageReviewNote />
                     </ReviewDescriptionList>
                 </ReviewDescriptionList>
             </FlexItem>
@@ -296,7 +255,7 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ allPagesComplete, hasValidSpaceCheck }) => {
+const CustomFooter = ({ allPagesComplete }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
@@ -316,8 +275,8 @@ const CustomFooter = ({ allPagesComplete, hasValidSpaceCheck }) => {
 
     useEffect(() => {
         const isConfirmationValid = isConfirmed || installationIsClean;
-        setIsFormValid(isConfirmationValid && hasValidSpaceCheck && allPagesComplete);
-    }, [setIsFormValid, isConfirmed, installationIsClean, hasValidSpaceCheck, allPagesComplete]);
+        setIsFormValid(isConfirmationValid && allPagesComplete);
+    }, [setIsFormValid, isConfirmed, installationIsClean, allPagesComplete]);
 
     return (
         <AnacondaWizardFooter

@@ -94,7 +94,7 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
     const { partitioning, storageScenarioId } = useContext(StorageContext) ?? {};
     const homeReuseOptions = useHomeReuseOptions();
     /** Scenarios do not create or apply existing partitioning on this step. */
-    const SCENARIOS_WITHOUT_PARTITIONING_CREATION = ["mount-point-mapping", "use-configured-storage"];
+    const SCENARIOS_WITHOUT_PARTITIONING_CREATION = ["mount-point-mapping", "use-configured-storage", "use-configured-storage-kickstart"];
 
     useEffect(() => {
         if (nextRef.current !== true && newPartitioning === partitioning.path && isNextClicked) {
@@ -108,14 +108,12 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
         } else {
-            const part = storageScenarioId === "use-configured-storage-kickstart"
-                ? partitioning.path
-                : await getNewPartitioning({
-                    currentPartitioning: partitioning,
-                    homeReuseOptions,
-                    method: "AUTOMATIC",
-                    storageScenarioId,
-                });
+            const part = await getNewPartitioning({
+                currentPartitioning: partitioning,
+                homeReuseOptions,
+                method: "AUTOMATIC",
+                storageScenarioId,
+            });
             setNewPartitioning(part);
 
             const scenarioSupportsReclaimSpace = scenarios.find(sc => sc.id === storageScenarioId)?.canReclaimSpace;
@@ -123,7 +121,7 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
 
             if (willShowReclaimSpaceModal) {
                 setIsReclaimSpaceModalOpen(true);
-            } else if (!["home-reuse", "use-configured-storage-kickstart"].includes(storageScenarioId)) {
+            } else if (!["home-reuse"].includes(storageScenarioId)) {
                 setIsNextClicked(true);
             } else {
                 // If partitioning was already applied, proceed to next step
