@@ -33,6 +33,7 @@ import {
 } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
@@ -69,7 +70,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = () => {
+export const ReviewConfiguration = ({ automatedInstall }) => {
     const { setStepNotification } = useContext(PageContext) ?? {};
     const osRelease = useContext(OsReleaseContext);
     const localizationData = useContext(LanguageContext);
@@ -85,7 +86,9 @@ export const ReviewConfiguration = () => {
     const { goToStepById } = useWizardContext();
     const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
-    const allPagesComplete = localizationComplete;
+    const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
+    const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
+    const allPagesComplete = localizationComplete && datetimeComplete;
 
     useEffect(() => {
         const step = SCREEN_ID;
@@ -149,6 +152,10 @@ export const ReviewConfiguration = () => {
         ? (language ? language["native-name"].v : localizationData.language)
         : <IncompleteStepIndicator />;
 
+    const timezoneDescription = datetimeComplete
+        ? timezone
+        : <IncompleteStepIndicator />;
+
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
             <FlexItem>
@@ -175,7 +182,7 @@ export const ReviewConfiguration = () => {
                     <ReviewDescriptionListItem
                       id={`${SCREEN_ID}-target-system-timezone`}
                       term={_("Timezone")}
-                      description={timezone}
+                      description={timezoneDescription}
                     />}
                     {!hiddenScreens.includes("anaconda-screen-accounts") &&
                         <ReviewDescriptionList>

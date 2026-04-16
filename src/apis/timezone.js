@@ -15,6 +15,7 @@ import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Timezone";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Timezone";
+const KICKSTART_MODULE_INTERFACE = "org.fedoraproject.Anaconda.Modules";
 
 /**
  * Helper for DBus Timezone API.
@@ -52,10 +53,12 @@ export class TimezoneClient {
 
         this.startEventMonitor();
 
-        const timezone = await getTimezone();
-        this.dispatch(setTimezoneAction({ timezone }));
-
-        const allValidTimezones = await getAllValidTimezones();
+        const [timezone, allValidTimezones, kickstarted] = await Promise.all([
+            getTimezone(),
+            getAllValidTimezones(),
+            getKickstarted(),
+        ]);
+        this.dispatch(setTimezoneAction({ kickstarted: Boolean(kickstarted), timezone }));
         this.dispatch(setAllValidTimezonesAction({ allValidTimezones }));
     }
 
@@ -81,6 +84,14 @@ export class TimezoneClient {
  */
 export const getTimezone = () => {
     return getProperty("Timezone");
+};
+
+/**
+ * Whether the timezone module was configured from kickstart
+ * @returns {Promise<boolean>}
+ */
+export const getKickstarted = () => {
+    return _getProperty(TimezoneClient, OBJECT_PATH, KICKSTART_MODULE_INTERFACE, "Kickstarted");
 };
 
 /**
