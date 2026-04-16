@@ -45,7 +45,7 @@ def cmd_cli():
         else:
             print("You can start the installer by running the following command on the terminal in the test VM:")
             print(
-                f"liveinst --graphical --updates=http://10.0.2.2:{machine.http_updates_img_port}/updates.img"
+                f"liveinst --graphical --updates=http://10.0.2.2:{machine.http_install_port}/updates.img"
             )
 
         # print marker that the VM is ready; tests can poll for this to wait for the VM

@@ -32,7 +32,8 @@ os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
 
 class VirtInstallMachine(VirtMachine):
-    http_payload_server = None
+    http_install_server = None
+    http_install_port = None
 
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
@@ -61,30 +62,40 @@ class VirtInstallMachine(VirtMachine):
         with timeout.Timeout(seconds=50, error_message="Timeout while waiting for http server to start"):
             self._execute(WAIT_HTTP_RUNNING)
 
-    def _serve_updates_img(self):
-        http_updates_img_port = self._get_free_port()
-        self.http_updates_img_server = subprocess.Popen(["python3", "-m", "http.server", "-d", ROOT_DIR, str(http_updates_img_port)])
-        self._wait_http_server_running(http_updates_img_port)
+    def _serve_install_http(self):
+        """Serve ``ROOT_DIR`` (updates.img, ``test/kickstarts/``, payload tree under ``tmp/``).
 
-        return http_updates_img_port
+        Idempotent: returns the existing port without spawning a second server.
+        """
+        if self.http_install_server is not None:
+            return self.http_install_port
+        port = self._get_free_port()
+        self.http_install_server = subprocess.Popen([
+            "python3", "-m", "http.server", "-d", ROOT_DIR, str(port),
+        ])
+        self._wait_http_server_running(port)
+        self.http_install_port = port
+        return port
 
-    def _serve_payload(self):
-        serve_dir = os.path.realpath(self.payload_path)
-        http_payload_port = self._get_free_port()
-        self.http_payload_server = subprocess.Popen(["python3", "-m", "http.server", "-d", serve_dir, str(http_payload_port)])
-        self._wait_http_server_running(http_payload_port)
-        return http_payload_port
+    def _payload_http_relpath(self, *parts):
+        """URL path under the HTTP root for ``self.payload_path``, plus optional extra segments."""
+        base = os.path.relpath(self.payload_path, ROOT_DIR).replace(os.sep, "/")
+        return "/".join((base, *parts))
 
-    def _payload_source(self, mode, port):
+    def _payload_source(self):
+        """Return liveimg or repo kickstart lines; URLs use the unified install HTTP root."""
+        mode = self.payload_type
+        port = self._serve_install_http()
         if mode == "liveimg":
-            return f'liveimg --url="http://10.0.2.2:{port}/liveimg.tar.gz"'
+            rel = self._payload_http_relpath("liveimg.tar.gz")
+            return f'liveimg --url="http://10.0.2.2:{port}/{rel}"'
         if mode == "dnf":
-            return f'repo --name webuitests --baseurl="http://10.0.2.2:{port}/repo/"\n'
+            rel = self._payload_http_relpath("repo")
+            return f'repo --name webuitests --baseurl="http://10.0.2.2:{port}/{rel}/"\n'
         raise ValueError(f"Unsupported payload_type value: {mode!r}")
 
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
-        port = self._serve_payload()
-        payload_source = self._payload_source(self.payload_type, port)
+        payload_source = self._payload_source()
         kickstart_file_content = ""
         if self.kickstart_file_name:
             path = os.path.join(WEBUI_TEST_DIR, "kickstarts", self.kickstart_file_name)
@@ -111,6 +122,8 @@ class VirtInstallMachine(VirtMachine):
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload in {self.payload_path}; use 'make payload'.")
 
+        self._serve_install_http()
+
         update_img_global_file = os.path.join(ROOT_DIR, f"updates-{self.os}.img")
         update_img_file = os.path.join(ROOT_DIR, f"{self.label}-updates.img")
         if not os.path.exists(update_img_global_file):
@@ -119,8 +132,6 @@ class VirtInstallMachine(VirtMachine):
         if not self.is_live():
             # Configure the payload in interactive-defaults.ks
             self._write_interactive_defaults_ks(update_img_global_file, update_img_file)
-
-        self.http_updates_img_port = self._serve_updates_img()
 
         # If custom compose if specified for fetching the image then use that
         # else get the image from the bots directory
@@ -161,7 +172,7 @@ class VirtInstallMachine(VirtMachine):
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
                 f"'inst.sshd inst.webui.remote {selinux} "
-                f"inst.updates=http://10.0.2.2:{self.http_updates_img_port}/"
+                f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
                 f"{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
@@ -201,10 +212,10 @@ class VirtInstallMachine(VirtMachine):
             f"virsh -q -c qemu:///session undefine --nvram "  # tell undefine to also delete the EFI NVRAM device
             f"--remove-all-storage {self.label} || true"
         )
-        if self.http_updates_img_server:
-            self.http_updates_img_server.kill()
-        if self.http_payload_server:
-            self.http_payload_server.kill()
+        if self.http_install_server:
+            self.http_install_server.kill()
+            self.http_install_server = None
+            self.http_install_port = None
 
     # pylint: disable=arguments-differ  # this fails locally if you have bots checked out
     def wait_poweroff(self):
