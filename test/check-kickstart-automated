@@ -24,6 +24,7 @@ class TestKickstartAutomated(VirtInstallMachineCase):
             Boot with ``inst.ks=TestKickstartAutomated-testBasic.ks``
 
         Expected results:
+            - Automated install opens on the review step with the install action enabled.
             - Users specified in kickstart are correctly picked up on the Accounts step
               and cannot be changed.
             - Root settings cannot be changed when rootpw is in kickstart.
@@ -40,7 +41,10 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         r = Review(b, m)
         s = Storage(b, m)
 
-        i.open()
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
+
+        i.reach_on_sidebar(i.steps.LANGUAGE)
         i.reach(i.steps.DATE_TIME)
 
         tz = dt.dbus_get_timezone()
@@ -101,8 +105,9 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         i = Installer(b, m, scenario="use-configured-storage-kickstart")
 
         override_user_interface_conf_keys(self, can_change_root=True, can_change_users=True)
-        i.open()
-        i.reach(i.steps.ACCOUNTS)
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
+        i.reach_on_sidebar(i.steps.ACCOUNTS)
 
         b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:not(:disabled)")
         b.wait_visible("#anaconda-screen-accounts-create-account-set-user-account:not(:disabled)")

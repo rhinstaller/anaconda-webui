@@ -48,8 +48,8 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         stepNotification,
     };
 
-    const stepsOrder = getSteps(userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
-    const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
+    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
+    const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
 
     useEffect(() => {
         if (path[0] && path[0] !== currentStepId) {
@@ -123,12 +123,16 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
             </PageSection>
         );
     }
+    if (currentStepId === undefined) {
+        return null;
+    }
 
-    const startIndex = steps.findIndex(step => {
-        // Find the first step that is not hidden if the Wizard is opening for the first time.
-        // Otherwise, find the first step that was last visited.
-        return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
-    }) + 1;
+    let startIndex = stepsOrder.findIndex(step => step.isFirstScreen) + 1;
+
+    // HACK: start index is calculated incorrectly for KS installations
+    if (automatedInstall) {
+        startIndex += 1;
+    }
 
     // Properties from usePage to be passed to the Wizard Footer,
     // in case the Page is not using custom footer.
