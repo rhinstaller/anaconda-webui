@@ -19,6 +19,7 @@ import {
     LanguageContext,
     OsReleaseContext,
     PageContext,
+    PayloadContext,
     StorageContext,
     SystemTypeContext,
     TimezoneContext,
@@ -35,6 +36,7 @@ import {
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
+import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
 import { ReviewDescriptionListItem } from "./Common.jsx";
@@ -88,7 +90,15 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
     const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
-    const allPagesComplete = localizationComplete && datetimeComplete;
+    const { environments, selection, type: payloadType } = useContext(PayloadContext) ?? {};
+    const softwarePageHidden =
+        payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
+    const softwareComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
+
+    const allPagesComplete =
+        localizationComplete &&
+        datetimeComplete &&
+        softwareComplete === true;
 
     useEffect(() => {
         const step = SCREEN_ID;
@@ -156,6 +166,18 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         ? timezone
         : <IncompleteStepIndicator />;
 
+    const softwareDescription = useMemo(() => {
+        if (softwareComplete !== true) {
+            return <IncompleteStepIndicator />;
+        }
+        const envId = selection?.environment;
+        if (!envId) {
+            return "";
+        }
+        const env = environments?.find(e => e.id === envId);
+        return env?.name || envId;
+    }, [softwareComplete, environments, selection?.environment]);
+
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
             <FlexItem>
@@ -183,6 +205,12 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                       id={`${SCREEN_ID}-target-system-timezone`}
                       term={_("Timezone")}
                       description={timezoneDescription}
+                    />}
+                    {!softwarePageHidden &&
+                    <ReviewDescriptionListItem
+                      id={`${SCREEN_ID}-target-system-software`}
+                      term={_("Software selection")}
+                      description={softwareDescription}
                     />}
                     {!hiddenScreens.includes("anaconda-screen-accounts") &&
                         <ReviewDescriptionList>
