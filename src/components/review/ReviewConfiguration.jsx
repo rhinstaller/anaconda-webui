@@ -5,10 +5,12 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
-import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
@@ -82,6 +84,7 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
+    const { goToStepById } = useWizardContext();
     const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
@@ -104,6 +107,17 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const reviewValidationPending = pages.some(p => p.complete === undefined);
     const allReviewPagesComplete =
         !reviewValidationPending && pages.every(p => p.complete === true);
+    const firstIncompleteStepId = !reviewValidationPending
+        ? (pages.find(p => p.complete !== true)?.id ?? null)
+        : null;
+
+    const jumpToFirstIncomplete = () => {
+        if (!firstIncompleteStepId) {
+            return;
+        }
+        cockpit.location.go([firstIncompleteStepId]);
+        goToStepById(firstIncompleteStepId);
+    };
 
     // Display custom footer
     const getFooter = useMemo(() => (
@@ -169,6 +183,27 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                 )
                 : (
                     <>
+                        {firstIncompleteStepId &&
+                        <FlexItem>
+                            <Alert
+                              id={`${SCREEN_ID}-incomplete-configuration`}
+                              actionLinks={(
+                                  <Button
+                                    id={`${SCREEN_ID}-go-first-incomplete`}
+                                    variant="link"
+                                    isInline
+                                    onClick={jumpToFirstIncomplete}
+                                  >
+                                      {_("Jump to first incomplete step")}
+                                  </Button>
+                              )}
+                              isInline
+                              title={_("Configuration is incomplete")}
+                              variant="danger"
+                            >
+                                {_("Some installation steps still need to be completed before you can continue.")}
+                            </Alert>
+                        </FlexItem>}
                         <FlexItem>
                             <ReviewDescriptionList>
                                 <ReviewDescriptionList>
