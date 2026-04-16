@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
@@ -32,6 +33,7 @@ import {
 } from "../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
 import { ReviewDescriptionListItem } from "./Common.jsx";
@@ -42,6 +44,12 @@ import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-review";
+
+const IncompleteStepIndicator = () => (
+    <Label isCompact status="danger">
+        {_("incomplete")}
+    </Label>
+);
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -75,6 +83,9 @@ export const ReviewConfiguration = () => {
     const freeSpace = useFreeSpaceForSystem();
     const requiredSize = useRequiredSize();
     const { goToStepById } = useWizardContext();
+    const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
+    const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
+    const allPagesComplete = localizationComplete;
 
     useEffect(() => {
         const step = SCREEN_ID;
@@ -120,8 +131,8 @@ export const ReviewConfiguration = () => {
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter hasValidSpaceCheck={hasValidSpaceCheck} />
-    ), [hasValidSpaceCheck]);
+        <CustomFooter allPagesComplete={allPagesComplete} hasValidSpaceCheck={hasValidSpaceCheck} />
+    ), [allPagesComplete, hasValidSpaceCheck]);
     useWizardFooter(getFooter);
 
     const language = useMemo(() => {
@@ -133,6 +144,10 @@ export const ReviewConfiguration = () => {
             }
         }
     }, [localizationData]);
+
+    const languageDescription = localizationComplete
+        ? (language ? language["native-name"].v : localizationData.language)
+        : <IncompleteStepIndicator />;
 
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
@@ -153,7 +168,7 @@ export const ReviewConfiguration = () => {
                         <ReviewDescriptionListItem
                           id={`${SCREEN_ID}-target-system-language`}
                           term={_("Language")}
-                          description={language ? language["native-name"].v : localizationData.language}
+                          description={languageDescription}
                         />
                     </ReviewDescriptionList>
                     {!hiddenScreens.includes("anaconda-screen-date-time") &&
@@ -246,7 +261,7 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ hasValidSpaceCheck }) => {
+const CustomFooter = ({ allPagesComplete, hasValidSpaceCheck }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
@@ -266,8 +281,8 @@ const CustomFooter = ({ hasValidSpaceCheck }) => {
 
     useEffect(() => {
         const isConfirmationValid = isConfirmed || installationIsClean;
-        setIsFormValid(isConfirmationValid && hasValidSpaceCheck);
-    }, [setIsFormValid, isConfirmed, installationIsClean, hasValidSpaceCheck]);
+        setIsFormValid(isConfirmationValid && hasValidSpaceCheck && allPagesComplete);
+    }, [setIsFormValid, isConfirmed, installationIsClean, hasValidSpaceCheck, allPagesComplete]);
 
     return (
         <AnacondaWizardFooter
