@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-export const setTimezoneAction = ({ timezone }) => {
+export const setTimezoneAction = ({ kickstarted, timezone } = {}) => {
     return ({
-        payload: { timezone },
+        payload: { kickstarted, timezone },
         type: "SET_TIMEZONE",
     });
 };

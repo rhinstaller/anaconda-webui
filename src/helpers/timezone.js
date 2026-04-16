@@ -39,3 +39,21 @@ export const getUserLocale = () =>
     navigator.languages?.length
         ? navigator.languages[0]
         : navigator.language || "en-US";
+
+/**
+ * True when **timezoneId** is a non-empty Region/City id present in the module catalog.
+ * @param {string} [timezoneId]
+ * @param {object} [allValidTimezones] - Object of form { region: [city1, city2, ...], ... }
+ */
+export const isValidTimezone = (timezoneId, allValidTimezones) => {
+    if (!timezoneId) {
+        return false;
+    }
+    if (!timezoneId.includes("/")) {
+        return false;
+    }
+    const [region, ...cityParts] = timezoneId.split("/");
+    const city = cityParts.join("/");
+    const cities = allValidTimezones?.[region];
+    return Array.isArray(cities) && cities.includes(city);
+};
