@@ -246,8 +246,10 @@ export const payloadReducer = (state = payloadInitialState, action) => {
     if (action.type === "SET_PAYLOAD_SELECTION") {
         return {
             ...state,
-            packagesKickstarted: action.payload.packagesKickstarted,
             selection: action.payload.selection,
+            ...(action.payload.packagesKickstarted !== undefined
+                ? { packagesKickstarted: action.payload.packagesKickstarted }
+                : {}),
         };
     } else if (action.type === "SET_PAYLOAD_ENVIRONMENTS") {
         return { ...state, environments: action.payload.environments || [] };
