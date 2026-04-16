@@ -80,6 +80,7 @@ export const usersInitialState = {
     canModifyUserConfiguration: true,
     confirmPassword: "",
     isRootEnabled: false,
+    isRootPasswordSet: false,
     password: "",
     rootConfirmPassword: "",
     rootPassword: "",

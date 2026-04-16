@@ -6,6 +6,7 @@
 import {
     getCanChangeRootPassword,
     getIsRootAccountLocked,
+    getIsRootPasswordSet,
     getUsers,
 } from "../apis/users.js";
 
@@ -64,14 +65,16 @@ export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) 
 };
 
 export const getUsersAction = () => async (dispatch) => {
-    const [users, isRootAccountLocked] = await Promise.all([
+    const [users, isRootAccountLocked, isRootPasswordSet] = await Promise.all([
         getUsers(),
         getIsRootAccountLocked(),
+        getIsRootPasswordSet(),
     ]);
     const userList = users ?? [];
 
     dispatch(setUsersAction({
         isRootEnabled: !isRootAccountLocked,
+        isRootPasswordSet: !!isRootPasswordSet,
         users: userList,
     }));
 };
