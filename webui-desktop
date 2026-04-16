@@ -187,7 +187,7 @@ else
 
     USER_GRAPHICAL_SESSION_AVAILABLE=0
     if [ "$USER_SESSION_AVAILABLE" = "1" ]; then
-        if printf '%s\n' "${user_environment[@]}" | grep -qE '^(DISPLAY|WAYLAND_DISPLAY)='; then
+        if printf '%s\n' "${user_environment[@]}" | grep -q '^WAYLAND_DISPLAY='; then
             USER_GRAPHICAL_SESSION_AVAILABLE=1
         fi
     fi
