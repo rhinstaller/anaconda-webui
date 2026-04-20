@@ -162,6 +162,7 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         users = Users(b, m)
         users.dbus_clear_users()
+        users.dbus_set_root_locked(True)
 
     def resetTimezone(self):
         m = self.machine

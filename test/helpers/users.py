@@ -64,6 +64,13 @@ class UsersDBus():
 
         return ret.split()[1].strip() == "true"
 
+    def dbus_set_root_locked(self, locked):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property  \
+            {USERS_SERVICE} \
+            {USERS_OBJECT_PATH} \
+            {USERS_INTERFACE} IsRootAccountLocked b {"true" if locked else "false"}')
+
     def dbus_get_is_root_password_set(self):
         ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
             get-property  \
