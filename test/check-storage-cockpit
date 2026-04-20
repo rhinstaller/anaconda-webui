@@ -486,8 +486,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot auto noauto,subvol=/ 0 0" in fstab)
 
     def _createBtrfsSubvolumes(self, browser, vol_size=None):
-        tmp_mount = "/btrfs-mount-test"
-
         self.reachCockpitStorage()
         self.cockpitCreateBootloaderPartitions()
 
@@ -498,9 +496,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
             self.dialog({"type": "btrfs"})
 
         self.click_card_row("Storage", name="top-level")
-
-        browser.click(self.card_button("btrfs subvolume", "Mount"))
-        self.dialog({"mount_point": tmp_mount})
 
         browser.click(self.card_button("btrfs subvolume", "Create subvolume"))
         self.dialog({"name": "root", "mount_point": "/"})
@@ -547,7 +542,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
         self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
-        self.assertTrue("/mnt/sysroot/btrfs-mount-test auto subvol=/ 0 0" in fstab)
         self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
@@ -603,7 +597,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
         self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
-        self.assertTrue("/mnt/sysroot/btrfs-mount-test auto subvol=/ 0 0" in fstab)
         self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
