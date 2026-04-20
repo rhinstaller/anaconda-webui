@@ -26,7 +26,7 @@ import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
-import { getDeviceChildren } from "../../../helpers/storage.js";
+import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -47,32 +47,6 @@ const N_ = cockpit.noop;
 
 const idPrefix = "anaconda-screen-method";
 const debug = loggerDebug.bind(null, idPrefix + ":");
-
-/**
- *  Select default disks for the partitioning.
- *
- * If there are some usable disks already selected, show these.
- * In the automatic installation, select all disks. In
- * the interactive installation, select a disk if there
- * is only one available.
- * @return: the list of selected disks
- */
-const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
-    if (selectedDisks.length && selectedDisks.some(disk => usableDisks.includes(disk))) {
-        // Filter the selection by checking the usable disks if there are some disks selected
-        debug("Selecting disks selected in backend:", selectedDisks.join(","));
-        return selectedDisks.filter(disk => usableDisks.includes(disk));
-    } else {
-        const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
-        debug("Selecting one or less disks by default:", availableDisks.join(","));
-
-        // Select a usable disk if there is only one available
-        if (availableDisks.length === 1) {
-            return availableDisks;
-        }
-        return [];
-    }
-};
 
 const DeviceExistingInstallation = ({ device }) => {
     const originalExistingSystems = useOriginalExistingSystems();

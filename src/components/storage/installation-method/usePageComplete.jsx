@@ -5,11 +5,15 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { useWizardContext } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
+import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { applyStorage } from "../../../apis/storage_partitioning.js";
+
+import { selectDefaultDisks } from "../../../helpers/storage.js";
+import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
@@ -64,6 +68,34 @@ export const useStorageComplete = () => {
     };
 };
 
+const useApplyDefaultDisksOnReview = () => {
+    const refUsableDisks = useRef();
+    const { diskSelection } = useContext(StorageContext) ?? {};
+    const usableDisksStr = diskSelection?.usableDisks?.join?.(",") ?? "";
+
+    useEffect(() => {
+        refUsableDisks.current = false;
+    }, [usableDisksStr]);
+
+    useEffect(() => {
+        if (refUsableDisks.current === true || !diskSelection) {
+            return;
+        }
+
+        refUsableDisks.current = true;
+
+        const defaultDisks = selectDefaultDisks({
+            ignoredDisks: diskSelection.ignoredDisks,
+            selectedDisks: diskSelection.selectedDisks,
+            usableDisks: diskSelection.usableDisks,
+        });
+
+        if (!checkIfArraysAreEqual(diskSelection.selectedDisks, defaultDisks)) {
+            setSelectedDisks({ drives: defaultDisks });
+        }
+    }, [diskSelection]);
+};
+
 const useApplyStorageOnReview = () => {
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const { setStepNotification } = useContext(PageContext) ?? {};
@@ -89,7 +121,7 @@ const useApplyStorageOnReview = () => {
                 }
             },
             partitioning: partitioningPath,
-        });
+        }).catch(() => {});
     }, [appliedPartitioning, partitioningPath, setStepNotification]);
 };
 
@@ -153,6 +185,7 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
 export const usePageComplete = () => {
     const spaceState = useStorageComplete();
 
+    useApplyDefaultDisksOnReview();
     useApplyStorageOnReview();
     useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSize);
 
