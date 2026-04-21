@@ -81,7 +81,6 @@ export const payloadInitialState = {
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
-    canChangeRootPassword: true,
     canModifyRootConfiguration: true,
     canModifyUserConfiguration: true,
     confirmPassword: "",
@@ -263,9 +262,52 @@ export const payloadReducer = (state = payloadInitialState, action) => {
     }
 };
 
+const updateFirstUserData = (currentUsers, { gecos, name }) => {
+    const list = currentUsers ?? [];
+    const first = { ...(list[0] ?? {}), gecos, name };
+    const tail = list.slice(1);
+    return (name || gecos || tail.length > 0)
+        ? [first, ...tail]
+        : [];
+};
+
+const updateRootData = (state, { isRootEnabled, rootConfirmPassword, rootPassword }) => {
+    const next = { ...state };
+    if (isRootEnabled !== undefined) {
+        next.isRootEnabled = isRootEnabled;
+    }
+    if (rootConfirmPassword !== undefined) {
+        next.rootConfirmPassword = rootConfirmPassword;
+    }
+    if (rootPassword !== undefined) {
+        next.rootPassword = rootPassword;
+    }
+    return next;
+};
+
 export const usersReducer = (state = usersInitialState, action) => {
     if (action.type === "SET_USERS") {
-        return { ...state, ...action.payload.users };
+        return { ...state, ...action.payload };
+    } else if (action.type === "SET_USER_CONFIGURATION_POLICY") {
+        return { ...state, ...action.payload };
+    } else if (action.type === "SET_FIRST_USER") {
+        const { confirmPassword, gecos, name, password } = action.payload;
+        const users = updateFirstUserData(state.users, { gecos, name });
+        return {
+            ...state,
+            confirmPassword: confirmPassword !== undefined ? confirmPassword : state.confirmPassword,
+            password: password !== undefined ? password : state.password,
+            users,
+        };
+    } else if (action.type === "CLEAR_USERS") {
+        return {
+            ...state,
+            confirmPassword: "",
+            password: "",
+            users: [],
+        };
+    } else if (action.type === "SET_ROOT_ACCOUNT") {
+        return updateRootData(state, action.payload);
     } else {
         return state;
     }

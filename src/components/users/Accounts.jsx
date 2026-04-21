@@ -22,7 +22,9 @@ import {
 } from "../../apis/users.js";
 
 import {
-    setUsersAction,
+    clearUsersAction,
+    setFirstUserAction,
+    setRootAccountAction,
 } from "../../actions/users-actions.js";
 
 import {
@@ -119,8 +121,8 @@ const isUserNameWithInvalidCharacters = (userName) => {
 };
 
 const CreateAccount = ({
+    dispatch,
     idPrefix,
-    setAccounts,
     setIsUserValid,
     setSkipAccountCreation,
     skipAccountCreation,
@@ -203,20 +205,20 @@ const CreateAccount = ({
 
     useEffect(() => {
         if (skipAccountCreation) {
-            setAccounts({ confirmPassword, password, users: [] });
+            dispatch(clearUsersAction());
             return;
         }
-        const first = { ...(accounts.users?.[0] ?? {}), gecos: fullName, name: userName };
-        const users = accounts.users?.length
-            ? [first, ...accounts.users.slice(1)]
-            : (userName || fullName ? [first] : []);
-        setAccounts({ confirmPassword, password, users });
+        dispatch(setFirstUserAction({
+            confirmPassword,
+            gecos: fullName,
+            name: userName,
+            password,
+        }));
     }, [
-        accounts.users,
         confirmPassword,
+        dispatch,
         fullName,
         password,
-        setAccounts,
         skipAccountCreation,
         userName,
     ]);
@@ -347,8 +349,8 @@ const RootAccountReadonly = ({ idPrefix, setIsRootValid }) => {
 };
 
 const RootAccountEditable = ({
+    dispatch,
     idPrefix,
-    setAccounts,
     setIsRootValid,
 }) => {
     const accounts = useContext(UsersContext);
@@ -379,7 +381,7 @@ const RootAccountEditable = ({
           id={idPrefix + "-enable-root-account"}
           label={_("Enable root account")}
           isChecked={isRootAccountEnabled}
-          onChange={(_event, enable) => setAccounts({ isRootEnabled: enable })}
+          onChange={(_event, enable) => dispatch(setRootAccountAction({ isRootEnabled: enable }))}
           body={content}
         />
     );
@@ -402,8 +404,8 @@ const RootAccountEditable = ({
     );
 
     useEffect(() => {
-        setAccounts({ rootConfirmPassword: confirmPassword, rootPassword: password });
-    }, [setAccounts, password, confirmPassword]);
+        dispatch(setRootAccountAction({ rootConfirmPassword: confirmPassword, rootPassword: password }));
+    }, [confirmPassword, dispatch, password]);
 
     return (
         <FormSection
@@ -414,7 +416,7 @@ const RootAccountEditable = ({
     );
 };
 
-const RootAccount = ({ idPrefix, setAccounts, setIsRootValid }) => {
+const RootAccount = ({ dispatch, idPrefix, setIsRootValid }) => {
     const accounts = useContext(UsersContext);
     const canModifyRootConfiguration = accounts.canModifyRootConfiguration !== false;
 
@@ -428,8 +430,8 @@ const RootAccount = ({ idPrefix, setAccounts, setIsRootValid }) => {
     }
     return (
         <RootAccountEditable
+          dispatch={dispatch}
           idPrefix={idPrefix}
-          setAccounts={setAccounts}
           setIsRootValid={setIsRootValid}
         />
     );
@@ -443,7 +445,6 @@ export const Accounts = ({
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const accounts = useContext(UsersContext);
-    const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
     const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
     const kickstartUsersReadOnly = accounts.usersSpecifiedByKickstart === true &&
@@ -460,7 +461,6 @@ export const Accounts = ({
     }, [
         accounts.isRootEnabled,
         accounts.canModifyUserConfiguration,
-        accounts.usersSpecifiedByKickstart,
         isRootValid,
         isUserValid,
         setIsFormValid,
@@ -485,17 +485,17 @@ export const Accounts = ({
                 )
                 : (
                     <CreateAccount
+                      dispatch={dispatch}
                       idPrefix={idPrefix + "-create-account"}
                       setIsUserValid={setIsUserValid}
-                      setAccounts={setAccounts}
                       setSkipAccountCreation={setSkipAccountCreation}
                       skipAccountCreation={skipAccountCreation}
                     />
                 )}
             <RootAccount
+              dispatch={dispatch}
               idPrefix={idPrefix + "-root-account"}
               setIsRootValid={setIsRootValid}
-              setAccounts={setAccounts}
             />
         </Form>
     );

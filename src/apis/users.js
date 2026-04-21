@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import { getUsersAction } from "../actions/users-actions.js";
+import { getUserConfigurationAction, getUsersAction } from "../actions/users-actions.js";
 
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
@@ -43,13 +43,15 @@ export class UsersClient {
     }
 
     /**
-     * @param {object} args  Bootstrap args from `Application` (`conf`, `automatedInstall`).
+     * @param {object} args  Bootstrap args from `Application` (`conf`, etc.).
      */
     init (args = {}) {
         this.client.addEventListener(
             "close", () => error("Users client closed")
         );
-        return this.dispatch(getUsersAction(args));
+
+        this.dispatch(getUsersAction());
+        this.dispatch(getUserConfigurationAction({ automatedInstall: args.automatedInstall, conf: args.conf }));
     }
 }
 
