@@ -12,10 +12,26 @@ import {
 import { canModifyRootConfiguration, canModifyUserConfiguration } from "../helpers/users.js";
 import { parseAnacondaConfBool } from "../helpers/utils.js";
 
-export const setUsersAction = (users) => ({
-    payload: { users },
-    type: "SET_USERS"
+export const setUsersAction = (payload) => ({
+    payload,
+    type: "SET_USERS",
 });
+
+/**
+ * Patch users slice from the Accounts UI (draft first user, root passwords, etc.).
+ */
+export const applyUsersPatch = (patch = {}) => (dispatch) => {
+    const { firstUser, ...rest } = patch;
+    const payload = { ...rest };
+
+    if (firstUser !== undefined) {
+        payload.firstUser = firstUser;
+    }
+
+    if (Object.keys(payload).length > 0) {
+        dispatch(setUsersAction(payload));
+    }
+};
 
 /** @param {{ automatedInstall?: boolean, conf?: object }} args  Bootstrap from `Application` / `UsersClient.init` */
 export const getUsersAction = (args = {}) => async (dispatch) => {

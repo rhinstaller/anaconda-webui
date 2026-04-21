@@ -265,7 +265,31 @@ export const payloadReducer = (state = payloadInitialState, action) => {
 
 export const usersReducer = (state = usersInitialState, action) => {
     if (action.type === "SET_USERS") {
-        return { ...state, ...action.payload.users };
+        const { firstUser, ...rest } = action.payload;
+        let next = { ...state, ...rest };
+        if (firstUser !== undefined) {
+            const existing = state.users ?? [];
+            const [currentFirst = {}, ...tail] = existing;
+            const updatedFirst = {
+                ...currentFirst,
+                gecos: firstUser.gecos,
+                name: firstUser.name,
+            };
+            const updatedUsers = (firstUser.name || firstUser.gecos || tail.length > 0)
+                ? [updatedFirst, ...tail]
+                : [];
+            next = {
+                ...next,
+                users: updatedUsers,
+            };
+            if (firstUser.password !== undefined) {
+                next.password = firstUser.password;
+            }
+            if (firstUser.confirmPassword !== undefined) {
+                next.confirmPassword = firstUser.confirmPassword;
+            }
+        }
+        return next;
     } else {
         return state;
     }
