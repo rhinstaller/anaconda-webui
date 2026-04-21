@@ -75,7 +75,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         # Test cancelled reclaim is not taking effect
         s.reclaim_remove_device("vda2")
-        s.reclaim_check_action_present("vda2", "delete", True)
+        s.reclaim_check_action_present("vda2", "delete")
         s.reclaim_modal_cancel()
 
         # Continue without reclaiming space
@@ -122,29 +122,29 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_available_space("2.06 MB")
 
         # Check that all partitions are present
-        s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
-        s.reclaim_check_device_row("vda1", "", "biosboot", "1.05 MB")
-        s.reclaim_check_device_row("vda2", "", "ext4", "6.44 GB")
-        s.reclaim_check_device_row("vda3", "", "btrfs", "5.37 GB")
-        s.reclaim_check_device_row("vda4", "", "btrfs", "4.29 GB")
+        s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
+        s.reclaim_check_device_row("vda1", deviceType="biosboot", space="1.05 MB")
+        s.reclaim_check_device_row("vda2", deviceType="ext4", space="6.44 GB")
+        s.reclaim_check_device_row("vda3", deviceType="btrfs", space="5.37 GB")
+        s.reclaim_check_device_row("vda4", deviceType="btrfs", space="4.29 GB")
 
         # Check that deleting a disk will delete all contained partitions
-        s.reclaim_remove_device("vda (Virtio")
+        s.reclaim_remove_device("vda")
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete")
 
         s.reclaim_check_available_space("16.1 GB")
 
         # Undo disk device deletion
-        s.reclaim_undo_action("vda (Virtio")
+        s.reclaim_undo_action("vda")
         for device in ["vda1", "vda2", "vda3"]:
-            s.reclaim_check_action_present(device, "delete", False)
+            s.reclaim_check_action_present(device, "delete", present=False)
 
         s.reclaim_check_available_space("2.06 MB")
 
         # Check that actions for devices whose parents are marked for deletion are not sent to blivet
         s.reclaim_remove_device("vda4")
-        s.reclaim_remove_device("vda (Virtio")
+        s.reclaim_remove_device("vda")
         s.reclaim_modal_submit()
 
         i.back()
@@ -153,14 +153,14 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         # Remove one partition and allocate enough space for the installation
         s.reclaim_remove_device("vda2")
-        s.reclaim_check_action_present("vda2", "delete", True)
+        s.reclaim_check_action_present("vda2", "delete")
         s.reclaim_check_available_space("6.44 GB")
 
         # Check that deleting a parent disk which contains partitions marked for deletion
         # correctly calculates the available space
-        s.reclaim_remove_device("vda (Virtio")
+        s.reclaim_remove_device("vda")
         s.reclaim_check_available_space("16.1 GB")
-        s.reclaim_undo_action("vda (Virtio")
+        s.reclaim_undo_action("vda")
         s.reclaim_check_available_space("6.44 GB")
 
         s.reclaim_modal_submit()
@@ -202,14 +202,14 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_available_space("2.06 MB")
 
         # Check that shrinking action is only available for partitions
-        s.reclaim_check_action_button_present("vda (Virtio", "shrink", False)
+        s.reclaim_check_action_button_present("vda", "shrink", present=False)
         for device in ["vda2"]:
-            s.reclaim_check_action_button_present(device, "shrink", True)
+            s.reclaim_check_action_button_present(device, "shrink")
 
         for device in ["vda3", "vda4"]:
             # Shrinking Btrfs partitions is not yet supported by blivet:
             # https://bugzilla.redhat.com/show_bug.cgi?id=962143
-            s.reclaim_check_action_button_present(device, "shrink", True, True)
+            s.reclaim_check_action_button_present(device, "shrink", disabled=True)
 
         # Shrink a partition too much and expect a warning
         s.reclaim_shrink_device("vda2", "0.100", "6.44")
@@ -223,7 +223,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         # Undo the shrink actions
         for device in ["vda2"]:
             s.reclaim_undo_action(device)
-            s.reclaim_check_action_present(device, "shrink", False)
+            s.reclaim_check_action_present(device, "shrink", present=False)
 
         s.reclaim_check_available_space("2.06 MB")
 
@@ -277,19 +277,19 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
-        s.reclaim_check_device_row("vda1", "", "vfat", "512 MB")
-        s.reclaim_check_device_row("vda2", "", "swap", "2.00 GB")
-        s.reclaim_check_device_row("vda3", "", "ext4", "8.00 GB")
-        s.reclaim_check_device_row("vda4", "", "extended partition", "")
-        s.reclaim_check_device_row("vda5", "", "btrfs", "2.50 GB")
-        s.reclaim_check_device_row("", "BTRFS", "btrfs volume", "")
-        s.reclaim_check_device_row("", "@subvol1", "btrfs subvolume", "")
-        s.reclaim_check_device_row("", "@subvol2", "btrfs subvolume", "")
+        s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
+        s.reclaim_check_device_row("vda1", deviceType="vfat", space="512 MB")
+        s.reclaim_check_device_row("vda2", deviceType="swap", space="2.00 GB")
+        s.reclaim_check_device_row("vda3", deviceType="ext4", space="8.00 GB")
+        s.reclaim_check_device_row("vda4", deviceType="extended partition")
+        s.reclaim_check_device_row("vda5", deviceType="btrfs", space="2.50 GB")
+        s.reclaim_check_device_row("BTRFS", name="BTRFS", deviceType="btrfs volume")
+        s.reclaim_check_device_row("@subvol1", name="@subvol1", deviceType="btrfs subvolume")
+        s.reclaim_check_device_row("@subvol2", name="@subvol2", deviceType="btrfs subvolume")
 
         # Remove only the logical Btrfs partition (vda5)
         s.reclaim_remove_device("vda5")
-        s.reclaim_check_action_present("vda5", "delete", True)
+        s.reclaim_check_action_present("vda5", "delete")
 
         # Add a pixel test for the reclaim space dialog
         b.assert_pixels(
@@ -347,9 +347,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             ignore=["#reclaim-space-modal-hint"],
         )
 
-        s.reclaim_check_device_row("vda1", "", "luks", "4.29 GB", locked=True)
-        s.reclaim_check_action_button_present("vda1", "shrink", True, True)
-        s.reclaim_check_action_button_present("vda1", "delete", True)
+        s.reclaim_check_device_row("vda1", deviceType="luks", space="4.29 GB", locked=True)
+        s.reclaim_check_action_button_present("vda1", "shrink", disabled=True)
+        s.reclaim_check_action_button_present("vda1", "delete")
 
     @disk_images([("fedora-rawhide", 15)])
     def testDeletePartition(self):
@@ -443,12 +443,12 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_shrink_device("vda1", "7", rowIndex=3)
+        s.reclaim_shrink_device("vda1", "7")
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)
         # Don't specify the exact original size as this might change with image refreshes
-        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from")
+        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.2 GB")
         r.check_resized_system("Ubuntu", ["vda1"])
 
         i.reach_on_sidebar(i.steps.LANGUAGE)
@@ -457,11 +457,11 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_shrink_device("vda1", "7,10", rowIndex=3, ariaLabel="zmenšit")
+        s.reclaim_shrink_device("vda1", "7,10", ariaLabel="zmenšit")
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)
-        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z")
+        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z 11,2 GB")
 
 
 if __name__ == '__main__':

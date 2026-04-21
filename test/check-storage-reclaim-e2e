@@ -37,7 +37,7 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
         s.reclaim_set_checkbox(True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_shrink_device("vda1", "7", rowIndex=3)
+        s.reclaim_shrink_device("vda1", "7")
         s.reclaim_modal_submit()
 
         i.reach(i.steps.REVIEW)

@@ -3,7 +3,9 @@
 
 import os
 import sys
+from types import SimpleNamespace
 
+from netlib import NetworkCase
 from testlib import wait
 
 HELPERS_DIR = os.path.dirname(__file__)
@@ -228,12 +230,12 @@ class Network():
         ])
 
     def configure_iface_setting(self, setting_title):
-        b = self.browser
-        b.click(f"dt:contains('{setting_title}') + dd button")
+        shim = SimpleNamespace(browser=self.browser)
+        NetworkCase.configure_iface_setting(shim, setting_title)
 
     def wait_for_iface_setting(self, setting_title, setting_value):
-        b = self.browser
-        b.wait_in_text(f"dt:contains('{setting_title}') + dd", setting_value)
+        shim = SimpleNamespace(browser=self.browser)
+        NetworkCase.wait_for_iface_setting(shim, setting_title, setting_value)
 
     def set_mtu_on_iface(self, iface, mtu):
         n = self

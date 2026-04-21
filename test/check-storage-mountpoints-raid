@@ -189,7 +189,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row("vda", "/boot", "vda2", "1.00 GB", False)
         r.check_disk("MDRAID-SOMERAID", "32.2 GB MDRAID-SOMERAID (MDRAID set (stripe))")
-        r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1", "32.2 GB", False)
+        r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1, RAID", "32.2 GB", False)
 
 
 if __name__ == '__main__':
