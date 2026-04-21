@@ -130,18 +130,24 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 )
                 : ""
         );
-
+        const encryptedText = hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "";
+        const deviceText = cockpit.format("$0$1", parents.join(", "), showMaybeType());
         return (
             {
                 columns: [
-                    { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 17 },
+                    { title: deviceText, width: 17 },
                     { title: size, width: 15 },
                     { title: action, width: 17 },
-                    { title: hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "", width: 17 },
+                    { title: encryptedText, width: 17 },
                     { title: mount, width: 17 },
                     ...(isReviewScreen ? [{ title: helperText, width: 17 }] : []),
                 ],
-                props: { key: device },
+                props: {
+                    "data-device": deviceText,
+                    "data-mount": mount,
+                    ...(encryptedText ? { "data-encrypted": encryptedText } : {}),
+                    key: device
+                },
             }
         );
     };
@@ -177,6 +183,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                     ...(isReviewScreen ? [{ title: "" }] : []),
                 ],
                 props: {
+                    "data-action": actionDescriptionText,
+                    "data-device": device,
                     key: device + actionType,
                 },
             }

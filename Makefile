@@ -131,11 +131,6 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 
-# required for running integration tests;
-TEST_NPMS = \
-	node_modules/sizzle \
-	$(NULL)
-
 dist: $(TARFILE)
 	@ls -1 $(TARFILE)
 
@@ -147,7 +142,7 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
-		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) $(TEST_NPMS) VERSION.txt \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) VERSION.txt \
 		dist/
 
 srpm: $(TARFILE) $(SPEC)
