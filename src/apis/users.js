@@ -6,7 +6,7 @@ import cockpit from "cockpit";
 
 import { getUserConfigurationPolicyAction, getUsersAction } from "../actions/users-actions.js";
 
-import { error } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users";
@@ -49,10 +49,26 @@ export class UsersClient {
         this.client.addEventListener(
             "close", () => error("Users client closed")
         );
+        this.startEventMonitor(args);
         return Promise.all([
             this.dispatch(getUsersAction()),
             this.dispatch(getUserConfigurationPolicyAction(args)),
         ]);
+    }
+
+    startEventMonitor () {
+        this.client.subscribe(
+            { },
+            async (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    await this.dispatch(getUsersAction());
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                }
+            }
+        );
     }
 }
 
