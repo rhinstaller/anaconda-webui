@@ -22,7 +22,7 @@ import {
 } from "../../apis/users.js";
 
 import {
-    setUsersAction,
+    applyUsersPatch,
 } from "../../actions/users-actions.js";
 
 import {
@@ -206,13 +206,15 @@ const CreateAccount = ({
             setAccounts({ confirmPassword, password, users: [] });
             return;
         }
-        const first = { ...(accounts.users?.[0] ?? {}), gecos: fullName, name: userName };
-        const users = accounts.users?.length
-            ? [first, ...accounts.users.slice(1)]
-            : (userName || fullName ? [first] : []);
-        setAccounts({ confirmPassword, password, users });
+        setAccounts({
+            firstUser: {
+                confirmPassword,
+                gecos: fullName,
+                name: userName,
+                password,
+            },
+        });
     }, [
-        accounts.users,
         confirmPassword,
         fullName,
         password,
@@ -443,7 +445,7 @@ export const Accounts = ({
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const accounts = useContext(UsersContext);
-    const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
+    const setAccounts = useMemo(() => args => dispatch(applyUsersPatch(args)), [dispatch]);
     const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
     const kickstartUsersReadOnly = accounts.usersSpecifiedByKickstart === true &&
