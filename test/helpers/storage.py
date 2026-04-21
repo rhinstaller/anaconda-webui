@@ -516,49 +516,57 @@ class StorageScenario():
 
 
 class StorageReclaimDialog():
+    _TABLE = "#reclaim-space-modal-table"
+
     def __init__(self, browser):
         self.browser = browser
 
-    def reclaim_check_device_row(self, location, name=None, deviceType=None, space=None, locked=False):
-        self.browser.wait_visible(
-            "#reclaim-space-modal-table "
-            f"td[data-label=Location]:contains({location}) + " +
-            (f"td[data-label=Name]:contains({name}) + " if deviceType != "disk" else "") +
-            f"td[data-label=Type]:contains({deviceType}) + "
-            f"td[data-label=Space]:contains({space})"
-        )
+    def _reclaim_row_selector(self, device):
+        """CSS selector for the table row identified by data-device attribute."""
+        return f'{self._TABLE} tr[data-device="{device}"]'
+
+    def _reclaim_row_btn_selector(self, device, aria_label):
+        return f'{self._reclaim_row_selector(device)} button[aria-label="{aria_label}"]'
+
+    def reclaim_check_device_row(self, device, location=None, name=None, deviceType=None, space=None, locked=False):
+        row = self._reclaim_row_selector(device)
+        self.browser.wait_visible(row)
+
+        if location is not None:
+            self.browser.wait_in_text(f'{row} td[data-label="Location"]', location)
+        if name is not None:
+            self.browser.wait_in_text(f'{row} td[data-label="Name"]', name)
+        if deviceType is not None:
+            self.browser.wait_in_text(f'{row} td[data-label="Type"]', deviceType)
+        if space is not None:
+            self.browser.wait_in_text(f'{row} td[data-label="Space"]', space)
         if locked:
-            self.browser.wait_visible(
-                f"#reclaim-space-modal-table tr:contains({name}) "
-                f"td[data-label=Type] .reclaim-space-modal-device-locked"
-            )
+            self.browser.wait_visible(f'{row} .reclaim-space-modal-device-locked')
 
     def reclaim_remove_device(self, device):
-        self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='delete']")
+        self.browser.click(self._reclaim_row_btn_selector(device, "delete"))
 
     def reclaim_check_action_button_present(self, device, action, present=True, disabled=False):
-        disabled_sel = "[aria-disabled='true']" if disabled else ":not([aria-disabled='true'])"
-        selector = (
-            "#reclaim-space-modal-table "
-            f"tr:contains('{device}') "
-            f"button[aria-label='{action}']{disabled_sel}"
-        )
-
-        if present:
-            self.browser.wait_visible(selector)
+        sel = self._reclaim_row_btn_selector(device, action)
+        if not present:
+            self.browser.wait_not_present(sel)
+            return
+        self.browser.wait_visible(sel)
+        if disabled:
+            self.browser.wait_js_cond(
+                f'document.querySelector({json.dumps(sel)})?.ariaDisabled === "true"'
+            )
         else:
-            self.browser.wait_not_present(selector)
+            self.browser.wait_js_cond(
+                f'document.querySelector({json.dumps(sel)})?.ariaDisabled !== "true"'
+            )
 
     def reclaim_modal_submit_and_check_warning(self, warning):
         self.browser.click("button:contains('Reclaim space')")
         self.browser.wait_in_text("#reclaim-space-modal .pf-v6-c-alert", warning)
 
-    def reclaim_shrink_device(self, device, new_size, current_size=None, rowIndex=None, ariaLabel="shrink"):
-        self.browser.click(
-            "#reclaim-space-modal-table "
-            f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
-            f"tr:contains('{device}') button[aria-label='{ariaLabel}']"
-        )
+    def reclaim_shrink_device(self, device, new_size, current_size=None, ariaLabel="shrink"):
+        self.browser.click(self._reclaim_row_btn_selector(device, ariaLabel))
         self.browser.wait_visible("#popover-reclaim-space-modal-shrink-body")
         if current_size is not None:
             self.browser.wait_val("#reclaim-space-modal-shrink-input", current_size)
@@ -571,22 +579,17 @@ class StorageReclaimDialog():
         self.browser.set_input_text("#reclaim-space-modal-shrink-input", new_size)
         self.browser.click("#reclaim-space-modal-shrink-button")
         self.browser.wait_not_present("#reclaim-space-modal-shrink-slider")
-        self.reclaim_check_action_present(device, ariaLabel, rowIndex=rowIndex)
+        self.reclaim_check_action_present(device, ariaLabel)
 
-    def reclaim_check_action_present(self, device, action, present=True, rowIndex=None):
-        selector = (
-            "#reclaim-space-modal-table "
-            f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
-            f"tr:contains('{device}') "
-            "td:nth-child(5) "  # Actions column
-        )
+    def reclaim_check_action_present(self, device, action, present=True):
+        row = self._reclaim_row_selector(device)
         if present:
-            self.browser.wait_in_text(selector, action)
+            self.browser.wait_in_text(row, action)
         else:
-            self.browser.wait_not_in_text(selector, action)
+            self.browser.wait_not_in_text(row, action)
 
     def reclaim_undo_action(self, device):
-        self.browser.click(f"#reclaim-space-modal-table tr:contains('{device}') button[aria-label='undo']")
+        self.browser.click(self._reclaim_row_btn_selector(device, "undo"))
 
     def reclaim_check_available_space(self, space):
         self.browser.wait_text("#reclaim-space-modal-hint-available-free-space", space)

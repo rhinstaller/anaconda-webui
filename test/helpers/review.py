@@ -55,23 +55,33 @@ class Review(NetworkDBus, StorageDBus):
         self,
         disk,
         mount_point="", parent="", size="", reformat="",
-        fs_type=None, is_encrypted=False, rowIndex=None,
+        fs_type=None, is_encrypted=False,
         action="", prefix=""
     ):
-        action = f"format as {fs_type}" if reformat else action or "mount"
+        table = f"{prefix} #storage-review-table-{disk}".strip()
+
+        action_text = f"format as {fs_type}" if reformat else action or "mount"
         encrypt_text = "encrypted" if is_encrypted and not reformat else "encrypt" if is_encrypted and reformat else ""
-        self.browser.wait_visible(
-            f"{prefix} table[aria-label={disk}] "
-            f"tbody{'' if rowIndex is None else f':nth-child({rowIndex})'} "
-            f"td:contains('{parent}') + "
-            f"td:contains('{size}') + "
-            f"td:contains('{action}') + "
-            f"td:contains('{encrypt_text}') + "
-            f"td:contains('{mount_point}')"
-        )
+
+        # Action rows (delete/resize) have data-action and no data-mount;
+        # mount rows have data-mount and no data-action.
+        # Detect action rows: explicit non-default action, no mount_point, no reformat.
+        is_action_row = action and action not in ("mount", "biosboot") and not mount_point and not reformat
+        if is_action_row:
+            row = f'{table} tr[data-device="{parent}"][data-action]'
+        elif mount_point:
+            row = f'{table} tr[data-mount="{mount_point}"]'
+        else:
+            row = f'{table} tr[data-device="{parent}"][data-mount]'
+
+        self.browser.wait_visible(row)
+
+        for text in (parent, str(size) if size != "" else "", action_text, encrypt_text, mount_point):
+            if text is not None and str(text) != "":
+                self.browser.wait_in_text(row, str(text))
 
     def check_disk_row_not_present(self, disk, mount):
-        self.browser.wait_not_present(f"table[aria-label={disk}] td:contains({mount})")
+        self.browser.wait_not_present(f'#storage-review-table-{disk} tr[data-mount="{mount}"]')
 
     def check_deleted_system(self, os_name):
         self.browser.wait_in_text(f"#{self._step}-target-storage-note li", os_name)

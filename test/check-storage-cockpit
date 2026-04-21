@@ -392,7 +392,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/", "vda3", "1.70 GB", False, None, False, 4)
+        r.check_disk_row(dev, "/", "vda3", "1.70 GB", False)
         r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
 
         i.check_next_disabled()
@@ -477,7 +477,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(dev, "/boot/efi", "vda1", "99.6 MB", False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.9 GB", False, None, False, 4)
+        r.check_disk_row(dev, "/", "vda3", "14.9 GB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -536,7 +536,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False, None, False, 4)
+        r.check_disk_row(dev, "/", "vda3", "15.0 GB", False)
         r.check_disk_row(dev, "/home", "vda3", "15.0 GB", False)
 
         # Check fstab

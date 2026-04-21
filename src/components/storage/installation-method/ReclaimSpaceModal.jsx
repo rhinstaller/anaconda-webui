@@ -319,7 +319,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
                 { title: size },
                 { title: deviceActions }
             ],
-            props: { className: classNames.join(" "), key: disk },
+            props: { className: classNames.join(" "), "data-device": device.name.v, key: disk },
         },
         ...device.children.v.map((child) => getDeviceRow(child, devices, level + 1, unappliedActions, setUnappliedActions))
     ];

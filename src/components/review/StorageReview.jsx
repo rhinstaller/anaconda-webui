@@ -141,7 +141,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                     { title: mount, width: 17 },
                     ...(isReviewScreen ? [{ title: helperText, width: 17 }] : []),
                 ],
-                props: { key: device },
+                props: { "data-device": parents.join(", "), "data-mount": mount, key: device },
             }
         );
     };
@@ -177,6 +177,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                     ...(isReviewScreen ? [{ title: "" }] : []),
                 ],
                 props: {
+                    "data-action": actionType,
+                    "data-device": device,
                     key: device + actionType,
                 },
             }
