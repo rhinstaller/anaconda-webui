@@ -83,8 +83,6 @@ export const usersInitialState = {
     rootConfirmPassword: "",
     rootPassword: "",
     users: [],
-    /** True when users were specified via kickstart */
-    usersSpecifiedByKickstart: false,
 };
 
 /* Initial state for the global store */

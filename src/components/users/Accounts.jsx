@@ -448,8 +448,7 @@ export const Accounts = ({
     const setAccounts = useMemo(() => args => dispatch(applyUsersPatch(args)), [dispatch]);
     const [skipAccountCreation, setSkipAccountCreation] = useState(false);
 
-    const kickstartUsersReadOnly = accounts.usersSpecifiedByKickstart === true &&
-        accounts.canModifyUserConfiguration === false;
+    const kickstartUsersReadOnly = accounts.canModifyUserConfiguration === false;
 
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
@@ -462,7 +461,6 @@ export const Accounts = ({
     }, [
         accounts.isRootEnabled,
         accounts.canModifyUserConfiguration,
-        accounts.usersSpecifiedByKickstart,
         isRootValid,
         isUserValid,
         setIsFormValid,
