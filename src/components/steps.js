@@ -9,6 +9,7 @@ import { debug } from "../helpers/log.js";
 import { Page as PageDateAndTime } from "./datetime/index.js";
 import { Page as PageProgress } from "./installation/index.js";
 import { Page as PageInstallationLanguage } from "./localization/index.js";
+import { Page as PageNetworkConfiguration } from "./network/index.js";
 import { Page as PageReviewConfiguration } from "./review/index.js";
 import { Page as PageSoftwareSelection } from "./software/index.js";
 import { Page as PageInstallationMethod } from "./storage/installation-method/index.js";
@@ -23,6 +24,7 @@ export const getSteps = (userInterfaceConfig, args) => {
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const stepsOrder = [
         new PageInstallationLanguage(args),
+        new PageNetworkConfiguration(args),
         new PageDateAndTime(args),
         new PageSoftwareSelection(args),
         new PageInstallationMethod(args),
