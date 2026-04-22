@@ -33,32 +33,46 @@ export const applyUsersPatch = (patch = {}) => (dispatch) => {
     }
 };
 
-/** @param {{ automatedInstall?: boolean, conf?: object }} args  Bootstrap from `Application` / `UsersClient.init` */
-export const getUsersAction = (args = {}) => async (dispatch) => {
+export const setUserConfigurationPolicyAction = (policy) => ({
+    payload: policy,
+    type: "SET_USER_CONFIGURATION_POLICY",
+});
+
+export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) => {
     const { automatedInstall, conf } = args;
     const canChangeRoot = parseAnacondaConfBool(conf?.["User Interface"]?.can_change_root);
     const canChangeUsers = parseAnacondaConfBool(conf?.["User Interface"]?.can_change_users);
-    const [users, isRootAccountLocked, canChangeRootPassword] = await Promise.all([
+
+    const [users, canChangeRootPassword] = await Promise.all([
         getUsers(),
-        getIsRootAccountLocked(),
-        getCanChangeRootPassword()
+        getCanChangeRootPassword(),
     ]);
     const userList = users ?? [];
     const usersSpecifiedByKickstart = userList.length > 0;
 
-    dispatch(setUsersAction({
-        canChangeRootPassword: !!canChangeRootPassword,
+    dispatch(setUserConfigurationPolicyAction({
         canModifyRootConfiguration: canModifyRootConfiguration({
             automatedInstall: !!automatedInstall,
             canChangeRoot,
-            canChangeRootPassword,
+            canChangeRootPassword: !!canChangeRootPassword,
         }),
         canModifyUserConfiguration: canModifyUserConfiguration({
             canChangeUsers,
             usersSpecifiedByKickstart,
         }),
+        usersSpecifiedByKickstart,
+    }));
+};
+
+export const getUsersAction = () => async (dispatch) => {
+    const [users, isRootAccountLocked] = await Promise.all([
+        getUsers(),
+        getIsRootAccountLocked(),
+    ]);
+    const userList = users ?? [];
+
+    dispatch(setUsersAction({
         isRootEnabled: !isRootAccountLocked,
         users: userList,
-        usersSpecifiedByKickstart,
     }));
 };

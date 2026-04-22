@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import { getUsersAction } from "../actions/users-actions.js";
+import { getUserConfigurationPolicyAction, getUsersAction } from "../actions/users-actions.js";
 
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
@@ -49,7 +49,10 @@ export class UsersClient {
         this.client.addEventListener(
             "close", () => error("Users client closed")
         );
-        return this.dispatch(getUsersAction(args));
+        return Promise.all([
+            this.dispatch(getUsersAction()),
+            this.dispatch(getUserConfigurationPolicyAction(args)),
+        ]);
     }
 }
 

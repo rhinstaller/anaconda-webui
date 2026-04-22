@@ -81,7 +81,6 @@ export const payloadInitialState = {
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
-    canChangeRootPassword: true,
     canModifyRootConfiguration: true,
     canModifyUserConfiguration: true,
     confirmPassword: "",
@@ -290,6 +289,8 @@ export const usersReducer = (state = usersInitialState, action) => {
             }
         }
         return next;
+    } else if (action.type === "SET_USER_CONFIGURATION_POLICY") {
+        return { ...state, ...action.payload };
     } else {
         return state;
     }
