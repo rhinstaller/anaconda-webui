@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
@@ -46,6 +46,11 @@ export const CockpitNetworkConfiguration = ({
     const backdropClass = useMaybeBackdrop();
     const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "cockpit-network-configuration";
+
+    useLayoutEffect(() => {
+        /* Cockpit `in_anaconda_mode()` only checks that JSON parses; content unused for network */
+        window.sessionStorage.setItem("cockpit_anaconda", "{}");
+    }, []);
 
     useEffect(() => {
         if (isIframeMounted) {
