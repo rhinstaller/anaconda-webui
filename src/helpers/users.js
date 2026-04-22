@@ -77,7 +77,7 @@ const cryptUserPassword = async (password) => {
 export const applyAccounts = async (accounts) => {
     if ((accounts.users?.length ?? 0) === 0) {
         await setUsers([]);
-    } else if (!accounts.usersSpecifiedByKickstart || accounts.canModifyUserConfiguration) {
+    } else if (accounts.canModifyUserConfiguration) {
         const cryptedUserPw = await cryptUserPassword(accounts.password);
         const first = accounts.users?.[0] ?? {};
         const firstUserDbus = firstUserToDbus({ ...first, password: cryptedUserPw });

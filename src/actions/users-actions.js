@@ -60,7 +60,6 @@ export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) 
             canChangeUsers,
             usersSpecifiedByKickstart,
         }),
-        usersSpecifiedByKickstart,
     }));
 };
 
