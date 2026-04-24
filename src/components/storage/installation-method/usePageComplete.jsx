@@ -22,7 +22,7 @@ import {
     useRequiredSize,
 } from "../../../hooks/Storage.jsx";
 
-import { createWarningNotification } from "../Common.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -112,10 +112,10 @@ const useApplyStorageOnReview = () => {
                 setStepNotification?.({ step, ...ex });
             },
             onSuccess: validationReport => {
-                const warningNotification = createWarningNotification(validationReport, step);
+                const notification = createStorageValidationNotification(validationReport, step);
 
-                if (warningNotification) {
-                    setStepNotification?.(warningNotification);
+                if (notification) {
+                    setStepNotification?.(notification);
                 } else {
                     setStepNotification?.();
                 }

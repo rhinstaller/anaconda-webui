@@ -129,6 +129,21 @@ export const runStorageTask = ({ onFail, onSuccess, task }) => {
     });
 };
 
+export const runStorageTaskAsync = ({ onSuccess, task }) => {
+    return new Promise((resolve, reject) => {
+        runStorageTask({
+            onFail: reject,
+            onSuccess: () => {
+                Promise.resolve()
+                        .then(() => (onSuccess !== undefined ? onSuccess() : undefined))
+                        .then(resolve)
+                        .catch(reject);
+            },
+            task,
+        });
+    });
+};
+
 /**
  * @returns {Promise}           Resolves a DBus path to a task
  */

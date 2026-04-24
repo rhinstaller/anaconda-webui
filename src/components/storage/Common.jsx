@@ -28,15 +28,42 @@ export const StorageWarningList = ({ warningMessages }) => {
     );
 };
 
+export const StorageErrorList = ({ errorMessages }) => {
+    return (
+        <>
+            <List>
+                {errorMessages.map((msg, i) => (
+                    <ListItem key={"err-" + i}>{msg}</ListItem>
+                ))}
+            </List>
+            <p>{_("Correct these issues before continuing.")}</p>
+        </>
+    );
+};
+
 /**
- * Create a step notification object for storage validation warnings.
+ * Inline alert for storage validation (errors take precedence over warnings).
  *
  * @param {Object} validationReport - The validation report from storage validation
  * @param {string} step - The step ID for the notification
- * @returns {Object|null} - Notification object with title and message, or null if no warnings
+ * @returns {Object|null} notification for setStepNotification, or null if valid
  */
-export const createWarningNotification = (validationReport, step) => {
+export const createStorageValidationNotification = (validationReport, step) => {
+    const errorMessages = validationReport?.["error-messages"]?.v || [];
     const warningMessages = validationReport?.["warning-messages"]?.v || [];
+
+    if (errorMessages.length > 0) {
+        const errorTitle = cockpit.format(
+            cockpit.ngettext("$0 error", "$0 errors", errorMessages.length),
+            errorMessages.length
+        );
+        return {
+            message: <StorageErrorList errorMessages={errorMessages} />,
+            step,
+            title: errorTitle,
+            variant: "danger",
+        };
+    }
 
     if (warningMessages.length === 0) {
         return null;

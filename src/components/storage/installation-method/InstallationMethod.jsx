@@ -25,7 +25,7 @@ import {
 } from "../../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
-import { createWarningNotification } from "../Common.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 import { scenarios } from "../scenarios/index.js";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
@@ -135,25 +135,22 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
 
                 setIsFormDisabled(true);
                 const step = SCREEN_ID;
-                await applyStorage({
-                    onFail: ex => {
-                        setIsFormDisabled(false);
-                        setPartitioningApplied(false);
-                        setStepNotification({ step, ...ex });
-                    },
-                    onSuccess: (validationReport) => {
-                        const warningNotification = createWarningNotification(validationReport, step);
+                try {
+                    const { validationReport } = await applyStorage({ partitioning: part });
+                    const notification = createStorageValidationNotification(validationReport, step);
 
-                        setStepNotification(warningNotification);
-                        setPartitioningApplied(!!warningNotification);
+                    setStepNotification(notification);
+                    setPartitioningApplied(notification?.variant === "warning");
 
-                        if (!warningNotification) {
-                            goToNextStep();
-                        }
-                        setIsFormDisabled(false);
-                    },
-                    partitioning: part,
-                });
+                    if (!notification) {
+                        goToNextStep();
+                    }
+                } catch (ex) {
+                    setPartitioningApplied(false);
+                    setStepNotification({ step, ...ex });
+                } finally {
+                    setIsFormDisabled(false);
+                }
             }
         }
     };

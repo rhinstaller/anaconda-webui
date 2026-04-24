@@ -42,6 +42,7 @@ import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 
 import "./MountPointMapping.scss";
 
@@ -722,34 +723,46 @@ const CustomFooter = () => {
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const step = SCREEN_ID;
+    const [partitioningApplied, setPartitioningApplied] = useState(false);
+
     const onNext = async ({ goToNextStep }) => {
+        if (partitioningApplied) {
+            setPartitioningApplied(false);
+            setStepNotification();
+            goToNextStep();
+            setIsFormDisabled(false);
+            return;
+        }
+
         const partitioningPath = partitioning.path;
 
-        // Before applying storage, filter requests from partitioning.requests
-        // partitioning.requests are in plain format, but filterPartitioningRequests handles both
-        const filteredRequests = filterPartitioningRequests(partitioning.requests || []);
-        // Convert to DBus format before sending to backend
-        await setManualPartitioningRequests({
-            partitioning: partitioningPath,
-            requests: requestsToDbus(filteredRequests),
-        });
+        setIsFormDisabled(true);
 
-        return applyStorage({
-            devices,
-            onFail: ex => {
-                setIsFormDisabled(false);
-                setStepNotification({ step, ...ex });
-            },
-            onSuccess: () => {
+        try {
+            // Before applying storage, filter requests from partitioning.requests
+            // partitioning.requests are in plain format, but filterPartitioningRequests handles both
+            const filteredRequests = filterPartitioningRequests(partitioning.requests || []);
+            // Convert to DBus format before sending to backend
+            await setManualPartitioningRequests({
+                partitioning: partitioningPath,
+                requests: requestsToDbus(filteredRequests),
+            });
+
+            const { validationReport } = await applyStorage({ devices, partitioning: partitioningPath });
+            const notification = createStorageValidationNotification(validationReport, step);
+
+            setStepNotification(notification);
+            setPartitioningApplied(notification?.variant === "warning");
+
+            if (!notification) {
                 goToNextStep();
-
-                // Reset the state after the onNext call. Otherwise,
-                // React will try to render the current step again.
-                setIsFormDisabled(false);
-                setStepNotification();
-            },
-            partitioning: partitioningPath,
-        });
+            }
+        } catch (ex) {
+            setPartitioningApplied(false);
+            setStepNotification({ step, ...ex });
+        } finally {
+            setIsFormDisabled(false);
+        }
     };
 
     return <AnacondaWizardFooter onNext={onNext} />;

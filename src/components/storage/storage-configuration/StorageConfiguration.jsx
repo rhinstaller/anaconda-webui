@@ -11,7 +11,7 @@ import { applyStorage } from "../../../apis/storage_partitioning.js";
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
-import { createWarningNotification } from "../Common.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
@@ -49,37 +49,33 @@ const CustomFooter = ({ luks, partitioning }) => {
     const step = SCREEN_ID;
     const [partitioningApplied, setPartitioningApplied] = useState(false);
 
-    const onNext = ({ goToNextStep }) => {
+    const onNext = async ({ goToNextStep }) => {
         // If partitioning was already applied, proceed to next step
         if (partitioningApplied) {
             setPartitioningApplied(false);
             setStepNotification();
             goToNextStep();
             setIsFormDisabled(false);
-            return Promise.resolve();
+            return;
         }
 
         setIsFormDisabled(true);
-        return applyStorage({
-            luks,
-            onFail: ex => {
-                setIsFormDisabled(false);
-                setPartitioningApplied(false);
-                setStepNotification({ step, ...ex });
-            },
-            onSuccess: (validationReport) => {
-                const warningNotification = createWarningNotification(validationReport, step);
+        try {
+            const { validationReport } = await applyStorage({ luks, partitioning });
+            const notification = createStorageValidationNotification(validationReport, step);
 
-                setStepNotification(warningNotification);
-                setPartitioningApplied(!!warningNotification);
+            setStepNotification(notification);
+            setPartitioningApplied(notification?.variant === "warning");
 
-                if (!warningNotification) {
-                    goToNextStep();
-                }
-                setIsFormDisabled(false);
-            },
-            partitioning,
-        });
+            if (!notification) {
+                goToNextStep();
+            }
+        } catch (ex) {
+            setPartitioningApplied(false);
+            setStepNotification({ step, ...ex });
+        } finally {
+            setIsFormDisabled(false);
+        }
     };
 
     return <AnacondaWizardFooter onNext={onNext} />;
