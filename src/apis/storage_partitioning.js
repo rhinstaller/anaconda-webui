@@ -11,7 +11,7 @@ import {
 import { _callClient, _getProperty } from "./helpers.js";
 
 import {
-    runStorageTask,
+    runStorageTaskAsync,
     StorageClient,
 } from "./storage.js";
 import {
@@ -215,25 +215,29 @@ export const partitioningConfigureWithTask = ({ partitioning }) => {
     );
 };
 
-const partitioningValidate = async ({ onFail, onSuccess, partitioning }) => {
+const partitioningValidateAsync = async ({ partitioning }) => {
     const tasks = await new StorageClient().client.call(
         partitioning,
         INTERFACE_NAME_PARTITIONING,
         "ValidateWithTask", []
     );
-    return runStorageTask({
-        onFail,
+    return runStorageTaskAsync({
         onSuccess: async () => {
             const taskProxy = new StorageClient().client.proxy(
                 "org.fedoraproject.Anaconda.Task",
                 tasks[0]
             );
             const result = await taskProxy.GetResult();
-            return onSuccess(result.v);
+            return result.v;
         },
         task: tasks[0],
     });
 };
+
+const parseStorageValidationReport = (validationReport) => ({
+    errors: validationReport?.["error-messages"]?.v || [],
+    warnings: validationReport?.["warning-messages"]?.v || [],
+});
 
 export const resetPartitioning = () => {
     return callClient("ResetPartitioning", []);
@@ -270,7 +274,7 @@ export const gatherRequests = ({ partitioning }) => {
     ).then(res => res[0]);
 };
 
-export const applyStorage = async ({ devices, luks, onFail, onSuccess, partitioning }) => {
+export const applyStorage = async ({ devices, luks, partitioning }) => {
     if (luks?.encrypted !== undefined) {
         await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
     }
@@ -297,22 +301,15 @@ export const applyStorage = async ({ devices, luks, onFail, onSuccess, partition
 
     const configureTasks = await partitioningConfigureWithTask({ partitioning });
 
-    const onConfigureTaskSuccess = async () => {
-        try {
+    const validationReport = await runStorageTaskAsync({
+        onSuccess: async () => {
             await applyPartitioning({ partitioning });
-            await partitioningValidate({
-                onFail,
-                onSuccess,
-                partitioning,
-            });
-        } catch (error) {
-            onFail(error);
-        }
-    };
-
-    runStorageTask({
-        onFail,
-        onSuccess: onConfigureTaskSuccess,
+            return partitioningValidateAsync({ partitioning });
+        },
         task: configureTasks[0],
     });
+
+    const { errors, warnings } = parseStorageValidationReport(validationReport);
+
+    return { errors, validationReport, warnings };
 };
