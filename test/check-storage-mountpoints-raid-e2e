@@ -73,6 +73,7 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         s.select_mountpoint_row_device(1, "vol-group-root")
         s.select_mountpoint_row_device(2, f"{raid_name}-boot")
 
+        i.next(should_fail=True)
         i.reach(i.steps.REVIEW)
         self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
 

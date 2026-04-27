@@ -584,6 +584,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.check_mountpoint_row(2, "/boot", "vda2", True, "ext4")
         s.check_mountpoint_row(3, "/home", "home", False, "btrfs")
 
+        i.next(should_fail=True)
         i.reach(i.steps.REVIEW)
 
         # verify review screen

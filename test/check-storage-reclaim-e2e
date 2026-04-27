@@ -35,7 +35,7 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_shrink_device("vda1", "7", rowIndex=3)
         s.reclaim_modal_submit()

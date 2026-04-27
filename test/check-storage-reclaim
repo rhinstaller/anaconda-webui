@@ -71,7 +71,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_checkbox(False, False)
 
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         # Test cancelled reclaim is not taking effect
         s.reclaim_remove_device("vda2")
@@ -117,7 +117,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         s.set_scenario("use-free-space")
         s.reclaim_check_checkbox(True, True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_check_available_space("2.06 MB")
 
@@ -149,7 +149,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.back()
         s.reclaim_check_checkbox(True, True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         # Remove one partition and allocate enough space for the installation
         s.reclaim_remove_device("vda2")
@@ -197,7 +197,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.set_scenario("use-free-space")
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_check_available_space("2.06 MB")
 
@@ -275,7 +275,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_check_device_row("vda (Virtio", "", "disk", "16.1 GB")
         s.reclaim_check_device_row("vda1", "", "vfat", "512 MB")
@@ -338,7 +338,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         b.wait_visible("#reclaim-space-modal")
         b.assert_pixels(
@@ -369,7 +369,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("use-free-space")
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
         b.wait_visible("#reclaim-space-modal")
 
         b.assert_pixels(
@@ -411,7 +411,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         b.wait_visible("#reclaim-space-modal")
         b.assert_pixels(
@@ -441,7 +441,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.set_scenario("use-free-space")
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_shrink_device("vda1", "7", rowIndex=3)
         s.reclaim_modal_submit()
@@ -455,7 +455,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         l.select_locale("cs_CZ", is_common=False)
         i.reach(i.steps.INSTALLATION_METHOD)
         s.reclaim_set_checkbox(True)
-        i.next(True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
 
         s.reclaim_shrink_device("vda1", "7,10", rowIndex=3, ariaLabel="zmenšit")
         s.reclaim_modal_submit()
