@@ -134,6 +134,8 @@ class Installer():
         self.browser.click("#installation-next-btn")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
+        if should_fail:
+            self.browser.wait_visible(f"#{expected_page}-step-notification")
         return expected_page
 
     @log_step()
