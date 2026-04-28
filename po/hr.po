@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 05:12+0000\n"
+"POT-Creation-Date: 2026-04-28 05:46+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Croatian <https://translate.fedoraproject.org/projects/"
@@ -29,18 +29,18 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.1.1\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:142
+#: src/components/storage/installation-method/InstallationDestination.jsx:263
 msgid "$0 $1"
 msgstr ""
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/installation-method/InstallationDestination.jsx:162
+#: src/components/storage/installation-method/InstallationDestination.jsx:256
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
 msgid "$0 ($1)"
 msgstr ""
 
-#: src/components/app.jsx:81
+#: src/components/app.jsx:82
 #, fuzzy
 msgid "$0 installation"
 msgstr "Instalacija"
@@ -50,13 +50,13 @@ msgstr "Instalacija"
 msgid "$0 installer"
 msgstr "_Zatvori program instalacije"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:243
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:89
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
@@ -90,7 +90,7 @@ msgid ""
 "devices are not supported."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:243
+#: src/components/users/Accounts.jsx:245
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -99,14 +99,14 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:243
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
 msgid "Account"
 msgstr "_Račun"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 #: src/components/review/StorageReview.jsx:235
 #, fuzzy
 #| msgid "Action"
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Automatically set timezone"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:199
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
 
@@ -238,8 +238,8 @@ msgstr ""
 "nam olakšali poboljšanje ovog uratka."
 
 #: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:210
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:355
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
 #: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
 #: src/components/localization/Keyboard.jsx:280
@@ -254,7 +254,7 @@ msgstr "Odustani"
 msgid "Change"
 msgstr "_Spremi promjene"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:327
 #, fuzzy
 msgid "Change destination"
 msgstr "Opis"
@@ -265,7 +265,7 @@ msgstr "Opis"
 msgid "Change hostname"
 msgstr "Postavite naziv računala"
 
-#: src/components/review/ReviewConfiguration.jsx:103
+#: src/components/storage/installation-method/usePageComplete.jsx:157
 #, fuzzy
 msgid "Change partition layout"
 msgstr "Opis"
@@ -280,6 +280,12 @@ msgstr ""
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
+
+#: src/components/review/ReviewConfiguration.jsx:180
+#, fuzzy
+#| msgid "Checking storage configuration..."
+msgid "Checking installation configuration..."
+msgstr "Provjera podešavanja uređaja pohrane..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
@@ -297,7 +303,7 @@ msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/storage/installation-method/InstallationDestination.jsx:360
 #: src/components/network/CockpitNetworkConfiguration.jsx:95
 msgid "Close"
 msgstr "Zatvori"
@@ -315,6 +321,12 @@ msgstr ""
 #: src/components/installation/InstallationProgress.jsx:175
 msgid "Completed"
 msgstr "Završeno"
+
+#: src/components/review/ReviewConfiguration.jsx:201
+#, fuzzy
+#| msgid "Apply configuration in installer"
+msgid "Configuration is incomplete"
+msgstr "Primijeni podešavanje u instalacijskom programu"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
@@ -346,7 +358,7 @@ msgid "Configure storage again"
 msgstr "Podešavanje uređaja pohrane"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "_Potvrdi lozinku"
@@ -372,13 +384,13 @@ msgstr "Pokretanje predinstalacijskih zadataka"
 msgid "Create Account"
 msgstr "_Korijenski račun"
 
-#: src/components/users/Accounts.jsx:305
+#: src/components/users/Accounts.jsx:307
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Create account"
 msgstr "Zaključaj korijenski račun"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:65
 #, fuzzy
 #| msgid "Current host name:"
 msgid "Currently installed: $0"
@@ -400,6 +412,12 @@ msgstr ""
 msgid "Date and time"
 msgstr "Postavi datum i vrijeme"
 
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+#, fuzzy
+#| msgid "Standard Partition"
+msgid "Delete partition"
+msgstr "Standardna particija"
+
 #: src/components/review/StorageReview.jsx:335
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
@@ -408,7 +426,7 @@ msgstr ""
 msgid "Description"
 msgstr "Opis"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:248
 #, fuzzy
 msgid "Destination"
 msgstr "Opis"
@@ -444,7 +462,7 @@ msgstr "_Uređaji s više putanja"
 msgid "Duplicate mount point."
 msgstr "Odredite točku montiranja."
 
-#: src/components/users/Accounts.jsx:329 src/components/users/Accounts.jsx:380
+#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
 #, fuzzy
 #| msgctxt "GUI|Password"
 #| msgid "_Enable root account"
@@ -492,8 +510,8 @@ msgstr "Pojedinosti greške: "
 msgid "Exit to live desktop"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:240
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:247
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 #, fuzzy
 #| msgid "Standard Partition"
 msgid "Extended partition"
@@ -534,13 +552,13 @@ msgstr ""
 msgid "Find layout"
 msgstr "_Dodaj raspored"
 
-#: src/components/users/Accounts.jsx:396
+#: src/components/users/Accounts.jsx:398
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:247
 msgid "Full name"
 msgstr "Puno ime"
 
@@ -584,7 +602,7 @@ msgstr ""
 "\n"
 "Želite li je ipak koristiti?"
 
-#: src/components/review/ReviewConfiguration.jsx:227
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -592,11 +610,11 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -657,7 +675,7 @@ msgstr "Instalacija neuspjela"
 msgid "Installation of the system failed: $0"
 msgstr "Instalacija neuspjela"
 
-#: src/components/review/ReviewConfiguration.jsx:184
+#: src/components/review/ReviewConfiguration.jsx:258
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalacija"
@@ -666,7 +684,7 @@ msgstr "Instalacija"
 msgid "Installing"
 msgstr "Instalacija"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:294
 msgid "Insufficient disk space"
 msgstr ""
 
@@ -685,6 +703,12 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Nevaljani naziv poslužitelja"
 
+#: src/components/review/ReviewConfiguration.jsx:197
+#, fuzzy
+#| msgid "completed step"
+msgid "Jump to first incomplete step"
+msgstr "korak završen"
+
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -699,7 +723,7 @@ msgstr "Tipkovnica"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/review/ReviewConfiguration.jsx:223
 #: src/components/localization/InstallationLanguage.jsx:236
 msgid "Language"
 msgstr "Jezik"
@@ -716,7 +740,7 @@ msgstr "Instalacija"
 msgid "Learn more about restricted access in the configuration"
 msgstr "Saznajte više o svojim mogućnostima pohrane."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Lokacija"
 
@@ -753,7 +777,7 @@ msgstr "Instaliranje softvera"
 msgid "Medium"
 msgstr ""
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:297
 msgid "Minimum of $0 required"
 msgstr ""
 
@@ -799,7 +823,7 @@ msgstr "NTP poslužitelji:"
 msgid "NTS"
 msgstr "DNS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "Naziv"
 
@@ -833,19 +857,19 @@ msgstr "Prijava čvora neuspjela."
 msgid "Next"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:143
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
 #, fuzzy
 msgid "No devices"
 msgstr "Dodaj uređaj"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:124
 #, fuzzy
 #| msgid "not available"
 msgid "No disks available"
 msgstr "nedostupan"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "No disks selected"
 msgstr "Nema odabranih diskova"
 
@@ -866,7 +890,7 @@ msgid ""
 "layout(s). Please make a different keyboard layout selection."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/storage/installation-method/usePageComplete.jsx:141
 #, fuzzy
 #| msgid "Not enough free space on selected disks."
 msgid "Not enough available free space"
@@ -900,7 +924,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:212
 #, fuzzy
 msgid "Operating system"
 msgstr "korak na čekanju"
@@ -922,7 +946,7 @@ msgstr ""
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:394
+#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
 msgid "Passphrase"
 msgstr "Lozinka"
 
@@ -943,7 +967,7 @@ msgstr "Čekanje"
 msgid "Please attach the log file $0 to the issue."
 msgstr ""
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 #, fuzzy
 #| msgid "No disks selected; please select at least one disk to install to."
 msgid "Please select at least one disk to continue"
@@ -981,16 +1005,16 @@ msgstr "Zatvori"
 msgid "Quit installer?"
 msgstr "_Zatvori program instalacije"
 
-#: src/components/app.jsx:125
+#: src/components/app.jsx:127
 #, fuzzy
 msgid "Reading information about the OS failed."
 msgstr "Registracija neuspjela."
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:72
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:115
+#: src/components/app.jsx:117
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "Ponovno podešavanje uređaja neuspjelo."
@@ -1017,7 +1041,7 @@ msgstr "Naziv računala mora biti dugačak 255 znakova ili manje."
 msgid "Reboot"
 msgstr "Ponovno pokreni"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:535
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -1041,9 +1065,9 @@ msgstr "/boot datotečni sustav"
 msgid "Reclaim additional space"
 msgstr "_Povrati prostor"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:115
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:135
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:207
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 #, fuzzy
 #| msgctxt "GUI|Reclaim Dialog"
 #| msgid "_Reclaim space"
@@ -1090,7 +1114,7 @@ msgid ""
 "systems."
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:119
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 #, fuzzy
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
@@ -1102,7 +1126,7 @@ msgstr "Neuspjeli nastavak instalacije."
 msgid "Remove server"
 msgstr "Ukloni NTP poslužitelj"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:121
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1143,23 +1167,29 @@ msgstr "Nije registrirano."
 msgid "Requirements"
 msgstr "Nije registrirano."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:115
 #, fuzzy
 #| msgid "to rescan devices"
 msgid "Rescan devices"
 msgstr "za ponovno pretraživanje uređaja"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:96
 #, fuzzy
 msgid "Rescanning of the disks failed."
 msgstr "Ponovno pretraživanje diskova završeno."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:515
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 #, fuzzy
 #| msgctxt "GUI|Advanced Storage|NVDIMM|Reconfigure"
 #| msgid "_Sector size:"
 msgid "Resize"
 msgstr "_Veličina sektora:"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+#, fuzzy
+#| msgid "Standard Partition"
+msgid "Resize partition"
+msgstr "Standardna particija"
 
 #: src/components/review/StorageReview.jsx:341
 msgid "Resizing the following partitions from $0: $1"
@@ -1197,7 +1227,7 @@ msgstr "Korijenski račun je onemogućen"
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 
-#: src/components/users/Accounts.jsx:338
+#: src/components/users/Accounts.jsx:340
 msgid "Root password has been set."
 msgstr "Korijenska lozinka je postavljena."
 
@@ -1243,7 +1273,7 @@ msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:352
 #, fuzzy
 #| msgctxt "GUI|Custom Partitioning|Configure Dialog"
 #| msgid "_Select"
@@ -1263,7 +1293,7 @@ msgstr "Odabrani uređaj"
 msgid "Select city"
 msgstr "_Odaberi"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:335
 #, fuzzy
 msgid "Select destination"
 msgstr "Opis"
@@ -1358,15 +1388,21 @@ msgstr ""
 "Instalacija softvera: Podešavanje uređaja pohrane je završena. Softver se "
 "trenutno instalira na vaš uređaj."
 
+#: src/components/review/ReviewConfiguration.jsx:236
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Odabir softvera"
+
+#: src/components/review/ReviewConfiguration.jsx:204
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr ""
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 #, fuzzy
 #| msgid "No Space"
 msgid "Space"
@@ -1376,7 +1412,7 @@ msgstr "Nema prostora"
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:265
 #, fuzzy
 msgid "Storage"
 msgstr "Mogućnosti uređaja pohrane"
@@ -1447,7 +1483,7 @@ msgstr "Odaberi jezik"
 msgid "Suggested languages"
 msgstr "Odaberi jezik"
 
-#: src/components/users/Accounts.jsx:326 src/components/users/Accounts.jsx:410
+#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
 #, fuzzy
 #| msgid "File System"
 msgid "System"
@@ -1465,7 +1501,7 @@ msgstr ""
 "Podešavanje sustava: Instalacija softvera je završena. Sustav se trenutno "
 "podešava."
 
-#: src/components/app.jsx:160
+#: src/components/app.jsx:162
 #, fuzzy
 #| msgid "Choose an installation source type."
 msgid "The Anaconda installation has stopped unexpectedly."
@@ -1552,7 +1588,7 @@ msgid "Time"
 msgstr "Vremenska zona: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:162
+#: src/components/review/ReviewConfiguration.jsx:230
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
@@ -1569,7 +1605,7 @@ msgstr ""
 "\n"
 "Pritisnite [Enter] za ponovno pokretanje sustava.\n"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:197
+#: src/components/storage/installation-method/InstallationMethod.jsx:195
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr "Nema odabranih diskova; odaberite barem jedan disk za instalaciju."
@@ -1580,17 +1616,24 @@ msgid ""
 "$0."
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Vrsta"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:86
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:88
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr ""
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+#, fuzzy
+#| msgctxt "GUI|Blivet Gui Partitioning"
+#| msgid "_Undo last action"
+msgid "Undo last action"
+msgstr "_Poništi posljednju radnju"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
@@ -1628,7 +1671,7 @@ msgstr "Odabrani diskovi"
 msgid "Use free space"
 msgstr "Koristi slobodan prostor"
 
-#: src/components/users/Accounts.jsx:231
+#: src/components/users/Accounts.jsx:233
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Use local account"
@@ -1644,7 +1687,7 @@ msgstr "Nedovoljno slobodnog prostora na disku za automatsko particioniranje"
 msgid "User creation"
 msgstr "Stvaranje korisnika"
 
-#: src/components/users/Accounts.jsx:276
+#: src/components/users/Accounts.jsx:278
 msgid "User name"
 msgstr "Korisničko ime"
 
@@ -1696,7 +1739,7 @@ msgid ""
 "automatically: $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
 
@@ -1732,8 +1775,8 @@ msgstr "korak završen"
 msgid "current step"
 msgstr "trenutni korak"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:378
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:391
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 #: src/components/review/StorageReview.jsx:158
 #, fuzzy
 #| msgid "Delete"
@@ -1756,7 +1799,7 @@ msgstr "Šifriraj"
 msgid "encrypted"
 msgstr "Šifriraj"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:236
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 #, fuzzy
 #| msgid "Standard Partition"
 msgid "extended partition"
@@ -1770,6 +1813,12 @@ msgstr "Ponovno formatiraj"
 #: src/components/Error.jsx:161 src/components/Error.jsx:241
 msgid "here"
 msgstr ""
+
+#: src/components/review/ReviewConfiguration.jsx:56
+#, fuzzy
+#| msgid "Completed"
+msgid "incomplete"
+msgstr "Završeno"
 
 #: src/components/review/StorageReview.jsx:108
 #, fuzzy
@@ -1788,18 +1837,18 @@ msgstr ""
 msgid "resized from $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:462
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:466
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 #, fuzzy
 #| msgid "Shrink"
 msgid "shrink"
 msgstr "Smanjiti"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:412
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:372
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr ""
 
@@ -2568,9 +2617,6 @@ msgstr ""
 #~ msgid "Apple EFI Boot Partition"
 #~ msgstr "Particija Apple EFI pokretanja"
 
-#~ msgid "Apply configuration in installer"
-#~ msgstr "Primijeni podešavanje u instalacijskom programu"
-
 #~ msgid ""
 #~ "Are you sure you want to delete all of the data on {}, including "
 #~ "snapshots?"
@@ -2834,9 +2880,6 @@ msgstr ""
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "Provjeravanje zavisnosti softvera..."
-
-#~ msgid "Checking storage configuration..."
-#~ msgstr "Provjera podešavanja uređaja pohrane..."
 
 #~ msgid ""
 #~ "Choose device from above to assign mount point and set format.\n"
@@ -7273,10 +7316,6 @@ msgstr ""
 #~ msgctxt "GUI|Software Source"
 #~ msgid "_URL:"
 #~ msgstr "Pro_xy URL:"
-
-#~ msgctxt "GUI|Blivet Gui Partitioning"
-#~ msgid "_Undo last action"
-#~ msgstr "_Poništi posljednju radnju"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
