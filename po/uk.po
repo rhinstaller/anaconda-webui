@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 05:12+0000\n"
-"PO-Revision-Date: 2026-03-29 05:01+0000\n"
+"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"PO-Revision-Date: 2026-04-17 05:17+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/uk/>\n"
@@ -35,20 +35,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:142
+#: src/components/storage/installation-method/InstallationDestination.jsx:263
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/installation-method/InstallationDestination.jsx:162
+#: src/components/storage/installation-method/InstallationDestination.jsx:256
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:81
+#: src/components/app.jsx:82
 msgid "$0 installation"
 msgstr "Встановлення $0"
 
@@ -56,7 +56,7 @@ msgstr "Встановлення $0"
 msgid "$0 installer"
 msgstr "Засіб встановлення $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:243
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -64,7 +64,7 @@ msgstr ""
 "$0 - це розширений розділ MBR, який містить логічні розділи. Вилучення усіх "
 "логічних розділів автоматично вилучить і розширений розділ."
 
-#: src/components/review/ReviewConfiguration.jsx:89
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "$0 is required, but only $1 is available."
 msgstr "потрібно $0, але маємо лише $1."
 
@@ -95,7 +95,7 @@ msgstr ""
 "Знайдено розділ «$0» на пристрої MDRAID $1. Підтримки розділів завантажувача "
 "на пристроях MDRAID не передбачено."
 
-#: src/components/users/Accounts.jsx:243
+#: src/components/users/Accounts.jsx:245
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -106,11 +106,11 @@ msgstr ""
 msgid "About"
 msgstr "Відомості"
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:243
 msgid "Account"
 msgstr "Обліковий запис"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 #: src/components/review/StorageReview.jsx:235
 msgid "Actions"
 msgstr "Дії"
@@ -187,7 +187,7 @@ msgstr "Автоматично встановити дату і час за да
 msgid "Automatically set timezone"
 msgstr "Автоматично встановити часовий пояс"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:199
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Доступний вільний простір: $0. Для встановлення необхідно: $1."
 
@@ -225,8 +225,8 @@ msgstr ""
 "вади і проблеми з метою покращення його роботи."
 
 #: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:210
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:355
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
 #: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
 #: src/components/localization/Keyboard.jsx:280
@@ -237,7 +237,7 @@ msgstr "Скасувати"
 msgid "Change"
 msgstr "Змінити"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:327
 msgid "Change destination"
 msgstr "Змінити призначення"
 
@@ -245,7 +245,7 @@ msgstr "Змінити призначення"
 msgid "Change hostname"
 msgstr "Змінити назву вузла"
 
-#: src/components/review/ReviewConfiguration.jsx:103
+#: src/components/storage/installation-method/usePageComplete.jsx:157
 msgid "Change partition layout"
 msgstr "Змінити компонування розділів"
 
@@ -260,6 +260,12 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 "Зміни, внесені тут, негайно вплинуть на систему. Скасувати їх неможливо."
+
+#: src/components/review/ReviewConfiguration.jsx:180
+#, fuzzy
+#| msgid "Checking storage configuration..."
+msgid "Checking installation configuration..."
+msgstr "Перевіряємо налаштування носія…"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
@@ -276,7 +282,7 @@ msgid "Click 'Next' again to proceed despite these warnings."
 msgstr "Натисніть «Далі» ще раз, щоб продовжити попри попередження."
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/storage/installation-method/InstallationDestination.jsx:360
 #: src/components/network/CockpitNetworkConfiguration.jsx:95
 msgid "Close"
 msgstr "Закрити"
@@ -294,6 +300,12 @@ msgstr ""
 #: src/components/installation/InstallationProgress.jsx:175
 msgid "Completed"
 msgstr "Завершено"
+
+#: src/components/review/ReviewConfiguration.jsx:201
+#, fuzzy
+#| msgid "Apply configuration in installer"
+msgid "Configuration is incomplete"
+msgstr "Застосувати налаштування у засобі встановлення"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
@@ -317,7 +329,7 @@ msgid "Configure storage again"
 msgstr "Повторне налаштовування сховища даних"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
 msgid "Confirm passphrase"
 msgstr "Підтвердіть пароль"
 
@@ -337,11 +349,11 @@ msgstr "Продовжити встановлення"
 msgid "Create Account"
 msgstr "Створити обліковий запис"
 
-#: src/components/users/Accounts.jsx:305
+#: src/components/users/Accounts.jsx:307
 msgid "Create account"
 msgstr "Створити обліковий запис"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:65
 msgid "Currently installed: $0"
 msgstr "Зараз встановлено: $0"
 
@@ -358,6 +370,10 @@ msgstr "Дата"
 msgid "Date and time"
 msgstr "Дата і час"
 
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+msgid "Delete partition"
+msgstr "Вилучити розділ"
+
 #: src/components/review/StorageReview.jsx:335
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Вилучення певних розділів може завадити завантаженню $0: $1"
@@ -366,7 +382,7 @@ msgstr "Вилучення певних розділів може завадит
 msgid "Description"
 msgstr "Опис"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:248
 msgid "Destination"
 msgstr "Призначення"
 
@@ -395,7 +411,7 @@ msgstr "Дублювання пристрою."
 msgid "Duplicate mount point."
 msgstr "Дублювання точки монтування."
 
-#: src/components/users/Accounts.jsx:329 src/components/users/Accounts.jsx:380
+#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
 msgid "Enable root account"
 msgstr "Увімкнути обліковий запис root"
 
@@ -436,8 +452,8 @@ msgstr "Подробиці щодо помилки"
 msgid "Exit to live desktop"
 msgstr "Повернутися до портативної стільниці"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:240
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:247
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
 msgstr "Розширений розділ"
 
@@ -469,7 +485,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Виявити компонування"
 
-#: src/components/users/Accounts.jsx:396
+#: src/components/users/Accounts.jsx:398
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -478,7 +494,7 @@ msgstr ""
 "Замість цього, користуйтеся для керування системою вказаним вище локальним "
 "обліковим записом."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:247
 msgid "Full name"
 msgstr "Ім’я повністю"
 
@@ -514,21 +530,19 @@ msgstr "Назва вузла"
 msgid "How would you like to install?"
 msgstr "Яким способом ви хочете виконати встановлення?"
 
-#: src/components/review/ReviewConfiguration.jsx:227
-#, fuzzy
-#| msgid "I understand that all existing data will be erased"
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr[0] "Розумію, що усі наявні дані буде витерто"
-msgstr[1] "Розумію, що усі наявні дані буде витерто"
-msgstr[2] "Розумію, що усі наявні дані буде витерто"
+msgstr[0] "Розумію, що з позначених дисків буде витерто усі наявні дані"
+msgstr[1] "Розумію, що з позначених дисків буде витерто усі наявні дані"
+msgstr[2] "Розумію, що з позначених дисків буде витерто усі наявні дані"
 
-#: src/components/review/ReviewConfiguration.jsx:232
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "Розумію, що частину з наявних даних буде витерто"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "Розумію, що до деяких розділів буде внесено зміни"
 
@@ -591,7 +605,7 @@ msgstr "Не вдалося встановити систему"
 msgid "Installation of the system failed: $0"
 msgstr "Не вдалося встановити систему: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:184
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "Тип встановлення"
 
@@ -599,7 +613,7 @@ msgstr "Тип встановлення"
 msgid "Installing"
 msgstr "Встановлюємо"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:294
 msgid "Insufficient disk space"
 msgstr "Недостатньо місця на диску"
 
@@ -621,6 +635,12 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Некоректна назва вузла"
 
+#: src/components/review/ReviewConfiguration.jsx:197
+#, fuzzy
+#| msgid "completed step"
+msgid "Jump to first incomplete step"
+msgstr "завершений крок"
+
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
@@ -637,7 +657,7 @@ msgstr "Клавіатура"
 msgid "Keyboard layout during boot"
 msgstr "Розкладка клавіатури під час завантаження"
 
-#: src/components/review/ReviewConfiguration.jsx:155
+#: src/components/review/ReviewConfiguration.jsx:223
 #: src/components/localization/InstallationLanguage.jsx:236
 msgid "Language"
 msgstr "Мова"
@@ -651,7 +671,7 @@ msgstr "Запустити редактор сховищ даних"
 msgid "Learn more about restricted access in the configuration"
 msgstr "Дізнатися більше про обмежений доступ у налаштуваннях"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Розташування"
 
@@ -684,7 +704,7 @@ msgstr "Може потребувати більше вільного місця
 msgid "Medium"
 msgstr "Носій"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:297
 msgid "Minimum of $0 required"
 msgstr "Потрібно принаймні $0"
 
@@ -726,7 +746,7 @@ msgstr "Сервери NTP"
 msgid "NTS"
 msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "Назва"
 
@@ -758,16 +778,16 @@ msgstr "Помилка додатка мережі"
 msgid "Next"
 msgstr "Далі"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:143
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
 msgid "No devices"
 msgstr "Немає пристроїв"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:124
 msgid "No disks available"
 msgstr "Немає доступних дисків"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "No disks selected"
 msgstr "Не позначено жодного диска"
 
@@ -787,7 +807,7 @@ msgstr ""
 "Не вдалося отримати коректної прив'язки клавіш VConsole для вибраних "
 "розкладок клавіатури. Будь ласка, виберіть інші розкладки."
 
-#: src/components/review/ReviewConfiguration.jsx:87
+#: src/components/storage/installation-method/usePageComplete.jsx:141
 msgid "Not enough available free space"
 msgstr "Недостатньо доступного вільного місця"
 
@@ -817,7 +837,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Відкрити форму введення звіту щодо вади у Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:144
+#: src/components/review/ReviewConfiguration.jsx:212
 msgid "Operating system"
 msgstr "Операційна система"
 
@@ -836,7 +856,7 @@ msgstr "Розділи (додатково)"
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:394
+#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
 msgid "Passphrase"
 msgstr "Пароль"
 
@@ -856,7 +876,7 @@ msgstr "У черзі"
 msgid "Please attach the log file $0 to the issue."
 msgstr "Будь ласка, додайте до повідомлення про ваду файл журналу $0."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Please select at least one disk to continue"
 msgstr "Будь ласка, позначте принаймні один диск, щоб продовжити"
 
@@ -889,15 +909,15 @@ msgstr "Вийти"
 msgid "Quit installer?"
 msgstr "Вийти зі встановлювача?"
 
-#: src/components/app.jsx:125
+#: src/components/app.jsx:127
 msgid "Reading information about the OS failed."
 msgstr "Не вдалося прочитати відомості щодо операційної системи."
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:72
 msgid "Reading information about the computer failed."
 msgstr "Не вдалося прочитати відомості щодо комп'ютера."
 
-#: src/components/app.jsx:115
+#: src/components/app.jsx:117
 msgid "Reading installer configuration failed."
 msgstr "Не вдалося прочитати налаштування встановлювача."
 
@@ -922,7 +942,7 @@ msgstr "Справжня назва вузла має складатися не 
 msgid "Reboot"
 msgstr "Перезавантажити"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:535
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -942,9 +962,9 @@ msgstr "Перезавантажитися до встановленої сис�
 msgid "Reclaim additional space"
 msgstr "Звільнити додаткове місце"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:115
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:135
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:207
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
 msgstr "Звільнити місце"
 
@@ -985,7 +1005,7 @@ msgstr ""
 "Вилучити усі розділи на позначених пристроях, включно із наявними "
 "операційними системами."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:119
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
@@ -996,7 +1016,7 @@ msgstr ""
 msgid "Remove server"
 msgstr "Вилучити сервер"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:121
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1039,17 +1059,21 @@ msgstr "Обов'язковий"
 msgid "Requirements"
 msgstr "Вимоги"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:115
 msgid "Rescan devices"
 msgstr "Виконати повторний пошук пристроїв"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:96
 msgid "Rescanning of the disks failed."
 msgstr "Повторне сканування дисків зазнало невдачі."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:515
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
 msgstr "Змінити розмір"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+msgid "Resize partition"
+msgstr "Змінити розмір розділу"
 
 #: src/components/review/StorageReview.jsx:341
 msgid "Resizing the following partitions from $0: $1"
@@ -1085,7 +1109,7 @@ msgstr ""
 "Увімкнено обліковий запис root, але не налаштовано жодного облікового запису "
 "користувача"
 
-#: src/components/users/Accounts.jsx:338
+#: src/components/users/Accounts.jsx:340
 msgid "Root password has been set."
 msgstr "Встановлено пароль root."
 
@@ -1124,7 +1148,7 @@ msgstr ""
 "Захистіть ваші дані за допомогою шифрування дисків. Можна застосувати лише "
 "до нових розділів"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:352
 msgid "Select"
 msgstr "Позначити"
 
@@ -1137,7 +1161,7 @@ msgstr "Виберіть пристрій"
 msgid "Select city"
 msgstr "Виберіть місто"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:335
 msgid "Select destination"
 msgstr "Виберіть призначення"
 
@@ -1213,15 +1237,21 @@ msgstr ""
 "Встановлення програмного забезпечення: завершено налаштовування сховища "
 "даних. Тепер встановлюємо програмне забезпечення на ваш пристрій."
 
+#: src/components/review/ReviewConfiguration.jsx:236
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Вибір програмного забезпечення"
+
+#: src/components/review/ReviewConfiguration.jsx:204
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr ""
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
 msgstr "Не вистачає декількох обов'язкових розділів: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
 msgstr "Місце"
 
@@ -1229,7 +1259,7 @@ msgstr "Місце"
 msgid "Stacktrace"
 msgstr "Трасування стеку"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "Сховище даних"
 
@@ -1265,6 +1295,8 @@ msgid ""
 "Storage layout is defined by the kickstart file. The planned partitioning "
 "layout can be reviewed in the summary step."
 msgstr ""
+"Компонування сховища даних визначається файлом kickstart. Із запланованим "
+"компонуванням розділів можна буде ознайомитися на підсумковому кроці."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
 msgid "Storage plugin failed"
@@ -1294,7 +1326,7 @@ msgstr "Пропоновані клавіатури"
 msgid "Suggested languages"
 msgstr "Пропоновані мови"
 
-#: src/components/users/Accounts.jsx:326 src/components/users/Accounts.jsx:410
+#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
 msgid "System"
 msgstr "Система"
 
@@ -1310,18 +1342,16 @@ msgstr ""
 "Налаштовування системи: встановлення програмного забезпечення завершено. "
 "Тепер виконуємо налаштовування системи."
 
-#: src/components/app.jsx:160
+#: src/components/app.jsx:162
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Встановлення Anaconda було припинено у неочікуваний спосіб."
 
 #: src/components/users/Accounts.jsx:47
-#, fuzzy
-#| msgid "The following user will be created:"
 msgid "The following user will be created:"
 msgid_plural "The following users will be created:"
-msgstr[0] "Буде створено такий запис користувача:"
-msgstr[1] "Буде створено такий запис користувача:"
-msgstr[2] "Буде створено такий запис користувача:"
+msgstr[0] "Буде створено такі записи користувачів:"
+msgstr[1] "Буде створено такі записи користувачів:"
+msgstr[2] "Буде створено такі записи користувачів:"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
@@ -1401,7 +1431,7 @@ msgid "Time"
 msgstr "Час"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:162
+#: src/components/review/ReviewConfiguration.jsx:230
 msgid "Timezone"
 msgstr "Часовий пояс"
 
@@ -1413,7 +1443,7 @@ msgstr "Заголовок"
 msgid "To begin using $0, reboot your system."
 msgstr "Щоб розпочати користування $0, перезавантажте вашу систему."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:197
+#: src/components/storage/installation-method/InstallationMethod.jsx:195
 msgid "To continue, select the devices to install to."
 msgstr "Щоб продовжити, виберіть пристрої для встановлення на них системи."
 
@@ -1425,17 +1455,21 @@ msgstr ""
 "Щоб скористатися цим варіантом, змініть розміри розділів або вилучіть наявні "
 "розділи, щоб звільнити принаймні $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Тип"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:86
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr "Не вдалося запланувати вилучення $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:88
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr "Не вдалося запланувати зміну розмірів $0"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+msgid "Undo last action"
+msgstr "Скасувати останню дію"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
@@ -1467,7 +1501,7 @@ msgstr "Використати увесь диск"
 msgid "Use free space"
 msgstr "Використати вільне місце"
 
-#: src/components/users/Accounts.jsx:231
+#: src/components/users/Accounts.jsx:233
 msgid "Use local account"
 msgstr "Використовувати локальний обліковий запис"
 
@@ -1479,7 +1513,7 @@ msgstr "Використати пристрій RAID для автоматичн
 msgid "User creation"
 msgstr "Створення запису користувача"
 
-#: src/components/users/Accounts.jsx:276
+#: src/components/users/Accounts.jsx:278
 msgid "User name"
 msgstr "Ім’я користувача"
 
@@ -1527,7 +1561,7 @@ msgstr ""
 "При надсиланні цього звіту щодо вади буде автоматично вивантажено такі файли "
 "журналу: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "Розміри розділів Windows з шифруванням BitLocker не можна змінювати"
 
@@ -1572,8 +1606,8 @@ msgstr "завершений крок"
 msgid "current step"
 msgstr "поточний крок"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:378
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:391
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 #: src/components/review/StorageReview.jsx:158
 msgid "delete"
 msgstr "вилучити"
@@ -1590,7 +1624,7 @@ msgstr "зашифрувати"
 msgid "encrypted"
 msgstr "зашифрований"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:236
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 msgid "extended partition"
 msgstr "розширений розділ"
 
@@ -1601,6 +1635,12 @@ msgstr "форматувати як $0"
 #: src/components/Error.jsx:161 src/components/Error.jsx:241
 msgid "here"
 msgstr "тут"
+
+#: src/components/review/ReviewConfiguration.jsx:56
+#, fuzzy
+#| msgid "Completed"
+msgid "incomplete"
+msgstr "Завершено"
 
 #: src/components/review/StorageReview.jsx:108
 msgid "mount"
@@ -1618,16 +1658,16 @@ msgstr "створити звіт щодо вади вручну"
 msgid "resized from $0"
 msgstr "змінено розмір з $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:462
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:466
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
 msgstr "стиснути"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:412
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr "стиснути до $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:372
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "скасувати"
 
@@ -2560,9 +2600,6 @@ msgstr "скасувати"
 #~ msgid "Apple EFI Boot Partition"
 #~ msgstr "Розділ завантаження EFI Apple"
 
-#~ msgid "Apply configuration in installer"
-#~ msgstr "Застосувати налаштування у засобі встановлення"
-
 #~ msgid ""
 #~ "Are you sure you want to delete all of the data on {}, including "
 #~ "snapshots?"
@@ -2828,9 +2865,6 @@ msgstr "скасувати"
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "Перевіряємо залежності програмного забезпечення…"
-
-#~ msgid "Checking storage configuration..."
-#~ msgstr "Перевіряємо налаштування носія…"
 
 #~ msgid ""
 #~ "Choose device from above to assign mount point and set format.\n"
@@ -7341,10 +7375,6 @@ msgstr "скасувати"
 #~ msgctxt "GUI|Software Source"
 #~ msgid "_URL:"
 #~ msgstr "_Адреса:"
-
-#~ msgctxt "GUI|Blivet Gui Partitioning"
-#~ msgid "_Undo last action"
-#~ msgstr "_Скасувати останню дію"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
