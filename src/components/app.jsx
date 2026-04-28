@@ -12,6 +12,7 @@ import { clients } from "../apis/index.js";
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
 import { getInstallerConfValue, parseAnacondaConfBool, readConf } from "../helpers/conf.js";
+import { isExiting } from "../helpers/exit.js";
 import { debug } from "../helpers/log.js";
 import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
@@ -157,7 +158,7 @@ const useAddress = (onCritFail) => {
 
                 setBackendReady(isReady);
 
-                if (!isReady && wasReadyRef.current && onCritFail) {
+                if (!isReady && wasReadyRef.current && onCritFail && !isExiting()) {
                     onCritFail()({
                         message: _("The Anaconda installation has stopped unexpectedly."),
                     });
