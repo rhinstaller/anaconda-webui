@@ -6,9 +6,16 @@ import cockpit from "cockpit";
 
 import { debug, error } from "./log.js";
 
+let _isExiting = false;
+
+export const isExiting = () => _isExiting;
+
 export const exitGui = () => {
+    _isExiting = true;
+
     const pidFile = cockpit.file("/run/anaconda/webui_script.pid", { superuser: "try" });
     let pid;
+
     pidFile.read()
             .then(content => {
                 pid = content.trim();
