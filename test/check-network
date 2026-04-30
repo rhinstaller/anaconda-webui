@@ -5,7 +5,7 @@
 
 import time
 
-from anacondalib import VirtInstallMachineCase, run_on_vm_setups
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, run_on_vm_setups
 from installer import Installer
 from network import COCKPIT_CHECKPOINT_ROLLBACK_TIME, SYSROOT_PATH, Network
 from progress import Progress
@@ -14,6 +14,7 @@ from utils import check_cockpit_module_js_error
 
 
 class TestNetwork(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     def testCockpitConnectionsPreInstall(self):
         """
@@ -125,6 +126,8 @@ class TestNetwork(VirtInstallMachineCase):
             [con_name, "ipv4.dns", dns_server, None],
         ])
 
+
+class TestNetworkNondestructive(VirtInstallMachineCase):
     @nondestructive
     def testCockpitJsErrorHandling(self):
         """
