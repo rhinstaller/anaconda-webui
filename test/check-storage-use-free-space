@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -12,6 +12,7 @@ from testlib import test_main  # pylint: disable=import-error
 
 # FIXME: add back @nondestructive
 class TestStorageUseFreeSpace(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     @disk_images([("debian-testing", 20)])
     def testBasic(self):
