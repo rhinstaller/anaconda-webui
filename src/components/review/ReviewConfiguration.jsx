@@ -12,18 +12,15 @@ import { DescriptionList } from "@patternfly/react-core/dist/esm/components/Desc
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
-import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
-    LanguageContext,
     OsReleaseContext,
     PageContext,
     PayloadContext,
     StorageContext,
     SystemTypeContext,
-    TimezoneContext,
     UserInterfaceContext,
 } from "../../contexts/Common.jsx";
 
@@ -35,16 +32,21 @@ import {
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { DateAndTimeReviewDescription } from "../datetime/index.js";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
+import { InstallationLanguageReviewDescription } from "../localization/index.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
 import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
+import {
+    StorageInstallationReviewSummary,
+    StorageScenarioReviewDescription,
+} from "../storage/index.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
 import { usePageComplete as useStorageInstallationPageComplete } from "../storage/installation-method/usePageComplete.jsx";
 import { AccountsReviewDescription } from "../users/index.js";
 import { usePageComplete as useUsersPageComplete } from "../users/usePageComplete.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
-import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 
@@ -77,10 +79,6 @@ const ReviewDescriptionList = ({ children }) => {
 
 export const ReviewConfiguration = ({ automatedInstall }) => {
     const osRelease = useContext(OsReleaseContext);
-    const localizationData = useContext(LanguageContext);
-    const timezone = useContext(TimezoneContext)?.timezone;
-    const { getLabel } = useScenario();
-    const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
@@ -125,23 +123,15 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     ), [allReviewPagesComplete, reviewValidationPending]);
     useWizardFooter(getFooter);
 
-    const language = useMemo(() => {
-        for (const l of Object.keys(localizationData.languages)) {
-            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
-
-            if (locale) {
-                return locale;
-            }
-        }
-    }, [localizationData]);
-
     const languageDescription = localizationComplete
-        ? (language ? language["native-name"].v : localizationData.language)
+        ? <InstallationLanguageReviewDescription />
         : <IncompleteStepIndicator />;
 
     const timezoneDescription = datetimeComplete
-        ? timezone
+        ? <DateAndTimeReviewDescription />
         : <IncompleteStepIndicator />;
+
+    const installationScenarioDescription = <StorageScenarioReviewDescription />;
 
     const softwareDescription = useMemo(() => {
         if (!softwareSelectionComplete) {
@@ -155,15 +145,15 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         return env?.name || envId;
     }, [softwareSelectionComplete, environments, selection?.environment]);
 
-    const installationTypeDescription = scenarioLabel;
     const storageDescription = (
-        <>
-            <Stack hasGutter>
-                <StorageReview isReviewScreen />
-                {!storageComplete && <IncompleteStepIndicator />}
-            </Stack>
-            <StorageReviewNote />
-        </>
+        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
+            {!storageComplete && (
+                <FlexItem>
+                    <IncompleteStepIndicator />
+                </FlexItem>
+            )}
+            <StorageInstallationReviewSummary />
+        </Flex>
     );
 
     const accountDescription = usersComplete
@@ -256,7 +246,7 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                                     <ReviewDescriptionListItem
                                       id={`${SCREEN_ID}-target-system-mode`}
                                       term={_("Installation type")}
-                                      description={installationTypeDescription}
+                                      description={installationScenarioDescription}
                                     />
                                 </ReviewDescriptionList>
                                 <ReviewDescriptionList>

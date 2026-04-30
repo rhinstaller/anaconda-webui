@@ -56,9 +56,9 @@ import {
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { StorageReview } from "../../review/StorageReview.jsx";
 import { useAvailabilityConfiguredStorage } from "../scenarios/use-configured-storage/UseConfiguredStorage.jsx";
 import { useAvailabilityUseFreeSpace } from "../scenarios/use-free-space/UseFreeSpace.jsx";
+import { StorageReview } from "../StorageReview.jsx";
 
 const _ = cockpit.gettext;
 

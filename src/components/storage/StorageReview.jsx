@@ -35,8 +35,6 @@ import {
 
 import { ListingTable } from "cockpit-components-table.jsx";
 
-import { ReviewDescriptionListItem } from "./Common.jsx";
-
 import "./StorageReview.scss";
 
 const _ = cockpit.gettext;
@@ -373,19 +371,11 @@ export const StorageReviewNote = () => {
     );
     if (!hasNote) return null;
 
-    const description = (
-        <List isPlain>
+    return (
+        <List isPlain id="anaconda-screen-review-target-storage-note">
             <DeletedSystems />
             <AffectedSystems type="delete" />
             <AffectedSystems type="resize" />
         </List>
-    );
-
-    return (
-        <ReviewDescriptionListItem
-          id="anaconda-screen-review-target-storage-note"
-          term={_("Note")}
-          description={description}
-        />
     );
 };
