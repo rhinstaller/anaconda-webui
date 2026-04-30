@@ -5,7 +5,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images, run_boot
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
 from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
@@ -17,7 +17,7 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
-class TestStorageHomeReuse(VirtInstallMachineCase):
+class _TestStorageHomeReuseHelpers:
     def _remove_unknown_mountpoints(self, disk):
         # Remove the /var subvolume from the default btrfs layout
         # as /var/ is not default mount point in Fedora which results in
@@ -30,79 +30,6 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
             sed -i '/var/d' /mnt/root/etc/fstab;
             umount /mnt
         """)
-
-    def _testBasic_partition_disk(self):
-        self._remove_unknown_mountpoints("vda")
-
-    # Reinstall option does not work with UEFI when /boot is on btrfs
-    # @run_boot("bios", "efi")
-    @disk_images([("fedora-rawhide", 15)])
-    @nondestructive
-    def testBasic(self):
-        """
-        Description:
-            Test the home reuse installation method with a pre-existing standard
-            Fedora installation
-
-        Expected results:
-            - The home reuse installation method is available
-            - The home reuse expected layout is shown in the review screen
-        """
-
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-        r = Review(b, m)
-
-        pretend_default_scheme(self, "BTRFS")
-        dev="vda"
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        s.check_scenario_selected("home-reuse")
-        s.check_scenario_index("home-reuse", 1)
-        i.reach(i.steps.REVIEW)
-
-        # check selected disks are shown
-        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
-        if self.is_efi:
-            r.check_disk_row(dev, parent=f"{dev}2", action="delete")
-        else:
-            r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-
-        if self.is_efi:
-            r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row(dev, "/boot", f"{dev}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}3", "13.9 GB", True, "btrfs", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}3", "13.9 GB", False, "btrfs", is_encrypted=False,
-                         action="mount")
-
-    @disk_images([("fedora-rawhide", 15)])
-    @nondestructive
-    def testHidden(self):
-        """
-        Description:
-            Test the home reuse installation method with a pre-existing
-            Fedora installation with unexpected mount points
-
-        Expected results:
-            - The home reuse installation method is not available
-        """
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="home-reuse")
-        s = Storage(b, m)
-
-        pretend_default_scheme(self, "BTRFS")
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        # The `Re-install Fedora` scenario should not be available
-        # when unexpected mount points are present
-        s.wait_scenario_visible("home-reuse", False)
 
     def move_standard_fedora_disk_to_encrypted(self, encrypted_disk, new_disk, password):
         b = self.browser
@@ -155,21 +82,26 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         umount -l /mnt
         """, timeout=90)
 
-    def _testHomeReuseFedoraEncrypted_partition_disk(self):
-        self._remove_unknown_mountpoints("vda")
-        self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
 
-    @disk_images([("fedora-rawhide", 15), ("fedora-42", 15)])
-    def testHomeReuseFedoraEncrypted(self):
+@nondestructive
+class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers):
+    def _testBasic_partition_disk(self):
+        self._remove_unknown_mountpoints("vda")
+
+    # Reinstall option does not work with UEFI when /boot is on btrfs
+    # @run_boot("bios", "efi")
+    @disk_images([("fedora-rawhide", 15)])
+    def testBasic(self):
         """
         Description:
             Test the home reuse installation method with a pre-existing standard
-            Fedora installation layout with encrypted /.
+            Fedora installation
 
         Expected results:
-            - The home reuse installation method is available after the encrypted device is unlocked.
+            - The home reuse installation method is available
             - The home reuse expected layout is shown in the review screen
         """
+
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="home-reuse")
@@ -177,30 +109,58 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r = Review(b, m)
 
         pretend_default_scheme(self, "BTRFS")
+        dev="vda"
 
         i.open()
         i.reach(i.steps.INSTALLATION_METHOD)
-        s.select_disks([("vda", True), ("vdb", False)])
 
-        s.unlock_all_encrypted()
-        s.unlock_device("einszwei", ["vda4"], ["vda4"])
-        s.set_scenario("home-reuse")
+        s.check_scenario_selected("home-reuse")
+        s.check_scenario_index("home-reuse", 1)
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        dev = "vda"
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
-        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-        r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}4", "13.9 GB", True, "btrfs", is_encrypted=True)
-        r.check_disk_row(dev, "/home", f"{dev}4", "13.9 GB", False, "btrfs", is_encrypted=True, action="mount")
+        if self.is_efi:
+            r.check_disk_row(dev, parent=f"{dev}2", action="delete")
+        else:
+            r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+
+        if self.is_efi:
+            r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
+        r.check_disk_row(dev, "/boot", f"{dev}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "13.9 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}3", "13.9 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+
+    @disk_images([("fedora-rawhide", 15)])
+    def testHidden(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing
+            Fedora installation with unexpected mount points
+
+        Expected results:
+            - The home reuse installation method is not available
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # The `Re-install Fedora` scenario should not be available
+        # when unexpected mount points are present
+        s.wait_scenario_visible("home-reuse", False)
 
     def _testMultipleRoots_partition_disk(self):
         self._remove_unknown_mountpoints("vda")
 
     @disk_images([("fedora-rawhide", 15), ("fedora-42", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    @nondestructive
     def testMultipleRoots(self):
         """
         Description:
@@ -258,6 +218,51 @@ class TestStorageHomeReuse(VirtInstallMachineCase):
         r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}3", "13.9 GB", False, "btrfs", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+
+
+# TODO: these tests should be made nondestructive
+class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeReuseHelpers):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
+
+    def _testHomeReuseFedoraEncrypted_partition_disk(self):
+        self._remove_unknown_mountpoints("vda")
+        self.move_standard_fedora_disk_to_encrypted("/dev/vda", "vdb", "einszwei")
+
+    @disk_images([("fedora-rawhide", 15), ("fedora-42", 15)])
+    def testHomeReuseFedoraEncrypted(self):
+        """
+        Description:
+            Test the home reuse installation method with a pre-existing standard
+            Fedora installation layout with encrypted /.
+
+        Expected results:
+            - The home reuse installation method is available after the encrypted device is unlocked.
+            - The home reuse expected layout is shown in the review screen
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="home-reuse")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.select_disks([("vda", True), ("vdb", False)])
+
+        s.unlock_all_encrypted()
+        s.unlock_device("einszwei", ["vda4"], ["vda4"])
+        s.set_scenario("home-reuse")
+        i.reach(i.steps.REVIEW)
+
+        # check selected disks are shown
+        dev = "vda"
+        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
+        r.check_disk_row(dev, parent=f"{dev}1", action="delete")
+        r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}4", "13.9 GB", True, "btrfs", is_encrypted=True)
+        r.check_disk_row(dev, "/home", f"{dev}4", "13.9 GB", False, "btrfs", is_encrypted=True, action="mount")
 
     def _testNonLinuxSystem_partition_disk(self):
         b = self.browser

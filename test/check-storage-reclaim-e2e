@@ -3,7 +3,7 @@
 # Copyright (C) 2024 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from operating_systems import DualBootHelper_E2E
 from review import Review
@@ -12,6 +12,7 @@ from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     @disk_images([("debian-testing", 20)])
     @timeout(1200)

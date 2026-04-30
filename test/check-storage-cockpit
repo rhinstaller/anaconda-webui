@@ -12,6 +12,7 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_workstation_iso
 
 
+@nondestructive
 class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
     def reachCockpitStorage(self):
         b = self.browser
@@ -38,7 +39,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 3), "Create partition")
         self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
 
-    @nondestructive
     def testBasicLiveISO(self):
         """
         Description:
@@ -60,7 +60,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.check_disk_selected("vda")
         s.enter_cockpit_storage()
 
-    @nondestructive
     def testEncryptedUnlock(self):
         """
         Description:
@@ -166,7 +165,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.click_card_dropdown("Unformatted data", "Format")
         self.dialog({"type": "swap"})
 
-    @nondestructive
     def testLVM(self):
         """
         Description:
@@ -259,7 +257,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot/boot auto noauto 0 0" in fstab)
         self.assertTrue("/mnt/sysroot auto noauto 0 0" in fstab)
 
-    @nondestructive
     def testStandardPartitionExt4(self):
         """
         Description:
@@ -270,7 +267,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         """
         self._testStandardPartition("ext4")
 
-    @nondestructive
     def testStandardPartitionXFS(self):
         """
         Description:
@@ -281,7 +277,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         """
         self._testStandardPartition("xfs")
 
-    @nondestructive
     def testPayloadSizeCheckExt4(self):
         """
         Description:
@@ -295,7 +290,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         """
         self._testPayloadSizeCheck("ext4")
 
-    @nondestructive
     def testPayloadSizeCheckXFS(self):
         """
         Description:
@@ -358,7 +352,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         s.wait_scenario_available("use-configured-storage")
 
-    @nondestructive
     def testPayloadSizeCheckBtrfs(self):
         """
         Description:
@@ -397,7 +390,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
-    @nondestructive
     def testPayloadSizeCheckLVM(self):
         """
         Description:
@@ -436,7 +428,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         i.check_next_disabled()
 
-    @nondestructive
     @run_boot("efi")
     def testBtrfsTopLevelVolume(self):
         """
@@ -506,7 +497,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         browser.click(self.card_button("btrfs subvolume", "Create subvolume"))
         self.dialog({"name": "home", "mount_point": "/home"})
 
-    @nondestructive
     def testBtrfsSubvolumes(self):
         """
         Description:
@@ -545,7 +535,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
-    @nondestructive
     def testBtrfsAndMountPointAssignment(self):
         """
         Description:
@@ -602,7 +591,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
     @disk_images([("", 15), ("", 15), ("", 15)])
-    @nondestructive
     def testRAIDUnsupportedNesting(self):
         """
         Description:
@@ -668,7 +656,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_top()
         s.return_to_installation("Invalid RAID configuration detected.")
 
-    @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     @run_boot("bios", "efi")
     def testUnsupportedBootloaderOnMDRAID(self):
@@ -750,7 +737,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         b.wait_not_present(self.card_row("Storage", index))
 
-    @nondestructive
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testCalculateSelectedDisksRAID(self):
         """
@@ -836,7 +822,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
 
     @disk_images([("", 15), ("", 15)])
-    @nondestructive
     def testFormattedDiskRootfs(self):
         """
         Description:
@@ -907,7 +892,6 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_device(3, "vdb")
         s.select_mountpoint_row_mountpoint(3, "/home")
 
-    @nondestructive
     def testMBRParttable(self):
         """
         Description:

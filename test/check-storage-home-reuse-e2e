@@ -5,7 +5,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -18,6 +18,8 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
+
     def _remove_unknown_mountpoints(self):
         # Remove the /var subvolume from the default btrfs layout
         # as /var/ is not default mount point in Fedora which results in

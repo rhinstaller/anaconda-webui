@@ -3,7 +3,7 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -12,6 +12,7 @@ from utils import get_pretty_name
 
 
 class TestInstallationProgress(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     def testBasic(self):
         """

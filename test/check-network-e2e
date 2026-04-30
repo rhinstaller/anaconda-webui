@@ -3,7 +3,7 @@
 # Copyright (C) 2026 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
 from installer import Installer
 from network import SYSROOT_PATH, Network
 from progress import Progress
@@ -11,6 +11,7 @@ from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestNetwork_E2E(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     @timeout(1200)
     def testConnectionsE2E(self):

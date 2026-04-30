@@ -3,13 +3,15 @@
 # Copyright (C) 2024 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from storage import Storage
 from testlib import test_main, timeout  # pylint: disable=import-error
 
 
 class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
+
     def _testLVMOnRAID_partition_disk(self):
         b = self.browser
         m = self.machine
