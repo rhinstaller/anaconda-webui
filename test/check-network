@@ -125,6 +125,69 @@ class TestNetwork(VirtInstallMachineCase):
             [con_name, "ipv4.dns", dns_server, None],
         ])
 
+    # FIXME add "" vm_setup back when
+    # https://github.com/cockpit-project/cockpit/issues/22926 is fixed
+    #@run_on_vm_setups("", "bootopts-net1")
+    @run_on_vm_setups("bootopts-net1")
+    def testWizardCockpitConfigurationPreInstall(self):
+        """
+        Description:
+            Test configuration of settings of a device from a wizard page.
+
+        Expected results:
+            - Change breaking connection raises expected confirmation dialog
+            - The configured values are correctly applied to connection profile and device.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        n = Network(b, m)
+
+        i.open()
+
+        i.reach(i.steps.NETWORK)
+
+        iface = n.get_the_iface()
+
+        n.disable_ipv4_on_iface_wizard(iface)
+
+        i.next()
+        i.back()
+
+        # After editing, therefore persisting, the automatic default connection
+        # is updated by Cockpit (COCKPIT-1750)
+        con_name = iface
+
+        mtu_value = "1600"
+        n.set_mtu_on_iface_wizard(iface, mtu_value)
+
+        n.check_con_settings([
+            [con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        i.next()
+        i.back()
+
+        dns_server = "8.8.8.8"
+        n.add_dns_server_to_iface_wizard(iface, dns_server)
+
+        n.check_con_settings([
+            [con_name, "ipv4.dns", dns_server, None],
+        ])
+
+        # Check that the checkpoint does not fail silently, ie check after
+        # checkpoint timeout (INSTALLER-4594)
+        time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
+
+        n.check_con_settings([
+            [con_name, "802-3-ethernet.mtu", mtu_value, None],
+        ])
+
+        n.check_con_settings([
+            [con_name, "ipv4.dns", dns_server, None],
+        ])
+
+
     @nondestructive
     def testCockpitJsErrorHandling(self):
         """
