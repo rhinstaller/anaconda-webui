@@ -5,7 +5,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from password import Password
 from progress import Progress
@@ -20,6 +20,8 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
 class TestStorageEraseAll_E2E(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
+
     @timeout(1200)
     def testGuidedEncrypted(self):
         """

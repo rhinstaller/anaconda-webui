@@ -5,7 +5,7 @@
 
 import os
 
-from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -18,13 +18,13 @@ ROOT_DIR = os.path.dirname(TEST_DIR)
 BOTS_DIR = f'{ROOT_DIR}/bots'
 
 
+@nondestructive
 class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     # FIXME: Re-enable bios test, it's currently failing in CI to detect the BIOS boot partition
     # @run_boot("bios", "efi")
     @run_boot("efi")
     @disk_images([("", 15), ("fedora-42", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    @nondestructive
     def testBasic(self):
         """
         Description:
@@ -149,7 +149,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk = "/dev/vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
-    @nondestructive
     def testNoRootMountPoint(self):
         """
         Description:
@@ -212,7 +211,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(disk2, [("", "xfs")])
 
     @disk_images([("", 15), ("", 10)])
-    @nondestructive
     def testMultipleDisks(self):
         """
         Description:
@@ -294,7 +292,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(disk1, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
 
     @disk_images([("", 15)])
-    @nondestructive
     def testPayloadSizeCheck(self):
         """
         Description:
@@ -381,54 +378,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         b.click(f"#{i.steps.REVIEW}-next-confirmation-checkbox")
         i.check_next_disabled(False)
 
-    def _testMBRParttable_partition_disk(self):
-        storage = Storage(self.browser, self.machine)
-        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
-
-    @disk_images([("", 15), ("fedora-rawhide", 15)])
-    def testMBRParttable(self):
-        """
-        Description:
-            Test the case when the disk is MBR partitioned.
-
-        Expected results:
-            - The mount point mapping scenario is available and can be used with
-              MBR partitioned disks.
-        """
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        s = Storage(b, m)
-        r = Review(b, m)
-
-        # This is required for home-reuse availability check
-        pretend_default_scheme(self, "BTRFS")
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        s.wait_scenario_available("mount-point-mapping", True)
-
-        s.select_mountpoint([("vda", True), ("vdb", False)])
-
-        s.select_mountpoint_row_device(1, "root")
-        s.select_mountpoint_row_device(2, "vda1")
-        s.add_mountpoint_row()
-        s.select_mountpoint_row_mountpoint(3, "/home")
-        s.select_mountpoint_row_device(3, "home")
-
-        s.select_mountpoint_row_reformat(2)
-
-        i.reach(i.steps.REVIEW)
-
-        # verify review screen
-        disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
-
-        r.check_disk_row(disk, "/boot", "vda1", "1.07 GB", True, "ext4")
-        r.check_disk_row(disk, "/", "vda2", "14.0 GB", True, "btrfs subvolume")
-        r.check_disk_row(disk, "/home", "vda2", "14.0 GB", False, "btrfs")
-
     def _testEncryptedUnlock_partition_disk(self):
         b = self.browser
         m = self.machine
@@ -443,7 +392,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.create_luks_partition(f"{disk1}3", "einszweidrei", "encrypted-vol1", "xfs")
         s.create_luks_partition(f"{disk1}4", "einszweidreivier", "encrypted-vol2", "xfs")
 
-    @nondestructive
     def testEncryptedUnlock(self):
         """
         Description:
@@ -508,7 +456,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
         r.check_disk_row(dev1, "/", "vda3", "", True, "xfs", True)
 
-    @nondestructive
     def testEncryptedUnlockCockpit(self):
         """
         Description:
@@ -616,7 +563,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         )
 
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
-    @nondestructive
     def testDuplicateDeviceNames(self):
         """
         Description:
@@ -674,7 +620,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk = "/dev/vda"
         s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
 
-    @nondestructive
     def testUnusableFormats(self):
         """
         Description:
@@ -729,7 +674,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         """)
 
     @run_boot("efi")
-    @nondestructive
     def testExtendedPartition(self):
         """
         Description:
@@ -756,58 +700,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_mountpoint(4, "/home")
         s.select_mountpoint_row_device(4, "home")
 
-    def _testWindowsSingleDiskHomeReuse_partition_disk(self):
-        storage = Storage(self.browser, self.machine)
-        move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
-
-    @run_boot("efi")
-    @disk_images([("", 35), ("fedora-rawhide", 15)])
-    def testWindowsSingleDiskHomeReuse(self):
-        """
-        Description:
-            Test home reuse via 'Mount point mapping' installation method with
-            a disk containig dual boot setup with Windows and Fedora (shared EFI partition).
-
-        Expected results:
-            - The mount point mapping scenario is available and can be used for reuse
-              of the home partition.
-            - The home reuse expected layout is shown in the review screen
-        """
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        s = Storage(b, m)
-        r = Review(b, m)
-
-        i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
-
-        s.wait_scenario_available("mount-point-mapping", True)
-
-        s.select_mountpoint([("vda", True), ("vdb", False)])
-
-        s.select_mountpoint_row_device(1, "root")
-        s.select_mountpoint_row_device(2, "vda1")
-        s.select_mountpoint_row_device(3, "vda4")
-        s.select_mountpoint_row_reformat(3)
-        s.add_mountpoint_row()
-        s.select_mountpoint_row_mountpoint(4, "/home")
-        s.select_mountpoint_row_device(4, "home")
-        s.check_mountpoint_row_reformat(4, False)
-
-        i.next(should_fail=True)
-        i.reach(i.steps.REVIEW)
-
-        dev_win_fed = "vda"
-        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
-        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
-                         action="mount")
-        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
-                         action="mount")
-        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
-
-
     def _testEncryptedHomeSecondDisk_partition_disk(self):
         b = self.browser
         m = self.machine
@@ -823,7 +715,6 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
     @run_boot("efi")
     @disk_images([("", 15), ("", 10)])
-    @nondestructive
     def testEncryptedHomeSecondDisk(self):
         """
         Description:
@@ -884,6 +775,110 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         r.check_disk(dev2, "10.7 GB vdb (Virtio Block Device)")
         r.check_disk_row(dev2, "/home", "", "10.7", False, "xfs", is_encrypted=True, action="mount")
+
+
+# TODO: these tests should be made nondestructive
+class TestStorageMountPointsDestructive(VirtInstallMachineCase, StorageCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
+
+    def _testMBRParttable_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
+
+    @disk_images([("", 15), ("fedora-rawhide", 15)])
+    def testMBRParttable(self):
+        """
+        Description:
+            Test the case when the disk is MBR partitioned.
+
+        Expected results:
+            - The mount point mapping scenario is available and can be used with
+              MBR partitioned disks.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        # This is required for home-reuse availability check
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.wait_scenario_available("mount-point-mapping", True)
+
+        s.select_mountpoint([("vda", True), ("vdb", False)])
+
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, "vda1")
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(3, "/home")
+        s.select_mountpoint_row_device(3, "home")
+
+        s.select_mountpoint_row_reformat(2)
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        disk = "vda"
+        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+
+        r.check_disk_row(disk, "/boot", "vda1", "1.07 GB", True, "ext4")
+        r.check_disk_row(disk, "/", "vda2", "14.0 GB", True, "btrfs subvolume")
+        r.check_disk_row(disk, "/home", "vda2", "14.0 GB", False, "btrfs")
+
+    def _testWindowsSingleDiskHomeReuse_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
+
+    @run_boot("efi")
+    @disk_images([("", 35), ("fedora-rawhide", 15)])
+    def testWindowsSingleDiskHomeReuse(self):
+        """
+        Description:
+            Test home reuse via 'Mount point mapping' installation method with
+            a disk containig dual boot setup with Windows and Fedora (shared EFI partition).
+
+        Expected results:
+            - The mount point mapping scenario is available and can be used for reuse
+              of the home partition.
+            - The home reuse expected layout is shown in the review screen
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.wait_scenario_available("mount-point-mapping", True)
+
+        s.select_mountpoint([("vda", True), ("vdb", False)])
+
+        s.select_mountpoint_row_device(1, "root")
+        s.select_mountpoint_row_device(2, "vda1")
+        s.select_mountpoint_row_device(3, "vda4")
+        s.select_mountpoint_row_reformat(3)
+        s.add_mountpoint_row()
+        s.select_mountpoint_row_mountpoint(4, "/home")
+        s.select_mountpoint_row_device(4, "home")
+        s.check_mountpoint_row_reformat(4, False)
+
+        i.next(should_fail=True)
+        i.reach(i.steps.REVIEW)
+
+        dev_win_fed = "vda"
+        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
+        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
+                         action="mount")
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
 
 
 if __name__ == '__main__':

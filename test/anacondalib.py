@@ -29,6 +29,9 @@ from utils import add_public_key
 pixel_tests_ignore = ["#anaconda-screen-review-target-system-timezone"]
 
 
+INSTALLER_VM_MEMORY_MB = 4096
+
+
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["bios"]
