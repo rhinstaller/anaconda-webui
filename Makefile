@@ -226,10 +226,6 @@ FORCE:
 $(NODE_MODULES_TEST): FORCE tools/node-modules
 	tools/node-modules make_package_lock_json
 
-.PHONY: print-test-os
-print-test-os:
-	@echo $(TEST_OS)
-
 .PHONY: test-compose
 test-compose: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}"

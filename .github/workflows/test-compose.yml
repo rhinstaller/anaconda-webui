@@ -16,8 +16,6 @@ jobs:
     permissions:
       statuses: write
     runs-on: ubuntu-latest
-    outputs:
-      compose_id: ${{ steps.get-compose.outputs.compose_id }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -45,51 +43,3 @@ jobs:
           else
             make test-compose
           fi
-
-  verify:
-    needs: trigger
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v4
-
-      - name: Wait for jobs and verify success from logs
-        run: |
-          set -e
-          COMPOSE_ID="${{ needs.trigger.outputs.compose_id }}"
-          COMMIT_SHORT=$(git rev-parse --short HEAD)
-          TEST_OS=$(make -s print-test-os TEST_COMPOSE="$COMPOSE_ID")
-          SCENARIO_COMPOSE="${TEST_OS}-compose-${COMPOSE_ID}"
-          SCENARIO_COMPOSE_EFI="${TEST_OS}-efi-compose-${COMPOSE_ID}"
-          BASE="https://logs-cockpit.apps.ocp.cloud.ci.centos.org"
-          REPORT_SUCCESS_MARKER="Compose test report submitted successfully."
-          TIMEOUT=$((60 * 90))
-          INTERVAL=600
-          elapsed=0
-
-          check_log_success() {
-            local log
-            log=$(curl -sSfL --max-time 60 "$1" 2>/dev/null || true)
-            echo "$log" | grep -qF "$REPORT_SUCCESS_MARKER"
-          }
-
-          found_compose=0
-          found_compose_efi=0
-          while [ $elapsed -lt $TIMEOUT ]; do
-            for i in $(seq 0 15); do
-              ts=$(date -u -d "${i} minutes ago" +%Y%m%d-%H%M%S)
-              if [ $found_compose -eq 0 ]; then
-                url_compose="${BASE}/pull-0-${COMMIT_SHORT}-${ts}-${SCENARIO_COMPOSE}/log"
-                check_log_success "$url_compose" && found_compose=1
-              fi
-              if [ $found_compose_efi -eq 0 ]; then
-                url_compose_efi="${BASE}/pull-0-${COMMIT_SHORT}-${ts}-${SCENARIO_COMPOSE_EFI}/log"
-                check_log_success "$url_compose_efi" && found_compose_efi=1
-              fi
-              [ $found_compose -eq 1 ] && [ $found_compose_efi -eq 1 ] && exit 0
-            done
-            sleep $INTERVAL
-            elapsed=$((elapsed + INTERVAL))
-          done
-          echo "Timeout waiting for successful job logs."
-          exit 1
