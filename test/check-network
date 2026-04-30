@@ -34,6 +34,7 @@ class TestNetwork(VirtInstallMachineCase):
         i.open()
 
         iface = n.get_the_iface()
+        n.assert_default_nm_wired_connection_props(iface)
         n.preinstall_connection_test(i, iface)
 
     @run_on_vm_setups("", "bootopts-net1")
