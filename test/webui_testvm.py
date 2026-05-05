@@ -8,6 +8,7 @@ import os
 import signal
 import subprocess
 
+from anacondalib import INSTALLER_VM_MEMORY_MB
 from machine_install import VirtInstallMachine
 
 
@@ -21,7 +22,7 @@ def cmd_cli():
 
     if args.efi:
         os.environ["TEST_FIRMWARE"] = "efi"
-    machine = VirtInstallMachine(image=args.image)
+    machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB)
     try:
         machine.start()
 
