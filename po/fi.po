@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
-"PO-Revision-Date: 2026-04-16 05:19+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
+"PO-Revision-Date: 2026-05-05 15:40+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/fi/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
 #: src/components/storage/installation-method/InstallationDestination.jsx:263
@@ -47,9 +47,16 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 virhe"
+msgstr[1] "$0 virhettä"
 
 #: src/components/app.jsx:82
 msgid "$0 installation"
@@ -72,25 +79,26 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 vaaditaan, mutta vain $1 on saatavilla."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 varoitus"
 msgstr[1] "$0 varoitusta"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 msgid "$0 will be deleted"
 msgstr "$0 poistetaan"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Tiedostojärjestelmä '$0' ei voi olla salatussa lohkolaitteessa"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0':n on oltava '$1':ksi alustetussa laitteessa"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -114,7 +122,7 @@ msgid "Account"
 msgstr "Tili"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 msgid "Actions"
 msgstr "Toimet"
 
@@ -122,7 +130,7 @@ msgstr "Toimet"
 msgid "Add another server..."
 msgstr "Lisää toinen palvelin..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "Lisää liitos"
 
@@ -266,14 +274,12 @@ msgstr ""
 "ole."
 
 #: src/components/review/ReviewConfiguration.jsx:180
-#, fuzzy
-#| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
-msgstr "Tarkistetaan tallennustilan määrityksiä..."
+msgstr "Tarkistetaan asennuksen kokoonpanoa..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "Tarkistetaan tallennustilan asetuksia"
 
@@ -296,7 +302,7 @@ msgstr "Sulje"
 msgid "Close storage editor"
 msgstr "Sulje tallennusmuokkkain"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -308,10 +314,8 @@ msgid "Completed"
 msgstr "Valmis"
 
 #: src/components/review/ReviewConfiguration.jsx:201
-#, fuzzy
-#| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
-msgstr "Ota asetukset käyttöön asentimessa"
+msgstr "Määritys on keskeneräinen"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
@@ -330,7 +334,7 @@ msgstr "Määritä verkko"
 msgid "Configure storage"
 msgstr "Määritä tallennustila"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "Määritä tallennustila uudelleen"
 
@@ -339,7 +343,7 @@ msgstr "Määritä tallennustila uudelleen"
 msgid "Confirm passphrase"
 msgstr "Vahvista salalause"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Jatka"
 
@@ -347,9 +351,13 @@ msgstr "Jatka"
 msgid "Continue installation"
 msgstr "Jatka asennusta"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "Jatka asennuksella"
+
+#: src/components/storage/Common.jsx:39
+msgid "Correct these issues before continuing."
+msgstr "Korjaa nämä ongelmat ennen jatkamista."
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -363,7 +371,7 @@ msgstr "Luo tili"
 msgid "Currently installed: $0"
 msgstr "Tällä hetkellä asennettuna: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "Mukautettu"
 
@@ -380,7 +388,7 @@ msgstr "Päivämäärä ja aika"
 msgid "Delete partition"
 msgstr "Poista osio"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Tiettyjen osioiden poistaminen voi estää $0:n käynnistymisen: $1"
 
@@ -400,20 +408,20 @@ msgstr "Määränpää on salattu"
 msgid "Detailed description of the issue"
 msgstr "Yksityiskohtainen kuvaus ongelmasta"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "Havaittu kelvollinen tallennusasettelu:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "Laite"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "Laitteen kaksoiskappale."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "Monista liitoskohta."
 
@@ -425,7 +433,7 @@ msgstr "Ota root-tili käyttöön"
 msgid "Encrypt my data"
 msgstr "Salaa tietoni"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 msgid "Encrypted"
 msgstr "Salattu"
 
@@ -506,7 +514,7 @@ msgstr "Koko nimi"
 msgid "Full name cannot contain colon characters"
 msgstr "Koko nimi ei saa sisältää kaksoispisteitä"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr "Avustava teksti"
 
@@ -617,7 +625,7 @@ msgstr "Asennetaan"
 msgid "Insufficient disk space"
 msgstr "Riittämätön levytila"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -635,10 +643,8 @@ msgid "Invalid hostname"
 msgstr "Ei kelvollinen isäntänimi"
 
 #: src/components/review/ReviewConfiguration.jsx:197
-#, fuzzy
-#| msgid "completed step"
 msgid "Jump to first incomplete step"
-msgstr "suoritettu vaihe"
+msgstr "Siirry ensimmäiseen keskeneräiseen vaiheeseen"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -707,18 +713,18 @@ msgstr "Keskivahva"
 msgid "Minimum of $0 required"
 msgstr "Vähintään $0 tarvitaan"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Isäntälaitteen ja alalaitteen uudelleenmuotoilun valinta ei vastaa toisiaan."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "Liitoskohta"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "Liitoskohdan määrittely"
 
@@ -777,7 +783,7 @@ msgid "Next"
 msgstr "Seuraava"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "Ei laiteita"
 
@@ -817,7 +823,7 @@ msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 msgid "Not enough space on selected disks."
 msgstr "Valituilla levyillä ei ole riittävästi vapaata tilaa."
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr "Huomautus"
 
@@ -894,7 +900,7 @@ msgstr "Esijulkaisu"
 msgid "Prefer to report manually? $0"
 msgstr "Haluatko mieluummin tehdä raportin manuaalisesti? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "Jatka asentamista"
 
@@ -970,7 +976,7 @@ msgstr "Vapauta tilaa"
 msgid "Reclaim space (required)"
 msgstr "Pyydä tila takaisin (pakollinen)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "Suositeltu"
 
@@ -978,8 +984,8 @@ msgstr "Suositeltu"
 msgid "Recommended partitions:"
 msgstr "Suositellut osiot:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Alusta uudelleen"
 
@@ -988,8 +994,8 @@ msgstr "Alusta uudelleen"
 msgid "Reinstall Fedora"
 msgstr "Asenna Fedora uudelleen"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1049,7 +1055,7 @@ msgstr "Ilmoita ongelmasta"
 msgid "Reporting issue..."
 msgstr "Ilmoitetaan ongelmasta..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "Vaaditaan"
 
@@ -1073,7 +1079,7 @@ msgstr "Muuta kokoa"
 msgid "Resize partition"
 msgstr "Muuta osion kokoa"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Seuraavien osioiden koon muuttaminen $0:sta: $1"
 
@@ -1089,7 +1095,7 @@ msgstr "Rajaa raportin $0-ryhmään. $1"
 msgid "Return to installation"
 msgstr "Palaa asennukseen"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "Palaa tallennusmuokkaimeen"
 
@@ -1145,8 +1151,8 @@ msgstr ""
 msgid "Select"
 msgstr "Valitse"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "Valitse laite"
 
@@ -1166,7 +1172,7 @@ msgstr "Valitse alue"
 msgid "Selected (top = current)"
 msgstr "Valittuna (ylin = nykyinen)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Valitun laitteen muotoa '$0' ei voi alustaa uudelleen."
 
@@ -1214,7 +1220,7 @@ msgstr "Näytä tunnuslause"
 msgid "Show password"
 msgstr "Näytä salasana"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr "Koko"
 
@@ -1238,7 +1244,7 @@ msgstr "Ohjelmistovalinta"
 #: src/components/review/ReviewConfiguration.jsx:204
 msgid ""
 "Some installation steps still need to be completed before you can continue."
-msgstr ""
+msgstr "Jotkin asennusvaiheet on vielä suoritettava ennen kuin voit jatkaa."
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
@@ -1292,7 +1298,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Tallennustilalaajennus epäonnistui"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "Tallennustilavaatimukset eivät täyty"
 
@@ -1411,7 +1417,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Tämä saattaa kestää hetken"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "Tämä kestää hetken"
 
@@ -1432,7 +1438,7 @@ msgstr "Otsikko"
 msgid "To begin using $0, reboot your system."
 msgstr "Aloita $0:n käyttö käynnistämällä järjestelmä uudelleen."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "Jatka valitsemalla laitteet, joihin haluat asentaa."
 
@@ -1486,7 +1492,7 @@ msgstr "Käytä määritettyä tallennustilaa"
 msgid "Use entire disk"
 msgstr "Käytä koko levyä"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 msgid "Use free space"
 msgstr "Käytä vapaata tilaa"
 
@@ -1494,7 +1500,7 @@ msgstr "Käytä vapaata tilaa"
 msgid "Use local account"
 msgstr "Käytä paikallista tiliä"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Käytä RAID-laitetta automaattista osiointia varten"
 
@@ -1594,7 +1600,7 @@ msgstr "nykyinen vaihe"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 msgid "delete"
 msgstr "poista"
 
@@ -1602,11 +1608,11 @@ msgstr "poista"
 msgid "edit"
 msgstr "muokkaa"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "Salaa"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "salattu"
 
@@ -1623,10 +1629,8 @@ msgid "here"
 msgstr "täällä"
 
 #: src/components/review/ReviewConfiguration.jsx:56
-#, fuzzy
-#| msgid "Completed"
 msgid "incomplete"
-msgstr "Valmis"
+msgstr "keskeneräinen"
 
 #: src/components/review/StorageReview.jsx:108
 msgid "mount"
@@ -1640,7 +1644,7 @@ msgstr "käsittelyä odottava vaihe"
 msgid "report the issue manually"
 msgstr "ilmoita ongelmasta manuaalisesti"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr "koko muutettu $0:sta"
 
@@ -3256,9 +3260,6 @@ msgstr "kumoa"
 #~ msgid "Entitlements"
 #~ msgstr "Oikeudet"
 
-#~ msgid "Error"
-#~ msgstr "Virhe"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Virhe FCoE SAN:n lisäämisessä."
 
@@ -4384,9 +4385,6 @@ msgstr "kumoa"
 #~ msgstr ""
 #~ "Fyysinen taltio \"{}\" on muotoa \"{}\", mutta sen tulisi olla muotoa "
 #~ "\"lvmpv\"."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Tee kaikki vaiheet valmiiksi ennen jatkamista"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

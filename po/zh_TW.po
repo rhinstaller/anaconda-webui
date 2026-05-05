@@ -36,7 +36,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
 "PO-Revision-Date: 2026-03-02 04:28+0000\n"
 "Last-Translator: Shihfu Juan <xlion@xlion.tw>\n"
 "Language-Team: Chinese (Traditional) <https://translate.fedoraproject.org/"
@@ -55,9 +55,17 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "錯誤"
 
 #: src/components/app.jsx:82
 msgid "$0 installation"
@@ -79,24 +87,25 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr "需要 $0，但只有 $1 可用。"
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 個警告"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 msgid "$0 will be deleted"
 msgstr "$0 將會被刪除"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "'$0' 檔案系統不能位於加密的區塊裝置上"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' 必須位於格式化為 '$1' 的裝置上"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -118,7 +127,7 @@ msgid "Account"
 msgstr "帳號"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 msgid "Actions"
 msgstr "動作"
 
@@ -126,7 +135,7 @@ msgstr "動作"
 msgid "Add another server..."
 msgstr "新增其他伺服器..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "增加掛載"
 
@@ -269,8 +278,8 @@ msgid "Checking installation configuration..."
 msgstr "正在檢查儲存組態..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "正在檢查儲存組態"
 
@@ -292,7 +301,7 @@ msgstr "關閉"
 msgid "Close storage editor"
 msgstr "關閉儲存編輯器"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr "Cockpit storage 不會提供用於解鎖加密裝置的密碼短語。"
@@ -324,7 +333,7 @@ msgstr "設定網路"
 msgid "Configure storage"
 msgstr "正在配置存儲"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "重新設定儲存裝置"
 
@@ -333,7 +342,7 @@ msgstr "重新設定儲存裝置"
 msgid "Confirm passphrase"
 msgstr "確認密碼"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "繼續"
 
@@ -341,9 +350,15 @@ msgstr "繼續"
 msgid "Continue installation"
 msgstr "繼續安裝"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "繼續以繼續安裝"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "請在繼續之前完成所有輻輳項目"
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -357,7 +372,7 @@ msgstr "建立帳號"
 msgid "Currently installed: $0"
 msgstr "目前已安裝：$0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "自訂"
 
@@ -376,7 +391,7 @@ msgstr "日期和時間"
 msgid "Delete partition"
 msgstr "延伸分割區"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "刪除特定分割區可能會導致 $0 無法開機：$1"
 
@@ -396,20 +411,20 @@ msgstr "目的地已加密"
 msgid "Detailed description of the issue"
 msgstr "問題的詳細描述"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "已偵測到有效的儲存空間佈局："
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "裝置"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "重複的設備。"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "重複的掛載點。"
 
@@ -421,7 +436,7 @@ msgstr "啟用 root 帳號(_E)"
 msgid "Encrypt my data"
 msgstr "加密我的資料"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 msgid "Encrypted"
 msgstr "已加密"
 
@@ -499,7 +514,7 @@ msgstr "全名"
 msgid "Full name cannot contain colon characters"
 msgstr "全名不能包含冒號"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr "輔助文字"
 
@@ -609,7 +624,7 @@ msgstr "正在安裝"
 msgid "Insufficient disk space"
 msgstr "磁碟空間不足"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -696,17 +711,17 @@ msgstr "中等"
 msgid "Minimum of $0 required"
 msgstr "最少需要 $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "父裝置與子裝置的重新格式化選擇不匹配。"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "掛載點"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "掛載點分配"
 
@@ -763,7 +778,7 @@ msgid "Next"
 msgstr "下一步"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "沒有裝置"
 
@@ -801,7 +816,7 @@ msgstr "所選取的磁碟上的可用空間不足。"
 msgid "Not enough space on selected disks."
 msgstr "所選取的磁碟上的空間不足。"
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr "備註"
 
@@ -877,7 +892,7 @@ msgstr "預先發行"
 msgid "Prefer to report manually? $0"
 msgstr "偏好手動回報？$0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "繼續安裝"
 
@@ -951,7 +966,7 @@ msgstr "取回磁碟空間(_R)"
 msgid "Reclaim space (required)"
 msgstr "取回空間（必須）"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "推薦的"
 
@@ -959,8 +974,8 @@ msgstr "推薦的"
 msgid "Recommended partitions:"
 msgstr "建議分割區："
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "重新格式化"
 
@@ -969,8 +984,8 @@ msgstr "重新格式化"
 msgid "Reinstall Fedora"
 msgstr "重新安裝 Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1022,7 +1037,7 @@ msgstr "回報問題"
 msgid "Reporting issue..."
 msgstr "回報問題中..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "必須"
 
@@ -1048,7 +1063,7 @@ msgstr "調整大小"
 msgid "Resize partition"
 msgstr "延伸分割區"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr "重新調整以下分割區的大小從 $0：$1"
 
@@ -1064,7 +1079,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "回到安裝"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "回到儲存空間編輯器"
 
@@ -1119,8 +1134,8 @@ msgstr "使用硬碟加密來保護您的資料。 此設定僅適用於新分�
 msgid "Select"
 msgstr "選取"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "選取的裝置"
 
@@ -1140,7 +1155,7 @@ msgstr "選擇區域"
 msgid "Selected (top = current)"
 msgstr "已選取（頂端 = 目前）"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "無法重新格式化所選的裝置格式 '$0' 。"
 
@@ -1188,7 +1203,7 @@ msgstr "顯示密碼"
 msgid "Show password"
 msgstr "顯示密碼"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr "大小"
 
@@ -1261,7 +1276,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "儲存空間外掛失敗"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "儲存空間需求不滿足"
 
@@ -1375,7 +1390,7 @@ msgstr "此配置將用於啟動時解鎖系統"
 msgid "This may take a moment"
 msgstr "這可能需要一段時間"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "這會需要一段時間"
 
@@ -1396,7 +1411,7 @@ msgstr "標題"
 msgid "To begin using $0, reboot your system."
 msgstr "若要開始使用 $0，請重新啟動您的系統。"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "若要繼續。請選擇要安裝的設備。"
 
@@ -1449,7 +1464,7 @@ msgstr "使用已配置的儲存空間"
 msgid "Use entire disk"
 msgstr "使用整個硬碟"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 msgid "Use free space"
 msgstr "使用可用的空間"
 
@@ -1457,7 +1472,7 @@ msgstr "使用可用的空間"
 msgid "Use local account"
 msgstr "使用本機帳號"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr "使用 RAID 裝置進行自動分割"
 
@@ -1549,7 +1564,7 @@ msgstr "目前步驟"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 msgid "delete"
 msgstr "刪除"
 
@@ -1557,11 +1572,11 @@ msgstr "刪除"
 msgid "edit"
 msgstr "編輯"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "加密"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "已加密"
 
@@ -1595,7 +1610,7 @@ msgstr "待執行步驟"
 msgid "report the issue manually"
 msgstr "手動回報問題"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr "已從 $0 調整大小"
 
@@ -3015,9 +3030,6 @@ msgstr "復原"
 #~ msgid "Entitlements"
 #~ msgstr "權利"
 
-#~ msgid "Error"
-#~ msgstr "錯誤"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "加入 FCoE SAN 時發生錯誤。"
 
@@ -4099,9 +4111,6 @@ msgstr "復原"
 #~ "Physical volume \"{}\" has a format of \"{}\", but should have a format "
 #~ "of \"lvmpv\"."
 #~ msgstr "實體卷宗 \"{}\" 格式為 \"{}\"，但應該為「lvmpv」格式。"
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "請在繼續之前完成所有輻輳項目"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 40.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
 "PO-Revision-Date: 2026-03-24 04:33+0000\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <https://translate.fedoraproject.org/projects/"
@@ -28,9 +28,20 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "Napaka"
+msgstr[1] "Napaka"
+msgstr[2] "Napaka"
+msgstr[3] "Napaka"
 
 #: src/components/app.jsx:82
 msgid "$0 installation"
@@ -52,7 +63,8 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 je zahtevan, a samo $1 je na voljo."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 opozoril"
@@ -60,19 +72,19 @@ msgstr[1] "$0 opozorilo"
 msgstr[2] "$0 opozorili"
 msgstr[3] "$0 opozorila"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 msgid "$0 will be deleted"
 msgstr "$0 bo izbrisano"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Datotečni sistem »$0« ne more biti na šifrirani bločni napravi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "»$0« mora biti na napravi, ki je formatirana na »$1«"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -96,7 +108,7 @@ msgid "Account"
 msgstr "Račun"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 msgid "Actions"
 msgstr "Dejanja"
 
@@ -104,7 +116,7 @@ msgstr "Dejanja"
 msgid "Add another server..."
 msgstr "Dodaj drug strežnik..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "Dodaj nosilec"
 
@@ -253,8 +265,8 @@ msgid "Checking installation configuration..."
 msgstr "Preverjanje konfiguracije hrambe..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "Preverjanje prilagoditve hrambe"
 
@@ -276,7 +288,7 @@ msgstr "Zapri"
 msgid "Close storage editor"
 msgstr "Zapri urejevalnik hrambe"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -309,7 +321,7 @@ msgstr "Konfiguriraj omrežje"
 msgid "Configure storage"
 msgstr "Prilagodi hrambo"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "Znova prilagodi hrambo"
 
@@ -318,7 +330,7 @@ msgstr "Znova prilagodi hrambo"
 msgid "Confirm passphrase"
 msgstr "Potrdi šifrirno geslo"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Nadaljuj"
 
@@ -326,9 +338,13 @@ msgstr "Nadaljuj"
 msgid "Continue installation"
 msgstr "Nadaljuj z namestitvijo"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "Nadaljuj z namestitvijo"
+
+#: src/components/storage/Common.jsx:39
+msgid "Correct these issues before continuing."
+msgstr ""
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -342,7 +358,7 @@ msgstr "Ustvari račun"
 msgid "Currently installed: $0"
 msgstr "Trenutno nameščeno: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "Po meri"
 
@@ -361,7 +377,7 @@ msgstr "Datum in čas"
 msgid "Delete partition"
 msgstr "razširjen razdelek"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Brisanje določenih razdelkov lahko prepreči zagon $0: $1"
 
@@ -381,20 +397,20 @@ msgstr "Cilj je šifriran"
 msgid "Detailed description of the issue"
 msgstr "Podrobni opis težave"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "Zaznana veljavna postavitev hrambe:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "Naprava"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "Podvoji napravo."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "Podvoji priklopno točko."
 
@@ -406,7 +422,7 @@ msgstr "Omogoči korenski račun"
 msgid "Encrypt my data"
 msgstr "Šifriraj moje podatke"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 msgid "Encrypted"
 msgstr "Šifrirano"
 
@@ -487,7 +503,7 @@ msgstr "Polno ime"
 msgid "Full name cannot contain colon characters"
 msgstr "Polno ime ne sme vsebovati dvopičij"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr "Besedilo pomoči"
 
@@ -604,7 +620,7 @@ msgstr "Nameščanje"
 msgid "Insufficient disk space"
 msgstr "Nezadosten prostor na disku"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -695,19 +711,19 @@ msgstr "Medij"
 msgid "Minimum of $0 required"
 msgstr "Potrebnih je najmanj $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Neusklajenost med izbiro ponovnega formatiranja nadrejene naprave in "
 "podrejene naprave."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "Točka priklopa"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "Dodelitev priklopne točke"
 
@@ -766,7 +782,7 @@ msgid "Next"
 msgstr "Naprej"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "Ni naprav"
 
@@ -806,7 +822,7 @@ msgstr "Na izbranih diskih ni dovolj prostega prostora."
 msgid "Not enough space on selected disks."
 msgstr "Premalo prostora na izbranih diskih."
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr "Opomba"
 
@@ -883,7 +899,7 @@ msgstr "Pred-izdaja"
 msgid "Prefer to report manually? $0"
 msgstr "Bi raje poročali ročno? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "Nadaljuj z namestitvijo"
 
@@ -959,7 +975,7 @@ msgstr "Zahtevaj prostor nazaj"
 msgid "Reclaim space (required)"
 msgstr "Povrni prostor (obvezno)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "Priporočeno"
 
@@ -967,8 +983,8 @@ msgstr "Priporočeno"
 msgid "Recommended partitions:"
 msgstr "Priporočeni razdelki:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Ponovno formatiraj"
 
@@ -977,8 +993,8 @@ msgstr "Ponovno formatiraj"
 msgid "Reinstall Fedora"
 msgstr "Ponovno namesti Fedoro"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1039,7 +1055,7 @@ msgstr "Poročaj o težavi"
 msgid "Reporting issue..."
 msgstr "Poročanje o težavi..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "Obvezno"
 
@@ -1065,7 +1081,7 @@ msgstr "Spremeni velikost"
 msgid "Resize partition"
 msgstr "Razširjen razdelek"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Spreminjanje velikosti naslednjih razdelkov z $0: $1"
 
@@ -1081,7 +1097,7 @@ msgstr "Omeji poročilo na skupino $0. $1"
 msgid "Return to installation"
 msgstr "Nazaj na namestitev"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "Nazaj v urejevalnik hrambe"
 
@@ -1139,8 +1155,8 @@ msgstr ""
 msgid "Select"
 msgstr "Izberi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "Izberite napravo"
 
@@ -1160,7 +1176,7 @@ msgstr "Izberite pokrajino"
 msgid "Selected (top = current)"
 msgstr "Izbrana (vrhnja = trenutna)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Oblike zapisa izbrane naprave »$0« ni mogoče preoblikovati."
 
@@ -1208,7 +1224,7 @@ msgstr "Pokaži šifrirno geslo"
 msgid "Show password"
 msgstr "Pokaži geslo"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr "Velikost"
 
@@ -1283,7 +1299,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Vstavek za hrambo ni uspel"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "Zahteve za shrambo niso izpolnjene"
 
@@ -1404,7 +1420,7 @@ msgstr "Ta postavitev bo uporabljena za odklepanje vašega sistema ob zagonu"
 msgid "This may take a moment"
 msgstr "To utegne nekaj časa trajati"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "To utegne trajati nekaj časa"
 
@@ -1425,7 +1441,7 @@ msgstr "Naslov"
 msgid "To begin using $0, reboot your system."
 msgstr "Če želite začeti uporabljati $0, znova zaženite sistem."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "Če želite nadaljevati, izberite naprave, v katere želite nameščati."
 
@@ -1479,7 +1495,7 @@ msgstr "Uporabi nastavljeno hrambo"
 msgid "Use entire disk"
 msgstr "Uporabi celoten disk"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 msgid "Use free space"
 msgstr "Uporabi prosti prostor"
 
@@ -1487,7 +1503,7 @@ msgstr "Uporabi prosti prostor"
 msgid "Use local account"
 msgstr "Ustvari krajevni račun"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Uporabi napravo RAID za samodejno particioniranje"
 
@@ -1589,7 +1605,7 @@ msgstr "trenutni korak"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 msgid "delete"
 msgstr "izbriši"
 
@@ -1597,11 +1613,11 @@ msgstr "izbriši"
 msgid "edit"
 msgstr "uredi"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "šifriraj"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "šifrirano"
 
@@ -1635,7 +1651,7 @@ msgstr "korak v teku"
 msgid "report the issue manually"
 msgstr "ročno prijavite težavo"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr "spremenjena velikost iz $0"
 
@@ -3200,9 +3216,6 @@ msgstr "razveljavi"
 
 #~ msgid "Entitlements"
 #~ msgstr "Pravice"
-
-#~ msgid "Error"
-#~ msgstr "Napaka"
 
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Napaka pri dodajanju FCoE SAN."

@@ -28,8 +28,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
-"PO-Revision-Date: 2026-04-16 05:19+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
+"PO-Revision-Date: 2026-05-01 05:56+0000\n"
 "Last-Translator: Oğuz Ersen <oguz@ersen.moe>\n"
 "Language-Team: Turkish <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/tr/>\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1)\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
 #: src/components/storage/installation-method/InstallationDestination.jsx:263
@@ -47,9 +47,16 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 hata"
+msgstr[1] "$0 hata"
 
 #: src/components/app.jsx:82
 msgid "$0 installation"
@@ -72,25 +79,26 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 gerekli, ama yalnızca $1 var."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 uyarı"
 msgstr[1] "$0 uyarı"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 msgid "$0 will be deleted"
 msgstr "$0 silinecek"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "'$0' dosya sistemi şifrelenmiş bir blok aygıtı üzerinde olamaz"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0', '$1' olarak biçimlendirilen bir aygıt üzerinde olmalıdır"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -114,7 +122,7 @@ msgid "Account"
 msgstr "Hesap"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 msgid "Actions"
 msgstr "Eylemler"
 
@@ -122,7 +130,7 @@ msgstr "Eylemler"
 msgid "Add another server..."
 msgstr "Başka bir sunucu ekle..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "Bağlama noktası ekle"
 
@@ -266,14 +274,12 @@ msgstr ""
 "seçeneği yoktur."
 
 #: src/components/review/ReviewConfiguration.jsx:180
-#, fuzzy
-#| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
-msgstr "Depolama yapılandırması denetleniyor..."
+msgstr "Kurulum yapılandırması denetleniyor..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "Depolama yapılandırması denetleniyor"
 
@@ -296,7 +302,7 @@ msgstr "Kapat"
 msgid "Close storage editor"
 msgstr "Depolama düzenleyicisini kapat"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -307,10 +313,8 @@ msgid "Completed"
 msgstr "Tamamlandı"
 
 #: src/components/review/ReviewConfiguration.jsx:201
-#, fuzzy
-#| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
-msgstr "Yapılandırmayı kurucuda uygula"
+msgstr "Yapılandırma tamamlanmadı"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
@@ -329,7 +333,7 @@ msgstr "Ağı yapılandır"
 msgid "Configure storage"
 msgstr "Depolamayı yapılandır"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "Depolamayı tekrar yapılandır"
 
@@ -338,7 +342,7 @@ msgstr "Depolamayı tekrar yapılandır"
 msgid "Confirm passphrase"
 msgstr "Parolayı onayla"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Sürdür"
 
@@ -346,9 +350,13 @@ msgstr "Sürdür"
 msgid "Continue installation"
 msgstr "Kuruluma devam et"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "Kuruluma devam et"
+
+#: src/components/storage/Common.jsx:39
+msgid "Correct these issues before continuing."
+msgstr "Devam etmeden önce bu sorunları düzeltin."
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -362,7 +370,7 @@ msgstr "Hesap oluştur"
 msgid "Currently installed: $0"
 msgstr "Şu anda kurulu: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "Özel"
 
@@ -379,7 +387,7 @@ msgstr "Tarih ve saat"
 msgid "Delete partition"
 msgstr "Bölümü sil"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Belirli bölümlerin silinmesi $0 önyüklenmesini engelleyebilir: $1"
 
@@ -399,20 +407,20 @@ msgstr "Hedef şifreli"
 msgid "Detailed description of the issue"
 msgstr "Sorunun ayrıntılı açıklaması"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "Algılanan geçerli depolama düzeni:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "Aygıt"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "Yinelenen aygıt."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "Yinelenen bağlama noktası."
 
@@ -424,7 +432,7 @@ msgstr "Kök hesabını etkinleştir"
 msgid "Encrypt my data"
 msgstr "Verilerimi şifrele"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 msgid "Encrypted"
 msgstr "Şifrelendi"
 
@@ -505,7 +513,7 @@ msgstr "Tam ad"
 msgid "Full name cannot contain colon characters"
 msgstr "Tam ad iki nokta üst üste karakterini içeremez"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr "Yardımcı metin"
 
@@ -618,7 +626,7 @@ msgstr "Kuruluyor"
 msgid "Insufficient disk space"
 msgstr "Yetersiz disk alanı"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -637,10 +645,8 @@ msgid "Invalid hostname"
 msgstr "Geçersiz ana makine adı"
 
 #: src/components/review/ReviewConfiguration.jsx:197
-#, fuzzy
-#| msgid "completed step"
 msgid "Jump to first incomplete step"
-msgstr "tamamlanan adım"
+msgstr "İlk tamamlanmamış adıma git"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -709,18 +715,18 @@ msgstr "Ortam"
 msgid "Minimum of $0 required"
 msgstr "$0'ın en azı gereklidir"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Üst aygıt ve alt aygıt yeniden biçimlendirme seçimi arasında uyumsuzluk."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "Bağlama noktası"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "Bağlama noktası ataması"
 
@@ -779,7 +785,7 @@ msgid "Next"
 msgstr "Sonraki"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "Aygıt yok"
 
@@ -819,7 +825,7 @@ msgstr "Seçilen disklerde yeterli boş alan yok."
 msgid "Not enough space on selected disks."
 msgstr "Seçilen disklerde yeterli alan yok."
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr "Not"
 
@@ -896,7 +902,7 @@ msgstr "Ön sürüm"
 msgid "Prefer to report manually? $0"
 msgstr "Manuel olarak raporlamayı mı tercih ediyorsunuz? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "Kuruluma devam et"
 
@@ -972,7 +978,7 @@ msgstr "Alanı geri kazan"
 msgid "Reclaim space (required)"
 msgstr "Alanı geri kazan (gerekli)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "Tavsiye edilir"
 
@@ -980,8 +986,8 @@ msgstr "Tavsiye edilir"
 msgid "Recommended partitions:"
 msgstr "Tavsiye edilen bölümler:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Yeniden biçimlendir"
 
@@ -990,8 +996,8 @@ msgstr "Yeniden biçimlendir"
 msgid "Reinstall Fedora"
 msgstr "Fedora'yı Yeniden Kur"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1051,7 +1057,7 @@ msgstr "Sorunu bildir"
 msgid "Reporting issue..."
 msgstr "Sorun bildiriliyor..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "Gerekli"
 
@@ -1075,7 +1081,7 @@ msgstr "Yeniden boyutlandır"
 msgid "Resize partition"
 msgstr "Bölümü yeniden boyutlandır"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Şu bölümler $0 boyutundan yeniden boyutlandırılıyor: $1"
 
@@ -1091,7 +1097,7 @@ msgstr "Rapora erişimi $0 grubuyla kısıtlar. $1"
 msgid "Return to installation"
 msgstr "Kuruluma geri dön"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "Depolama düzenleyicisine dön"
 
@@ -1149,8 +1155,8 @@ msgstr ""
 msgid "Select"
 msgstr "Seç"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "Bir aygıt seçin"
 
@@ -1170,7 +1176,7 @@ msgstr "Bölge seç"
 msgid "Selected (top = current)"
 msgstr "Seçilen (en üst = geçerli)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Seçilen aygıtın biçimi '$0' yeniden biçimlendirilemiyor."
 
@@ -1218,7 +1224,7 @@ msgstr "Parolayı göster"
 msgid "Show password"
 msgstr "Parolayı göster"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr "Boyut"
 
@@ -1243,6 +1249,7 @@ msgstr "Yazılım seçimi"
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
+"Devam edebilmeniz için bazı kurulum adımlarının tamamlanması gerekiyor."
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
@@ -1297,7 +1304,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Depolama eklentisi başarısız oldu"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "Depolama gereksinimleri karşılanmadı"
 
@@ -1413,7 +1420,7 @@ msgstr "Bu görünüm, sisteminizi önyüklemede açmada kullanılacak"
 msgid "This may take a moment"
 msgstr "Bu biraz zaman alabilir"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "Bu biraz zaman alacak"
 
@@ -1434,7 +1441,7 @@ msgstr "Başık"
 msgid "To begin using $0, reboot your system."
 msgstr "$0 kullanmaya başlamak için sisteminizi yeniden başlatın."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "Devam etmek için kurulum yapılacak aygıtları seçin."
 
@@ -1488,7 +1495,7 @@ msgstr "Yapılandırılan depolamayı kullan"
 msgid "Use entire disk"
 msgstr "Tüm diski kullan"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 msgid "Use free space"
 msgstr "Serbest alan kullanın"
 
@@ -1496,7 +1503,7 @@ msgstr "Serbest alan kullanın"
 msgid "Use local account"
 msgstr "Yerel hesabı kullan"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Otomatik bölüntüleme için RAID cihazını kullanın"
 
@@ -1595,7 +1602,7 @@ msgstr "geçerli adım"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 msgid "delete"
 msgstr "sil"
 
@@ -1603,11 +1610,11 @@ msgstr "sil"
 msgid "edit"
 msgstr "düzenle"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "şifrele"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "şifrelendi"
 
@@ -1624,10 +1631,8 @@ msgid "here"
 msgstr "burada"
 
 #: src/components/review/ReviewConfiguration.jsx:56
-#, fuzzy
-#| msgid "Completed"
 msgid "incomplete"
-msgstr "Tamamlandı"
+msgstr "tamamlanmadı"
 
 #: src/components/review/StorageReview.jsx:108
 msgid "mount"
@@ -1641,7 +1646,7 @@ msgstr "bekleyen adım"
 msgid "report the issue manually"
 msgstr "hatayı manuel olarak bildir"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr "yeniden boyutlandırıldı (önceki $0)"
 
@@ -3240,9 +3245,6 @@ msgstr "geri al"
 #~ msgid "Entitlements"
 #~ msgstr "Haklar"
 
-#~ msgid "Error"
-#~ msgstr "Hata"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "FCoE SAN eklenirken hata oluştu."
 
@@ -4365,9 +4367,6 @@ msgstr "geri al"
 #~ msgstr ""
 #~ "\"{}\" fiziksel birimi \"{}\" biçiminde, ancak \"lvmpv\" biçiminde "
 #~ "olmalıdır."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Lütfen sürdürmeden önce tüm bölümleri tamamlayın"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

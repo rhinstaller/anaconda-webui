@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
 "PO-Revision-Date: 2023-11-06 12:16+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bengali (India) <https://translate.fedoraproject.org/projects/"
@@ -43,9 +43,18 @@ msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr ""
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "ত্রুটি"
+msgstr[1] "ত্রুটি"
 
 #: src/components/app.jsx:82
 #, fuzzy
@@ -67,29 +76,30 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 #, fuzzy
 #| msgid "No user will be created"
 msgid "$0 will be deleted"
 msgstr "কোনো ব্যবহারকারী তৈরি করা হবে না"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "%s-কে এনক্রিপ্ট করা ব্লক ডিভাইসের উপর স্থাপন করা যাবে না।"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -110,7 +120,7 @@ msgid "Account"
 msgstr "সজ্জা যোগ করুন"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -120,7 +130,7 @@ msgstr "কাজ"
 msgid "Add another server..."
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 #, fuzzy
 msgid "Add mount"
 msgstr "সজ্জা যোগ করুন"
@@ -281,8 +291,8 @@ msgid "Checking installation configuration..."
 msgstr "স্টোরেজ কনফিগারেশন পরীক্ষা করা হচ্ছে..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 #, fuzzy
 msgid "Checking storage configuration"
 msgstr "স্টোরেজ কনফিগারেশন পরীক্ষা করা হচ্ছে..."
@@ -306,7 +316,7 @@ msgstr "বন্ধ করুন"
 msgid "Close storage editor"
 msgstr "ইনস্টলেশন"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -345,7 +355,7 @@ msgstr "সঞ্চয়স্থান সজ্জা সংশোধন ক
 msgid "Configure storage"
 msgstr "সঞ্চয়স্থান সজ্জা সংশোধন করুন (_M)"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 #, fuzzy
 msgid "Configure storage again"
 msgstr "সঞ্চয়স্থান সজ্জা সংশোধন করুন (_M)"
@@ -356,7 +366,7 @@ msgstr "সঞ্চয়স্থান সজ্জা সংশোধন ক
 msgid "Confirm passphrase"
 msgstr "পাসওয়ার্ড নিশ্চিত করুন (_C)"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "এগিয়ে চলুন"
 
@@ -365,10 +375,16 @@ msgstr "এগিয়ে চলুন"
 msgid "Continue installation"
 msgstr "ইনস্টলেশান শুরু করুন (_B)"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 #, fuzzy
 msgid "Continue with installation"
 msgstr "ইনস্টলেশান শুরু করুন (_B)"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "দয়া করে জারি রাখার পূর্বে সকল স্পোক সম্পন্ন করুন"
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -382,7 +398,7 @@ msgstr ""
 msgid "Currently installed: $0"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr ""
 
@@ -403,7 +419,7 @@ msgstr "তারিখ ও সময় সেট"
 msgid "Delete partition"
 msgstr "সাধারণ পার্টিশন"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
@@ -428,21 +444,21 @@ msgstr "কন্টেনারটি এনক্রিপ্ট করা।"
 msgid "Detailed description of the issue"
 msgstr "ডিভাইস বর্ণনা"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "ডিভাইস"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 #, fuzzy
 msgid "Duplicate device."
 msgstr "মাল্টি-পাথ ডিভাইস (_M)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "নতুন মাউন্ট-পয়েন্ট যোগ করুন।"
@@ -456,7 +472,7 @@ msgstr ""
 msgid "Encrypt my data"
 msgstr "এনক্রিপ্ট করুন"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -549,7 +565,7 @@ msgstr "সম্পূর্ণ নাম (_F)"
 msgid "Full name cannot contain colon characters"
 msgstr "পুরো নামে কোলোন অক্ষর থাকতে পারে না"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr ""
 
@@ -668,7 +684,7 @@ msgstr "%s ইনস্টল করা হচ্ছে"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -761,17 +777,17 @@ msgstr ""
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "মাউন্ট পয়েন্ট"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "মাউন্ট পয়েন্ট"
@@ -838,7 +854,7 @@ msgid "Next"
 msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 #, fuzzy
 msgid "No devices"
 msgstr "ডিভাইস যোগ করুন"
@@ -885,7 +901,7 @@ msgstr "নির্বাচিত ডিস্কে পর্যাপ্ত 
 msgid "Not enough space on selected disks."
 msgstr "নির্বাচিত ডিস্কে পর্যাপ্ত খালি স্থান নেই।"
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr ""
 
@@ -968,7 +984,7 @@ msgstr ""
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 #, fuzzy
 #| msgid "Failed to set up installation source"
 msgid "Proceed with installation"
@@ -1058,7 +1074,7 @@ msgstr "জায়গা পুনঃদাবি করুন (_R)"
 msgid "Reclaim space (required)"
 msgstr "জায়গা পুনঃদাবি করুন (_R)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr ""
 
@@ -1066,8 +1082,8 @@ msgstr ""
 msgid "Recommended partitions:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr ""
 
@@ -1078,8 +1094,8 @@ msgstr ""
 msgid "Reinstall Fedora"
 msgstr "ইনস্টল করুন"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 #, fuzzy
@@ -1135,7 +1151,7 @@ msgstr ""
 msgid "Reporting issue..."
 msgstr "পরীক্ষার স্থিতি..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 #, fuzzy
 msgid "Required"
 msgstr "পুনঃমাপযোগ্য নয়"
@@ -1166,7 +1182,7 @@ msgstr ""
 msgid "Resize partition"
 msgstr "সাধারণ পার্টিশন"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
@@ -1183,7 +1199,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "ইনস্টলেশন"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 #, fuzzy
 msgid "Return to storage editor"
 msgstr "ইনস্টলেশন"
@@ -1255,8 +1271,8 @@ msgstr ""
 msgid "Select"
 msgstr "নির্বাচন করুন (_S)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 #, fuzzy
 msgid "Select a device"
 msgstr "নির্বাচিত ডিভাইস"
@@ -1286,7 +1302,7 @@ msgstr "নেটওয়ার্কে (_O):"
 msgid "Selected (top = current)"
 msgstr "নির্বাচিত সজ্জা"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
@@ -1348,7 +1364,7 @@ msgstr "পাসওয়ার্ড নিশ্চিত করুন (_C)"
 msgid "Show password"
 msgstr "Root পাসওয়ার্ড"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr ""
 
@@ -1431,7 +1447,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "নোড লগইন ব্যর্থ হয়েছে।"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr ""
 
@@ -1547,7 +1563,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "ডিস্ক স্ক্যান করা হচ্ছে।  এতে কিছুটা সময় লাগতে পারে..."
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 #, fuzzy
 msgid "This will take a few moments"
 msgstr "ডিস্ক স্ক্যান করা হচ্ছে।  এতে কিছুটা সময় লাগতে পারে..."
@@ -1574,7 +1590,7 @@ msgstr ""
 "\n"
 "আপনার সিস্টেম রিবুট করতে [এন্টার] টিপুন।\n"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr ""
@@ -1632,7 +1648,7 @@ msgstr "সঞ্চয়স্থান সজ্জা সংশোধন ক
 msgid "Use entire disk"
 msgstr "নির্বাচিত ডিভাইস"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 #, fuzzy
 #| msgid "Use Free Space"
 msgid "Use free space"
@@ -1644,7 +1660,7 @@ msgstr "অব্যবহৃত স্থান ব্যবহার করা
 msgid "Use local account"
 msgstr "সকল স্পেস ব্যবহার করুন"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr ""
 
@@ -1744,7 +1760,7 @@ msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1754,13 +1770,13 @@ msgstr "মুছে ফেলুন"
 msgid "edit"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypt"
 msgstr "এনক্রিপ্ট করুন"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypted"
@@ -1798,7 +1814,7 @@ msgstr ""
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr ""
 
@@ -2895,9 +2911,6 @@ msgstr ""
 #~ msgid "Enterprise"
 #~ msgstr "এন্টারপ্রাইজ "
 
-#~ msgid "Error"
-#~ msgstr "ত্রুটি"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "FCoE SAN যোগ করতে সমস্যা হয়েছে।"
 
@@ -3655,9 +3668,6 @@ msgstr ""
 #~ msgstr ""
 #~ "\"%(device)s\" ফিজিক্যাল ভলিউমের \"%(format)s\" ফর্ম্যাট অাছে, কিন্তু "
 #~ "\"lvmpv\" এর একটি ফর্ম্যাট থাকা উচিত ছিল।"
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "দয়া করে জারি রাখার পূর্বে সকল স্পোক সম্পন্ন করুন"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

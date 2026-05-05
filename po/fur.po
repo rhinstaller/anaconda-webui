@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-05 05:30+0000\n"
 "PO-Revision-Date: 2024-02-11 02:42+0000\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <https://translate.fedoraproject.org/projects/"
@@ -25,9 +25,18 @@ msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr ""
+
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "Erôr"
+msgstr[1] "Erôr"
 
 #: src/components/app.jsx:82
 msgid "$0 installation"
@@ -47,29 +56,30 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/review/StorageReview.jsx:285
 #, fuzzy
 #| msgid "No user will be created"
 msgid "$0 will be deleted"
 msgstr "Nol vignarà creât nissun utent"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 #, fuzzy
 #| msgid "'$0' filesystem cannot be on an ecnrypted block device"
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Il filesystem '$0' nol pues stâ suntun dispositîf a blocs cifrât"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' al scugne stâ suntun dispositîf formatât come '$1'"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -89,7 +99,7 @@ msgid "Account"
 msgstr "Account"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/review/StorageReview.jsx:243
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -101,7 +111,7 @@ msgstr "Azion"
 msgid "Add another server..."
 msgstr "Zonte servidôr NTP"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "Zonte pont di montaç"
 
@@ -271,8 +281,8 @@ msgid "Checking installation configuration..."
 msgstr "Verifiche de configurazion de memorie di archiviazion..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "Verifiche de configurazion de memorie di archiviazion"
 
@@ -298,7 +308,7 @@ msgstr "Siere"
 msgid "Close storage editor"
 msgstr "Torne ae instalazion"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
@@ -334,7 +344,7 @@ msgstr "Configure la memorie di archiviazion"
 msgid "Configure storage"
 msgstr "Configure la memorie di archiviazion"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 #, fuzzy
 #| msgid "Configure storage"
 msgid "Configure storage again"
@@ -345,7 +355,7 @@ msgstr "Configure la memorie di archiviazion"
 msgid "Confirm passphrase"
 msgstr "Conferme passphrase"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Continue"
 
@@ -353,11 +363,17 @@ msgstr "Continue"
 msgid "Continue installation"
 msgstr "Continue la instalazion"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 #, fuzzy
 #| msgid "Continue installation"
 msgid "Continue with installation"
 msgstr "Continue la instalazion"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "Completâ dutis lis sezions prime di continuâ"
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -373,7 +389,7 @@ msgstr "Cree account"
 msgid "Currently installed: $0"
 msgstr "Non host atuâl:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "Personalizade"
 
@@ -394,7 +410,7 @@ msgstr "Stabilìs date e ore"
 msgid "Delete partition"
 msgstr "Partizions racomandadis:"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/review/StorageReview.jsx:343
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
@@ -418,20 +434,20 @@ msgstr "Il contignidôr al è cifrât."
 msgid "Detailed description of the issue"
 msgstr "Descrizion dispositîf"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/review/StorageReview.jsx:241
 msgid "Device"
 msgstr "Dispositîf"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "Dispositîfs duplicât."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "Pont di montaç duplicât."
 
@@ -443,7 +459,7 @@ msgstr "Abilite l'account di root"
 msgid "Encrypt my data"
 msgstr "Cifre i miei dâts"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/review/StorageReview.jsx:244
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -533,7 +549,7 @@ msgstr "Non complet"
 msgid "Full name cannot contain colon characters"
 msgstr "Il non complet nol pues contignî il caratar doi ponts"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/review/StorageReview.jsx:246
 msgid "Helper text"
 msgstr ""
 
@@ -646,7 +662,7 @@ msgstr "Daûr a instalâ"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -744,19 +760,19 @@ msgstr "Supuart"
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Corispondence falide tra la selezion di gnove formatazion dal dispositîf "
 "gjenitôr e dal dispositîf fi."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/review/StorageReview.jsx:245
 msgid "Mount point"
 msgstr "Pont di montaç"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "Assegnazion ponts di montaç"
 
@@ -823,7 +839,7 @@ msgid "Next"
 msgstr "Indevant"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "Nissun dispositîf"
 
@@ -868,7 +884,7 @@ msgstr "No vonde spazi libar sui discs selezionâts."
 msgid "Not enough space on selected disks."
 msgstr "No vonde spazi sui discs selezionâts."
 
-#: src/components/review/StorageReview.jsx:379
+#: src/components/review/StorageReview.jsx:387
 msgid "Note"
 msgstr ""
 
@@ -950,7 +966,7 @@ msgstr "Pre-distribuzion"
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 #, fuzzy
 #| msgid "Failed to proceed with the installation."
 msgid "Proceed with installation"
@@ -1039,7 +1055,7 @@ msgstr "_Recupere spazi"
 msgid "Reclaim space (required)"
 msgstr "_Recupere spazi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "Conseât"
 
@@ -1047,8 +1063,8 @@ msgstr "Conseât"
 msgid "Recommended partitions:"
 msgstr "Partizions racomandadis:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Torne formate"
 
@@ -1059,8 +1075,8 @@ msgstr "Torne formate"
 msgid "Reinstall Fedora"
 msgstr "Instale Fedora…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1123,7 +1139,7 @@ msgstr "Segnale il probleme"
 msgid "Reporting issue..."
 msgstr "Segnale il probleme"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "Necessari"
 
@@ -1154,7 +1170,7 @@ msgstr "Dimension di _setôr:"
 msgid "Resize partition"
 msgstr "Partizions racomandadis:"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/review/StorageReview.jsx:349
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
@@ -1170,7 +1186,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "Torne ae instalazion"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 #, fuzzy
 #| msgid "Return to installation"
 msgid "Return to storage editor"
@@ -1243,8 +1259,8 @@ msgstr ""
 msgid "Select"
 msgstr "_Selezione"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "Selezione un dispositîf"
 
@@ -1273,7 +1289,7 @@ msgstr "Selezionâ nissun"
 msgid "Selected (top = current)"
 msgstr "Disposizions selezionadis"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 "Nol è pussibil tornâ a formatâ il formât '$0' dal dispositîf selezionât."
@@ -1333,7 +1349,7 @@ msgstr "Mostre passphrase"
 msgid "Show password"
 msgstr "Mostre password"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/review/StorageReview.jsx:242
 msgid "Size"
 msgstr ""
 
@@ -1418,7 +1434,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Acès grop falît."
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr ""
 
@@ -1535,7 +1551,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Chest al podarès tirâle a dilunc"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 #, fuzzy
 #| msgid "This may take a moment"
 msgid "This will take a few moments"
@@ -1562,7 +1578,7 @@ msgstr ""
 msgid "To begin using $0, reboot your system."
 msgstr "Par scomençâ a doprâ $0, torne invie il sisteme."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "Par continuâ, selezione i dispositîfs dulà lâ a instalâ."
 
@@ -1621,7 +1637,7 @@ msgstr "Configure la memorie di archiviazion"
 msgid "Use entire disk"
 msgstr "Discs selezionâts"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 #, fuzzy
 #| msgid "Use Free Space"
 msgid "Use free space"
@@ -1633,7 +1649,7 @@ msgstr "Dopre spazi libar"
 msgid "Use local account"
 msgstr "Cree account"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
@@ -1733,7 +1749,7 @@ msgstr "passaç corint"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/review/StorageReview.jsx:164
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1743,13 +1759,13 @@ msgstr "Elimine"
 msgid "edit"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypt"
 msgstr "Cifrâ"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/review/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypted"
@@ -1787,7 +1803,7 @@ msgstr "passaçs in spiete"
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/review/StorageReview.jsx:169
 msgid "resized from $0"
 msgstr ""
 
@@ -3369,9 +3385,6 @@ msgstr ""
 #~ msgid "Entitlements"
 #~ msgstr "Dirits"
 
-#~ msgid "Error"
-#~ msgstr "Erôr"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Erôr tal zontâ SAN FCoE."
 
@@ -4504,9 +4517,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Il volum fisic \"{}\" al à un formât di \"{}\", ma al varès di vê un "
 #~ "formât di \"lvmpv\"."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Completâ dutis lis sezions prime di continuâ"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
