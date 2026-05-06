@@ -28,7 +28,12 @@ import {
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors, hasReusableFedoraWithWindowsOS, systemMountPoints } from "../helpers/storage.js";
+import {
+    getDeviceAncestors,
+    hasReusableFedoraWithWindowsOS,
+    intersectSelectedDisksWithUsable,
+    systemMountPoints,
+} from "../helpers/storage.js";
 
 import { PageContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
 
@@ -40,15 +45,17 @@ export const useDiskTotalSpace = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            const diskTotalSpace = await getDiskTotalSpace({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            const diskTotalSpace = await getDiskTotalSpace({ diskNames });
 
             setDiskTotalSpace(diskTotalSpace);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return diskTotalSpace;
 };
@@ -59,15 +66,17 @@ export const useDiskFreeSpace = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            const diskFreeSpace = await getDiskFreeSpace({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            const diskFreeSpace = await getDiskFreeSpace({ diskNames });
 
             setDiskFreeSpace(diskFreeSpace);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return diskFreeSpace;
 };
@@ -138,10 +147,12 @@ export const useMountPointConstraints = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            let _mountPointConstraints = await getMountPointConstraints({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            let _mountPointConstraints = await getMountPointConstraints({ diskNames });
             _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
                 let description = "";
                 const formatType = c["required-filesystem-type"].v;
@@ -154,7 +165,7 @@ export const useMountPointConstraints = () => {
             setMountPointConstraints(_mountPointConstraints);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return mountPointConstraints;
 };

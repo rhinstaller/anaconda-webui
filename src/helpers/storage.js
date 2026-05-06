@@ -323,3 +323,18 @@ export const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks })
     }
     return [];
 };
+
+/**
+ * Selected disks that also appear in the module usable list. SelectedDisks can still name
+ * removed disks after a rescan.
+ *
+ * @param {string[]} selectedDisks
+ * @param {string[]} usableDisks
+ * @returns {string[]}
+ */
+export const intersectSelectedDisksWithUsable = (selectedDisks, usableDisks) => {
+    if (!usableDisks) {
+        return selectedDisks;
+    }
+    return selectedDisks.filter(disk => usableDisks.includes(disk));
+};
