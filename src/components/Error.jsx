@@ -32,10 +32,10 @@ import {
     BUGZILLA_BASE_URL,
     buildBugDescription,
     buildBugSummary,
-    convertToExtlinkIfNeeded,
     createBugzillaEnterBug
 } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
+import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
 import { debug, error } from "../helpers/log.js";
 
 import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";

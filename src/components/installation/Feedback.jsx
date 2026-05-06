@@ -8,6 +8,8 @@ import React, { useContext } from "react";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
+import { convertToExtlinkIfNeeded } from "../../helpers/extlink.js";
+
 import { SystemTypeContext } from "../../contexts/Common.jsx";
 
 import feedbackQRcode from "../../../images/qr-code-feedback.svg";
@@ -29,7 +31,7 @@ export const Feedback = () => {
                   component="a"
                   target={isBootIso ? "_blank" : ""}
                   rel={isBootIso ? "noreferrer" : ""}
-                  href={(isBootIso ? "https://" : "extlink://") + "discussion.fedoraproject.org/tag/anaconda"}>
+                  href={convertToExtlinkIfNeeded("https://discussion.fedoraproject.org/tag/anaconda", !isBootIso)}>
                     https://discussion.fedoraproject.org/tag/anaconda
                 </Content>
             </Content>
