@@ -31,6 +31,8 @@ class TestStorageBasic(VirtInstallMachineCase):
             - When the selected disk[s] does not have enough space for the installation,
               the installer should not allow the user to continue
             - The disk selection should be preserved when moving back and forth between screens
+            - Removing the second disk and rescanning should reflect only the remaining disk
+              (rhbz#2456923)
         """
         b = self.browser
         i = Installer(b, self.machine)
@@ -61,7 +63,7 @@ class TestStorageBasic(VirtInstallMachineCase):
         # the newly added disk, will not be visible in the UI,
         # until the test clicks on the re-scan button
         dev = "vdb"
-        self.add_disk(2, target=dev)
+        vdb_image = self.add_disk(2, target=dev)
         s.rescan_disks(["vda", dev])
 
         # Check the next button is disabled when not sufficient disk space is available
@@ -96,6 +98,13 @@ class TestStorageBasic(VirtInstallMachineCase):
         i.back()
         for disk in ["vda", dev]:
             s.check_disk_selected(disk)
+
+        # rhbz#2456923: unplug second disk while it remains in the installer's selection, then rescan
+        self.rem_disk(vdb_image)
+        s.rescan_disks(["vda"])
+        s.check_disk_selected("vda", selected=True)
+        s.check_disk_selected(dev, selected=False)
+        i.check_next_disabled(False)
 
     def testScenarioSelection(self):
         """
