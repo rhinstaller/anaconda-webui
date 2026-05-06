@@ -13,6 +13,9 @@ import { _getProperty } from "./helpers.js";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime.UserInterface";
 
+const RUNTIME_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime";
+const RUNTIME_INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime";
+
 const getProperty = (...args) => {
     return _getProperty(RuntimeClient, OBJECT_PATH, INTERFACE_NAME, ...args);
 };
@@ -98,4 +101,11 @@ export const getIsFinal = async () => {
  */
 export const getPasswordPolicies = () => {
     return getProperty("PasswordPolicies");
+};
+
+/**
+ * @returns {Promise}           Returns the RebootData structure (action, eject, kexec)
+ */
+export const getRebootData = () => {
+    return _getProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME, "Reboot");
 };
