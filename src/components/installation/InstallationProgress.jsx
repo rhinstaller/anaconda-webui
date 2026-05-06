@@ -23,6 +23,7 @@ import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { Feedback } from "./Feedback.jsx";
+import { useAutoReboot } from "./useAutoReboot.js";
 
 import "./InstallationProgress.scss";
 
@@ -38,7 +39,7 @@ const progressStepsMap = {
     SYSTEM_CONFIGURATION: 3,
 };
 
-export const InstallationProgress = ({ onCritFail }) => {
+export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [status, setStatus] = useState();
     const [statusMessage, setStatusMessage] = useState("");
     const [steps, setSteps] = useState();
@@ -46,6 +47,8 @@ export const InstallationProgress = ({ onCritFail }) => {
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
+
+    useAutoReboot(status, automatedInstall);
 
     useEffect(() => {
         installWithTasks()
