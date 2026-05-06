@@ -6,19 +6,6 @@
 export const BUGZILLA_BASE_URL = "https://bugzilla.redhat.com";
 
 /**
- * Convert an HTTPS URL to extlink:// protocol if needed for non-boot ISO environments
- * @param {String} url - The URL to convert
- * @param {Boolean} useExtlink - Whether to use extlink:// protocol (true for non-boot ISO)
- * @returns {String} - The converted URL
- */
-export const convertToExtlinkIfNeeded = (url, useExtlink) => {
-    if (useExtlink && url.startsWith("https://")) {
-        return url.replace("https://", "extlink://");
-    }
-    return url;
-};
-
-/**
  * Create a Bugzilla URL for entering a bug report
  * @param {Object} osReleaseData - { product, version }
  * @param {String} component - Bugzilla component (defaults to "anaconda")

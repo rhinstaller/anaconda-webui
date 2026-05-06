@@ -15,6 +15,8 @@ import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/
 import { EllipsisVIcon } from "@patternfly/react-icons/dist/esm/icons/ellipsis-v-icon";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
 
+import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
+
 import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import { UserIssue } from "./Error.jsx";
@@ -70,7 +72,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
                   id="anaconda-page-button"
                   variant="link"
                   icon={<ExternalLinkAltIcon />}
-                  href={(isBootIso ? "https://" : "extlink://") + "github.com/rhinstaller/anaconda"}
+                  href={convertToExtlinkIfNeeded("https://github.com/rhinstaller/anaconda", !isBootIso)}
                   target={isBootIso ? "_blank" : ""}
                   component="a">
                     {_("Anaconda project page")}
