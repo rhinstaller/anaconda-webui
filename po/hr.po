@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-12 05:54+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Croatian <https://translate.fedoraproject.org/projects/"
@@ -36,16 +36,26 @@ msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr ""
 
-#: src/components/app.jsx:82
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "Greška"
+msgstr[1] "Greška"
+msgstr[2] "Greška"
+
+#: src/components/app.jsx:83
 #, fuzzy
 msgid "$0 installation"
 msgstr "Instalacija"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:48
 #, fuzzy
 msgid "$0 installer"
 msgstr "_Zatvori program instalacije"
@@ -60,31 +70,32 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:283
 #, fuzzy
 #| msgid "No user will be created"
 msgid "$0 will be deleted"
 msgstr "Korisnik neće biti stvoren"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "%s ne može biti na šifriranom bloku uređaja."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} mora biti na uređaju vrste {type}"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -95,11 +106,11 @@ msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:243
+#: src/components/review/ReviewConfiguration.jsx:233
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -107,7 +118,7 @@ msgid "Account"
 msgstr "_Račun"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/storage/StorageReview.jsx:241
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -119,7 +130,7 @@ msgstr "Radnja"
 msgid "Add another server..."
 msgstr "Dodaj NTP poslužitelj"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 #, fuzzy
 msgid "Add mount"
 msgstr "Dodaj raspored"
@@ -164,7 +175,7 @@ msgstr "Anaconda program za instalaciju"
 msgid "Anaconda Web UI"
 msgstr "Anaconda program za instalaciju"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:78
 #, fuzzy
 msgid "Anaconda project page"
 msgstr "Anaconda program za instalaciju"
@@ -281,15 +292,15 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:180
+#: src/components/review/ReviewConfiguration.jsx:170
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
 msgstr "Provjera podešavanja uređaja pohrane..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 #, fuzzy
 msgid "Checking storage configuration"
 msgstr "Provjera podešavanja uređaja pohrane..."
@@ -313,16 +324,16 @@ msgstr "Zatvori"
 msgid "Close storage editor"
 msgstr "Instalacija"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:178
 msgid "Completed"
 msgstr "Završeno"
 
-#: src/components/review/ReviewConfiguration.jsx:201
+#: src/components/review/ReviewConfiguration.jsx:191
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -339,7 +350,7 @@ msgid "Configure custom NTP servers"
 msgstr "Podesi NTP poslužitelje"
 
 #: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/HeaderKebab.jsx:115
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Configure network"
@@ -351,7 +362,7 @@ msgstr "Podešavanje uređaja pohrane"
 msgid "Configure storage"
 msgstr "Podešavanje uređaja pohrane"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Configure storage again"
@@ -363,7 +374,7 @@ msgstr "Podešavanje uređaja pohrane"
 msgid "Confirm passphrase"
 msgstr "_Potvrdi lozinku"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Nastavi"
 
@@ -372,10 +383,16 @@ msgstr "Nastavi"
 msgid "Continue installation"
 msgstr "Pokretanje predinstalacijskih zadataka"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 #, fuzzy
 msgid "Continue with installation"
 msgstr "Pokretanje predinstalacijskih zadataka"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "Popunite sva polja prije nastavka"
 
 #: src/components/users/index.js:20
 #, fuzzy
@@ -396,7 +413,7 @@ msgstr "Zaključaj korijenski račun"
 msgid "Currently installed: $0"
 msgstr "Trenutni naziv računala:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 #, fuzzy
 msgid "Custom"
 msgstr "_Prilagođeno"
@@ -405,7 +422,7 @@ msgstr "_Prilagođeno"
 msgid "Date"
 msgstr ""
 
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 #: src/components/datetime/DateAndTime.jsx:151
 #, fuzzy
 #| msgid "Set Date & Time"
@@ -418,7 +435,7 @@ msgstr "Postavi datum i vrijeme"
 msgid "Delete partition"
 msgstr "Standardna particija"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/StorageReview.jsx:341
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
@@ -443,21 +460,21 @@ msgstr "Spremnik je šifriran."
 msgid "Detailed description of the issue"
 msgstr "Opis uređaja"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/StorageReview.jsx:239
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
 msgid "Device"
 msgstr "Uređaj"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 #, fuzzy
 msgid "Duplicate device."
 msgstr "_Uređaji s više putanja"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "Odredite točku montiranja."
@@ -474,7 +491,7 @@ msgstr "_Omogući korijenski račun"
 msgid "Encrypt my data"
 msgstr "Šifriraj moje podatke."
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:242
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -506,7 +523,7 @@ msgstr "Obriši diskove i instaliraj"
 msgid "Error details"
 msgstr "Pojedinosti greške: "
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Exit to live desktop"
 msgstr ""
 
@@ -533,11 +550,11 @@ msgstr "Neuspjelo spremanje podešavanja uređaja pohrane"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:147
 msgid "Finalization"
 msgstr "Finalizacija"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:145
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -566,7 +583,7 @@ msgstr "Puno ime"
 msgid "Full name cannot contain colon characters"
 msgstr "Puno ime ne može sadržavati dvotočke"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:244
 msgid "Helper text"
 msgstr ""
 
@@ -595,14 +612,14 @@ msgstr "Sakrij lozinku."
 msgid "Hostname"
 msgstr "Naziv računala"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:148
+#: src/components/storage/installation-method/InstallationScenario.jsx:145
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Želite li je ipak koristiti?"
 
-#: src/components/review/ReviewConfiguration.jsx:298
+#: src/components/review/ReviewConfiguration.jsx:288
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -610,11 +627,11 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/review/ReviewConfiguration.jsx:303
+#: src/components/review/ReviewConfiguration.jsx:293
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:304
+#: src/components/review/ReviewConfiguration.jsx:294
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -638,11 +655,11 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Ako ne shvaćate ili ne prihvaćate rizike, tada zatvorite ovaj program."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/installation/InstallationProgress.jsx:183
 msgid "In progress"
 msgstr "U tijeku"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 #, fuzzy
 #| msgid "Installing."
 msgid "Initializing..."
@@ -655,32 +672,32 @@ msgid "Install"
 msgstr "Instaliraj"
 
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "Instalacija neuspjela"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 #, fuzzy
 msgid "Installation method"
 msgstr "Instalacija je završila"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:104
+#: src/components/installation/InstallationProgress.jsx:108
 #, fuzzy
 msgid "Installation of the system failed"
 msgstr "Instalacija neuspjela"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:84
 #, fuzzy
 msgid "Installation of the system failed: $0"
 msgstr "Instalacija neuspjela"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:248
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalacija"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:125
 msgid "Installing"
 msgstr "Instalacija"
 
@@ -688,7 +705,7 @@ msgstr "Instalacija"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -703,7 +720,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Nevaljani naziv poslužitelja"
 
-#: src/components/review/ReviewConfiguration.jsx:197
+#: src/components/review/ReviewConfiguration.jsx:187
 #, fuzzy
 #| msgid "completed step"
 msgid "Jump to first incomplete step"
@@ -723,7 +740,7 @@ msgstr "Tipkovnica"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
 msgid "Language"
 msgstr "Jezik"
@@ -768,7 +785,7 @@ msgstr "Podešavanje uređaja"
 msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:85
 #, fuzzy
 msgid "May need more free space"
 msgstr "Instaliranje softvera"
@@ -781,17 +798,17 @@ msgstr ""
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/StorageReview.jsx:243
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
 msgid "Mount point"
 msgstr "Točka montiranja"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "Točka montiranja"
@@ -827,7 +844,7 @@ msgstr "DNS"
 msgid "Name"
 msgstr "Naziv"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:83
 msgid "Needs at least $0"
 msgstr ""
 
@@ -858,7 +875,7 @@ msgid "Next"
 msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 #, fuzzy
 msgid "No devices"
 msgstr "Dodaj uređaj"
@@ -906,10 +923,6 @@ msgstr "Nedovoljno slobodnog prostora na odabranim diskovima."
 msgid "Not enough space on selected disks."
 msgstr "Nedovoljno slobodnog prostora na odabranim diskovima."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr ""
-
 #: src/components/AnacondaHeader.jsx:71
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
@@ -924,7 +937,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:202
 #, fuzzy
 msgid "Operating system"
 msgstr "korak na čekanju"
@@ -959,7 +972,7 @@ msgstr ""
 msgid "Passphrases must match"
 msgstr "Lozinke se ne podudaraju."
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:172
 msgid "Pending"
 msgstr "Čekanje"
 
@@ -977,7 +990,7 @@ msgstr "Nema odabranih diskova; odaberite barem jedan disk za instalaciju."
 msgid "Pool"
 msgstr "Skup"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/HeaderKebab.jsx:49
 msgid "Powered by Anaconda"
 msgstr ""
 
@@ -989,7 +1002,7 @@ msgstr "Predizdanje"
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 #, fuzzy
 #| msgid "Failed to proceed with the installation."
 msgid "Proceed with installation"
@@ -1005,16 +1018,16 @@ msgstr "Zatvori"
 msgid "Quit installer?"
 msgstr "_Zatvori program instalacije"
 
-#: src/components/app.jsx:127
+#: src/components/app.jsx:128
 #, fuzzy
 msgid "Reading information about the OS failed."
 msgstr "Registracija neuspjela."
 
-#: src/components/app.jsx:72
+#: src/components/app.jsx:73
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:118
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "Ponovno podešavanje uređaja neuspjelo."
@@ -1052,7 +1065,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "_Ponovno pokreni sustav"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 #, fuzzy
 #| msgid "/boot file system"
 msgid "Reboot to installed system"
@@ -1081,7 +1094,7 @@ msgstr "_Povrati prostor"
 msgid "Reclaim space (required)"
 msgstr "_Povrati prostor"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr ""
 
@@ -1089,8 +1102,8 @@ msgstr ""
 msgid "Recommended partitions:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Ponovno formatiraj"
 
@@ -1101,8 +1114,8 @@ msgstr "Ponovno formatiraj"
 msgid "Reinstall Fedora"
 msgstr "Instalirano"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1137,7 +1150,7 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:129
 msgid "Report Issue"
 msgstr ""
 
@@ -1157,7 +1170,7 @@ msgstr ""
 msgid "Reporting issue..."
 msgstr "testiranje stanja..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 #, fuzzy
 msgid "Required"
 msgstr "Nije registrirano."
@@ -1191,7 +1204,7 @@ msgstr "_Veličina sektora:"
 msgid "Resize partition"
 msgstr "Standardna particija"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:347
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
@@ -1208,7 +1221,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "Instalacija"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 #, fuzzy
 msgid "Return to storage editor"
 msgstr "Instalacija"
@@ -1240,7 +1253,7 @@ msgstr "Korijenska lozinka je postavljena."
 msgid "Save"
 msgstr "_Spremi"
 
-#: src/components/installation/Feedback.jsx:27
+#: src/components/installation/Feedback.jsx:29
 msgid "Scan the QR code with your phone or visit:"
 msgstr ""
 
@@ -1280,8 +1293,8 @@ msgstr ""
 msgid "Select"
 msgstr "_Odaberi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 #, fuzzy
 msgid "Select a device"
 msgstr "Odabrani uređaj"
@@ -1310,11 +1323,11 @@ msgstr "Odaberi nijedan"
 msgid "Selected (top = current)"
 msgstr "Odabrani rasporedi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
-#: src/components/installation/Feedback.jsx:26
+#: src/components/installation/Feedback.jsx:28
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Neuspjeli nastavak instalacije."
@@ -1372,15 +1385,15 @@ msgstr "_Potvrdi lozinku"
 msgid "Show password"
 msgstr "Prikaži lozinku."
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:240
 msgid "Size"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:137
 msgid "Software installation"
 msgstr "Instalacija softvera"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:135
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1388,12 +1401,12 @@ msgstr ""
 "Instalacija softvera: Podešavanje uređaja pohrane je završena. Softver se "
 "trenutno instalira na vaš uređaj."
 
-#: src/components/review/ReviewConfiguration.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:226
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Odabir softvera"
 
-#: src/components/review/ReviewConfiguration.jsx:204
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1412,19 +1425,19 @@ msgstr "Nema prostora"
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:265
+#: src/components/review/ReviewConfiguration.jsx:255
 #, fuzzy
 msgid "Storage"
 msgstr "Mogućnosti uređaja pohrane"
 
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:129
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/steps.js:33
 msgid "Storage configuration"
 msgstr "Podešavanje uređaja pohrane"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:130
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Podešavanje uređaja pohrane. Uređaj pohrane se trenutno podešava."
 
@@ -1455,7 +1468,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Prijava čvora neuspjela."
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr ""
 
@@ -1463,7 +1476,7 @@ msgstr ""
 msgid "Strong"
 msgstr "Snažna"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:120
 msgid "Successfully installed"
 msgstr ""
 
@@ -1489,11 +1502,11 @@ msgstr "Odaberi jezik"
 msgid "System"
 msgstr "Datotečni sustav"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:142
 msgid "System configuration"
 msgstr "Podešavanje sustava"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:140
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1501,7 +1514,7 @@ msgstr ""
 "Podešavanje sustava: Instalacija softvera je završena. Sustav se trenutno "
 "podešava."
 
-#: src/components/app.jsx:162
+#: src/components/app.jsx:163
 #, fuzzy
 #| msgid "Choose an installation source type."
 msgid "The Anaconda installation has stopped unexpectedly."
@@ -1575,7 +1588,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Ovo može kratko potrajati"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 #, fuzzy
 #| msgid "This may take a moment"
 msgid "This will take a few moments"
@@ -1588,7 +1601,7 @@ msgid "Time"
 msgstr "Vremenska zona: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:230
+#: src/components/review/ReviewConfiguration.jsx:220
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
@@ -1598,14 +1611,14 @@ msgstr "Vremenska zona: %s\n"
 msgid "Title"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:163
 #, fuzzy
 msgid "To begin using $0, reboot your system."
 msgstr ""
 "\n"
 "Pritisnite [Enter] za ponovno pokretanje sustava.\n"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr "Nema odabranih diskova; odaberite barem jedan disk za instalaciju."
@@ -1665,7 +1678,7 @@ msgstr "Podešavanje uređaja pohrane"
 msgid "Use entire disk"
 msgstr "Odabrani diskovi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 #, fuzzy
 #| msgid "Use Free Space"
 msgid "Use free space"
@@ -1677,7 +1690,7 @@ msgstr "Koristi slobodan prostor"
 msgid "Use local account"
 msgstr "Zaključaj korijenski račun"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
@@ -1719,11 +1732,11 @@ msgstr "Instalacija."
 msgid "Weak"
 msgstr "Slaba"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Dobrodošli"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 #, fuzzy
 #| msgid "Welcome to Fedora"
 msgid "Welcome to Fedora Linux"
@@ -1767,17 +1780,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:177
 msgid "completed step"
 msgstr "korak završen"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:182
 msgid "current step"
 msgstr "trenutni korak"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/storage/StorageReview.jsx:162
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1787,13 +1800,13 @@ msgstr "Obrisati"
 msgid "edit"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypt"
 msgstr "Šifriraj"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypted"
@@ -1805,7 +1818,7 @@ msgstr "Šifriraj"
 msgid "extended partition"
 msgstr "Standardna particija"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:102
 #, fuzzy
 msgid "format as $0"
 msgstr "Ponovno formatiraj"
@@ -1814,18 +1827,18 @@ msgstr "Ponovno formatiraj"
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:56
+#: src/components/review/ReviewConfiguration.jsx:58
 #, fuzzy
 #| msgid "Completed"
 msgid "incomplete"
 msgstr "Završeno"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/storage/StorageReview.jsx:106
 #, fuzzy
 msgid "mount"
 msgstr "Dodaj raspored"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:171
 msgid "pending step"
 msgstr "korak na čekanju"
 
@@ -1833,7 +1846,7 @@ msgstr "korak na čekanju"
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:167
 msgid "resized from $0"
 msgstr ""
 
@@ -3306,9 +3319,6 @@ msgstr ""
 #~ msgid "Entitlements"
 #~ msgstr "Prava"
 
-#~ msgid "Error"
-#~ msgstr "Greška"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Greška dodavanja FCoE SAN."
 
@@ -4429,9 +4439,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Fizički uređaj \"{}\" je \"{}\" formata, ali bi trebao biti \"lvmpv\" "
 #~ "formata."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Popunite sva polja prije nastavka"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

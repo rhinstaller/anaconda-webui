@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-12 05:54+0000\n"
 "PO-Revision-Date: 2023-11-06 12:15+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bulgarian <https://translate.fedoraproject.org/projects/"
@@ -43,16 +43,25 @@ msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr ""
 
-#: src/components/app.jsx:82
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "Грешка"
+msgstr[1] "Грешка"
+
+#: src/components/app.jsx:83
 #, fuzzy
 msgid "$0 installation"
 msgstr "Инсталация"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:48
 #, fuzzy
 msgid "$0 installer"
 msgstr "_Изход от инсталатора"
@@ -67,29 +76,30 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:283
 #, fuzzy
 #| msgid "No user will be created"
 msgid "$0 will be deleted"
 msgstr "Няма да бъде създаден потребител"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "%s не може да е върху криптирано блоково устройство."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -100,17 +110,17 @@ msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:243
+#: src/components/review/ReviewConfiguration.jsx:233
 #, fuzzy
 msgid "Account"
 msgstr "Добавяне подредба"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/storage/StorageReview.jsx:241
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -122,7 +132,7 @@ msgstr "Действие"
 msgid "Add another server..."
 msgstr "Добавяне на NTP сървър"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 #, fuzzy
 msgid "Add mount"
 msgstr "Добавяне подредба"
@@ -167,7 +177,7 @@ msgstr "Инсталатор Anaconda"
 msgid "Anaconda Web UI"
 msgstr "Инсталатор Anaconda"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:78
 #, fuzzy
 msgid "Anaconda project page"
 msgstr "Инсталатор Anaconda"
@@ -280,15 +290,15 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:180
+#: src/components/review/ReviewConfiguration.jsx:170
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
 msgstr "Проверка конфигурацията на устройствата за съхранение на данни..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 #, fuzzy
 msgid "Checking storage configuration"
 msgstr "Проверка конфигурацията на устройствата за съхранение на данни..."
@@ -312,17 +322,17 @@ msgstr "Затвори"
 msgid "Close storage editor"
 msgstr "Инсталация"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:178
 #, fuzzy
 msgid "Completed"
 msgstr "Готово!"
 
-#: src/components/review/ReviewConfiguration.jsx:201
+#: src/components/review/ReviewConfiguration.jsx:191
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -339,7 +349,7 @@ msgid "Configure custom NTP servers"
 msgstr "Конфигуриране на NTP сървъри"
 
 #: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/HeaderKebab.jsx:115
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Configure network"
@@ -351,7 +361,7 @@ msgstr "Конфигуриране на уст-ва за съхранение (�
 msgid "Configure storage"
 msgstr "Конфигуриране на уст-ва за съхранение (дискове)"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Configure storage again"
@@ -363,7 +373,7 @@ msgstr "Конфигуриране на уст-ва за съхранение (�
 msgid "Confirm passphrase"
 msgstr "П_аролата отново"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Продължение"
 
@@ -372,10 +382,16 @@ msgstr "Продължение"
 msgid "Continue installation"
 msgstr "Започ_ни инсталирането"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 #, fuzzy
 msgid "Continue with installation"
 msgstr "Започ_ни инсталирането"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "Моля попълнете където трябва, преди да продължите"
 
 #: src/components/users/index.js:20
 #, fuzzy
@@ -395,7 +411,7 @@ msgstr "Създаване на потребител"
 msgid "Currently installed: $0"
 msgstr "Текущо име на хоста: %s\n"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr ""
 
@@ -403,7 +419,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 #: src/components/datetime/DateAndTime.jsx:151
 #, fuzzy
 #| msgid "Set Date & Time"
@@ -416,7 +432,7 @@ msgstr "Задаване дата и час"
 msgid "Delete partition"
 msgstr "Стандартен дял"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/StorageReview.jsx:341
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
@@ -441,21 +457,21 @@ msgstr "Контейнерът е криптиран."
 msgid "Detailed description of the issue"
 msgstr "Описание на устройството"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/StorageReview.jsx:239
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
 msgid "Device"
 msgstr "Устройство"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 #, fuzzy
 msgid "Duplicate device."
 msgstr "Избрано устройство"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "Добавяне нова точка на монтиране"
@@ -469,7 +485,7 @@ msgstr ""
 msgid "Encrypt my data"
 msgstr "Криптирай"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:242
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -501,7 +517,7 @@ msgstr "Изтрий дисковете и инсталирай"
 msgid "Error details"
 msgstr "Подробности за грешката: "
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Exit to live desktop"
 msgstr ""
 
@@ -528,12 +544,12 @@ msgstr "Записването на конфигурацията на стори
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:147
 #, fuzzy
 msgid "Finalization"
 msgstr "Действие"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:145
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -560,7 +576,7 @@ msgstr "Пълно име"
 msgid "Full name cannot contain colon characters"
 msgstr "Пълното име не може да съдържа двоеточие"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:244
 msgid "Helper text"
 msgstr ""
 
@@ -589,25 +605,25 @@ msgstr "С използване на парола"
 msgid "Hostname"
 msgstr "Име на хоста"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:148
+#: src/components/storage/installation-method/InstallationScenario.jsx:145
 #, fuzzy
 msgid "How would you like to install?"
 msgstr ""
 "\n"
 "Ще го/я ползвате ли въпреки това?"
 
-#: src/components/review/ReviewConfiguration.jsx:298
+#: src/components/review/ReviewConfiguration.jsx:288
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/ReviewConfiguration.jsx:303
+#: src/components/review/ReviewConfiguration.jsx:293
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:304
+#: src/components/review/ReviewConfiguration.jsx:294
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -631,12 +647,12 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/installation/InstallationProgress.jsx:183
 #, fuzzy
 msgid "In progress"
 msgstr "Напредък"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr ""
 
@@ -647,33 +663,33 @@ msgid "Install"
 msgstr "_Инсталиране"
 
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:123
 #, fuzzy
 msgid "Installation failed"
 msgstr "Инсталация"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 #, fuzzy
 msgid "Installation method"
 msgstr "Инсталирането завърши"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:104
+#: src/components/installation/InstallationProgress.jsx:108
 #, fuzzy
 msgid "Installation of the system failed"
 msgstr "Инсталация"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:84
 #, fuzzy
 msgid "Installation of the system failed: $0"
 msgstr "Инсталация"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:248
 #, fuzzy
 msgid "Installation type"
 msgstr "Инсталация"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:125
 #, fuzzy
 msgid "Installing"
 msgstr "Инсталиране на {}"
@@ -682,7 +698,7 @@ msgstr "Инсталиране на {}"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -697,7 +713,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Невалидно име на хост"
 
-#: src/components/review/ReviewConfiguration.jsx:197
+#: src/components/review/ReviewConfiguration.jsx:187
 #, fuzzy
 msgid "Jump to first incomplete step"
 msgstr "Готово!"
@@ -719,7 +735,7 @@ msgstr "_Клавиатура"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
 #, fuzzy
 msgid "Language"
@@ -767,7 +783,7 @@ msgstr "Конфигурация на устройство"
 msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:85
 #, fuzzy
 msgid "May need more free space"
 msgstr "Инсталиране на софтуер"
@@ -780,17 +796,17 @@ msgstr ""
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/StorageReview.jsx:243
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
 msgid "Mount point"
 msgstr "Точка на монтиране"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "Точка на монтиране"
@@ -826,7 +842,7 @@ msgstr "DNS"
 msgid "Name"
 msgstr "Име"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:83
 msgid "Needs at least $0"
 msgstr ""
 
@@ -857,7 +873,7 @@ msgid "Next"
 msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 #, fuzzy
 msgid "No devices"
 msgstr "Добавяне на устройство"
@@ -904,10 +920,6 @@ msgstr "На избраните дискове няма достатъчно с�
 msgid "Not enough space on selected disks."
 msgstr "На избраните дискове няма достатъчно свободно пространство."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr ""
-
 #: src/components/AnacondaHeader.jsx:71
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
@@ -919,7 +931,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:202
 #, fuzzy
 msgid "Operating system"
 msgstr "Създаване на потребители"
@@ -958,7 +970,7 @@ msgstr ""
 msgid "Passphrases must match"
 msgstr "Парола"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:172
 msgid "Pending"
 msgstr ""
 
@@ -978,7 +990,7 @@ msgstr ""
 msgid "Pool"
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/HeaderKebab.jsx:49
 msgid "Powered by Anaconda"
 msgstr ""
 
@@ -990,7 +1002,7 @@ msgstr ""
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 #, fuzzy
 #| msgid "Failed to set up installation source"
 msgid "Proceed with installation"
@@ -1006,16 +1018,16 @@ msgstr "Изход"
 msgid "Quit installer?"
 msgstr "_Изход от инсталатора"
 
-#: src/components/app.jsx:127
+#: src/components/app.jsx:128
 #, fuzzy
 msgid "Reading information about the OS failed."
 msgstr "Връзката пропадна"
 
-#: src/components/app.jsx:72
+#: src/components/app.jsx:73
 msgid "Reading information about the computer failed."
 msgstr ""
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:118
 #, fuzzy
 msgid "Reading installer configuration failed."
 msgstr "Преконфигурирането на устройства се провали."
@@ -1051,7 +1063,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "_Рестартиране"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 #, fuzzy
 #| msgid "/boot file system"
 msgid "Reboot to installed system"
@@ -1080,7 +1092,7 @@ msgstr "_Възстанови пространството"
 msgid "Reclaim space (required)"
 msgstr "_Възстанови пространството"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr ""
 
@@ -1088,8 +1100,8 @@ msgstr ""
 msgid "Recommended partitions:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr ""
 
@@ -1100,8 +1112,8 @@ msgstr ""
 msgid "Reinstall Fedora"
 msgstr "_Инсталиране"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 #, fuzzy
@@ -1137,7 +1149,7 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:129
 msgid "Report Issue"
 msgstr ""
 
@@ -1157,7 +1169,7 @@ msgstr ""
 msgid "Reporting issue..."
 msgstr "тестване на състоянието..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 #, fuzzy
 msgid "Required"
 msgstr "С непроменяема големина"
@@ -1188,7 +1200,7 @@ msgstr ""
 msgid "Resize partition"
 msgstr "Стандартен дял"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:347
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
@@ -1205,7 +1217,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "Инсталация"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 #, fuzzy
 msgid "Return to storage editor"
 msgstr "Инсталация"
@@ -1238,7 +1250,7 @@ msgstr "Root паролата беше зададена."
 msgid "Save"
 msgstr "_Запис"
 
-#: src/components/installation/Feedback.jsx:27
+#: src/components/installation/Feedback.jsx:29
 msgid "Scan the QR code with your phone or visit:"
 msgstr ""
 
@@ -1275,8 +1287,8 @@ msgstr ""
 msgid "Select"
 msgstr "_Select"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 #, fuzzy
 msgid "Select a device"
 msgstr "Избрано устройство"
@@ -1306,11 +1318,11 @@ msgstr "В _мрежата:"
 msgid "Selected (top = current)"
 msgstr "Избрани подредби"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
-#: src/components/installation/Feedback.jsx:26
+#: src/components/installation/Feedback.jsx:28
 #, fuzzy
 msgid "Send us feedback on your installation"
 msgstr "Неуспех при задаване източника за инсталиране"
@@ -1368,16 +1380,16 @@ msgstr "П_аролата отново"
 msgid "Show password"
 msgstr "Парола на root"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:240
 msgid "Size"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:137
 #, fuzzy
 msgid "Software installation"
 msgstr "Избор на софтуер"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:135
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1385,12 +1397,12 @@ msgstr ""
 "Инсталация на софтуер: Конфигурацията на дисковете е готова. В момента "
 "Софтуерът се инсталира на вашето устройство."
 
-#: src/components/review/ReviewConfiguration.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:226
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Избор на софтуер"
 
-#: src/components/review/ReviewConfiguration.jsx:204
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1409,20 +1421,20 @@ msgstr "Няма пространство"
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:265
+#: src/components/review/ReviewConfiguration.jsx:255
 #, fuzzy
 msgid "Storage"
 msgstr "Опции на мястото за съхранение"
 
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:129
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/steps.js:33
 #, fuzzy
 msgid "Storage configuration"
 msgstr "Конфигуриране на мрежа"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:130
 msgid "Storage configuration: Storage is currently being configured."
 msgstr ""
 
@@ -1453,7 +1465,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Влизането във възела не успя."
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr ""
 
@@ -1461,7 +1473,7 @@ msgstr ""
 msgid "Strong"
 msgstr "Много добра"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:120
 msgid "Successfully installed"
 msgstr ""
 
@@ -1485,12 +1497,12 @@ msgstr "Езици"
 msgid "System"
 msgstr "Файлова система"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:142
 #, fuzzy
 msgid "System configuration"
 msgstr "Конфигуриране на мрежа"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:140
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1498,7 +1510,7 @@ msgstr ""
 "Конфигурация на системата: Инсталацията на софтуера приключи. В момента "
 "системата се конфигурира."
 
-#: src/components/app.jsx:162
+#: src/components/app.jsx:163
 #, fuzzy
 #| msgid "Choose an installation source type."
 msgid "The Anaconda installation has stopped unexpectedly."
@@ -1571,7 +1583,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Това може да отнеме време."
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 #, fuzzy
 msgid "This will take a few moments"
 msgstr "Това може да отнеме време."
@@ -1583,7 +1595,7 @@ msgid "Time"
 msgstr "Часова зона: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:230
+#: src/components/review/ReviewConfiguration.jsx:220
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
@@ -1593,14 +1605,14 @@ msgstr "Часова зона: %s\n"
 msgid "Title"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:163
 #, fuzzy
 msgid "To begin using $0, reboot your system."
 msgstr ""
 "\n"
 "Натиснете [Enter], за да рестартирате системата.\n"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 #, fuzzy
 msgid "To continue, select the devices to install to."
 msgstr ""
@@ -1659,7 +1671,7 @@ msgstr "Конфигуриране на уст-ва за съхранение (�
 msgid "Use entire disk"
 msgstr "Избрано устройство"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 #, fuzzy
 #| msgid "Use Free Space"
 msgid "Use free space"
@@ -1671,7 +1683,7 @@ msgstr "Използвай свободното пространство"
 msgid "Use local account"
 msgstr "Създаване на потребител"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr ""
 
@@ -1707,11 +1719,11 @@ msgstr ""
 msgid "Weak"
 msgstr "Лесна"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Добре дошли"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 #, fuzzy
 #| msgid "Welcome to Fedora"
 msgid "Welcome to Fedora Linux"
@@ -1755,18 +1767,18 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:177
 #, fuzzy
 msgid "completed step"
 msgstr "Готово!"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:182
 msgid "current step"
 msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/storage/StorageReview.jsx:162
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1776,13 +1788,13 @@ msgstr "Изтриване"
 msgid "edit"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypt"
 msgstr "Криптирай"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypted"
@@ -1794,7 +1806,7 @@ msgstr "Криптирай"
 msgid "extended partition"
 msgstr "Стандартен дял"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:102
 msgid "format as $0"
 msgstr ""
 
@@ -1802,17 +1814,17 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:56
+#: src/components/review/ReviewConfiguration.jsx:58
 #, fuzzy
 msgid "incomplete"
 msgstr "Готово!"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/storage/StorageReview.jsx:106
 #, fuzzy
 msgid "mount"
 msgstr "Добавяне подредба"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:171
 msgid "pending step"
 msgstr ""
 
@@ -1820,7 +1832,7 @@ msgstr ""
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:167
 msgid "resized from $0"
 msgstr ""
 
@@ -3161,9 +3173,6 @@ msgstr ""
 #~ msgid "Enterprise"
 #~ msgstr "Enterprise"
 
-#~ msgid "Error"
-#~ msgstr "Грешка"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Грешка при добавяне на FCoE SAN."
 
@@ -4068,9 +4077,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Физическият том \"%(device)s\" е с формат \"%(format)s\", а трябва да е с "
 #~ "формат \"lvmpv\"."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Моля попълнете където трябва, преди да продължите"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
