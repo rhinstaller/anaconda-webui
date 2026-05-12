@@ -19,6 +19,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 sys.path.append(BOTS_DIR)
 
 # pylint: disable=import-error
+import libvirt  # type: ignore[import-untyped]
 from machine.machine_core import timeout
 from machine.testvm import (
     Machine,  # nopep8
@@ -40,6 +41,20 @@ class VirtInstallMachine(VirtMachine):
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         super().__init__(image, **kwargs)
+
+    def _attach_libvirt_domain(self, timeout_sec=120):
+        conn = self.virt_connection
+        assert conn is not None
+        deadline = time.monotonic() + timeout_sec
+        while time.monotonic() < deadline:
+            try:
+                self._domain = conn.lookupByName(self.label)
+                return
+            except libvirt.libvirtError:
+                time.sleep(0.5)
+        raise AssertionError(
+            f"libvirt domain {self.label!r} did not appear within {timeout_sec}s"
+        )
 
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
@@ -137,6 +152,15 @@ class VirtInstallMachine(VirtMachine):
             iso_path = f"{os.getcwd()}/test/images/{compose}.iso"
         else:
             iso_path = f"{os.getcwd()}/bots/images/{self.image}"
+        # edd=off: EDD probing often hangs on virtio/QEMU ("Probing EDD" forever).
+        # console=ttyS0: send boot log to file-backed serial when VirtMachine enables console_file.
+        # Any console= on the kernel cmdline makes Anaconda default to TUI (argument_parsing.py) and
+        # prompt for text vs RDP; inst.graphical forces GUI so the Web UI can start.
+        virt_kargs = "edd=off "
+        inst_graphical = ""
+        if self.console_file:
+            virt_kargs += "console=ttyS0 "
+            inst_graphical = "inst.graphical "
         extra_args = ""
         if self.is_live():
             # Live install ISO has different directory structure inside
@@ -156,6 +180,11 @@ class VirtInstallMachine(VirtMachine):
         boot_arg = "--boot uefi " if self.is_efi else ""
         extra_boot_args = os.environ.get("TEST_EXTRA_BOOT_ARGS", "")
         extra_boot_args_option = f"--extra-args {shlex.quote(extra_boot_args)} " if extra_boot_args else ""
+        serial_opt = (
+            f"--serial type=file,path={shlex.quote(self.console_file.name)} "
+            if self.console_file
+            else ""
+        )
         try:
             self._execute(
                 "virt-install "
@@ -167,9 +196,10 @@ class VirtInstallMachine(VirtMachine):
                 f"--os-variant=detect=on "
                 f"--memory {self.memory_mb} "
                 "--noautoconsole "
+                f"{serial_opt}"
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote {selinux}{inst_ks_arg} "
+                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {selinux}{inst_ks_arg} "
                 f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
                 f"{self.label}-updates.img' "
                 "--network none "
@@ -183,6 +213,8 @@ class VirtInstallMachine(VirtMachine):
                 f"--disk=none "
                 f"--location {location} &"
             )
+
+            self._attach_libvirt_domain()
 
             # Live install ISO does not have sshd service enabled by default
             # so we can't run any Machine.* methods on it.
@@ -201,31 +233,22 @@ class VirtInstallMachine(VirtMachine):
                 # Symlink /usr/share/cockpit to /usr/local/share/cockpit so that rsync works without killing cockpit-bridge
                 Machine.execute(self, "mkdir -p /usr/local/share/cockpit/anaconda-webui && mount --bind /usr/share/cockpit /usr/local/share/cockpit")
         except Exception as e:
+            self.print_console_log()
             self.kill()
             raise e
 
-    def kill(self):
-        self._execute(f"virsh -q -c qemu:///session destroy {self.label} || true")
+    def _cleanup(self, quick=False):
+        super()._cleanup(quick=quick)
+        # VirtMachine.kill / wait_poweroff destroy the guest but leave persistent XML (virt-install);
+        # undefine so the domain and EFI NVRAM do not accumulate in the session connection.
         self._execute(
-            f"virsh -q -c qemu:///session undefine --nvram "  # tell undefine to also delete the EFI NVRAM device
+            f"virsh -q -c qemu:///session undefine --nvram "
             f"--remove-all-storage {self.label} || true"
         )
         if self.http_install_server:
             self.http_install_server.kill()
             self.http_install_server = None
             self.http_install_port = None
-
-    # pylint: disable=arguments-differ  # this fails locally if you have bots checked out
-    def wait_poweroff(self):
-        for _ in range(10):
-            try:
-                self._execute(f"virsh -q -c qemu:///session domstate {self.label} | grep 'shut off'")
-                Machine.disconnect(self)
-                break
-            except subprocess.CalledProcessError:
-                time.sleep(2)
-        else:
-            raise AssertionError("Test VM did not shut off")
 
     def is_live(self):
         return "live" in self.image
