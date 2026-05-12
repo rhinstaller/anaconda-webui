@@ -34,8 +34,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
-"PO-Revision-Date: 2026-04-04 04:35+0000\n"
+"POT-Creation-Date: 2026-05-12 05:54+0000\n"
+"PO-Revision-Date: 2026-05-01 05:56+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/id/>\n"
@@ -44,7 +44,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
 #: src/components/storage/installation-method/InstallationDestination.jsx:263
@@ -53,15 +53,21 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:82
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 kesalahan"
+
+#: src/components/app.jsx:83
 msgid "$0 installation"
 msgstr "Instalasi $0"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:48
 msgid "$0 installer"
 msgstr "Pemasang $0"
 
@@ -78,25 +84,26 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr "Dibutuhkan $0, tetapi hanya tersedia $1."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 peringatan"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:283
 msgid "$0 will be deleted"
 msgstr "$0 akan dihapus"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr ""
 "Sistem berkas '$0' tidak dapat berada di perangkat blok yang dienkripsi"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' harus berada pada peranti yang diformat ke '$1'"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -111,16 +118,16 @@ msgstr ""
 "Akun pengguna standar dengan akses admin untuk melakukan perubahan sistem "
 "secara menyeluruh."
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "Ihwal"
 
-#: src/components/review/ReviewConfiguration.jsx:243
+#: src/components/review/ReviewConfiguration.jsx:233
 msgid "Account"
 msgstr "Akun"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Aksi"
 
@@ -128,7 +135,7 @@ msgstr "Aksi"
 msgid "Add another server..."
 msgstr "Tambahkan server lain..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "Tambah kait"
 
@@ -165,7 +172,7 @@ msgstr "Anaconda"
 msgid "Anaconda Web UI"
 msgstr "Antarmuka Web Anaconda"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:78
 msgid "Anaconda project page"
 msgstr "Halaman proyek Anaconda"
 
@@ -271,15 +278,13 @@ msgstr ""
 "Perubahan yang dibuat di sini seketika memengaruhi sistem. Tidak ada 'tak "
 "jadi'."
 
-#: src/components/review/ReviewConfiguration.jsx:180
-#, fuzzy
-#| msgid "Checking storage configuration..."
+#: src/components/review/ReviewConfiguration.jsx:170
 msgid "Checking installation configuration..."
-msgstr "Memeriksa konfigurasi penyimpanan..."
+msgstr "Memeriksa konfigurasi instalasi..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "Memeriksa konfigurasi penyimpanan"
 
@@ -301,22 +306,20 @@ msgstr "Tutup"
 msgid "Close storage editor"
 msgstr "Tutup editor penyimpanan"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 "Penyimpanan Cockpit tidak menyediakan frasa sandi untuk membuka kunci "
 "perangkat yang terenkripsi."
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:178
 msgid "Completed"
 msgstr "Lengkap"
 
-#: src/components/review/ReviewConfiguration.jsx:201
-#, fuzzy
-#| msgid "Apply configuration in installer"
+#: src/components/review/ReviewConfiguration.jsx:191
 msgid "Configuration is incomplete"
-msgstr "Terapkan konfigurasi dalam instalasi"
+msgstr "Konfigurasi tidak lengkap"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
@@ -327,7 +330,7 @@ msgid "Configure custom NTP servers"
 msgstr "Konfigurasikan server NTP kustom"
 
 #: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/HeaderKebab.jsx:115
 msgid "Configure network"
 msgstr "Konfigurasi jaringan"
 
@@ -335,7 +338,7 @@ msgstr "Konfigurasi jaringan"
 msgid "Configure storage"
 msgstr "Konfigurasikan penyimpanan"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "Konfigurasikan penyimpanan lagi"
 
@@ -344,7 +347,7 @@ msgstr "Konfigurasikan penyimpanan lagi"
 msgid "Confirm passphrase"
 msgstr "Konfirmasi frasa sandi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "Lanjutkan"
 
@@ -352,9 +355,13 @@ msgstr "Lanjutkan"
 msgid "Continue installation"
 msgstr "Lanjutkan instalasi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "Lanjutkan dengan instalasi"
+
+#: src/components/storage/Common.jsx:39
+msgid "Correct these issues before continuing."
+msgstr "Perbaiki masalah ini sebelum melanjutkan."
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -368,7 +375,7 @@ msgstr "Buat akun"
 msgid "Currently installed: $0"
 msgstr "Saat ini terinstal: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "Ubahan"
 
@@ -376,18 +383,16 @@ msgstr "Ubahan"
 msgid "Date"
 msgstr "Tanggal"
 
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 #: src/components/datetime/DateAndTime.jsx:151
 msgid "Date and time"
 msgstr "Tanggal dan waktu"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
-#, fuzzy
-#| msgid "extended partition"
 msgid "Delete partition"
-msgstr "partisi yang diperluas"
+msgstr "Hapus partisi"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/StorageReview.jsx:341
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Penghapusan partisi tertentu dapat mencegah $0 melakukan booting: $1"
 
@@ -407,20 +412,20 @@ msgstr "Tujuan dienkripsi"
 msgid "Detailed description of the issue"
 msgstr "Deskripsi terperinci tentang masalah"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "Tata letak penyimpanan valid yang terdeteksi:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/StorageReview.jsx:239
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
 msgid "Device"
 msgstr "Peranti"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "Peranti duplikat."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "Titik kait duplikat."
 
@@ -432,7 +437,7 @@ msgstr "Fungsikan akun root"
 msgid "Encrypt my data"
 msgstr "Enkripsikan data saya"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:242
 msgid "Encrypted"
 msgstr "Terenkripsi"
 
@@ -460,7 +465,7 @@ msgstr "Hapus data dan pasang"
 msgid "Error details"
 msgstr "Rincian kesalahan"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Exit to live desktop"
 msgstr "Keluar ke live desktop"
 
@@ -481,11 +486,11 @@ msgstr "Gagal menyimpan tata letak"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux memerlukan setidaknya ruang disk $0."
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:147
 msgid "Finalization"
 msgstr "Finalisasi"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:145
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -513,7 +518,7 @@ msgstr "Nama lengkap"
 msgid "Full name cannot contain colon characters"
 msgstr "Nama lengkap tidak boleh mengandung karakter titik dua"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:244
 msgid "Helper text"
 msgstr "Teks bantuan"
 
@@ -537,23 +542,22 @@ msgstr "Sembunyikan kata sandi"
 msgid "Hostname"
 msgstr "Nama host"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:148
+#: src/components/storage/installation-method/InstallationScenario.jsx:145
 msgid "How would you like to install?"
 msgstr "Bagaimana Anda ingin memasang?"
 
-#: src/components/review/ReviewConfiguration.jsx:298
-#, fuzzy
-#| msgid "I understand that all existing data will be erased"
+#: src/components/review/ReviewConfiguration.jsx:288
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr[0] "Saya memahami bahwa semua data yang ada akan dihapus"
+msgstr[0] ""
+"Saya memahami bahwa semua data yang ada akan dihapus dari disk yang dipilih"
 
-#: src/components/review/ReviewConfiguration.jsx:303
+#: src/components/review/ReviewConfiguration.jsx:293
 msgid "I understand that some existing data will be erased"
 msgstr "Saya memahami bahwa beberapa data yang ada akan dihapus"
 
-#: src/components/review/ReviewConfiguration.jsx:304
+#: src/components/review/ReviewConfiguration.jsx:294
 msgid "I understand that some partitions will be modified"
 msgstr "Saya memahami bahwa beberapa partisi akan dimodifikasi"
 
@@ -583,11 +587,11 @@ msgstr ""
 "Bila Anda tidak paham atau menerima risiko tersebut, harap keluar dari "
 "program ini."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/installation/InstallationProgress.jsx:183
 msgid "In progress"
 msgstr "Dalam progres"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "Menginisialisasi..."
 
@@ -598,28 +602,28 @@ msgid "Install"
 msgstr "Pasang"
 
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "Instalasi gagal"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "Metode instalasi"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:104
+#: src/components/installation/InstallationProgress.jsx:108
 msgid "Installation of the system failed"
 msgstr "Pemasangan sistem gagal"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:84
 msgid "Installation of the system failed: $0"
 msgstr "Instalasi sistem gagal: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Installation type"
 msgstr "Tipe instalasi"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:125
 msgid "Installing"
 msgstr "Memasang"
 
@@ -627,7 +631,7 @@ msgstr "Memasang"
 msgid "Insufficient disk space"
 msgstr "Ruang disk tidak mencukupi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -645,11 +649,9 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Nama host tidak valid"
 
-#: src/components/review/ReviewConfiguration.jsx:197
-#, fuzzy
-#| msgid "completed step"
+#: src/components/review/ReviewConfiguration.jsx:187
 msgid "Jump to first incomplete step"
-msgstr "langkah yang telah lengkap"
+msgstr "Loncat ke langkah pertama yang belum selesai"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -667,7 +669,7 @@ msgstr "Papan Ketik"
 msgid "Keyboard layout during boot"
 msgstr "Tata letak keyboard selama boot"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
 msgid "Language"
 msgstr "Bahasa"
@@ -706,7 +708,7 @@ msgstr "Konfigurasi disk manual: Pemetaan titik kait"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Boleh memuat huruf, angka, dan strip."
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:85
 msgid "May need more free space"
 msgstr "Mungkin memerlukan lebih banyak ruang kosong"
 
@@ -718,18 +720,18 @@ msgstr "Medium"
 msgid "Minimum of $0 required"
 msgstr "Minimum $0 diperlukan"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Tidak cocok antara pilihan format ulang perangkat induk dan perangkat anak."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/StorageReview.jsx:243
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
 msgid "Mount point"
 msgstr "Titik kait"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "Penugasan titik kait"
 
@@ -759,7 +761,7 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Nama"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:83
 msgid "Needs at least $0"
 msgstr "Membutuhkan setidaknya $0"
 
@@ -789,7 +791,7 @@ msgid "Next"
 msgstr "Berikutnya"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "Tidak ada perangkat"
 
@@ -829,10 +831,6 @@ msgstr "Tidak cukup ruang bebas pada disk yang dipilih."
 msgid "Not enough space on selected disks."
 msgstr "Tidak cukup ruang bebas pada disk yang dipilih."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "Catatan"
-
 #: src/components/AnacondaHeader.jsx:71
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
@@ -847,7 +845,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Buka formulir entri bug Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Operating system"
 msgstr "Sistem operasi"
 
@@ -878,7 +876,7 @@ msgstr "Frasa sandi tidak cocok dengan perangkat yang terkunci"
 msgid "Passphrases must match"
 msgstr "Frasa sandi tidak cocok"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:172
 msgid "Pending"
 msgstr "Tertunda"
 
@@ -894,7 +892,7 @@ msgstr "Silakan pilih setidaknya satu disk untuk melanjutkan."
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/HeaderKebab.jsx:49
 msgid "Powered by Anaconda"
 msgstr "Ditenagai oleh Anaconda"
 
@@ -906,7 +904,7 @@ msgstr "Prarilis"
 msgid "Prefer to report manually? $0"
 msgstr "Lebih suka melaporkan secara manual? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "Lanjutkan dengan instalasi"
 
@@ -919,15 +917,15 @@ msgstr "Keluar"
 msgid "Quit installer?"
 msgstr "Keluar pemasang?"
 
-#: src/components/app.jsx:127
+#: src/components/app.jsx:128
 msgid "Reading information about the OS failed."
 msgstr "Pembacaan informasi tentang OS gagal."
 
-#: src/components/app.jsx:72
+#: src/components/app.jsx:73
 msgid "Reading information about the computer failed."
 msgstr "Gagal membaca informasi tentang komputer."
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "Gagal membaca konfigurasi pemasang."
 
@@ -964,7 +962,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "Boot ulang sistem?"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Reboot to installed system"
 msgstr "Mulai ulang ke sistem yang terinstal"
 
@@ -982,7 +980,7 @@ msgstr "Mengambil kembali ruang"
 msgid "Reclaim space (required)"
 msgstr "Mengambil kembali ruang (diperlukan)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "Direkomendasikan"
 
@@ -990,8 +988,8 @@ msgstr "Direkomendasikan"
 msgid "Recommended partitions:"
 msgstr "Partisi yang disarankan:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "Format ulang"
 
@@ -1000,8 +998,8 @@ msgstr "Format ulang"
 msgid "Reinstall Fedora"
 msgstr "Instal ulang Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1041,7 +1039,7 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr "Ganti instalasi saat ini, tetapi pertahankan file di home."
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:129
 msgid "Report Issue"
 msgstr "Laporkan Masalah"
 
@@ -1061,7 +1059,7 @@ msgstr "Laporkan masalah"
 msgid "Reporting issue..."
 msgstr "Sedang melaporkan masalah..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "Diperlukan"
 
@@ -1082,12 +1080,10 @@ msgid "Resize"
 msgstr "Ubah ukuran"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
-#, fuzzy
-#| msgid "Extended partition"
 msgid "Resize partition"
-msgstr "Partisi diperluas"
+msgstr "Ubah ukuran partisi"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:347
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Mengubah ukuran partisi berikut ini dari $0: $1"
 
@@ -1103,7 +1099,7 @@ msgstr "Membatasi laporan ke grup $0. $1"
 msgid "Return to installation"
 msgstr "Kembali ke instalasi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "Kembali ke penyunting penyimpanan"
 
@@ -1131,7 +1127,7 @@ msgstr "Kata sandi root telah diisi."
 msgid "Save"
 msgstr "Simpan"
 
-#: src/components/installation/Feedback.jsx:27
+#: src/components/installation/Feedback.jsx:29
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Pindai kode QR dengan telepon Anda atau kunjungi:"
 
@@ -1162,8 +1158,8 @@ msgstr ""
 msgid "Select"
 msgstr "Pilih"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "Pilih suatu perangkat"
 
@@ -1183,11 +1179,11 @@ msgstr "Pilih wilayah"
 msgid "Selected (top = current)"
 msgstr "Terpilih (atas = saat ini)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Format '$0' dari perangkat yang dipilih tidak bisa diformat ulang."
 
-#: src/components/installation/Feedback.jsx:26
+#: src/components/installation/Feedback.jsx:28
 msgid "Send us feedback on your installation"
 msgstr "Kirimi kami umpan balik tentang instalasi Anda"
 
@@ -1231,15 +1227,15 @@ msgstr "Tampilkan frasa sandi"
 msgid "Show password"
 msgstr "Tampilkan kata sandi"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:240
 msgid "Size"
 msgstr "Ukuran"
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:137
 msgid "Software installation"
 msgstr "Instalasi perangkat lunak"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:135
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1247,15 +1243,17 @@ msgstr ""
 "Instalasi perangkat lunak: Konfigurasi penyimpanan selesai. Perangkat lunak "
 "saat ini sedang dipasang ke perangkat Anda."
 
-#: src/components/review/ReviewConfiguration.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:226
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Pemilihan perangkat lunak"
 
-#: src/components/review/ReviewConfiguration.jsx:204
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
+"Beberapa langkah instalasi masih perlu diselesaikan sebelum Anda dapat "
+"melanjutkan."
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
@@ -1269,18 +1267,18 @@ msgstr "Ruang"
 msgid "Stacktrace"
 msgstr "Stacktrace"
 
-#: src/components/review/ReviewConfiguration.jsx:265
+#: src/components/review/ReviewConfiguration.jsx:255
 msgid "Storage"
 msgstr "Penyimpanan"
 
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:129
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/steps.js:33
 msgid "Storage configuration"
 msgstr "Konfigurasi penyimpanan"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:130
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Konfigurasi penyimpanan: Penyimpanan saat ini sedang dikonfigurasi."
 
@@ -1301,12 +1299,14 @@ msgid ""
 "Storage layout is defined by the kickstart file. The planned partitioning "
 "layout can be reviewed in the summary step."
 msgstr ""
+"Tata letak penyimpanan ditentukan oleh berkas kickstart. Tata letak partisi "
+"yang direncanakan dapat ditinjau di langkah ringkasan."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
 msgid "Storage plugin failed"
 msgstr "Plugin penyimpanan gagal"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "Kebutuhan penyimpanan tidak dipenuhi"
 
@@ -1314,7 +1314,7 @@ msgstr "Kebutuhan penyimpanan tidak dipenuhi"
 msgid "Strong"
 msgstr "Kuat"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:120
 msgid "Successfully installed"
 msgstr "Sukses dipasang"
 
@@ -1334,11 +1334,11 @@ msgstr "Bahasa yang disarankan"
 msgid "System"
 msgstr "Sistem"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:142
 msgid "System configuration"
 msgstr "Konfigurasi sistem"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:140
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1346,13 +1346,11 @@ msgstr ""
 "Konfigurasi sistem: Instalasi perangkat lunak selesai. Sistem sedang "
 "dikonfigurasi."
 
-#: src/components/app.jsx:162
+#: src/components/app.jsx:163
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Instalasi Anaconda telah berhenti secara tidak terduga."
 
 #: src/components/users/Accounts.jsx:47
-#, fuzzy
-#| msgid "The following user will be created:"
 msgid "The following user will be created:"
 msgid_plural "The following users will be created:"
 msgstr[0] "Pengguna berikut akan dibuat:"
@@ -1425,7 +1423,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Ini mungkin perlu waktu"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "Ini akan makan waktu beberapa saat"
 
@@ -1434,7 +1432,7 @@ msgid "Time"
 msgstr "Waktu"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:230
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid "Timezone"
 msgstr "Zona Waktu"
 
@@ -1442,11 +1440,11 @@ msgstr "Zona Waktu"
 msgid "Title"
 msgstr "Judul"
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "To begin using $0, reboot your system."
 msgstr "Untuk mulai memakai $0, boot ulang sistem Anda."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "Untuk melanjutkan, pilih perangkat untuk dipasangi."
 
@@ -1471,11 +1469,8 @@ msgid "Unable to schedule resizing of $0"
 msgstr "Tidak dapat menjadwalkan pengubahan ukuran $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
-#, fuzzy
-#| msgctxt "GUI|Blivet Gui Partitioning"
-#| msgid "_Undo last action"
 msgid "Undo last action"
-msgstr "_Batalkan aksi terakhir"
+msgstr "Batalkan tindakan terakhir"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
@@ -1503,7 +1498,7 @@ msgstr "Gunakan penyimpanan yang dikonfigurasi"
 msgid "Use entire disk"
 msgstr "Gunakan seluruh disk"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 msgid "Use free space"
 msgstr "Gunakan ruang kosong"
 
@@ -1511,7 +1506,7 @@ msgstr "Gunakan ruang kosong"
 msgid "Use local account"
 msgstr "Gunakan akun lokal"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Gunakan perangkat RAID untuk partisi otomatis"
 
@@ -1547,11 +1542,11 @@ msgstr "Sedang memvalidasi..."
 msgid "Weak"
 msgstr "Lemah"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Selamat Datang"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 msgid "Welcome to Fedora Linux"
 msgstr "Selamat datang di Fedora Linux"
 
@@ -1601,17 +1596,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr "Kemajuan Anda tidak akan disimpan."
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:177
 msgid "completed step"
 msgstr "langkah yang telah lengkap"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:182
 msgid "current step"
 msgstr "langkah kini"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "hapus"
 
@@ -1619,11 +1614,11 @@ msgstr "hapus"
 msgid "edit"
 msgstr "sunting"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 msgid "encrypt"
 msgstr "enkripsi"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 msgid "encrypted"
 msgstr "terenkripsi"
 
@@ -1631,7 +1626,7 @@ msgstr "terenkripsi"
 msgid "extended partition"
 msgstr "partisi yang diperluas"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:102
 msgid "format as $0"
 msgstr "format sebagai $0"
 
@@ -1639,17 +1634,15 @@ msgstr "format sebagai $0"
 msgid "here"
 msgstr "di sini"
 
-#: src/components/review/ReviewConfiguration.jsx:56
-#, fuzzy
-#| msgid "Completed"
+#: src/components/review/ReviewConfiguration.jsx:58
 msgid "incomplete"
-msgstr "Lengkap"
+msgstr "tidak lengkap"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/storage/StorageReview.jsx:106
 msgid "mount"
 msgstr "kait"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:171
 msgid "pending step"
 msgstr "langkah tertunda"
 
@@ -1657,7 +1650,7 @@ msgstr "langkah tertunda"
 msgid "report the issue manually"
 msgstr "laporkan masalah secara manual"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:167
 msgid "resized from $0"
 msgstr "diubah ukurannya dari $0"
 
@@ -1673,6 +1666,9 @@ msgstr "mengecil menjadi $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "undo"
+
+#~ msgid "Note"
+#~ msgstr "Catatan"
 
 #~ msgid ""
 #~ "I understand that all existing data will be erased from the selected disks"
@@ -3276,9 +3272,6 @@ msgstr "undo"
 #~ msgid "Entitlements"
 #~ msgstr "Hak"
 
-#~ msgid "Error"
-#~ msgstr "Kesalahan"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Kesalahan menambah FCoE SAN."
 
@@ -4403,9 +4396,6 @@ msgstr "undo"
 #~ msgstr ""
 #~ "Volume fisik \"{}\" memiliki format \"{}\", tetapi seharusnya memiliki "
 #~ "format \"lvmpv\"."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Silakan lengkapi semua spoke sebelum melanjutkan"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "

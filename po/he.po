@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 05:46+0000\n"
+"POT-Creation-Date: 2026-05-12 05:54+0000\n"
 "PO-Revision-Date: 2024-11-18 02:57+0000\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <https://translate.fedoraproject.org/projects/anaconda-"
@@ -38,15 +38,24 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:82
+#: src/components/storage/Common.jsx:57
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "שגיאה"
+msgstr[1] "שגיאה"
+
+#: src/components/app.jsx:83
 msgid "$0 installation"
 msgstr "התקנת $0"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:48
 msgid "$0 installer"
 msgstr "תוכנית ההתקנה של $0"
 
@@ -60,25 +69,26 @@ msgstr ""
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/Common.jsx:73
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:283
 msgid "$0 will be deleted"
 msgstr "$0 תימחק"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "מערכת הקבצים ‚$0’ לא יכולה להיות על התקן בלוק מוצפן"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "‚$0’ חייב להיות על התקן שמפורמט ל־‚$1’"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -89,16 +99,16 @@ msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "על אודות"
 
-#: src/components/review/ReviewConfiguration.jsx:243
+#: src/components/review/ReviewConfiguration.jsx:233
 msgid "Account"
 msgstr "חשבון"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/review/StorageReview.jsx:235
+#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "פעולות"
 
@@ -108,7 +118,7 @@ msgstr "פעולות"
 msgid "Add another server..."
 msgstr "הוספת שרת NTP"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:634
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
 msgid "Add mount"
 msgstr "הוספת עיגון"
 
@@ -150,7 +160,7 @@ msgstr "Anaconda"
 msgid "Anaconda Web UI"
 msgstr "מנשק דפדפן Anaconda"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:78
 msgid "Anaconda project page"
 msgstr "דף מיזם Anaconda"
 
@@ -261,15 +271,15 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr "שינויים שבוצעו כאן ישפיעו על המערכת ישירות. אי אפשר לסגת."
 
-#: src/components/review/ReviewConfiguration.jsx:180
+#: src/components/review/ReviewConfiguration.jsx:170
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
 msgstr "בודק את הגדרות תצורת האחסון..."
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
 msgid "Checking storage configuration"
 msgstr "הגדרות האחסון נבדקות"
 
@@ -295,16 +305,16 @@ msgstr "סגירה"
 msgid "Close storage editor"
 msgstr "עורך האחסון"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr "האחסון של Cockpit לא סיפק מילת צופן לשחרור ההתקן המוצפן."
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:178
 msgid "Completed"
 msgstr "הושלם"
 
-#: src/components/review/ReviewConfiguration.jsx:201
+#: src/components/review/ReviewConfiguration.jsx:191
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -321,7 +331,7 @@ msgid "Configure custom NTP servers"
 msgstr "הגדרת שרתי NTP"
 
 #: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/HeaderKebab.jsx:115
 #, fuzzy
 #| msgid "Configure storage"
 msgid "Configure network"
@@ -331,7 +341,7 @@ msgstr "הגדרת אחסון"
 msgid "Configure storage"
 msgstr "הגדרת אחסון"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
 msgid "Configure storage again"
 msgstr "הגדרת האחסון שוב"
 
@@ -340,7 +350,7 @@ msgstr "הגדרת האחסון שוב"
 msgid "Confirm passphrase"
 msgstr "אישור מילת צופן"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
 msgid "Continue"
 msgstr "המשך"
 
@@ -348,9 +358,15 @@ msgstr "המשך"
 msgid "Continue installation"
 msgstr "להמשיך להתקין"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
 msgid "Continue with installation"
 msgstr "להמשיך בהתקנה"
+
+#: src/components/storage/Common.jsx:39
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "נא להשלים את כל הצלעות לפני המשך הפעילות"
 
 #: src/components/users/index.js:20
 msgid "Create Account"
@@ -364,7 +380,7 @@ msgstr "יצירת חשבון"
 msgid "Currently installed: $0"
 msgstr "מותקן כרגע: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
 msgid "Custom"
 msgstr "מותאם אישית"
 
@@ -372,7 +388,7 @@ msgstr "מותאם אישית"
 msgid "Date"
 msgstr ""
 
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 #: src/components/datetime/DateAndTime.jsx:151
 #, fuzzy
 #| msgid "Set Date & Time"
@@ -385,7 +401,7 @@ msgstr "קביעת שעה ותאריך"
 msgid "Delete partition"
 msgstr "מחיצות מומלצות:"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/StorageReview.jsx:341
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "מחיקה של מחיצות מסוימות עלולה לפגום בעלייה של $0:‏ $1"
 
@@ -409,20 +425,20 @@ msgstr "המכולה (container) מוצפנת."
 msgid "Detailed description of the issue"
 msgstr "תיאור התקן"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
 msgid "Detected valid storage layout:"
 msgstr "זוהתה פריסת אחסון תקפה:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
-#: src/components/review/StorageReview.jsx:233
+#: src/components/storage/StorageReview.jsx:239
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
 msgid "Device"
 msgstr "התקן"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
 msgid "Duplicate device."
 msgstr "התקן כפול."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
 msgid "Duplicate mount point."
 msgstr "נקודת עגינה כפולה."
 
@@ -434,7 +450,7 @@ msgstr "הפעלת חשבון root"
 msgid "Encrypt my data"
 msgstr "הצפנת הנתונים שלי"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:242
 msgid "Encrypted"
 msgstr "מוצפן"
 
@@ -462,7 +478,7 @@ msgstr "מחיקת הנתונים והתקנה"
 msgid "Error details"
 msgstr "פרטי השגיאה"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Exit to live desktop"
 msgstr "יציאה לשולחן העבודה החי"
 
@@ -489,11 +505,11 @@ msgstr "שמירת תצורת האחסון נכשלה"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "לינוקס פדורה דורש לפחות $0 של מקום פנוי בכונן."
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:147
 msgid "Finalization"
 msgstr "סיום"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:145
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -520,7 +536,7 @@ msgstr "שם מלא"
 msgid "Full name cannot contain colon characters"
 msgstr "השם המלא לא יכול להכיל את התו נקודתיים"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:244
 msgid "Helper text"
 msgstr ""
 
@@ -544,11 +560,11 @@ msgstr "הסתרת הסיסמה"
 msgid "Hostname"
 msgstr "שם מארח"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:148
+#: src/components/storage/installation-method/InstallationScenario.jsx:145
 msgid "How would you like to install?"
 msgstr "איך להתקין?"
 
-#: src/components/review/ReviewConfiguration.jsx:298
+#: src/components/review/ReviewConfiguration.jsx:288
 #, fuzzy
 #| msgid "I understand that all existing data will be erased"
 msgid "I understand that all existing data will be erased"
@@ -557,11 +573,11 @@ msgid_plural ""
 msgstr[0] "ברור לי שכל הנתונים הקיימים יימחקו"
 msgstr[1] "ברור לי שכל הנתונים הקיימים יימחקו"
 
-#: src/components/review/ReviewConfiguration.jsx:303
+#: src/components/review/ReviewConfiguration.jsx:293
 msgid "I understand that some existing data will be erased"
 msgstr "ברור לי שחלק מהנתונים הקיימים יימחקו"
 
-#: src/components/review/ReviewConfiguration.jsx:304
+#: src/components/review/ReviewConfiguration.jsx:294
 msgid "I understand that some partitions will be modified"
 msgstr "ברור לי שחלק מהמחיצות ישתנו"
 
@@ -585,11 +601,11 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "נא לצאת מהתוכנית אם לא הבנת או קיבלת את הסיכונים."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/installation/InstallationProgress.jsx:183
 msgid "In progress"
 msgstr "בתהליך"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "מופעל…"
 
@@ -600,30 +616,30 @@ msgid "Install"
 msgstr "התקנה"
 
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "ההתקנה נכשלה"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "שיטת התקנה"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:104
+#: src/components/installation/InstallationProgress.jsx:108
 #, fuzzy
 #| msgid "Installation of the system failed: $0"
 msgid "Installation of the system failed"
 msgstr "התקנת המערכת נכשלה: $0"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:84
 msgid "Installation of the system failed: $0"
 msgstr "התקנת המערכת נכשלה: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:248
 msgid "Installation type"
 msgstr "סוג התקנה"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:125
 msgid "Installing"
 msgstr "התקנה מתבצעת"
 
@@ -631,7 +647,7 @@ msgstr "התקנה מתבצעת"
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -646,7 +662,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "שם מארח לא חוקי"
 
-#: src/components/review/ReviewConfiguration.jsx:197
+#: src/components/review/ReviewConfiguration.jsx:187
 #, fuzzy
 #| msgid "completed step"
 msgid "Jump to first incomplete step"
@@ -671,7 +687,7 @@ msgstr "_מקלדת"
 msgid "Keyboard layout during boot"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
 msgid "Language"
 msgstr "שפה"
@@ -712,7 +728,7 @@ msgstr "הגדרות כונן ידניות: מיפוי נקודות עיגון"
 msgid "May contain letters, numbers, and dashes."
 msgstr "יכול להכיל אותיות, מספרים ומינוסים."
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:85
 #, fuzzy
 #| msgid "Install on the free space?"
 msgid "May need more free space"
@@ -726,17 +742,17 @@ msgstr "בינונית"
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "חוסר התאמה בין בחירת הפרמוט המחודש של התקן ההורה והתקן הצאצא."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:609
-#: src/components/review/StorageReview.jsx:237
+#: src/components/storage/StorageReview.jsx:243
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
 msgid "Mount point"
 msgstr "נקודת עיגון"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:607
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 msgid "Mount point assignment"
 msgstr "הקצאה של נקודות עיגון"
 
@@ -770,7 +786,7 @@ msgstr "DNS"
 msgid "Name"
 msgstr "שם"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:83
 msgid "Needs at least $0"
 msgstr ""
 
@@ -803,7 +819,7 @@ msgid "Next"
 msgstr "הבא"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:614
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "No devices"
 msgstr "אין התקנים"
 
@@ -846,10 +862,6 @@ msgstr "אין די מקום פנוי בכוננים שנבחרו."
 msgid "Not enough space on selected disks."
 msgstr "אין די מקום בכוננים שנבחרו."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "הערה"
-
 #: src/components/AnacondaHeader.jsx:71
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
@@ -863,7 +875,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Operating system"
 msgstr "מערכת הפעלה"
 
@@ -897,7 +909,7 @@ msgstr "מילת הצופן לא מתאימה לאף התקן נעול"
 msgid "Passphrases must match"
 msgstr "מילות הצופן חייבות להיות תואמות"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:172
 msgid "Pending"
 msgstr "בהמתנה"
 
@@ -915,7 +927,7 @@ msgstr "לא נבחרו כוננים; נא לבחור כונן אחד לפחות
 msgid "Pool"
 msgstr "בריכה"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/HeaderKebab.jsx:49
 msgid "Powered by Anaconda"
 msgstr "מופעל על גבי אנקונדה"
 
@@ -927,7 +939,7 @@ msgstr "קדם־שחרור"
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
 msgid "Proceed with installation"
 msgstr "המשך בהתקנה"
 
@@ -940,15 +952,15 @@ msgstr "י_ציאה"
 msgid "Quit installer?"
 msgstr "לצאת מתוכנית ההתקנה?"
 
-#: src/components/app.jsx:127
+#: src/components/app.jsx:128
 msgid "Reading information about the OS failed."
 msgstr "קריאת המידע על מערכת ההפעלה נכשלה."
 
-#: src/components/app.jsx:72
+#: src/components/app.jsx:73
 msgid "Reading information about the computer failed."
 msgstr "קריאת המידע על המחשב נכשלה."
 
-#: src/components/app.jsx:117
+#: src/components/app.jsx:118
 msgid "Reading installer configuration failed."
 msgstr "קריאת הגדרות תוכנית ההתקנה נכשלה."
 
@@ -984,7 +996,7 @@ msgstr "יש להפעיל מחדש ל־Windows כדי לשנות גודל של �
 msgid "Reboot system?"
 msgstr "להפעיל את המערכת מחדש?"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Reboot to installed system"
 msgstr "הפעלה מחדש למערכת המותקנת"
 
@@ -1002,7 +1014,7 @@ msgstr "השבת נפח"
 msgid "Reclaim space (required)"
 msgstr "השבת נפח (חובה)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
 msgid "Recommended"
 msgstr "מומלץ"
 
@@ -1010,8 +1022,8 @@ msgstr "מומלץ"
 msgid "Recommended partitions:"
 msgstr "מחיצות מומלצות:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
 msgid "Reformat"
 msgstr "פרמוט מחדש"
 
@@ -1020,8 +1032,8 @@ msgstr "פרמוט מחדש"
 msgid "Reinstall Fedora"
 msgstr "התקנת פדורה מחדש"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1055,7 +1067,7 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr "החלפת ההתקנה הנוכחית אבל לשמור את הקבצים שבתיקיית הבית (home)."
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:129
 msgid "Report Issue"
 msgstr "דיווח על תקלה"
 
@@ -1075,7 +1087,7 @@ msgstr "דיווח על תקלה"
 msgid "Reporting issue..."
 msgstr "דיווח על תקלה"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
 msgid "Required"
 msgstr "חובה"
 
@@ -1101,7 +1113,7 @@ msgstr "שינוי גודל"
 msgid "Resize partition"
 msgstr "מחיצות מומלצות:"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:347
 msgid "Resizing the following partitions from $0: $1"
 msgstr "הגודל של המחיצות הבאות ישתנה מ־$0:‏ $1"
 
@@ -1117,7 +1129,7 @@ msgstr ""
 msgid "Return to installation"
 msgstr "חזרה להתקנה"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
 msgid "Return to storage editor"
 msgstr "חזרה לעורך האחסון"
 
@@ -1145,7 +1157,7 @@ msgstr "סיסמת מנהל המערכת (root) הוגדרה."
 msgid "Save"
 msgstr "שמירה"
 
-#: src/components/installation/Feedback.jsx:27
+#: src/components/installation/Feedback.jsx:29
 msgid "Scan the QR code with your phone or visit:"
 msgstr "אפשר לסרוק את קוד ה־QR עם הטלפון שלך או לבקר באתר:"
 
@@ -1182,8 +1194,8 @@ msgstr "אפשר להגן על הנתונים שלך עם הצפנה מבוסס�
 msgid "Select"
 msgstr "בחירה"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
 msgid "Select a device"
 msgstr "נא לבחור התקן"
 
@@ -1209,11 +1221,11 @@ msgstr "לא לבחור בכלום"
 msgid "Selected (top = current)"
 msgstr "פריסות שנבחרו"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "לא ניתן לפרמט מחדש את תצורת הכונן הנבחרת ‚$0’."
 
-#: src/components/installation/Feedback.jsx:26
+#: src/components/installation/Feedback.jsx:28
 msgid "Send us feedback on your installation"
 msgstr "שליחת משוב על ההתקנה שלך"
 
@@ -1270,26 +1282,26 @@ msgstr "הצגת מילת צופן"
 msgid "Show password"
 msgstr "הצגת הסיסמה"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:240
 msgid "Size"
 msgstr "גודל"
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:137
 msgid "Software installation"
 msgstr "התקנת תוכנות"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:135
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
 msgstr "התקנת תוכנות: הגדרת האחסון הושלמה. התוכנות מותקנות כעת במכשיר שלך."
 
-#: src/components/review/ReviewConfiguration.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:226
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "בחירת תכנה"
 
-#: src/components/review/ReviewConfiguration.jsx:204
+#: src/components/review/ReviewConfiguration.jsx:194
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1306,18 +1318,18 @@ msgstr "מקום"
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:265
+#: src/components/review/ReviewConfiguration.jsx:255
 msgid "Storage"
 msgstr "אחסון"
 
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:129
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/steps.js:33
 msgid "Storage configuration"
 msgstr "הגדרות אחסון"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:130
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "הגדרות אחסון: האחסון מוגדר כרגע."
 
@@ -1343,7 +1355,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "תוסף האחסון נכשל"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
 msgid "Storage requirements not met"
 msgstr "דרישות האחסון לא מתקיימות"
 
@@ -1351,7 +1363,7 @@ msgstr "דרישות האחסון לא מתקיימות"
 msgid "Strong"
 msgstr "חזק"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:120
 msgid "Successfully installed"
 msgstr "ההתקנה הצליחה"
 
@@ -1375,17 +1387,17 @@ msgstr "נא לבחור שפה"
 msgid "System"
 msgstr "מערכת"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:142
 msgid "System configuration"
 msgstr "הגדרות מערכת"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:140
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
 msgstr "הגדרות מערכת: התקנת התוכנות הושלמה. המערכת מוגדרת כעת."
 
-#: src/components/app.jsx:162
+#: src/components/app.jsx:163
 #, fuzzy
 #| msgid "Choose an installation source type."
 msgid "The Anaconda installation has stopped unexpectedly."
@@ -1457,7 +1469,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "פעולה זו עלולה לארוך זמן מה"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
 msgstr "הפעולה הזאת יכולה לארוך מספר רגעים"
 
@@ -1468,7 +1480,7 @@ msgid "Time"
 msgstr "אזור זמן: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:230
+#: src/components/review/ReviewConfiguration.jsx:220
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
@@ -1478,11 +1490,11 @@ msgstr "אזור זמן: %s\n"
 msgid "Title"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "To begin using $0, reboot your system."
 msgstr "כדי להתחיל להשתמש ב־$0, יש להפעיל את המערכת מחדש."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:195
+#: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
 msgstr "כדי להמשיך, נא לבחור את ההתקן להתקנה אליו."
 
@@ -1537,7 +1549,7 @@ msgstr "להשתמש באחסון המוגדר"
 msgid "Use entire disk"
 msgstr "להשתמש בכונן כולו"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
 #, fuzzy
 #| msgid "Use Free Space"
 msgid "Use free space"
@@ -1549,7 +1561,7 @@ msgstr "להשתמש במקום הפנוי"
 msgid "Use local account"
 msgstr "יצירת חשבון"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
@@ -1589,11 +1601,11 @@ msgstr "מופעל…"
 msgid "Weak"
 msgstr "חלש"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "ברוך בואך"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 #, fuzzy
 #| msgid "Welcome to Fedora"
 msgid "Welcome to Fedora Linux"
@@ -1638,17 +1650,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr "התהליך שעברת לא יישמר."
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:177
 msgid "completed step"
 msgstr "שלב שהושלם"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:182
 msgid "current step"
 msgstr "שלב נוכחי"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/review/StorageReview.jsx:158
+#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "מחיקה"
 
@@ -1656,11 +1668,11 @@ msgstr "מחיקה"
 msgid "edit"
 msgstr "עריכה"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 msgid "encrypt"
 msgstr "הצפנה"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:131
 msgid "encrypted"
 msgstr "מוצפן"
 
@@ -1670,7 +1682,7 @@ msgstr "מוצפן"
 msgid "extended partition"
 msgstr "מחיצות מומלצות:"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:102
 msgid "format as $0"
 msgstr "פרמוט ל־$0"
 
@@ -1678,17 +1690,17 @@ msgstr "פרמוט ל־$0"
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:56
+#: src/components/review/ReviewConfiguration.jsx:58
 #, fuzzy
 #| msgid "Completed"
 msgid "incomplete"
 msgstr "הושלם"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/storage/StorageReview.jsx:106
 msgid "mount"
 msgstr "עיגון"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:171
 msgid "pending step"
 msgstr "שלב בהמתנה"
 
@@ -1696,7 +1708,7 @@ msgstr "שלב בהמתנה"
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:167
 msgid "resized from $0"
 msgstr "הגודל השתנה מ־$0"
 
@@ -1712,6 +1724,9 @@ msgstr "כיווץ לכדי $0"
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "ביטול"
+
+#~ msgid "Note"
+#~ msgstr "הערה"
 
 #~ msgid ""
 #~ "I understand that all existing data will be erased from the selected disks"
@@ -3217,9 +3232,6 @@ msgstr "ביטול"
 #~ msgid "Entitlements"
 #~ msgstr "זכאויות"
 
-#~ msgid "Error"
-#~ msgstr "שגיאה"
-
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "שגיאה בהוספת FCoE SAN."
 
@@ -4310,9 +4322,6 @@ msgstr "ביטול"
 #~ "of \"lvmpv\"."
 #~ msgstr ""
 #~ "הכרך הפיזי „{}” מפורמט בתור „{}”, אך עליו להיות מפורמט בתור „lvmpv”."
-
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "נא להשלים את כל הצלעות לפני המשך הפעילות"
 
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
