@@ -22,7 +22,11 @@ def pretend_live_workstation_iso(test, installer, machine):
 
     test.restore_file('/run/anaconda/anaconda.conf')
     test.machine.execute("sed -i 's/type = BOOT_ISO/type = LIVE_OS/g' /run/anaconda/anaconda.conf")
-    test.machine.execute(f"sed -i '/[anaconda]/a hidden_webui_pages = {" ".join(hidden_screens)}' /run/anaconda/anaconda.conf")
+    pages = " ".join(hidden_screens)
+    test.machine.execute(
+        "sed -i '/^[[:space:]]*hidden_webui_pages[[:space:]]*=/d' /run/anaconda/anaconda.conf && "
+        f"sed -i '0,/^\\[User Interface\\]$/s|^\\[User Interface\\]$|&\\nhidden_webui_pages = {pages}|' /run/anaconda/anaconda.conf"
+    )
 
 def pretend_default_scheme(test, scheme):
     test.restore_file('/run/anaconda/anaconda.conf')
