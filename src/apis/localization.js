@@ -179,18 +179,8 @@ export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
  * @returns {Promise}           Resolves a list of locale keyboards
  */
 export const getKeyboardLayouts = async () => {
-    // FIXME: GetKeyboardLayouts is not available in Fedora 42
-    // Remove this try/catch when we stop testing Fedora 42
-    try {
-        const keyboards = await callClient("GetKeyboardLayouts", []);
-        return keyboards;
-    } catch (e) {
-        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
-            return [];
-        } else {
-            throw e;
-        }
-    }
+    const keyboards = await callClient("GetKeyboardLayouts", []);
+    return keyboards;
 };
 
 /**
