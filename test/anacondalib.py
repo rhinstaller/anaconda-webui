@@ -116,6 +116,8 @@ class VirtInstallMachineCase(MachineCase):
         self.resetLanguage()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
+        # Nested Cockpit (e.g. storage/network iframes) and language changes which reload the page can log this; harmless.
+        self.allow_journal_messages("Error .* data: Connection reset by peer")
         self.installation_finished = False
 
         if not self.is_nondestructive():
