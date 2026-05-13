@@ -4,13 +4,14 @@
  */
 import cockpit from "cockpit";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
 import { useMaybeBackdrop } from "../../hooks/CockpitIntegration.jsx";
 
+import { CockpitNetworkIframe } from "./NetworkConfiguration.jsx";
 import { useNetworkStatus } from "./useNetworkStatus.js";
 
 import "./CockpitNetworkConfiguration.scss";
@@ -21,20 +22,9 @@ export const CockpitNetworkConfiguration = ({
     onCritFail,
     setIsNetworkOpen,
 }) => {
-    const [isIframeMounted, setIsIframeMounted] = useState(false);
     const { hasActiveCheckpoint } = useNetworkStatus();
     const backdropClass = useMaybeBackdrop();
-    const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "cockpit-network-configuration";
-
-    useEffect(() => {
-        if (isIframeMounted) {
-            const iframe = document.getElementById("cockpit-network-frame");
-            iframe.contentWindow.addEventListener("error", exception => {
-                onCritFail({ context: _("Network plugin failed") })({ message: exception.error.message, stack: exception.error.stack });
-            });
-        }
-    }, [isIframeMounted, onCritFail]);
 
     const handleClose = () => {
         // Prevent closing if there's an active checkpoint
@@ -57,12 +47,11 @@ export const CockpitNetworkConfiguration = ({
             <ModalBody style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 <div className={idPrefix + "-page-section-cockpit-network"} style={{ flex: 1 }}>
                     <PageSection hasBodyWrapper={false} style={{ height: "100%" }}>
-                        <iframe
-                          src="/cockpit/@localhost/network/index.html"
-                          name="cockpit-network"
-                          id="cockpit-network-frame"
-                          onLoad={handleIframeLoad}
-                          className={idPrefix + "-iframe-cockpit-network"} />
+                        <CockpitNetworkIframe
+                          iframeId="cockpit-network-frame"
+                          iframeName="cockpit-network"
+                          className={idPrefix + "-iframe-cockpit-network"}
+                          onCritFail={onCritFail} />
                     </PageSection>
                 </div>
             </ModalBody>

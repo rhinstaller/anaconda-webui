@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useRef } from "react";
 
 import { PageContext } from "../../contexts/Common.jsx";
 
@@ -16,14 +16,74 @@ import "./NetworkConfiguration.scss";
 
 const _ = cockpit.gettext;
 
+const COCKPIT_NETWORK_IFRAME_SRC = "/cockpit/@localhost/network/index.html";
+
+/**
+ * Cockpit network page embedded in an iframe. Sets `cockpit_anaconda` in sessionStorage
+ * before paint so Cockpit’s `in_anaconda_mode()` applies when the iframe loads.
+ */
+export const CockpitNetworkIframe = ({
+    className,
+    iframeId,
+    iframeName,
+    onCritFail,
+}) => {
+    const iframeRef = useRef(null);
+
+    useLayoutEffect(() => {
+        /* Cockpit `in_anaconda_mode()` only checks that JSON parses; content unused for network */
+        window.sessionStorage.setItem("cockpit_anaconda", "{}");
+    }, []);
+
+    useEffect(() => {
+        const el = iframeRef.current;
+        if (!el) {
+            return undefined;
+        }
+
+        let removeErrorListener = () => {};
+
+        const attach = () => {
+            removeErrorListener();
+            const win = el.contentWindow;
+            if (!win) {
+                return;
+            }
+            const handler = exception => {
+                onCritFail({ context: _("Network plugin failed") })({
+                    message: exception.error.message,
+                    stack: exception.error.stack,
+                });
+            };
+            win.addEventListener("error", handler);
+            removeErrorListener = () => win.removeEventListener("error", handler);
+        };
+
+        el.addEventListener("load", attach);
+        attach();
+
+        return () => {
+            el.removeEventListener("load", attach);
+            removeErrorListener();
+        };
+    }, [onCritFail]);
+
+    return (
+        <iframe
+          ref={iframeRef}
+          src={COCKPIT_NETWORK_IFRAME_SRC}
+          name={iframeName}
+          id={iframeId}
+          className={className} />
+    );
+};
+
 export const NetworkConfiguration = ({
     onCritFail,
 }) => {
     const { setIsFormDisabled, setIsFormValid } = useContext(PageContext) ?? {};
-    const [isIframeMounted, setIsIframeMounted] = useState(false);
     const { hasActiveCheckpoint } = useNetworkStatus();
     const backdropClass = useMaybeBackdrop();
-    const handleIframeLoad = () => setIsIframeMounted(true);
     const idPrefix = "network-configuration";
 
     const hasModal = backdropClass !== "";
@@ -34,38 +94,13 @@ export const NetworkConfiguration = ({
         setIsFormDisabled(isBlocked);
     }, [isBlocked, setIsFormDisabled, setIsFormValid]);
 
-    useEffect(() => {
-        if (isIframeMounted) {
-            const iframe = document.getElementById("network-configuration-frame");
-            iframe.contentWindow.addEventListener("error", exception => {
-                onCritFail({ context: _("Network plugin failed") })({ message: exception.error.message, stack: exception.error.stack });
-            });
-
-            // Hide elements not needed in the installer context
-            const hideSelectors = ["#networking-graphs", ".cockpit-log-panel"];
-            const iframeDoc = iframe.contentDocument;
-            const observer = new MutationObserver(() => {
-                hideSelectors.forEach(sel => {
-                    const el = iframeDoc.querySelector(sel);
-                    if (el && el.style.display !== "none") {
-                        el.style.display = "none";
-                    }
-                });
-            });
-            observer.observe(iframeDoc.body, { childList: true, subtree: true });
-
-            return () => observer.disconnect();
-        }
-    }, [isIframeMounted, onCritFail]);
-
     return (
         <div className={backdropClass + " " + idPrefix + "-page-section"}>
-            <iframe
-              src="/cockpit/@localhost/network/index.html"
-              name="network-configuration"
-              id="network-configuration-frame"
-              onLoad={handleIframeLoad}
-              className={idPrefix + "-iframe"} />
+            <CockpitNetworkIframe
+              iframeId={idPrefix + "-frame"}
+              iframeName="network-configuration"
+              className={idPrefix + "-iframe"}
+              onCritFail={onCritFail} />
         </div>
     );
 };
