@@ -123,7 +123,7 @@ class VirtInstallMachine(VirtMachine):
             os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
     def start(self):
-        self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+        self.is_efi = os.environ.get("TEST_FIRMWARE", "efi") == "efi"
         self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
 
         self.payload_path = os.path.join(ROOT_DIR, f"tmp/{self.os}-anaconda-payload")

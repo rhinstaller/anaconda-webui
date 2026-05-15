@@ -1,7 +1,7 @@
 bootloader --timeout=1
 zerombr
 clearpart --all
-part biosboot --fstype=biosboot --size=1
+part /boot/efi --fstype=efi --size=500
 part /boot --fstype=xfs --size=1024
 part swap --size=1024
 part / --fstype=xfs --grow

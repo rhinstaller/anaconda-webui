@@ -40,7 +40,7 @@ class _TestStorageHomeReuseHelpers:
         dev = encrypted_disk.split("/")[-1]
         dev_fedora = new_disk
 
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1MiB", "efi"), (BOOT_PARTITION_DEFAULT_SIZE, "ext4"), ("", None)])
+        s.partition_disk(disk, [("500MiB", "efi"), (BOOT_PARTITION_DEFAULT_SIZE, "ext4"), ("", None)])
 
         # Create standard encrypted btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the Fedora encrypted layout
@@ -49,8 +49,8 @@ class _TestStorageHomeReuseHelpers:
         set -xe
 
         # Create encrypted btrfs layout
-        echo {password} | cryptsetup luksFormat {disk}4
-        echo {password} | cryptsetup luksOpen {disk}4 crypt
+        echo {password} | cryptsetup luksFormat {disk}3
+        echo {password} | cryptsetup luksOpen {disk}3 crypt
         mkfs.btrfs /dev/mapper/crypt
         mount /dev/mapper/crypt /mnt
         btrfs subvolume create /mnt/root
@@ -67,14 +67,14 @@ class _TestStorageHomeReuseHelpers:
         # Adjust /etc/fstab to contain the new device UUIDS
         echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) / btrfs defaults,subvol=root 0 0" > /mnt/root/etc/fstab
         echo "UUID=$(blkid -s UUID -o value /dev/mapper/crypt) /home btrfs defaults,subvol=home 0 0" >> /mnt/root/etc/fstab
-        echo "UUID=$(blkid -s UUID -o value /dev/{dev}3) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
+        echo "UUID=$(blkid -s UUID -o value /dev/{dev}2) /boot ext4 defaults 0 0" >> /mnt/root/etc/fstab
 
         umount -l /mnt-fedora
         umount -l /mnt
         cryptsetup close crypt
 
         # Do the same for /boot
-        mount /dev/{dev}3 /mnt
+        mount /dev/{dev}2 /mnt
         mount /dev/{dev_fedora}3 /mnt-fedora
         rsync -aAXHv /mnt-fedora/ /mnt/
 
@@ -88,8 +88,8 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
     def _testBasic_partition_disk(self):
         self._remove_unknown_mountpoints("vda")
 
-    # Reinstall option does not work with UEFI when /boot is on btrfs
-    # @run_boot("bios", "efi")
+    # FIXME: Reinstall option does not work with UEFI when /boot is on btrfs
+    @run_boot("bios")
     @disk_images([("fedora-rawhide", 15)])
     def testBasic(self):
         """
@@ -161,6 +161,9 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
 
     @disk_images([("fedora-rawhide", 15), ("fedora-42", 15), ("ubuntu-stable", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
+    # FIXME: Reinstall option does not work with UEFI when /boot is on btrfs
+    # @run_boot("bios", "efi")
+    @run_boot("bios")
     def testMultipleRoots(self):
         """
         Description:
@@ -252,7 +255,7 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         s.select_disks([("vda", True), ("vdb", False)])
 
         s.unlock_all_encrypted()
-        s.unlock_device("einszwei", ["vda4"], ["vda4"])
+        s.unlock_device("einszwei", ["vda3"], ["vda3"])
         s.set_scenario("home-reuse")
         i.reach(i.steps.REVIEW)
 
@@ -260,9 +263,9 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         dev = "vda"
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-        r.check_disk_row(dev, "/boot", f"{dev}3", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}4", "13.9 GB", True, "btrfs", is_encrypted=True)
-        r.check_disk_row(dev, "/home", f"{dev}4", "13.9 GB", False, "btrfs", is_encrypted=True, action="mount")
+        r.check_disk_row(dev, "/boot", f"{dev}2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "13.4 GB", True, "btrfs", is_encrypted=True)
+        r.check_disk_row(dev, "/home", f"{dev}3", "13.4 GB", False, "btrfs", is_encrypted=True, action="mount")
 
     def _testNonLinuxSystem_partition_disk(self):
         b = self.browser
@@ -321,6 +324,9 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         self._remove_unknown_mountpoints("vdb")
 
     @disk_images([("", 20), ("fedora-rawhide", 15)])
+    # https://fedoraproject.org/wiki/Changes/Anaconda_Drop_Support_UEFI_on_MBR
+    # Fedora installer has phased out support for booting in UEFI mode on MBR-partitioned disks.
+    @run_boot("bios")
     def testMBRParttable(self):
         """
         Description:
@@ -378,7 +384,6 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
         self._remove_unknown_mountpoints("vdb")
 
-    @run_boot("efi")
     @disk_images([("", 35), ("fedora-rawhide", 15)])
     def testWindowsSingleDisk(self):
         """

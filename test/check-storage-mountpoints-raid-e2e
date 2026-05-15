@@ -21,8 +21,8 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         disk2 = "/dev/vdb"
         raid_name = "raid1"
 
-        s.partition_disk(disk1, [("1MiB", "biosboot"),("1GiB", "xfs"), ("" , None)])
-        s.partition_disk(disk2, [("1MiB", "biosboot"),("1GiB", "xfs"), ("" , None)])
+        s.partition_disk(disk1, [("500MiB", "efi"), ("1GiB", "xfs"), ("", None)])
+        s.partition_disk(disk2, [("500MiB", "efi"), ("1GiB", "xfs"), ("", None)])
 
         # RAID1 on partition level for /boot and /
         s.create_raid_device(f"{raid_name}-boot", "raid1", [f"{disk1}2", f"{disk2}2"])
@@ -48,13 +48,12 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         """
         Description:
             Test RAID1 on partition level with LVM. Both disks (vda, vdb) have:
-            - Partition 1: biosboot (1M)
+            - Partition 1: EFI system partition (500 MiB)
             - Partition 2: RAID1 for /boot (xfs)
             - Partition 3: RAID1 for LVM (ext4 for /)
 
         Expected results:
-            - The user can select the devices for biosboot, boot and root partitions in the
-            mount point assignment screen
+            - The user can assign /boot/efi, /boot, and / on UEFI
             - The mount points are correctly assigned to the devices in the installed system
         """
         b = self.browser
@@ -73,7 +72,8 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
 
         s.select_mountpoint([(dev1, True), (dev2, True)])
         s.select_mountpoint_row_device(1, "vol-group-root")
-        s.select_mountpoint_row_device(2, f"{raid_name}-boot")
+        s.select_mountpoint_row_device(2, f"{dev1}1")
+        s.select_mountpoint_row_device(3, f"{raid_name}-boot")
 
         i.next(should_fail=True)
         i.reach(i.steps.REVIEW)

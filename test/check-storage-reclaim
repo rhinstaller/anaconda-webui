@@ -22,7 +22,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("1MiB", "biosboot"),
+                ("500MiB", "efi"),
                 ("6GiB", "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
                 ("", "btrfs", "-f", "-L", f"{btrfsname}B"),
@@ -39,7 +39,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("1MiB", "biosboot"),
+                ("500MiB", "efi"),
                 (BOOT_PARTITION_DEFAULT_SIZE, "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
             ],
@@ -84,7 +84,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row(dev, "/", "vda5, LVM", "6.44 GB", True, "xfs")
+        r.check_disk_row(dev, "/", "vda5, LVM", "5.91 GB", True, "xfs")
 
     def _testReclaimSpaceDeleteBtrfsSubvolumes_partition_disk(self):
         b = self.browser
@@ -123,10 +123,10 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         # Check that all partitions are present
         s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
-        s.reclaim_check_device_row("vda1", deviceType="biosboot", space="1.05 MB")
+        s.reclaim_check_device_row("vda1", deviceType="efi", space="524 MB")
         s.reclaim_check_device_row("vda2", deviceType="ext4", space="6.44 GB")
         s.reclaim_check_device_row("vda3", deviceType="btrfs", space="5.37 GB")
-        s.reclaim_check_device_row("vda4", deviceType="btrfs", space="4.29 GB")
+        s.reclaim_check_device_row("vda4", deviceType="btrfs", space="3.77 GB")
 
         # Check that deleting a disk will delete all contained partitions
         s.reclaim_remove_device("vda")
@@ -380,6 +380,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         s.reclaim_remove_device("vda3")
         s.reclaim_modal_submit()
+        # Backend gives warning on the 100MB /boot/efi partition
+        i.next(should_fail=True)
 
         i.reach(i.steps.REVIEW)
         r.check_affected_system("Fedora Linux", [("vda3", ["boot", "home", "root", "var"])])
@@ -446,6 +448,10 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_shrink_device("vda1", "7")
         s.reclaim_modal_submit()
 
+        # existing efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
+
         i.reach(i.steps.REVIEW)
         # Don't specify the exact original size as this might change with image refreshes
         r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.2 GB")
@@ -459,6 +465,9 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         s.reclaim_shrink_device("vda1", "7,10", ariaLabel="zmenšit")
         s.reclaim_modal_submit()
+        # existing efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
 
         i.reach(i.steps.REVIEW)
         r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z 11,2 GB")

@@ -5,7 +5,7 @@
 
 import os
 
-from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -84,6 +84,7 @@ class TestStorageHomeReuse_E2E(VirtInstallMachineCase):
 
         self._remove_unknown_mountpoints()
 
+    @run_boot("bios")
     @disk_images([("fedora-rawhide", 15)])
     @timeout(1200)
     def testBasic(self):
