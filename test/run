@@ -9,7 +9,7 @@
 # storage              - storage related tests
 # cockpit              - storage related tests that utilize Cockpit Storage plugin
 # other                - all remaining tests
-# efi                  - tests in UEFI mode (they might be tests which are also present in other scenarios)
+# bios                 - tests in BIOS mode (they might be tests which are also present in other scenarios)
 # compose-{compose-id} - tests defined in wiki-testmap.json ran against given compose
 # bootoptns-net1       - tests run for installation with network configuration via boot options
 
@@ -36,7 +36,7 @@ BASIC_TESTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep -vE "$RE_DNF_
 
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
-    *efi*) export TEST_FIRMWARE="efi";;&
+    *bios*) export TEST_FIRMWARE="bios";;&
 
     *bootopts-net1*) export TEST_EXTRA_BOOT_ARGS="net.ifnames.prefix=net ip=net0:dhcp" TEST_VM_SETUP="bootopts-net1";;&
 

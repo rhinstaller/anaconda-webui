@@ -87,8 +87,8 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         r.check_storage_config("Use configured storage")
         dev1 = "vda"
         r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev1, "", "vda1", "1.05 MB", True, "biosboot")
-        r.check_disk_row(dev1, "/", "vda5", "11.8 GB", True, "xfs")
+        r.check_disk_row(dev1, "/boot/efi", "vda1", "524 MB", True, "efi")
+        r.check_disk_row(dev1, "/", "vda5", "11.3 GB", True, "xfs")
         r.check_disk_row(dev1, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
         r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")

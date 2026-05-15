@@ -235,7 +235,7 @@ You can set these environment variables to configure the test suite::
     TEST_FIRMWARE  The firmware to run the tests against. Currently supported values:
                      "bios"
                      "efi"
-                  "bios" is the default.
+                  "efi" is the default.
 
 Debugging tests
 ---------------

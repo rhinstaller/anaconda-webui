@@ -34,7 +34,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         Description:
             Test scenario with three disks:
 
-            - 'biosboot' and '/boot' are on 'vda'.
+            - ESP and '/boot' are on 'vda'.
             - A RAID 0 array is created using partitions on 'vdb1' and 'vdc1'.
             - The root filesystem ('/') is placed on the RAID 0 device.
 
@@ -55,7 +55,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
 
         s.enter_cockpit_storage()
 
-        # Create BIOS and boot partitions on vda
+        # Create ESP and /boot partitions on vda
         self.cockpitCreateBootloaderPartitions()
 
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")
@@ -97,7 +97,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
             with b.wait_timeout(30):
                 for disk in ("vda", "vdb", "vdc"):
                     r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)")
-                    r.check_disk_row(disk, "/", "vda3, vdc1, vdb1, RAID", "47.2 GB", False, prefix=prefix)
+                    r.check_disk_row(disk, "/", "vda3, vdc1, vdb1, RAID", "47.1 GB", False, prefix=prefix)
 
         # verify review screen
         checkStorageReview()
@@ -121,7 +121,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
 
         raid_root = next(part for part in vda3["children"] if part["type"] == "raid0")
         self.assertEqual(raid_root["mountpoints"], ["/"])
-        self.assertEqual(raid_root["size"], "44G")
+        self.assertEqual(raid_root["size"], "43.9G")
 
     @disk_images([("", 15), ("", 15), ("", 15)])
     @run_boot("bios", "efi")
@@ -131,7 +131,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         Description:
             Test scenario with three disks:
 
-            - 'biosboot' and '/boot' are on 'vda'.
+            - ESP or BIOS boot and '/boot' are on 'vda'.
             - A RAID 0 array is created using 'vdb' and 'vdc'.
             - The root filesystem ('/') is placed on the RAID 0 device.
 
@@ -160,8 +160,16 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         self.dialog_apply()
         self.dialog_wait_close()
 
-        # Create biosboot and /boot partitions on vda
-        self.cockpitCreateBootloaderPartitions()
+        # Create bootloader and /boot partitions on vda
+        if self.is_efi:
+            self.cockpitCreateBootloaderPartitions()
+        else:
+            self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+            self.confirm()
+            self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+            self.dialog({"size": 1, "type": "biosboot"})
+            self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+            self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
 
         # Create / partition on the RAID device
         self.click_dropdown(self.card_row("Storage", 7), "Create partition table")
@@ -173,6 +181,8 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
             with b.wait_timeout(30):
                 disk = "vda"
                 r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)", prefix=prefix)
+                if self.is_efi:
+                    r.check_disk_row(disk, "/boot/efi", "vda1", "99.6 MB", False, prefix=prefix)
                 r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
 
                 disk = "MDRAID-SOMERAID"
@@ -226,7 +236,7 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.enter_cockpit_storage()
-        # Create BIOS and boot partitions on vda
+        # Create ESP and /boot partitions on vda
         self.cockpitCreateBootloaderPartitions()
         # Create a partition for /
         self.click_dropdown(self.card_row("Storage", 4), "Create partition")

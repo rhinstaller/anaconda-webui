@@ -34,8 +34,8 @@ INSTALLER_VM_MEMORY_MB = 4096
 
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
-    boot_modes = ["bios"]
-    is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+    boot_modes = ["efi"]
+    is_efi = os.environ.get("TEST_FIRMWARE", "efi") == "efi"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
@@ -67,7 +67,7 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        boot_modes = getattr(method, "boot_modes", ["bios"])
+        boot_modes = getattr(method, "boot_modes", ["efi"])
         self.run_on_vm_setups = getattr(method, "run_on_vm_setups", [""])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
@@ -337,7 +337,7 @@ def run_boot(*modes):
     The VirtMachine has self.is_efi = True/False set.
     We need to skip the test if self.is_efi is True but 'efi' is not in the modes list.
 
-    The absence of the decorator is equivalent to run_boot("bios").
+    The absence of the decorator is equivalent to run_boot("efi").
 
     :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
     """

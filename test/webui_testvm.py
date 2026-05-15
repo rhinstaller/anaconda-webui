@@ -17,11 +17,11 @@ def cmd_cli():
     parser.add_argument("image", help="Image name")
     parser.add_argument("--rsync", help="Rsync development files over on startup", action='store_true')
     parser.add_argument("--host", help="Hostname to rsync", default='test-updates')
-    parser.add_argument("--efi", help="Start the VM with an EFI firmware", action='store_true')
+    parser.add_argument("--bios", help="Start the VM with BIOS firmware (UEFI is the default)", action='store_true')
     args = parser.parse_args()
 
-    if args.efi:
-        os.environ["TEST_FIRMWARE"] = "efi"
+    if args.bios:
+        os.environ["TEST_FIRMWARE"] = "bios"
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB)
     try:
         machine.start()

@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, run_boot
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
 from installer import Installer
 from review import Review
 from storage import Storage
@@ -42,7 +42,6 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
         rmdir {tmp_mount}
         """)
 
-    @run_boot("efi")
     @timeout(1200)
     def testPreserveHome(self):
         """

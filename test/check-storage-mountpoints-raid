@@ -19,9 +19,9 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
         m = self.machine
         s = Storage(b, m)
 
-        # BIOS boot partition, /boot partition, / on RAID
+        # EFI system partition, /boot partition, / on RAID
         disk = "/dev/vda"
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
+        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", close_luks=False)
         s.create_luks_partition(f"{disk}4", "einszweidrei", "encrypted-vol2", close_luks=False)
         s.create_raid_device("encryptedraid", "raid1", ["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"])
@@ -61,15 +61,18 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
         s.select_mountpoint_row_device(1, "encryptedraid")
         s.check_mountpoint_row_format_type(1, "xfs")
 
-        s.check_mountpoint_row_mountpoint(2, "/boot")
-        s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
+        s.check_mountpoint_row_mountpoint(2, "/boot/efi")
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.check_mountpoint_row_mountpoint(3, "/boot")
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.select_mountpoint_row_reformat(3)
+        s.check_mountpoint_row_reformat(3, True)
 
         i.reach(i.steps.REVIEW)
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
+        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False, "efi")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
@@ -80,7 +83,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         disk = "/dev/vda"
 
-        s.partition_disk(disk, [("1MiB", "biosboot"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
+        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_raid_device("encryptedraid", "raid1", [f"{disk}3", f"{disk}4"])
         s.create_luks_partition("/dev/md/encryptedraid", "einszweidrei", "encrypted-vol", "xfs")
 
@@ -104,7 +107,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
         s = Storage(b, m)
         r = Review(b, m)
 
-        # BIOS boot partition, /boot partition, / on RAID
+        # EFI system partition, /boot partition, / on RAID
         dev = "vda"
 
         i.open()
@@ -116,14 +119,16 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         s.select_mountpoint()
 
-        s.check_mountpoint_row_mountpoint(2, "/boot")
-        s.select_mountpoint_row_device(2, f"{dev}2")
-        s.select_mountpoint_row_reformat(2)
-        s.check_mountpoint_row_reformat(2, True)
+        s.check_mountpoint_row_mountpoint(2, "/boot/efi")
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.check_mountpoint_row_mountpoint(3, "/boot")
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.select_mountpoint_row_reformat(1)
+        s.check_mountpoint_row_reformat(1, True)
 
         toggle_selector = f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1-device-select-toggle:not([disabled]):not([aria-disabled=true])"
         b.click(toggle_selector)
-        b.click(".pf-v6-c-menu__content li:nth-of-type(2) button")
+        b.click(".pf-v6-c-menu__content li:nth-of-type(3) button")
         b.wait_not_present(".pf-v6-c-menu")
         b.wait_js_func("ph_text", f"#{i.steps.CUSTOM_MOUNT_POINT}-table-row-1 .pf-v6-c-select__toggle-text", "luks")
 
@@ -131,6 +136,8 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False, "efi")
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
 
@@ -141,8 +148,8 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         m = self.machine
         s = Storage(b, m)
 
-        # BIOS boot partition, /boot partition, / on RAID
-        s.partition_disk("/dev/vda", [("1MiB", "biosboot"), ("1GB", "xfs")])
+        # EFI system partition, /boot partition, / on RAID
+        s.partition_disk("/dev/vda", [("500MiB", "efi"), ("1GB", "xfs")])
         self.addCleanup(
             lambda: m.execute(
             """
@@ -165,7 +172,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         """
         Test scenario with three disks:
 
-        - 'biosboot' and '/boot' are on 'vda'.
+        - ESP and '/boot' are on 'vda'.
         - A RAID 0 array is created using 'vdb' and 'vdc'.
         - The root filesystem ('/') is placed on the RAID 0 device.
         """
@@ -180,9 +187,13 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
 
         s.select_mountpoint([("vda", True), ("MDRAID-SOMERAID", True)]) # Select both disks
 
-        s.check_mountpoint_row_mountpoint(2, "/boot")
-        s.select_mountpoint_row_device(2, "vda2")
+        s.check_mountpoint_row_mountpoint(2, "/boot/efi")
+        s.select_mountpoint_row_device(2, "vda1")
         s.select_mountpoint_row_reformat(2, False)
+
+        s.check_mountpoint_row_mountpoint(3, "/boot")
+        s.select_mountpoint_row_device(3, "vda2")
+        s.select_mountpoint_row_reformat(3, False)
 
         s.check_mountpoint_row_mountpoint(1, "/")
         s.select_mountpoint_row_device(1, "SOMERAID1")
@@ -192,6 +203,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot/efi", "vda1", "524 MB", False)
         r.check_disk_row("vda", "/boot", "vda2", "1.00 GB", False)
         r.check_disk("MDRAID-SOMERAID", "32.2 GB MDRAID-SOMERAID (MDRAID set (stripe))")
         r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1, RAID", "32.2 GB", False)

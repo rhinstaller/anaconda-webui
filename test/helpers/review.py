@@ -66,7 +66,7 @@ class Review(NetworkDBus, StorageDBus):
         # Action rows (delete/resize) have data-action and no data-mount;
         # mount rows have data-mount and no data-action.
         # Detect action rows: explicit non-default action, no mount_point, no reformat.
-        is_action_row = action and action not in ("mount", "biosboot") and not mount_point and not reformat
+        is_action_row = action and action not in ("mount", "biosboot", "efi") and not mount_point and not reformat
         row = f'{table} tr[data-device="{parent}"]'
         if is_action_row:
             row = f'{row}[data-action="{action_text}"]'

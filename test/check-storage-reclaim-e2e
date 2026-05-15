@@ -40,6 +40,8 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
 
         s.reclaim_shrink_device("vda1", "7")
         s.reclaim_modal_submit()
+        # Debian /boot/efi is less than 500MB therefore we get a warning
+        i.next(should_fail=True)
 
         i.reach(i.steps.REVIEW)
         r.check_some_resized_checkbox_label()

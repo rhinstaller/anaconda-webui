@@ -36,10 +36,16 @@ class TestStorageUseFreeSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.check_scenario_selected("use-free-space")
         i.next()
+        # debian's efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
 
         i.reach_on_sidebar(i.steps.STORAGE_CONFIGURATION)
+        # debian's efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
         r.check_disk_row("vda", "/", "vda3, LVM", "7.51 GB", True, "xfs")
