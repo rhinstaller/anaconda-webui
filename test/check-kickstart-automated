@@ -93,6 +93,7 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
         r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")
 
+        i.check_next_disabled(disabled=False)
         b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
 
     def testUserInterfaceCanChangeAccountsConf(self):
