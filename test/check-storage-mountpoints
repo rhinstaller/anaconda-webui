@@ -769,10 +769,10 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev1, "/boot/efi", f"{dev1}1", "537 MB", False, "efi")
         r.check_disk_row(dev1, "/boot", f"{dev1}2", "1.07 GB", False, "ext4")
-        r.check_disk_row(dev1, "/", f"{dev1}3", "14.5", True, "xfs")
+        r.check_disk_row(dev1, "/", f"{dev1}3", "14.5 GB", True, "xfs")
 
         r.check_disk(dev2, "10.7 GB vdb (Virtio Block Device)")
-        r.check_disk_row(dev2, "/home", "", "10.7", False, "xfs", is_encrypted=True, action="mount")
+        r.check_disk_row(dev2, "/home", "", "10.7 GB", False, "xfs", is_encrypted=True, action="mount")
 
 
 # TODO: these tests should be made nondestructive
