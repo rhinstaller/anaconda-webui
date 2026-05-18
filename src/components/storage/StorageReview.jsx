@@ -143,6 +143,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 props: {
                     "data-device": deviceText,
                     "data-mount": mount,
+                    "data-size": size,
                     ...(encryptedText ? { "data-encrypted": encryptedText } : {}),
                     key: device
                 },
@@ -183,6 +184,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 props: {
                     "data-action": actionDescriptionText,
                     "data-device": device,
+                    "data-size": sizeText,
                     key: device + actionType,
                 },
             }
