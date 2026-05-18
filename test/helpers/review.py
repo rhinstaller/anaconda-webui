@@ -74,6 +74,8 @@ class Review(NetworkDBus, StorageDBus):
             row = f'{row}[data-mount="{mount_point}"]'
         if is_encrypted:
             row = f'{row}[data-encrypted="{encrypt_text}"]'
+        if size:
+            row = f'{row}[data-size="{size}"]'
 
         self.browser.wait_visible(row)
 
