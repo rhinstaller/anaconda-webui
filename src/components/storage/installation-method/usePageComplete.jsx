@@ -107,21 +107,15 @@ const useApplyStorageOnReview = () => {
         }
 
         const step = REVIEW_STEP_ID;
-        applyStorage({
-            onFail: ex => {
-                setStepNotification?.({ step, ...ex });
-            },
-            onSuccess: validationReport => {
-                const notification = createStorageValidationNotification(validationReport, step);
 
-                if (notification) {
-                    setStepNotification?.(notification);
-                } else {
-                    setStepNotification?.();
-                }
-            },
-            partitioning: partitioningPath,
-        }).catch(() => {});
+        (async () => {
+            try {
+                const { validationReport } = await applyStorage({ partitioning: partitioningPath });
+                setStepNotification?.(createStorageValidationNotification(validationReport, step));
+            } catch (ex) {
+                setStepNotification?.({ step, ...ex });
+            }
+        })();
     }, [appliedPartitioning, partitioningPath, setStepNotification]);
 };
 
@@ -163,8 +157,6 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
                 step: REVIEW_STEP_ID,
                 title,
             });
-        } else {
-            setStepNotification?.();
         }
     }, [
         appliedPartitioning,
