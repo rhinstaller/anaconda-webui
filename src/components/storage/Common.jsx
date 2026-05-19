@@ -15,7 +15,7 @@ const _ = cockpit.gettext;
  * @param {Object} props - Component props
  * @param {Array<string>} props.warningMessages - Array of warning messages to display
  */
-export const StorageWarningList = ({ warningMessages }) => {
+export const StorageWarningList = ({ showProceedHint = true, warningMessages }) => {
     return (
         <>
             <List>
@@ -23,7 +23,8 @@ export const StorageWarningList = ({ warningMessages }) => {
                     <ListItem key={"warn-" + i}>{msg}</ListItem>
                 ))}
             </List>
-            <p>{_("Click 'Next' again to proceed despite these warnings.")}</p>
+            {showProceedHint &&
+            <p>{_("Click 'Next' again to proceed despite these warnings.")}</p>}
         </>
     );
 };
@@ -75,7 +76,12 @@ export const createStorageValidationNotification = (validationReport, step) => {
     );
 
     return {
-        message: <StorageWarningList warningMessages={warningMessages} />,
+        message: (
+            <StorageWarningList
+              showProceedHint={step !== "anaconda-screen-review"}
+              warningMessages={warningMessages}
+            />
+        ),
         step,
         title: warningTitle,
         variant: "warning",
