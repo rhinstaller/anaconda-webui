@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
 
@@ -19,7 +19,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "ext4"), ("", "btrfs")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", "btrfs")])
         m.execute(f"""
         mkdir -p {tmp_mount}
         mount {disk}3 {tmp_mount}
@@ -87,7 +87,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         # verify review screen
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", True, "efi")
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
         r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs")
         r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
@@ -158,7 +158,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "ext4"), ("", "btrfs")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", "btrfs")])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", "btrfs", close_luks=False)
         m.execute(f"""
         mkdir -p {tmp_mount}
@@ -206,7 +206,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         # Verify the review page
         i.reach(i.steps.REVIEW)
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs", True)
 

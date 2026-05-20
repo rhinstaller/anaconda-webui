@@ -8,7 +8,7 @@ import os
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
-from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, EFI_PARTITION_DEFAULT_SIZE, Storage
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme, rsync_directory
 
@@ -40,7 +40,7 @@ class _TestStorageHomeReuseHelpers:
         dev = encrypted_disk.split("/")[-1]
         dev_fedora = new_disk
 
-        s.partition_disk(disk, [("500MiB", "efi"), (BOOT_PARTITION_DEFAULT_SIZE, "ext4"), ("", None)])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (BOOT_PARTITION_DEFAULT_SIZE, "ext4"), ("", None)])
 
         # Create standard encrypted btrfs layout in the empty disk and copy the data from the fedora
         # disk to emulate the Fedora encrypted layout

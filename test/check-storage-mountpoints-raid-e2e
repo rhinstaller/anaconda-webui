@@ -5,7 +5,7 @@
 
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE, Storage
 from testlib import test_main, timeout  # pylint: disable=import-error
 
 
@@ -21,8 +21,8 @@ class TestStorageMountPointsRAID_E2E(VirtInstallMachineCase):
         disk2 = "/dev/vdb"
         raid_name = "raid1"
 
-        s.partition_disk(disk1, [("500MiB", "efi"), ("1GiB", "xfs"), ("", None)])
-        s.partition_disk(disk2, [("500MiB", "efi"), ("1GiB", "xfs"), ("", None)])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("", None)])
+        s.partition_disk(disk2, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("", None)])
 
         # RAID1 on partition level for /boot and /
         s.create_raid_device(f"{raid_name}-boot", "raid1", [f"{disk1}2", f"{disk2}2"])

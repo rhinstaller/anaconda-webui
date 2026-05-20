@@ -6,7 +6,7 @@
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
@@ -21,7 +21,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         # EFI system partition, /boot partition, / on RAID
         disk = "/dev/vda"
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", close_luks=False)
         s.create_luks_partition(f"{disk}4", "einszweidrei", "encrypted-vol2", close_luks=False)
         s.create_raid_device("encryptedraid", "raid1", ["/dev/mapper/encrypted-vol", "/dev/mapper/encrypted-vol2"])
@@ -72,7 +72,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False, "efi")
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False, "efi")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
@@ -83,7 +83,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         disk = "/dev/vda"
 
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("5GiB", None), ("5GiB", None)])
         s.create_raid_device("encryptedraid", "raid1", [f"{disk}3", f"{disk}4"])
         s.create_luks_partition("/dev/md/encryptedraid", "einszweidrei", "encrypted-vol", "xfs")
 
@@ -136,7 +136,7 @@ class TestStorageMountPointsRAIDDestructive(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False, "efi")
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False, "efi")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev, "/", "vda3, vda4, RAID", "5.35 GB", True, "xfs", True)
 
@@ -149,7 +149,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         s = Storage(b, m)
 
         # EFI system partition, /boot partition, / on RAID
-        s.partition_disk("/dev/vda", [("500MiB", "efi"), ("1GB", "xfs")])
+        s.partition_disk("/dev/vda", [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GB", "xfs")])
         self.addCleanup(
             lambda: m.execute(
             """
@@ -203,7 +203,7 @@ class TestStorageMountPointsRAID(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row("vda", "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row("vda", "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row("vda", "/boot", "vda2", "1.00 GB", False)
         r.check_disk("MDRAID-SOMERAID", "32.2 GB MDRAID-SOMERAID (MDRAID set (stripe))")
         r.check_disk_row("MDRAID-SOMERAID", "/", "SOMERAID1, RAID", "32.2 GB", False)

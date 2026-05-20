@@ -8,7 +8,7 @@ import os
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme
@@ -145,7 +145,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot on ext4, / on xfs, /home on btrfs
         disk = "/dev/vda"
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
     def testNoRootMountPoint(self):
         """
@@ -205,7 +205,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [("500MiB", "efi"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("", "xfs")])
 
         # /dev/vdb1 /home partition
         disk2 = "/dev/vdb"
@@ -276,7 +276,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # verify review screen
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(disk, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(disk, "/", "vda3", "14.5 GB", True, "xfs")
 
@@ -297,7 +297,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [("500MiB", "efi"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
 
     @disk_images([("", 15)])
     def testPayloadSizeCheck(self):
@@ -395,7 +395,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk1 = "/dev/vda"
         s.partition_disk(
             disk1,
-            [("500MiB", "efi"), ("1GiB", None), ("1GiB", None), ("1GiB", None), ("1GiB", "xfs")],
+            [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", None), ("1GiB", None), ("1GiB", None), ("1GiB", "xfs")],
         )
         s.create_luks_partition(f"{disk1}2", "einszwei", "encrypted-vol0", "xfs")
         s.create_luks_partition(f"{disk1}3", "einszweidrei", "encrypted-vol1", "xfs")
@@ -565,7 +565,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(
             disk,
             [
-                ("500MiB", "efi"),
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
                 ("1GiB", "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", "root"),
                 ("5GiB", "btrfs", "-f", "-L", btrfsname),
@@ -619,7 +619,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk = "vda"
         r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(disk, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs")
         r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs")
@@ -631,7 +631,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
 
         disk = "/dev/vda"
-        s.partition_disk(disk, [("500MiB", "efi"), ("1GiB", "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
 
     def testUnusableFormats(self):
         """
