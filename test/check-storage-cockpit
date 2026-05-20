@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_workstation_iso
@@ -184,7 +184,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         def checkStorageReview(prefix=""):
             disk = "vda"
             r.check_disk(disk, "16.1 GB vda (Virtio Block Device)", prefix=prefix)
-            r.check_disk_row(disk, "/boot/efi", "vda1", "524 MB", False, "efi", prefix=prefix)
+            r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False, "efi", prefix=prefix)
             r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False, prefix=prefix)
             r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False, prefix=prefix)
@@ -464,7 +464,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3", "14.5 GB", False)
 
@@ -523,7 +523,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3", "14.5 GB", False)
         r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
@@ -581,7 +581,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         dev = "vda"
         r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", "524 MB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
         r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs")
         r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)

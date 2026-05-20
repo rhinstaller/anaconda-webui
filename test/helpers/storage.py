@@ -29,6 +29,10 @@ BOOT_PARTITION_DEFAULT_SIZE = '2GiB'
 # Default boot partition size for review display (GB format)
 BOOT_PARTITION_DEFAULT_SIZE_GB = '2.15 GB'
 
+# Default EFI system partition size for partition preparation (MiB format)
+EFI_PARTITION_DEFAULT_SIZE = '500MiB'
+# Default EFI system partition size for review display (MB format)
+EFI_PARTITION_DEFAULT_SIZE_MB = '524 MB'
 
 class StorageDestination():
     def __init__(self, browser, machine):

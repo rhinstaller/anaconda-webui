@@ -7,7 +7,7 @@ from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_te
 from installer import Installer
 from payload_dnf import PayloadDNF
 from review import Review
-from storage import Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import test_main  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
@@ -87,7 +87,7 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         r.check_storage_config("Use configured storage")
         dev1 = "vda"
         r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev1, "/boot/efi", "vda1", "524 MB", True, "efi")
+        r.check_disk_row(dev1, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
         r.check_disk_row(dev1, "/", "vda5", "11.3 GB", True, "xfs")
         r.check_disk_row(dev1, "/boot", "vda2", "1.07 GB", True, "xfs")
         r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")

@@ -7,7 +7,7 @@ from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from language import Language
 from review import Review
-from storage import BOOT_PARTITION_DEFAULT_SIZE, Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import (
     nondestructive,
     test_main,
@@ -22,7 +22,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("500MiB", "efi"),
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
                 ("6GiB", "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
                 ("", "btrfs", "-f", "-L", f"{btrfsname}B"),
@@ -39,7 +39,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("500MiB", "efi"),
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
                 (BOOT_PARTITION_DEFAULT_SIZE, "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", f"{btrfsname}A"),
             ],
@@ -123,7 +123,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         # Check that all partitions are present
         s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
-        s.reclaim_check_device_row("vda1", deviceType="efi", space="524 MB")
+        s.reclaim_check_device_row("vda1", deviceType="efi", space=EFI_PARTITION_DEFAULT_SIZE_MB)
         s.reclaim_check_device_row("vda2", deviceType="ext4", space="6.44 GB")
         s.reclaim_check_device_row("vda3", deviceType="btrfs", space="5.37 GB")
         s.reclaim_check_device_row("vda4", deviceType="btrfs", space="3.77 GB")
