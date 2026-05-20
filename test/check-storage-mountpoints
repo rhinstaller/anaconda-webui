@@ -712,6 +712,43 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.select_mountpoint_row_mountpoint(4, "/home")
         s.select_mountpoint_row_device(4, "home")
 
+    def _testVfatWithoutESP_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        # Vfat partition, /boot on ext4, / on xfs
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "vfat"), ("1GiB", "ext4"), ("", "xfs")])
+
+    def testVfatWithoutESP(self):
+        """
+        Description:
+            Test that assigning /boot/efi to a vfat partition without the ESP
+            flag shows an appropriate error message.
+
+        Expected results:
+            - When a vfat partition without ESP type is selected for /boot/efi,
+              an error about missing ESP marking is shown.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        dev = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([(dev, True)])
+
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.select_mountpoint_row_device(1, f"{dev}3")
+        s.select_mountpoint_row_device(3, f"{dev}2")
+
+        s.wait_mountpoint_table_column_helper(2, "device", text="must be on an EFI System Partition")
+
     def _testEncryptedHomeSecondDisk_partition_disk(self):
         b = self.browser
         m = self.machine

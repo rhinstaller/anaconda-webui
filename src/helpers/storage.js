@@ -194,6 +194,46 @@ export const unitMultiplier = {
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
 
+const _ = cockpit.gettext;
+
+/* Blivet reports plain FAT without ESP flags as "vfat", not "efi". */
+const VFAT_FORMAT_TYPE = "vfat";
+
+/**
+ * Check whether a device satisfies the format constraint for a mount point.
+ *
+ * The backend's required-filesystem-type field actually carries blivet format
+ * types (efi, biosboot, ext4, ...). Bootloader format types such as "efi" are
+ * not filesystem types; use constraint.description (from GetFormatTypeData)
+ * when presenting them to the user.
+ *
+ * @returns {[boolean, string]} [invalid, errorMessage]
+ */
+export const getMountPointFormatConstraintError = ({ constraint, device, devices, mountPoint }) => {
+    const requiredFormatType = constraint?.["required-filesystem-type"]?.v;
+    const deviceFormatType = devices[device]?.formatData?.type?.v;
+
+    if (!requiredFormatType || !deviceFormatType || deviceFormatType === requiredFormatType) {
+        return [false, ""];
+    }
+
+    const formatLabel = constraint.description || requiredFormatType;
+
+    if (requiredFormatType === "efi" && deviceFormatType === VFAT_FORMAT_TYPE) {
+        return [true,
+            cockpit.format(
+                _("'$0' must be on an EFI System Partition. The selected partition uses a FAT filesystem, but is not marked as an ESP. Set the partition type to EFI System and enable the esp flag."),
+                mountPoint
+            )];
+    }
+
+    if (bootloaderTypes.includes(requiredFormatType)) {
+        return [true, cockpit.format(_("'$0' must be assigned to $1"), mountPoint, formatLabel)];
+    }
+
+    return [true, cockpit.format(_("'$0' must be on a device formatted to '$1'"), mountPoint, formatLabel)];
+};
+
 /* Filter requests to remove devices that should not be sent to the backend.
  * Keeps:
  * - Requests with reformat set to true or with specified mount points
