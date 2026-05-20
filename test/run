@@ -75,16 +75,15 @@ esac
 
 # If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
 if [ -n "${TEST_COMPOSE-}" ]; then
-    DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
     COMPOSE_BASE_URL=$(python3 test/helpers/compose_path.py "$TEST_COMPOSE")
     COMPOSE_A_PACKAGES="${COMPOSE_BASE_URL}/compose/Everything/x86_64/os/Packages/a/"
-    ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+    ANACONDA_WEBUI_TAG=$(curl -sfL "$COMPOSE_A_PACKAGES" | grep -oE 'anaconda-webui-[0-9]+' | sed 's/anaconda-webui-//' | sort -n | tail -1)
+
+    git fetch --tags origin
+    git checkout "$ANACONDA_WEBUI_TAG"
 
     # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
     echo "FIXME" > test/reference-image
-
-    # Commit the changes to the repo
-    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes" || echo "Skipped infra checkout commit, no changes"
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
