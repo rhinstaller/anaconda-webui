@@ -28,6 +28,7 @@ import {
     getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
+    getMountPointFormatConstraintError,
     hasDuplicateFields,
     isDuplicateRequestField,
     requestsFromDbus,
@@ -172,12 +173,14 @@ const isDeviceMountPointInvalid = (deviceData, mountPointConstraints, request) =
         return [false, ""];
     }
 
-    // we have constraints for filesystem type for required and recommended mount points from the backend) {
-    if (constrainedMountPointData && constrainedMountPointData["required-filesystem-type"].v !== "" &&
-        deviceData[device].formatData.type.v !== constrainedMountPointData["required-filesystem-type"].v) {
-        return [true,
-            cockpit.format(_("'$0' must be on a device formatted to '$1'"),
-                           request["mount-point"], constrainedMountPointData["required-filesystem-type"].v)];
+    const [formatInvalid, formatError] = getMountPointFormatConstraintError({
+        constraint: constrainedMountPointData,
+        device,
+        devices: deviceData,
+        mountPoint: request["mount-point"],
+    });
+    if (formatInvalid) {
+        return [true, formatError];
     }
     if (constrainedMountPointData && !constrainedMountPointData["encryption-allowed"].v &&
         deviceData[device].type.v === "luks/dm-crypt") {
@@ -362,7 +365,11 @@ const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRe
     const [deviceInvalid, errorMessage] = isDeviceMountPointInvalid(deviceData, mountPointConstraints, request);
 
     return (
-        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsNone" }}>
+        <Flex
+          direction={{ default: "column" }}
+          id={idPrefix}
+          spaceItems={{ default: "spaceItemsNone" }}
+        >
             <DeviceColumnSelect
               deviceData={deviceData}
               devices={devices}
