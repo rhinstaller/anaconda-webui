@@ -8,6 +8,7 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 
+import { formatBytes } from "../../../../helpers/storage.js";
 import { AvailabilityState } from "../helpers.js";
 
 import {
@@ -51,7 +52,7 @@ export const useAvailabilityUseFreeSpace = (args) => {
             availability.reason = _("Not enough free space on the selected disks.");
             availability.hint = cockpit.format(
                 _("To use this option, resize or remove existing partitions to free up at least $0."),
-                cockpit.format_bytes(requiredSize)
+                formatBytes(requiredSize)
             );
             if (allowReclaim) {
                 availability.enforceAction = true;

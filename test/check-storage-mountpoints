@@ -8,7 +8,13 @@ import os
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
-from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import (
+    EFI_PARTITION_DEFAULT_SIZE,
+    EFI_PARTITION_DEFAULT_SIZE_SPACE,
+    PARTITION_1GiB_SIZE,
+    PARTITION_1GiB_SIZE_SPACE,
+    Storage,
+)
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme
@@ -94,15 +100,15 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        r.check_disk(dev, "16.1 GB vdb (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vdb (Virtio Block Device)")
 
         next_idx = 2
         if self.is_efi:
-            r.check_disk_row(dev, "/boot/efi", f"vdb{next_idx}", "105 MB", True, "efi")
+            r.check_disk_row(dev, "/boot/efi", f"vdb{next_idx}", "100 MiB", True, "efi")
         next_idx += 1
-        r.check_disk_row(dev, "/boot", f"vdb{next_idx}", "1.05 GB", True, "ext4")
-        r.check_disk_row(dev, "/", f"vdb{next_idx + 1}", "12.8 GB", True, "btrfs subvolume")
-        r.check_disk_row(dev, "/home", f"vdb{next_idx + 1}", "12.8 GB", False)
+        r.check_disk_row(dev, "/boot", f"vdb{next_idx}", "1000 MiB", True, "ext4")
+        r.check_disk_row(dev, "/", f"vdb{next_idx + 1}", "11.9 GiB", True, "btrfs subvolume")
+        r.check_disk_row(dev, "/home", f"vdb{next_idx + 1}", "11.9 GiB", False)
 
         applied_partitioning = s.dbus_get_applied_partitioning()
 
@@ -145,7 +151,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot on ext4, / on xfs, /home on btrfs
         disk = "/dev/vda"
-        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("10GiB", "xfs"), ("", "ext4")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("10GiB", "xfs"), ("", "ext4")])
 
     def testNoRootMountPoint(self):
         """
@@ -205,7 +211,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "xfs"), ("", "xfs")])
 
         # /dev/vdb1 /home partition
         disk2 = "/dev/vdb"
@@ -275,14 +281,14 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(disk, "/", "vda3", "14.5 GB", True, "xfs")
+        r.check_disk(disk, "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/", "vda3", "13.5 GiB", True, "xfs")
 
         disk = "vdb"
-        r.check_disk(disk, "10.7 GB vdb (Virtio Block Device)")
-        r.check_disk_row(disk, "/home", "vdb1", "10.7 GB", False)
+        r.check_disk(disk, "10 GiB vdb (Virtio Block Device)")
+        r.check_disk_row(disk, "/home", "vdb1", "10.0 GiB", False)
 
         b.assert_pixels(
             "#app",
@@ -297,7 +303,16 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(
+            disk1,
+            [
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
+                (PARTITION_1GiB_SIZE, "xfs"),
+                (PARTITION_1GiB_SIZE, "xfs"),
+                (PARTITION_1GiB_SIZE, "xfs"),
+                ("", "xfs"),
+            ],
+        )
 
     @disk_images([("", 15)])
     def testPayloadSizeCheck(self):
@@ -334,7 +349,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_size_error()
 
         # check that there is a hint with required size beside the device
-        r.check_disk_row(dev, "/", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", PARTITION_1GiB_SIZE_SPACE, True, "xfs", is_encrypted=False)
         r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
 
         # check that it is not possible to continue on the next page (install)
@@ -360,9 +375,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         r.check_size_error()
 
         # check that there is a hint suitable for multiple devices
-        r.check_disk_row(dev, "/", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", PARTITION_1GiB_SIZE_SPACE, True, "xfs", is_encrypted=False)
         r.check_disk_mount_point_helper_text(dev, "/", "May need more free space")
-        r.check_disk_row(dev, "/usr", f"{dev}4", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/usr", f"{dev}4", PARTITION_1GiB_SIZE_SPACE, True, "xfs", is_encrypted=False)
         r.check_disk_mount_point_helper_text(dev, "/usr", "May need more free space")
 
         # check that it is not possible to continue on the next page (install)
@@ -395,7 +410,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk1 = "/dev/vda"
         s.partition_disk(
             disk1,
-            [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", None), ("1GiB", None), ("1GiB", None), ("1GiB", "xfs")],
+            [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", None), ("1GiB", None), ("1GiB", None), (PARTITION_1GiB_SIZE, "xfs")],
         )
         s.create_luks_partition(f"{disk1}2", "einszwei", "encrypted-vol0", "xfs")
         s.create_luks_partition(f"{disk1}3", "einszweidrei", "encrypted-vol1", "xfs")
@@ -508,7 +523,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         self.click_dropdown(self.card_row("Storage", 2), "Create partition")
         self.dialog({"size": 524, "type": "efi", "mount_point": "/boot/efi"})
 
-        # FIXME: Cockpit uses MB/GB for units whereas anaconda uses MiB/GiB, so
+        # FIXME: Cockpit and anaconda may round partition sizes slightly differently, so
         # when anaconda backend recommends a 1GiB boot partition and Cockpit
         # creates a 1GB partition, it is rounded down to 931MiB and doesn't
         # meet the boot partition requirement, causing the test to fail. For
@@ -566,7 +581,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             disk,
             [
                 (EFI_PARTITION_DEFAULT_SIZE, "efi"),
-                ("1GiB", "ext4"),
+                (PARTITION_1GiB_SIZE, "ext4"),
                 ("5GiB", "btrfs", "-f", "-L", "root"),
                 ("5GiB", "btrfs", "-f", "-L", btrfsname),
                 ("", "btrfs", "-f", "-L", btrfsname)
@@ -617,13 +632,13 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(disk, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs volume")
-        r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs volume")
-        r.check_disk_row(disk, "/home/alan", "vda5", "3.77 GB", False, "btrfs volume")
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/", "vda3", "5 GiB", True, "btrfs volume")
+        r.check_disk_row(disk, "/home/joe", "vda4", "5 GiB", False, "btrfs volume")
+        r.check_disk_row(disk, "/home/alan", "vda5", "3.51 GiB", False, "btrfs volume")
 
     def _testUnusableFormats_partition_disk(self):
         b = self.browser
@@ -631,7 +646,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s = Storage(b, m)
 
         disk = "/dev/vda"
-        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("1GiB", None), ("1GiB", "lvmpv")])
 
     def testUnusableFormats(self):
         """
@@ -669,8 +684,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         s.partition_disk(
             disk,
             [
-                ("512MiB", "efi"),
-                ("1GiB", "ext4"),
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
+                (PARTITION_1GiB_SIZE, "ext4"),
                 ("", "extended"),
                 ("10GiB", "logical")
             ],
@@ -757,7 +772,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         disk1 = "/dev/vda"
         disk2 = "/dev/vdb"
         # On disk1: EFI, /boot (ext4), and root (xfs)
-        s.partition_disk(disk1, [("512MiB", "efi"), ("1GiB", "ext4"), ("", "xfs")])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("", "xfs")])
         # On disk2: whole-disk LUKS with xfs inside (no partition table)
         m.execute(f"wipefs -a {disk2}")
         s.create_luks_partition(disk2, "homepass", "encrypted-home", "xfs")
@@ -815,13 +830,13 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # Verify review shows /home as encrypted and mounted on disk2
         i.reach(i.steps.REVIEW)
-        r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev1, "/boot/efi", f"{dev1}1", "537 MB", False, "efi")
-        r.check_disk_row(dev1, "/boot", f"{dev1}2", "1.07 GB", False, "ext4")
-        r.check_disk_row(dev1, "/", f"{dev1}3", "14.5 GB", True, "xfs")
+        r.check_disk(dev1, "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row(dev1, "/boot/efi", f"{dev1}1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False, "efi")
+        r.check_disk_row(dev1, "/boot", f"{dev1}2", PARTITION_1GiB_SIZE_SPACE, False, "ext4")
+        r.check_disk_row(dev1, "/", f"{dev1}3", "13.5 GiB", True, "xfs")
 
-        r.check_disk(dev2, "10.7 GB vdb (Virtio Block Device)")
-        r.check_disk_row(dev2, "/home", "", "10.7 GB", False, "xfs", is_encrypted=True, action="mount")
+        r.check_disk(dev2, "10 GiB vdb (Virtio Block Device)")
+        r.check_disk_row(dev2, "/home", "", "9.98 GiB", False, "xfs", is_encrypted=True, action="mount")
 
 
 # TODO: these tests should be made nondestructive
@@ -873,11 +888,11 @@ class TestStorageMountPointsDestructive(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(disk, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(disk, "/boot", "vda1", "1.07 GB", True, "ext4")
-        r.check_disk_row(disk, "/", "vda2", "14.0 GB", True, "btrfs subvolume")
-        r.check_disk_row(disk, "/home", "vda2", "14.0 GB", False, "btrfs subvolume")
+        r.check_disk_row(disk, "/boot", "vda1", PARTITION_1GiB_SIZE_SPACE, True, "ext4")
+        r.check_disk_row(disk, "/", "vda2", "13 GiB", True, "btrfs subvolume")
+        r.check_disk_row(disk, "/home", "vda2", "13 GiB", False, "btrfs subvolume")
 
     def _testWindowsSingleDiskHomeReuse_partition_disk(self):
         storage = Storage(self.browser, self.machine)
@@ -921,13 +936,13 @@ class TestStorageMountPointsDestructive(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         dev_win_fed = "vda"
-        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
-        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
+        r.check_disk(dev_win_fed, f"35 GiB {dev_win_fed} (Virtio Block Device)")
+        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "100 MiB", False, "vfat", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", PARTITION_1GiB_SIZE_SPACE, True, "ext4", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "13 GiB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "13 GiB", True, "btrfs subvolume", is_encrypted=False)
 
 
 if __name__ == '__main__':

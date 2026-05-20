@@ -12,7 +12,7 @@ import { useWizardContext } from "@patternfly/react-core/dist/esm/components/Wiz
 import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { applyStorage } from "../../../apis/storage_partitioning.js";
 
-import { selectDefaultDisks } from "../../../helpers/storage.js";
+import { formatBytes, selectDefaultDisks } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
@@ -135,8 +135,8 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
             const title = _("Not enough available free space");
             const message = cockpit.format(
                 _("$0 is required, but only $1 is available."),
-                cockpit.format_bytes(requiredSize),
-                cockpit.format_bytes(freeSpace)
+                formatBytes(requiredSize),
+                formatBytes(freeSpace)
             );
             const actionLinks = (
                 <Button

@@ -12,6 +12,8 @@ import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/ind
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
+import { formatBytes } from "../../../helpers/storage.js";
+
 import {
     useMountPointConstraints,
     useRequiredSize,
@@ -77,7 +79,7 @@ export const ModifyStorageSideBar = () => {
                             <Title headingLevel="h3" size="lg">{_("Requirements")}</Title>
                             <Content>
                                 <Content component="p" className={idPrefix + "-requirements-hint"}>
-                                    {cockpit.format(_("Fedora linux requires at least $0 of disk space."), cockpit.format_bytes(requiredSize))}
+                                    {cockpit.format(_("Fedora linux requires at least $0 of disk space."), formatBytes(requiredSize))}
                                 </Content>
                                 <Content component="p" className={idPrefix + "-requirements-hint-detail"}>
                                     {_("You can either free up enough space here and let the installer handle the rest or manually set up partitions.")}

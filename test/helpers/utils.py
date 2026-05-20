@@ -3,6 +3,8 @@
 
 import os
 
+from storage import PARTITION_1GiB_SIZE
+
 
 def add_public_key(machine):
     with open(f'{machine.identity_file}.pub', 'r') as pub:
@@ -105,7 +107,7 @@ def move_standard_fedora_disk_to_disk(machine, src_disk, dst_disk,
 def move_standard_fedora_disk_to_MBR_disk(storage, machine, mbr_disk, fedora_disk):
     """Partition a disk with msdos table and copy Fedora system from another disk on it."""
     storage.partition_disk(f"/dev/{mbr_disk}", [
-        ("1GiB", "ext4"),
+        (PARTITION_1GiB_SIZE, "ext4"),
         ("13GiB", "btrfs"),
     ], is_mbr=True)
     boot_part = 1
@@ -123,7 +125,7 @@ def move_standard_fedora_disk_to_win_disk(storage, machine, win_disk, fedora_dis
         ("128MiB", "microsoft-reserved"),
         ("11.5GiB", "basic-data"),
         # Fedora
-        ("1GiB", "ext4"),
+        (PARTITION_1GiB_SIZE, "ext4"),
         ("13GiB", "btrfs"),
         # Windows
         ("530MiB", "microsoft-recovery"),

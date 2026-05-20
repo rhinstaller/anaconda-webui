@@ -7,6 +7,7 @@ import cockpit from "cockpit";
 
 import { useContext, useEffect, useState } from "react";
 
+import { formatBytes } from "../../../../helpers/storage.js";
 import { AvailabilityState } from "../helpers.js";
 
 import {
@@ -43,7 +44,7 @@ export const useAvailabilityEraseAll = () => {
             availability.reason = _("Not enough space on selected disks.");
             availability.hint = cockpit.format(
                 _("The installation needs $0 of disk space; however, the capacity of the selected disks is only $1."),
-                cockpit.format_bytes(requiredSize), cockpit.format_bytes(diskTotalSpace));
+                formatBytes(requiredSize), formatBytes(diskTotalSpace));
         }
 
         return setScenarioAvailability(availability);

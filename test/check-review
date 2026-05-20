@@ -8,7 +8,7 @@ from installer import Installer
 from network import Network
 from password import Password
 from review import Review
-from storage import BOOT_PARTITION_DEFAULT_SIZE_GB, Storage
+from storage import Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_workstation_iso
 
@@ -51,9 +51,9 @@ class TestReview(VirtInstallMachineCase):
         r.check_language("English (United States)")
 
         # check selected disks are shown
-        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row("vda", "/boot", "vda2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs")
-        r.check_disk_row("vda", "/", "vda3, LVM", "13.3 GB", True, "xfs")
+        r.check_disk("vda", "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot", "vda2", "2 GiB", True, "xfs")
+        r.check_disk_row("vda", "/", "vda3, LVM", "12.4 GiB", True, "xfs")
 
         # check storage configuration
         r.check_storage_config("Use entire disk")
@@ -79,10 +79,10 @@ class TestReview(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row("vda", "/boot/efi", "vda1", "629 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row("vda", "/boot", "vda2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row("vda", "/", "vda3, LVM", "13.3 GB", True, "xfs", is_encrypted=True)
+        r.check_disk("vda", "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot/efi", "vda1", "600 MiB", True, "efi", is_encrypted=False)
+        r.check_disk_row("vda", "/boot", "vda2", "2 GiB", True, "xfs", is_encrypted=False)
+        r.check_disk_row("vda", "/", "vda3, LVM", "12.4 GiB", True, "xfs", is_encrypted=True)
 
         # move the mouse away to avoid highlighting any UI element (pixel ref does not expect that)
         b.mouse("#app", "mouseenter")
