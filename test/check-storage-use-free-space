@@ -49,6 +49,8 @@ class TestStorageUseFreeSpace(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
         r.check_disk_row("vda", "/", "vda3, LVM", "7.51 GB", True, "xfs")
+        r.check_disk_row("vda", "/boot/efi", "vda15", "130 MB", False)
+        r.check_disk_row("vda", "", "vda14", "3.15 MB", False, action="biosboot")
 
 
 if __name__ == '__main__':

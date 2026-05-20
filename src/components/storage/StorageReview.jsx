@@ -71,6 +71,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
     const reusedMountPoints = requests.find(request => request["reused-mount-points"])?.["reused-mount-points"];
+    const reformattedMountPoints = requests.find(request => request["reformatted-mount-points"])?.["reformatted-mount-points"];
     const plannedSystemMountPoints = Object.entries(mountPoints).filter(mp => systemMountPoints.includes(mp[0]));
 
     if (!deviceData) {
@@ -90,7 +91,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         let format = devices[device].formatData.type.v;
-        const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount)) || request?.reformat;
+        const isImplicitlyReusedMountPoint = originalDevices[device] && !reformattedMountPoints?.includes(mount);
+        const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount) && !isImplicitlyReusedMountPoint) || request?.reformat;
 
         // If the format is btrfs, we want to show the type of the device (aka btrfs subvolume)
         if (format === "btrfs") {
