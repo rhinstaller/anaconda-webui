@@ -67,6 +67,14 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
+        payload_type = getattr(method, "payload_type", None)
+        if payload_type and not self.is_nondestructive():
+            provision = dict(self.provision or {"machine1": {}})
+            self.provision = {
+                key: {**dict(opts), "payload_type": payload_type}
+                for key, opts in provision.items()
+            }
+
         boot_modes = getattr(method, "boot_modes", ["bios"])
         self.run_on_vm_setups = getattr(method, "run_on_vm_setups", [""])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
@@ -355,6 +363,16 @@ def disk_images(disks):
     """
     def decorator(func):
         func.disk_images = list(disks)
+        return func
+    return decorator
+
+
+def payload_type(mode):
+    """
+    Decorator to provision the installer VM with a specific payload (``liveimg`` or ``dnf``).
+    """
+    def decorator(func):
+        func.payload_type = mode.lower()
         return func
     return decorator
 

@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, payload_type, pixel_tests_ignore
 from installer import Installer
 from payload_dnf import PayloadDNF
 from review import Review
@@ -19,11 +19,11 @@ class TestKickstartAutomated(VirtInstallMachineCase):
     provision = {
         "machine1": {
             "kickstart_file_name": "TestKickstartAutomated-testBasic.ks",
-            "payload_type": "dnf",
             "memory_mb": INSTALLER_VM_MEMORY_MB,
         },
     }
 
+    @payload_type("dnf")
     def testBasic(self):
         """
         Description:

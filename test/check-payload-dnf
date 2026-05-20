@@ -6,7 +6,7 @@
 import os
 import sys
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import VirtInstallMachineCase, payload_type, pixel_tests_ignore
 from installer import Installer
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
@@ -17,8 +17,8 @@ from payload_dnf import PayloadDNF
 
 @nondestructive
 class TestPayloadDNF(VirtInstallMachineCase):
-    provision = {"machine1": {"payload_type": "dnf"}}
 
+    @payload_type("dnf")
     def testEnvironmentPackages(self):
         """
         Description:
