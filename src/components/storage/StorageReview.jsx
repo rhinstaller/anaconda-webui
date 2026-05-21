@@ -141,6 +141,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                     ...(isReviewScreen ? [{ title: helperText, width: 17 }] : []),
                 ],
                 props: {
+                    "data-action": action,
                     "data-device": deviceText,
                     "data-mount": mount,
                     "data-size": size,

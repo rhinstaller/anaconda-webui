@@ -63,13 +63,8 @@ class Review(NetworkDBus, StorageDBus):
         action_text = f"format as {fs_type}" if reformat else action or "mount"
         encrypt_text = "encrypted" if is_encrypted and not reformat else "encrypt" if is_encrypted and reformat else ""
 
-        # Action rows (delete/resize) have data-action and no data-mount;
-        # mount rows have data-mount and no data-action.
-        # Detect action rows: explicit non-default action, no mount_point, no reformat.
-        is_action_row = action and action not in ("mount", "biosboot", "efi") and not mount_point and not reformat
         row = f'{table} tr[data-device="{parent}"]'
-        if is_action_row:
-            row = f'{row}[data-action="{action_text}"]'
+        row = f'{row}[data-action="{action_text}"]'
         if mount_point:
             row = f'{row}[data-mount="{mount_point}"]'
         if is_encrypted:
