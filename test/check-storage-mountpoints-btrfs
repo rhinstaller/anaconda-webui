@@ -89,7 +89,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs")
+        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume")
         r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
         r.check_disk_row_not_present(dev, "unused")
 
@@ -208,7 +208,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs", True)
+        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume", True)
 
 
 if __name__ == '__main__':
