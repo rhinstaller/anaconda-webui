@@ -621,9 +621,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs")
-        r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs")
-        r.check_disk_row(disk, "/home/alan", "vda5", "3.77 GB", False, "btrfs")
+        r.check_disk_row(disk, "/", "vda3", "5.37 GB", True, "btrfs volume")
+        r.check_disk_row(disk, "/home/joe", "vda4", "5.37 GB", False, "btrfs volume")
+        r.check_disk_row(disk, "/home/alan", "vda5", "3.77 GB", False, "btrfs volume")
 
     def _testUnusableFormats_partition_disk(self):
         b = self.browser
@@ -840,7 +840,7 @@ class TestStorageMountPointsDestructive(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(disk, "/boot", "vda1", "1.07 GB", True, "ext4")
         r.check_disk_row(disk, "/", "vda2", "14.0 GB", True, "btrfs subvolume")
-        r.check_disk_row(disk, "/home", "vda2", "14.0 GB", False, "btrfs")
+        r.check_disk_row(disk, "/home", "vda2", "14.0 GB", False, "btrfs subvolume")
 
     def _testWindowsSingleDiskHomeReuse_partition_disk(self):
         storage = Storage(self.browser, self.machine)
@@ -888,9 +888,9 @@ class TestStorageMountPointsDestructive(VirtInstallMachineCase, StorageCase):
         r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs", is_encrypted=False,
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
 
 
 if __name__ == '__main__':

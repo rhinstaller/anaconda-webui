@@ -583,7 +583,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs")
+        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume")
         r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
 
         # Check fstab
