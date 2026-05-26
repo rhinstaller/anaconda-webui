@@ -91,7 +91,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         let format = devices[device].formatData.type.v;
-        const isImplicitlyReusedMountPoint = originalDevices[device] && !reformattedMountPoints?.includes(mount);
+        const isImplicitlyReusedMountPoint = originalDevices[device] && !reformattedMountPoints?.includes(mount) && !isDeviceDeleted({ actions, device }) && !isDeviceResized({ actions, device });
         const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount) && !isImplicitlyReusedMountPoint) || request?.reformat;
 
         // If the format is btrfs, we want to show the type of the device (aka btrfs subvolume)
