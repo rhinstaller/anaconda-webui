@@ -45,9 +45,8 @@ limitations that need to be addressed:
   responsiveness in the future.
 - **Architecture**: Currently, tests are only run on `x86_64` architecture. Support for additional
   architectures will be added in the future.
-- **Firmware Boot Mode**: Not all tests are currently tested with UEFI, only tests that are considered
-  firmware-specific are run with UEFI firmware boot mode. This may need to change to better align with
-  Fedora's QA test matrix.
+- **Firmware Boot Mode**: Not all tests are currently tested with BIOS, only tests that are considered
+  firmware-specific are run with BIOS firmware boot mode.
 
 Workflow Summary
 ----------------

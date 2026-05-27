@@ -233,9 +233,9 @@ print-test-os:
 .PHONY: test-compose
 test-compose: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}"
-	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}"
+	bots/tests-trigger --force "-" "${TEST_OS}/bios-compose-${TEST_COMPOSE}"
 
 .PHONY: test-compose-staging
 test-compose-staging: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}-staging"
-	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}-staging"
+	bots/tests-trigger --force "-" "${TEST_OS}/bios-compose-${TEST_COMPOSE}-staging"
