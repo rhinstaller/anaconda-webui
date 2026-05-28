@@ -28,10 +28,16 @@ ACCOUNTS_READONLY_USER_ROW = "accounts-users-readonly-user"
 
 def override_user_interface_conf_keys(test, **kwargs):
     """Patch `[User Interface]` boolean keys in `/run/anaconda/anaconda.conf` (single restore)."""
-    test.restore_file('/run/anaconda/anaconda.conf')
+    conf = '/run/anaconda/anaconda.conf'
+    test.restore_file(conf)
     for key, value in kwargs.items():
-        val = "True" if value else "False"
-        test.machine.execute(fr"sed -i 's/^{key} =.*/{key} = {val}/' /run/anaconda/anaconda.conf")
+        text = value if isinstance(value, str) else str(value)
+        if "\n" in text:
+            lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
+            sed_text = "\\\n".join([f"{key} =", *[f"    {line}" for line in lines]])
+            test.machine.execute(f"sed -i '/^{key} =/,/^$/c\\\n{sed_text}' {conf}")
+        else:
+            test.machine.execute(f"sed -i '/^{key} =/c\\{key} = {text}' {conf}")
 
 
 class UsersDBus():
