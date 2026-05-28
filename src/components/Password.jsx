@@ -174,13 +174,35 @@ export const PasswordFormFields = ({
     }, [checkPassword, strengthLevels]);
 
     useEffect(() => {
-        setIsValid(!!(
-            isEmptyPasswordAccepted ||
-            (rulesSatisfied(ruleResults) &&
-            ruleConfirmMatches &&
-            isValidStrength(passwordStrength, strengthLevels))
-        ));
-    }, [setIsValid, isEmptyPasswordAccepted, ruleResults, ruleConfirmMatches, passwordStrength, strengthLevels]);
+        const isStrict = policy?.["is-strict"]?.v ?? false;
+
+        if (isEmptyPasswordAccepted) {
+            setIsValid(true);
+            return;
+        }
+
+        if (!ruleConfirmMatches) {
+            setIsValid(false);
+            return;
+        }
+
+        if (isStrict) {
+            setIsValid(!!(rulesSatisfied(ruleResults) && isValidStrength(passwordStrength, strengthLevels)));
+            return;
+        }
+
+        // Non-strict: length/strength are shown but not required; only confirmation must match.
+        setIsValid((checkPassword?.length ?? 0) > 0);
+    }, [
+        checkPassword,
+        isEmptyPasswordAccepted,
+        policy,
+        ruleConfirmMatches,
+        ruleResults,
+        passwordStrength,
+        setIsValid,
+        strengthLevels,
+    ]);
 
     return (
         <FormSection>
