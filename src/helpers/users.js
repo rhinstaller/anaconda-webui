@@ -78,9 +78,17 @@ export const applyAccounts = async (accounts) => {
     if ((accounts.users?.length ?? 0) === 0) {
         await setUsers([]);
     } else if (accounts.canModifyUserConfiguration) {
-        const cryptedUserPw = await cryptUserPassword(accounts.password);
+        const password = typeof accounts.password === "string" ? accounts.password : "";
+        const hasUserPassword = password.length > 0;
+        const userPassword = hasUserPassword
+            ? await cryptUserPassword(password)
+            : "";
         const first = accounts.users?.[0] ?? {};
-        const firstUserDbus = firstUserToDbus({ ...first, password: cryptedUserPw });
+        const firstUserDbus = firstUserToDbus({
+            ...first,
+            isCrypted: hasUserPassword,
+            password: userPassword,
+        });
         const existing = accounts.users ?? [];
         const users = existing.length > 0
             ? [firstUserDbus, ...existing.slice(1).map(u => objectToDbus(u))]
@@ -103,7 +111,7 @@ const firstUserToDbus = (firstUser) => {
     return {
         gecos: cockpit.variant("s", firstUser.gecos ?? ""),
         groups: cockpit.variant("as", firstUser.groups ?? ["wheel"]),
-        "is-crypted": cockpit.variant("b", true),
+        "is-crypted": cockpit.variant("b", firstUser.isCrypted ?? true),
         name: cockpit.variant("s", firstUser.name ?? ""),
         password: cockpit.variant("s", firstUser.password ?? ""),
     };

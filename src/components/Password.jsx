@@ -102,6 +102,7 @@ const passwordStrengthLabel = (idPrefix, strength, strengthLevels) => {
 export const PasswordFormFields = ({
     confirmPassword,
     confirmPasswordLabel,
+    emptyPasswordHelperText,
     idPrefix,
     password,
     passwordLabel,
@@ -131,7 +132,12 @@ export const PasswordFormFields = ({
         return getRuleResults(rules, policy, checkPassword);
     }, [policy, checkPassword, rules]);
 
-    const ruleConfirmMatches = checkPassword.length > 0 ? checkPassword === checkConfirmPassword : null;
+    const allowEmptyPassword = policy?.["allow-empty"]?.v ?? false;
+    const bothFieldsEmpty = (checkPassword?.length ?? 0) === 0 && (checkConfirmPassword?.length ?? 0) === 0;
+    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmpty;
+    const ruleConfirmMatches = bothFieldsEmpty
+        ? (allowEmptyPassword ? true : null)
+        : checkPassword === checkConfirmPassword;
 
     const ruleHelperItems = ruleResults.map(rule => {
         let variant = rule.isSatisfied === null ? "indeterminate" : rule.isSatisfied ? "success" : "error";
@@ -168,12 +174,13 @@ export const PasswordFormFields = ({
     }, [checkPassword, strengthLevels]);
 
     useEffect(() => {
-        setIsValid(
-            rulesSatisfied(ruleResults) &&
+        setIsValid(!!(
+            isEmptyPasswordAccepted ||
+            (rulesSatisfied(ruleResults) &&
             ruleConfirmMatches &&
-            isValidStrength(passwordStrength, strengthLevels)
-        );
-    }, [setIsValid, ruleResults, ruleConfirmMatches, passwordStrength, strengthLevels]);
+            isValidStrength(passwordStrength, strengthLevels))
+        ));
+    }, [setIsValid, isEmptyPasswordAccepted, ruleResults, ruleConfirmMatches, passwordStrength, strengthLevels]);
 
     return (
         <FormSection>
@@ -206,6 +213,14 @@ export const PasswordFormFields = ({
                 <FormHelperText>
                     <HelperText component="ul" aria-live="polite" id={idPrefix + "-password-field-helper"}>
                         {ruleHelperItems}
+                        {allowEmptyPassword && emptyPasswordHelperText && (
+                            <HelperTextItem
+                              component="li"
+                              variant="default"
+                            >
+                                {emptyPasswordHelperText}
+                            </HelperTextItem>
+                        )}
                     </HelperText>
                 </FormHelperText>
             </FormGroup>
