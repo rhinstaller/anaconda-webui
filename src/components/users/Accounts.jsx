@@ -196,6 +196,7 @@ const CreateAccount = ({
           confirmPassword={confirmPassword}
           setConfirmPassword={setConfirmPassword}
           confirmPasswordLabel={_("Confirm passphrase")}
+          emptyPasswordHelperText={_("Leave both passphrase fields empty to use an empty password.")}
           rules={[ruleLength]}
           setIsValid={setIsPasswordValid}
         />
