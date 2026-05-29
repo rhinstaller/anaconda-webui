@@ -26,7 +26,7 @@ import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
-import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
+import { getDeviceChildren, getOSDisplayName, selectDefaultDisks } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -63,7 +63,7 @@ const DeviceExistingInstallation = ({ device }) => {
     return (
         cockpit.format(
             _("Currently installed: $0"),
-            existingSystemsOnDevice.map(system => system["os-name"].v).join(", ")
+            existingSystemsOnDevice.map(getOSDisplayName).join(", ")
         )
     );
 };

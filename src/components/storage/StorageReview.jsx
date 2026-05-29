@@ -13,6 +13,7 @@ import {
     checkDeviceOnStorageType,
     getDeviceAncestors,
     getDeviceChildren,
+    getOSDisplayName,
     getParentPartitions,
     hasEncryptedAncestor,
     isBootloaderDevice,
@@ -284,8 +285,8 @@ const DeletedSystems = () => {
     );
 
     return deletedSystems.map(system => (
-        <ListItem key={system["os-name"].v}>
-            {cockpit.format(_("$0 will be deleted"), system["os-name"].v)}
+        <ListItem key={getOSDisplayName(system)}>
+            {cockpit.format(_("$0 will be deleted"), getOSDisplayName(system))}
         </ListItem>
     ));
 };
@@ -344,18 +345,18 @@ const AffectedSystems = ({ type }) => {
 
     const deleteText = system => cockpit.format(
         _("Deletion of certain partitions may prevent $0 from booting: $1"),
-        system["os-name"].v,
+        getOSDisplayName(system),
         getAffectedDevicesText(system)
     );
 
     const resizeText = system => cockpit.format(
         _("Resizing the following partitions from $0: $1"),
-        system["os-name"].v,
+        getOSDisplayName(system),
         getAffectedDevicesText(system)
     );
 
     return affectedSystems.map(system => (
-        <ListItem key={system["os-name"].v}>
+        <ListItem key={getOSDisplayName(system)}>
             {type === "delete" && deleteText(system)}
             {type === "resize" && resizeText(system)}
         </ListItem>

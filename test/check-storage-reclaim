@@ -455,7 +455,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         # Don't specify the exact original size as this might change with image refreshes
         r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.2 GB")
-        r.check_resized_system("Ubuntu", ["vda1"])
+        r.check_resized_system("Ubuntu 25.10", ["vda1"])
 
         i.reach_on_sidebar(i.steps.LANGUAGE)
         l.select_locale("cs_CZ", is_common=False)

@@ -7,6 +7,15 @@ import cockpit from "cockpit";
 
 import { checkIfArraysAreEqual } from "./utils.js";
 
+/**
+ * Get the user-facing name of an existing OS installation.
+ * @param {Object} osData - the existing OS data object
+ * @returns {string}
+ */
+export const getOSDisplayName = (osData) => {
+    return osData["os-pretty-name"]?.v || osData["os-name"].v;
+};
+
 export const requestsFromDbus = (requests) => {
     return requests.map(request => Object.entries(request).reduce((acc, [key, value]) => ({ ...acc, [key]: value.v }), {}));
 };

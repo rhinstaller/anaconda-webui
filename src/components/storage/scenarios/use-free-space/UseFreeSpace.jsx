@@ -8,6 +8,7 @@ import cockpit from "cockpit";
 import React, { useContext, useEffect, useState } from "react";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 
+import { getOSDisplayName } from "../../../../helpers/storage.js";
 import { AvailabilityState } from "../helpers.js";
 
 import {
@@ -88,7 +89,10 @@ const LabelUserFreeSpace = ({ isReview }) => {
     const existingSystems = usePlannedExistingSystems();
 
     if (isReview && existingSystems?.length) {
-        return cockpit.format(_("Share disk with other operating systems: $0"), existingSystems?.map((system) => system["os-name"].v).join(", "));
+        return cockpit.format(
+            _("Share disk with other operating systems: $0"),
+            existingSystems?.map(getOSDisplayName).join(", ")
+        );
     }
 
     return _("Share disk with other operating systems");
