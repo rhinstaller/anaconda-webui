@@ -186,8 +186,9 @@ else
     fi
 
     USER_GRAPHICAL_SESSION_AVAILABLE=0
-    if [ "$USER_SESSION_AVAILABLE" = "1" ]; then
-        if printf '%s\n' "${user_environment[@]}" | grep -q '^WAYLAND_DISPLAY='; then
+    if [ "$USER_SESSION_AVAILABLE" = "1" ] && [ -n "${PKEXEC_UID:-}" ]; then
+        # Live ISO only: reuse the desktop user's session when it has a display.
+        if printf '%s\n' "${user_environment[@]}" | grep -qE '^(WAYLAND_DISPLAY|DISPLAY)='; then
             USER_GRAPHICAL_SESSION_AVAILABLE=1
         fi
     fi
