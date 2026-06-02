@@ -23,6 +23,7 @@ import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { Feedback } from "./Feedback.jsx";
+import { InstallationNonCriticalErrorDialog } from "./InstallationNonCriticalErrorDialog.jsx";
 import { useAutoReboot } from "./useAutoReboot.js";
 
 import "./InstallationProgress.scss";
@@ -30,6 +31,7 @@ import "./InstallationProgress.scss";
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 const SCREEN_ID = "anaconda-screen-progress";
+const DETAIL_TYPE_YESNO = "yesno";
 
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
@@ -44,6 +46,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [statusMessage, setStatusMessage] = useState("");
     const [steps, setSteps] = useState();
     const [currentProgressStep, setCurrentProgressStep] = useState(0);
+    const [errorDialogData, setErrorDialogData] = useState(null);
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
@@ -93,6 +96,18 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 return current;
                             });
                         });
+                        categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
+                            if (detailType === DETAIL_TYPE_YESNO) {
+                                setErrorDialogData({
+                                    categoryProxy,
+                                    message,
+                                });
+                            } else {
+                                setStatus("danger");
+                                categoryProxy.RespondToError(false);
+                                onCritFail()({ message });
+                            }
+                        });
                         taskProxy.addEventListener("Succeeded", () => {
                             setStatus("success");
                             setCurrentProgressStep(4);
@@ -108,6 +123,17 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     context: _("Installation of the system failed"),
                 }));
     }, [onCritFail]);
+
+    const submitErrorDecision = (shouldContinue) => {
+        if (!errorDialogData) {
+            return;
+        }
+
+        errorDialogData.categoryProxy.RespondToError(shouldContinue)
+                .finally(() => {
+                    setErrorDialogData(null);
+                });
+    };
 
     if (steps === undefined) {
         return null;
@@ -222,6 +248,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               }
               title={title}
               headingLevel="h2"
+            />
+            <InstallationNonCriticalErrorDialog
+              errorDialogData={errorDialogData}
+              onSubmitDecision={submitErrorDecision}
             />
             {(status === "success" || status === "danger") && <Feedback />}
         </Flex>
