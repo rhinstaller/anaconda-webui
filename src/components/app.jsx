@@ -39,6 +39,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
     const automatedInstall = parseAnacondaConfBool(getInstallerConfValue(conf, "Runtime", "automated_install"));
+    const pauseAtSummary = parseAnacondaConfBool(getInstallerConfValue(conf, "Runtime", "pause_at_summary"));
 
     useEffect(() => {
         if (!address) {
@@ -102,6 +103,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               currentStepId={currentStepId}
               isFetching={isFetching}
               onCritFail={onCritFail}
+              pauseAtSummary={pauseAtSummary}
               title={title}
               dispatch={dispatch}
               setCurrentStepId={setCurrentStepId}
