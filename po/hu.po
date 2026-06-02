@@ -35,7 +35,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
+"POT-Creation-Date: 2026-06-02 07:11+0000\n"
 "PO-Revision-Date: 2026-03-30 05:13+0000\n"
 "Last-Translator: Balázs Meskó <meskobalazs@mailbox.org>\n"
 "Language-Team: Hungarian <https://translate.fedoraproject.org/projects/"
@@ -54,11 +54,11 @@ msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
+#: src/components/storage/Common.jsx:58
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
 #, fuzzy
 #| msgid "Error"
@@ -84,28 +84,41 @@ msgstr ""
 "Az összes logikai partíció eltávolítása a kiterjesztett partíciót törlését "
 "is magával vonja."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:137
 msgid "$0 is required, but only $1 is available."
 msgstr "A(z) $0 szükséges, de csak a(z) $1 érhető el."
 
-#: src/components/storage/Common.jsx:73
+#: src/components/storage/Common.jsx:74
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 figyelmeztetés"
 msgstr[1] "$0 figyelmeztetés"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "A(z) $0 törölve lesz"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "A(z) „$0” fájlrendszer nem lehet titkosított blokkeszközön"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+#, fuzzy
+#| msgid "'$0' must be on a device formatted to '$1'"
+msgid "'$0' must be assigned to $1"
+msgstr "A(z) „$0” csatolási pontnak „$1” formázású eszközön kell lennie"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "A(z) „$0” csatolási pontnak „$1” formázású eszközön kell lennie"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -115,7 +128,7 @@ msgstr ""
 "„$0” partíció található a(z) $1. MDRAID eszközön. Az MDRAID eszközökön lévő "
 "rendszerbetöltő partíciók nem támogatottak."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:246
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -131,7 +144,7 @@ msgid "Account"
 msgstr "Fiók"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
+#: src/components/storage/StorageReview.jsx:246
 msgid "Actions"
 msgstr "Műveletek"
 
@@ -139,7 +152,7 @@ msgstr "Műveletek"
 msgid "Add another server..."
 msgstr "Másik kiszolgáló hozzáadása…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Csatolási pont hozzáadása"
 
@@ -183,7 +196,7 @@ msgstr "Az Anaconda projekt oldala"
 msgid "Apply mount point assignment and install"
 msgstr "A csatolási pontok hozzárendelésének alkalmazása és telepítése"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Változtatások alkalmazása…"
 
@@ -244,11 +257,11 @@ msgstr ""
 "problémákat, hogy javítson ezen a munkán."
 
 #: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:355
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/Error.jsx:759 src/components/localization/Keyboard.jsx:280
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -264,7 +277,7 @@ msgstr "Cél módosítása"
 msgid "Change hostname"
 msgstr "Gépnév módosítása"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:151
 msgid "Change partition layout"
 msgstr "Partíciókiosztás módosítása"
 
@@ -295,14 +308,14 @@ msgstr "Tároló-összeállítás ellenőrzése"
 msgid "Clear search"
 msgstr "Keresés törlése"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Kattintson a „Következő” gombra, hogy folytassa a figyelmeztetések ellenére."
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:181
 #: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/EncryptedDevices.jsx:181
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Bezárás"
 
@@ -335,8 +348,8 @@ msgstr "NTP-kiszolgálók beállítása"
 msgid "Configure custom NTP servers"
 msgstr "Egyéni NTP-kiszolgálók beállítása"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Hálózat beállítása"
 
@@ -349,7 +362,7 @@ msgid "Configure storage again"
 msgstr "Tárolók újbóli beállítása"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:401
 msgid "Confirm passphrase"
 msgstr "Erősítse meg a jelszavát"
 
@@ -365,7 +378,7 @@ msgstr "Telepítés folytatása"
 msgid "Continue with installation"
 msgstr "A telepítés folytatása"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 #, fuzzy
 #| msgid "Please complete all spokes before continuing"
 msgid "Correct these issues before continuing."
@@ -375,7 +388,7 @@ msgstr "Kérjük fejezzen be minden lépést mielőtt folytatja"
 msgid "Create Account"
 msgstr "Fiók létrehozása"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:308
 msgid "Create account"
 msgstr "Fiók létrehozása"
 
@@ -383,7 +396,7 @@ msgstr "Fiók létrehozása"
 msgid "Currently installed: $0"
 msgstr "Jelenleg telepítve: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "Egyéni"
 
@@ -402,7 +415,7 @@ msgstr "Dátum és idő"
 msgid "Delete partition"
 msgstr "kiterjesztett partíció"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Egyes partíciók törlése megakadályozhatja a(z) $0 indítását: $1"
 
@@ -426,20 +439,20 @@ msgstr "A probléma részletes leírása"
 msgid "Detected valid storage layout:"
 msgstr "Érvényes tárolóelrendezés észlelve:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
+#: src/components/storage/StorageReview.jsx:244
 msgid "Device"
 msgstr "Eszköz"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "Duplikált eszköz."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "Duplikált csatolási pont."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:332 src/components/users/Accounts.jsx:383
 msgid "Enable root account"
 msgstr "Rendszergazdai fiók engedélyezése"
 
@@ -447,7 +460,7 @@ msgstr "Rendszergazdai fiók engedélyezése"
 msgid "Encrypt my data"
 msgstr "Saját adatok titkosítása"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "Titkosítva"
 
@@ -512,7 +525,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Kiosztás keresése"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:399
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -520,7 +533,7 @@ msgstr ""
 "A nagyobb biztonság érdekében ne használja közvetlenül a root fiókot. "
 "Helyette használja a fenti helyi fiókot a rendszer kezeléséhez."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:248
 msgid "Full name"
 msgstr "Teljes név"
 
@@ -528,7 +541,7 @@ msgstr "Teljes név"
 msgid "Full name cannot contain colon characters"
 msgstr "A teljes név nem tartalmazhat kettőspontot"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "Súgószöveg"
 
@@ -536,7 +549,7 @@ msgstr "Súgószöveg"
 msgid "Hide API key"
 msgstr "API-kulcs elrejtése"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Megerősített jelszó elrejtése"
 
@@ -544,7 +557,7 @@ msgstr "Megerősített jelszó elrejtése"
 msgid "Hide passphrase"
 msgstr "Jelmondat elrejtése"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Jelszó elrejtése"
 
@@ -614,8 +627,8 @@ msgstr "Előkészítés…"
 msgid "Install"
 msgstr "Telepítés"
 
-#: src/components/Error.jsx:747
 #: src/components/installation/InstallationProgress.jsx:123
+#: src/components/Error.jsx:747
 msgid "Installation failed"
 msgstr "A telepítés sikertelen"
 
@@ -698,6 +711,10 @@ msgstr "Tárhelyszerkesztő indítása"
 msgid "Learn more about restricted access in the configuration"
 msgstr "Tudjon meg többet a korlátozott hozzáférésről a beállításokban"
 
+#: src/components/users/Accounts.jsx:199
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Hely"
@@ -723,7 +740,7 @@ msgstr "Kézi lemezkonfiguráció: Csatolási pontok hozzárendelése"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Betűket, számokat és kötőjeleket tartalmazhat."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Lehet, hogy több szabad helyre lesz szükség"
 
@@ -735,18 +752,18 @@ msgstr "Közepes"
 msgid "Minimum of $0 required"
 msgstr "Legalább $0 szükséges"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Nem egyezik a szülőeszköz és a gyermekeszköz újraformázásának kiválasztása."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
+#: src/components/storage/StorageReview.jsx:248
 msgid "Mount point"
 msgstr "Csatolási pont"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "Csatolási pont hozzárendelése"
 
@@ -776,11 +793,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Név"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Legalább $0 szükséges"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Hálózat"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "Hálózati beállítások"
 
@@ -797,7 +819,7 @@ msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "A hálózat nem érhető el. A probléma bejelentéséhez állítsa be a hálózatot."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "A hálózati bővítmény sikertelen"
 
@@ -806,7 +828,7 @@ msgid "Next"
 msgstr "Következő"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "Nincsenek eszközök"
 
@@ -834,7 +856,7 @@ msgstr ""
 "Nem szerezhető be érvényes VConsole billentyűleképezés a kiválasztott "
 "billentyűzetkiosztásokhoz. Válasszon más billentyűzetkiosztást."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:135
 msgid "Not enough available free space"
 msgstr "Nincs elég szabad hely"
 
@@ -879,7 +901,7 @@ msgstr "Partíciók (speciális)"
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:397
 msgid "Passphrase"
 msgstr "Jelmondat"
 
@@ -887,7 +909,7 @@ msgstr "Jelmondat"
 msgid "Passphrase did not match any locked device"
 msgstr "A jelmondat nem egyezik egyetlen zárolt eszközével sem"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "A jelmondatoknak egyezniük kell"
 
@@ -996,7 +1018,7 @@ msgstr "Hely visszanyerése"
 msgid "Reclaim space (required)"
 msgstr "Hely visszanyerése (szükséges)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "Ajánlott"
 
@@ -1004,8 +1026,8 @@ msgstr "Ajánlott"
 msgid "Recommended partitions:"
 msgstr "Ajánlott partíciók:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Újraformázás"
 
@@ -1014,8 +1036,8 @@ msgstr "Újraformázás"
 msgid "Reinstall Fedora"
 msgstr "A Fedora újratelepítése"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 msgid "Remove"
@@ -1076,7 +1098,7 @@ msgstr "Probléma bejelentése"
 msgid "Reporting issue..."
 msgstr "Probléma bejelentése…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "Szükséges"
 
@@ -1102,7 +1124,7 @@ msgstr "Átméretezés"
 msgid "Resize partition"
 msgstr "Kiterjesztett partíció"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "A(z) $0 következő partícióinak átméretezése: $1"
 
@@ -1136,7 +1158,7 @@ msgstr ""
 "A rendszergazdai fiók be van kapcsolva, de felhasználói fiók nem lett "
 "beállítva"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:341
 msgid "Root password has been set."
 msgstr "Be lett állítva a rendszergazdai jelszó."
 
@@ -1177,8 +1199,8 @@ msgstr ""
 msgid "Select"
 msgstr "Válasszon"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "Válasszon egy eszközt"
 
@@ -1198,7 +1220,7 @@ msgstr "Válasszon régiót"
 msgid "Selected (top = current)"
 msgstr "Kiválasztva (felső = jelenlegi)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "A kiválasztott eszköz „$0” formátuma nem formázható újra."
 
@@ -1234,7 +1256,7 @@ msgstr "A _de./du. megjelenítése"
 msgid "Show API key"
 msgstr "API-kulcs megjelenítése"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Megerősített jelszó megjelenítése"
 
@@ -1242,11 +1264,11 @@ msgstr "Megerősített jelszó megjelenítése"
 msgid "Show passphrase"
 msgstr "Jelmondta megjelenítése"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Jelszó megjelenítése"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "Méret"
 
@@ -1288,10 +1310,10 @@ msgstr "Veremkiíratás"
 msgid "Storage"
 msgstr "Tárhely"
 
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
 msgid "Storage configuration"
 msgstr "Tároló-összeállítás"
 
@@ -1345,7 +1367,7 @@ msgstr "Javasolt billentyűzetek"
 msgid "Suggested languages"
 msgstr "Javasolt nyelvek"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:329 src/components/users/Accounts.jsx:413
 msgid "System"
 msgstr "Rendszer"
 
@@ -1521,7 +1543,7 @@ msgstr "Teljes lemez felhasználása"
 msgid "Use free space"
 msgstr "Szabad tárhely felhasználása"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:234
 msgid "Use local account"
 msgstr "Helyi fiók használata"
 
@@ -1529,11 +1551,11 @@ msgstr "Helyi fiók használata"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "A RAID-eszköz használata az automatikus particionáláshoz"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:483
 msgid "User creation"
 msgstr "Felhasználó létrehozása"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:279
 msgid "User name"
 msgstr "Felhasználónév"
 
@@ -1598,7 +1620,7 @@ msgstr ""
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Előállíthat egy API-kulcsot a(z) $0 Bugzilla-fiókjához."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:516
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1625,7 +1647,7 @@ msgstr "jelenlegi lépés"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
+#: src/components/storage/StorageReview.jsx:166
 msgid "delete"
 msgstr "törlés"
 
@@ -1633,11 +1655,11 @@ msgstr "törlés"
 msgid "edit"
 msgstr "szerkesztés"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "titkosítás"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "titkosítva"
 
@@ -1645,7 +1667,7 @@ msgstr "titkosítva"
 msgid "extended partition"
 msgstr "kiterjesztett partíció"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "formázás mint $0"
 
@@ -1659,7 +1681,7 @@ msgstr "itt"
 msgid "incomplete"
 msgstr "Kész"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "csatolás"
 
@@ -1671,7 +1693,7 @@ msgstr "függőben lévő lépés"
 msgid "report the issue manually"
 msgstr "jelentheti a hibát kézileg"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "átméretezve erről: $0"
 
@@ -4110,9 +4132,6 @@ msgstr "visszavonás"
 
 #~ msgid "Need Space"
 #~ msgstr "Több hely szükséges"
-
-#~ msgid "Network"
-#~ msgstr "Hálózat"
 
 #~ msgid "Network Config Box"
 #~ msgstr "Hálózati beállító doboz"

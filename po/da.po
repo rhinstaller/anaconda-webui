@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
+"POT-Creation-Date: 2026-06-02 07:11+0000\n"
 "PO-Revision-Date: 2025-08-24 03:40+0000\n"
 "Last-Translator: Danni Lundgren <fedoraproject.footsie399@passmail.com>\n"
 "Language-Team: Danish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -40,11 +40,11 @@ msgstr "$0$1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
 #: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
+#: src/components/storage/Common.jsx:58
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
 #, fuzzy
 #| msgid "Error"
@@ -68,33 +68,45 @@ msgid ""
 "all logical partitions will also automatically remove the extended partition."
 msgstr ""
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:137
 msgid "$0 is required, but only $1 is available."
 msgstr ""
 
-#: src/components/storage/Common.jsx:73
+#: src/components/storage/Common.jsx:74
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 #, fuzzy
 #| msgid "No user will be created"
 msgid "$0 will be deleted"
 msgstr "Der oprettes ikke nogen bruger"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 #, fuzzy
 #| msgid "%s cannot be on an encrypted block device."
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "%s kan ikke være på en krypteret blokenhed."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+#, fuzzy
+msgid "'$0' must be assigned to $1"
+msgstr "{fs} skal være en enhed af typen {type}"
+
+#: src/helpers/storage.js:234
 #, fuzzy
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "{fs} skal være en enhed af typen {type}"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -102,7 +114,7 @@ msgid ""
 "devices are not supported."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:246
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -119,7 +131,7 @@ msgid "Account"
 msgstr "_Konto"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
+#: src/components/storage/StorageReview.jsx:246
 #, fuzzy
 #| msgid "Action"
 msgid "Actions"
@@ -131,7 +143,7 @@ msgstr "Handling"
 msgid "Add another server..."
 msgstr "Tilføj NTP-server"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 #, fuzzy
 msgid "Add mount"
 msgstr "Tilføj layout"
@@ -186,7 +198,7 @@ msgstr "Anaconda-installationsprogram"
 msgid "Apply mount point assignment and install"
 msgstr "Anvend konfiguration i installationsprogrammet"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr ""
 
@@ -258,11 +270,11 @@ msgstr ""
 "system."
 
 #: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:355
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/Error.jsx:759 src/components/localization/Keyboard.jsx:280
 #, fuzzy
 msgid "Cancel"
 msgstr "_Annuller"
@@ -285,7 +297,7 @@ msgstr "Beskrivelse"
 msgid "Change hostname"
 msgstr "Angiv værtsnavn"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:151
 #, fuzzy
 msgid "Change partition layout"
 msgstr "Beskrivelse"
@@ -318,13 +330,13 @@ msgstr "Kontrollerer lagerkonfiguration..."
 msgid "Clear search"
 msgstr ""
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:181
 #: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/EncryptedDevices.jsx:181
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Luk"
 
@@ -359,8 +371,8 @@ msgstr "Konfigurér NTP-servere"
 msgid "Configure custom NTP servers"
 msgstr "Konfigurér NTP-servere"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 #, fuzzy
 #| msgid "Configuring storage"
 msgid "Configure network"
@@ -379,7 +391,7 @@ msgid "Configure storage again"
 msgstr "Konfigurerer lager"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:401
 #, fuzzy
 msgid "Confirm passphrase"
 msgstr "_Bekræft adgangskode"
@@ -398,7 +410,7 @@ msgstr "Kører præinstallationsopgaver"
 msgid "Continue with installation"
 msgstr "Kører præinstallationsopgaver"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 #, fuzzy
 #| msgid "Please complete all spokes before continuing"
 msgid "Correct these issues before continuing."
@@ -411,7 +423,7 @@ msgstr "Færdiggør venligst alle eger før du fortsætter"
 msgid "Create Account"
 msgstr "_Konto"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:308
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Create account"
@@ -423,7 +435,7 @@ msgstr "Lås root-konto"
 msgid "Currently installed: $0"
 msgstr "Nuværende værtsnavn:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 #, fuzzy
 msgid "Custom"
 msgstr "_Tilpasset"
@@ -445,7 +457,7 @@ msgstr "Angiv dato og klokkeslæt"
 msgid "Delete partition"
 msgstr "Standardpartition"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
@@ -474,22 +486,22 @@ msgstr "Enhedsbeskrivelse"
 msgid "Detected valid storage layout:"
 msgstr ""
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
+#: src/components/storage/StorageReview.jsx:244
 msgid "Device"
 msgstr "Enhed"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 #, fuzzy
 msgid "Duplicate device."
 msgstr "_Flerstis-enheder"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 #, fuzzy
 msgid "Duplicate mount point."
 msgstr "Indtast venligst et monteringspunkt."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:332 src/components/users/Accounts.jsx:383
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Enable root account"
@@ -500,7 +512,7 @@ msgstr "Lås root-konto"
 msgid "Encrypt my data"
 msgstr "_Kryptér mine data."
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 #, fuzzy
 #| msgid "Encrypt"
 msgid "Encrypted"
@@ -576,13 +588,13 @@ msgstr ""
 msgid "Find layout"
 msgstr "_Tilføj layout"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:399
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:248
 msgid "Full name"
 msgstr "Fulde navn"
 
@@ -590,7 +602,7 @@ msgstr "Fulde navn"
 msgid "Full name cannot contain colon characters"
 msgstr "Det fulde navn må ikke indeholde kolon"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr ""
 
@@ -598,7 +610,7 @@ msgstr ""
 msgid "Hide API key"
 msgstr ""
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 #, fuzzy
 msgid "Hide confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -608,7 +620,7 @@ msgstr "_Bekræft adgangskode"
 msgid "Hide passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 #, fuzzy
 msgid "Hide password"
 msgstr "Skjul adgangskode."
@@ -678,8 +690,8 @@ msgstr "Installerer."
 msgid "Install"
 msgstr "Installér"
 
-#: src/components/Error.jsx:747
 #: src/components/installation/InstallationProgress.jsx:123
+#: src/components/Error.jsx:747
 #, fuzzy
 msgid "Installation failed"
 msgstr "Installation"
@@ -767,6 +779,10 @@ msgstr "Installation"
 msgid "Learn more about restricted access in the configuration"
 msgstr ""
 
+#: src/components/users/Accounts.jsx:199
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Placering"
@@ -795,7 +811,7 @@ msgstr "Enhedskonfiguration"
 msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 #, fuzzy
 msgid "May need more free space"
 msgstr "Installerer software"
@@ -808,17 +824,17 @@ msgstr ""
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
+#: src/components/storage/StorageReview.jsx:248
 msgid "Mount point"
 msgstr "Monteringspunkt"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 #, fuzzy
 msgid "Mount point assignment"
 msgstr "Monteringspunkt"
@@ -854,11 +870,16 @@ msgstr "DNS"
 msgid "Name"
 msgstr "Navn"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Netværk"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 #, fuzzy
 #| msgid "Network configuration"
 msgid "Network Configuration"
@@ -874,7 +895,7 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 #, fuzzy
 #| msgid "Node login failed."
 msgid "Network plugin failed"
@@ -885,7 +906,7 @@ msgid "Next"
 msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 #, fuzzy
 msgid "No devices"
 msgstr "Tilføj enhed"
@@ -916,7 +937,7 @@ msgid ""
 "layout(s). Please make a different keyboard layout selection."
 msgstr ""
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:135
 #, fuzzy
 #| msgid "Not enough free space on selected disks."
 msgid "Not enough available free space"
@@ -966,7 +987,7 @@ msgstr ""
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:397
 msgid "Passphrase"
 msgstr "Adgangssætning"
 
@@ -974,7 +995,7 @@ msgstr "Adgangssætning"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 #, fuzzy
 msgid "Passphrases must match"
 msgstr "Adgangskoderne er ikke ens."
@@ -1102,7 +1123,7 @@ msgstr "_Genvind plads"
 msgid "Reclaim space (required)"
 msgstr "_Genvind plads"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr ""
 
@@ -1110,8 +1131,8 @@ msgstr ""
 msgid "Recommended partitions:"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Genformatér"
 
@@ -1122,8 +1143,8 @@ msgstr "Genformatér"
 msgid "Reinstall Fedora"
 msgstr "Installér"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
 #, fuzzy
@@ -1179,7 +1200,7 @@ msgstr ""
 msgid "Reporting issue..."
 msgstr "tester status..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 #, fuzzy
 msgid "Required"
 msgstr "Ikke registreret."
@@ -1213,7 +1234,7 @@ msgstr "_Sektorstørrelse:"
 msgid "Resize partition"
 msgstr "Standardpartition"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
@@ -1250,7 +1271,7 @@ msgstr "Root-konto er deaktiveret."
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:341
 msgid "Root password has been set."
 msgstr "Root-adgangskode er blevet angivet."
 
@@ -1300,8 +1321,8 @@ msgstr ""
 msgid "Select"
 msgstr "_Vælg"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 #, fuzzy
 msgid "Select a device"
 msgstr "Valgte enhed"
@@ -1331,7 +1352,7 @@ msgstr "_Vælg netværk"
 msgid "Selected (top = current)"
 msgstr "Valgte layouts"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 
@@ -1378,7 +1399,7 @@ msgstr "_AM/PM"
 msgid "Show API key"
 msgstr "_AM/PM"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 #, fuzzy
 msgid "Show confirmed password"
 msgstr "_Bekræft adgangskode"
@@ -1388,12 +1409,12 @@ msgstr "_Bekræft adgangskode"
 msgid "Show passphrase"
 msgstr "_Bekræft adgangskode"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 #, fuzzy
 msgid "Show password"
 msgstr "Vis adgangskode."
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr ""
 
@@ -1437,10 +1458,10 @@ msgstr ""
 msgid "Storage"
 msgstr "Valgmuligheder for lager"
 
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
 #, fuzzy
 msgid "Storage configuration"
 msgstr "Lagerkonfiguration"
@@ -1502,7 +1523,7 @@ msgstr "Sprog"
 msgid "Suggested languages"
 msgstr "Sprog"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:329 src/components/users/Accounts.jsx:413
 #, fuzzy
 #| msgid "File System"
 msgid "System"
@@ -1689,7 +1710,7 @@ msgstr "Valgte diske"
 msgid "Use free space"
 msgstr "Brug ledig plads"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:234
 #, fuzzy
 #| msgid "Lock root account"
 msgid "Use local account"
@@ -1701,11 +1722,11 @@ msgstr "Lås root-konto"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Ikke stor nok ledig plads på diske til automatisk partitionering"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:483
 msgid "User creation"
 msgstr "Brugeroprettelse"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:279
 msgid "User name"
 msgstr "Brugernavn"
 
@@ -1771,7 +1792,7 @@ msgstr ""
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:516
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1797,7 +1818,7 @@ msgstr "Nuværende værtsnavn:"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
+#: src/components/storage/StorageReview.jsx:166
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1807,13 +1828,13 @@ msgstr "Slet"
 msgid "edit"
 msgstr ""
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypt"
 msgstr "Kryptér"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 #, fuzzy
 #| msgid "Encrypt"
 msgid "encrypted"
@@ -1825,7 +1846,7 @@ msgstr "Kryptér"
 msgid "extended partition"
 msgstr "Standardpartition"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 #, fuzzy
 msgid "format as $0"
 msgstr "Genformatér"
@@ -1839,7 +1860,7 @@ msgstr ""
 msgid "incomplete"
 msgstr "Færdig!"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 #, fuzzy
 msgid "mount"
 msgstr "Tilføj layout"
@@ -1852,7 +1873,7 @@ msgstr ""
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr ""
 
@@ -4114,9 +4135,6 @@ msgstr ""
 
 #~ msgid "Need Space"
 #~ msgstr "Mangler plads"
-
-#~ msgid "Network"
-#~ msgstr "Netværk"
 
 #~ msgid "Network Config Box"
 #~ msgstr "Konfigurationsboks for netværk"
