@@ -77,7 +77,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ automatedInstall }) => {
+export const ReviewConfiguration = ({ automatedInstall, pauseAtSummary }) => {
     const osRelease = useContext(OsReleaseContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
@@ -116,6 +116,14 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
         cockpit.location.go([firstIncompleteStepId]);
         goToStepById(firstIncompleteStepId);
     };
+
+    // Auto-proceed to installation when kickstart is used without inst.pauseatsummary
+    useEffect(() => {
+        if (automatedInstall && !pauseAtSummary &&
+            allReviewPagesComplete && !reviewValidationPending) {
+            cockpit.location.go(["anaconda-screen-progress"]);
+        }
+    }, [automatedInstall, pauseAtSummary, allReviewPagesComplete, reviewValidationPending]);
 
     // Display custom footer
     const getFooter = useMemo(() => (

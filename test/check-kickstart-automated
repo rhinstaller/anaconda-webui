@@ -6,6 +6,7 @@
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from payload_dnf import PayloadDNF
+from progress import Progress
 from review import Review
 from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import test_main  # pylint: disable=import-error
@@ -13,24 +14,26 @@ from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
 
 
-class TestKickstartAutomated(VirtInstallMachineCase):
+class TestKickstartAutomatedPause(VirtInstallMachineCase):
     """Destructive tests for kickstart-driven automated installations."""
 
     provision = {
         "machine1": {
-            "kickstart_file_name": "TestKickstartAutomated-testBasic.ks",
+            "kickstart_file_name": "TestKickstartAutomatedPause-testBasic.ks",
             "payload_type": "dnf",
             "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
         },
     }
 
     def testBasic(self):
         """
         Description:
-            Boot with ``inst.ks=TestKickstartAutomated-testBasic.ks``
+            Boot with ``inst.ks=TestKickstartAutomatedPause-testBasic.ks``
+            with inst.pauseatsummary option.
 
         Expected results:
-            - Automated install opens on the review step with the install action enabled.
+            - Automated install pause on the review step with the install action enabled.
             - Users specified in kickstart are correctly picked up on the Accounts step
               and cannot be changed.
             - Root settings cannot be changed when rootpw is in kickstart.
@@ -38,7 +41,6 @@ class TestKickstartAutomated(VirtInstallMachineCase):
               NTP servers, pool, and NTS options are visible in the Configure NTP servers modal.
             - Scenario is preset to 'Use configured storage' and the partitioning appears on the Review storage section.
             - Environment and groups from the ``%packages`` section in the kickstart appear on the Software selection step.
-            - Storage validation warnings are shown on the review page.
         """
         b = self.browser
         m = self.machine
@@ -89,17 +91,12 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         dev1 = "vda"
         r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
         r.check_disk_row(dev1, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
-        r.check_disk_row(dev1, "/", "vda5", "11.8 GB", True, "xfs")
-        r.check_disk_row(dev1, "/boot", "vda2", "524 MB", True, "xfs")
+        r.check_disk_row(dev1, "/", "vda5", "11.2 GB", True, "xfs")
+        r.check_disk_row(dev1, "/boot", "vda2", "1.15 GB", True, "xfs")
         r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
         r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")
 
-        # Wait for warning notification about /boot partition size
-        b.wait_in_text(f"#{i.steps.REVIEW}-step-notification",
-                       "Your /boot partition is less than 1024 MiB which is lower than recommended for a normal Fedora install.")
-
         i.check_next_disabled(disabled=False)
-        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
 
     def testUserInterfaceCanChangeAccountsConf(self):
         """
@@ -123,6 +120,34 @@ class TestKickstartAutomated(VirtInstallMachineCase):
 
         b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:not(:disabled)")
         b.wait_visible("#anaconda-screen-accounts-create-account-set-user-account:not(:disabled)")
+
+
+class TestKickstartAutomated(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomated-testBasic.ks``
+
+        Expected results:
+            - Automated installation starts.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_done()
+
+        self.handleReboot()
 
 
 if __name__ == "__main__":

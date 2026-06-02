@@ -39,6 +39,7 @@ class VirtInstallMachine(VirtMachine):
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
+        self.pause_at_summary = kwargs.pop("pause_at_summary", False)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         super().__init__(image, **kwargs)
 
@@ -143,8 +144,9 @@ class VirtInstallMachine(VirtMachine):
             self._write_interactive_defaults_ks(update_img_global_file, update_img_file)
             if self.kickstart_file_name:
                 inst_ks_url = f"http://10.0.2.2:{self.http_install_port}/test/kickstarts/{self.kickstart_file_name}"
-                # Web UI rejects kickstart-driven installs without inst.pauseatsummary.
-                inst_ks_arg = f" inst.ks={inst_ks_url} inst.pauseatsummary"
+                inst_ks_arg = f" inst.ks={inst_ks_url}"
+                if self.pause_at_summary:
+                    inst_ks_arg += " inst.pauseatsummary"
 
         # If custom compose if specified for fetching the image then use that
         # else get the image from the bots directory

@@ -18,4 +18,6 @@ timesource --ntp-server nts-test.strangled.net --nts
 timesource --ntp-pool 0.pool.ntp.org
 
 %packages
+@^workstation-product-environment
+@domain-client
 %end

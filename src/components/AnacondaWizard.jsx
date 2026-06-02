@@ -16,7 +16,7 @@ import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { getSteps } from "./steps.js";
 
-export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFetching, onCritFail, setCurrentStepId, showStorage }) => {
+export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFetching, onCritFail, pauseAtSummary, setCurrentStepId, showStorage }) => {
     /**
      * Wizard step page state (reset in `AnacondaWizard` `goToStep` on step change).
      * - **isFormValid** / **setIsFormValid** — Required fields satisfied; reset when the step changes in the wizard.
@@ -37,6 +37,7 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         automatedInstall,
         dispatch,
         onCritFail,
+        pauseAtSummary,
     };
 
     const pageContextValue = {
