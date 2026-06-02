@@ -25,9 +25,6 @@ class Review(NetworkDBus, StorageDBus):
     def check_hostname(self, hostname):
         self.browser.wait_in_text(f"#{self._step}-target-system-hostname > .pf-v6-c-description-list__text", hostname)
 
-    def check_hostname_not_present(self):
-        self.browser.wait_not_present(f"#{self._step}-target-system-hostname")
-
     @log_step()
     def check_language(self, lang):
         self.browser.wait_in_text(f"#{self._step}-target-system-language > .pf-v6-c-description-list__text", lang)

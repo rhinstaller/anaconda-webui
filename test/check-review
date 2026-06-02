@@ -25,7 +25,7 @@ class TestReview(VirtInstallMachineCase):
             - The review step is shown
             - The review step shows the correct information
             - The review step shows the correct information after setting encryption
-            - The hostname is not shown for Live ISO
+            - The hostname is shown for Live ISO
             - The timezone is not shown for Live ISO
             - The UI elements for accessing network configuration are not present
         """
@@ -58,8 +58,8 @@ class TestReview(VirtInstallMachineCase):
         # check storage configuration
         r.check_storage_config("Use entire disk")
 
-        # check hostname is not visible for Live ISO
-        r.check_hostname_not_present()
+        # check hostname is visible for Live ISO with DHCP default
+        r.check_hostname("transient, will use DHCP")
 
         # check timezone is not visible for Live ISO
         r.check_timezone_not_present()
