@@ -828,6 +828,9 @@ export class ErrorBoundary extends React.Component {
         const { context } = arg || {};
 
         return async (_error) => {
+            if (this.state.hasError) {
+                return;
+            }
             const stateUpdate = await buildExceptionState(_error, { context });
             error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
             this.setState(stateUpdate);

@@ -186,5 +186,65 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         self.handleReboot()
 
 
+class TestKickstartAutomatedNonCriticalError(VirtInstallMachineCase):
+    """Kickstart install with a missing package triggers a non-critical error dialog."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testNonCriticalError.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testMissingPackageAbort(self):
+        """
+        Description:
+            Boot with kickstart that requests a non-existent package during
+            ``%packages``.
+
+        Expected results:
+            - During installation the UI must show a continue/abort dialog.
+            - The dialog mentions the missing package.
+            - Choosing abort ends installation with a failure state.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_installation_error_dialog("domain-client-nonexisting")
+        b.wait_visible("#anaconda-screen-progress-installation-error-continue-btn")
+        p.respond_installation_error_abort()
+        p.wait_installation_failed()
+
+
+class TestKickstartAutomatedFatalError(VirtInstallMachineCase):
+    """Kickstart install with a fatal error shows the critical report dialog."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testFatalError.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testPreInstallScriptFailure(self):
+        """
+        Description:
+            Boot with kickstart whose ``%pre-install --erroronfail`` script fails.
+
+        Expected results:
+            - Installation does not show the non-critical continue/abort dialog.
+            - The critical error report dialog appears with script failure details.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_installation_failed("This is a fatal error", timeout=1200)
+        b.wait_not_present("#anaconda-screen-progress-installation-error-continue-btn")
+
+
 if __name__ == "__main__":
     test_main()

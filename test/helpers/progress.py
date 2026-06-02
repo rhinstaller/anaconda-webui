@@ -36,3 +36,18 @@ class Progress():
     @log_step()
     def reboot(self):
         self.browser.click(self._reboot_selector)
+
+    def wait_installation_error_dialog(self, message_substring=None, timeout=600):
+        dialog = "#anaconda-screen-progress-installation-error-dialog"
+        with self.browser.wait_timeout(timeout):
+            self.browser.wait_in_text(dialog, message_substring)
+
+    def respond_installation_error_abort(self):
+        self.browser.click("#anaconda-screen-progress-installation-error-abort-btn")
+
+    def wait_installation_failed(self, message_substring=None, timeout=600):
+        dialog = "#critical-error-bz-report-modal"
+        with self.browser.wait_timeout(timeout):
+            self.browser.wait_in_text(f"{dialog} h1", "Installation failed")
+            if message_substring:
+                self.browser.wait_in_text(f"{dialog}-details", message_substring)
