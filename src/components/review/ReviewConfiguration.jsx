@@ -20,7 +20,6 @@ import {
     PageContext,
     PayloadContext,
     StorageContext,
-    SystemTypeContext,
     UserInterfaceContext,
 } from "../../contexts/Common.jsx";
 
@@ -81,7 +80,6 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
     const osRelease = useContext(OsReleaseContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const { goToStepById } = useWizardContext();
     const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ isHidden: languagePageHidden });
@@ -234,10 +232,9 @@ export const ReviewConfiguration = ({ automatedInstall }) => {
                                       description={accountDescription}
                                     />
                                 </ReviewDescriptionList>}
-                                {isBootIso &&
-                                    <ReviewDescriptionList>
-                                        <HostnameRow />
-                                    </ReviewDescriptionList>}
+                                <ReviewDescriptionList>
+                                    <HostnameRow />
+                                </ReviewDescriptionList>
                             </ReviewDescriptionList>
                         </FlexItem>
                         <FlexItem>
