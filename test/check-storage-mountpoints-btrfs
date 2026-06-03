@@ -6,7 +6,13 @@
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
-from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import (
+    EFI_PARTITION_DEFAULT_SIZE,
+    EFI_PARTITION_DEFAULT_SIZE_SPACE,
+    PARTITION_1GiB_SIZE,
+    PARTITION_1GiB_SIZE_SPACE,
+    Storage,
+)
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 
 
@@ -19,7 +25,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
-        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", "btrfs")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("", "btrfs")])
         m.execute(f"""
         mkdir -p {tmp_mount}
         mount {disk}3 {tmp_mount}
@@ -85,12 +91,12 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False, "efi")
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume")
-        r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False, "efi")
+        r.check_disk_row(dev, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, True, "ext4")
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", True, "btrfs subvolume")
+        r.check_disk_row(dev, "/home", "vda3", "13.5 GiB", False)
         r.check_disk_row_not_present(dev, "unused")
 
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
@@ -158,7 +164,7 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         disk = "/dev/vda"
         tmp_mount = "/tmp/btrfs-mount-test"
-        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", "btrfs")])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("", "btrfs")])
         s.create_luks_partition(f"{disk}3", "einszweidrei", "encrypted-vol", "btrfs", close_luks=False)
         m.execute(f"""
         mkdir -p {tmp_mount}
@@ -206,9 +212,9 @@ class TestStorageMountPointsBtrfs (VirtInstallMachineCase):
 
         # Verify the review page
         i.reach(i.steps.REVIEW)
-        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume", True)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(dev, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, False)
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", True, "btrfs subvolume", True)
 
 
 if __name__ == '__main__':

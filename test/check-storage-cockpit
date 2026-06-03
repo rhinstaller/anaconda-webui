@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase, disk_images, pixel_tests_ignore, run_boot
 from installer import Installer
 from review import Review
-from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE_SPACE, Storage
 from storagelib import StorageCase  # pylint: disable=import-error
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import pretend_live_workstation_iso
@@ -102,7 +102,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", False, None, True)
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", False, None, True)
 
         # Exit the cockpit-storage iframe
         i.reach_on_sidebar(i.steps.INSTALLATION_METHOD)
@@ -183,12 +183,12 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         def checkStorageReview(prefix=""):
             disk = "vda"
-            r.check_disk(disk, "16.1 GB vda (Virtio Block Device)", prefix=prefix)
-            r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False, "efi", prefix=prefix)
-            r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
-            r.check_disk_row(disk, "/", "vda3, LVM", "6.01 GB", False, prefix=prefix)
-            r.check_disk_row(disk, "/home", "vda3, LVM", "8.12 GB", False, prefix=prefix)
-            r.check_disk_row(disk, "swap", "vda3, LVM", "377 MB", False, prefix=prefix)
+            r.check_disk(disk, "15 GiB vda (Virtio Block Device)", prefix=prefix)
+            r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False, "efi", prefix=prefix)
+            r.check_disk_row(disk, "/boot", "vda2", "1020 MiB", False, prefix=prefix)
+            r.check_disk_row(disk, "/", "vda3, LVM", "5.60 GiB", False, prefix=prefix)
+            r.check_disk_row(disk, "/home", "vda3, LVM", "7.56 GiB", False, prefix=prefix)
+            r.check_disk_row(disk, "swap", "vda3, LVM", "360 MiB", False, prefix=prefix)
 
         s.return_to_installation()
 
@@ -238,10 +238,10 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         b.switch_to_top()
 
         def checkStorageReview(prefix=""):
-            r.check_disk(dev, "16.1 GB vda (Virtio Block Device)", prefix=prefix)
-            r.check_disk_row(dev, "/boot/efi", "vda1", "99.6 MB", False, "efi", prefix=prefix)
-            r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
-            r.check_disk_row(dev, "/", "vda3", "14.9 GB", False, prefix=prefix)
+            r.check_disk(dev, "15 GiB vda (Virtio Block Device)", prefix=prefix)
+            r.check_disk_row(dev, "/boot/efi", "vda1", "95 MiB", False, "efi", prefix=prefix)
+            r.check_disk_row(dev, "/boot", "vda2", "1020 MiB", False, prefix=prefix)
+            r.check_disk_row(dev, "/", "vda3", "13.9 GiB", False, prefix=prefix)
 
         s.return_to_installation()
         checkStorageReview(prefix="#cockpit-storage-integration-check-storage-dialog")
@@ -340,8 +340,8 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         r.check_available_size_error_value("1")
 
         # check that there is a hint with required size beside the device
-        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
-        r.check_disk_row(dev, "/", f"{dev}3", "1.30 GB", False)
+        r.check_disk(dev, f"15 GiB {dev} (Virtio Block Device)")
+        r.check_disk_row(dev, "/", f"{dev}3", "1.21 GiB", False)
         r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
 
         i.check_next_disabled()
@@ -382,9 +382,9 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # check that there is a hint with required size beside the device
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/", "vda3", "1.70 GB", False)
+        r.check_disk_row(dev, "/", "vda3", "1.58 GiB", False)
         r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
 
         i.check_next_disabled()
@@ -420,9 +420,9 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # check that there is a hint with required size beside the device
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/", "vda3, LVM", "1.70 GB", False)
+        r.check_disk_row(dev, "/", "vda3, LVM", "1.58 GiB", False)
         r.check_disk_mount_point_helper_text(dev, "/", "Needs at least")
 
         i.check_next_disabled()
@@ -462,11 +462,11 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(dev, "/boot", "vda2", "1020 MiB", False)
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -521,12 +521,12 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", False)
-        r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(dev, "/boot", "vda2", "1020 MiB", False)
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", False)
+        r.check_disk_row(dev, "/home", "vda3", "13.5 GiB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -579,12 +579,12 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "14.5 GB", True, "btrfs subvolume")
-        r.check_disk_row(dev, "/home", "vda3", "14.5 GB", False)
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(dev, "/boot", "vda2", "1020 MiB", True, "ext4")
+        r.check_disk_row(dev, "/", "vda3", "13.5 GiB", True, "btrfs subvolume")
+        r.check_disk_row(dev, "/home", "vda3", "13.5 GiB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -872,13 +872,13 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
 
         # verify review screen
         dev = "vda"
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev, "/boot/efi", "vda1", "99.6 MB", False)
-        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "14.9 GB", False)
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row(dev, "/boot/efi", "vda1", "95 MiB", False)
+        r.check_disk_row(dev, "/boot", "vda2", "1020 MiB", False)
+        r.check_disk_row(dev, "/", "vda3", "13.9 GiB", False)
         dev = "vdb"
-        r.check_disk(dev, "16.1 GB vdb (Virtio Block Device)")
-        r.check_disk_row(dev, "/home", "", "16.1 GB", False)
+        r.check_disk(dev, "15 GiB vdb (Virtio Block Device)")
+        r.check_disk_row(dev, "/home", "", "15 GiB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")
@@ -943,10 +943,10 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         i.reach(i.steps.REVIEW)
 
         # verify review screen
-        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(dev, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(dev, "/boot", "vda1", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda2", "15.0 GB", False)
+        r.check_disk_row(dev, "/boot", "vda1", "1020 MiB", False)
+        r.check_disk_row(dev, "/", "vda2", "14.0 GiB", False)
 
         # Check fstab
         fstab = m.execute("cat /etc/fstab")

@@ -8,7 +8,13 @@ import os
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, run_boot
 from installer import Installer
 from review import Review
-from storage import BOOT_PARTITION_DEFAULT_SIZE, BOOT_PARTITION_DEFAULT_SIZE_GB, EFI_PARTITION_DEFAULT_SIZE, Storage
+from storage import (
+    BOOT_PARTITION_DEFAULT_SIZE,
+    BOOT_PARTITION_DEFAULT_SIZE_SPACE,
+    EFI_PARTITION_DEFAULT_SIZE,
+    EFI_PARTITION_DEFAULT_SIZE_SPACE,
+    Storage,
+)
 from testlib import nondestructive, skipImage, test_main  # pylint: disable=import-error
 from utils import move_standard_fedora_disk_to_MBR_disk, move_standard_fedora_disk_to_win_disk, pretend_default_scheme, rsync_directory
 
@@ -119,17 +125,17 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
+        r.check_disk(dev, f"15 GiB {dev} (Virtio Block Device)")
         if self.is_efi:
             r.check_disk_row(dev, parent=f"{dev}2", action="delete")
         else:
             r.check_disk_row(dev, parent=f"{dev}1", action="delete")
 
         if self.is_efi:
-            r.check_disk_row(dev, "/boot/efi", f"{dev}2", "629 MB", True, "efi", is_encrypted=False)
-        r.check_disk_row(dev, "/boot", f"{dev}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}3", "13.9 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev, "/home", f"{dev}3", "13.9 GB", False, "btrfs subvolume", is_encrypted=False,
+            r.check_disk_row(dev, "/boot/efi", f"{dev}2", EFI_PARTITION_DEFAULT_SIZE_SPACE, True, "efi", is_encrypted=False)
+        r.check_disk_row(dev, "/boot", f"{dev}4", "2.00 GiB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "12.9 GiB", True, "btrfs subvolume", is_encrypted=False)
+        r.check_disk_row(dev, "/home", f"{dev}3", "12.9 GiB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
 
     @disk_images([("fedora-rawhide", 15)])
@@ -215,12 +221,12 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev_fedora1, f"16.1 GB {dev_fedora1} (Virtio Block Device)")
+        r.check_disk(dev_fedora1, f"15 GiB {dev_fedora1} (Virtio Block Device)")
         r.check_disk_row(dev_fedora1, parent=f"{dev_fedora1}1", action="delete")
-        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}3", "13.9 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}3", "13.9 GB", False, "btrfs subvolume", is_encrypted=False,
+        r.check_disk_row(dev_fedora1, "/", f"{dev_fedora1}3", "12.9 GiB", True, "btrfs subvolume", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/home", f"{dev_fedora1}3", "12.9 GiB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_fedora1, "/boot", f"{dev_fedora1}4", BOOT_PARTITION_DEFAULT_SIZE_SPACE, True, "xfs", is_encrypted=False)
 
 
 # TODO: these tests should be made nondestructive
@@ -261,11 +267,11 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
 
         # check selected disks are shown
         dev = "vda"
-        r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
+        r.check_disk(dev, f"15 GiB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-        r.check_disk_row(dev, "/boot", f"{dev}2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
-        r.check_disk_row(dev, "/", f"{dev}3", "13.4 GB", True, "btrfs subvolume", is_encrypted=True)
-        r.check_disk_row(dev, "/home", f"{dev}3", "13.4 GB", False, "btrfs subvolume", is_encrypted=True, action="mount")
+        r.check_disk_row(dev, "/boot", f"{dev}2", "2 GiB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/", f"{dev}3", "12.5 GiB", True, "btrfs subvolume", is_encrypted=True)
+        r.check_disk_row(dev, "/home", f"{dev}3", "12.5 GiB", False, "btrfs subvolume", is_encrypted=True, action="mount")
 
     def _testNonLinuxSystem_partition_disk(self):
         b = self.browser
@@ -372,12 +378,12 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev_mbr, f"21.5 GB {dev_mbr} (Virtio Block Device)")
+        r.check_disk(dev_mbr, f"20 GiB {dev_mbr} (Virtio Block Device)")
         r.check_disk_row(dev_mbr, parent=f"{dev_mbr}1", action="delete")
-        r.check_disk_row(dev_mbr, "/home", f"{dev_mbr}2", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
+        r.check_disk_row(dev_mbr, "/home", f"{dev_mbr}2", "13 GiB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "13 GiB", True, "btrfs subvolume", is_encrypted=False)
+        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "2 GiB", True, "xfs", is_encrypted=False)
 
     def _testWindowsSingleDisk_partition_disk(self):
         storage = Storage(self.browser, self.machine)
@@ -436,14 +442,14 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         i.reach(i.steps.REVIEW)
 
         # check selected disks are shown
-        r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
+        r.check_disk(dev_win_fed, f"35 GiB {dev_win_fed} (Virtio Block Device)")
         r.check_disk_row(dev_win_fed, parent=f"{dev_win_fed}4", action="delete")
-        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
+        r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "100 MiB", False, "vfat", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
+        r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "13 GiB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
-        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "13 GiB", True, "btrfs subvolume", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "2 GiB", True, "xfs", is_encrypted=False)
 
 
 if __name__ == '__main__':

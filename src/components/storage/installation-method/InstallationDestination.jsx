@@ -26,7 +26,7 @@ import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
-import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
+import { formatBytes, getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -140,7 +140,7 @@ const LocalDisksSelect = ({
                                           <FlexItem>
                                               {cockpit.format(
                                                   _("$0 $1"),
-                                                  cockpit.format_bytes(devices[disk]?.total.v),
+                                                  formatBytes(devices[disk]?.total.v),
                                                   devices[disk]?.type.v
                                               )}
                                           </FlexItem>
@@ -261,7 +261,7 @@ export const InstallationDestination = ({
                             <FlexItem className={idPrefix + "-target-disk-size"}>
                                 {cockpit.format(
                                     _("$0 $1"),
-                                    cockpit.format_bytes(devices[disk]?.total.v),
+                                    formatBytes(devices[disk]?.total.v),
                                     devices[disk]?.type.v
                                 )}
                             </FlexItem>
@@ -294,7 +294,7 @@ const InsufficientSpace = () => {
           title={_("Insufficient disk space")}
           variant="warning"
         >
-            {cockpit.format(_("Minimum of $0 required"), cockpit.format_bytes(requiredSize))}
+            {cockpit.format(_("Minimum of $0 required"), formatBytes(requiredSize))}
         </Alert>
     );
 };

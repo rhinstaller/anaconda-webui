@@ -25,6 +25,7 @@ import {
 
 import {
     filterPartitioningRequests,
+    formatBytes,
     getDeviceAncestors,
     getDeviceChildren,
     getLockedLUKSDevices,
@@ -264,7 +265,7 @@ export const DeviceColumnSelect = ({
 
         const formatType = deviceData[device]?.formatData.type.v;
         const format = deviceData[device]?.formatData.description.v;
-        const size = cockpit.format_bytes(deviceData[device]?.total.v);
+        const size = formatBytes(deviceData[device]?.total.v);
         const description = (
             typeLabel && typeLabel !== deviceName
                 ? cockpit.format("$0 $1, used by $2", size, format, typeLabel)
@@ -302,7 +303,7 @@ export const DeviceColumnSelect = ({
         if (!device) return cockpit.gettext("Select a device");
 
         const name = deviceData[device]?.name.v;
-        const size = cockpit.format_bytes(deviceData[device]?.total.v);
+        const size = formatBytes(deviceData[device]?.total.v);
         const isAmbiguous = Object.values(deviceData).filter(d => d.name.v === name).length > 1;
 
         return isAmbiguous ? cockpit.format("$0 ($1)", name, size) : name;

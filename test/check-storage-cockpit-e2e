@@ -96,8 +96,8 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         def checkStorageReview(prefix=""):
             with b.wait_timeout(30):
                 for disk in ("vda", "vdb", "vdc"):
-                    r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)")
-                    r.check_disk_row(disk, "/", "vda3, vdc1, vdb1, RAID", "47.1 GB", False, prefix=prefix)
+                    r.check_disk(disk, f"15 GiB {disk} (Virtio Block Device)")
+                    r.check_disk_row(disk, "/", "vda3, vdc1, vdb1, RAID", "43.9 GiB", False, prefix=prefix)
 
         # verify review screen
         checkStorageReview()
@@ -180,14 +180,14 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         def checkStorageReview(prefix=""):
             with b.wait_timeout(30):
                 disk = "vda"
-                r.check_disk(disk, f"16.1 GB {disk} (Virtio Block Device)", prefix=prefix)
+                r.check_disk(disk, f"15 GiB {disk} (Virtio Block Device)", prefix=prefix)
                 if self.is_efi:
-                    r.check_disk_row(disk, "/boot/efi", "vda1", "99.6 MB", False, prefix=prefix)
-                r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", False, prefix=prefix)
+                    r.check_disk_row(disk, "/boot/efi", "vda1", "95 MiB", False, prefix=prefix)
+                r.check_disk_row(disk, "/boot", "vda2", "1020 MiB", False, prefix=prefix)
 
                 disk = "MDRAID-SOMERAID"
-                r.check_disk(disk, f"32.2 GB {disk} (MDRAID set (stripe))", prefix=prefix)
-                r.check_disk_row(disk, "/", "SOMERAID1, RAID", "32.2 GB", False, prefix=prefix)
+                r.check_disk(disk, f"30.0 GiB {disk} (MDRAID set (stripe))", prefix=prefix)
+                r.check_disk_row(disk, "/", "SOMERAID1, RAID", "30.0 GiB", False, prefix=prefix)
 
         # Exit the cockpit-storage iframe and return to installation
         b.switch_to_top()
@@ -249,10 +249,10 @@ class TestStorageCockpitIntegration_E2E(VirtInstallMachineCase, StorageCase):
         s.check_scenario_selected("use-configured-storage")
 
         i.reach(i.steps.REVIEW)
-        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row("vda", "/", "vda3", "4.10 GB", False)
-        r.check_disk_row("vda", "swap", "vda4", "1.02 GB", False)
+        r.check_disk("vda", "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot", "vda2", "1020 MiB", False)
+        r.check_disk_row("vda", "/", "vda3", "3.81 GiB", False)
+        r.check_disk_row("vda", "swap", "vda4", "977 MiB", False)
         self.install(needs_confirmation=False)
 
         # Check that the expected partition layout is created

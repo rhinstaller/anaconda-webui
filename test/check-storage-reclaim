@@ -7,7 +7,7 @@ from anacondalib import VirtInstallMachineCase, disk_images
 from installer import Installer
 from language import Language
 from review import Review
-from storage import BOOT_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_SPACE, Storage
 from testlib import (
     nondestructive,
     test_main,
@@ -84,7 +84,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row(dev, "/", "vda5, LVM", "5.91 GB", True, "xfs")
+        r.check_disk_row(dev, "/", "vda5, LVM", "5.51 GiB", True, "xfs")
 
     def _testReclaimSpaceDeleteBtrfsSubvolumes_partition_disk(self):
         b = self.browser
@@ -119,28 +119,28 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_check_checkbox(True, True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_check_available_space("2.06 MB")
+        s.reclaim_check_available_space("1.97 MiB")
 
         # Check that all partitions are present
-        s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
-        s.reclaim_check_device_row("vda1", deviceType="efi", space=EFI_PARTITION_DEFAULT_SIZE_MB)
-        s.reclaim_check_device_row("vda2", deviceType="ext4", space="6.44 GB")
-        s.reclaim_check_device_row("vda3", deviceType="btrfs", space="5.37 GB")
-        s.reclaim_check_device_row("vda4", deviceType="btrfs", space="3.77 GB")
+        s.reclaim_check_device_row("vda", deviceType="disk", space="15 GiB")
+        s.reclaim_check_device_row("vda1", deviceType="efi", space=EFI_PARTITION_DEFAULT_SIZE_SPACE)
+        s.reclaim_check_device_row("vda2", deviceType="ext4", space="6 GiB")
+        s.reclaim_check_device_row("vda3", deviceType="btrfs", space="5 GiB")
+        s.reclaim_check_device_row("vda4", deviceType="btrfs", space="3.51 GiB")
 
         # Check that deleting a disk will delete all contained partitions
         s.reclaim_remove_device("vda")
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete")
 
-        s.reclaim_check_available_space("16.1 GB")
+        s.reclaim_check_available_space("15 GiB")
 
         # Undo disk device deletion
         s.reclaim_undo_action("vda")
         for device in ["vda1", "vda2", "vda3"]:
             s.reclaim_check_action_present(device, "delete", present=False)
 
-        s.reclaim_check_available_space("2.06 MB")
+        s.reclaim_check_available_space("1.97 MiB")
 
         # Check that actions for devices whose parents are marked for deletion are not sent to blivet
         s.reclaim_remove_device("vda4")
@@ -154,14 +154,14 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         # Remove one partition and allocate enough space for the installation
         s.reclaim_remove_device("vda2")
         s.reclaim_check_action_present("vda2", "delete")
-        s.reclaim_check_available_space("6.44 GB")
+        s.reclaim_check_available_space("6.00 GiB")
 
         # Check that deleting a parent disk which contains partitions marked for deletion
         # correctly calculates the available space
         s.reclaim_remove_device("vda")
-        s.reclaim_check_available_space("16.1 GB")
+        s.reclaim_check_available_space("15 GiB")
         s.reclaim_undo_action("vda")
-        s.reclaim_check_available_space("6.44 GB")
+        s.reclaim_check_available_space("6.00 GiB")
 
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
@@ -199,7 +199,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.set_scenario("use-free-space")
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_check_available_space("2.06 MB")
+        s.reclaim_check_available_space("1.97 MiB")
 
         # Check that shrinking action is only available for partitions
         s.reclaim_check_action_button_present("vda", "shrink", present=False)
@@ -212,28 +212,28 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             s.reclaim_check_action_button_present(device, "shrink", disabled=True)
 
         # Shrink a partition too much and expect a warning
-        s.reclaim_shrink_device("vda2", "0.100", "6.44")
+        s.reclaim_shrink_device("vda2", "0.100", "6")
         s.reclaim_modal_submit_and_check_warning("Unable to schedule resizing of vda2")
         s.reclaim_undo_action("vda2")
 
         # Shrink a partition
-        s.reclaim_shrink_device("vda2", "1", "6.44")
-        s.reclaim_check_available_space("5.44 GB")
+        s.reclaim_shrink_device("vda2", "1", "6")
+        s.reclaim_check_available_space("5.00 GiB")
 
         # Undo the shrink actions
         for device in ["vda2"]:
             s.reclaim_undo_action(device)
             s.reclaim_check_action_present(device, "shrink", present=False)
 
-        s.reclaim_check_available_space("2.06 MB")
+        s.reclaim_check_available_space("1.97 MiB")
 
         # Shrink one partition and allocate enough space for the installation
-        s.reclaim_shrink_device("vda2", "1", "6.44")
+        s.reclaim_shrink_device("vda2", "1", "6")
 
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
 
-        r.check_disk_row("vda", parent="vda2", size="1.00 GB", action="resized from 6.44 GB")
+        r.check_disk_row("vda", parent="vda2", size="1 GiB", action="resized from 6 GiB")
 
     def _testExtendedPartitionEFI_partition_disk(self):
         b = self.browser
@@ -245,11 +245,11 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.partition_disk(
             disk,
             [
-                ("512MB", "efi"),
-                ("2GB", "swap"),
-                ("8GB", "ext4"),
+                (EFI_PARTITION_DEFAULT_SIZE, "efi"),
+                ("2GiB", "swap"),
+                ("8GiB", "ext4"),
                 ("", "extended"),
-                ("2.5GB", "logical"),
+                ("2.5GiB", "logical"),
             ],
             is_mbr=True
         )
@@ -274,15 +274,15 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
 
         s.set_scenario("use-free-space")
-        s.reclaim_set_checkbox(True)
+        s.reclaim_check_checkbox(True, True)
         i.next(next_page=i.steps.INSTALLATION_METHOD)
 
-        s.reclaim_check_device_row("vda", deviceType="disk", space="16.1 GB")
-        s.reclaim_check_device_row("vda1", deviceType="vfat", space="512 MB")
-        s.reclaim_check_device_row("vda2", deviceType="swap", space="2.00 GB")
-        s.reclaim_check_device_row("vda3", deviceType="ext4", space="8.00 GB")
+        s.reclaim_check_device_row("vda", deviceType="disk", space="15 GiB")
+        s.reclaim_check_device_row("vda1", deviceType="vfat", space=EFI_PARTITION_DEFAULT_SIZE_SPACE)
+        s.reclaim_check_device_row("vda2", deviceType="swap", space="2 GiB")
+        s.reclaim_check_device_row("vda3", deviceType="ext4", space="8 GiB")
         s.reclaim_check_device_row("vda4", deviceType="extended partition")
-        s.reclaim_check_device_row("vda5", deviceType="btrfs", space="2.50 GB")
+        s.reclaim_check_device_row("vda5", deviceType="btrfs", space="2.50 GiB")
         s.reclaim_check_device_row("BTRFS", name="BTRFS", deviceType="btrfs volume")
         s.reclaim_check_device_row("@subvol1", name="@subvol1", deviceType="btrfs subvolume")
         s.reclaim_check_device_row("@subvol2", name="@subvol2", deviceType="btrfs subvolume")
@@ -347,7 +347,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             ignore=["#reclaim-space-modal-hint"],
         )
 
-        s.reclaim_check_device_row("vda1", deviceType="luks", space="4.29 GB", locked=True)
+        s.reclaim_check_device_row("vda1", deviceType="luks", space="4 GiB", locked=True)
         s.reclaim_check_action_button_present("vda1", "shrink", disabled=True)
         s.reclaim_check_action_button_present("vda1", "delete")
 
@@ -454,7 +454,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         # Don't specify the exact original size as this might change with image refreshes
-        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.2 GB")
+        r.check_disk_row("vda", parent="vda1", size="7 GiB", action="resized from 10.4 GiB")
         r.check_resized_system("Ubuntu", ["vda1"])
 
         i.reach_on_sidebar(i.steps.LANGUAGE)
@@ -470,7 +470,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.next(next_page=i.steps.STORAGE_CONFIGURATION)
 
         i.reach(i.steps.REVIEW)
-        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z 11,2 GB")
+        r.check_disk_row("vda", parent="vda1", size="7,10 GiB", action="změněna velikost z 10,4 GiB")
 
 
 if __name__ == '__main__':

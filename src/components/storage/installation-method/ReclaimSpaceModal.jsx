@@ -30,7 +30,7 @@ import { UndoIcon } from "@patternfly/react-icons/dist/esm/icons/undo-icon";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/storage_partitioning_automatic_resizable.js";
 
-import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../../helpers/storage.js";
+import { formatBytes, getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../../helpers/storage.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
@@ -198,8 +198,8 @@ const ReclaimFooter = ({ onClose, onReclaim, unappliedActions }) => {
                 <HelperTextItem id={idPrefix + "-hint"} variant={status}>
                     {fmtToFragments(
                         _("Available free space: $0. Installation requires: $1."),
-                        <b id={idPrefix + "-hint-available-free-space"}>{cockpit.format_bytes(diskFreeSpace + selectedSpaceToReclaim)}</b>,
-                        <b id={idPrefix + "-hint-required-free-space"}>{cockpit.format_bytes(requiredSize)}</b>
+                        <b id={idPrefix + "-hint-available-free-space"}>{formatBytes(diskFreeSpace + selectedSpaceToReclaim)}</b>,
+                        <b id={idPrefix + "-hint-required-free-space"}>{formatBytes(requiredSize)}</b>
                     )}
                 </HelperTextItem>
             </HelperText>
@@ -299,7 +299,7 @@ const getDeviceRow = (disk, devices, level = 0, unappliedActions, setUnappliedAc
         );
     }
 
-    const size = level < 2 && !isExtendedPartition ? cockpit.format_bytes(device.total.v) : "";
+    const size = level < 2 && !isExtendedPartition ? formatBytes(device.total.v) : "";
     const deviceActions = (
         <DeviceActions
           device={device}
@@ -416,7 +416,7 @@ const DeviceActionDelete = ({ device, hasBeenRemoved, newDeviceSize, onAction })
 
 const ShrinkText = ({ newDeviceSize }) => (
     <span className={idPrefix + "-device-action-shrink"}>
-        {cockpit.format(_("shrink to $0"), cockpit.format_bytes(newDeviceSize))}
+        {cockpit.format(_("shrink to $0"), formatBytes(newDeviceSize))}
     </span>
 );
 
@@ -440,7 +440,7 @@ const useIsDeviceShrinkable = ({ device }) => {
 };
 
 const DeviceActionShrink = ({ device, hasBeenRemoved, newDeviceSize, onAction }) => {
-    const onShrink = value => onAction("shrink", value);
+    const onShrink = value => onAction("shrink", Math.round(value));
     const isDeviceShrinkable = useIsDeviceShrinkable({ device: device["device-id"].v });
     const shrinkButton = <ShrinkPopover device={device} isAriaDisabled={!isDeviceShrinkable} onShrink={onShrink} />;
 
@@ -460,8 +460,7 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
     const shrinkButtonTooltipId = idPrefix + "-shrink-tooltip-" + device["device-id"].v;
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [value, setValue] = useState(device.total.v);
-    const originalValue = cockpit.format_bytes(device.total.v, { separate: true })[0];
-    const originalUnit = cockpit.format_bytes(device.total.v, { separate: true })[1];
+    const [originalValue, originalUnit] = formatBytes(device.total.v, { separate: true });
     const [inputValue, setInputValue] = useState(originalValue);
 
     // Patternfly slider accepts only english locale for the input value
@@ -505,11 +504,11 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
                         onChange={(_, sliderValue) => {
                             const newValue = Math.round((sliderValue / 100) * device.total.v);
                             setValue(newValue);
-                            setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
+                            setInputValue(formatBytes(newValue, originalUnit, { separate: true })[0]);
                         }}
                         customSteps={[
                             { label: "0", value: 0 },
-                            { label: cockpit.format_bytes(device.total.v), value: 100 },
+                            { label: `${originalValue} ${originalUnit}`, value: 100 },
                         ]}
                       />
                       <InputGroup>
@@ -518,13 +517,17 @@ const ShrinkPopover = ({ device, isAriaDisabled, onShrink }) => {
                                 value={inputValue}
                                 onChange={(_event, val) => setInputValue(val)}
                                 onBlur={() => {
-                                    const newValue = Math.min(device.total.v, Math.max(0, normalizedValue * unitMultiplier[originalUnit]));
-                                    if (Number.isNaN(newValue)) {
-                                        setInputValue(cockpit.format_bytes(value, originalUnit, { separate: true })[0]);
+                                    const parsed = parseFloat(normalizedValue);
+                                    const newValue = Math.min(
+                                        device.total.v,
+                                        Math.max(0, Math.round(parsed * unitMultiplier[originalUnit]))
+                                    );
+                                    if (Number.isNaN(parsed) || Number.isNaN(newValue)) {
+                                        setInputValue(formatBytes(value, originalUnit, { separate: true })[0]);
                                         return;
                                     }
                                     setValue(newValue);
-                                    setInputValue(cockpit.format_bytes(newValue, originalUnit, { separate: true })[0]);
+                                    setInputValue(formatBytes(newValue, originalUnit, { separate: true })[0]);
                                 }}
                                 id={idPrefix + "-shrink-input"}
                               />
@@ -563,7 +566,7 @@ const WindowsHint = () => {
             <Alert variant="warning" isInline title={_("Windows partitions with BitLocker encryption cannot be resized")}>
                 {cockpit.format(
                     _("Reboot into Windows to resize BitLocker-encrypted partitions. Make at least $0 of free space available for installation."),
-                    cockpit.format_bytes(requiredSize)
+                    formatBytes(requiredSize)
                 )}
             </Alert>
         );

@@ -182,14 +182,33 @@ export const getDeviceTypeInfo = (device) => {
     return deviceType;
 };
 
+const isPlainObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+
+/**
+ * Format a byte count (binary KiB/MiB/GiB).
+ * Wraps cockpit.format_bytes with base2: true by default.
+ */
+export const formatBytes = (number, ...args) => {
+    if (args.length === 0) {
+        return cockpit.format_bytes(number, { base2: true });
+    }
+    if (args.length === 1 && isPlainObject(args[0])) {
+        return cockpit.format_bytes(number, { base2: true, ...args[0] });
+    }
+    if (args.length === 1) {
+        return cockpit.format_bytes(number, args[0], { base2: true });
+    }
+    return cockpit.format_bytes(number, args[0], { base2: true, ...args[1] });
+};
+
 /* Match the units to their respective sizes */
 export const unitMultiplier = {
     B: 1,
-    KB: 1000,
-    MB: 1000000,
+    KiB: 1024,
+    MiB: 1024 ** 2,
     // eslint-disable-next-line sort-keys
-    GB: 1000000000,
-    TB: 1000000000000,
+    GiB: 1024 ** 3,
+    TiB: 1024 ** 4,
 };
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];

@@ -6,7 +6,13 @@
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
-from storage import EFI_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import (
+    EFI_PARTITION_DEFAULT_SIZE,
+    EFI_PARTITION_DEFAULT_SIZE_SPACE,
+    PARTITION_1GiB_SIZE,
+    PARTITION_1GiB_SIZE_SPACE,
+    Storage,
+)
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
@@ -20,7 +26,7 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
         disk = "/dev/vda"
         vgname = "fedoravg"
 
-        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", None)])
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), (PARTITION_1GiB_SIZE, "ext4"), ("", None)])
         m.execute(f"""
         vgcreate -y -f {vgname} {disk}3
         lvcreate -y -l40%FREE -n root {vgname}
@@ -85,13 +91,13 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(disk, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(disk, "/", "vda3, LVM", "5.80 GB", True, "ext4")
-        r.check_disk_row(disk, "/home", "vda3, LVM", "7.83 GB", False)
-        r.check_disk_row(disk, "swap", "vda3, LVM", "872 MB", False)
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, True, "ext4")
+        r.check_disk_row(disk, "/", "vda3, LVM", "5.40 GiB", True, "ext4")
+        r.check_disk_row(disk, "/home", "vda3, LVM", "7.29 GiB", False)
+        r.check_disk_row(disk, "swap", "vda3, LVM", "832 MiB", False)
 
         i.reach_on_sidebar(i.steps.CUSTOM_MOUNT_POINT)
 
@@ -104,12 +110,12 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
 
         # verify review screen
         disk = "vda"
-        r.check_disk(disk, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk(disk, "15 GiB vda (Virtio Block Device)")
 
-        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
-        r.check_disk_row(disk, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(disk, "/", "vda3, LVM", "5.80 GB", True, "ext4")
-        r.check_disk_row(disk, "swap", "vda3, LVM", "872 MB", False)
+        r.check_disk_row(disk, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, False)
+        r.check_disk_row(disk, "/boot", "vda2", PARTITION_1GiB_SIZE_SPACE, True, "ext4")
+        r.check_disk_row(disk, "/", "vda3, LVM", "5.40 GiB", True, "ext4")
+        r.check_disk_row(disk, "swap", "vda3, LVM", "832 MiB", False)
 
 
 if __name__ == '__main__':

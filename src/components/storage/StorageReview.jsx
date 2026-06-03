@@ -11,6 +11,7 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
     checkDeviceOnStorageType,
+    formatBytes,
     getDeviceAncestors,
     getDeviceChildren,
     getParentPartitions,
@@ -81,14 +82,14 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     let insufficientSizeMessage = "";
     if (requiredSize > freeSpace) {
         if (Object.keys(plannedSystemMountPoints).length === 1) {
-            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSize));
+            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), formatBytes(requiredSize));
         } else if (Object.keys(plannedSystemMountPoints).length > 1) {
             insufficientSizeMessage = _("May need more free space");
         }
     }
 
     const getDeviceRow = ([mount, device]) => {
-        const size = cockpit.format_bytes(devices[device].size.v);
+        const size = formatBytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         let format = devices[device].formatData.type.v;
         const isImplicitlyReusedMountPoint = originalDevices[device] && !reformattedMountPoints?.includes(mount) && !isDeviceDeleted({ actions, device }) && !isDeviceResized({ actions, device });
@@ -165,8 +166,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
         if (actionType === "destroy") {
             actionDescriptionText = _("delete");
         } else if (actionType === "resize") {
-            const prevSize = cockpit.format_bytes(originalDevices[device].size.v);
-            sizeText = cockpit.format_bytes(devices[device].size.v);
+            const prevSize = formatBytes(originalDevices[device].size.v);
+            sizeText = formatBytes(devices[device].size.v);
 
             actionDescriptionText = cockpit.format(_("resized from $0"), prevSize);
         }
@@ -236,7 +237,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
 
     return (
         <div>
-            <span id={`disk-${disk}`}>{cockpit.format_bytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
+            <span id={`disk-${disk}`}>{formatBytes(deviceData.size.v)} {disk} {"(" + deviceData.description.v + ")"}</span>
             <ListingTable
               aria-label={_("Device tree for $0", disk)}
               className={"pf-m-no-border-rows " + idPrefix + "-table"}

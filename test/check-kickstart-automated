@@ -7,7 +7,7 @@ from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_te
 from installer import Installer
 from payload_dnf import PayloadDNF
 from review import Review
-from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage import EFI_PARTITION_DEFAULT_SIZE_SPACE, Storage
 from testlib import test_main  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users, override_user_interface_conf_keys
@@ -87,12 +87,12 @@ class TestKickstartAutomated(VirtInstallMachineCase):
 
         r.check_storage_config("Use configured storage")
         dev1 = "vda"
-        r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
-        r.check_disk_row(dev1, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
-        r.check_disk_row(dev1, "/", "vda5", "11.8 GB", True, "xfs")
-        r.check_disk_row(dev1, "/boot", "vda2", "524 MB", True, "xfs")
-        r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
-        r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")
+        r.check_disk(dev1, "15 GiB vda (Virtio Block Device)")
+        r.check_disk_row(dev1, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_SPACE, True, "efi")
+        r.check_disk_row(dev1, "/", "vda5", "11.0 GiB", True, "xfs")
+        r.check_disk_row(dev1, "/boot", "vda2", "500 MiB", True, "xfs")
+        r.check_disk_row(dev1, "/home", "vda3", "2 GiB", True, "xfs")
+        r.check_disk_row(dev1, "swap", "vda4", "1 GiB", True, "swap")
 
         # Wait for warning notification about /boot partition size
         b.wait_in_text(f"#{i.steps.REVIEW}-step-notification",

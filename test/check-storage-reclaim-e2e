@@ -46,12 +46,12 @@ class TestStorageReclaim_E2E(DualBootHelper_E2E, VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_some_resized_checkbox_label()
         vda1_original_size_bytes = m.execute("blockdev --getsize64 /dev/vda1").strip()
-        vda1_original_size_gb = round(int(vda1_original_size_bytes) / 1000 / 1000 / 1000, 1)
-        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action=f"resized from {vda1_original_size_gb} GB")
+        vda1_original_size_gib = round(int(vda1_original_size_bytes) / 1024 / 1024 / 1024, 1)
+        r.check_disk_row("vda", parent="vda1", size="7 GiB", action=f"resized from {vda1_original_size_gib} GiB")
         r.check_resized_system("Debian", ["vda1"])
 
         self.install(needs_confirmation=True)
-        self.verifyDualBootDebian(root_one_size=11.4, root_two_size=6.5)
+        self.verifyDualBootDebian(root_one_size=10.9, root_two_size=7)
 
 
 if __name__ == '__main__':

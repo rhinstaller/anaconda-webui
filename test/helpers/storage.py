@@ -26,13 +26,22 @@ DISK_INITIALIZATION_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/D
 
 # Default boot partition size for partition preparation (GiB format)
 BOOT_PARTITION_DEFAULT_SIZE = '2GiB'
-# Default boot partition size for review display (GB format)
-BOOT_PARTITION_DEFAULT_SIZE_GB = '2.15 GB'
+# Default boot partition size as shown in the UI (binary units)
+BOOT_PARTITION_DEFAULT_SIZE_SPACE = '2.00 GiB'
 
 # Default EFI system partition size for partition preparation (MiB format)
 EFI_PARTITION_DEFAULT_SIZE = '500MiB'
-# Default EFI system partition size for review display (MB format)
-EFI_PARTITION_DEFAULT_SIZE_MB = '524 MB'
+# Default EFI system partition size as shown in the UI (binary units)
+EFI_PARTITION_DEFAULT_SIZE_SPACE = '500 MiB'
+
+# Typical 1 GiB partition size in mount-point mapping tests
+PARTITION_1GiB_SIZE = '1GiB'
+# Typical 1 GiB partition size as shown in the UI (binary units)
+PARTITION_1GiB_SIZE_SPACE = '1 GiB'
+
+# ~1 GB (decimal) partition; shown as 954 MiB in the UI (binary units)
+PARTITION_1GB_SIZE = '954MiB'
+PARTITION_1GB_SIZE_SPACE = '954 MiB'
 
 class StorageDestination():
     def __init__(self, browser, machine):
