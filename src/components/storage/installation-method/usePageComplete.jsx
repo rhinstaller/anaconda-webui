@@ -5,7 +5,7 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { useWizardContext } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
@@ -97,6 +97,8 @@ const useApplyDefaultDisksOnReview = () => {
 };
 
 const useApplyStorageOnReview = () => {
+    const [validationPending, setValidationPending] = useState(false);
+    const [validationReport, setValidationReport] = useState(null);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const { setStepNotification } = useContext(PageContext) ?? {};
     const partitioningPath = partitioning?.path;
@@ -108,15 +110,21 @@ const useApplyStorageOnReview = () => {
 
         const step = REVIEW_STEP_ID;
 
+        setValidationPending(true);
         (async () => {
             try {
                 const { validationReport } = await applyStorage({ partitioning: partitioningPath });
+                setValidationReport(validationReport);
                 setStepNotification?.(createStorageValidationNotification(validationReport, step));
             } catch (ex) {
                 setStepNotification?.({ step, ...ex });
+            } finally {
+                setValidationPending(false);
             }
         })();
     }, [appliedPartitioning, partitioningPath, setStepNotification]);
+
+    return { validationPending, validationReport };
 };
 
 const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
@@ -178,14 +186,20 @@ export const usePageComplete = () => {
     const spaceState = useStorageComplete();
 
     useApplyDefaultDisksOnReview();
-    useApplyStorageOnReview();
+    const { validationPending, validationReport } = useApplyStorageOnReview();
     useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSize);
 
+    const warningMessages = validationReport?.["warning-messages"]?.v || [];
+    const hasWarnings = !validationPending && warningMessages.length > 0;
+
+    let complete;
     if (spaceState.status === StorageCompleteStatus.PENDING) {
-        return undefined;
+        complete = undefined;
+    } else if (spaceState.status === StorageCompleteStatus.INSUFFICIENT) {
+        complete = false;
+    } else {
+        complete = true;
     }
-    if (spaceState.status === StorageCompleteStatus.INSUFFICIENT) {
-        return false;
-    }
-    return true;
+
+    return { complete, hasWarnings, validationPending };
 };
