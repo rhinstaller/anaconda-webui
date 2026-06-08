@@ -89,7 +89,11 @@ export const ReviewConfiguration = ({ automatedInstall, pauseAtSummary }) => {
     const softwarePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
     const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
-    const storageComplete = useStorageInstallationPageComplete();
+    const {
+        complete: storageComplete,
+        hasWarnings: hasStorageWarnings,
+        validationPending: storageValidationPending,
+    } = useStorageInstallationPageComplete();
     const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
     const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 
@@ -117,10 +121,12 @@ export const ReviewConfiguration = ({ automatedInstall, pauseAtSummary }) => {
 
     // Auto-proceed to installation when kickstart is used without inst.pauseatsummary
     useEffect(() => {
-        if (automatedInstall && !pauseAtSummary && allReviewPagesComplete) {
+        if (automatedInstall && !pauseAtSummary && allReviewPagesComplete &&
+            !storageValidationPending && !hasStorageWarnings) {
             cockpit.location.go(["anaconda-screen-progress"]);
         }
-    }, [automatedInstall, pauseAtSummary, allReviewPagesComplete]);
+    }, [automatedInstall, pauseAtSummary, allReviewPagesComplete, storageValidationPending,
+        hasStorageWarnings]);
 
     // Display custom footer
     const getFooter = useMemo(() => (
