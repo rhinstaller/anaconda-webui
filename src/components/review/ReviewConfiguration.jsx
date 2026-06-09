@@ -77,7 +77,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ automatedInstall, pauseAtSummary }) => {
+export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, pauseAtSummary }) => {
     const osRelease = useContext(OsReleaseContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
@@ -121,12 +121,22 @@ export const ReviewConfiguration = ({ automatedInstall, pauseAtSummary }) => {
         goToStepById(firstIncompleteStepId);
     };
 
-    // Auto-proceed to installation when kickstart is used without inst.pauseatsummary
+    // Auto-proceed to installation when kickstart is used without inst.pauseatsummary.
+    // This is a one-shot check: once validations complete and any issue is found
+    // (incomplete pages, storage warnings), auto-proceed is permanently disabled
+    // so the user must manually click "Begin installation" after fixing the issue.
     useEffect(() => {
-        if (automatedInstall && !pauseAtSummary &&
-            allReviewPagesComplete && !reviewValidationPending &&
-            !storageValidationPending && !hasStorageWarnings) {
+        if (!automatedInstall || pauseAtSummary || autoProceedBlockedRef.current) {
+            return;
+        }
+        // Wait until all validations have finished
+        if (reviewValidationPending || storageValidationPending) {
+            return;
+        }
+        if (allReviewPagesComplete && !hasStorageWarnings) {
             cockpit.location.go(["anaconda-screen-progress"]);
+        } else {
+            autoProceedBlockedRef.current = true;
         }
     }, [automatedInstall, pauseAtSummary, allReviewPagesComplete, reviewValidationPending,
         storageValidationPending, hasStorageWarnings]);

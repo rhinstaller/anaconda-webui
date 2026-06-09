@@ -11,7 +11,7 @@ from review import Review
 from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
 from testlib import test_main  # pylint: disable=import-error
 from timezone import DateAndTime
-from users import Users, override_user_interface_conf_keys
+from users import create_user, Users, override_user_interface_conf_keys
 
 
 class TestKickstartAutomatedPause(VirtInstallMachineCase):
@@ -183,6 +183,56 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         p.wait_done()
 
         self.handleReboot()
+
+
+class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedIncomplete-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedIncomplete-testBasic.ks``
+
+        Expected results:
+            - Automated installation starts.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage-kickstart")
+        p = Progress(b)
+        u = Users(b, m)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+
+        # Wait for warning notification about incompleteness of accounts
+        # Note: also makes sure that the button state stabilizes for the next check
+        b.wait_in_text(f"#{i.steps.REVIEW}-incomplete-configuration",
+                       "Some installation steps still need to be completed before you can continue.")
+
+        i.check_next_disabled()
+
+        i.reach_on_sidebar(i.steps.ACCOUNTS)
+        create_user(b, self.machine)
+        # Workaround to stabilize the button state before calling the reach
+        # to prevent race condition on state flipping
+        u.enable_user_account(False)
+        u.enable_user_account(True)
+
+        i.reach(i.steps.REVIEW)
+
+        # Wait for completeness of accounts
+        # Note: also makes sure that the button state stabilizes for the next check
+        b.wait_in_text(f"#{i.steps.REVIEW}-target-system-account",
+                       "The following user will be created")
+        i.check_next_disabled(disabled=False)
 
 
 if __name__ == "__main__":

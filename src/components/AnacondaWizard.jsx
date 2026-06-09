@@ -6,7 +6,7 @@ import cockpit from "cockpit";
 
 import { usePageLocation } from "hooks";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
@@ -33,7 +33,10 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
 
+    const autoProceedBlockedRef = useRef(false);
+
     const componentProps = {
+        autoProceedBlockedRef,
         automatedInstall,
         dispatch,
         onCritFail,
