@@ -21,7 +21,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 @nondestructive
 class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
     @run_boot("bios", "efi")
-    @disk_images([("", 15), ("fedora-42", "15")])
+    @disk_images([("", 15), ("fedora-43", "15")])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     def testBasic(self):
         """
@@ -90,7 +90,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         #     ignore=pixel_tests_ignore,
         # )
 
-        i.next(should_fail=True)
+        if self.is_efi:
+            i.next(should_fail=True)
+
         i.reach(i.steps.REVIEW)
 
         # verify review screen
@@ -100,9 +102,9 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         if self.is_efi:
             r.check_disk_row(dev, "/boot/efi", f"vdb{next_idx}", "105 MB", True, "efi")
         next_idx += 1
-        r.check_disk_row(dev, "/boot", f"vdb{next_idx}", "1.05 GB", True, "ext4")
-        r.check_disk_row(dev, "/", f"vdb{next_idx + 1}", "12.8 GB", True, "btrfs subvolume")
-        r.check_disk_row(dev, "/home", f"vdb{next_idx + 1}", "12.8 GB", False)
+        r.check_disk_row(dev, "/boot", f"vdb{next_idx}", "2.10 GB", True, "ext4")
+        r.check_disk_row(dev, "/", f"vdb{next_idx + 1}", "11.8 GB", True, "btrfs subvolume")
+        r.check_disk_row(dev, "/home", f"vdb{next_idx + 1}", "11.8 GB", False)
 
         applied_partitioning = s.dbus_get_applied_partitioning()
 
@@ -117,7 +119,8 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
             next_idx += 1
         s.check_mountpoint_row(next_idx, "/boot", f"{dev}3", False)
 
-        i.next(should_fail=True)
+        if self.is_efi:
+            i.next(should_fail=True)
         i.next()
         new_applied_partitioning = s.dbus_get_applied_partitioning()
         self.assertNotEqual(new_applied_partitioning, applied_partitioning)
