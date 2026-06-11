@@ -236,10 +236,22 @@ export const InstallationDestination = ({
     }, [diskSelection]);
 
     const selectedDisksCnt = diskSelection.selectedDisks.length;
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
 
     useEffect(() => {
-        setIsDestinationValid(selectedDisksCnt > 0);
-    }, [selectedDisksCnt, setIsDestinationValid]);
+        if (selectedDisksCnt === 0) {
+            setIsDestinationValid(false);
+            return;
+        }
+
+        if (diskTotalSpace == null || requiredSize == null) {
+            setIsDestinationValid(undefined);
+            return;
+        }
+
+        setIsDestinationValid(diskTotalSpace >= requiredSize);
+    }, [selectedDisksCnt, diskTotalSpace, requiredSize, setIsDestinationValid]);
 
     const headingLevel = isFirstScreen ? "h3" : "h2";
 

@@ -43,7 +43,7 @@ export const InstallationMethod = ({
 }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
-    const [isDestinationValid, setIsDestinationValid] = useState(false);
+    const [isDestinationValid, setIsDestinationValid] = useState(undefined);
     const [isScenarioValid, setIsScenarioValid] = useState(false);
 
     // Calculate overall form validity based on both children's validation states
@@ -181,7 +181,7 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
 const InstallationMethodFooterHelper = () => {
     const { isFormValid } = useContext(PageContext) ?? {};
 
-    if (isFormValid) {
+    if (isFormValid !== false) {
         return null;
     }
 
