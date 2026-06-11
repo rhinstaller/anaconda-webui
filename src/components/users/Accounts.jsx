@@ -149,9 +149,12 @@ const CreateAccount = ({
         debounce(300, () => setCheckFullName(fullName))();
     }, [fullName, setCheckFullName]);
 
+    // null means the field is empty: keep the default (non-error) input style on load.
+    // User name must be set, so require isUserNameValid === true. Full name may be
+    // left empty, so only reject explicit errors (isFullNameValid !== false).
     useEffect(() => {
         setIsUserValid(
-            (isPasswordValid !== false && isUserNameValid !== false && isFullNameValid !== false) ||
+            (isPasswordValid !== false && isUserNameValid === true && isFullNameValid !== false) ||
             skipAccountCreation
         );
     }, [skipAccountCreation, setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
