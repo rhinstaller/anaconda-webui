@@ -68,8 +68,7 @@ class TestStorageBasic(VirtInstallMachineCase):
 
         # Check the next button is disabled when not sufficient disk space is available
         s.select_disks([("vda", False), (dev, True)])
-        # FIXME INSTALLER-4770
-        #i.check_next_disabled()
+        i.check_next_disabled()
 
         # Check that the disk selection persists when moving next and back
         s.select_disks([("vda", True), (dev, False)])
