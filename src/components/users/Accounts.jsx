@@ -150,11 +150,12 @@ const CreateAccount = ({
     }, [fullName, setCheckFullName]);
 
     // null means the field is empty: keep the default (non-error) input style on load.
-    // User name must be set, so require isUserNameValid === true. Full name may be
-    // left empty, so only reject explicit errors (isFullNameValid !== false).
+    // User name and password must be set (or explicitly accepted empty), so require
+    // isUserNameValid === true and isPasswordValid === true. Full name may be left
+    // empty, so only reject explicit errors (isFullNameValid !== false).
     useEffect(() => {
         setIsUserValid(
-            (isPasswordValid !== false && isUserNameValid === true && isFullNameValid !== false) ||
+            (isPasswordValid === true && isUserNameValid === true && isFullNameValid !== false) ||
             skipAccountCreation
         );
     }, [skipAccountCreation, setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
@@ -366,7 +367,7 @@ const RootAccountEditable = ({
     const passwordRef = useRef();
 
     useEffect(() => {
-        setIsRootValid(isPasswordValid || !isRootAccountEnabled);
+        setIsRootValid(isPasswordValid === true || !isRootAccountEnabled);
     }, [setIsRootValid, isPasswordValid, isRootAccountEnabled]);
 
     useEffect(() => {
