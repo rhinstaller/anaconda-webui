@@ -274,21 +274,18 @@ class TestUsers(VirtInstallMachineCase):
 
         p.set_password("")
         p.set_password_confirm("")
-        # FIXME: INSTALLER-4769
-        #i.check_next_disabled()
+        i.check_next_disabled()
 
         p.set_password("abcd")
         p.set_password_confirm("abcd")
         p.check_pw_rule("length", "error")
-        # FIXME: INSTALLER-4769
-        #i.check_next_disabled()
+        i.check_next_disabled()
 
         p.set_password("abcdef")
         p.set_password_confirm("abcdef")
         p.check_pw_rule("length", "success")
         p.check_pw_strength("weak")
-        # FIXME: INSTALLER-4769
-        #i.check_next_disabled()
+        i.check_next_disabled()
 
         strong_password = "Rwce82ybF7dXtCzFumanchu!!!!!!!!"
         p.set_password(strong_password)
