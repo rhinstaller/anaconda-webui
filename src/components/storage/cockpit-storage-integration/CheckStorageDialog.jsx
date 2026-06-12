@@ -508,8 +508,9 @@ const CheckStorageDialogLoadingNewPartitioning = ({
         }
         mounted.current = true;
 
-        // If "Use configured storage" is not available, skip Manual partitioning creation
-        if (!useConfiguredStorage) {
+        // If "Use configured storage" is not available and no mount points were
+        // specified, skip Manual partitioning creation
+        if (!useConfiguredStorage && Object.keys(newMountPoints).length === 0) {
             if (useFreeSpace) {
                 dispatch(setStorageScenarioAction("use-free-space"));
             } else {
@@ -518,8 +519,10 @@ const CheckStorageDialogLoadingNewPartitioning = ({
             setNotification(null);
             setNeedsNewPartitioning(false);
             return;
-        } else {
+        } else if (useConfiguredStorage) {
             dispatch(setStorageScenarioAction("use-configured-storage"));
+        } else {
+            dispatch(setStorageScenarioAction(""));
         }
 
         const onFail = (exc) => {
@@ -577,7 +580,7 @@ const CheckStorageDialogLoaded = ({
     const selectedDisks = diskSelection.selectedDisks;
 
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
-    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
+    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
 
     const mdArrays = useMemo(() => {
         return Object.keys(devices).filter(device => devices[device].type.v === "mdarray");

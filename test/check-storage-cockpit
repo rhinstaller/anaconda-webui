@@ -276,6 +276,36 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         """
         self._testStandardPartition("xfs")
 
+    def testMissingBootEfiPartition(self):
+        """
+        Description:
+            Test that a storage layout without /boot/efi shows a backend validation
+            error
+
+        Expected results:
+            - The check storage dialog shows backend validation errors
+
+        References:
+            - https://bugzilla.redhat.com/show_bug.cgi?id=2406021
+        """
+        b = self.browser
+        s = Storage(b, self.machine)
+
+        self.reachCockpitStorage()
+
+        self.click_dropdown(self.card_row("Storage", 1), "Create partition table")
+        self.confirm()
+
+        self.click_dropdown(self.card_row("Storage", 2), "Create partition")
+        self.dialog({"size": 1070, "type": "ext4", "mount_point": "/boot"})
+
+        self.click_dropdown(self.card_row("Storage", 3), "Create partition")
+        self.dialog({"type": "ext4", "mount_point": "/"})
+
+        b.switch_to_top()
+        s.return_to_installation("EFI System Partition must be mounted on one of /boot/efi")
+        b.wait_in_text("#cockpit-storage-integration-check-storage-dialog", "Storage requirements not met")
+
     def testPayloadSizeCheckExt4(self):
         """
         Description:
