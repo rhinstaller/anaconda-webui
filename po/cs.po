@@ -46,8 +46,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-05-11 06:24+0000\n"
+"POT-Creation-Date: 2026-06-16 08:33+0000\n"
+"PO-Revision-Date: 2026-06-02 07:11+0000\n"
 "Last-Translator: Jonáš Loskot "
 "<alius@users.noreply.translate.fedoraproject.org>\n"
 "Language-Team: Czech <https://translate.fedoraproject.org/projects/anaconda-"
@@ -56,29 +56,29 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 chyba"
 msgstr[1] "$0 chyby"
 msgstr[2] "$0 chyb"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "Instalace $0"
 
@@ -95,29 +95,43 @@ msgstr ""
 "všech logických oddílů dojde rovněž k automatickému odstranění tohoto "
 "rozšířeného oddílu."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "Je zapotřebí $0, ale k dispozici je pouze $1."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 varování"
 msgstr[1] "$0 varování"
 msgstr[2] "$0 varování"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 bude smazáno"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Souborový systém „$0“ nelze umístit na šifrované blokové zařízení"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+msgid "'$0' must be assigned to $1"
+msgstr "„$0“ musí být přiřazené k $1"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "Je třeba, aby „$0“ bylo na zařízení naformátovaném na „$1“"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"„$0“ musí být na systémovém oddílu EFI. Zvolený oddíl používá souborový "
+"systém FAT, ale není označen jako ESP. Nastavte typ oddílu na EFI systém a "
+"povolte příznak esp."
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -127,7 +141,7 @@ msgstr ""
 "Na MDRAID zařízení $1 nalezen oddíl „$0“. Oddíly pro zavaděč systému, "
 "nacházející se na MDRAID zařízeních, nejsou podporovány."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -138,12 +152,12 @@ msgstr ""
 msgid "About"
 msgstr "O aplikaci"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "Účet"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Akce"
 
@@ -151,7 +165,7 @@ msgstr "Akce"
 msgid "Add another server..."
 msgstr "Přidat další server…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Přidat přípojný bod"
 
@@ -196,7 +210,7 @@ msgstr "Stránka projektu Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "Uplatnit přiřazení přípojného bodu a nainstalovat"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Uplatňování změn…"
 
@@ -256,12 +270,12 @@ msgstr ""
 "pouze pro testovací a vývojové účely a jste ochotni hlásit jakékoli chyby "
 "nebo problémy za účelem zlepšení tohoto díla."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -269,7 +283,7 @@ msgstr "Zrušit"
 msgid "Change"
 msgstr "Změnit"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "Změnit cíl"
 
@@ -277,7 +291,7 @@ msgstr "Změnit cíl"
 msgid "Change hostname"
 msgstr "Změnit název stroje"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "Změnit rozvržení oddílů"
 
@@ -293,13 +307,13 @@ msgid ""
 msgstr ""
 "Změny zde provedené budou mít okamžitý vliv na systém. Nelze je „vzít zpět“."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
 msgstr "Kontrola konfigurace instalace…"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "Zjišťuje se uspořádání úložiště"
 
@@ -307,14 +321,14 @@ msgstr "Zjišťuje se uspořádání úložiště"
 msgid "Clear search"
 msgstr "Vymazat vyhledávání"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Pokud chcete pokračovat navzdory těmto varováním, klikněte znovu na „Další“."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Zavřít"
 
@@ -333,7 +347,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Dokončeno"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
 msgstr "Konfigurace není dokončena"
 
@@ -345,8 +359,8 @@ msgstr "Nastavit NTP servery"
 msgid "Configure custom NTP servers"
 msgstr "Nastavit uživatelsky určené NTP servery"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Nastavení sítě"
 
@@ -354,16 +368,16 @@ msgstr "Nastavení sítě"
 msgid "Configure storage"
 msgstr "Uspořádat úložiště"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "Znovu nastavit úložiště"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "Zopakování heslové fráze"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "Pokračovat"
 
@@ -371,11 +385,11 @@ msgstr "Pokračovat"
 msgid "Continue installation"
 msgstr "Pokračovat v instalaci"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "Pokračovat v instalaci"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
 msgstr "Před pokračováním napravte tyto problémy."
 
@@ -383,7 +397,7 @@ msgstr "Před pokračováním napravte tyto problémy."
 msgid "Create Account"
 msgstr "Vytvořit účet"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "Vytvořit účet"
 
@@ -391,7 +405,7 @@ msgstr "Vytvořit účet"
 msgid "Currently installed: $0"
 msgstr "Nyní nainstalováno: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "Uživatelsky určené"
 
@@ -408,7 +422,7 @@ msgstr "Datum a čas"
 msgid "Delete partition"
 msgstr "Odstranit oddíl"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Smazání určitých oddílů může $0 zabránit ve spouštění: $1"
 
@@ -416,7 +430,7 @@ msgstr "Smazání určitých oddílů může $0 zabránit ve spouštění: $1"
 msgid "Description"
 msgstr "Popis"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "Cíl"
 
@@ -428,24 +442,24 @@ msgstr "Cíl je šifrován"
 msgid "Detailed description of the issue"
 msgstr "Podrobný popis problému"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "Nalezeno platné rozvržení úložiště:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "Zařízení"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "Zduplikovat zařízení."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "Zduplikovat přípojný bod."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "Povolit účet správce"
 
@@ -453,7 +467,7 @@ msgstr "Povolit účet správce"
 msgid "Encrypt my data"
 msgstr "Šifrovat má data"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "Šifrováno"
 
@@ -518,7 +532,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Najít rozložení"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -526,15 +540,15 @@ msgstr ""
 "Pro lepší zabezpečení se vyhněte přímému využívání účtu root. Namísto toho "
 "používejte pro správu systému výše uvedený lokální účet."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "Celé jméno"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "Celé jméno nemůže obsahovat znak dvojtečka"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "Text pomocného"
 
@@ -542,7 +556,7 @@ msgstr "Text pomocného"
 msgid "Hide API key"
 msgstr "Skrýt klíč k API"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Skrýt potvrzené heslo"
 
@@ -550,7 +564,7 @@ msgstr "Skrýt potvrzené heslo"
 msgid "Hide passphrase"
 msgstr "Skrýt heslovou frázi"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Skrýt heslo"
 
@@ -562,7 +576,7 @@ msgstr "Název stroje"
 msgid "How would you like to install?"
 msgstr "Jak si přejete nainstalovat?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -570,11 +584,11 @@ msgstr[0] "Rozumím, že veškerá stávající data budou smazána"
 msgstr[1] "Rozumím, že veškerá stávající data budou smazána z vybraných disků"
 msgstr[2] "Rozumím, že veškerá stávající data budou smazána z vybraných disků"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "Rozumím, že některá ze stávajících dat budou smazána"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "Rozumím, že některé oddíly budou změněny"
 
@@ -613,14 +627,14 @@ msgstr "Probíhá"
 msgid "Initializing..."
 msgstr "Inicializace…"
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "Nainstalovat"
 
-#: src/components/Error.jsx:747
 #: src/components/installation/InstallationProgress.jsx:123
+#: src/components/Error.jsx:747
 msgid "Installation failed"
 msgstr "Instalace se nezdařila"
 
@@ -637,7 +651,7 @@ msgstr "Instalace systému se nezdařila"
 msgid "Installation of the system failed: $0"
 msgstr "instalace systému se nezdařila: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "Typ instalace"
 
@@ -645,7 +659,7 @@ msgstr "Typ instalace"
 msgid "Installing"
 msgstr "Instaluje se"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "Nedostatek místa na disku"
 
@@ -666,7 +680,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Neplatný název stroje"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
 msgstr "Přejít na první nedokončený krok"
 
@@ -686,8 +700,8 @@ msgstr "Klávesnice"
 msgid "Keyboard layout during boot"
 msgstr "Rozvržení klávesnice v průběhu startu systému"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "Jazyk"
 
@@ -699,6 +713,10 @@ msgstr "Spustit editor úložiště"
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
 msgstr "Zjistěte více o omezeném přístupu v nastavení"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr "Ponechte obě pole prázdná pro použití prázdného hesla."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -725,7 +743,7 @@ msgstr "Ruční nastavení pro jednotku: mapování přípojného bodu"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Může obsahovat písmena, číslice a pomlčky."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Může vyžadovat více volného prostoru"
 
@@ -733,22 +751,22 @@ msgstr "Může vyžadovat více volného prostoru"
 msgid "Medium"
 msgstr "Střední"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "Vyžadováno alespoň $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Neshoda mezi výběrem přeformátování u nadřazeného a podřízeného zařízení."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "Přípojný bod"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "Přiřazení přípojného bodu"
 
@@ -778,11 +796,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Název"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Vyžaduje alespoň $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Síť"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "Nastavení sítě"
 
@@ -798,7 +821,7 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Síť není k dispozici. Aby bylo možné chybu nahlásit, nastavte síť."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Zásuvný modul sítě selhal"
 
@@ -807,7 +830,7 @@ msgid "Next"
 msgstr "Další"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "Žádná zařízení"
 
@@ -815,7 +838,7 @@ msgstr "Žádná zařízení"
 msgid "No disks available"
 msgstr "Nejsou k dispozici žádné disky"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "Nevybrány žádné jednotky"
 
@@ -835,7 +858,7 @@ msgstr ""
 "Pro vybraná rozložení klávesnice nebylo možné obdržet žádnou platnou "
 "VConsole mapu kláves. Vybete jiné rozložení klávesnice."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "Nedostatek volného místa k dispozici"
 
@@ -861,7 +884,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Otevřít formulář zadávání hlášení chyby do Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "Operační systém"
 
@@ -877,10 +900,10 @@ msgstr "Další klávesnice"
 msgid "Partitions (advanced)"
 msgstr "Rozdělení disku (pokročilé)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "Heslová fráze"
 
@@ -888,7 +911,7 @@ msgstr "Heslová fráze"
 msgid "Passphrase did not match any locked device"
 msgstr "Heslová fráze neodpovídá žádnému ze zamčených zařízení"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Je třeba, aby se zadání heslové fráze shodovaly"
 
@@ -900,7 +923,7 @@ msgstr "Čeká"
 msgid "Please attach the log file $0 to the issue."
 msgstr "K problému připojte soubor se záznamem událostí $0."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "Aby bylo možné pokračovat, vyberte alespoň jeden disk"
 
@@ -920,7 +943,7 @@ msgstr "Předprodukční verze"
 msgid "Prefer to report manually? $0"
 msgstr "Chcete raději nahlásit ručně? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "Pokračovat v instalaci"
 
@@ -933,15 +956,15 @@ msgstr "Ukončit"
 msgid "Quit installer?"
 msgstr "Ukončit instalátor?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "Načítání informací o operačním systému se nezdařilo."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "Načítání informací o počítači se nezdařilo."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "Nepodařilo se načíst nastavení instalátoru."
 
@@ -996,7 +1019,7 @@ msgstr "Uvolnit místo"
 msgid "Reclaim space (required)"
 msgstr "Uvolnit místo (vyžadováno)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "Doporučeno"
 
@@ -1004,8 +1027,8 @@ msgstr "Doporučeno"
 msgid "Recommended partitions:"
 msgstr "Doporučené oddíly:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Znovu vytvořit souborový systém"
 
@@ -1014,10 +1037,10 @@ msgstr "Znovu vytvořit souborový systém"
 msgid "Reinstall Fedora"
 msgstr "Přeinstalovat Fedoru"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "Odstranit"
 
@@ -1074,7 +1097,7 @@ msgstr "Nahlásit problém"
 msgid "Reporting issue..."
 msgstr "Nahlašování problému…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "Vyžadováno"
 
@@ -1098,7 +1121,7 @@ msgstr "Změnit velikost"
 msgid "Resize partition"
 msgstr "Změnit velikost oddílu"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Mění se velikost následujících oddílů z $0: $1"
 
@@ -1114,7 +1137,7 @@ msgstr "Omezí hlášení na skupinu $0. $1"
 msgid "Return to installation"
 msgstr "Návrat k instalaci"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "Návrat do editoru úložiště"
 
@@ -1130,13 +1153,13 @@ msgstr "Účet správce (root) je povolený"
 msgid "Root account is enabled, but no user account has been configured"
 msgstr "Účet root je povolený, ale nebyl nastaven žádný uživatelský účet"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Heslo správce (root) bylo nastaveno."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Uložit"
 
@@ -1166,12 +1189,12 @@ msgid ""
 msgstr ""
 "Zabezpečte svá data pomocí šifrování disku. Lze uplatnit pouze na nové oddíly"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "Vybrat"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "Vybrat zařízení"
 
@@ -1179,7 +1202,7 @@ msgstr "Vybrat zařízení"
 msgid "Select city"
 msgstr "Vyberte město"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "Vyberte cíl"
 
@@ -1191,7 +1214,7 @@ msgstr "Vyberte oblast"
 msgid "Selected (top = current)"
 msgstr "Vybraná (nejvyšší = současné)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Formát „$0“ vybraného zařízení není možné přeformátovat."
 
@@ -1227,7 +1250,7 @@ msgstr "Zobrazovat dop/odp."
 msgid "Show API key"
 msgstr "Zobrazit klíč k API"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Zobrazit potvrzené heslo"
 
@@ -1235,11 +1258,11 @@ msgstr "Zobrazit potvrzené heslo"
 msgid "Show passphrase"
 msgstr "Zobrazit heslovou frázi"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Zobrazit heslo"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "Velikost"
 
@@ -1255,12 +1278,12 @@ msgstr ""
 "Instalace softwaru: Nastavování úložiště dokončeno. Software se nyní "
 "instaluje do vašeho zařízení."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Výběr softwaru"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "Před pokračováním je třeba vyřešit některé kroky instalace."
@@ -1277,14 +1300,14 @@ msgstr "Místo"
 msgid "Stacktrace"
 msgstr "Stacktrace"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "Úložiště"
 
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "Uspořádání úložiště"
 
@@ -1316,7 +1339,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Zásuvný modul úložiště selhal"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "Požadavky na úložiště nejsou splněny"
 
@@ -1340,7 +1363,7 @@ msgstr "Navržené klávesnice"
 msgid "Suggested languages"
 msgstr "Doporučené jazyky"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "Systém"
 
@@ -1355,7 +1378,7 @@ msgid ""
 msgstr ""
 "Nastavování systému: Instalace softwaru dokončena. Systém se nyní nastavuje."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Instalace Anaconda se neočekávaně zastavila."
 
@@ -1442,7 +1465,7 @@ msgid "Time"
 msgstr "Čas"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "Časové pásmo"
 
@@ -1508,27 +1531,27 @@ msgstr "Použít nastavené úložiště"
 msgid "Use entire disk"
 msgstr "Použít celý disk"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "Využít volný prostor"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "Použít lokální účet"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Použít RAID zařízení pro automatické rozdělení"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "Vytvoření uživatele"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "Uživatelské jméno"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1536,11 +1559,11 @@ msgstr ""
 "Uživatelské jméno může obsahovat pouze: písmena a-z, číslice 0-9, pomlčku "
 "$0, tečku $1, podtržítko $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "Uživatelské jméno nemůže být některým z vyhrazených slov"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "Je třeba, aby uživatelské jméno bylo kratší než 33 znaků"
 
@@ -1590,7 +1613,7 @@ msgstr ""
 "Klíč k API je možné si nechat vytvořit v nastavení vašeho účtu na Bugzilla "
 "$0."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1616,9 +1639,9 @@ msgstr "dokončený krok"
 msgid "current step"
 msgstr "stávající krok"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "smazat"
 
@@ -1626,11 +1649,11 @@ msgstr "smazat"
 msgid "edit"
 msgstr "upravit"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "šifrovat"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "šifrováno"
 
@@ -1638,7 +1661,7 @@ msgstr "šifrováno"
 msgid "extended partition"
 msgstr "Rozšířený oddíl"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "vytvořit souborový systém $0"
 
@@ -1646,11 +1669,11 @@ msgstr "vytvořit souborový systém $0"
 msgid "here"
 msgstr "zde"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
 msgstr "nedokončené"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "připojení"
 
@@ -1662,7 +1685,7 @@ msgstr "čekající krok"
 msgid "report the issue manually"
 msgstr "nahlásit problém ručně"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "změněna velikost z $0"
 
@@ -4100,9 +4123,6 @@ msgstr "zpět"
 
 #~ msgid "Need Space"
 #~ msgstr "Potřeba místa"
-
-#~ msgid "Network"
-#~ msgstr "Síť"
 
 #~ msgid "Network Config Box"
 #~ msgstr "Dialog nastavení sítě"

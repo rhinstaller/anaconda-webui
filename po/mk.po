@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE_VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-04-23 05:18+0000\n"
+"POT-Creation-Date: 2026-06-16 08:33+0000\n"
+"PO-Revision-Date: 2026-06-08 07:16+0000\n"
 "Last-Translator: Gjorgji Jankovski <j.gjorgji@gmail.com>\n"
 "Language-Team: Macedonian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/mk/>\n"
@@ -17,28 +17,28 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1\n"
-"X-Generator: Weblate 5.17\n"
+"Plural-Forms: nplurals=2; plural=n==1 || n%10==1 ? 0 : 1;\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0$1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "$0 грешка"
+msgstr[1] "$0 грешки"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "$0инсталација"
 
@@ -54,28 +54,42 @@ msgstr ""
 "$0 е MBR проширена партиција која содржи логички партиции. Отстранувањето на "
 "сите логички партиции автоматски ќе ја отстрани и проширената партиција."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 е потребно, но достапно е само $1."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 предупредување"
 msgstr[1] "$0 предупредувања"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 ќе биде избришано"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Фајл системот '$0' не може да биде на енкриптиран блок уред"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+msgid "'$0' must be assigned to $1"
+msgstr "'$0' мора да биде доделен на '$1'"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' мора да биде на уред форматиран како '$1'"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"'$0' мора да е на EFI системска партиција. Селектираната партиција го "
+"користи FAT фајл системот, но не е маркирана како ESP. Подесете го типот на "
+"партицијата на EFI System и вклучете го esp знаменцето."
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -85,7 +99,7 @@ msgstr ""
 "Пронајдена е партиција '$0' на MDRAID уредот $1. Партиции за bootloader на "
 "MDRAID уреди не се поддржани."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -96,12 +110,12 @@ msgstr ""
 msgid "About"
 msgstr "За програмата"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "Сметка"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Акции"
 
@@ -109,7 +123,7 @@ msgstr "Акции"
 msgid "Add another server..."
 msgstr "Додај друг сервер..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Додај точка за монтирање"
 
@@ -144,7 +158,7 @@ msgstr "Анаконда"
 
 #: src/index.html:20
 msgid "Anaconda Web UI"
-msgstr "Anaconda веб кориснички интерфејс"
+msgstr "Веб-интерфејс на Anaconda"
 
 #: src/components/HeaderKebab.jsx:78
 msgid "Anaconda project page"
@@ -152,9 +166,9 @@ msgstr "Страница на проектот Anaconda"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:21
 msgid "Apply mount point assignment and install"
-msgstr "Примени доделување на точки за монтирање и инсталирај"
+msgstr "Примени го доделувањето точки за монтирање и инсталирај"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Се применуваат промените..."
 
@@ -214,12 +228,12 @@ msgstr ""
 "само за тестирање и развој и сте подготвени да пријавувате грешки или "
 "проблеми со цел да се подобри овој производ."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -227,16 +241,15 @@ msgstr "Откажи"
 msgid "Change"
 msgstr "Промени"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "Промени дестинација"
 
 #: src/components/review/Hostname.jsx:87
 msgid "Change hostname"
-msgstr ""
+msgstr "Промени име на компјутерот"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
-#, fuzzy
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "Промени распоред на партиции"
 
@@ -251,288 +264,300 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr "Промените направени тука веднаш ќе влијаат на системот. Нема 'врати'."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
-msgstr ""
+msgstr "Се проверува конфигурацијата за инсталација..."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
-msgstr ""
+msgstr "Се проверува конфигурацијата на складиштето"
 
 #: src/components/common/MenuSearch.jsx:112
 msgid "Clear search"
-msgstr ""
+msgstr "Исчисти пребарување"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
+"Кликнете повторно на 'Следно' за да продолжите и покрај овие предупредувања."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
-msgstr ""
+msgstr "Затвори"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:143
 msgid "Close storage editor"
-msgstr ""
+msgstr "Затвори уредувач на складиште"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:314
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
+"Cockpit складиштето не ја обезбеди лозинката за отклучување на шифрираниот "
+"уред."
 
 #: src/components/installation/InstallationProgress.jsx:178
 msgid "Completed"
-msgstr ""
+msgstr "Завршено"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
-msgstr ""
+msgstr "Конфигурацијата е е завршена"
 
 #: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
-msgstr ""
+msgstr "Конфигурирај NTP сервери"
 
 #: src/components/datetime/CustomNTPModal.jsx:154
 msgid "Configure custom NTP servers"
-msgstr ""
+msgstr "Конфигурирај прилагодени NTP сервери"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
-msgstr ""
+msgstr "Конфигурирај мрежа"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:129
 msgid "Configure storage"
-msgstr ""
+msgstr "Конфигурирај складиште"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
-msgstr ""
+msgstr "Повторно конфигурирај складиште"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
-msgstr ""
+msgstr "Потврди лозинка"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
-msgstr ""
+msgstr "Продолжи"
 
 #: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
-msgstr ""
+msgstr "Продолжи со инсталацијата"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
-msgstr ""
+msgstr "Продолжи со инсталацијата"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
-msgstr ""
+msgstr "Поправете ги овие проблеми пред да продолжите."
 
 #: src/components/users/index.js:20
 msgid "Create Account"
-msgstr ""
+msgstr "Создај сметка"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
-msgstr ""
+msgstr "Создај сметка"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:65
 msgid "Currently installed: $0"
-msgstr ""
+msgstr "Моментално инсталирано: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
-msgstr ""
+msgstr "Сопствено"
 
 #: src/components/datetime/DateAndTime.jsx:172
 msgid "Date"
-msgstr ""
+msgstr "Датум"
 
 #: src/components/datetime/index.js:21
 #: src/components/datetime/DateAndTime.jsx:151
 msgid "Date and time"
-msgstr ""
+msgstr "Датум и време"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
 msgid "Delete partition"
-msgstr ""
+msgstr "Избриши партиција"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
-msgstr ""
+msgstr "Бришењето на одредени партиции може да спречи $0 да се подигне: $1"
 
 #: src/components/Error.jsx:268
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
-msgstr ""
+msgstr "Одредиште"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:52
 msgid "Destination is encrypted"
-msgstr ""
+msgstr "Дестинацијата е шифрирана"
 
 #: src/components/Error.jsx:273
 msgid "Detailed description of the issue"
-msgstr ""
+msgstr "Детален опис на проблемот"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
-msgstr ""
+msgstr "Откриен е важечки распоред на складиште:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
-msgstr ""
+msgstr "Уред"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
-msgstr ""
+msgstr "Дупликат уред."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
-msgstr ""
+msgstr "Дупликат точка за монтирање."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
-msgstr ""
+msgstr "Овозможи root сметка"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:63
 msgid "Encrypt my data"
-msgstr ""
+msgstr "Шифрирај ги моите податоци"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
-msgstr ""
+msgstr "Шифрирано"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:106
 msgid "Encryption"
-msgstr ""
+msgstr "Шифрирање"
 
 #: src/components/Error.jsx:203
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
+"Внесете го вашиот Bugzilla API клуч за да создадете пријава за грешка. Во "
+"следниот чекор ќе можете да ги прегледате и уредите деталите за грешката."
 
 #: src/components/Error.jsx:285
 msgid "Environment"
-msgstr ""
+msgstr "Околина"
 
 #: src/components/storage/scenarios/erase-all/index.js:20
 msgid "Erase data and install"
-msgstr ""
+msgstr "Избриши податоци и инсталирај"
 
 #: src/components/Error.jsx:716
 msgid "Error details"
-msgstr ""
+msgstr "Детали за грешката"
 
 #: src/components/installation/InstallationProgress.jsx:221
 msgid "Exit to live desktop"
-msgstr ""
+msgstr "Излези во живата работна околина"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
-msgstr ""
+msgstr "Проширена партиција"
 
 #: src/components/Error.jsx:318
 msgid "Failed to report issue"
-msgstr ""
+msgstr "Не успеа пријавувањето на проблемот"
 
 #: src/components/localization/Keyboard.jsx:202
 msgid "Failed to save layouts"
-msgstr ""
+msgstr "Не успеа зачувувањето на распоредите"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:80
 msgid "Fedora linux requires at least $0 of disk space."
-msgstr ""
+msgstr "Fedora Linux бара најмалку $0 простор на дискот."
 
 #: src/components/installation/InstallationProgress.jsx:147
 msgid "Finalization"
-msgstr ""
+msgstr "Финализирање"
 
 #: src/components/installation/InstallationProgress.jsx:145
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
 msgstr ""
+"Финализирање: Конфигурацијата на системот е завршена. Финализирањето на "
+"инсталацијата може да потрае неколку моменти."
 
 #: src/components/localization/Keyboard.jsx:218
 msgid "Find layout"
-msgstr ""
+msgstr "Најди распоред"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
 msgstr ""
+"За подобра безбедност, избегнувајте директно користење на root сметката. "
+"Наместо тоа, користете ја локалната сметка погоре за управување со системот."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
-msgstr ""
+msgstr "Целосно име"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
-msgstr ""
+msgstr "Целосното име не може да содржи двоточки"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
-msgstr ""
+msgstr "Помошен текст"
 
 #: src/components/Error.jsx:229
 msgid "Hide API key"
-msgstr ""
+msgstr "Скриј API клуч"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
-msgstr ""
+msgstr "Скриј потврдена лозинка"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:166
 msgid "Hide passphrase"
-msgstr ""
+msgstr "Скриј лозинка"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
-msgstr ""
+msgstr "Скриј лозинка"
 
 #: src/components/review/Hostname.jsx:91 src/components/review/Hostname.jsx:145
 msgid "Hostname"
-msgstr ""
+msgstr "Име на компјутерот"
 
 #: src/components/storage/installation-method/InstallationScenario.jsx:145
 msgid "How would you like to install?"
-msgstr ""
+msgstr "Како сакате да инсталирате?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr[0] ""
+msgstr[0] "Разбирам дека сите постоечки податоци ќе бидат избришани"
 msgstr[1] ""
+"Разбирам дека сите постоечки податоци ќе бидат избришани од одбраните дискови"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
-msgstr ""
+msgstr "Разбирам дека некои постојни податоци ќе бидат избришани"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
-msgstr ""
+msgstr "Разбирам дека некои партиции ќе бидат изменети"
 
 #: src/components/review/Hostname.jsx:114
 msgid "If empty, hostname will be transient and set by network information."
 msgstr ""
+"Ако е празно, името на компјутерот ќе биде привремено и поставено според "
+"мрежните информации."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
-msgstr ""
+msgstr "Ако конфигурирате партиции, потребно е следново:"
 
 #: src/components/Error.jsx:382
 msgid ""
@@ -540,55 +565,59 @@ msgid ""
 "Manual reporting allows you to review and selectively attach log files "
 "yourself."
 msgstr ""
+"Ако не се согласувате со автоматско прикачување датотеки со дневник, можете "
+"наместо тоа да $0. Рачното пријавување ви овозможува самостојно да ги "
+"прегледате и селективно да ги прикачите датотеките со дневник."
 
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
+"Ако не ги разбирате или не ги прифаќате ризиците, излезете од оваа програма."
 
 #: src/components/installation/InstallationProgress.jsx:183
 msgid "In progress"
-msgstr ""
+msgstr "Во тек"
 
 #: src/components/app.jsx:33
 msgid "Initializing..."
-msgstr ""
+msgstr "Се иницијализира..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
-msgstr ""
+msgstr "Инсталирај"
 
-#: src/components/Error.jsx:747
 #: src/components/installation/InstallationProgress.jsx:123
+#: src/components/Error.jsx:747
 msgid "Installation failed"
-msgstr ""
+msgstr "Инсталацијата не успеа"
 
 #: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
-msgstr ""
+msgstr "Начин на инсталација"
 
 #: src/components/installation/InstallationProgress.jsx:104
 #: src/components/installation/InstallationProgress.jsx:108
 msgid "Installation of the system failed"
-msgstr ""
+msgstr "Инсталацијата на системот не успеа"
 
 #: src/components/installation/InstallationProgress.jsx:84
 msgid "Installation of the system failed: $0"
-msgstr ""
+msgstr "Инсталацијата на системот не успеа: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
-msgstr ""
+msgstr "Тип на инсталација"
 
 #: src/components/installation/InstallationProgress.jsx:125
 msgid "Installing"
-msgstr ""
+msgstr "Се инсталира"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
-msgstr ""
+msgstr "Недоволен простор на дискот"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:253
 msgid ""
@@ -598,184 +627,209 @@ msgid ""
 "filesystem or format (e.g., LVM PV). Any existing partitions on this array "
 "will be ignored."
 msgstr ""
+"Откриена е неважечка RAID конфигурација. Ако вашата RAID низа е создадена "
+"директно врз дискови, на низата мора да се создаде табела на партиции. Ако "
+"вашата RAID низа е создадена врз партиции, таа мора да содржи еден датотечен "
+"систем или формат (на пр., LVM PV). Сите постојни партиции на оваа низа ќе "
+"бидат игнорирани."
 
 #: src/components/datetime/CustomNTPModal.jsx:92
 msgid "Invalid hostname"
-msgstr ""
+msgstr "Неважечко име на копмјутерот"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
-msgstr ""
+msgstr "Одете на првиот не завршен чекор"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
 "Keep current disk layout and use available space, to dual-boot with another "
 "OS."
 msgstr ""
+"Задржи го тековниот распоред на дискот и користи го достапниот простор за "
+"двојно подигнување со друг оперативен систем."
 
 #: src/components/localization/InstallationLanguage.jsx:250
 msgid "Keyboard"
-msgstr ""
+msgstr "Тастатура"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:75
 msgid "Keyboard layout during boot"
-msgstr ""
+msgstr "Распоред на тастатура при подигнување"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
-msgstr ""
+msgstr "Јазик"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:77
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:199
 msgid "Launch storage editor"
-msgstr ""
+msgstr "Стартувај уредувач на складиште"
 
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
+msgstr "Дознајте повеќе за ограничениот пристап во конфигурацијата"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
 msgstr ""
+"Оставете ги двете полиња за пасворд празни за да користите празна лозинка."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
-msgstr ""
+msgstr "Локација"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:147
 msgid "Locked devices"
-msgstr ""
+msgstr "Заклучени уреди"
 
 #: src/components/localization/Keyboard.jsx:122
 #: src/components/localization/Keyboard.jsx:126
 msgid "Make current"
-msgstr ""
+msgstr "Постави како тековно"
 
 #: src/components/storage/mount-point-mapping/index.js:19
 msgid "Manual disk configuration"
-msgstr ""
+msgstr "Рачна конфигурација на диск"
 
 #: src/components/storage/mount-point-mapping/index.js:20
 msgid "Manual disk configuration: Mount point mapping"
-msgstr ""
+msgstr "Рачна конфигурација на диск: мапирање точки за монтирање"
 
 #: src/components/review/Hostname.jsx:111
 msgid "May contain letters, numbers, and dashes."
-msgstr ""
+msgstr "Може да содржи букви, бројки и цртички."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
-msgstr ""
+msgstr "Можеби е потребен повеќе слободен простор"
 
 #: src/components/Password.jsx:56
 msgid "Medium"
-msgstr ""
+msgstr "Средно"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
-msgstr ""
+msgstr "Потребни се најмалку $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
+"Несовпаѓање меѓу изборот за преформатирање на родителскиот и подредениот "
+"уред."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
-msgstr ""
+msgstr "Точка за монтирање"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
-msgstr ""
+msgstr "Доделување точка за монтирање"
 
 #: src/components/localization/Keyboard.jsx:144
 #: src/components/localization/Keyboard.jsx:148
 msgid "Move down"
-msgstr ""
+msgstr "Премести надолу"
 
 #: src/components/localization/Keyboard.jsx:133
 #: src/components/localization/Keyboard.jsx:137
 msgid "Move up"
-msgstr ""
+msgstr "Премести нагоре"
 
 #: src/components/Password.jsx:31
 msgid "Must be at least $0 characters"
-msgstr ""
+msgstr "Мора да има најмалку $0 знаци"
 
 #: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
-msgstr ""
+msgstr "NTP сервери"
 
 #: src/components/datetime/CustomNTPModal.jsx:205
 msgid "NTS"
-msgstr ""
+msgstr "NTS"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
-msgstr ""
+msgstr "Име"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
-msgstr ""
+msgstr "Потребни се најмалку $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Мрежа"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
-msgstr ""
+msgstr "Мрежна конфигурација"
 
 #: src/components/Error.jsx:624
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
+"Мрежата не е достапна. Конфигурирајте ја мрежата во менито на горната лента "
+"за да го пријавите проблемот."
 
 #: src/components/Error.jsx:625
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
+"Мрежата не е достапна. Конфигурирајте ја мрежата за да го пријавите "
+"проблемот."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
-msgstr ""
+msgstr "Мрежниот приклучок не успеа"
 
 #: src/components/Error.jsx:581 src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
-msgstr ""
+msgstr "Следно"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
-msgstr ""
+msgstr "Нема уреди"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:124
 msgid "No disks available"
-msgstr ""
+msgstr "Нема достапни дискови"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
-msgstr ""
+msgstr "Нема избрани дискови"
 
 #: src/components/localization/Keyboard.jsx:240
 msgid "No layouts selected yet"
-msgstr ""
+msgstr "Сè уште нема избрани распореди"
 
 #: src/components/common/MenuSearch.jsx:135
 msgid "No results found"
-msgstr ""
+msgstr "Не се пронајдени резултати"
 
 #: src/components/localization/Keyboard.jsx:394
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
 msgstr ""
+"Не може да се добие важечка VConsole мапа на тастатура за избраниот распоред "
+"или распореди. Изберете друг распоред на тастатура."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
-msgstr ""
+msgstr "Нема доволно достапен слободен простор"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:51
 msgid "Not enough free space on the selected disks."
-msgstr ""
+msgstr "Нема доволно слободен простор на избраните дискови."
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:43
 msgid "Not enough space on selected disks."
-msgstr ""
+msgstr "Нема доволно простор на избраните дискови."
 
 #: src/components/AnacondaHeader.jsx:71
 msgid ""
@@ -783,181 +837,192 @@ msgid ""
 "testing purposes only. Do NOT use this software for any critical work or for "
 "production environments."
 msgstr ""
+"Напомена: Ова е софтвер пред издание наменет само за развој и тестирање. НЕ "
+"го користете овој софтвер за критична работа или за продукциски околини."
 
 #: src/components/Error.jsx:180
 msgid "Open Bugzilla bug entry form"
-msgstr ""
+msgstr "Отвори формулар за внесување грешка во Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
-msgstr ""
+msgstr "Оперативен систем"
 
 #: src/components/datetime/CustomNTPModal.jsx:161
 msgid "Options"
-msgstr ""
+msgstr "Опции"
 
 #: src/components/localization/Keyboard.jsx:96
 msgid "Other keyboards"
-msgstr ""
+msgstr "Други тастатури"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:88
 msgid "Partitions (advanced)"
-msgstr ""
+msgstr "Партиции (напредно)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
-msgstr ""
+msgstr "Лозинка"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:114
 msgid "Passphrase did not match any locked device"
-msgstr ""
+msgstr "Лозинката не одговара на ниту еден заклучен уред"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
-msgstr ""
+msgstr "Лозинките мора да се совпаѓаат"
 
 #: src/components/installation/InstallationProgress.jsx:172
 msgid "Pending"
-msgstr ""
+msgstr "На чекање"
 
 #: src/components/Error.jsx:93
 msgid "Please attach the log file $0 to the issue."
-msgstr ""
+msgstr "Прикачете ја датотеката со дневник $0 кон проблемот."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
-msgstr ""
+msgstr "Изберете најмалку еден диск за да продолжите"
 
 #: src/components/datetime/CustomNTPModal.jsx:198
 msgid "Pool"
-msgstr ""
+msgstr "Пул"
 
 #: src/components/HeaderKebab.jsx:49
 msgid "Powered by Anaconda"
-msgstr ""
+msgstr "Овозможено од Anaconda"
 
 #: src/components/AnacondaHeader.jsx:61
 msgid "Pre-release"
-msgstr ""
+msgstr "Пред издание"
 
 #: src/components/Error.jsx:178
 msgid "Prefer to report manually? $0"
-msgstr ""
+msgstr "Претпочитате рачно пријавување? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
-msgstr ""
+msgstr "Продолжи со инсталацијата"
 
 #: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
 msgid "Quit"
-msgstr ""
+msgstr "Напушти"
 
 #: src/components/AnacondaWizardFooter.jsx:104
 msgid "Quit installer?"
-msgstr ""
+msgstr "Да се напушти инсталаторот?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
-msgstr ""
+msgstr "Не успеа читањето информации за оперативниот систем."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
-msgstr ""
+msgstr "Не успеа читањето информации за компјутерот."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
-msgstr ""
+msgstr "Не успеа читањето на конфигурацијата на инсталаторот."
 
 #: src/components/AnacondaHeader.jsx:34
 msgid "Reading installer version information failed."
-msgstr ""
+msgstr "Не успеа читањето информации за верзијата на инсталаторот."
 
 #: src/components/review/Hostname.jsx:35
 msgid ""
 "Real hostname can only contain characters, digits, dashes (not starting or "
 "ending a character) and dots"
 msgstr ""
+"Вистинското име на компјутерот може да содржи само букви, цифри, цртички (не "
+"на почеток или крај) и точки"
 
 #: src/components/review/Hostname.jsx:31
 msgid "Real hostname must be 64 characters or less"
-msgstr ""
+msgstr "Вистинското име на компјутерот мора да има 64 знаци или помалку"
 
 #: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
 msgid "Reboot"
-msgstr ""
+msgstr "Рестартирај"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
 msgstr ""
+"Рестартирајте во Windows за да ја промените големината на партициите "
+"шифрирани со BitLocker. Ослободете најмалку $0 слободен простор за "
+"инсталацијата."
 
 #: src/components/AnacondaWizardFooter.jsx:104
 msgid "Reboot system?"
-msgstr ""
+msgstr "Да се рестартира системот?"
 
 #: src/components/installation/InstallationProgress.jsx:221
 msgid "Reboot to installed system"
-msgstr ""
+msgstr "Рестартирај во инсталираниот систем"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 msgid "Reclaim additional space"
-msgstr ""
+msgstr "Ослободи дополнителен простор"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
-msgstr ""
+msgstr "Ослободи простор"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 msgid "Reclaim space (required)"
-msgstr ""
+msgstr "Ослободи простор (потребно)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
-msgstr ""
+msgstr "Препорачано"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:65
 msgid "Recommended partitions:"
-msgstr ""
+msgstr "Препорачани партиции:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
-msgstr ""
+msgstr "Преформатирај"
 
 #: src/components/storage/scenarios/reinstall-fedora/index.js:21
 #: src/components/storage/scenarios/reinstall-fedora/index.js:23
 msgid "Reinstall Fedora"
-msgstr ""
+msgstr "Преинсталирај Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
-msgstr ""
+msgstr "Отстрани"
 
 #: src/components/storage/scenarios/erase-all/index.js:21
 msgid ""
 "Remove all partitions on the selected devices, including existing operating "
 "systems."
 msgstr ""
+"Отстрани ги сите партиции на избраните уреди, вклучувајќи ги и постојните "
+"оперативни системи."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
+"Отстранете или променете ја големината на постојните датотечни системи за да "
+"ослободите простор за инсталацијата."
 
 #: src/components/datetime/CustomNTPModal.jsx:216
 msgid "Remove server"
-msgstr ""
+msgstr "Отстрани сервер"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
@@ -965,339 +1030,362 @@ msgid ""
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
 "to have backups of anything important before reclaiming space."
 msgstr ""
+"Отстранувањето на датотечен систем трајно ќе ги избрише сите податоци што ги "
+"содржи. Промената на големината на партиција може да ослободи неискористен "
+"простор, но не е без ризик. Осигурете се дека имате резервни копии од сè што "
+"е важно пред да ослободувате простор."
 
 #: src/components/storage/scenarios/reinstall-fedora/index.js:22
 msgid "Replace current installation, but keep files in home."
-msgstr ""
+msgstr "Замени ја тековната инсталација, но задржи ги датотеките во home."
 
 #: src/components/HeaderKebab.jsx:129
 msgid "Report Issue"
-msgstr ""
+msgstr "Пријави проблем"
 
 #: src/components/Error.jsx:159
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
+"Пријавете проблем или испратете повратни информации со отворање на "
+"формуларот за внесување грешка во Bugzilla $0."
 
 #: src/components/Error.jsx:601 src/components/Error.jsx:768
 msgid "Report issue"
-msgstr ""
+msgstr "Пријави проблем"
 
 #: src/components/Error.jsx:601
 msgid "Reporting issue..."
-msgstr ""
+msgstr "Се пријавува проблем..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
-msgstr ""
+msgstr "Потребно"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:77
 msgid "Requirements"
-msgstr ""
+msgstr "Барања"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:115
 msgid "Rescan devices"
-msgstr ""
+msgstr "Повторно скенирај уреди"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:96
 msgid "Rescanning of the disks failed."
-msgstr ""
+msgstr "Повторното скенирање на дисковите не успеа."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
-msgstr ""
+msgstr "Промени големина"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
 msgid "Resize partition"
-msgstr ""
+msgstr "Промени големина на партиција"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
-msgstr ""
+msgstr "Се менува големината на следните партиции од $0: $1"
 
 #: src/components/Error.jsx:352
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Ограничи пристап до извештајот"
 
 #: src/components/Error.jsx:354
 msgid "Restricts the report to the $0 group. $1"
-msgstr ""
+msgstr "Го ограничува извештајот на групата $0. $1"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
 msgid "Return to installation"
-msgstr ""
+msgstr "Врати се на инсталацијата"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
-msgstr ""
+msgstr "Врати се во уредувачот на складиште"
 
 #: src/components/review/index.js:18 src/components/review/index.js:19
 msgid "Review and install"
-msgstr ""
+msgstr "Прегледај и инсталирај"
 
 #: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
-msgstr ""
+msgstr "Root сметката е овозможена"
 
 #: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
-msgstr ""
+msgstr "Root сметката е овозможена, но нема конфигурирана корисничка сметка"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
-msgstr ""
+msgstr "Root лозинката е поставена."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
-msgstr ""
+msgstr "Зачувај"
 
 #: src/components/installation/Feedback.jsx:29
 msgid "Scan the QR code with your phone or visit:"
-msgstr ""
+msgstr "Скенирајте го QR кодот со телефонот или посетете:"
 
 #: src/components/localization/InstallationLanguage.jsx:204
 msgid "Search for a language"
-msgstr ""
+msgstr "Пребарај јазик"
 
 #: src/components/software/SoftwareSelection.jsx:159
 msgid "Search for additional software"
-msgstr ""
+msgstr "Пребарај дополнителен софтвер"
 
 #: src/components/software/SoftwareSelection.jsx:66
 msgid "Search for an environment"
-msgstr ""
+msgstr "Пребарај околина"
 
 #: src/components/localization/Keyboard.jsx:222
 msgid "Search keyboard layout"
-msgstr ""
+msgstr "Пребарај распоред на тастатура"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
+"Заштитете ги податоците со шифрирање базирано на диск. Важи само за нови "
+"партиции"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
-msgstr ""
+msgstr "Избери"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
-msgstr ""
+msgstr "Избери уред"
 
 #: src/components/datetime/Timezone.jsx:176
 msgid "Select city"
-msgstr ""
+msgstr "Избери град"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
-msgstr ""
+msgstr "Избери дестинација"
 
 #: src/components/datetime/Timezone.jsx:157
 msgid "Select region"
-msgstr ""
+msgstr "Избери регион"
 
 #: src/components/localization/Keyboard.jsx:233
 msgid "Selected (top = current)"
-msgstr ""
+msgstr "Избрано (горе = тековно)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
-msgstr ""
+msgstr "Форматот '$0' на избраниот уред не може да се преформатира."
 
 #: src/components/installation/Feedback.jsx:28
 msgid "Send us feedback on your installation"
-msgstr ""
+msgstr "Испратете ни повратни информации за вашата инсталација"
 
 #: src/components/datetime/CustomNTPModal.jsx:160
 msgid "Server"
-msgstr ""
+msgstr "Сервер"
 
 #: src/components/datetime/CustomNTPModal.jsx:190
 msgid "Server is not reachable"
-msgstr ""
+msgstr "Серверот не е достапен"
 
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
-msgstr ""
+msgstr "Постави прилагодено име на компјутерот"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:94
 msgid "Share disk with other operating systems"
-msgstr ""
+msgstr "Сподели диск со други оперативни системи"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:91
 msgid "Share disk with other operating systems: $0"
-msgstr ""
+msgstr "Сподели диск со други оперативни системи: $0"
 
 #: src/components/datetime/DateAndTime.jsx:192
 msgid "Show AM/PM"
-msgstr ""
+msgstr "Прикажи AM/PM"
 
 #: src/components/Error.jsx:229
 msgid "Show API key"
-msgstr ""
+msgstr "Прикажи API клуч"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
-msgstr ""
+msgstr "Прикажи потврдена лозинка"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:166
 msgid "Show passphrase"
-msgstr ""
+msgstr "Прикажи лозинка"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
-msgstr ""
+msgstr "Прикажи лозинка"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
-msgstr ""
+msgstr "Големина"
 
 #: src/components/installation/InstallationProgress.jsx:137
 msgid "Software installation"
-msgstr ""
+msgstr "Инсталација на софтвер"
 
 #: src/components/installation/InstallationProgress.jsx:135
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
 msgstr ""
+"Инсталација на софтвер: Конфигурацијата на складиштето е завршена. Софтверот "
+"сега се инсталира на вашиот уред."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
-msgstr ""
+msgstr "Избор на софтвер"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
+"Некои чекори од инсталација мора да бидат завршени пред да можете да "
+"продолжите."
 
 #: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
 msgid "Some required partitions are missing: $0"
-msgstr ""
+msgstr "Недостасуваат некои потребни партиции: $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
-msgstr ""
+msgstr "Простор"
 
 #: src/components/Error.jsx:279
 msgid "Stacktrace"
-msgstr ""
+msgstr "Трага на стекот"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
-msgstr ""
+msgstr "Складиште"
 
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
-msgstr ""
+msgstr "Конфигурација на складиште"
 
 #: src/components/installation/InstallationProgress.jsx:130
 msgid "Storage configuration: Storage is currently being configured."
-msgstr ""
+msgstr "Конфигурација на складиште: складиштето моментално се конфигурира."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:58
 msgid "Storage editor"
-msgstr ""
+msgstr "Уредувач на складиште"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
 msgid "Storage editor is available only in the `Installation method` step."
 msgstr ""
+"Уредувачот на складиште е достапен само во чекорот `Начин на инсталација`."
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
-msgstr ""
+msgstr "Складиштето се базира на конфигурацијата од 'Измени складиште'."
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:40
 msgid ""
 "Storage layout is defined by the kickstart file. The planned partitioning "
 "layout can be reviewed in the summary step."
 msgstr ""
+"Распоредот на складиштето е дефиниран со kickstart датотеката. Планираниот "
+"распоред на партиционирање може да се прегледа во чекорот за резиме."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
 msgid "Storage plugin failed"
-msgstr ""
+msgstr "Приклучокот за складиште не успеа"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
-msgstr ""
+msgstr "Барањата за складиште не се исполнети"
 
 #: src/components/Password.jsx:67
 msgid "Strong"
-msgstr ""
+msgstr "Силна"
 
 #: src/components/installation/InstallationProgress.jsx:120
 msgid "Successfully installed"
-msgstr ""
+msgstr "Успешно инсталирано"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:109
 msgid "Successfully unlocked $0."
-msgstr ""
+msgstr "$0 е успешно отклучено."
 
 #: src/components/localization/Keyboard.jsx:96
 msgid "Suggested keyboards"
-msgstr ""
+msgstr "Предложени тастатури"
 
 #: src/components/localization/InstallationLanguage.jsx:127
 msgid "Suggested languages"
-msgstr ""
+msgstr "Предложени јазици"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
-msgstr ""
+msgstr "Систем"
 
 #: src/components/installation/InstallationProgress.jsx:142
 msgid "System configuration"
-msgstr ""
+msgstr "Конфигурација на системот"
 
 #: src/components/installation/InstallationProgress.jsx:140
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
 msgstr ""
+"Конфигурација на системот: Инсталацијата на софтверот е завршена. Системот "
+"сега се конфигурира."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
-msgstr ""
+msgstr "Инсталацијата на Anaconda неочекувано запре."
 
 #: src/components/users/Accounts.jsx:47
 msgid "The following user will be created:"
 msgid_plural "The following users will be created:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Следниот корисник ќе биде креиран:"
+msgstr[1] "Следните корисници ќе бидат креирани:"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
 "The installation needs $0 of disk space; however, the capacity of the "
 "selected disks is only $1."
 msgstr ""
+"Инсталацијата бара $0 простор на дискот; сепак, капацитетот на избраните "
+"дискови е само $1."
 
 #: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error."
-msgstr ""
+msgstr "Инсталаторот не може да продолжи поради критична грешка."
 
 #: src/components/Error.jsx:675
 msgid "The installer cannot continue due to a critical error: $0"
-msgstr ""
+msgstr "Инсталаторот не може да продолжи поради критична грешка: $0"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:35
 msgid ""
 "The passphrase you have provided contains non-ASCII characters. You may not "
 "be able to switch between keyboard layouts when typing it."
 msgstr ""
+"Лозинката што ја внесовте содржи не-ASCII знаци. Можеби нема да можете да "
+"менувате распоред на тастатура додека ја внесувате."
 
 #: src/components/localization/Keyboard.jsx:262
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
 msgstr ""
+"Избраниот стандарден распоред на тастатура не поддржува ASCII знаци. "
+"Изберете распоред што поддржува ASCII како стандарден."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
 msgid ""
@@ -1305,255 +1393,274 @@ msgid ""
 "set up LVM and much more. It is meant to be used as an advanced utility and "
 "not intended to be used in a typical installation."
 msgstr ""
+"Уредувачот на складиште ви овозможува да менувате големина, бришете и "
+"создавате партиции. Може да постави LVM и многу повеќе. Наменет е како "
+"напредна алатка и не е предвиден за користење во типична инсталација."
 
 #: src/components/Error.jsx:378
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
 msgstr ""
+"Овие датотеки со дневник може да содржат чувствителни информации како IP "
+"адреси, кориснички имиња или други системски детали."
 
 #: src/components/review/Hostname.jsx:51
 msgid "This hostname can't be submitted"
-msgstr ""
+msgstr "Ова име на компјутерот не може да се поднесе"
 
 #: src/components/AnacondaHeader.jsx:65
 msgid "This is unstable, pre-release software"
-msgstr ""
+msgstr "Ова е нестабилен софтвер пред издание"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:87
 msgid "This layout will be used for unlocking your system on boot"
-msgstr ""
+msgstr "Овој распоред ќе се користи за отклучување на системот при подигнување"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:43
 msgid "This may take a moment"
-msgstr ""
+msgstr "Ова може да потрае момент"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:462
 msgid "This will take a few moments"
-msgstr ""
+msgstr "Ова ќе потрае неколку моменти"
 
 #: src/components/datetime/DateAndTime.jsx:183
 msgid "Time"
-msgstr ""
+msgstr "Време"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
-msgstr ""
+msgstr "Временска зона"
 
 #: src/components/Error.jsx:330
 msgid "Title"
-msgstr ""
+msgstr "Наслов"
 
 #: src/components/installation/InstallationProgress.jsx:163
 msgid "To begin using $0, reboot your system."
-msgstr ""
+msgstr "За да започнете да го користите $0, рестартирајте го системот."
 
 #: src/components/storage/installation-method/InstallationMethod.jsx:192
 msgid "To continue, select the devices to install to."
-msgstr ""
+msgstr "За да продолжите, изберете ги уредите на кои ќе се инсталира."
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:53
 msgid ""
 "To use this option, resize or remove existing partitions to free up at least "
 "$0."
 msgstr ""
+"За да ја користите оваа опција, променете ја големината или отстранете "
+"постојни партиции за да ослободите најмалку $0."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
-msgstr ""
+msgstr "Тип"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
-msgstr ""
+msgstr "Не може да се закаже бришење на $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
-msgstr ""
+msgstr "Не може да се закаже промена на големината на $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
 msgid "Undo last action"
-msgstr ""
+msgstr "Поништи предходна акција"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
 msgid "Unlock"
-msgstr ""
+msgstr "Отклучи"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
 msgid ""
 "Unlock LUKS-encrypted partitions to keep existing data and show more "
 "installation methods."
 msgstr ""
+"Отклучете LUKS-шифрирани партиции за да ги задржите постојните податоци и да "
+"се прикажат повеќе начини на инсталација."
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:138
 msgid "Unlock encrypted devices"
-msgstr ""
+msgstr "Отклучи шифрирани уреди"
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:41
 msgid "Use configured storage"
-msgstr ""
+msgstr "Користи конфигурирано складиште"
 
 #: src/components/storage/scenarios/erase-all/index.js:22
 msgid "Use entire disk"
-msgstr ""
+msgstr "Користи го целиот диск"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
-msgstr ""
+msgstr "Користи слободен простор"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
-msgstr ""
+msgstr "Користи локална сметка"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
-msgstr ""
+msgstr "Користи го RAID уредот за автоматско партиционирање"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
-msgstr ""
+msgstr "Создавање корисник"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
-msgstr ""
+msgstr "Корисничко име"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
 msgstr ""
+"Корисничкото име може да содржи само: букви од a-z, цифри 0-9, цртичка $0, "
+"точка $1, долна црта $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
-msgstr ""
+msgstr "Корисничкото име не смее да биде резервиран збор"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
-msgstr ""
+msgstr "Корисничките имиња мора да бидат пократки од 33 знаци"
 
 #: src/components/Error.jsx:581
 msgid "Validating..."
-msgstr ""
+msgstr "Се проверува..."
 
 #: src/components/Password.jsx:45
 msgid "Weak"
-msgstr ""
+msgstr "Слаба"
 
 #: src/components/localization/index.js:21
 msgid "Welcome"
-msgstr ""
+msgstr "Добредојдовте"
 
 #: src/components/localization/index.js:22
 msgid "Welcome to Fedora Linux"
-msgstr ""
+msgstr "Добредојдовте во Fedora Linux"
 
 #: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
-msgstr ""
+msgstr "Добредојдовте. Да го инсталираме $0 сега."
 
 #: src/components/Error.jsx:373
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
 msgstr ""
+"Кога ќе ја поднесете оваа пријава за грешка, следните датотеки со дневник ќе "
+"се прикачат автоматски: $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
+"Windows партициите со BitLocker шифрирање не може да се менуваат по големина"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
 "You can either free up enough space here and let the installer handle the "
 "rest or manually set up partitions."
 msgstr ""
+"Можете да ослободите доволно простор тука и да му дозволите на инсталаторот "
+"да се погрижи за останатото, или рачно да поставите партиции."
 
 #: src/components/Error.jsx:238
 msgid "You can generate the API key for your Bugzilla account $0."
-msgstr ""
+msgstr "Можете да го генерирате API клучот за вашата Bugzilla сметка $0."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
 msgstr ""
+"Мора да ја овозможите root сметката или да создадете локална корисничка "
+"сметка за да продолжите."
 
 #: src/components/datetime/DateAndTime.jsx:142
 msgid "You must be connected to a network to enable automatic date and time."
 msgstr ""
+"Мора да бидете поврзани на мрежа за да овозможите автоматски датум и време."
 
 #: src/components/AnacondaWizardFooter.jsx:108
 msgid "Your progress will not be saved."
-msgstr ""
+msgstr "Вашиот напредок нема да биде зачуван."
 
 #: src/components/installation/InstallationProgress.jsx:177
 msgid "completed step"
-msgstr ""
+msgstr "завршен чекор"
 
 #: src/components/installation/InstallationProgress.jsx:182
 msgid "current step"
-msgstr ""
+msgstr "тековен чекор"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
-msgstr ""
+msgstr "избриши"
 
 #: src/components/review/Hostname.jsx:77
 msgid "edit"
-msgstr ""
+msgstr "уреди"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
-msgstr ""
+msgstr "шифрирај"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
-msgstr ""
+msgstr "шифрирано"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 msgid "extended partition"
-msgstr ""
+msgstr "проширена партиција"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
-msgstr ""
+msgstr "форматирај како $0"
 
 #: src/components/Error.jsx:161 src/components/Error.jsx:241
 msgid "here"
-msgstr ""
+msgstr "тука"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
-msgstr ""
+msgstr "незавршено"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
-msgstr ""
+msgstr "монтирај"
 
 #: src/components/installation/InstallationProgress.jsx:171
 msgid "pending step"
-msgstr ""
+msgstr "чекор на чекање"
 
 #: src/components/Error.jsx:384
 msgid "report the issue manually"
-msgstr ""
+msgstr "пријавете го проблемот рачно"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
-msgstr ""
+msgstr "со променета големина од $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
-msgstr ""
+msgstr "намали"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
-msgstr ""
+msgstr "намали на $0"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
-msgstr ""
+msgstr "врати"

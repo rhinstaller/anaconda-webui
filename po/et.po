@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-05-05 15:40+0000\n"
+"POT-Creation-Date: 2026-06-16 08:33+0000\n"
+"PO-Revision-Date: 2026-06-11 07:17+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jrtkbfdr@users.noreply.translate.fedoraproject.org>\n"
 "Language-Team: Estonian <https://translate.fedoraproject.org/projects/"
@@ -27,28 +27,28 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 viga"
 msgstr[1] "$0 viga"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "Paigaldus: $0"
 
@@ -65,28 +65,42 @@ msgstr ""
 "partitsioone. Kõikide loogiliste partitsioonidega eemaldad ka laiendatud "
 "partitsiooni(d)."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "Nõutav on $0, kuid vaid $1 on saadaval."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 hoiatus"
 msgstr[1] "$0 hoiatust"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 kustutatakse"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "„$0“ failisüsteem ei saa asuda krüptitud blokkseadmes"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+msgid "'$0' must be assigned to $1"
+msgstr "„$0“ peab olema määratud „$1“ seadmele"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "„$0“ peab asuma „$1“ vorminduses seadmel"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"„$0“ peab asuma EFI süsteemipartitsioonil. Valitud partitsioon küll kasutab "
+"FAT-vormingus failisüsteemi, kui pole ESP-tunnusega märgitud. Seadista "
+"partitsioon EFI süsteemipartitsiooniks ja lülita sisse ESP-tunnus."
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -96,7 +110,7 @@ msgstr ""
 "Leidus MDRAID-i seadmel „$1“ asuv „$0“ partitsioon. MDRAID-i seadmetel "
 "asuvad alglaaduri partitsioonid pole toetatud."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
@@ -107,12 +121,12 @@ msgstr ""
 msgid "About"
 msgstr "Teave"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "Kasutajakonto"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Tegevused"
 
@@ -120,7 +134,7 @@ msgstr "Tegevused"
 msgid "Add another server..."
 msgstr "Lisa veel üks server..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Lisa haakepunkt"
 
@@ -164,7 +178,7 @@ msgstr "Anaconda projekti veebileht"
 msgid "Apply mount point assignment and install"
 msgstr "Rakenda haakepunktide määramine ja paigalda"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Rakendan muudatusi…"
 
@@ -224,12 +238,12 @@ msgstr ""
 "testimiseks ja arenduseks ning toote edaspidise parandamise nimel oled nõus "
 "arendajatele teada andma leitud vigadest ja probleemidest."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Katkesta"
 
@@ -237,7 +251,7 @@ msgstr "Katkesta"
 msgid "Change"
 msgstr "Muuda"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "Muuda sihtandmekandjat"
 
@@ -245,7 +259,7 @@ msgstr "Muuda sihtandmekandjat"
 msgid "Change hostname"
 msgstr "Muuda hostinime"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "Muuda partitsioonide jaotust"
 
@@ -262,13 +276,13 @@ msgstr ""
 "Siinkohal tehtud muudatused mõjutavad süsteemi koheselt ja pole mitte mingit "
 "võimalust seda tagasi pöörata."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
 msgstr "Kontrollin paigalduse seadistust..."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "Kontrollin andmeruumi seadistust"
 
@@ -276,15 +290,15 @@ msgstr "Kontrollin andmeruumi seadistust"
 msgid "Clear search"
 msgstr "Tühjenda otsing"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Kui tahad jätkata neile hoiatustele vaatamata, siis klõpsa uuesti nuppu "
 "„Edasi“."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Sulge"
 
@@ -302,7 +316,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Valmis"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
 msgstr "Seadistus on poolik"
 
@@ -314,8 +328,8 @@ msgstr "Seadista NTP-servereid"
 msgid "Configure custom NTP servers"
 msgstr "Seadista enda eelistatud NTP-servereid"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Seadista võrku"
 
@@ -323,16 +337,16 @@ msgstr "Seadista võrku"
 msgid "Configure storage"
 msgstr "Seadista andmeruumi"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "Seadista uuesti andmeruumi"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "Kinnita salafraas"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "Jätka"
 
@@ -340,11 +354,11 @@ msgstr "Jätka"
 msgid "Continue installation"
 msgstr "Jätka paigaldamisega"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "Jätka paigaldamisega"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
 msgstr "Palun paranda need vead enne jätkamist."
 
@@ -352,7 +366,7 @@ msgstr "Palun paranda need vead enne jätkamist."
 msgid "Create Account"
 msgstr "Lisa kasutajakonto"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "Lisa kasutajakonto"
 
@@ -360,7 +374,7 @@ msgstr "Lisa kasutajakonto"
 msgid "Currently installed: $0"
 msgstr "Hetkel paigaldatud: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "Kohandatud"
 
@@ -377,7 +391,7 @@ msgstr "Kuupäev ja kellaaeg"
 msgid "Delete partition"
 msgstr "Kustuta partitsioon"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Mõnede partitsioonide kustutamine takistaks $0 käivitumist: $1"
 
@@ -385,7 +399,7 @@ msgstr "Mõnede partitsioonide kustutamine takistaks $0 käivitumist: $1"
 msgid "Description"
 msgstr "Kirjeldus"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "Sihtkoht"
 
@@ -397,24 +411,24 @@ msgstr "Sihtobjekt on krüptitud"
 msgid "Detailed description of the issue"
 msgstr "Vea või probleemi üksikasjalik kirjeldus"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "Tuvastasin korrektse andmeruumi jaotuse:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "Seade"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "Klooni seade."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "Klooni haakepunkt."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "Võta juurkasutaja konto kasutusele"
 
@@ -422,7 +436,7 @@ msgstr "Võta juurkasutaja konto kasutusele"
 msgid "Encrypt my data"
 msgstr "Krüpti minu andmed"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "Krüptitud"
 
@@ -487,7 +501,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Otsi klahvistiku paigutust"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -495,15 +509,15 @@ msgstr ""
 "Parema turvalisuse nimel väldi juurkasutaja konto kasutamist otse. Selle "
 "asemel kasuta süsteemi haldamiseks ülaltoodud kasutajakontot."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "Täisnimi"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "Täisnimes ei tohi olla koolonit"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "Abitekst"
 
@@ -511,7 +525,7 @@ msgstr "Abitekst"
 msgid "Hide API key"
 msgstr "Peida APi võti"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Peida kinnitatud salasõna"
 
@@ -519,7 +533,7 @@ msgstr "Peida kinnitatud salasõna"
 msgid "Hide passphrase"
 msgstr "Peida salafraas"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Peida salasõna"
 
@@ -531,7 +545,7 @@ msgstr "Hostinimi"
 msgid "How would you like to install?"
 msgstr "Kuidas sa sooviksid paigaldada?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -539,11 +553,11 @@ msgstr[0] "Ma saan aru, et kõik olemasolevad andmed kustutatakse"
 msgstr[1] ""
 "Ma saan aru, et kõik olemasolevad andmed kustutatakse valitud ketastelt"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "Ma saan aru, et mõned olemasolevad andmed kustutatakse"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "Ma saan aru, et mõned partitsioonid kuuluvad muutmisele"
 
@@ -581,14 +595,14 @@ msgstr "Töös"
 msgid "Initializing..."
 msgstr "Valmendan..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "Paigalda"
 
-#: src/components/Error.jsx:747
 #: src/components/installation/InstallationProgress.jsx:123
+#: src/components/Error.jsx:747
 msgid "Installation failed"
 msgstr "Paigaldamine ei õnnestunud"
 
@@ -605,7 +619,7 @@ msgstr "Süsteemi paigaldamine ei õnnestunud"
 msgid "Installation of the system failed: $0"
 msgstr "Süsteemi paigaldamine ei õnnestunud: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "Paigalduse tüüp"
 
@@ -613,7 +627,7 @@ msgstr "Paigalduse tüüp"
 msgid "Installing"
 msgstr "Paigaldan"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "Pole piisavalt kettaruumi"
 
@@ -636,7 +650,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
 msgstr "Mine esimese pooliku sammu juurde"
 
@@ -656,8 +670,8 @@ msgstr "Klahvistik"
 msgid "Keyboard layout during boot"
 msgstr "Klahvistiku paigutus alglaadimise ajal"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "Keel"
 
@@ -669,6 +683,10 @@ msgstr "Käivita andmeruumi haldaja"
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
 msgstr "Uuri lisateavet seadistuste piiratud ligipääsu kohta"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr "Tühja salasõna kasutamiseks jäta mõlemad salafraasi väljad tühjaks."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -695,7 +713,7 @@ msgstr "Ketta käsitsi seadistamine: haakepunktide vastendamine"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Võib sisaldada tähti, numbreid ja kriipse."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Võib vajada suuremat vaba andmeruumi"
 
@@ -703,21 +721,21 @@ msgstr "Võib vajada suuremat vaba andmeruumi"
 msgid "Medium"
 msgstr "Keskmine"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "Vajalik on vähemalt $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "Ülemseadme ja alamseadme ümbervorminduse valik ei ole vastavuses."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "Haakepunkt"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "Määra haakepunkt"
 
@@ -747,11 +765,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Nimi"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Vajalik on vähemalt $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Võrk"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "Võrguseadistus"
 
@@ -768,7 +791,7 @@ msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Võrguühendust pole. Veast teatamiseks palun seadista või lisa võrguühendus."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Võrgu lisamooduli töö ebaõnnestus"
 
@@ -777,7 +800,7 @@ msgid "Next"
 msgstr "Edasi"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "Seadmeid pole"
 
@@ -785,7 +808,7 @@ msgstr "Seadmeid pole"
 msgid "No disks available"
 msgstr "Kettaid pole saadaval"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "Ühtegi ketast pole valitud"
 
@@ -805,7 +828,7 @@ msgstr ""
 "Valitud klahvistikupaigutus(t)e jaoks ei ole võimalik laadida korrektset "
 "VConsole'i klahvistikukaarti. Palun vali mõni muu klahvistikupaigutus."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "Pole piisavalt vaba andmeruumi"
 
@@ -831,7 +854,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Ava Bugzilla veakirjelduse sisestusvorm"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "Operatsioonisüsteem"
 
@@ -847,10 +870,10 @@ msgstr "Muud klahvistikud"
 msgid "Partitions (advanced)"
 msgstr "Partitsioonid (detailsem seadistus)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "Salafraas"
 
@@ -858,7 +881,7 @@ msgstr "Salafraas"
 msgid "Passphrase did not match any locked device"
 msgstr "Sellele salafraasile ei vasta mitte ükski lukustatud seade"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Salafraasid peavad klappima"
 
@@ -870,7 +893,7 @@ msgstr "Ootel"
 msgid "Please attach the log file $0 to the issue."
 msgstr "Palun lisa veateatele $0 logifail."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "Jätkamiseks palun vali vähemalt üks ketas"
 
@@ -890,7 +913,7 @@ msgstr "Eelversioon"
 msgid "Prefer to report manually? $0"
 msgstr "Kas eelistad edastada selle käsitsi? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "Jätka paigaldamisega"
 
@@ -903,15 +926,15 @@ msgstr "Välju"
 msgid "Quit installer?"
 msgstr "Kas väljud paigaldajast?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "Operatsioonisüsteemi teabe lugemine ei õnnestunud."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "Arvutikohase teabe lugemine ei õnnestunud."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "Paigaldaja seadistuste lugemine ei õnnestunud."
 
@@ -966,7 +989,7 @@ msgstr "Vabasta andmeruumi"
 msgid "Reclaim space (required)"
 msgstr "Vabasta andmeruumi (see on nõutav)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "Soovitatav"
 
@@ -974,8 +997,8 @@ msgstr "Soovitatav"
 msgid "Recommended partitions:"
 msgstr "Soovituslikud partitsioonid:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Vorminda uuesti"
 
@@ -984,10 +1007,10 @@ msgstr "Vorminda uuesti"
 msgid "Reinstall Fedora"
 msgstr "Paigalda Fedora uuesti"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "Eemalda"
 
@@ -1043,7 +1066,7 @@ msgstr "Teata veast või probleemist"
 msgid "Reporting issue..."
 msgstr "Teatan veast või probleemist…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "Vajalik"
 
@@ -1067,7 +1090,7 @@ msgstr "Muuda suurust"
 msgid "Resize partition"
 msgstr "Muuda partitsiooni suutust"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Muudan järgnevate partitsioonide suurust „$0“ → „$1“"
 
@@ -1083,7 +1106,7 @@ msgstr "Piirab ligipääsu teatele „$0“ grupiga. $1"
 msgid "Return to installation"
 msgstr "Tagasi paigalduse juurde"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "Tagasi andmeruumi halduri juurde"
 
@@ -1101,13 +1124,13 @@ msgstr ""
 "Juurkasutaja (peakasutaja) konto on kasutusel, kuid ühtegi tavakasutajat "
 "pole seadistatud"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Juurkasutaja (peakasutaja) salasõna on määratud."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Salvesta"
 
@@ -1138,12 +1161,12 @@ msgstr ""
 "Taga oma andmete turvalisus kettapõhise krüptimisega. See kehtiks vaid uute "
 "partitsioonide puhul"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "Vali"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "Vali seade"
 
@@ -1151,7 +1174,7 @@ msgstr "Vali seade"
 msgid "Select city"
 msgstr "Vali linn"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "Vali sihtobjekt"
 
@@ -1163,7 +1186,7 @@ msgstr "Vali piirkond"
 msgid "Selected (top = current)"
 msgstr "Valitud (ülal = praegune)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Valitud seadme vorming „$0“ on selline, mida ei saa ümbervormindada."
 
@@ -1199,7 +1222,7 @@ msgstr "Näita AM/PM (el/pl)"
 msgid "Show API key"
 msgstr "Näita API võtit"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Näita kinnitatud salasõna"
 
@@ -1207,11 +1230,11 @@ msgstr "Näita kinnitatud salasõna"
 msgid "Show passphrase"
 msgstr "Näita salafraasi"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Näita salasõna"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "Suurus"
 
@@ -1227,12 +1250,12 @@ msgstr ""
 "Tarkvara paigaldus: andmeruumi seadistamine on lõppenud. Tarkvara on "
 "parasjagu sinu arvutisse/seadmesse paigaldamisel."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Tarkvara valik"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "Enne jätkamist palun lõpeta mõned paigalduse sammud."
@@ -1249,14 +1272,14 @@ msgstr "Ruum"
 msgid "Stacktrace"
 msgstr "Pinujälg"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "Andmeruum"
 
+#: src/components/installation/InstallationProgress.jsx:132
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "Andmeruumi seadistus"
 
@@ -1289,7 +1312,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Andmeruumi lisamooduli töö ebaõnnestus"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "Andmeruumi nõuded pole tagatud"
 
@@ -1313,7 +1336,7 @@ msgstr "Soovituslikud klahvistikud"
 msgid "Suggested languages"
 msgstr "Soovituslikud keeled"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "Süsteem"
 
@@ -1329,7 +1352,7 @@ msgstr ""
 "Tarkvara paigaldus: tarkvara paigaldamine on lõppenud. Kogus süsteem on nüüd "
 "seadistatud."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda paigaldus on ootamatult peatunud."
 
@@ -1416,7 +1439,7 @@ msgid "Time"
 msgstr "Kellaaeg"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "Ajavöönd"
 
@@ -1482,27 +1505,27 @@ msgstr "Kasuta seadistatud andmeruumi"
 msgid "Use entire disk"
 msgstr "Kasuta kogu ketast"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "Kasuta vaba ruumi"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "Kasuta kohaliku kontot"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Kasuta automaatse partitsioneerimise jaoks RAID-seadet"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "Kasutaja lisamine"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "Kasutajanimi"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1510,11 +1533,11 @@ msgstr ""
 "Kasutajanimes võivad sisalduda vaid: täppideta tähed vahemikus a-z, numbreid "
 "0-9, kriipsud $0, punktid $1 või alakriipsud $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "Kasutajanimi ei tohi olla reserveeritud sõna"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "Kasutajanimed peavad olema lühemad, kui 33 tähemärki"
 
@@ -1561,7 +1584,7 @@ msgstr ""
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Sa võid luua API-võtme oma Bugzilla kasutajakonto jaoks $0."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1587,9 +1610,9 @@ msgstr "lõpetatud samm"
 msgid "current step"
 msgstr "praegune samm"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "kustuta"
 
@@ -1597,11 +1620,11 @@ msgstr "kustuta"
 msgid "edit"
 msgstr "muuda"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "krüpti"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "krüptitud"
 
@@ -1609,7 +1632,7 @@ msgstr "krüptitud"
 msgid "extended partition"
 msgstr "laiendatud partitsioon"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "vorminda kui $0"
 
@@ -1617,11 +1640,11 @@ msgstr "vorminda kui $0"
 msgid "here"
 msgstr "siin"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
 msgstr "poolik"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "haagi"
 
@@ -1633,7 +1656,7 @@ msgstr "ootel samm"
 msgid "report the issue manually"
 msgstr "teatada veast käsitsi"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "suurus muudetud $0-st"
 
@@ -2110,9 +2133,6 @@ msgstr "võta tegevus tagasi"
 
 #~ msgid "NETWORK CONFIGURATION"
 #~ msgstr "VÕRGU SEADISTAMINE"
-
-#~ msgid "Network Name"
-#~ msgstr "Võrgu nimi"
 
 #~ msgid "New Device"
 #~ msgstr "Uus seade"
