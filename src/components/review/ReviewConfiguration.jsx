@@ -105,8 +105,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
         { complete: usersComplete, id: "anaconda-screen-accounts" },
     ];
     const reviewValidationPending = pages.some(p => p.complete === undefined);
-    const allReviewPagesComplete =
-        !reviewValidationPending && pages.every(p => p.complete === true);
+    const allValidatedReviewPagesComplete = pages.every(p => p.complete === true);
     const firstIncompleteStepId = !reviewValidationPending
         ? (pages.find(p => p.complete !== true)?.id ?? null)
         : null;
@@ -131,18 +130,18 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
         if (reviewValidationPending || storageValidationPending) {
             return;
         }
-        if (allReviewPagesComplete && !hasStorageWarnings) {
+        if (allValidatedReviewPagesComplete && !hasStorageWarnings) {
             cockpit.location.go(["anaconda-screen-progress"]);
         } else {
             autoProceedBlockedRef.current = true;
         }
-    }, [automatedInstall, pauseAtSummary, allReviewPagesComplete, storageValidationPending,
+    }, [automatedInstall, pauseAtSummary, allValidatedReviewPagesComplete, storageValidationPending,
         hasStorageWarnings, autoProceedBlockedRef, reviewValidationPending]);
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter pageValidationOk={allReviewPagesComplete && !reviewValidationPending} />
-    ), [allReviewPagesComplete, reviewValidationPending]);
+        <CustomFooter pageValidationOk={allValidatedReviewPagesComplete && !reviewValidationPending} />
+    ), [allValidatedReviewPagesComplete, reviewValidationPending]);
     useWizardFooter(getFooter);
 
     const languageDescription = localizationComplete
