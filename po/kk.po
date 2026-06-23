@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
+"POT-Creation-Date: 2026-06-23 06:34+0000\n"
 "PO-Revision-Date: 2026-04-21 05:16+0000\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <https://translate.fedoraproject.org/projects/anaconda-"
@@ -21,29 +21,29 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.17\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 #, fuzzy
 #| msgid "Error"
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "Қате"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "$0 орнатуы"
 
@@ -59,27 +59,40 @@ msgstr ""
 "$0 - логикалық бөлімдерді қамтитын MBR кеңейтілген бөлімі. Барлық логикалық "
 "бөлімдерді өшіру кеңейтілген бөлімді де автоматты түрде өшіреді."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 қажет, бірақ тек $1 қолжетімді."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 ескерту"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 өшірілетін болады"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "'$0' файлдық жүйесі шифрленген блоктық құрылғыда бола алмайды"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+#, fuzzy
+#| msgid "'$0' must be on a device formatted to '$1'"
+msgid "'$0' must be assigned to $1"
+msgstr "'$0' '$1' түріндегі бөлімде болуы тиіс"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' '$1' түріндегі бөлімде болуы тиіс"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -89,23 +102,29 @@ msgstr ""
 "MDRAID $1 құрылғысында '$0' бөлімі табылды. MDRAID құрылғыларындағы жүктеуіш "
 "бөлімдеріне қолдау көрсетілмейді."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "Жүйелік өзгерістер жасау үшін админ ретінде қол жеткізу мүмкіндігі бар "
 "стандартты пайдаланушы тіркелгісі."
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:48
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Abort installation"
+msgstr "$0 орнатуы"
+
 #: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "Осы туралы"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "Тіркелгі"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Әрекеттер"
 
@@ -113,7 +132,7 @@ msgstr "Әрекеттер"
 msgid "Add another server..."
 msgstr "Басқа серверді қосу..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Тіркелу нүктесін қосу"
 
@@ -157,7 +176,7 @@ msgstr "Anaconda жобасының парағы"
 msgid "Apply mount point assignment and install"
 msgstr "Тіркеу нүктелерді тағайындауды іске асыру және орнату"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Өзгерістерді іске асыру..."
 
@@ -218,12 +237,12 @@ msgstr ""
 "келеді және осы жұмысты жақсарту үшін кез келген қателер мен мәселелер "
 "туралы хабарлауға дайын боласыз."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Бас тарту"
 
@@ -231,7 +250,7 @@ msgstr "Бас тарту"
 msgid "Change"
 msgstr "Өзгерту"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "Мақсатты орынды өзгерту"
 
@@ -239,7 +258,7 @@ msgstr "Мақсатты орынды өзгерту"
 msgid "Change hostname"
 msgstr "Хост атын өзгерту"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "Бөлім орналасуын өзгерту"
 
@@ -256,15 +275,15 @@ msgstr ""
 "Мұнда жасалған өзгерістер жүйеге дереу әсер етеді. 'Болдырмау' мүмкіндігі "
 "жоқ."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
 msgstr "Сақтау құрылғылары баптауларын тексеру..."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "Сақтау құрылғылары баптауларын тексеру"
 
@@ -272,15 +291,15 @@ msgstr "Сақтау құрылғылары баптауларын тексер�
 msgid "Clear search"
 msgstr "Іздеуді тазарту"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Осы ескертулерге қарамастан жалғастыру үшін 'Келесі' батырмасын қайта "
 "шертіңіз."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Жабу"
 
@@ -294,11 +313,11 @@ msgid ""
 msgstr ""
 "Cockpit сақтағышы шифрленген құрылғының құлпын ашу үшін кілтсөзді бермеді."
 
-#: src/components/installation/InstallationProgress.jsx:178
+#: src/components/installation/InstallationProgress.jsx:204
 msgid "Completed"
 msgstr "Аяқталды"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -312,8 +331,8 @@ msgstr "NTP серверлерін баптау"
 msgid "Configure custom NTP servers"
 msgstr "Реттелетін NTP серверлерін баптау"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Желіні баптау"
 
@@ -321,28 +340,35 @@ msgstr "Желіні баптау"
 msgid "Configure storage"
 msgstr "Сақтағышты баптау"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "Сақтағышты қайта баптау"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "Кілттік фразаны растау"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "Жалғастыру"
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:41
 #: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Орнату жалғастыру"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:28
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue installation?"
+msgstr "Орнату жалғастыру"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "Орнатуды жалғастыру"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 #, fuzzy
 #| msgid "Please complete all spokes before continuing"
 msgid "Correct these issues before continuing."
@@ -352,7 +378,7 @@ msgstr "Жалғастыру алдында барлық өрістерді то
 msgid "Create Account"
 msgstr "Тіркелгі жасау"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "Тіркелгі жасау"
 
@@ -360,7 +386,7 @@ msgstr "Тіркелгі жасау"
 msgid "Currently installed: $0"
 msgstr "Қазір орнатылған: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "Таңдауыңызша"
 
@@ -377,7 +403,7 @@ msgstr "Күн мен уақыт"
 msgid "Delete partition"
 msgstr "Бөлімді өшіру"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Кейбір бөлімдерді өшіру $0 жүктелуіне кедергі келтіруі мүмкін: $1"
 
@@ -385,7 +411,7 @@ msgstr "Кейбір бөлімдерді өшіру $0 жүктелуіне к�
 msgid "Description"
 msgstr "Сипаттамасы"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "Мақсаты"
 
@@ -397,24 +423,24 @@ msgstr "Мақсатты орын шифрленген"
 msgid "Detailed description of the issue"
 msgstr "Мәселенің толық сипаттамасы"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "Жарамды сақтауыш жаймасы анықталды:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "Құрылғы"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "Қайталанатын құрылғы."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "Қайталанатын тіркеу нүктесі."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "root тіркелгісін іске қосу"
 
@@ -422,7 +448,7 @@ msgstr "root тіркелгісін іске қосу"
 msgid "Encrypt my data"
 msgstr "Менің деректерімді шифрлеу"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "Шифрленген"
 
@@ -450,7 +476,7 @@ msgstr "Деректерді өшіру және орнату"
 msgid "Error details"
 msgstr "Қате ақпараты"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Exit to live desktop"
 msgstr "Жұмыс үстеліне шығу"
 
@@ -471,11 +497,11 @@ msgstr "Жаймаларды сақтау сәтсіз аяқталды"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux үшін кемінде $0 диск орны қажет."
 
-#: src/components/installation/InstallationProgress.jsx:147
+#: src/components/installation/InstallationProgress.jsx:173
 msgid "Finalization"
 msgstr "Аяқтау"
 
-#: src/components/installation/InstallationProgress.jsx:145
+#: src/components/installation/InstallationProgress.jsx:171
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -486,7 +512,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Жайманы табу"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -494,15 +520,15 @@ msgstr ""
 "Жақсырақ қауіпсіздік үшін root тіркелгісін тікелей қолданбаңыз. Оның орнына "
 "жүйені басқару үшін жоғарыдағы жергілікті тіркелгіні қолданыңыз."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "Толық аты"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "Толық атында үтірлер болмауы тиіс"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "Көмекші мәтін"
 
@@ -510,7 +536,7 @@ msgstr "Көмекші мәтін"
 msgid "Hide API key"
 msgstr "API кілтін жасыру"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Расталған парольді жасыру"
 
@@ -518,7 +544,7 @@ msgstr "Расталған парольді жасыру"
 msgid "Hide passphrase"
 msgstr "Кілттік фразаны жасыру"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Парольді жасыру"
 
@@ -530,18 +556,18 @@ msgstr "Хост аты"
 msgid "How would you like to install?"
 msgstr "Қалай орнатуды қалайсыз?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] ""
 "Мен таңдалған дискілердегі барлық бар деректердің өшірілетінін түсінемін"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "Мен кейбір бар деректердің өшірілетінін түсінемін"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "Мен кейбір бөлімдердің өзгертілетінін түсінемін"
 
@@ -572,7 +598,7 @@ msgstr ""
 "Егер сіз қауіп-қатерді түсінбесеңіз немесе қабылдамасаңыз, осы бағдарламадан "
 "шығыңыз."
 
-#: src/components/installation/InstallationProgress.jsx:183
+#: src/components/installation/InstallationProgress.jsx:209
 msgid "In progress"
 msgstr "Орындалу үстінде"
 
@@ -580,14 +606,14 @@ msgstr "Орындалу үстінде"
 msgid "Initializing..."
 msgstr "Инициализациялануда..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "Орнату"
 
+#: src/components/installation/InstallationProgress.jsx:149
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "Орнату сәтсіз аяқталды"
 
@@ -595,24 +621,24 @@ msgstr "Орнату сәтсіз аяқталды"
 msgid "Installation method"
 msgstr "Орнату тәсілі"
 
-#: src/components/installation/InstallationProgress.jsx:104
-#: src/components/installation/InstallationProgress.jsx:108
+#: src/components/installation/InstallationProgress.jsx:119
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation of the system failed"
 msgstr "Жүйені орнату сәтсіз аяқталды"
 
-#: src/components/installation/InstallationProgress.jsx:84
+#: src/components/installation/InstallationProgress.jsx:87
 msgid "Installation of the system failed: $0"
 msgstr "Жүйені орнату сәтсіз аяқталды: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "Орнату түрі"
 
-#: src/components/installation/InstallationProgress.jsx:125
+#: src/components/installation/InstallationProgress.jsx:151
 msgid "Installing"
 msgstr "Орнатылуда"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "Диск орны жеткіліксіз"
 
@@ -634,7 +660,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Жарамсыз хост аты"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 #, fuzzy
 #| msgid "completed step"
 msgid "Jump to first incomplete step"
@@ -656,8 +682,8 @@ msgstr "Пернетақта"
 msgid "Keyboard layout during boot"
 msgstr "Жүктелу кезіндегі пернетақта жаймасы"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "Тіл"
 
@@ -669,6 +695,10 @@ msgstr "Сақтауыш түзеткішін орындау"
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
 msgstr "Конфигурациядағы шектелген қол жеткізу туралы көбірек білу"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -695,7 +725,7 @@ msgstr "Дисктерді қолмен баптау: Тіркеу нүктел�
 msgid "May contain letters, numbers, and dashes."
 msgstr "Әріптер, сандар және сызықшалардан тұруы мүмкін."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Көбірек бос орын қажет болуы мүмкін"
 
@@ -703,23 +733,23 @@ msgstr "Көбірек бос орын қажет болуы мүмкін"
 msgid "Medium"
 msgstr "Орташа"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "Кем дегенде $0 қажет"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Аталық құрылғы мен еншілес құрылғыны қайта пішімдеу таңдауы арасындағы "
 "сәйкессіздік."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "Тіркеу нүктесі"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "Тіркеу нүктелерін тағайындау"
 
@@ -749,11 +779,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Аты"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Кем дегенде $0 қажет"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Желі"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "Желі баптауы"
 
@@ -769,7 +804,7 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Желі қолжетімді емес. Мәселе туралы хабарлау үшін желіні баптаңыз."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Желі плагині сәтсіз аяқталды"
 
@@ -778,7 +813,7 @@ msgid "Next"
 msgstr "Келесі"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "Құрылғылар жоқ"
 
@@ -786,7 +821,7 @@ msgstr "Құрылғылар жоқ"
 msgid "No disks available"
 msgstr "Қолжетімді дискілер жоқ"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "Дисктер таңдалмады"
 
@@ -806,7 +841,7 @@ msgstr ""
 "Таңдалған пернетақта жаймалары үшін жарамды VConsole пернелер картасын алу "
 "мүмкін емес. Басқа пернетақта жаймасын таңдаңыз."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "Бос орын жеткіліксіз"
 
@@ -832,7 +867,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Bugzilla ақаулықты енгізу пішінін ашу"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "Операциялық жүйе"
 
@@ -848,10 +883,10 @@ msgstr "Басқа пернетақталар"
 msgid "Partitions (advanced)"
 msgstr "Бөлімдер (кеңейтілген)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "Кілттік фраза"
 
@@ -859,11 +894,11 @@ msgstr "Кілттік фраза"
 msgid "Passphrase did not match any locked device"
 msgstr "Кілттік фраза бірде-бір құлыпталған құрылғыға сәйкес келмейді"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Кілттік фразалар өзара сәйкес келуі тиіс"
 
-#: src/components/installation/InstallationProgress.jsx:172
+#: src/components/installation/InstallationProgress.jsx:198
 msgid "Pending"
 msgstr "Күту"
 
@@ -871,7 +906,7 @@ msgstr "Күту"
 msgid "Please attach the log file $0 to the issue."
 msgstr "Мәселеге $0 журнал файлын тіркеңіз."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "Жалғастыру үшін кем дегенде бір дискіні таңдаңыз"
 
@@ -891,7 +926,7 @@ msgstr "Алдын ала шығарылымы"
 msgid "Prefer to report manually? $0"
 msgstr "Қолмен хабарлауды қалайсыз ба? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "Орнатуды жалғастыру"
 
@@ -904,15 +939,15 @@ msgstr "Шығу"
 msgid "Quit installer?"
 msgstr "Орнатқыштан шығу керек пе?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "ОЖ туралы ақпаратты оқу сәтсіз аяқталды."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "Компьютер туралы ақпаратты оқу сәтсіз аяқталды."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "Орнатқыш баптауларын оқу сәтсіз аяқталды."
 
@@ -949,7 +984,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "Жүйені қайта іске қосу керек пе?"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Reboot to installed system"
 msgstr "Орнатылған жүйеге қайта жүктеу"
 
@@ -967,7 +1002,7 @@ msgstr "Орынды босату"
 msgid "Reclaim space (required)"
 msgstr "Орынды босату (қажет)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "Ұсынылатын"
 
@@ -975,8 +1010,8 @@ msgstr "Ұсынылатын"
 msgid "Recommended partitions:"
 msgstr "Ұсынылатын бөлімдер:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Қайта пішімдеу"
 
@@ -985,10 +1020,10 @@ msgstr "Қайта пішімдеу"
 msgid "Reinstall Fedora"
 msgstr "Fedora-ны қайта орнату"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "Өшіру"
 
@@ -1046,7 +1081,7 @@ msgstr "Мәселе туралы хабарлау"
 msgid "Reporting issue..."
 msgstr "Ақаулық туралы хабарлануда..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "Міндетті"
 
@@ -1070,7 +1105,7 @@ msgstr "Өлшемін өзгерту"
 msgid "Resize partition"
 msgstr "Бөлім өлшемін өзгерту"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "$0 ішінен келесі бөлімдердің өлшемін өзгерту: $1"
 
@@ -1086,7 +1121,7 @@ msgstr "Есепті $0 тобына шектейді. $1"
 msgid "Return to installation"
 msgstr "Орнатуға қайту"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "Сақтауыш түзеткішіне оралу"
 
@@ -1103,13 +1138,13 @@ msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 "Root тіркелгісі іске қосылған, бірақ ешбір пайдаланушы тіркелгісі бапталмаған"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Root паролі орнатылған."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Сақтау"
 
@@ -1140,12 +1175,12 @@ msgstr ""
 "Деректеріңізді диск негізіндегі шифрлеу арқылы қорғаңыз. Тек жаңа бөлімдерге "
 "іске асырылады"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "Таңдау"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "Құрылғыны таңдау"
 
@@ -1153,7 +1188,7 @@ msgstr "Құрылғыны таңдау"
 msgid "Select city"
 msgstr "Таңдау"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "Мақсатын таңдау"
 
@@ -1165,7 +1200,7 @@ msgstr "Аймақты таңдау"
 msgid "Selected (top = current)"
 msgstr "Таңдалған (жоғарғысы = ағымдағы)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Таңдалған құрылғының \"$0\" пішімін қайта пішімдеу мүмкін емес."
 
@@ -1201,7 +1236,7 @@ msgstr "AM/PM көрсету"
 msgid "Show API key"
 msgstr "API кілтін көрсету"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Расталған парольді көрсету"
 
@@ -1209,19 +1244,19 @@ msgstr "Расталған парольді көрсету"
 msgid "Show passphrase"
 msgstr "Кілттік фразаны көрсету"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Парольді көрсету"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "Өлшемі"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "Software installation"
 msgstr "Бағд. қамтаманы орнату"
 
-#: src/components/installation/InstallationProgress.jsx:135
+#: src/components/installation/InstallationProgress.jsx:161
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1229,12 +1264,12 @@ msgstr ""
 "Бағд. қамтаманы орнату: Сақтауышты баптау аяқталды. Енді бағдарламалық "
 "қамтама құрылғыңызға орнатылып жатыр."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Бағд. қамтаманы таңдау"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1251,18 +1286,18 @@ msgstr "Орын"
 msgid "Stacktrace"
 msgstr "Стек трейсі"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "Сақтауыш"
 
+#: src/components/installation/InstallationProgress.jsx:158
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "Сақтауыш құрылғылар баптаулары"
 
-#: src/components/installation/InstallationProgress.jsx:130
+#: src/components/installation/InstallationProgress.jsx:156
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Сақтауыш баптаулары: Ағымдағы уақытта сақтауыш бапталуда."
 
@@ -1290,7 +1325,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Сақтауыш плагині істен шықты"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "Сақтауыш орны талаптары орындалмады"
 
@@ -1298,7 +1333,7 @@ msgstr "Сақтауыш орны талаптары орындалмады"
 msgid "Strong"
 msgstr "Күшті"
 
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:146
 msgid "Successfully installed"
 msgstr "Сәтті орнатылды"
 
@@ -1314,21 +1349,21 @@ msgstr "Ұсынылатын пернетақталар"
 msgid "Suggested languages"
 msgstr "Ұсынылатын тілдер"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "Жүйе"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:168
 msgid "System configuration"
 msgstr "Жүйе баптаулары"
 
-#: src/components/installation/InstallationProgress.jsx:140
+#: src/components/installation/InstallationProgress.jsx:166
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
 msgstr "Жүйе баптаулары: Бағд. қамтаманы орнату аяқталды. Жүйе енді бапталуда."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda орнатуы күтпеген түрде аяқталды."
 
@@ -1413,7 +1448,7 @@ msgid "Time"
 msgstr "Уақыт"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "Уақыт белдеуі"
 
@@ -1421,7 +1456,7 @@ msgstr "Уақыт белдеуі"
 msgid "Title"
 msgstr "Атауы"
 
-#: src/components/installation/InstallationProgress.jsx:163
+#: src/components/installation/InstallationProgress.jsx:189
 msgid "To begin using $0, reboot your system."
 msgstr "$0 пайдалануды бастау үшін жүйені қайта жүктеңіз."
 
@@ -1479,27 +1514,27 @@ msgstr "Бапталған сақтауыш орнын пайдалану"
 msgid "Use entire disk"
 msgstr "Бүкіл дискіні пайдалану"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "Бос орынды пайдалану"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "Жергілікті тіркелгіні пайдалану"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Автоматты түрде бөлімдерге бөлу үшін RAID құрылғысын пайдалану"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "Пайдаланушыны жасау"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "Пайдаланушы аты"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1507,11 +1542,11 @@ msgstr ""
 "Пайдаланушы атында тек мыналар болуы мүмкін: a-z әріптері, 0-9 цифрлары, "
 "дефис $0, нүкте $1, астын сызу $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "Пайдаланушы аты резервтелген сөз болмауы тиіс"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "Пайдаланушы аты 33 таңбадан қысқа болуы тиіс"
 
@@ -1560,7 +1595,7 @@ msgstr ""
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Bugzilla тіркелгіңіз үшін API кілтін $0 жасай аласыз."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1577,17 +1612,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr "Сіздің үрдісіңіз сақталмайды."
 
-#: src/components/installation/InstallationProgress.jsx:177
+#: src/components/installation/InstallationProgress.jsx:203
 msgid "completed step"
 msgstr "аяқталған қадам"
 
-#: src/components/installation/InstallationProgress.jsx:182
+#: src/components/installation/InstallationProgress.jsx:208
 msgid "current step"
 msgstr "ағымдағы қадам"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "өшіру"
 
@@ -1595,11 +1630,11 @@ msgstr "өшіру"
 msgid "edit"
 msgstr "түзету"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "шифрлеу"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "шифрленген"
 
@@ -1607,7 +1642,7 @@ msgstr "шифрленген"
 msgid "extended partition"
 msgstr "кеңейтілген бөлім"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "$0 ретінде пішімдеу"
 
@@ -1615,17 +1650,17 @@ msgstr "$0 ретінде пішімдеу"
 msgid "here"
 msgstr "осында"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 #, fuzzy
 #| msgid "Completed"
 msgid "incomplete"
 msgstr "Аяқталды"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "тіркеу"
 
-#: src/components/installation/InstallationProgress.jsx:171
+#: src/components/installation/InstallationProgress.jsx:197
 msgid "pending step"
 msgstr "күту қадамы"
 
@@ -1633,7 +1668,7 @@ msgstr "күту қадамы"
 msgid "report the issue manually"
 msgstr "ақаулық туралы қолмен хабарлай"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "$0 өлшемінен өзгертілген"
 
@@ -4033,9 +4068,6 @@ msgstr "болдырмау"
 
 #~ msgid "Need Space"
 #~ msgstr "Орын керек"
-
-#~ msgid "Network"
-#~ msgstr "Желі"
 
 #~ msgid "Network Config Box"
 #~ msgstr "Желіні баптау панелі"
