@@ -46,36 +46,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-05-08 05:17+0000\n"
-"Last-Translator: Luke Na <narukeu@outlook.com>\n"
+"POT-Creation-Date: 2026-06-23 06:34+0000\n"
+"PO-Revision-Date: 2026-06-20 06:48+0000\n"
+"Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/anaconda-webui/anaconda-webui/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 个错误"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "$0 安装"
 
@@ -90,27 +90,40 @@ msgid ""
 msgstr ""
 "$0 是包含逻辑分区的 MBR 扩展分区。删除所有逻辑分区也会自动删除扩展分区。"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "需要 $0 ，但只有 $1 可用。"
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 个警告"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 将被删除"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "'$0' 文件系统不能位于加密块设备上"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+#, fuzzy
+#| msgid "'$0' must be on a device formatted to '$1'"
+msgid "'$0' must be assigned to $1"
+msgstr "'$0' 必须位于格式化为 '$1' 的设备上"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' 必须位于格式化为 '$1' 的设备上"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -119,21 +132,27 @@ msgid ""
 msgstr ""
 "在 MDRAID 设备 $1 上发现“$0”分区。不支持 MDRAID 设备上的引导加载程序分区。"
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr "一个拥有管理员权限的标准用户账户，可执行系统级更改。"
+
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:48
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Abort installation"
+msgstr "$0 安装"
 
 #: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "关于"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "账户"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "操作"
 
@@ -141,7 +160,7 @@ msgstr "操作"
 msgid "Add another server..."
 msgstr "添加其它服务器..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "添加挂载"
 
@@ -185,7 +204,7 @@ msgstr "Anaconda 项目页面"
 msgid "Apply mount point assignment and install"
 msgstr "应用挂载点分配并安装"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "正在应用更改..."
 
@@ -238,15 +257,15 @@ msgid ""
 "testing and development purposes only and are willing to report any bugs or "
 "issues in order to enhance this work."
 msgstr ""
-"点击「继续」，则说明您了解并接受预发行版的风险，只将该软件用于测试和开发，并"
-"愿意报告所有程序错误或问题以便改进本软件。"
+"点击 \"继续\" ，则说明您了解并接受预发行版的风险，只将该软件用于测试和开发，"
+"并且愿意报告所有程序错误或问题，以便改进本软件。"
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "取消"
 
@@ -254,7 +273,7 @@ msgstr "取消"
 msgid "Change"
 msgstr "变更"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "更改目标位置"
 
@@ -262,7 +281,7 @@ msgstr "更改目标位置"
 msgid "Change hostname"
 msgstr "更改主机名"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "更改分区布局"
 
@@ -275,15 +294,15 @@ msgstr "更改系统键盘布局"
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:139
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
-msgstr "此处所做的更改将立即影响系统。无法「撤消」。"
+msgstr "此处所做的更改将立即影响系统。无法“撤消”。"
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
 msgstr "正在检查安装配置..."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "正在检查存储配置"
 
@@ -291,13 +310,13 @@ msgstr "正在检查存储配置"
 msgid "Clear search"
 msgstr "清除搜索"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
-msgstr "再次点击「下一步」以忽略这些警告并继续操作。"
+msgstr "再次点击“下一步”以忽略这些警告继续操作。"
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "关闭"
 
@@ -310,11 +329,11 @@ msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr "Cockpit 存储没有提供解锁加密设备的密码。"
 
-#: src/components/installation/InstallationProgress.jsx:178
+#: src/components/installation/InstallationProgress.jsx:204
 msgid "Completed"
 msgstr "已完成"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
 msgstr "配置未完成"
 
@@ -326,8 +345,8 @@ msgstr "配置 NTP 服务器"
 msgid "Configure custom NTP servers"
 msgstr "配置自定义 NTP 服务器"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "配置网络"
 
@@ -335,28 +354,35 @@ msgstr "配置网络"
 msgid "Configure storage"
 msgstr "配置存储"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "再次配置存储"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "确认密码"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "继续"
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:41
 #: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "继续安装"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:28
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue installation?"
+msgstr "继续安装"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "继续安装"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
 msgstr "继续前请修正这些问题"
 
@@ -364,7 +390,7 @@ msgstr "继续前请修正这些问题"
 msgid "Create Account"
 msgstr "创建账户"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "创建账户"
 
@@ -372,7 +398,7 @@ msgstr "创建账户"
 msgid "Currently installed: $0"
 msgstr "目前安装：$0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "自定义"
 
@@ -389,7 +415,7 @@ msgstr "日期和时间"
 msgid "Delete partition"
 msgstr "删除分区"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "删除某些分区可能会导致$0无法启动：$1"
 
@@ -397,7 +423,7 @@ msgstr "删除某些分区可能会导致$0无法启动：$1"
 msgid "Description"
 msgstr "描述"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "目标位置"
 
@@ -409,24 +435,24 @@ msgstr "目标位置已加密"
 msgid "Detailed description of the issue"
 msgstr "问题详述"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "检测到有效的存储布局："
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "设备"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "重复的设备。"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "重复的挂载点。"
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "启用 root 账户"
 
@@ -434,7 +460,7 @@ msgstr "启用 root 账户"
 msgid "Encrypt my data"
 msgstr "加密我的数据"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "已加密"
 
@@ -461,9 +487,9 @@ msgstr "删除数据内容并安装"
 msgid "Error details"
 msgstr "错误详情"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Exit to live desktop"
-msgstr "退出到 Live 桌面"
+msgstr "退出到 live 桌面"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
@@ -480,13 +506,13 @@ msgstr "保存布局失败"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:80
 msgid "Fedora linux requires at least $0 of disk space."
-msgstr "Fedora Linux 至少需要 $0 的磁盘空间。"
+msgstr "Fedora linux 至少需要 $0 的磁盘空间。"
 
-#: src/components/installation/InstallationProgress.jsx:147
+#: src/components/installation/InstallationProgress.jsx:173
 msgid "Finalization"
-msgstr "最终确定"
+msgstr "最后确定"
 
-#: src/components/installation/InstallationProgress.jsx:145
+#: src/components/installation/InstallationProgress.jsx:171
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -496,23 +522,23 @@ msgstr "最终确定：系统配置已经完成。最终完成安装可能需要
 msgid "Find layout"
 msgstr "查找布局"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
 msgstr ""
-"为了更好的安全性，避免直接使用 root 账户。相反，请使用上面的本地账户来管理系"
+"为了更好的安全性，避免直接使用root账户。相反，请使用以上的本地账户来管理系"
 "统。"
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "全名"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "全名不能含有冒号"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "帮助文本"
 
@@ -520,7 +546,7 @@ msgstr "帮助文本"
 msgid "Hide API key"
 msgstr "隐藏 API 密钥"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "隐藏确认密码"
 
@@ -528,7 +554,7 @@ msgstr "隐藏确认密码"
 msgid "Hide passphrase"
 msgstr "隐藏密码"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "隐藏密码"
 
@@ -540,17 +566,17 @@ msgstr "主机名"
 msgid "How would you like to install?"
 msgstr "您想如何安装？"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] "我了解所选磁盘上的所有现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "我了解部分现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "我了解有些分区会被修改"
 
@@ -574,9 +600,9 @@ msgstr ""
 #: src/components/AnacondaHeader.jsx:77
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
-msgstr "如果您不了解或不接受此风险，请点击「退出」按钮退出程序。"
+msgstr "如果您不了解或不接受此风险，请点击 \"退出\" 按钮退出程序。"
 
-#: src/components/installation/InstallationProgress.jsx:183
+#: src/components/installation/InstallationProgress.jsx:209
 msgid "In progress"
 msgstr "进行中"
 
@@ -584,14 +610,14 @@ msgstr "进行中"
 msgid "Initializing..."
 msgstr "初始化中..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "安装"
 
+#: src/components/installation/InstallationProgress.jsx:149
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "安装失败"
 
@@ -599,24 +625,24 @@ msgstr "安装失败"
 msgid "Installation method"
 msgstr "安装方案"
 
-#: src/components/installation/InstallationProgress.jsx:104
-#: src/components/installation/InstallationProgress.jsx:108
+#: src/components/installation/InstallationProgress.jsx:119
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation of the system failed"
 msgstr "系统安装失败"
 
-#: src/components/installation/InstallationProgress.jsx:84
+#: src/components/installation/InstallationProgress.jsx:87
 msgid "Installation of the system failed: $0"
 msgstr "系统安装失败：$0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "安装类型"
 
-#: src/components/installation/InstallationProgress.jsx:125
+#: src/components/installation/InstallationProgress.jsx:151
 msgid "Installing"
 msgstr "正在安装"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "磁盘空间不足"
 
@@ -636,7 +662,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "无效主机名"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
 msgstr "跳转至第一个未完成的步骤"
 
@@ -654,8 +680,8 @@ msgstr "键盘"
 msgid "Keyboard layout during boot"
 msgstr "启动期间的键盘布局"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "语言"
 
@@ -666,7 +692,11 @@ msgstr "启动存储编辑器"
 
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
-msgstr "了解更多有关配置中限制访问的信息"
+msgstr "在配置中详细了解受限访问。"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -693,7 +723,7 @@ msgstr "手动磁盘配置：挂载点映射"
 msgid "May contain letters, numbers, and dashes."
 msgstr "可能包含字母、数字和破折号。"
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "可能需要更多空闲空间"
 
@@ -701,21 +731,21 @@ msgstr "可能需要更多空闲空间"
 msgid "Medium"
 msgstr "中等"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "最低要求为 $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "父设备和子设备重新格式化选择不匹配。"
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "挂载点"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "挂载点配置"
 
@@ -745,11 +775,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "名称"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "至少需要 $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "网络"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "网络配置"
 
@@ -763,7 +798,7 @@ msgstr "网络不可用。在顶部栏菜单中配置网络以报告问题。"
 msgid "Network not available. Configure the network to report the issue."
 msgstr "网络不可用。请配置网络以报告该问题。"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "网络插件失败"
 
@@ -772,7 +807,7 @@ msgid "Next"
 msgstr "下一个"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "无设备"
 
@@ -780,7 +815,7 @@ msgstr "无设备"
 msgid "No disks available"
 msgstr "没有可用的磁盘"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "未选择任何磁盘"
 
@@ -796,9 +831,9 @@ msgstr "未找到结果"
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
-msgstr "无法为所选的键盘布局获取有效的 VConsole 键位映射。请尝试其他键盘布局。"
+msgstr "无法为所选的键盘布局获取有效的VConsole键位映射。请尝试其他键盘布局。"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "没有足够可用剩余空间"
 
@@ -823,7 +858,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "打开 Bugzilla 缺陷报告表单"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "操作系统"
 
@@ -839,10 +874,10 @@ msgstr "其他键盘"
 msgid "Partitions (advanced)"
 msgstr "分区（高级）"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "密码"
 
@@ -850,19 +885,19 @@ msgstr "密码"
 msgid "Passphrase did not match any locked device"
 msgstr "密码与任何锁定的设备都不匹配"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "密码必须匹配"
 
-#: src/components/installation/InstallationProgress.jsx:172
+#: src/components/installation/InstallationProgress.jsx:198
 msgid "Pending"
-msgstr "等待中"
+msgstr "待办的"
 
 #: src/components/Error.jsx:93
 msgid "Please attach the log file $0 to the issue."
 msgstr "请将日志文件 $0 附加到问题中。"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "请至少选择一个磁盘以继续"
 
@@ -882,7 +917,7 @@ msgstr "预发布"
 msgid "Prefer to report manually? $0"
 msgstr "倾向于手动报告吗？ $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "继续安装"
 
@@ -895,15 +930,15 @@ msgstr "退出"
 msgid "Quit installer?"
 msgstr "退出安装程序？"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "读取操作系统的信息失败。"
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "读取计算机信息失败。"
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "读取安装程序配置失败。"
 
@@ -938,7 +973,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "重启系统？"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Reboot to installed system"
 msgstr "重新启动到已安装的系统"
 
@@ -956,7 +991,7 @@ msgstr "回收空间"
 msgid "Reclaim space (required)"
 msgstr "回收空间（必需）"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "推荐的"
 
@@ -964,8 +999,8 @@ msgstr "推荐的"
 msgid "Recommended partitions:"
 msgstr "建议的分区："
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "重新格式化"
 
@@ -974,10 +1009,10 @@ msgstr "重新格式化"
 msgid "Reinstall Fedora"
 msgstr "重新安装 Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "删除"
 
@@ -1027,7 +1062,7 @@ msgstr "报告问题"
 msgid "Reporting issue..."
 msgstr "报告问题中..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "必需的"
 
@@ -1051,7 +1086,7 @@ msgstr "调整大小"
 msgid "Resize partition"
 msgstr "调整分区大小"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "从 $0 调整以下分区的大小：$1"
 
@@ -1067,7 +1102,7 @@ msgstr "将报告限制在 $0 组内。$1"
 msgid "Return to installation"
 msgstr "返回安装"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "返回存储编辑器"
 
@@ -1081,15 +1116,15 @@ msgstr "Root 帐户已启用"
 
 #: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
-msgstr "Root 账户已启用，但尚未配置任何用户帐户"
+msgstr "Root账户已启用，但尚未配置任何用户帐户"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Root 密码已设置。"
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "保存"
 
@@ -1118,12 +1153,12 @@ msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr "使用基于磁盘的加密保护您的数据。仅适用于新分区"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "选择"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "所选一个设备"
 
@@ -1131,7 +1166,7 @@ msgstr "所选一个设备"
 msgid "Select city"
 msgstr "选择城市"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "选择目标位置"
 
@@ -1143,13 +1178,13 @@ msgstr "选择区域"
 msgid "Selected (top = current)"
 msgstr "已选中（顶部 = 当前）"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "无法重新格式化所选设备的格式 '$0'。"
 
 #: src/components/installation/Feedback.jsx:28
 msgid "Send us feedback on your installation"
-msgstr "向我们发送有关您安装的反馈"
+msgstr "向我们发送有关您的安装的反馈"
 
 #: src/components/datetime/CustomNTPModal.jsx:160
 msgid "Server"
@@ -1179,7 +1214,7 @@ msgstr "显示 AM/PM"
 msgid "Show API key"
 msgstr "显示 API 密钥"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "显示确认密码"
 
@@ -1187,30 +1222,30 @@ msgstr "显示确认密码"
 msgid "Show passphrase"
 msgstr "显示密码"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "显示密码"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "大小"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "Software installation"
 msgstr "软件安装"
 
-#: src/components/installation/InstallationProgress.jsx:135
+#: src/components/installation/InstallationProgress.jsx:161
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
 msgstr "软件安装：存储配置完成。该软件现在正在安装到您的设备上。"
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "软件选择"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "在继续之前，您还需要完成一些安装步骤。"
@@ -1227,18 +1262,18 @@ msgstr "空间"
 msgid "Stacktrace"
 msgstr "栈回溯"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "存储"
 
+#: src/components/installation/InstallationProgress.jsx:158
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "存储配置"
 
-#: src/components/installation/InstallationProgress.jsx:130
+#: src/components/installation/InstallationProgress.jsx:156
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "存储配置：当前正在配置存储。"
 
@@ -1248,11 +1283,11 @@ msgstr "存储编辑器"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
 msgid "Storage editor is available only in the `Installation method` step."
-msgstr "存储编辑器仅在「安装方案」步骤中可用。"
+msgstr "存储编辑器仅在“安装方法”步骤中可用。"
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
-msgstr "存储基于「修改存储」的配置。"
+msgstr "存储基于‘修改存储’的配置。"
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:40
 msgid ""
@@ -1265,7 +1300,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "存储插件失败"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "未满足存储要求"
 
@@ -1273,7 +1308,7 @@ msgstr "未满足存储要求"
 msgid "Strong"
 msgstr "强"
 
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:146
 msgid "Successfully installed"
 msgstr "安装成功"
 
@@ -1289,21 +1324,21 @@ msgstr "建议的键盘"
 msgid "Suggested languages"
 msgstr "建议语言"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "系统"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:168
 msgid "System configuration"
 msgstr "系统配置"
 
-#: src/components/installation/InstallationProgress.jsx:140
+#: src/components/installation/InstallationProgress.jsx:166
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
-msgstr "系统配置：软件安装完成。现在正在配置系统。"
+msgstr "系统配置： 软件安装完成。现在正在配置系统。"
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda安装意外停止。"
 
@@ -1316,7 +1351,7 @@ msgstr[0] "将创建以下用户："
 msgid ""
 "The installation needs $0 of disk space; however, the capacity of the "
 "selected disks is only $1."
-msgstr "安装需要 $0 的磁盘空间；但是所选磁盘的容量只有 $1。"
+msgstr "安装需要$0的磁盘空间；但是所选磁盘的容量只有$1。"
 
 #: src/components/Error.jsx:676
 msgid "The installer cannot continue due to a critical error."
@@ -1337,8 +1372,7 @@ msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
 msgstr ""
-"所选的默认键盘布局不支持 ASCII 字符。请将默认布局更改为支持 ASCII 字符的布"
-"局。"
+"所选的默认键盘布局不支持ASCII字符。请将默认布局更改为支持ASCII字符的布局。"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
 msgid ""
@@ -1380,7 +1414,7 @@ msgid "Time"
 msgstr "时间"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "时区"
 
@@ -1388,7 +1422,7 @@ msgstr "时区"
 msgid "Title"
 msgstr "标题"
 
-#: src/components/installation/InstallationProgress.jsx:163
+#: src/components/installation/InstallationProgress.jsx:189
 msgid "To begin using $0, reboot your system."
 msgstr "要使用 $0，请重新启动系统。"
 
@@ -1442,37 +1476,37 @@ msgstr "使用配置的存储"
 msgid "Use entire disk"
 msgstr "使用整个磁盘"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "使用空闲空间"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "使用本地账户"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "使用 RAID 设备进行自动分区"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "创建用户"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "用户名"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
 msgstr "用户名只能包含：a-z 字母、0-9 数字、破折号 $0、句点 $1、下划线 $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "用户名不能是保留字"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "用户名必须少于 33 个字符"
 
@@ -1494,7 +1528,7 @@ msgstr "欢迎使用 Fedora Linux"
 
 #: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
-msgstr "欢迎安装 $0"
+msgstr "欢迎。现在就来安装 $0 吧。"
 
 #: src/components/Error.jsx:373
 msgid ""
@@ -1516,7 +1550,7 @@ msgstr "您可以在此处释放足够的空间并让安装程序处理其余部
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "您可以为您的 Bugzilla 账户 $0 生成 API 密钥。"
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1530,17 +1564,17 @@ msgstr "你必须连接到网络才能启用自动设置日期与时间。"
 msgid "Your progress will not be saved."
 msgstr "您的进度将不会被保存。"
 
-#: src/components/installation/InstallationProgress.jsx:177
+#: src/components/installation/InstallationProgress.jsx:203
 msgid "completed step"
 msgstr "已完成操作"
 
-#: src/components/installation/InstallationProgress.jsx:182
+#: src/components/installation/InstallationProgress.jsx:208
 msgid "current step"
 msgstr "当前操作"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "删除"
 
@@ -1548,11 +1582,11 @@ msgstr "删除"
 msgid "edit"
 msgstr "编辑"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "加密"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "已加密"
 
@@ -1560,7 +1594,7 @@ msgstr "已加密"
 msgid "extended partition"
 msgstr "扩展分区"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "格式化为 $0"
 
@@ -1568,15 +1602,15 @@ msgstr "格式化为 $0"
 msgid "here"
 msgstr "这里"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
 msgstr "未完成"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "挂载"
 
-#: src/components/installation/InstallationProgress.jsx:171
+#: src/components/installation/InstallationProgress.jsx:197
 msgid "pending step"
 msgstr "待执行操作"
 
@@ -1584,7 +1618,7 @@ msgstr "待执行操作"
 msgid "report the issue manually"
 msgstr "手动报告问题"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "从 $0 调整为"
 
@@ -3877,9 +3911,6 @@ msgstr "撤消"
 
 #~ msgid "Need Space"
 #~ msgstr "需要空间"
-
-#~ msgid "Network"
-#~ msgstr "网络"
 
 #~ msgid "Network Config Box"
 #~ msgstr "网络配置"

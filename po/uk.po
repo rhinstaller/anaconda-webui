@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-05-01 05:56+0000\n"
+"POT-Creation-Date: 2026-06-23 06:34+0000\n"
+"PO-Revision-Date: 2026-06-01 07:01+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/uk/>\n"
@@ -35,28 +35,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 помилка"
 msgstr[1] "$0 помилки"
 msgstr[2] "$0 помилок"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "Встановлення $0"
 
@@ -72,29 +72,43 @@ msgstr ""
 "$0 - це розширений розділ MBR, який містить логічні розділи. Вилучення усіх "
 "логічних розділів автоматично вилучить і розширений розділ."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "потрібно $0, але маємо лише $1."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 попередження"
 msgstr[1] "$0 попередження"
 msgstr[2] "$0 попереджень"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 буде видалено"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "Файлова система '$0' не може бути на зашифрованому блоковому пристрої"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+msgid "'$0' must be assigned to $1"
+msgstr "«$0» має бути пов'язано з $1"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "«$0» має перебувати на пристрої з форматуванням «$1»"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"«$0» має перебувати на системному розділі EFI. На вибраному розділі "
+"використано файлову систему FAT, але його не позначено як ESP. Встановіть "
+"тип розділу «EFI System» і позначте пункт esp."
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -104,23 +118,29 @@ msgstr ""
 "Знайдено розділ «$0» на пристрої MDRAID $1. Підтримки розділів завантажувача "
 "на пристроях MDRAID не передбачено."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "Стандартний обліковий запис користувача з правами адміністратора для "
 "внесення загальносистемних змін."
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:48
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Abort installation"
+msgstr "Встановлення $0"
+
 #: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "Відомості"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "Обліковий запис"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "Дії"
 
@@ -128,7 +148,7 @@ msgstr "Дії"
 msgid "Add another server..."
 msgstr "Додати інший сервер…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "Додати монтування"
 
@@ -172,7 +192,7 @@ msgstr "Сторінка проєкту Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "Застосувати прив'язку точки монтування і встановити"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Застосовуємо зміни…"
 
@@ -233,12 +253,12 @@ msgstr ""
 "тестування або подальшої розробки і що ви маєте намір повідомляти про всі "
 "вади і проблеми з метою покращення його роботи."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -246,7 +266,7 @@ msgstr "Скасувати"
 msgid "Change"
 msgstr "Змінити"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "Змінити призначення"
 
@@ -254,7 +274,7 @@ msgstr "Змінити призначення"
 msgid "Change hostname"
 msgstr "Змінити назву вузла"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "Змінити компонування розділів"
 
@@ -270,13 +290,13 @@ msgid ""
 msgstr ""
 "Зміни, внесені тут, негайно вплинуть на систему. Скасувати їх неможливо."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
 msgstr "Перевіряємо налаштування для встановлення…"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "Перевіряємо налаштування носія"
 
@@ -284,13 +304,13 @@ msgstr "Перевіряємо налаштування носія"
 msgid "Clear search"
 msgstr "Спорожнити поле пошуку"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr "Натисніть «Далі» ще раз, щоб продовжити попри попередження."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Закрити"
 
@@ -304,11 +324,11 @@ msgid ""
 msgstr ""
 "Сховище Cockpit не надало пароль для розблокування зашифрованого пристрою."
 
-#: src/components/installation/InstallationProgress.jsx:178
+#: src/components/installation/InstallationProgress.jsx:204
 msgid "Completed"
 msgstr "Завершено"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
 msgstr "Налаштування є неповними"
 
@@ -320,8 +340,8 @@ msgstr "Налаштувати сервери NTP"
 msgid "Configure custom NTP servers"
 msgstr "Налаштувати нетипові сервери NTP"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Налаштувати мережу"
 
@@ -329,28 +349,35 @@ msgstr "Налаштувати мережу"
 msgid "Configure storage"
 msgstr "Налаштувати сховище даних"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "Повторне налаштовування сховища даних"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "Підтвердіть пароль"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "Продовжити"
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:41
 #: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Продовжити встановлення"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:28
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue installation?"
+msgstr "Продовжити встановлення"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "Продовжити встановлення"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
 msgstr "Виправте ці проблеми, перш ніж продовжувати."
 
@@ -358,7 +385,7 @@ msgstr "Виправте ці проблеми, перш ніж продовжу
 msgid "Create Account"
 msgstr "Створити обліковий запис"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "Створити обліковий запис"
 
@@ -366,7 +393,7 @@ msgstr "Створити обліковий запис"
 msgid "Currently installed: $0"
 msgstr "Зараз встановлено: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "Нетипове"
 
@@ -383,7 +410,7 @@ msgstr "Дата і час"
 msgid "Delete partition"
 msgstr "Вилучити розділ"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Вилучення певних розділів може завадити завантаженню $0: $1"
 
@@ -391,7 +418,7 @@ msgstr "Вилучення певних розділів може завадит
 msgid "Description"
 msgstr "Опис"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "Призначення"
 
@@ -403,24 +430,24 @@ msgstr "Місце призначення зашифровано"
 msgid "Detailed description of the issue"
 msgstr "Докладний опис проблеми"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "Виявлене коректне компонування сховищ даних:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "Пристрій"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "Дублювання пристрою."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "Дублювання точки монтування."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "Увімкнути обліковий запис root"
 
@@ -428,7 +455,7 @@ msgstr "Увімкнути обліковий запис root"
 msgid "Encrypt my data"
 msgstr "Зашифрувати дані"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "Зашифровано"
 
@@ -457,7 +484,7 @@ msgstr "Витерти дані і встановити"
 msgid "Error details"
 msgstr "Подробиці щодо помилки"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Exit to live desktop"
 msgstr "Повернутися до портативної стільниці"
 
@@ -478,11 +505,11 @@ msgstr "Не вдалося зберегти компонування"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Для Fedora linux потрібно принаймні $0 місця на диску."
 
-#: src/components/installation/InstallationProgress.jsx:147
+#: src/components/installation/InstallationProgress.jsx:173
 msgid "Finalization"
 msgstr "Завершення"
 
-#: src/components/installation/InstallationProgress.jsx:145
+#: src/components/installation/InstallationProgress.jsx:171
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -494,7 +521,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "Виявити компонування"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -503,15 +530,15 @@ msgstr ""
 "Замість цього, користуйтеся для керування системою вказаним вище локальним "
 "обліковим записом."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "Ім’я повністю"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "У повному імені не повинно міститися двокрапок"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "Допоміжний текст"
 
@@ -519,7 +546,7 @@ msgstr "Допоміжний текст"
 msgid "Hide API key"
 msgstr "Приховати ключ до API"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Приховати підтверджений пароль"
 
@@ -527,7 +554,7 @@ msgstr "Приховати підтверджений пароль"
 msgid "Hide passphrase"
 msgstr "Приховати пароль"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Приховати пароль"
 
@@ -539,7 +566,7 @@ msgstr "Назва вузла"
 msgid "How would you like to install?"
 msgstr "Яким способом ви хочете виконати встановлення?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -547,11 +574,11 @@ msgstr[0] "Розумію, що з позначених дисків буде в
 msgstr[1] "Розумію, що з позначених дисків буде витерто усі наявні дані"
 msgstr[2] "Розумію, що з позначених дисків буде витерто усі наявні дані"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "Розумію, що частину з наявних даних буде витерто"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "Розумію, що до деяких розділів буде внесено зміни"
 
@@ -582,7 +609,7 @@ msgstr ""
 "Якщо ви не впевнені щодо наслідків своїх дій або не хочете ризикувати "
 "даними, будь ласка, завершіть роботу цієї програми."
 
-#: src/components/installation/InstallationProgress.jsx:183
+#: src/components/installation/InstallationProgress.jsx:209
 msgid "In progress"
 msgstr "Виконуємо"
 
@@ -590,14 +617,14 @@ msgstr "Виконуємо"
 msgid "Initializing..."
 msgstr "Започаткування…"
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "Встановити"
 
+#: src/components/installation/InstallationProgress.jsx:149
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "Не вдалося встановити"
 
@@ -605,24 +632,24 @@ msgstr "Не вдалося встановити"
 msgid "Installation method"
 msgstr "Спосіб встановлення"
 
-#: src/components/installation/InstallationProgress.jsx:104
-#: src/components/installation/InstallationProgress.jsx:108
+#: src/components/installation/InstallationProgress.jsx:119
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation of the system failed"
 msgstr "Не вдалося встановити систему"
 
-#: src/components/installation/InstallationProgress.jsx:84
+#: src/components/installation/InstallationProgress.jsx:87
 msgid "Installation of the system failed: $0"
 msgstr "Не вдалося встановити систему: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "Тип встановлення"
 
-#: src/components/installation/InstallationProgress.jsx:125
+#: src/components/installation/InstallationProgress.jsx:151
 msgid "Installing"
 msgstr "Встановлюємо"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "Недостатньо місця на диску"
 
@@ -644,7 +671,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Некоректна назва вузла"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
 msgstr "Перейти до першого незавершеного кроку"
 
@@ -664,8 +691,8 @@ msgstr "Клавіатура"
 msgid "Keyboard layout during boot"
 msgstr "Розкладка клавіатури під час завантаження"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "Мова"
 
@@ -677,6 +704,10 @@ msgstr "Запустити редактор сховищ даних"
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
 msgstr "Дізнатися більше про обмежений доступ у налаштуваннях"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -703,7 +734,7 @@ msgstr "Налаштування дисків вручну: прив'язува�
 msgid "May contain letters, numbers, and dashes."
 msgstr "Може складатися з літер, цифр та дефісів."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Може потребувати більше вільного місця"
 
@@ -711,23 +742,23 @@ msgstr "Може потребувати більше вільного місця
 msgid "Medium"
 msgstr "Носій"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "Потрібно принаймні $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Невідповідність між вибраними параметрами повторного форматування "
 "батьківського та дочірнього пристроїв."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "Точка монтування"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "Прив'язка до точки монтування"
 
@@ -757,11 +788,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "Назва"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Потребує принаймні $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Мережа"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "Налаштування мережі"
 
@@ -777,7 +813,7 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Мережа недоступна. Налаштуйте мережу, щоб повідомити про проблему."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Помилка додатка мережі"
 
@@ -786,7 +822,7 @@ msgid "Next"
 msgstr "Далі"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "Немає пристроїв"
 
@@ -794,7 +830,7 @@ msgstr "Немає пристроїв"
 msgid "No disks available"
 msgstr "Немає доступних дисків"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "Не позначено жодного диска"
 
@@ -814,7 +850,7 @@ msgstr ""
 "Не вдалося отримати коректної прив'язки клавіш VConsole для вибраних "
 "розкладок клавіатури. Будь ласка, виберіть інші розкладки."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "Недостатньо доступного вільного місця"
 
@@ -840,7 +876,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Відкрити форму введення звіту щодо вади у Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "Операційна система"
 
@@ -856,10 +892,10 @@ msgstr "Інші клавіатури"
 msgid "Partitions (advanced)"
 msgstr "Розділи (додатково)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "Пароль"
 
@@ -867,11 +903,11 @@ msgstr "Пароль"
 msgid "Passphrase did not match any locked device"
 msgstr "Пароль не є відповідним до жодного заблокованого пристрою"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Паролі мають збігатися"
 
-#: src/components/installation/InstallationProgress.jsx:172
+#: src/components/installation/InstallationProgress.jsx:198
 msgid "Pending"
 msgstr "У черзі"
 
@@ -879,7 +915,7 @@ msgstr "У черзі"
 msgid "Please attach the log file $0 to the issue."
 msgstr "Будь ласка, додайте до повідомлення про ваду файл журналу $0."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "Будь ласка, позначте принаймні один диск, щоб продовжити"
 
@@ -899,7 +935,7 @@ msgstr "Тестовий випуск"
 msgid "Prefer to report manually? $0"
 msgstr "Хочете створити звіт вручну? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "Продовжити встановлення"
 
@@ -912,15 +948,15 @@ msgstr "Вийти"
 msgid "Quit installer?"
 msgstr "Вийти зі встановлювача?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "Не вдалося прочитати відомості щодо операційної системи."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "Не вдалося прочитати відомості щодо комп'ютера."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "Не вдалося прочитати налаштування встановлювача."
 
@@ -957,7 +993,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "Перезавантажити систему?"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Reboot to installed system"
 msgstr "Перезавантажитися до встановленої системи"
 
@@ -975,7 +1011,7 @@ msgstr "Звільнити місце"
 msgid "Reclaim space (required)"
 msgstr "Звільнити місце (обов'язково)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "Рекомендовано"
 
@@ -983,8 +1019,8 @@ msgstr "Рекомендовано"
 msgid "Recommended partitions:"
 msgstr "Рекомендовані розділи:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "Повторно форматувати"
 
@@ -993,10 +1029,10 @@ msgstr "Повторно форматувати"
 msgid "Reinstall Fedora"
 msgstr "Перевстановити Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "Вилучити"
 
@@ -1054,7 +1090,7 @@ msgstr "Повідомити про ваду"
 msgid "Reporting issue..."
 msgstr "Звітування щодо вади…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "Обов'язковий"
 
@@ -1078,7 +1114,7 @@ msgstr "Змінити розмір"
 msgid "Resize partition"
 msgstr "Змінити розмір розділу"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Змінюємо розмір таких розділів на $0: $1"
 
@@ -1094,7 +1130,7 @@ msgstr "Обмежити звіт до групи $0. $1"
 msgid "Return to installation"
 msgstr "Повернутися до встановлення"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "Повернутися до редактора сховищ даних"
 
@@ -1112,13 +1148,13 @@ msgstr ""
 "Увімкнено обліковий запис root, але не налаштовано жодного облікового запису "
 "користувача"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Встановлено пароль root."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Зберегти"
 
@@ -1151,12 +1187,12 @@ msgstr ""
 "Захистіть ваші дані за допомогою шифрування дисків. Можна застосувати лише "
 "до нових розділів"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "Позначити"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "Виберіть пристрій"
 
@@ -1164,7 +1200,7 @@ msgstr "Виберіть пристрій"
 msgid "Select city"
 msgstr "Виберіть місто"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "Виберіть призначення"
 
@@ -1176,7 +1212,7 @@ msgstr "Виберіть регіон"
 msgid "Selected (top = current)"
 msgstr "Вибрані (верхня = поточна)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Повторне форматування для вибраного формату пристрою «$0» неможливе."
 
@@ -1212,7 +1248,7 @@ msgstr "Показувати _ДО/ПО"
 msgid "Show API key"
 msgstr "Показати ключ до API"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Показати підтверджений пароль"
 
@@ -1220,19 +1256,19 @@ msgstr "Показати підтверджений пароль"
 msgid "Show passphrase"
 msgstr "Показати пароль"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Показати пароль"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "Розмір"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "Software installation"
 msgstr "Встановлення програмного забезпечення"
 
-#: src/components/installation/InstallationProgress.jsx:135
+#: src/components/installation/InstallationProgress.jsx:161
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1240,12 +1276,12 @@ msgstr ""
 "Встановлення програмного забезпечення: завершено налаштовування сховища "
 "даних. Тепер встановлюємо програмне забезпечення на ваш пристрій."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "Вибір програмного забезпечення"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1263,18 +1299,18 @@ msgstr "Місце"
 msgid "Stacktrace"
 msgstr "Трасування стеку"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "Сховище даних"
 
+#: src/components/installation/InstallationProgress.jsx:158
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "Налаштування сховища даних"
 
-#: src/components/installation/InstallationProgress.jsx:130
+#: src/components/installation/InstallationProgress.jsx:156
 msgid "Storage configuration: Storage is currently being configured."
 msgstr ""
 "Налаштовування сховища даних: зараз виконуємо налаштовування сховища даних."
@@ -1306,7 +1342,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "Помилка додатка сховища даних"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "Вимоги до сховища даних не виконано"
 
@@ -1314,7 +1350,7 @@ msgstr "Вимоги до сховища даних не виконано"
 msgid "Strong"
 msgstr "Складний"
 
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:146
 msgid "Successfully installed"
 msgstr "Успішно встановлено"
 
@@ -1330,15 +1366,15 @@ msgstr "Пропоновані клавіатури"
 msgid "Suggested languages"
 msgstr "Пропоновані мови"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "Система"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:168
 msgid "System configuration"
 msgstr "Налаштування системи"
 
-#: src/components/installation/InstallationProgress.jsx:140
+#: src/components/installation/InstallationProgress.jsx:166
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1346,7 +1382,7 @@ msgstr ""
 "Налаштовування системи: встановлення програмного забезпечення завершено. "
 "Тепер виконуємо налаштовування системи."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Встановлення Anaconda було припинено у неочікуваний спосіб."
 
@@ -1435,7 +1471,7 @@ msgid "Time"
 msgstr "Час"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "Часовий пояс"
 
@@ -1443,7 +1479,7 @@ msgstr "Часовий пояс"
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/components/installation/InstallationProgress.jsx:163
+#: src/components/installation/InstallationProgress.jsx:189
 msgid "To begin using $0, reboot your system."
 msgstr "Щоб розпочати користування $0, перезавантажте вашу систему."
 
@@ -1501,27 +1537,27 @@ msgstr "Скористатися налаштованим сховищем да�
 msgid "Use entire disk"
 msgstr "Використати увесь диск"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "Використати вільне місце"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "Використовувати локальний обліковий запис"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Використати пристрій RAID для автоматичного поділу на розділи"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "Створення запису користувача"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "Ім’я користувача"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1529,11 +1565,11 @@ msgstr ""
 "Ім'я користувача може складатися лише з таких символів: літер a-z, цифр 0-9, "
 "дефісів $0, крапок $1, символів підкреслення $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "Ім’я користувача не може бути зарезервованим словом"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "Довжина імені користувача не повинна перевищувати 32 символи"
 
@@ -1584,7 +1620,7 @@ msgstr ""
 "Ви можете створити ключ до програмного інтерфейсу для вашого облікового "
 "запису Bugzilla $0."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1602,17 +1638,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr "Поступ не буде збережено."
 
-#: src/components/installation/InstallationProgress.jsx:177
+#: src/components/installation/InstallationProgress.jsx:203
 msgid "completed step"
 msgstr "завершений крок"
 
-#: src/components/installation/InstallationProgress.jsx:182
+#: src/components/installation/InstallationProgress.jsx:208
 msgid "current step"
 msgstr "поточний крок"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "вилучити"
 
@@ -1620,11 +1656,11 @@ msgstr "вилучити"
 msgid "edit"
 msgstr "редагувати"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "зашифрувати"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "зашифрований"
 
@@ -1632,7 +1668,7 @@ msgstr "зашифрований"
 msgid "extended partition"
 msgstr "розширений розділ"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "форматувати як $0"
 
@@ -1640,15 +1676,15 @@ msgstr "форматувати як $0"
 msgid "here"
 msgstr "тут"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
 msgstr "Не завершено"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "монтування"
 
-#: src/components/installation/InstallationProgress.jsx:171
+#: src/components/installation/InstallationProgress.jsx:197
 msgid "pending step"
 msgstr "крок у черзі"
 
@@ -1656,7 +1692,7 @@ msgstr "крок у черзі"
 msgid "report the issue manually"
 msgstr "створити звіт щодо вади вручну"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "змінено розмір з $0"
 
@@ -4119,9 +4155,6 @@ msgstr "скасувати"
 
 #~ msgid "Need Space"
 #~ msgstr "Потрібне місце"
-
-#~ msgid "Network"
-#~ msgstr "Мережа"
 
 #~ msgid "Network Config Box"
 #~ msgstr "Панель налаштовування мережі"

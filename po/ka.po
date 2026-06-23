@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 05:54+0000\n"
-"PO-Revision-Date: 2026-05-01 05:56+0000\n"
+"POT-Creation-Date: 2026-06-23 06:34+0000\n"
+"PO-Revision-Date: 2026-06-18 09:10+0000\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/ka/>\n"
@@ -22,27 +22,27 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Weblate 5.17.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
-#: src/components/storage/installation-method/InstallationDestination.jsx:263
+#: src/components/storage/installation-method/InstallationDestination.jsx:275
 msgid "$0 $1"
 msgstr "$0 $1"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:162
-#: src/components/storage/installation-method/InstallationDestination.jsx:256
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:344
+#: src/components/storage/installation-method/InstallationDestination.jsx:268
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:347
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/storage/Common.jsx:57
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:72
+#: src/components/storage/Common.jsx:58
 msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 შეცდომა"
 
-#: src/components/app.jsx:83
+#: src/components/app.jsx:84
 msgid "$0 installation"
 msgstr "$0-ის დაყენება"
 
@@ -58,27 +58,41 @@ msgstr ""
 "$0 წარმოადგენს MBR გაფართოებულ დანაყოფს, რომელიც ლოგიკურ დანაყოფებს შეიცავს. "
 "ყველა ლოგიკური დანაყოფის წაშლა გაფართოებულ დანაყოფს ავტომატურად წაშლის."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:145
 msgid "$0 is required, but only $1 is available."
 msgstr "საჭიროა $0, მაგრამ ხელმისაწვდომია მხოლოდ $1."
 
-#: src/components/storage/Common.jsx:73
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:88
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 გაფრთხილება"
 
-#: src/components/storage/StorageReview.jsx:283
+#: src/components/storage/StorageReview.jsx:288
 msgid "$0 will be deleted"
 msgstr "$0 წაიშლება"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:185
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:188
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "ფაილური სისტემა '$0' დაშიფრულ ბლოკურ მოწყობილობაზე ვერ იქნება"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:179
+#: src/helpers/storage.js:231
+msgid "'$0' must be assigned to $1"
+msgstr "'$0 უნდა იყოს მინიჭებული $1-ზე"
+
+#: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' '$1'-ით დაფორმატებულ მოწყობილობაზე უნდა იყოს"
+
+#: src/helpers/storage.js:225
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"'$0' EFI-ის სისტემური დანაყოფი უნდა იყო. მონიშნული დანაყოფი იყენებს ფაილურ "
+"სისტემას FAT, მაგრამ ის მონიშნული არაა, როგორც ESP. დააყენეთ დანაყოფის ტიპი "
+"EFI-ის სისტემურ დანაყოფზე და ჩართეთ ალამი esp."
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -88,23 +102,27 @@ msgstr ""
 "'$0' დანაყოფი აღმოჩენილია MDRAID მოწყობილობაზე $1. ჩამტვირთავი დანაყოფები "
 "MDRAID მოწყობილობაზე ჯერ მხარდაჭერილი არაა."
 
-#: src/components/users/Accounts.jsx:245
+#: src/components/users/Accounts.jsx:250
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "სტანდარტული მომხმარებლის ანგარიშის ადმინისტრატორის წვდომი მთელ სისტემაში "
 "ცვლილებების შესატანად."
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:48
+msgid "Abort installation"
+msgstr "დაყენების შეწყვეტა"
+
 #: src/components/HeaderKebab.jsx:126
 msgid "About"
 msgstr "შესახებ"
 
-#: src/components/review/ReviewConfiguration.jsx:233
+#: src/components/review/ReviewConfiguration.jsx:244
 msgid "Account"
 msgstr "ანგარიში"
 
+#: src/components/storage/StorageReview.jsx:246
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
-#: src/components/storage/StorageReview.jsx:241
 msgid "Actions"
 msgstr "ქმედებები"
 
@@ -112,7 +130,7 @@ msgstr "ქმედებები"
 msgid "Add another server..."
 msgstr "კიდევ ერთი სერვერის დამატება..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:642
 msgid "Add mount"
 msgstr "მიმაგრების დამატება"
 
@@ -156,7 +174,7 @@ msgstr "Anaconda-ის პროექტის გვერდი"
 msgid "Apply mount point assignment and install"
 msgstr "მიმაგრების წერტილების გადატარება და დაყენება"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "ცვლილებების გადატარება..."
 
@@ -216,12 +234,12 @@ msgstr ""
 "ტესტირებისთვის და მზად ხართ, გამოგვიგზავნოთ ანგარიში ნებისმიერი შეცდომის "
 "შესახებ."
 
-#: src/components/datetime/CustomNTPModal.jsx:252
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/installation-method/InstallationDestination.jsx:355
+#: src/components/localization/Keyboard.jsx:280 src/components/Error.jsx:759
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:367
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "გაუქმება"
 
@@ -229,7 +247,7 @@ msgstr "გაუქმება"
 msgid "Change"
 msgstr "შეცვლა"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:327
+#: src/components/storage/installation-method/InstallationDestination.jsx:339
 msgid "Change destination"
 msgstr "სამიზნის შეცვლა"
 
@@ -237,7 +255,7 @@ msgstr "სამიზნის შეცვლა"
 msgid "Change hostname"
 msgstr "ჰოსტის სახელის დაყენება"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:157
+#: src/components/storage/installation-method/usePageComplete.jsx:159
 msgid "Change partition layout"
 msgstr "დანაყოფების განლაგების შეცვლა"
 
@@ -254,13 +272,13 @@ msgstr ""
 "აქ განხორციელებული ცვლილებები სისტემას დაუყოვნებლივ ეხება. ქმედებები "
 "შეუქცევადია."
 
-#: src/components/review/ReviewConfiguration.jsx:170
+#: src/components/review/ReviewConfiguration.jsx:181
 msgid "Checking installation configuration..."
 msgstr "დაყენების კონფიგურაციის შემოწმება..."
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:461
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:467
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:39
 msgid "Checking storage configuration"
 msgstr "საცავის კონფიგურაციის შემოწმება"
 
@@ -268,14 +286,14 @@ msgstr "საცავის კონფიგურაციის შემ�
 msgid "Clear search"
 msgstr "ძებნის გასუფთავება"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "გაფრთხილებების მიუხედავად გასაგრძელებლად დააწკაპუნეთ ღილაკზე 'შემდეგი'."
 
+#: src/components/storage/installation-method/InstallationDestination.jsx:372
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/storage/installation-method/InstallationDestination.jsx:360
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "დაკეტვა"
 
@@ -290,11 +308,11 @@ msgstr ""
 "Cockpit-ის საცავის დამატებამ დაშიფრული მოწყობილობის განბლოკისთვის საკვანძო "
 "ფრაზა არ მოგვაწოდა."
 
-#: src/components/installation/InstallationProgress.jsx:178
+#: src/components/installation/InstallationProgress.jsx:204
 msgid "Completed"
 msgstr "დასრულებულია"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:202
 msgid "Configuration is incomplete"
 msgstr "კონფიგურაცია არასრულია"
 
@@ -306,8 +324,8 @@ msgstr "NTP სერვერების მორგება"
 msgid "Configure custom NTP servers"
 msgstr "მომხმარებლის NTP სერვერების მორგება"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
 #: src/components/HeaderKebab.jsx:115
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "ქსელის მორგება"
 
@@ -315,28 +333,33 @@ msgstr "ქსელის მორგება"
 msgid "Configure storage"
 msgstr "საცავის მორგება"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:665
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:668
 msgid "Configure storage again"
 msgstr "საცავის თავიდან მორგება"
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
-#: src/components/users/Accounts.jsx:198 src/components/users/Accounts.jsx:400
+#: src/components/users/Accounts.jsx:202 src/components/users/Accounts.jsx:405
 msgid "Confirm passphrase"
 msgstr "დაადასტურეთ საკვანძო ფრაზა"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:650
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Continue"
 msgstr "გაგრძელება"
 
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:41
 #: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "დაყენებს გაგრძელება"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:603
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:28
+msgid "Continue installation?"
+msgstr "გაგრძელდეს დაყენება?"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
 msgstr "დაყენების გაგრძელება"
 
-#: src/components/storage/Common.jsx:39
+#: src/components/storage/Common.jsx:40
 msgid "Correct these issues before continuing."
 msgstr "გაგრძელებამდე მოაგვარეთ ეს პრობლემები."
 
@@ -344,7 +367,7 @@ msgstr "გაგრძელებამდე მოაგვარეთ ე�
 msgid "Create Account"
 msgstr "ანგარიშის შექმნა"
 
-#: src/components/users/Accounts.jsx:307
+#: src/components/users/Accounts.jsx:312
 msgid "Create account"
 msgstr "ანგარიშის შექმნა"
 
@@ -352,7 +375,7 @@ msgstr "ანგარიშის შექმნა"
 msgid "Currently installed: $0"
 msgstr "ამჟამად დაყენებულია: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:226
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Custom"
 msgstr "ხელით"
 
@@ -369,7 +392,7 @@ msgstr "თარიღი და დრო"
 msgid "Delete partition"
 msgstr "განაყოფის წაშლა"
 
-#: src/components/storage/StorageReview.jsx:341
+#: src/components/storage/StorageReview.jsx:346
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "ზოგიერთი დანაყოფის წაშლამ, შეიძლება, $0-ს ჩატვირთვას ხელი შეუშალოს: $1"
 
@@ -377,7 +400,7 @@ msgstr "ზოგიერთი დანაყოფის წაშლამ,
 msgid "Description"
 msgstr "აღწერა"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:248
+#: src/components/storage/installation-method/InstallationDestination.jsx:260
 msgid "Destination"
 msgstr "სამიზნე"
 
@@ -389,24 +412,24 @@ msgstr "სამიზნე დაშიფრულია"
 msgid "Detailed description of the issue"
 msgstr "პრობლემის დეტალური აღწერა"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:629
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:632
 msgid "Detected valid storage layout:"
 msgstr "აღმოჩენილია სწორი საცავის განლაგება:"
 
-#: src/components/storage/StorageReview.jsx:239
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:618
 msgid "Device"
 msgstr "მოწყობილობა"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:379
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:386
 msgid "Duplicate device."
 msgstr "დუბლირებული მოწყობილობა."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:232
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:235
 msgid "Duplicate mount point."
 msgstr "მიმაგრების წერტილი დუბლირებულია."
 
-#: src/components/users/Accounts.jsx:331 src/components/users/Accounts.jsx:382
+#: src/components/users/Accounts.jsx:336 src/components/users/Accounts.jsx:387
 msgid "Enable root account"
 msgstr "Root-ის ანგარიშის ჩართვა"
 
@@ -414,7 +437,7 @@ msgstr "Root-ის ანგარიშის ჩართვა"
 msgid "Encrypt my data"
 msgstr "ჩემი მონაცემების დაშიფვრა"
 
-#: src/components/storage/StorageReview.jsx:242
+#: src/components/storage/StorageReview.jsx:247
 msgid "Encrypted"
 msgstr "დაშიფრულია"
 
@@ -442,7 +465,7 @@ msgstr "მონაცემების წაშლა და დაყენ
 msgid "Error details"
 msgstr "შეცდომის დეტალები"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Exit to live desktop"
 msgstr "გასვლა ცოცხალ სამუშაო მაგიდაზე"
 
@@ -463,11 +486,11 @@ msgstr "განლაგებების შენახვის შეც�
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux-ს დისკზე მინიმუმ $0 ადგილი სჭირდება."
 
-#: src/components/installation/InstallationProgress.jsx:147
+#: src/components/installation/InstallationProgress.jsx:173
 msgid "Finalization"
 msgstr "დასრულება"
 
-#: src/components/installation/InstallationProgress.jsx:145
+#: src/components/installation/InstallationProgress.jsx:171
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -479,7 +502,7 @@ msgstr ""
 msgid "Find layout"
 msgstr "განლაგების მოძებნა"
 
-#: src/components/users/Accounts.jsx:398
+#: src/components/users/Accounts.jsx:403
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -487,15 +510,15 @@ msgstr ""
 "უსაფრთხოებისთვის ნუ გამოიყენებთ root ანგარიშს პირდაპირ. სისტემის სამართავად "
 "გამოიყენეთ ლოკალური ანგარიში, რომელიც ზემოთ წერია."
 
-#: src/components/users/Accounts.jsx:247
+#: src/components/users/Accounts.jsx:252
 msgid "Full name"
 msgstr "სრული სახელი"
 
-#: src/components/users/Accounts.jsx:184
+#: src/components/users/Accounts.jsx:188
 msgid "Full name cannot contain colon characters"
 msgstr "სრული სახელი არ შეიძლება ორწერტილს შეიცავდეს"
 
-#: src/components/storage/StorageReview.jsx:244
+#: src/components/storage/StorageReview.jsx:249
 msgid "Helper text"
 msgstr "დამხმარე ტექსტი"
 
@@ -503,7 +526,7 @@ msgstr "დამხმარე ტექსტი"
 msgid "Hide API key"
 msgstr "API-ის გასაღების დამალვა"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "დადასტურებული პაროლის დამალვა"
 
@@ -511,7 +534,7 @@ msgstr "დადასტურებული პაროლის დამ�
 msgid "Hide passphrase"
 msgstr "საკვანძო ფრაზის დამალვა"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "პაროლის დამალვა"
 
@@ -523,17 +546,17 @@ msgstr "ჰოსტის სახელი"
 msgid "How would you like to install?"
 msgstr "როგორ გნებავთ, დააყენოთ?"
 
-#: src/components/review/ReviewConfiguration.jsx:288
+#: src/components/review/ReviewConfiguration.jsx:298
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] "მე მესმის, რომ არსებული მონაცემები მთლიანად წაიშლება"
 
-#: src/components/review/ReviewConfiguration.jsx:293
+#: src/components/review/ReviewConfiguration.jsx:303
 msgid "I understand that some existing data will be erased"
 msgstr "მე მესმის, რომ არსებული მონაცემების ნაწილი წაიშლება"
 
-#: src/components/review/ReviewConfiguration.jsx:294
+#: src/components/review/ReviewConfiguration.jsx:304
 msgid "I understand that some partitions will be modified"
 msgstr "მე მესმის, რომ ზოგიერთი დანაყოფი შეიცვლება"
 
@@ -564,7 +587,7 @@ msgstr ""
 "ამ პროგრამიდან \"მინდა გასვლა\"-ზე დაწოლით, რის შედეგადაც თქვენი სისტემა "
 "გადაიტვირთება."
 
-#: src/components/installation/InstallationProgress.jsx:183
+#: src/components/installation/InstallationProgress.jsx:209
 msgid "In progress"
 msgstr "მიმდინარეობს"
 
@@ -572,14 +595,14 @@ msgstr "მიმდინარეობს"
 msgid "Initializing..."
 msgstr "ინიციალიზაცია..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "დაყენება"
 
+#: src/components/installation/InstallationProgress.jsx:149
 #: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation failed"
 msgstr "დაყენების შეცდომა"
 
@@ -587,24 +610,24 @@ msgstr "დაყენების შეცდომა"
 msgid "Installation method"
 msgstr "დაყენების მეთოდი"
 
-#: src/components/installation/InstallationProgress.jsx:104
-#: src/components/installation/InstallationProgress.jsx:108
+#: src/components/installation/InstallationProgress.jsx:119
+#: src/components/installation/InstallationProgress.jsx:123
 msgid "Installation of the system failed"
 msgstr "სისტემის დაყენება ჩავარდა"
 
-#: src/components/installation/InstallationProgress.jsx:84
+#: src/components/installation/InstallationProgress.jsx:87
 msgid "Installation of the system failed: $0"
 msgstr "სისტემის დაყენება ჩავარდა: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:248
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Installation type"
 msgstr "დაყენების ტიპი"
 
-#: src/components/installation/InstallationProgress.jsx:125
+#: src/components/installation/InstallationProgress.jsx:151
 msgid "Installing"
 msgstr "დაყენება"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:294
+#: src/components/storage/installation-method/InstallationDestination.jsx:306
 msgid "Insufficient disk space"
 msgstr "დისკზე ადგილი საკმარისი არაა"
 
@@ -626,7 +649,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "ჰოსტის არასწორი სახელი"
 
-#: src/components/review/ReviewConfiguration.jsx:187
+#: src/components/review/ReviewConfiguration.jsx:198
 msgid "Jump to first incomplete step"
 msgstr "გადასვლა პირველ დაუსრულებელ ნაბიჯზე"
 
@@ -646,8 +669,8 @@ msgstr "კლავიატურა"
 msgid "Keyboard layout during boot"
 msgstr "კლავიატურის განლაგება ჩატვირთვისას"
 
-#: src/components/review/ReviewConfiguration.jsx:213
 #: src/components/localization/InstallationLanguage.jsx:236
+#: src/components/review/ReviewConfiguration.jsx:224
 msgid "Language"
 msgstr "ენა"
 
@@ -659,6 +682,11 @@ msgstr "საცავის რედაქტორის გაშვებ�
 #: src/components/Error.jsx:358
 msgid "Learn more about restricted access in the configuration"
 msgstr "გაიგეთ მეტი კონფიგურაციაში შეზღუდული წვდომის შესახებ"
+
+#: src/components/users/Accounts.jsx:203
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+"ცარიელი პაროლის გამოსაყენებლად ორივე საკვანძო ფრაზის ველი ცარიელი დატოვეთ."
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -685,7 +713,7 @@ msgstr "დისკის ხელით მორგება: მიმა�
 msgid "May contain letters, numbers, and dashes."
 msgstr "შეიძლება შეიცავდეს ლათინურ სიმბოლოებს, ციფრებს და ტირეებს."
 
-#: src/components/storage/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "შეიძლება, მეტი თავისუფალი ადგილი დაგჭირდეთ"
 
@@ -693,23 +721,23 @@ msgstr "შეიძლება, მეტი თავისუფალი �
 msgid "Medium"
 msgstr "მატარებელი"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:297
+#: src/components/storage/installation-method/InstallationDestination.jsx:309
 msgid "Minimum of $0 required"
 msgstr "საჭიროა მინიმუმ $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:134
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:135
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "მშობელი მოწყობილობისა და შვილი მოწყობილობის თავიდან დაფორმატების არჩევანი არ "
 "ემთხვევა."
 
-#: src/components/storage/StorageReview.jsx:243
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point"
 msgstr "მიმაგრების წერტილი"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
 msgid "Mount point assignment"
 msgstr "მიმაგრების წერტილის მინიჭება"
 
@@ -739,11 +767,16 @@ msgstr "NTS"
 msgid "Name"
 msgstr "სახელი"
 
-#: src/components/storage/StorageReview.jsx:83
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "საჭიროა სულ ცოტა $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "ქსელი"
+
+#: src/components/network/index.js:20
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
 msgid "Network Configuration"
 msgstr "ქსელის კონფიგურაცია"
 
@@ -759,7 +792,7 @@ msgstr ""
 msgid "Network not available. Configure the network to report the issue."
 msgstr "ქსელი ხელმისაწვდომი არაა. ანგარიშის გადასაცემად, ჯერ ქსელი მოირგეთ."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "ქსელის დამატება ჩავარდა"
 
@@ -768,7 +801,7 @@ msgid "Next"
 msgstr "შემდეგი"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
 msgid "No devices"
 msgstr "მოწყობილობების გარეშე"
 
@@ -776,7 +809,7 @@ msgstr "მოწყობილობების გარეშე"
 msgid "No disks available"
 msgstr "დისკები ხელმისაწვდომი არაა"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:306
+#: src/components/storage/installation-method/InstallationDestination.jsx:318
 msgid "No disks selected"
 msgstr "არცერთი დისკი მონიშნული არაა"
 
@@ -796,7 +829,7 @@ msgstr ""
 "არჩეული კლავიატურის განლაგებ(ებ)-ისთვის სწორი VConsole-ის კლავიატურის "
 "ასახვის მიღება შეუძლებელია. აირჩიეთ სხვა კლავიატურის განლაგება."
 
-#: src/components/storage/installation-method/usePageComplete.jsx:141
+#: src/components/storage/installation-method/usePageComplete.jsx:143
 msgid "Not enough available free space"
 msgstr "ხელმისაწვდომი თავისუფალი ადგილი საკმარისი არაა"
 
@@ -821,7 +854,7 @@ msgstr ""
 msgid "Open Bugzilla bug entry form"
 msgstr "Bugzilla-ის შეცდომის შეყვანის ფორმის გახსნა"
 
-#: src/components/review/ReviewConfiguration.jsx:202
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Operating system"
 msgstr "ოპერაციული სისტემა"
 
@@ -837,10 +870,10 @@ msgstr "სხვა კლავიატურები"
 msgid "Partitions (advanced)"
 msgstr "დანაყოფები (დამატებით)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:195 src/components/users/Accounts.jsx:396
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:199 src/components/users/Accounts.jsx:401
 msgid "Passphrase"
 msgstr "საკვანძო ფრაზა"
 
@@ -848,11 +881,11 @@ msgstr "საკვანძო ფრაზა"
 msgid "Passphrase did not match any locked device"
 msgstr "საკვანძო ფრაზა არც ერთ დაბლოკილ მოწყობილობას არ ემთხვევა"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "საკვანძო ფრაზები არ ემთხვევა"
 
-#: src/components/installation/InstallationProgress.jsx:172
+#: src/components/installation/InstallationProgress.jsx:198
 msgid "Pending"
 msgstr "დარჩენილი"
 
@@ -860,7 +893,7 @@ msgstr "დარჩენილი"
 msgid "Please attach the log file $0 to the issue."
 msgstr "პრობლემას ჟურნალის ფაილი, $0 მიამაგრეთ."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:309
+#: src/components/storage/installation-method/InstallationDestination.jsx:321
 msgid "Please select at least one disk to continue"
 msgstr "გასაგრძელებლად აირჩიეთ მინიმუმ ერთი დისკი"
 
@@ -880,7 +913,7 @@ msgstr "პრე-რელიზი"
 msgid "Prefer to report manually? $0"
 msgstr "გირჩევნიათ, ანგარიში ხელით გამოაგზავნოთ? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:671
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:674
 msgid "Proceed with installation"
 msgstr "დაყენების გაგრძელება"
 
@@ -893,15 +926,15 @@ msgstr "გასვლა"
 msgid "Quit installer?"
 msgstr "შევწყვიტო დაყენება?"
 
-#: src/components/app.jsx:128
+#: src/components/app.jsx:130
 msgid "Reading information about the OS failed."
 msgstr "ოპერაციული სისტემის შესახებ ინფორმაციის წაკითხვის ჩავარდა."
 
-#: src/components/app.jsx:73
+#: src/components/app.jsx:74
 msgid "Reading information about the computer failed."
 msgstr "კომპიუტერის შესახებ ინფორმაციის წაკითხვის შეცდომა."
 
-#: src/components/app.jsx:118
+#: src/components/app.jsx:120
 msgid "Reading installer configuration failed."
 msgstr "დაყენების პროგრამის კონფგიგურაციის წაკითხვის შეცდომა."
 
@@ -939,7 +972,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "გადავტვირთო სისტემა?"
 
-#: src/components/installation/InstallationProgress.jsx:221
+#: src/components/installation/InstallationProgress.jsx:247
 msgid "Reboot to installed system"
 msgstr "გადატვირთვა დაყენებულ სისტემაში"
 
@@ -957,7 +990,7 @@ msgstr "ადგილის გამოთხოვა"
 msgid "Reclaim space (required)"
 msgstr "ადგილის გამოთხოვა (აუცილებელია)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:228
 msgid "Recommended"
 msgstr "რეკომენდებულია"
 
@@ -965,8 +998,8 @@ msgstr "რეკომენდებულია"
 msgid "Recommended partitions:"
 msgstr "რეკომენდებული დანაყოფები:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:399
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:406
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Reformat"
 msgstr "გადაფორმატება"
 
@@ -975,10 +1008,10 @@ msgstr "გადაფორმატება"
 msgid "Reinstall Fedora"
 msgstr "Fedora-ის თავიდან დაყენება"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:426
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
 #: src/components/localization/Keyboard.jsx:155
 #: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:433
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Remove"
 msgstr "წაშლა"
 
@@ -1038,7 +1071,7 @@ msgstr "პრობლემის ანგარიში"
 msgid "Reporting issue..."
 msgstr "პრობლემის ანგარიში..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:227
 msgid "Required"
 msgstr "აუცილებელია"
 
@@ -1062,7 +1095,7 @@ msgstr "ზომის შეცვლა"
 msgid "Resize partition"
 msgstr "განაყოფის ზომის შეცვლა"
 
-#: src/components/storage/StorageReview.jsx:347
+#: src/components/storage/StorageReview.jsx:352
 msgid "Resizing the following partitions from $0: $1"
 msgstr "ზომის შეცვლა შემდეგი დანაყოფებისთვის $0-დან: $1"
 
@@ -1078,7 +1111,7 @@ msgstr "შეზღუდავს ანგარიშის ნახვა�
 msgid "Return to installation"
 msgstr "დაყენებაზე დაბრუნება"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:656
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:659
 msgid "Return to storage editor"
 msgstr "დაბრუნება საცავის რედაქტორზე"
 
@@ -1094,13 +1127,13 @@ msgstr "Root ანგარიში ჩართულია"
 msgid "Root account is enabled, but no user account has been configured"
 msgstr "Root ანგარიში ჩართულია, მაგრამ მომხმარებლის ანგარიშები არ შეიქმნება"
 
-#: src/components/users/Accounts.jsx:340
+#: src/components/users/Accounts.jsx:345
 msgid "Root password has been set."
 msgstr "Root-ის პაროლი დაყენებულია."
 
+#: src/components/localization/Keyboard.jsx:277
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/review/Hostname.jsx:125
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "შენახვა"
 
@@ -1130,12 +1163,12 @@ msgid ""
 msgstr ""
 "დაიცავით თქვენი მონაცემები დისკის დაშიფვრით. ეხება, მხოლოდ, ახალ დანაყოფებს"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:352
+#: src/components/storage/installation-method/InstallationDestination.jsx:364
 msgid "Select"
 msgstr "არჩევა"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:299
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:333
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:302
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:336
 msgid "Select a device"
 msgstr "აირჩიეთ მოწყობილობა"
 
@@ -1143,7 +1176,7 @@ msgstr "აირჩიეთ მოწყობილობა"
 msgid "Select city"
 msgstr "აირჩიეთ ქალაქი"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/storage/installation-method/InstallationDestination.jsx:347
 msgid "Select destination"
 msgstr "აირჩიეთ სამიზნე"
 
@@ -1155,7 +1188,7 @@ msgstr "აირჩიეთ რეგიონი"
 msgid "Selected (top = current)"
 msgstr "მონიშნულია (ზედა = მიმდინარეს)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:117
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:118
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "მონიშნული მოწყობილობის ფორმატი '$0' არ შეიძლება, თავიდან დაფორმატდეს."
 
@@ -1191,7 +1224,7 @@ msgstr "AM/PM-ის ჩვენება"
 msgid "Show API key"
 msgstr "API-ის გასაღების ჩვენება"
 
-#: src/components/Password.jsx:228
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "დადასტურებული პაროლის ჩვენება"
 
@@ -1199,19 +1232,19 @@ msgstr "დადასტურებული პაროლის ჩვე�
 msgid "Show passphrase"
 msgstr "საკვანძო ფრაზის ჩვენება"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "პაროლის ჩვენება"
 
-#: src/components/storage/StorageReview.jsx:240
+#: src/components/storage/StorageReview.jsx:245
 msgid "Size"
 msgstr "ზომა"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:163
 msgid "Software installation"
 msgstr "პროგრამების დაყენება"
 
-#: src/components/installation/InstallationProgress.jsx:135
+#: src/components/installation/InstallationProgress.jsx:161
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1219,12 +1252,12 @@ msgstr ""
 "პროგრამების დაყენება. საცავის მორგება დასრულდა. მიმდინარეობს პროგრამების "
 "დაყენება."
 
-#: src/components/review/ReviewConfiguration.jsx:226
+#: src/components/review/ReviewConfiguration.jsx:237
 #: src/components/software/index.js:19 src/components/software/index.js:20
 msgid "Software selection"
 msgstr "პროგრამული უზრუნველყოფის არჩევა"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:205
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "გაგრძელებამდე ჯერ კიდევ საჭიროა რამდენიმე დაყენების ნაბიჯის დასრულება."
@@ -1241,18 +1274,18 @@ msgstr "ადგილი"
 msgid "Stacktrace"
 msgstr "სტეკის ტრეისი"
 
-#: src/components/review/ReviewConfiguration.jsx:255
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Storage"
 msgstr "საცავი"
 
+#: src/components/installation/InstallationProgress.jsx:158
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
-#: src/components/installation/InstallationProgress.jsx:132
-#: src/components/steps.js:33
+#: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "საცავის მორგება"
 
-#: src/components/installation/InstallationProgress.jsx:130
+#: src/components/installation/InstallationProgress.jsx:156
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "საცავის კონფიგურაცია: მიმდინარეობს საცავის კონფიგურაცია."
 
@@ -1281,7 +1314,7 @@ msgstr ""
 msgid "Storage plugin failed"
 msgstr "საცავის დამატება ჩავარდა"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:601
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:604
 msgid "Storage requirements not met"
 msgstr "საცავის მოთხოვნები დაყენებული არაა"
 
@@ -1289,7 +1322,7 @@ msgstr "საცავის მოთხოვნები დაყენე�
 msgid "Strong"
 msgstr "ძლიერი"
 
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/installation/InstallationProgress.jsx:146
 msgid "Successfully installed"
 msgstr "დაყენება წარმატებულია"
 
@@ -1305,15 +1338,15 @@ msgstr "მინიშნებული კლავიატურები"
 msgid "Suggested languages"
 msgstr "მინიშნებული ენები"
 
-#: src/components/users/Accounts.jsx:328 src/components/users/Accounts.jsx:412
+#: src/components/users/Accounts.jsx:333 src/components/users/Accounts.jsx:417
 msgid "System"
 msgstr "სისტემა"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:168
 msgid "System configuration"
 msgstr "სისტემის მორგება"
 
-#: src/components/installation/InstallationProgress.jsx:140
+#: src/components/installation/InstallationProgress.jsx:166
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1321,7 +1354,7 @@ msgstr ""
 "სისტემის მორგება. პროგრამების დაყენება დასრულდა. მიმდინარეობს სისტემის "
 "მორგება."
 
-#: src/components/app.jsx:163
+#: src/components/app.jsx:165
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda-ით დაყენება მოულოდნელად შეწყდა."
 
@@ -1408,7 +1441,7 @@ msgid "Time"
 msgstr "დრო"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:220
+#: src/components/review/ReviewConfiguration.jsx:231
 msgid "Timezone"
 msgstr "დროის სარტყელი"
 
@@ -1416,7 +1449,7 @@ msgstr "დროის სარტყელი"
 msgid "Title"
 msgstr "სათაური"
 
-#: src/components/installation/InstallationProgress.jsx:163
+#: src/components/installation/InstallationProgress.jsx:189
 msgid "To begin using $0, reboot your system."
 msgstr "$0-ის გამოყენების დასაწყებად გადატვირთეთ თქვენი სისტემა."
 
@@ -1474,27 +1507,27 @@ msgstr "მორგებული საცავის გამოყენ�
 msgid "Use entire disk"
 msgstr "მთელი დისკის გამოყენება"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:636
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:639
 msgid "Use free space"
 msgstr "თავისუფალი ადგილის გამოყენება"
 
-#: src/components/users/Accounts.jsx:233
+#: src/components/users/Accounts.jsx:238
 msgid "Use local account"
 msgstr "ლოკალური ანგარიშის გამოყენება"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:635
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:638
 msgid "Use the RAID device for automatic partitioning"
 msgstr "RAID მოწყობილობის გამოყენება ავტომატური დაყოფისთვის"
 
-#: src/components/users/Accounts.jsx:482
+#: src/components/users/Accounts.jsx:487
 msgid "User creation"
 msgstr "მომხმარებლის შექმნა"
 
-#: src/components/users/Accounts.jsx:278
+#: src/components/users/Accounts.jsx:283
 msgid "User name"
 msgstr "მომხმარებლის სახელი"
 
-#: src/components/users/Accounts.jsx:172
+#: src/components/users/Accounts.jsx:176
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1502,11 +1535,11 @@ msgstr ""
 "მომხმარებლების სახელი შეიძლება, მხოლოდ, შეიცავდეს: სიმბოლოებს a-დან z-დე, "
 "ციფრებს 0-9, ტირეს $0, წერტილს $1 და ქვედატირეს $2"
 
-#: src/components/users/Accounts.jsx:169
+#: src/components/users/Accounts.jsx:173
 msgid "User name must not be a reserved word"
 msgstr "მომხმარებლის სახელი დაცული სიტყვა ვერ იქნება"
 
-#: src/components/users/Accounts.jsx:166
+#: src/components/users/Accounts.jsx:170
 msgid "User names must be shorter than 33 characters"
 msgstr "მომხმარებლის სახელის სიგრძე 33 სიმბოლოზე ნაკლები უნდა იყოს"
 
@@ -1556,7 +1589,7 @@ msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 "შეგიძლიათ, დააგენერიროთ API-ის გასაღები თქვენი Bugzilla-ის ანგარიშისთვის $0."
 
-#: src/components/users/Accounts.jsx:515
+#: src/components/users/Accounts.jsx:520
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1573,17 +1606,17 @@ msgstr ""
 msgid "Your progress will not be saved."
 msgstr "თქვენი მიმდინარეობა შენახული არ იქნება."
 
-#: src/components/installation/InstallationProgress.jsx:177
+#: src/components/installation/InstallationProgress.jsx:203
 msgid "completed step"
 msgstr "ნაბიჯი დასრულდა"
 
-#: src/components/installation/InstallationProgress.jsx:182
+#: src/components/installation/InstallationProgress.jsx:208
 msgid "current step"
 msgstr "მიმდინარე ბიჯი"
 
+#: src/components/storage/StorageReview.jsx:166
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:162
 msgid "delete"
 msgstr "წაშლა"
 
@@ -1591,11 +1624,11 @@ msgstr "წაშლა"
 msgid "edit"
 msgstr "ჩასწორება"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypt"
 msgstr "დაშიფრვა"
 
-#: src/components/storage/StorageReview.jsx:131
+#: src/components/storage/StorageReview.jsx:133
 msgid "encrypted"
 msgstr "დაშიფრულია"
 
@@ -1603,7 +1636,7 @@ msgstr "დაშიფრულია"
 msgid "extended partition"
 msgstr "გაფართოებული განაყოფი"
 
-#: src/components/storage/StorageReview.jsx:102
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "დაფორმატება, როგორც $0"
 
@@ -1611,15 +1644,15 @@ msgstr "დაფორმატება, როგორც $0"
 msgid "here"
 msgstr "აქ"
 
-#: src/components/review/ReviewConfiguration.jsx:58
+#: src/components/review/ReviewConfiguration.jsx:57
 msgid "incomplete"
 msgstr "დაუსრულებელია"
 
-#: src/components/storage/StorageReview.jsx:106
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "მიმაგრება"
 
-#: src/components/installation/InstallationProgress.jsx:171
+#: src/components/installation/InstallationProgress.jsx:197
 msgid "pending step"
 msgstr "დარჩენილი ბიჯები"
 
@@ -1627,7 +1660,7 @@ msgstr "დარჩენილი ბიჯები"
 msgid "report the issue manually"
 msgstr "შეცდომის ანგარიშის ხელით გაგზავნა"
 
-#: src/components/storage/StorageReview.jsx:167
+#: src/components/storage/StorageReview.jsx:171
 msgid "resized from $0"
 msgstr "ზომა შეცვლილია $0-დან"
 
@@ -4061,9 +4094,6 @@ msgstr "გაუქმება"
 
 #~ msgid "Need Space"
 #~ msgstr "საჭირო ადგილი"
-
-#~ msgid "Network"
-#~ msgstr "ქსელი"
 
 #~ msgid "Network Config Box"
 #~ msgstr "ქსელის მორგების ფანჯარა"
