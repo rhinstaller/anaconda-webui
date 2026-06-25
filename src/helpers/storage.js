@@ -349,18 +349,32 @@ export const hasReusableFedoraWithWindowsOS = (deviceData, selectedDisks, existi
  * Select default disks for the partitioning (mirrors Anaconda ``select_default_disks`` for
  * the Web UI disk list).
  *
- * If some selected disks are usable, keep those (filtered to usable). Otherwise select a disk
- * only when there is exactly one usable non-ignored candidate.
+ * If there are some disks already selected, do nothing.
+ * In the automatic installation, select all disks. In
+ * the interactive installation, select a disk if there
+ * is only one available.
+ *
+ * @returns {string[]} a list of selected disks
  */
-export const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
-    const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
-
-    if (selectedDisks.length && selectedDisks.some(disk => usableDisks.includes(disk))) {
-        return selectedDisks.filter(disk => usableDisks.includes(disk));
+export const selectDefaultDisks = ({
+    automatedInstall,
+    ignoredDisks,
+    selectedDisks,
+    usableDisks,
+}) => {
+    if (selectedDisks.length) {
+        return selectedDisks;
     }
+
+    if (automatedInstall) {
+        return usableDisks.filter(disk => !ignoredDisks.includes(disk));
+    }
+
+    const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
     if (availableDisks.length === 1) {
         return availableDisks;
     }
+
     return [];
 };
 

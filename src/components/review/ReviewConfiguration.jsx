@@ -93,7 +93,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
         complete: storageComplete,
         hasWarnings: hasStorageWarnings,
         validationPending: storageValidationPending,
-    } = useStorageInstallationPageComplete();
+    } = useStorageInstallationPageComplete({ automatedInstall });
     const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
     const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 

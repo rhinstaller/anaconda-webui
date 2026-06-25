@@ -68,7 +68,7 @@ export const useStorageComplete = () => {
     };
 };
 
-const useApplyDefaultDisksOnReview = () => {
+const useApplyDefaultDisksOnReview = ({ automatedInstall }) => {
     const refUsableDisks = useRef();
     const { diskSelection } = useContext(StorageContext) ?? {};
     const usableDisksStr = diskSelection?.usableDisks?.join?.(",") ?? "";
@@ -85,6 +85,7 @@ const useApplyDefaultDisksOnReview = () => {
         refUsableDisks.current = true;
 
         const defaultDisks = selectDefaultDisks({
+            automatedInstall,
             ignoredDisks: diskSelection.ignoredDisks,
             selectedDisks: diskSelection.selectedDisks,
             usableDisks: diskSelection.usableDisks,
@@ -93,7 +94,7 @@ const useApplyDefaultDisksOnReview = () => {
         if (!checkIfArraysAreEqual(diskSelection.selectedDisks, defaultDisks)) {
             setSelectedDisks({ drives: defaultDisks });
         }
-    }, [diskSelection]);
+    }, [automatedInstall, diskSelection]);
 };
 
 const useApplyStorageOnReview = () => {
@@ -182,10 +183,10 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
  * (1) run ``applyStorage`` on the current partitioning path when nothing is applied yet
  * (2) check for sufficient free space
  */
-export const usePageComplete = () => {
+export const usePageComplete = ({ automatedInstall } = {}) => {
     const spaceState = useStorageComplete();
 
-    useApplyDefaultDisksOnReview();
+    useApplyDefaultDisksOnReview({ automatedInstall });
     const { validationPending, validationReport } = useApplyStorageOnReview();
     useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSize);
 
