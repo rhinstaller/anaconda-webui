@@ -145,6 +145,8 @@ prepare_firefox_cmd() {
     BROWSER_ENV=(MOZ_APP_TITLE="" MOZ_APP_REMOTINGNAME="liveinst" MOZ_GTK_TITLEBAR_DECORATION=client)
 
     BROWSER=(/usr/bin/env "${BROWSER_ENV[@]}" /usr/bin/firefox --new-instance --profile "${FIREFOX_PROFILE_PATH}")
+
+    declare -p BROWSER
 }
 
 
@@ -200,26 +202,20 @@ else
     fi
 
     DEFAULT_BROWSER_CMD=$(get_default_browser)
-    read -r -a BROWSER <<< "${DEFAULT_BROWSER_CMD}"
-    DEFAULT_BROWSER_EXEC=${BROWSER[0]:-}
+    read -r -a DEFAULT_BROWSER_ARGS <<< "${DEFAULT_BROWSER_CMD}"
+    DEFAULT_BROWSER_EXEC=${DEFAULT_BROWSER_ARGS[0]:-}
 
     if [ -z "${DEFAULT_BROWSER_EXEC}" ] || ! command -v -- "${DEFAULT_BROWSER_EXEC}" >/dev/null 2>&1; then
         echo "Default browser command is unavailable, falling back to firefox: ${DEFAULT_BROWSER_CMD}" >&2
         DEFAULT_BROWSER_CMD=firefox
-        BROWSER=(firefox)
-        DEFAULT_BROWSER_EXEC=firefox
-    fi
-
-    if ! command -v -- "${DEFAULT_BROWSER_EXEC}" >/dev/null 2>&1; then
-        echo "Unable to find a usable browser command. Tried configured browser and firefox." >&2
-        exit 1
     fi
 
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
     if [[ "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
-        prepare_firefox_cmd "$INSTALLER_USER" "$INSTALLER_XDG_RUNTIME_DIR"
+        eval "$(prepare_firefox_cmd "$INSTALLER_USER" "$INSTALLER_XDG_RUNTIME_DIR")"
         echo "Using Firefox browser command: ${BROWSER[@]}" >&2
     else
+        BROWSER=(${DEFAULT_BROWSER_CMD})
         echo "Using default browser command: ${BROWSER[@]}" >&2
     fi
 
