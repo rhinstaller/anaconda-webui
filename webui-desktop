@@ -202,6 +202,14 @@ else
     fi
 
     DEFAULT_BROWSER_CMD=$(get_default_browser)
+    read -r -a DEFAULT_BROWSER_ARGS <<< "${DEFAULT_BROWSER_CMD}"
+    DEFAULT_BROWSER_EXEC=${DEFAULT_BROWSER_ARGS[0]:-}
+
+    if [ -z "${DEFAULT_BROWSER_EXEC}" ] || ! command -v -- "${DEFAULT_BROWSER_EXEC}" >/dev/null 2>&1; then
+        echo "Default browser command is unavailable, falling back to firefox: ${DEFAULT_BROWSER_CMD}" >&2
+        DEFAULT_BROWSER_CMD=firefox
+    fi
+
     echo "Using default browser: ${DEFAULT_BROWSER_CMD}" >&2
     if [[ "${DEFAULT_BROWSER_CMD}" == "firefox" ]]; then
         eval "$(prepare_firefox_cmd "$INSTALLER_USER" "$INSTALLER_XDG_RUNTIME_DIR")"
