@@ -1,0 +1,12 @@
+[Unit]
+Description=Cockpit pin auth
+Requires=cockpit-pin-auth.socket
+
+[Service]
+ExecStart=/usr/libexec/anaconda/cockpit-pin-auth
+StandardInput=socket
+StandardOutput=inherit
+StandardError=journal
+Type=simple
+# bridge error, authentication failure, or timeout, that's not a problem with the unit
+SuccessExitStatus=1 5 127
