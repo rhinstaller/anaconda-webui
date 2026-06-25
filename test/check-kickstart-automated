@@ -9,7 +9,7 @@ from payload_dnf import PayloadDNF
 from progress import Progress
 from review import Review
 from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
-from testlib import test_main  # pylint: disable=import-error
+from testlib import test_main, timeout  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users, create_user, override_user_interface_conf_keys
 
@@ -169,6 +169,7 @@ class TestKickstartAutomated(VirtInstallMachineCase):
         },
     }
 
+    @timeout(1200)
     def testBasic(self):
         """
         Description:
