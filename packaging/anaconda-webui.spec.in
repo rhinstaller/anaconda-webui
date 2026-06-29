@@ -65,7 +65,15 @@ exit 0
 %files
 %dir %{_datadir}/cockpit/anaconda-webui
 %doc README.rst
-%license LICENSE dist/index.js.LEGAL.txt
+%license LICENSE dist/index.js.LEGAL.txt dist/login.js.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/login.html
+%{_datadir}/cockpit/anaconda-webui/login.js
+%{_datadir}/cockpit/anaconda-webui/login.js.map
+%{_datadir}/cockpit/anaconda-webui/login.js.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/login.css
+%{_datadir}/cockpit/anaconda-webui/login.css.map
+%{_datadir}/cockpit/static/login-anaconda.js
+%{_datadir}/cockpit/static/login-anaconda.css
 %{_datadir}/cockpit/anaconda-webui/qr-code-feedback.svg
 %{_datadir}/cockpit/anaconda-webui/index.js.LEGAL.txt
 %{_datadir}/cockpit/anaconda-webui/index.html
@@ -77,6 +85,7 @@ exit 0
 %{_datadir}/cockpit/anaconda-webui/po.*.js.gz
 %{_datadir}/cockpit/anaconda-webui/VERSION.txt
 %{_libexecdir}/anaconda/cockpit-coproc-wrapper.sh
+%{_libexecdir}/anaconda/cockpit-pin-auth
 %dir %{_datadir}/anaconda/firefox-theme
 %dir %{_datadir}/anaconda/firefox-theme/default
 %dir %{_datadir}/anaconda/firefox-theme/default/chrome
@@ -94,6 +103,9 @@ exit 0
 %{_datadir}/applications/extlinks.desktop
 %{_datadir}/applications/anaconda-gnome-control-center.desktop
 %{_unitdir}/webui-cockpit-ws.service
+%{_unitdir}/cockpit-pin-auth.socket
+%{_unitdir}/cockpit-pin-auth@.service
+%config(noreplace) /etc/cockpit/cockpit.conf
 
 
 # The changelog is automatically generated and merged
