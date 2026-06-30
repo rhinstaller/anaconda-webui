@@ -3,7 +3,7 @@
 # Copyright (C) 2025 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
 from payload_dnf import PayloadDNF
 from progress import Progress
@@ -293,6 +293,42 @@ class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
         b.wait_in_text(f"#{i.steps.REVIEW}-target-system-account",
                        "The following user will be created")
         i.check_next_disabled(disabled=False)
+
+
+class TestKickstartAutomatedRAID(VirtInstallMachineCase):
+    """Kickstart automated install with RAID layout from kickstart-tests raid-1.ks."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedRAID-testRAID1.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def setUp(self):
+        super().setUp()
+        s = Storage(self.browser, self.machine)
+        s.dbus_reset_selected_disks()
+        s.dbus_scan_devices()
+
+    @disk_images([("", 15), ("", 15)])
+    def testRAID1(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedRAID-testRAID1.ks`` on two disks
+
+        Expected results:
+            - Automated install pauses on review without bootloader warnings;
+              /boot on vda, RAID1 swap, and RAID0 /.
+        """
+        b = self.browser
+        r = Review(b, self.machine)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        r.check_disk_row("vda", "/boot", "vda1", "1.15 GB", True, "xfs")
+        r.check_disk_row("vda", "/", "vda3, vdb3, RAID", "27.7 GB", True, "xfs")
 
 
 if __name__ == "__main__":
