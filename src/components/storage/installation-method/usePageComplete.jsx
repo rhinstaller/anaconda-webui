@@ -153,11 +153,8 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
 export const usePageComplete = () => {
     const spaceState = useStorageComplete();
 
-    const { validationPending, validationReport } = useApplyStorageOnReview();
+    const { validationPending } = useApplyStorageOnReview();
     useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSize);
-
-    const warningMessages = validationReport?.["warning-messages"]?.v || [];
-    const hasWarnings = !validationPending && warningMessages.length > 0;
 
     let complete;
     if (spaceState.status === StorageCompleteStatus.PENDING) {
@@ -168,5 +165,5 @@ export const usePageComplete = () => {
         complete = true;
     }
 
-    return { complete, hasWarnings, validationPending };
+    return { complete, validationPending };
 };
