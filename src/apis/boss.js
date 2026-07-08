@@ -6,7 +6,7 @@
 import cockpit from "cockpit";
 
 import { error } from "../helpers/log.js";
-import { _callClient } from "./helpers.js";
+import { _callClient, _getProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
@@ -55,6 +55,13 @@ export const getSteps = ({ task }) => {
         ["org.fedoraproject.Anaconda.Task", "Steps"]
     )
             .then(ret => ret[0]);
+};
+
+/**
+ * @returns {Promise}           Resolves the object path of the active installation task, or ""
+ */
+export const getActiveInstallationTask = () => {
+    return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "ActiveInstallationTask");
 };
 
 /**

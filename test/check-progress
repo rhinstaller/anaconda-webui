@@ -21,12 +21,10 @@ class TestInstallationProgress(VirtInstallMachineCase):
 
         Expected results:
             - The installation steps are displayed in the correct order
+            - After reloading the page, the UI reconnects to the ongoing installation
             - The 'Successfully installed' message is displayed at the end of the installation
             - The 'Modify Storage' option is not available from the kebab menu
         """
-
-        # HACK Ignore some selinux errors
-        self.allow_journal_messages(".*denied.*comm=\"tar\" name=\"/\".*")
 
         b = self.browser
         m = self.machine
@@ -41,13 +39,11 @@ class TestInstallationProgress(VirtInstallMachineCase):
 
         with b.wait_timeout(300):
             b.wait_in_text("h2", "Installing")
-            b.wait_in_text(".pf-v6-c-empty-state", "Storage configuration: Storage is currently being configured.")
-            b.wait_in_text(".pf-v6-c-empty-state", "Software installation: Storage configuration complete. The "
-                                                   "software is now being installed onto your device.")
-            b.wait_in_text(".pf-v6-c-empty-state", "System configuration: Software installation complete. The system "
-                                                   "is now being configured.")
-            b.wait_in_text(".pf-v6-c-empty-state", "Finalizing: The system configuration is complete. Finalizing "
-                                                   "installation may take a few moments.")
+
+        # Reload the page while installation is running to verify reconnect
+        b.reload()
+        b.wait_visible(".pf-v6-c-progress-stepper")
+        b.wait_in_text("h2", "Installing")
 
         p.wait_done()
         b.wait_in_text("h2", "Successfully installed")

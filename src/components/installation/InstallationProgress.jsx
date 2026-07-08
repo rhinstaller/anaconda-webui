@@ -14,7 +14,7 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getActiveInstallationTask, getSteps, installWithTasks } from "../../apis/boss.js";
 
 import { exitGui } from "../../helpers/exit.js";
 
@@ -54,71 +54,93 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     useAutoReboot(status, automatedInstall);
 
     useEffect(() => {
-        installWithTasks()
-                .then(tasks => {
-                    const taskProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.Task",
-                        tasks[0]
-                    );
-                    const categoryProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.TaskCategory",
-                        tasks[0]
-                    );
+        const connectToTask = (taskPath, shouldStart) => {
+            const taskProxy = new BossClient().client.proxy(
+                "org.fedoraproject.Anaconda.Task",
+                taskPath
+            );
+            const categoryProxy = new BossClient().client.proxy(
+                "org.fedoraproject.Anaconda.TaskCategory",
+                taskPath
+            );
 
-                    const addEventListeners = () => {
-                        taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
-                            if (step === 0) {
-                                getSteps({ task: tasks[0] })
-                                        .then(
-                                            ret => setSteps(ret.v),
-                                            onCritFail()
-                                        );
-                            }
-                            if (message) {
-                                setStatusMessage(message);
-                                refStatusMessage.current = message;
-                            }
-                        });
-                        taskProxy.addEventListener("Failed", () => {
-                            setStatus("danger");
-                        });
-                        taskProxy.addEventListener("Stopped", () => {
-                            taskProxy.Finish().catch(onCritFail({
-                                context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
-                            }));
-                        });
-                        categoryProxy.addEventListener("CategoryChanged", (_, category) => {
-                            const step = progressStepsMap[category];
-                            setCurrentProgressStep(current => {
-                                if (step !== undefined && step >= current) {
-                                    return step;
-                                }
-                                return current;
-                            });
-                        });
-                        categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
-                            if (detailType === DETAIL_TYPE_YESNO) {
-                                setErrorDialogData({
-                                    categoryProxy,
-                                    message,
-                                });
-                            } else {
-                                setStatus("danger");
-                                categoryProxy.RespondToError(false);
-                                onCritFail()({ message });
-                            }
-                        });
-                        taskProxy.addEventListener("Succeeded", () => {
-                            setStatus("success");
-                            setCurrentProgressStep(4);
-                        });
-                    };
-                    taskProxy.wait(() => {
-                        addEventListeners();
-                        taskProxy.Start().catch(onCritFail({
-                            context: _("Installation of the system failed"),
-                        }));
+            const addEventListeners = () => {
+                taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
+                    if (step === 0) {
+                        getSteps({ task: taskPath })
+                                .then(
+                                    ret => setSteps(ret.v),
+                                    onCritFail()
+                                );
+                    }
+                    if (message) {
+                        setStatusMessage(message);
+                        refStatusMessage.current = message;
+                    }
+                });
+                taskProxy.addEventListener("Failed", () => {
+                    setStatus("danger");
+                });
+                taskProxy.addEventListener("Stopped", () => {
+                    taskProxy.Finish().catch(onCritFail({
+                        context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
+                    }));
+                });
+                categoryProxy.addEventListener("CategoryChanged", (_, category) => {
+                    const step = progressStepsMap[category];
+                    setCurrentProgressStep(current => {
+                        if (step !== undefined && step >= current) {
+                            return step;
+                        }
+                        return current;
                     });
+                });
+                categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
+                    if (detailType === DETAIL_TYPE_YESNO) {
+                        setErrorDialogData({
+                            categoryProxy,
+                            message,
+                        });
+                    } else {
+                        setStatus("danger");
+                        categoryProxy.RespondToError(false);
+                        onCritFail()({ message });
+                    }
+                });
+                taskProxy.addEventListener("Succeeded", () => {
+                    setStatus("success");
+                    setCurrentProgressStep(4);
+                });
+            };
+            taskProxy.wait(() => {
+                addEventListeners();
+                if (shouldStart) {
+                    taskProxy.Start().catch(onCritFail({
+                        context: _("Installation of the system failed"),
+                    }));
+                } else {
+                    getSteps({ task: taskPath })
+                            .then(
+                                ret => setSteps(ret.v),
+                                onCritFail()
+                            );
+                }
+            });
+        };
+
+        getActiveInstallationTask()
+                .then(activeTask => {
+                    if (activeTask) {
+                        connectToTask(activeTask, false);
+                    } else {
+                        installWithTasks()
+                                .then(
+                                    tasks => connectToTask(tasks[0], true),
+                                    onCritFail({
+                                        context: _("Installation of the system failed"),
+                                    })
+                                );
+                    }
                 }, onCritFail({
                     context: _("Installation of the system failed"),
                 }));
