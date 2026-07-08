@@ -29,10 +29,24 @@ Then download the ISO file that the test VMs will use::
 
     ./bots/image-download fedora-rawhide-boot
 
-In most cases you want to run an individual test in a suite.
-You also need to specify `TEST_OS` for each test run, for example::
+If you did already run some anaconda-webui tests in the past, both the `bots` repository checkout
+and the testing image might be out of date. So run `git pull` in the `bots` folder followed by the
+image-download command above.
 
-   TEST_OS=fedora-rawhide-boot test/check-basic TestBasic.testNavigation
+A good rule of thumb is to do this full bots & image refresh about every two weeks to avoid both drifting too much.
+
+In most cases you want to run an individual test in a suite.
+You also need to specify `TEST_OS` for each test run, such as::
+
+   TEST_OS=fedora-rawhide-boot
+
+A good example invocation for Web UI test run looks like this::
+
+   TEST_SHOW_BROWSER=true TEST_AUDIT_NO_SELINUX=1 TEST_OS=fedora-rawhide-boot test/check-basic TestBasic.testNavigation
+
+This will run the given test in an interactive browser, so you can see how the test frame work performs the testing.
+To run the test in headless mode, just remove `TEST_SHOW_BROWSER=true` from the invocation. The `TEST_AUDIT_NO_SELINUX=1`
+variable currently needs to be used to avoid some SELinux related issues breaking the test run.
 
 You can get a list of tests by inspecting the `def test*` in the source, or by
 running the suite with `-l`/`--list`::
