@@ -91,7 +91,6 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
     const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
     const {
         complete: storageComplete,
-        hasWarnings: hasStorageWarnings,
         validationPending: storageValidationPending,
     } = useStorageInstallationPageComplete();
     const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
@@ -120,8 +119,9 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
 
     // Auto-proceed to installation when kickstart is used without inst.pauseatsummary.
     // This is a one-shot check: once validations complete and any issue is found
-    // (incomplete pages, storage warnings), auto-proceed is permanently disabled
-    // so the user must manually click "Begin installation" after fixing the issue.
+    // (incomplete pages), auto-proceed is permanently disabled so the user must
+    // manually click "Begin installation" after fixing the issue.
+    // Storage warnings do NOT block auto-proceed, matching GTK/TUI behavior.
     useEffect(() => {
         if (!automatedInstall || pauseAtSummary || autoProceedBlockedRef.current) {
             return;
@@ -130,13 +130,13 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
         if (reviewValidationPending || storageValidationPending) {
             return;
         }
-        if (allValidatedReviewPagesComplete && !hasStorageWarnings) {
+        if (allValidatedReviewPagesComplete) {
             cockpit.location.go(["anaconda-screen-progress"]);
         } else {
             autoProceedBlockedRef.current = true;
         }
     }, [automatedInstall, pauseAtSummary, allValidatedReviewPagesComplete, storageValidationPending,
-        hasStorageWarnings, autoProceedBlockedRef, reviewValidationPending]);
+        autoProceedBlockedRef, reviewValidationPending]);
 
     // Display custom footer
     const getFooter = useMemo(() => (

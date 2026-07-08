@@ -140,22 +140,13 @@ class TestKickstartAutomatedWarning(VirtInstallMachineCase):
             Boot with ``inst.ks=TestKickstartAutomatedWarning-testBasic.ks``
 
         Expected results:
-            - Automated install stops on the review step with the install action enabled.
-            - Storage validation warnings are shown on the review page.
+            - Automated installation starts despite storage warnings.
+            - Storage warnings do not block auto-proceed (matching GTK/TUI behavior).
         """
         b = self.browser
-        m = self.machine
-        i = Installer(b, m, scenario="use-configured-storage-kickstart")
 
         b.open("/cockpit/@localhost/anaconda-webui/index.html")
-        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
-
-        # Wait for warning notification about /boot partition size
-        b.wait_in_text(f"#{i.steps.REVIEW}-step-notification",
-                       "Your /boot partition is less than 1024 MiB which is lower than recommended for a normal Fedora install.")
-
-        i.check_next_disabled(disabled=False)
-        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
+        b.wait_in_text("h2", "Installing")
 
 
 class TestKickstartAutomated(VirtInstallMachineCase):
