@@ -10,6 +10,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
+import { getActiveInstallationTask } from "../apis/boss.js";
+
 import { PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
@@ -64,6 +66,16 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
             setCurrentStepId(firstStepId);
         }
     }, [currentStepId, firstStepId, path, setCurrentStepId]);
+
+    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
+    useEffect(() => {
+        getActiveInstallationTask()
+                .then(activeTask => {
+                    if (activeTask) {
+                        cockpit.location.go([finalStepId]);
+                    }
+                });
+    }, [finalStepId]);
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
