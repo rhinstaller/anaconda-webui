@@ -99,6 +99,74 @@ class TestStorageMountPointsBtrfs_E2E(VirtInstallMachineCase):
 
         self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
 
+    def _testReformatBtrfsVolume_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        # GPT: 1: EFI, 2: ext4 for /boot, 3: btrfs volume for /
+        s.partition_disk(disk, [("100MiB", "efi"), ("1GiB", "ext4"), ("", "btrfs")])
+
+        # Create a btrfs volume (not subvolume!) on partition 3 with label "root"
+        # This is key - we're creating a BTRFS volume, not subvolumes within it
+        # The bug occurs when reformatting a BTRFS volume (which changes its UUID)
+        # Use -f to force overwrite since partition_disk already created a btrfs filesystem
+        m.execute(f"""
+        set -ex
+        mkfs.btrfs -f -L root {disk}3
+        """)
+
+    @timeout(1200)
+    def testReformatBtrfsVolume(self):
+        """
+        Description:
+            EFI install using mount point assignment. Reformat a BTRFS volume
+            (not subvolume) and assign it to /. This tests the scenario where
+            the BTRFS volume UUID changes during reformatting.
+
+        Related bug:
+            https://bugzilla.redhat.com/show_bug.cgi?id=2496875
+
+        Expected results:
+            - /boot/efi present
+            - /boot on ext4 partition
+            - / on reformatted btrfs volume
+            - No error when generating kickstart after reformatting BTRFS volume
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        dev = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Select the disk and enter mount point mapping
+        s.select_mountpoint([(dev, True)])
+
+        # Assign mount points
+        # Row 1: / on vda3 (btrfs volume)
+        s.select_mountpoint_row_device(1, "root")
+        # Enable reformat - this is what triggers the bug
+        s.select_mountpoint_row_reformat(1, True)
+
+        # Row 2: /boot/efi on vda1
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.check_mountpoint_row_format_type(2, "EFI System Partition")
+
+        # Row 3: /boot on vda2 (ext4)
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.select_mountpoint_row_reformat(3, True)
+
+        # Review and install
+        i.next(should_fail=True)
+        i.reach(i.steps.REVIEW)
+
+        self.install(button_text="Apply mount point assignment and install", needs_confirmation=True)
+
 
 if __name__ == '__main__':
     test_main()
