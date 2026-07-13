@@ -4,11 +4,21 @@
  */
 import cockpit from "cockpit";
 
+import { setRebootData } from "../apis/runtime.js";
+
 import { debug, error } from "./log.js";
+
+const KS_REBOOT = 1;
 
 let _isExiting = false;
 
 export const isExiting = () => _isExiting;
+
+export const rebootSystem = () => {
+    setRebootData({
+        action: cockpit.variant("i", KS_REBOOT),
+    }).then(exitGui);
+};
 
 export const exitGui = () => {
     _isExiting = true;

@@ -8,7 +8,7 @@ import cockpit from "cockpit";
 import { getPasswordPoliciesAction } from "../actions/runtime-actions.js";
 
 import { debug, error } from "../helpers/log.js";
-import { _getProperty } from "./helpers.js";
+import { _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime.UserInterface";
@@ -112,4 +112,12 @@ export const getPasswordPolicies = () => {
  */
 export const getRebootData = () => {
     return _getProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME, "Reboot");
+};
+
+/**
+ * @param {Object} rebootData    The RebootData structure (action, eject, kexec)
+ */
+export const setRebootData = (rebootData) => {
+    return _setProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME,
+                        "Reboot", cockpit.variant("a{sv}", rebootData));
 };
