@@ -16,7 +16,7 @@ import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon
 
 import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
 
-import { exitGui } from "../../helpers/exit.js";
+import { exitGui, rebootSystem } from "../../helpers/exit.js";
 
 import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
@@ -174,6 +174,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
         },
     ];
 
+    const successActions = [
+        <Button key="reboot" onClick={isBootIso ? exitGui : rebootSystem}>{_("Reboot to installed system")}</Button>,
+        ...(!isBootIso ? [<Button key="exit" variant="link" onClick={exitGui}>{_("Exit to live desktop")}</Button>] : []),
+    ];
+
     return (
         <Flex direction={{ default: "column" }} className={SCREEN_ID + "-status " + SCREEN_ID + "-status-" + status}>
             <EmptyStatePanel
@@ -242,10 +247,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                           </>)}
                   </Flex>
               }
-              secondary={
-                  status === "success" &&
-                  <Button onClick={exitGui}>{isBootIso ? _("Reboot to installed system") : _("Exit to live desktop")}</Button>
-              }
+              secondary={status === "success" && successActions}
               title={title}
               headingLevel="h2"
             />
