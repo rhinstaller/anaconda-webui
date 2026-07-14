@@ -15,8 +15,12 @@ import {
     StorageClient,
 } from "./storage.js";
 import {
+    getBootloaderDrive,
     setBootloaderDrive,
 } from "./storage_bootloader.js";
+import {
+    getSelectedDisks,
+} from "./storage_disks_selection.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";
@@ -282,6 +286,12 @@ export const applyStorage = async ({ devices, luks, partitioning }) => {
         await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
     }
 
+    const [currentBootDrive, selectedDisks] = await Promise.all([
+        getBootloaderDrive(),
+        getSelectedDisks(),
+    ]);
+    const shouldResetBootDrive = currentBootDrive && !selectedDisks?.includes(currentBootDrive);
+
     const method = await getPartitioningMethod({ partitioning });
     if (method === "MANUAL") {
         const requests = await gatherRequests({ partitioning });
@@ -292,10 +302,10 @@ export const applyStorage = async ({ devices, luks, partitioning }) => {
 
         if (bootloaderDisk !== rootDisk && !!bootloaderDisk) {
             await setBootloaderDrive({ drive: bootloaderDisk });
-        } else {
+        } else if (shouldResetBootDrive || !currentBootDrive) {
             await setBootloaderDrive({ drive: "" });
         }
-    } else {
+    } else if (shouldResetBootDrive) {
         await setBootloaderDrive({ drive: "" });
     }
 
