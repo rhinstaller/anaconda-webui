@@ -104,6 +104,7 @@ export const useAvailabilityHomeReuse = () => {
                 LVM: "lvmlv",
                 LVM_THINP: "lvmthinlv",
                 PLAIN: "partition",
+                STRATIS: "stratis filesystem",
             };
             if (homeDeviceType !== requiredSchemeTypes[autopartScheme]) {
                 availability.available = false;
