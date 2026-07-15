@@ -147,7 +147,7 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
                     }
                 } catch (ex) {
                     setPartitioningApplied(false);
-                    setStepNotification({ step, ...ex });
+                    setStepNotification({ message: ex.message || String(ex), step });
                 } finally {
                     setIsFormDisabled(false);
                 }

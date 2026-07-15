@@ -87,7 +87,7 @@ const useApplyStorageOnReview = () => {
                 setValidationReport(validationReport);
                 setStepNotification?.(createStorageValidationNotification(validationReport, step));
             } catch (ex) {
-                setStepNotification?.({ step, ...ex });
+                setStepNotification?.({ message: ex.message || String(ex), step });
             } finally {
                 setValidationPending(false);
             }
