@@ -15,6 +15,7 @@ import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import {
     useFreeSpaceForSystem,
+    useOriginalDevices,
     useRequiredSize,
 } from "../../../hooks/Storage.jsx";
 
@@ -69,6 +70,7 @@ const useApplyStorageOnReview = () => {
     const [validationReport, setValidationReport] = useState(null);
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const { setStepNotification } = useContext(PageContext) ?? {};
+    const devices = useOriginalDevices();
     const partitioningPath = partitioning?.path;
 
     useEffect(() => {
@@ -81,7 +83,7 @@ const useApplyStorageOnReview = () => {
         setValidationPending(true);
         (async () => {
             try {
-                const { validationReport } = await applyStorage({ partitioning: partitioningPath });
+                const { validationReport } = await applyStorage({ devices, partitioning: partitioningPath });
                 setValidationReport(validationReport);
                 setStepNotification?.(createStorageValidationNotification(validationReport, step));
             } catch (ex) {
@@ -90,7 +92,7 @@ const useApplyStorageOnReview = () => {
                 setValidationPending(false);
             }
         })();
-    }, [appliedPartitioning, partitioningPath, setStepNotification]);
+    }, [appliedPartitioning, devices, partitioningPath, setStepNotification]);
 
     return { validationPending, validationReport };
 };
