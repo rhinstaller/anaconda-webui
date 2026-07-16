@@ -50,6 +50,10 @@ export class PayloadsClient {
         this.initData(args);
     }
 
+    stopEventMonitor () {
+        PayloadDNFClient.instance?.stopEventMonitor();
+    }
+
     async initData (args = {}) {
         const activePayload = await getActivePayload();
 

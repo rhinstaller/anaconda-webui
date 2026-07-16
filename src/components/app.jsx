@@ -7,7 +7,7 @@ import cockpit from "cockpit";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
-import { clients } from "../apis/index.js";
+import { BossClient } from "../apis/boss.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
@@ -68,7 +68,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         // Attach a click event listener to detect external link clicks
         document.addEventListener("click", allowExternalNavigation);
 
-        Promise.all(clients.map(Client => new Client(address, dispatch).init({ automatedInstall, conf })))
+        new BossClient(address, dispatch).init({ automatedInstall, conf })
                 .then(() => {
                     setStoreInitialized(true);
                 }, onCritFail({ context: N_("Reading information about the computer failed.") }));

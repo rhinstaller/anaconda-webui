@@ -8,6 +8,8 @@ import cockpit from "cockpit";
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
+import { moduleClients } from "./index.js";
+
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
 
@@ -17,11 +19,12 @@ const callClient = (...args) => {
 
 /**
  * @param {string} address      Anaconda bus address
+ * @param {Function} dispatch   Redux dispatch function
  *
  * @returns {Object}            A DBus client for the Boss bus
  */
 export class BossClient {
-    constructor (address) {
+    constructor (address, dispatch) {
         if (BossClient.instance && (!address || BossClient.instance.address === address)) {
             return BossClient.instance;
         }
@@ -35,10 +38,38 @@ export class BossClient {
             { address, bus: "none", superuser: "try" }
         );
         this.address = address;
+        this.dispatch = dispatch;
     }
 
-    init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
+    init (args = {}) {
         this.client.addEventListener("close", () => error("Boss client closed"));
+
+        return Promise.all(
+            moduleClients.map(Client => new Client(this.address, this.dispatch).init(args))
+        ).then(() => {
+            this.startEventMonitor();
+        });
+    }
+
+    startEventMonitor () {
+        this._subscription = this.client.subscribe(
+            { },
+            (path, iface, signal, args) => {
+                if (signal === "PropertiesChanged" &&
+                    args[0] === INTERFACE_NAME &&
+                    Object.hasOwn(args[1], "ActiveInstallationTask") &&
+                    args[1].ActiveInstallationTask.v) {
+                    for (const Client of moduleClients) {
+                        Client.instance?.stopEventMonitor();
+                    }
+                    this.stopEventMonitor();
+                }
+            }
+        );
+    }
+
+    stopEventMonitor () {
+        this._subscription?.remove();
     }
 }
 
