@@ -46,9 +46,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-30 06:41+0000\n"
-"PO-Revision-Date: 2026-06-20 06:48+0000\n"
-"Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
+"POT-Creation-Date: 2026-07-14 05:16+0000\n"
+"PO-Revision-Date: 2026-07-03 06:17+0000\n"
+"Last-Translator: Jesse Guo <jesseguotech@outlook.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/anaconda-webui/anaconda-webui/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -56,7 +56,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6.1\n"
+"X-Generator: Weblate 2026.7\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:142
 #: src/components/storage/installation-method/InstallationDestination.jsx:275
@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "$0 是包含逻辑分区的 MBR 扩展分区。删除所有逻辑分区也会自动删除扩展分区。"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:145
+#: src/components/storage/installation-method/usePageComplete.jsx:113
 msgid "$0 is required, but only $1 is available."
 msgstr "需要 $0 ，但只有 $1 可用。"
 
@@ -109,10 +109,8 @@ msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "'$0' 文件系统不能位于加密块设备上"
 
 #: src/helpers/storage.js:231
-#, fuzzy
-#| msgid "'$0' must be on a device formatted to '$1'"
 msgid "'$0' must be assigned to $1"
-msgstr "'$0' 必须位于格式化为 '$1' 的设备上"
+msgstr "'$0' 必须分配给 $1"
 
 #: src/helpers/storage.js:234
 msgid "'$0' must be on a device formatted to '$1'"
@@ -124,6 +122,8 @@ msgid ""
 "filesystem, but is not marked as an ESP. Set the partition type to EFI "
 "System and enable the esp flag."
 msgstr ""
+"'$0' 必须位于 EFI 系统分区（ESP）上。选中的分区使用了 FAT 文件系统，但并未被"
+"标记为 ESP。将分区类型设置为 EFI System 并启用 esp 标志。"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:270
 msgid ""
@@ -138,10 +138,8 @@ msgid ""
 msgstr "一个拥有管理员权限的标准用户账户，可执行系统级更改。"
 
 #: src/components/installation/InstallationNonCriticalErrorDialog.jsx:48
-#, fuzzy
-#| msgid "$0 installation"
 msgid "Abort installation"
-msgstr "$0 安装"
+msgstr "中止安装"
 
 #: src/components/HeaderKebab.jsx:126
 msgid "About"
@@ -281,7 +279,7 @@ msgstr "更改目标位置"
 msgid "Change hostname"
 msgstr "更改主机名"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:159
+#: src/components/storage/installation-method/usePageComplete.jsx:127
 msgid "Change partition layout"
 msgstr "更改分区布局"
 
@@ -329,7 +327,7 @@ msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr "Cockpit 存储没有提供解锁加密设备的密码。"
 
-#: src/components/installation/InstallationProgress.jsx:204
+#: src/components/installation/InstallationProgress.jsx:226
 msgid "Completed"
 msgstr "已完成"
 
@@ -373,10 +371,8 @@ msgid "Continue installation"
 msgstr "继续安装"
 
 #: src/components/installation/InstallationNonCriticalErrorDialog.jsx:28
-#, fuzzy
-#| msgid "Continue installation"
 msgid "Continue installation?"
-msgstr "继续安装"
+msgstr "继续安装？"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:606
 msgid "Continue with installation"
@@ -487,7 +483,7 @@ msgstr "删除数据内容并安装"
 msgid "Error details"
 msgstr "错误详情"
 
-#: src/components/installation/InstallationProgress.jsx:247
+#: src/components/installation/InstallationProgress.jsx:269
 msgid "Exit to live desktop"
 msgstr "退出到 live 桌面"
 
@@ -508,11 +504,11 @@ msgstr "保存布局失败"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux 至少需要 $0 的磁盘空间。"
 
-#: src/components/installation/InstallationProgress.jsx:173
+#: src/components/installation/InstallationProgress.jsx:195
 msgid "Finalization"
 msgstr "最后确定"
 
-#: src/components/installation/InstallationProgress.jsx:171
+#: src/components/installation/InstallationProgress.jsx:193
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -602,7 +598,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "如果您不了解或不接受此风险，请点击 \"退出\" 按钮退出程序。"
 
-#: src/components/installation/InstallationProgress.jsx:209
+#: src/components/installation/InstallationProgress.jsx:231
 msgid "In progress"
 msgstr "进行中"
 
@@ -616,7 +612,7 @@ msgstr "初始化中..."
 msgid "Install"
 msgstr "安装"
 
-#: src/components/installation/InstallationProgress.jsx:149
+#: src/components/installation/InstallationProgress.jsx:171
 #: src/components/Error.jsx:747
 msgid "Installation failed"
 msgstr "安装失败"
@@ -626,11 +622,12 @@ msgid "Installation method"
 msgstr "安装方案"
 
 #: src/components/installation/InstallationProgress.jsx:119
-#: src/components/installation/InstallationProgress.jsx:123
+#: src/components/installation/InstallationProgress.jsx:140
+#: src/components/installation/InstallationProgress.jsx:145
 msgid "Installation of the system failed"
 msgstr "系统安装失败"
 
-#: src/components/installation/InstallationProgress.jsx:87
+#: src/components/installation/InstallationProgress.jsx:86
 msgid "Installation of the system failed: $0"
 msgstr "系统安装失败：$0"
 
@@ -638,7 +635,7 @@ msgstr "系统安装失败：$0"
 msgid "Installation type"
 msgstr "安装类型"
 
-#: src/components/installation/InstallationProgress.jsx:151
+#: src/components/installation/InstallationProgress.jsx:173
 msgid "Installing"
 msgstr "正在安装"
 
@@ -696,7 +693,7 @@ msgstr "在配置中详细了解受限访问。"
 
 #: src/components/users/Accounts.jsx:203
 msgid "Leave both passphrase fields empty to use an empty password."
-msgstr ""
+msgstr "将两个密码框都留空以使用空密码。"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
@@ -819,6 +816,12 @@ msgstr "没有可用的磁盘"
 msgid "No disks selected"
 msgstr "未选择任何磁盘"
 
+#: src/components/localization/Keyboard.jsx:47
+#, fuzzy
+#| msgid "No layouts selected yet"
+msgid "No keyboard layouts selected"
+msgstr "尚未选择任何布局"
+
 #: src/components/localization/Keyboard.jsx:240
 msgid "No layouts selected yet"
 msgstr "尚未选择任何布局"
@@ -827,13 +830,13 @@ msgstr "尚未选择任何布局"
 msgid "No results found"
 msgstr "未找到结果"
 
-#: src/components/localization/Keyboard.jsx:394
+#: src/components/localization/Keyboard.jsx:427
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
 msgstr "无法为所选的键盘布局获取有效的VConsole键位映射。请尝试其他键盘布局。"
 
-#: src/components/storage/installation-method/usePageComplete.jsx:143
+#: src/components/storage/installation-method/usePageComplete.jsx:111
 msgid "Not enough available free space"
 msgstr "没有足够可用剩余空间"
 
@@ -889,7 +892,7 @@ msgstr "密码与任何锁定的设备都不匹配"
 msgid "Passphrases must match"
 msgstr "密码必须匹配"
 
-#: src/components/installation/InstallationProgress.jsx:198
+#: src/components/installation/InstallationProgress.jsx:220
 msgid "Pending"
 msgstr "待办的"
 
@@ -973,7 +976,7 @@ msgstr ""
 msgid "Reboot system?"
 msgstr "重启系统？"
 
-#: src/components/installation/InstallationProgress.jsx:247
+#: src/components/installation/InstallationProgress.jsx:269
 msgid "Reboot to installed system"
 msgstr "重新启动到已安装的系统"
 
@@ -1230,11 +1233,11 @@ msgstr "显示密码"
 msgid "Size"
 msgstr "大小"
 
-#: src/components/installation/InstallationProgress.jsx:163
+#: src/components/installation/InstallationProgress.jsx:185
 msgid "Software installation"
 msgstr "软件安装"
 
-#: src/components/installation/InstallationProgress.jsx:161
+#: src/components/installation/InstallationProgress.jsx:183
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1266,14 +1269,14 @@ msgstr "栈回溯"
 msgid "Storage"
 msgstr "存储"
 
-#: src/components/installation/InstallationProgress.jsx:158
+#: src/components/installation/InstallationProgress.jsx:180
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
 #: src/components/steps.js:35
 msgid "Storage configuration"
 msgstr "存储配置"
 
-#: src/components/installation/InstallationProgress.jsx:156
+#: src/components/installation/InstallationProgress.jsx:178
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "存储配置：当前正在配置存储。"
 
@@ -1308,7 +1311,7 @@ msgstr "未满足存储要求"
 msgid "Strong"
 msgstr "强"
 
-#: src/components/installation/InstallationProgress.jsx:146
+#: src/components/installation/InstallationProgress.jsx:168
 msgid "Successfully installed"
 msgstr "安装成功"
 
@@ -1328,11 +1331,11 @@ msgstr "建议语言"
 msgid "System"
 msgstr "系统"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:190
 msgid "System configuration"
 msgstr "系统配置"
 
-#: src/components/installation/InstallationProgress.jsx:166
+#: src/components/installation/InstallationProgress.jsx:188
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1422,7 +1425,7 @@ msgstr "时区"
 msgid "Title"
 msgstr "标题"
 
-#: src/components/installation/InstallationProgress.jsx:189
+#: src/components/installation/InstallationProgress.jsx:211
 msgid "To begin using $0, reboot your system."
 msgstr "要使用 $0，请重新启动系统。"
 
@@ -1564,11 +1567,11 @@ msgstr "你必须连接到网络才能启用自动设置日期与时间。"
 msgid "Your progress will not be saved."
 msgstr "您的进度将不会被保存。"
 
-#: src/components/installation/InstallationProgress.jsx:203
+#: src/components/installation/InstallationProgress.jsx:225
 msgid "completed step"
 msgstr "已完成操作"
 
-#: src/components/installation/InstallationProgress.jsx:208
+#: src/components/installation/InstallationProgress.jsx:230
 msgid "current step"
 msgstr "当前操作"
 
@@ -1610,7 +1613,7 @@ msgstr "未完成"
 msgid "mount"
 msgstr "挂载"
 
-#: src/components/installation/InstallationProgress.jsx:197
+#: src/components/installation/InstallationProgress.jsx:219
 msgid "pending step"
 msgstr "待执行操作"
 
