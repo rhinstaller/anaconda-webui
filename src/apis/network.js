@@ -52,8 +52,12 @@ export class NetworkClient {
         await this.dispatch(getHostnameAction());
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             (path, iface, signal, args) => {
                 switch (signal) {

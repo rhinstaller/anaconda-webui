@@ -56,8 +56,12 @@ export class UsersClient {
         ]);
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             async (path, iface, signal, args) => {
                 switch (signal) {
