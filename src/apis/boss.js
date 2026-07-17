@@ -65,6 +65,13 @@ export const getActiveInstallationTask = () => {
 };
 
 /**
+ * @returns {Promise<boolean>}  Resolves to true if the installation finished successfully, false otherwise
+ */
+export const getInstallationFinished = () => {
+    return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "InstallationFinished");
+};
+
+/**
  * @returns {Promise}           Resolves a list of tasks
  */
 export const installWithTasks = () => {
