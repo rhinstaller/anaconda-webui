@@ -328,6 +328,10 @@ const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
     const { diskSelection } = useContext(StorageContext);
     const [unappliedSelection, setUnappliedSelection] = useState(diskSelection.selectedDisks);
 
+    useEffect(() => {
+        setUnappliedSelection(diskSelection.selectedDisks);
+    }, [diskSelection.selectedDisks]);
+
     const onSave = () => {
         setSelectedDisks({ drives: unappliedSelection });
         setIsModalOpen(false);
