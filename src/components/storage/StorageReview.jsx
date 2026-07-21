@@ -14,8 +14,8 @@ import {
     getDeviceAncestors,
     getDeviceChildren,
     getParentPartitions,
-    hasEncryptedAncestor,
     isBootloaderDevice,
+    isOnEncryptedDevice,
     systemMountPoints,
 } from "../../helpers/storage.js";
 
@@ -130,7 +130,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 )
                 : ""
         );
-        const encryptedText = hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "";
+        const encryptedText = isOnEncryptedDevice(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "";
         const deviceText = cockpit.format("$0$1", parents.join(", "), showMaybeType());
         return (
             {
