@@ -30,10 +30,10 @@ import { InlineNotification } from "cockpit-components-inline-notification.jsx";
 
 const _ = cockpit.gettext;
 
-const LuksDevices = ({ id, lockedLUKSDevices }) => {
+const LockedDevices = ({ id, lockedEncryptedDevices }) => {
     return (
         <Flex id={id} spaceItems={{ default: "spaceItemsLg" }}>
-            {lockedLUKSDevices.map(device => (
+            {lockedEncryptedDevices.map(device => (
                 <Flex key={device} spaceItems={{ default: "spaceItemsXs" }} alignItems={{ default: "alignItemsCenter" }}>
                     <LockIcon />
                     <FlexItem>{device}</FlexItem>
@@ -43,7 +43,7 @@ const LuksDevices = ({ id, lockedLUKSDevices }) => {
     );
 };
 
-export const EncryptedDevices = ({ dispatch, idPrefix, lockedLUKSDevices }) => {
+export const EncryptedDevices = ({ dispatch, idPrefix, lockedEncryptedDevices }) => {
     const [showUnlockDialog, setShowUnlockDialog] = useState(false);
     return (
         <>
@@ -61,18 +61,18 @@ export const EncryptedDevices = ({ dispatch, idPrefix, lockedLUKSDevices }) => {
                   </ActionList>
               }
             >
-                {_("Unlock LUKS-encrypted partitions to keep existing data and show more installation methods.")}
+                {_("Unlock encrypted partitions to keep existing data and show more installation methods.")}
             </Alert>
             {showUnlockDialog &&
             <UnlockDialog
               dispatch={dispatch}
               onClose={() => setShowUnlockDialog(false)}
-              lockedLUKSDevices={lockedLUKSDevices} />}
+              lockedEncryptedDevices={lockedEncryptedDevices} />}
         </>
     );
 };
 
-const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
+const UnlockDialog = ({ dispatch, lockedEncryptedDevices, onClose }) => {
     const [passphrase, setPassphrase] = useState("");
     const [passphraseHidden, setPassphraseHidden] = useState(true);
     const [dialogWarning, setDialogWarning] = useState();
@@ -83,7 +83,7 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
     const onSubmit = () => {
         setInProgress(true);
         return Promise.allSettled(
-            lockedLUKSDevices.map(device => (
+            lockedEncryptedDevices.map(device => (
                 unlockDevice({ device, passphrase })
             ))
         ).then(
@@ -101,7 +101,7 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
                     } else {
                         const unlockedDevs = res.reduce((acc, r, i) => {
                             if (r.value) {
-                                acc.push(lockedLUKSDevices[i]);
+                                acc.push(lockedEncryptedDevices[i]);
                             }
                             return acc;
                         }, []);
@@ -144,15 +144,15 @@ const UnlockDialog = ({ dispatch, lockedLUKSDevices, onClose }) => {
                       onSubmit();
                   }}>
                     {dialogSuccess && <InlineNotification type="info" text={dialogSuccess} />}
-                    <FormGroup fieldId={idPrefix + "-luks-devices"} label={_("Locked devices")}>
-                        <LuksDevices id={idPrefix + "-luks-devices"} lockedLUKSDevices={lockedLUKSDevices} />
+                    <FormGroup fieldId={idPrefix + "-locked-devices"} label={_("Locked devices")}>
+                        <LockedDevices id={idPrefix + "-locked-devices"} lockedEncryptedDevices={lockedEncryptedDevices} />
                     </FormGroup>
-                    <FormGroup fieldId={idPrefix + "-luks-passphrase"} label={_("Passphrase")}>
+                    <FormGroup fieldId={idPrefix + "-passphrase"} label={_("Passphrase")}>
                         <InputGroup>
                             <InputGroupItem isFill>
                                 <TextInput
                                   isRequired
-                                  id={idPrefix + "-luks-passphrase"}
+                                  id={idPrefix + "-passphrase"}
                                   type={passphraseHidden ? "password" : "text"}
                                   aria-label={_("Passphrase")}
                                   value={passphrase}

@@ -40,11 +40,13 @@ import { getDevicesAction, setStorageScenarioAction } from "../../../actions/sto
 import { debug as loggerDebug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
+    deviceHasEncryptionKey,
     getDeviceAncestors,
     getDeviceByName,
     getDeviceByPath,
     getDeviceChildren,
     getUsableDevicesManualPartitioning,
+    isDeviceEncrypted,
 } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
@@ -287,6 +289,17 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
                         device = getDeviceByPath(devices, dev);
                     }
 
+                    // Cockpit stores passphrases keyed by backing block device name,
+                    // but for encrypted Stratis pools the encrypted entity is the pool
+                    // (a child of the block device), not the block device itself.
+                    if (device && !isDeviceEncrypted(devices[device])) {
+                        const encryptedChild = getDeviceChildren({ device, deviceData: devices })
+                                .find(child => isDeviceEncrypted(devices[child]) && !deviceHasEncryptionKey(devices[child]));
+                        if (encryptedChild) {
+                            device = encryptedChild;
+                        }
+                    }
+
                     return ({
                         device,
                         passphrase: cockpitPassphrases[dev]
@@ -298,8 +311,8 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
                 }
 
                 return (
-                    devices[device].formatData.type.v === "luks" &&
-                        devices[device].formatData.attrs.v.has_key !== "True"
+                    isDeviceEncrypted(devices[device]) &&
+                        !deviceHasEncryptionKey(devices[device])
                 );
             });
 
