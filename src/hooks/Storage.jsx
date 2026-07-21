@@ -32,6 +32,7 @@ import {
     getDeviceAncestors,
     hasReusableFedoraWithWindowsOS,
     intersectSelectedDisksWithUsable,
+    isDeviceEncrypted,
     systemMountPoints,
 } from "../helpers/storage.js";
 
@@ -115,7 +116,7 @@ export const useUsablePartitions = () => {
             return (
                 device.formatData?.type.v === "biosboot" ||
              device.formatData?.mountable.v ||
-             device.formatData?.type.v === "luks") &&
+             isDeviceEncrypted(device)) &&
              ancestors.some(ancestor => selectedDisks.includes(ancestor));
         });
 
