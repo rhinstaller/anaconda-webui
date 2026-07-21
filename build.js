@@ -49,7 +49,7 @@ function watchDirs (dir, onChange) {
 
 const context = await esbuild.context({
     bundle: true,
-    entryPoints: ["./src/index.js"],
+    entryPoints: ["./src/index.js", "./src/login.js"],
     external: [
         "*.woff", "*.woff2", "*.jpg",
         "@patternfly/react-core/src/components/assets/*.svg",
@@ -74,6 +74,7 @@ const context = await esbuild.context({
                 { from: ["./images/qr-code-feedback.svg"], to: ["./qr-code-feedback.svg"] },
                 { from: ["./src/manifest.json"], to: ["./manifest.json"] },
                 { from: ["./src/index.html"], to: ["./index.html"] },
+                { from: ["./src/login.html"], to: ["./login.html"] },
                 { from: ["./VERSION.txt"], to: ["./VERSION.txt"] },
             ]
         }),
@@ -82,7 +83,8 @@ const context = await esbuild.context({
             quietDeps: true,
         }),
         cockpitPoEsbuildPlugin(),
-        cockpitCompressPlugin(),
+        // for some reason cockpit does not support compressed login.(js|css)
+        cockpitCompressPlugin({ exclude: /login\.(js|css)$/}),
         cockpitRsyncEsbuildPlugin({ dest: packageJson.name }),
 
         {

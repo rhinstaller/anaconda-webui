@@ -1,0 +1,134 @@
+#!/usr/bin/python3
+
+import base64
+import json
+import logging
+import os
+import sys
+import time
+
+logger = logging.getLogger(__name__)
+
+
+def send_frame(content: 'dict[str, str]'):
+    data = json.dumps(content).encode()
+    os.write(1, str(len(data) + 1).encode())
+    os.write(1, b"\n\n")
+    os.write(1, data)
+
+
+def send_auth_command(challenge: 'str | None', response: 'str | None'):
+    cmd = {
+        "command": "authorize",
+    }
+
+    if challenge is not None:
+        cmd["cookie"] = f"session{os.getpid()}{time.time()}"
+        cmd["challenge"] = challenge
+    if response is not None:
+        cmd["response"] = response
+
+    send_frame(cmd)
+
+
+def send_problem_init(problem, message, auth_methods):
+    cmd = {
+        "command": "init",
+        "problem": problem
+    }
+
+    if message:
+        cmd["message"] = message
+
+    if auth_methods:
+        cmd["auth-method-results"] = auth_methods
+
+    send_frame(cmd)
+
+
+def read_size(fd):
+    sep = b'\n'
+    size = 0
+    seen = 0
+
+    while True:
+        t = os.read(fd, 1)
+
+        if not t:
+            return 0
+
+        if t == sep:
+            break
+
+        size = (size * 10) + int(t)
+        seen = seen + 1
+
+        if seen > 7:
+            raise ValueError("Invalid frame: size too long")
+
+    return size
+
+
+def read_frame(fd):
+    size = read_size(fd)
+
+    data = b""
+    while size > 0:
+        d = os.read(fd, size)
+        size = size - len(d)
+        data += d
+
+    return data.decode()
+
+
+def read_auth_reply():
+    data = read_frame(1)
+    cmd = json.loads(data)
+    logger.debug("cmd %s", cmd)
+    response = cmd.get("response")
+    if cmd.get("command") != "authorize" or \
+       not cmd.get("cookie") or not response:
+        raise ValueError("Did not receive a valid authorize command")
+
+    return response
+
+
+def decode_basic_header(response):
+    starts = "Basic "
+
+    assert response
+    assert response.startswith(starts), response
+
+    val = base64.b64decode(response[len(starts):].encode()).decode()
+    return val.replace('\x00', '')
+
+
+def main(args):
+    logging.basicConfig(filename='/tmp/pin.log', encoding='utf-8', level=logging.DEBUG)
+
+    # logger.debug('goo')
+    send_auth_command("*", None)
+    # message = base64.b64encode(b'Enter pin to login').decode()
+    # logging.debug("pre-conversation")
+    # send_auth_command(f"X-Conversation conv {message}", None)
+    logging.debug("post-conversation")
+
+    password = ""
+    try:
+        response = read_auth_reply()
+        password = decode_basic_header(response)
+    except (ValueError, TypeError, AssertionError) as e:
+        send_problem_init("internal-error", str(e), {})
+        raise
+
+    if password != "1234":
+        send_problem_init("authentication-failed", "PIN did not match",
+                          {"password": "denied"})
+        # send_auth_command(f"X-Conversation conv {message}", None)
+        return
+
+    os.execlpe("python3", "python3", "-m", "cockpit.bridge", os.environ)
+
+
+if __name__ == "__main__":
+    main(sys.argv)

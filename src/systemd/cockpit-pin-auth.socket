@@ -1,0 +1,15 @@
+[Unit]
+Description=Socket for cockpit pin auth service activation
+PartOf=cockpit-pin-auth.service
+# ensure our DynamicUser exists
+#Requires=cockpit-wsinstance-socket-user.service
+#After=cockpit-wsinstance-socket-user.service
+
+
+[Socket]
+ListenStream=/run/cockpit/wsinstance/cockpit-pin-auth.sock
+SocketUser=root
+#SocketGroup=cockpit-wsinstance-socket
+SocketMode=0666
+RemoveOnStop=yes
+Accept=yes

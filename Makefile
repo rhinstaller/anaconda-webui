@@ -128,8 +128,17 @@ install: $(DIST_TEST) po/LINGUAS
 	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
 	cp gnome-control-center-ext $(DESTDIR)/usr/libexec/anaconda
 	cp src/scripts/cockpit-coproc-wrapper.sh $(DESTDIR)/usr/libexec/anaconda/
+	cp src/scripts/cockpit-pin-auth $(DESTDIR)/usr/libexec/anaconda/
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/cockpit-pin-auth@.service $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/cockpit-pin-auth.socket $(DESTDIR)/usr/lib/systemd/system/
+	mkdir -p $(DESTDIR)/etc/cockpit
+	cp src/config/cockpit.conf $(DESTDIR)/etc/cockpit/
+	# static files for custom login page must be on this destination 	
+	mkdir -p $(DESTDIR)/usr/share/cockpit/static/
+	ln -sf ../anaconda-webui/login.js $(DESTDIR)/usr/share/cockpit/static/login-anaconda.js
+	ln -sf ../anaconda-webui/login.css $(DESTDIR)/usr/share/cockpit/static/login-anaconda.css
 
 dist: $(TARFILE)
 	@ls -1 $(TARFILE)
