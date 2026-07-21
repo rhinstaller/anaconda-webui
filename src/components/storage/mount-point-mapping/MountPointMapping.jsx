@@ -27,9 +27,11 @@ import {
     filterPartitioningRequests,
     getDeviceAncestors,
     getDeviceChildren,
-    getLockedLUKSDevices,
+    getLockedEncryptedDevices,
     getMountPointFormatConstraintError,
     hasDuplicateFields,
+    hasEncryptedAncestor,
+    isDeviceEncrypted,
     isDuplicateRequestField,
     requestsFromDbus,
     requestsToDbus,
@@ -183,7 +185,7 @@ const isDeviceMountPointInvalid = (deviceData, mountPointConstraints, request) =
         return [true, formatError];
     }
     if (constrainedMountPointData && !constrainedMountPointData["encryption-allowed"].v &&
-        deviceData[device].type.v === "luks/dm-crypt") {
+        hasEncryptedAncestor(deviceData, device)) {
         return [true,
             cockpit.format(_("'$0' filesystem cannot be on an encrypted block device"),
                            request["mount-point"])];
@@ -245,7 +247,7 @@ export const DeviceColumnSelect = ({
     handleRequestChange,
     idPrefix,
     isRequiredMountPoint,
-    lockedLUKSDevices,
+    lockedEncryptedDevices,
     request,
     requestIndex
 }) => {
@@ -271,12 +273,12 @@ export const DeviceColumnSelect = ({
                 : cockpit.format("$0 $1", size, format)
         );
 
-        const isLockedLUKS = lockedLUKSDevices.some(p => device.includes(p));
+        const isLockedEncryptedDevice = lockedEncryptedDevices.some(p => device.includes(p));
         /* Disable the following devices:
          * - Locked LUKS devices
          * - Swap devices when the mount point is preset (required) as these reset it
          */
-        const isAriaDisabled = isLockedLUKS || (formatType === "swap" && isRequiredMountPoint);
+        const isAriaDisabled = isLockedEncryptedDevice || (formatType === "swap" && isRequiredMountPoint);
 
         const node = (
             <SelectOption
@@ -359,7 +361,7 @@ export const DeviceColumnSelect = ({
     );
 };
 
-const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, mountPointConstraints, request, requestIndex, requests }) => {
+const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedEncryptedDevices, mountPointConstraints, request, requestIndex, requests }) => {
     const device = request["device-spec"];
     const duplicatedDevice = isDuplicateRequestField(requests, "device-spec", device);
     const [deviceInvalid, errorMessage] = isDeviceMountPointInvalid(deviceData, mountPointConstraints, request);
@@ -376,7 +378,7 @@ const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRe
               idPrefix={idPrefix}
               isRequiredMountPoint={isRequiredMountPoint}
               handleRequestChange={handleRequestChange}
-              lockedLUKSDevices={lockedLUKSDevices}
+              lockedEncryptedDevices={lockedEncryptedDevices}
               request={request}
               requestIndex={requestIndex}
             />
@@ -443,7 +445,7 @@ const getRequestRow = ({
     deviceData,
     handleRequestChange,
     idPrefix,
-    lockedLUKSDevices,
+    lockedEncryptedDevices,
     mountPointConstraints,
     request,
     requestIndex,
@@ -483,7 +485,7 @@ const getRequestRow = ({
                       handleRequestChange={handleRequestChange}
                       idPrefix={rowId + "-device"}
                       isRequiredMountPoint={isRequiredMountPoint}
-                      lockedLUKSDevices={lockedLUKSDevices}
+                      lockedEncryptedDevices={lockedEncryptedDevices}
                       request={request}
                       requestIndex={requestIndex}
                       requests={requests}
@@ -549,8 +551,8 @@ const RequestsTable = ({
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
     const isLoadingPartitioning = mountPointConstraints === undefined || !requests;
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(selectedDisks, deviceData),
+    const lockedEncryptedDevices = useMemo(
+        () => getLockedEncryptedDevices(selectedDisks, deviceData),
         [deviceData, selectedDisks]
     );
 
@@ -628,7 +630,7 @@ const RequestsTable = ({
                               deviceData,
                               handleRequestChange,
                               idPrefix,
-                              lockedLUKSDevices,
+                              lockedEncryptedDevices,
                               mountPointConstraints,
                               request,
                               requestIndex: idx,
@@ -652,8 +654,8 @@ const isUsableDevice = (devSpec, deviceData) => {
         return false;
     }
 
-    // luks is allowed -- we need to be able to unlock it
-    if (device.formatData.type.v === "luks") {
+    // encrypted devices are allowed -- we need to be able to unlock it
+    if (isDeviceEncrypted(device)) {
         return true;
     }
 
