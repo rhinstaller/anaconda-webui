@@ -50,16 +50,11 @@ function watchDirs (dir, onChange) {
 const context = await esbuild.context({
     bundle: true,
     entryPoints: ["./src/index.js"],
-    external: [
-        "*.woff", "*.woff2", "*.jpg",
-        "@patternfly/react-core/src/components/assets/*.svg",
-        "@patternfly/react-core/src/demos/assets/*svg"
-    ], // Allow external font files which live in ../../static/fonts
+    external: ["*.woff", "*.woff2", "*.jpg", "*.svg", "../../assets*"],
     legalComments: "external", // Move all legal comments to a .LEGAL.txt file
     loader: {
         ".js": "jsx",
         ".py": "text",
-        ".svg": "dataurl",
         ".txt": "text",
     },
     minify: production,
