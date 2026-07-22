@@ -104,6 +104,7 @@ export const getAutopartReuseDBusRequest = ({ reuseEFIPart, scheme }) => {
         LVM: cockpit.variant("i", 2),
         LVM_THINP: cockpit.variant("i", 3),
         PLAIN: cockpit.variant("i", 0),
+        STRATIS: cockpit.variant("i", 4),
     };
     const request = {
         "partitioning-scheme": configurationSchemeToDBus?.[scheme],
@@ -116,8 +117,8 @@ export const getAutopartReuseDBusRequest = ({ reuseEFIPart, scheme }) => {
         const removed = reuseEFIPart ? ["/", "/boot"] : ["/", "/boot", "bootloader"];
         request["removed-mount-points"] = cockpit.variant("as", removed);
     } else {
-        // "LVM", "BTRFS", "LVM_THINP"
-        // "/" can't be reallocated by autopartitioing as it is sharing container device with /home
+        // "LVM", "BTRFS", "LVM_THINP", "STRATIS"
+        // "/" can't be reallocated by autopartitioning as it is sharing container device with /home
         const removed = reuseEFIPart ? ["/boot"] : ["/boot", "bootloader"];
         request["removed-mount-points"] = cockpit.variant("as", removed);
         request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
