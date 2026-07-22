@@ -56,13 +56,37 @@ export const getDeviceChildren = ({ device, deviceData }) => {
     }, []);
 };
 
-/* Get the list of IDs of all LUKS devices
+/* Check if a device is encrypted (LUKS format or encrypted Stratis pool)
+ * @param {Object} device - The device data object
+ * @returns {boolean}
+ */
+export const isDeviceEncrypted = (device) => {
+    return (
+        device.formatData?.type.v === "luks" ||
+        (device.type.v === "stratis pool" && device.attrs?.v.encrypted === "True")
+    );
+};
+
+/* Check if an encrypted device has its encryption key set
+ * @param {Object} device - The device data object
+ * @returns {boolean}
+ */
+export const deviceHasEncryptionKey = (device) => {
+    if (device.formatData?.type.v === "luks") {
+        return device.formatData.attrs.v.has_key === "True";
+    }
+    if (device.type.v === "stratis pool" && device.attrs?.v.encrypted === "True") {
+        return device.attrs.v.has_key === "True";
+    }
+    return false;
+};
+
+/* Get the list of IDs of all locked encrypted devices
  * @param {Object} deviceData - The device data object
- * @param {Array} requests - The list of requests from a partitioning
+ * @param {Array} selectedDisks - The list of selected disks
  * @returns {Array}
  */
-export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
-    // check for selected disks and their children devices for locked LUKS devices
+export const getLockedEncryptedDevices = (selectedDisks, deviceData) => {
     const relevantDevs = selectedDisks.flatMap(disk => (
         [disk, ...getDeviceChildren({ device: disk, deviceData })]
     ));
@@ -70,8 +94,8 @@ export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
     return Object.keys(deviceData).filter(d => {
         return (
             relevantDevs.includes(d) &&
-            deviceData[d].formatData.type.v === "luks" &&
-            deviceData[d].formatData.attrs.v.has_key !== "True"
+            isDeviceEncrypted(deviceData[d]) &&
+            !deviceHasEncryptionKey(deviceData[d])
         );
     });
 };
@@ -114,13 +138,17 @@ export const getDeviceByName = (deviceData, name) => {
     return Object.keys(deviceData).find(d => deviceData[d].name?.v === name);
 };
 
-/* Check if a device has a LUKS encrypted parent
+/* Check if a device has an encrypted parent
  * @param {Object} deviceData - The device data object
  * @param {string} device - The ID of the device
  * @returns {boolean}
  * */
 export const hasEncryptedAncestor = (deviceData, device) => {
     if (deviceData[device].type.v === "luks/dm-crypt") {
+        return true;
+    }
+
+    if (isDeviceEncrypted(deviceData[device])) {
         return true;
     }
 

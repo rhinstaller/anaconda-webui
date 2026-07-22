@@ -165,10 +165,10 @@ class StorageEncryption():
         b = self.browser
         for device in encrypted_devices:
             b.wait_in_text(
-                "#unlock-device-dialog-luks-devices",
+                "#unlock-device-dialog-locked-devices",
                 device,
             )
-        b.set_input_text("#unlock-device-dialog-luks-passphrase[type=password]", passphrase)
+        b.set_input_text("#unlock-device-dialog-passphrase[type=password]", passphrase)
         b.click("#unlock-device-dialog-submit-btn")
         # Wait for the dialog to either close or stop being in progress
         with b.wait_timeout(45):
@@ -181,11 +181,11 @@ class StorageEncryption():
         # The devices that were successfully unlocked should not not be present
         # in the 'Locked devices' form field
         for device in successfully_unlocked_devices:
-            b.wait_not_in_text("#unlock-device-dialog-luks-devices", device)
+            b.wait_not_in_text("#unlock-device-dialog-locked-devices", device)
 
         # The locked devices should be present in the 'Locked devices' form field
         for device in list(set(encrypted_devices) - set(successfully_unlocked_devices)):
-            b.wait_in_text("#unlock-device-dialog-luks-devices", device)
+            b.wait_in_text("#unlock-device-dialog-locked-devices", device)
 
         # The devices that were successfully unlocked should appear in the info alert
         if len(successfully_unlocked_devices) > 0:
