@@ -42,12 +42,16 @@ export const getDevicesAction = () => {
             try {
                 const devData = await getDeviceData({ disk: device });
 
-                const free = await getDiskFreeSpace({ diskNames: [device] });
-                // extend it with variants to keep the format consistent
-                devData.free = cockpit.variant(String, free);
+                if (devData["is-disk"].v) {
+                    const free = await getDiskFreeSpace({ diskNames: [device] });
+                    devData.free = cockpit.variant(String, free);
 
-                const total = await getDiskTotalSpace({ diskNames: [device] });
-                devData.total = cockpit.variant(String, total);
+                    const total = await getDiskTotalSpace({ diskNames: [device] });
+                    devData.total = cockpit.variant(String, total);
+                } else {
+                    devData.free = cockpit.variant(String, 0);
+                    devData.total = cockpit.variant(String, devData.size.v);
+                }
 
                 const formatData = await getFormatData({ diskName: device });
                 devData.formatData = formatData;
