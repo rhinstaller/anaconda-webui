@@ -33,20 +33,23 @@ export const getDevicesAction = () => {
             type: "SET_IS_FETCHING",
         });
 
-        const actions = await getActions();
-        const devices = await getDevices();
-        const deviceData = {};
-        const mountPoints = await getMountPoints();
-        const existingSystems = await getExistingSystems();
-        for (const device of devices) {
+        const [actions, devices, mountPoints, existingSystems] = await Promise.all([
+            getActions(),
+            getDevices(),
+            getMountPoints(),
+            getExistingSystems(),
+        ]);
+
+        const results = await Promise.all(devices.map(async device => {
             try {
                 const devData = await getDeviceData({ disk: device });
 
                 if (devData["is-disk"].v) {
-                    const free = await getDiskFreeSpace({ diskNames: [device] });
+                    const [free, total] = await Promise.all([
+                        getDiskFreeSpace({ diskNames: [device] }),
+                        getDiskTotalSpace({ diskNames: [device] }),
+                    ]);
                     devData.free = cockpit.variant(String, free);
-
-                    const total = await getDiskTotalSpace({ diskNames: [device] });
                     devData.total = cockpit.variant(String, total);
                 } else {
                     devData.free = cockpit.variant(String, 0);
@@ -56,15 +59,16 @@ export const getDevicesAction = () => {
                 const formatData = await getFormatData({ diskName: device });
                 devData.formatData = formatData;
 
-                deviceData[device] = devData;
+                return [device, devData];
             } catch (error) {
                 if (error.name === "org.fedoraproject.Anaconda.Modules.Storage.UnknownDeviceError") {
-                    continue;
-                } else {
-                    throw error;
+                    return null;
                 }
+                throw error;
             }
-        }
+        }));
+
+        const deviceData = Object.fromEntries(results.filter(Boolean));
 
         dispatch({
             payload: {
