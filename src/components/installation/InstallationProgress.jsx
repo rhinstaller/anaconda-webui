@@ -14,7 +14,7 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getActiveInstallationTask, getSteps, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getActiveInstallationTask, getInstallationFinished, getSteps, installWithTasks } from "../../apis/boss.js";
 
 import { exitGui, rebootSystem } from "../../helpers/exit.js";
 
@@ -33,6 +33,7 @@ const N_ = cockpit.noop;
 const SCREEN_ID = "anaconda-screen-progress";
 const DETAIL_TYPE_YESNO = "yesno";
 
+const PROGRESS_STEPS_DONE = 4;
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
     ENVIRONMENT_CONFIGURATION: 0,
@@ -109,7 +110,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     setStatus("success");
-                    setCurrentProgressStep(4);
+                    setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
             };
             taskProxy.wait(() => {
@@ -128,18 +129,30 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
             });
         };
 
+        const startNewInstallation = () => {
+            installWithTasks()
+                    .then(
+                        tasks => connectToTask(tasks[0], true),
+                        onCritFail({
+                            context: _("Installation of the system failed"),
+                        })
+                    );
+        };
+
         getActiveInstallationTask()
                 .then(activeTask => {
                     if (activeTask) {
                         connectToTask(activeTask, false);
                     } else {
-                        installWithTasks()
-                                .then(
-                                    tasks => connectToTask(tasks[0], true),
-                                    onCritFail({
-                                        context: _("Installation of the system failed"),
-                                    })
-                                );
+                        getInstallationFinished().then(finished => {
+                            if (finished) {
+                                setStatus("success");
+                                setCurrentProgressStep(PROGRESS_STEPS_DONE);
+                                setSteps([]);
+                            } else {
+                                startNewInstallation();
+                            }
+                        });
                     }
                 }, onCritFail({
                     context: _("Installation of the system failed"),
@@ -211,11 +224,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               paragraph={
                   <Flex direction={{ default: "column" }}>
                       <Content component="p">
-                          {currentProgressStep < 4
+                          {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
                       </Content>
-                      {currentProgressStep < 4 && (
+                      {currentProgressStep < PROGRESS_STEPS_DONE && (
                           <>
                               <FlexItem spacer={{ default: "spacerXl" }} />
                               <ProgressStepper isCenterAligned>
