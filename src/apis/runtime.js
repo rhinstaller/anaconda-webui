@@ -8,7 +8,7 @@ import cockpit from "cockpit";
 import { getPasswordPoliciesAction } from "../actions/runtime-actions.js";
 
 import { debug, error } from "../helpers/log.js";
-import { _getProperty, _setProperty } from "./helpers.js";
+import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime.UserInterface";
@@ -120,4 +120,8 @@ export const getRebootData = () => {
 export const setRebootData = (rebootData) => {
     return _setProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME,
                         "Reboot", cockpit.variant("a{sv}", rebootData));
+};
+
+export const exitInstaller = () => {
+    return _callClient(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME, "Exit", []);
 };

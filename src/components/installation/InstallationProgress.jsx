@@ -197,7 +197,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     ];
 
     const successActions = [
-        <Button key="reboot" onClick={isBootIso ? exitGui : rebootSystem}>{_("Reboot to installed system")}</Button>,
+        <Button key="reboot" onClick={rebootSystem}>{_("Reboot")}</Button>,
         ...(!isBootIso ? [<Button key="exit" variant="link" onClick={exitGui}>{_("Exit to live desktop")}</Button>] : []),
     ];
 
