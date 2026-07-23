@@ -18,11 +18,16 @@ def cmd_cli():
     parser.add_argument("--rsync", help="Rsync development files over on startup", action='store_true')
     parser.add_argument("--host", help="Hostname to rsync", default='test-updates')
     parser.add_argument("--bios", help="Start the VM with BIOS firmware (UEFI is the default)", action='store_true')
+    parser.add_argument("--kickstart", help="Kickstart file name from test/kickstarts/", dest="kickstart_file_name")
+    parser.add_argument("--pause-at-summary", help="Pause automated kickstart install at the review screen",
+                        action='store_true', dest="pause_at_summary")
     args = parser.parse_args()
 
     if args.bios:
         os.environ["TEST_FIRMWARE"] = "bios"
-    machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB)
+    machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
+                                 kickstart_file_name=args.kickstart_file_name,
+                                 pause_at_summary=args.pause_at_summary)
     try:
         machine.start()
 
