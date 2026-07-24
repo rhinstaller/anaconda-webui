@@ -30,7 +30,7 @@ import {
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
-    useRequiredSize,
+    useRequiredSpace,
 } from "../../hooks/Storage.jsx";
 
 import { ListingTable } from "cockpit-components-table.jsx";
@@ -65,7 +65,7 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     const actions = usePlannedActions();
     const mountPoints = usePlannedMountPoints();
     const devices = usePlannedDevices();
-    const requiredSize = useRequiredSize();
+    const requiredSpace = useRequiredSpace();
     const freeSpace = useFreeSpaceForSystem();
 
     const requests = partitioning.requests;
@@ -79,9 +79,9 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     }
 
     let insufficientSizeMessage = "";
-    if (requiredSize > freeSpace) {
+    if (requiredSpace > freeSpace) {
         if (Object.keys(plannedSystemMountPoints).length === 1) {
-            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSize));
+            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSpace));
         } else if (Object.keys(plannedSystemMountPoints).length > 1) {
             insufficientSizeMessage = _("May need more free space");
         }

@@ -125,6 +125,21 @@ export const useUsablePartitions = () => {
     return usablePartitions;
 };
 
+export const useRequiredSpace = () => {
+    const [requiredSpace, setRequiredSpace] = useState();
+
+    useEffect(() => {
+        const update = async () => {
+            const requiredSpace = await getRequiredSpace();
+
+            setRequiredSpace(requiredSpace);
+        };
+        update();
+    }, []);
+
+    return requiredSpace;
+};
+
 export const useRequiredSize = () => {
     const [requiredSize, setRequiredSize] = useState();
 
