@@ -16,7 +16,7 @@ import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 import {
     useFreeSpaceForSystem,
     useOriginalDevices,
-    useRequiredSize,
+    useRequiredSpace,
 } from "../../../hooks/Storage.jsx";
 
 import { createStorageValidationNotification } from "../Common.jsx";
@@ -41,24 +41,24 @@ const StorageCompleteStatus = Object.freeze({
 export const useStorageComplete = () => {
     const { appliedPartitioning, storageScenarioId } = useContext(StorageContext);
     const freeSpace = useFreeSpaceForSystem();
-    const requiredSize = useRequiredSize();
+    const requiredSpace = useRequiredSpace();
 
     const hasInsufficientSpace =
-        requiredSize != null && freeSpace != null && requiredSize > freeSpace;
+        requiredSpace != null && freeSpace != null && requiredSpace > freeSpace;
 
     const pending =
         !appliedPartitioning ||
         !storageScenarioId ||
-        !requiredSize ||
+        !requiredSpace ||
         !freeSpace;
 
     if (pending) {
-        return { freeSpace, requiredSize, status: StorageCompleteStatus.PENDING };
+        return { freeSpace, requiredSpace, status: StorageCompleteStatus.PENDING };
     }
 
     return {
         freeSpace,
-        requiredSize,
+        requiredSpace,
         status: hasInsufficientSpace
             ? StorageCompleteStatus.INSUFFICIENT
             : StorageCompleteStatus.OK,
@@ -97,7 +97,7 @@ const useApplyStorageOnReview = () => {
     return { validationPending, validationReport };
 };
 
-const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
+const useStorageSpaceNotification = (status, freeSpace, requiredSpace) => {
     const { appliedPartitioning, storageScenarioId } = useContext(StorageContext);
     const { setStepNotification } = useContext(PageContext) ?? {};
     const { goToStepById } = useWizardContext();
@@ -113,7 +113,7 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
             const title = _("Not enough available free space");
             const message = cockpit.format(
                 _("$0 is required, but only $1 is available."),
-                cockpit.format_bytes(requiredSize),
+                cockpit.format_bytes(requiredSpace),
                 cockpit.format_bytes(freeSpace)
             );
             const actionLinks = (
@@ -141,7 +141,7 @@ const useStorageSpaceNotification = (status, freeSpace, requiredSize) => {
         fixupStepId,
         freeSpace,
         goToStepById,
-        requiredSize,
+        requiredSpace,
         setStepNotification,
         status,
     ]);
@@ -156,7 +156,7 @@ export const usePageComplete = () => {
     const spaceState = useStorageComplete();
 
     const { validationPending } = useApplyStorageOnReview();
-    useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSize);
+    useStorageSpaceNotification(spaceState.status, spaceState.freeSpace, spaceState.requiredSpace);
 
     let complete;
     if (spaceState.status === StorageCompleteStatus.PENDING) {
