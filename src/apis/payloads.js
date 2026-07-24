@@ -5,6 +5,7 @@
 import cockpit from "cockpit";
 
 import { setPayloadTypeAction } from "../actions/payload.js";
+import { getPayloadSourceAction } from "../actions/payload-source-actions.js";
 
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
@@ -66,6 +67,7 @@ export class PayloadsClient {
         if (payloadType === "DNF") {
             const dnfClient = new PayloadDNFClient(this.client, this.dispatch, payload);
             await dnfClient.init(args);
+            await this.dispatch(getPayloadSourceAction());
         }
     }
 }
