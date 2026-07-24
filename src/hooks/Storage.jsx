@@ -224,8 +224,9 @@ export const usePartitioningReset = () => {
     const pageHasMounted = useRef(false);
     // Always reset the partitioning when entering the installation destination page
     // If the last partitioning applied was from the cockpit storage integration
-    // we should not reset it, as this option does apply the partitioning onNext
+    // or from a kickstart we should not reset it
     const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
+        partitioning.storageScenarioId !== "use-configured-storage-kickstart" &&
         appliedPartitioning &&
         pageHasMounted.current !== true;
 
