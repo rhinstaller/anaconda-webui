@@ -13,6 +13,7 @@ import {
 
 import { _getProperty, _setProperty, objectFromDbus, objectToDbus } from "./helpers.js";
 
+import { startSourceEventMonitor } from "./payload_source.js";
 import { PayloadsClient } from "./payloads.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Payloads.Payload.DNF";
@@ -93,9 +94,12 @@ export class PayloadDNFClient {
 
     stopEventMonitor () {
         this._subscription?.remove();
+        this._sourceSubscription?.remove();
     }
 
     startEventMonitor () {
+        this._sourceSubscription = startSourceEventMonitor(this.client, this.dispatch, this.payload);
+
         this._subscription = this.client.subscribe(
             { },
             (path, iface, signal, args) => {
