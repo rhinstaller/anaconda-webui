@@ -4,32 +4,40 @@
  */
 
 import {
+    getDefaultEnvironment,
     getEnvironmentData,
     getEnvironments,
     getGroupData,
     getPackagesKickstarted,
     getPackagesSelection,
+    resolveEnvironment,
+    setPackagesSelection,
 } from "../apis/payload_dnf.js";
 
 export const getPayloadEnvironmentsAction = () => {
     return async (dispatch) => {
         const environmentIds = await getEnvironments();
 
-        // Fetch environment data for each environment to get descriptions
-        const environmentDataPromises = environmentIds.map(async (envId) => {
-            const envData = await getEnvironmentData(envId);
-            return {
-                description: envData.description,
-                id: envId,
-                name: envData.name,
-            };
-        });
+        const environmentResults = await Promise.all(
+            environmentIds.map(async (envId) => {
+                try {
+                    const envData = await getEnvironmentData(envId);
+                    return {
+                        description: envData.description,
+                        id: envId,
+                        name: envData.name,
+                    };
+                } catch {
+                    return null;
+                }
+            })
+        );
 
-        const environments = await Promise.all(environmentDataPromises);
+        const environments = environmentResults.filter(Boolean);
 
         return dispatch({
             payload: { environments },
-            type: "SET_PAYLOAD_ENVIRONMENTS"
+            type: "SET_PAYLOAD_ENVIRONMENTS",
         });
     };
 };
@@ -76,7 +84,53 @@ export const getPayloadGroupsAction = (environment) => {
 
         return dispatch({
             payload: { groups },
-            type: "SET_PAYLOAD_GROUPS"
+            type: "SET_PAYLOAD_GROUPS",
         });
+    };
+};
+
+/**
+ * Reload environments and re-validate the current selection after the source changes.
+ */
+export const refreshPayloadSoftwareSelectionAction = () => {
+    return async (dispatch) => {
+        await dispatch(getPayloadEnvironmentsAction());
+
+        let selection = await getPackagesSelection();
+        let environment = selection?.environment;
+
+        if (environment) {
+            const resolved = await resolveEnvironment(environment);
+            if (!resolved) {
+                environment = await getDefaultEnvironment();
+                if (environment && await resolveEnvironment(environment)) {
+                    await setPackagesSelection({ environment, groups: [] });
+                } else {
+                    await setPackagesSelection({ environment: "", groups: [] });
+                    environment = "";
+                }
+                await dispatch(getPayloadPackagesSelectionAction());
+                selection = await getPackagesSelection();
+                environment = selection?.environment;
+            }
+        }
+
+        if (environment) {
+            try {
+                await dispatch(getPayloadGroupsAction(environment));
+            } catch {
+                dispatch({
+                    payload: { groups: [] },
+                    type: "SET_PAYLOAD_GROUPS",
+                });
+            }
+        } else {
+            dispatch({
+                payload: { groups: [] },
+                type: "SET_PAYLOAD_GROUPS",
+            });
+        }
+
+        await dispatch(getPayloadPackagesSelectionAction());
     };
 };

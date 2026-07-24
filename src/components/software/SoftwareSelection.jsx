@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
-import { getDefaultEnvironment, resolveEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
+import { resolveEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
 
 import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
@@ -23,15 +23,6 @@ const SCREEN_ID = "anaconda-screen-software-selection";
 const EnvironmentSelection = () => {
     const { environments, selection } = useContext(PayloadContext);
     const environment = selection?.environment;
-
-    useEffect(() => {
-        (async () => {
-            if (!environment) {
-                const defaultEnv = await getDefaultEnvironment();
-                await setPackagesSelection({ environment: defaultEnv, groups: [] });
-            }
-        })();
-    }, [environment]);
 
     const options = useMemo(() => {
         if (!environments) {

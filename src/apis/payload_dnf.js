@@ -9,6 +9,7 @@ import {
     getPayloadEnvironmentsAction,
     getPayloadGroupsAction,
     getPayloadPackagesSelectionAction,
+    refreshPayloadSoftwareSelectionAction,
 } from "../actions/payload-dnf-actions.js";
 
 import { _getProperty, _setProperty, objectFromDbus, objectToDbus } from "./helpers.js";
@@ -85,10 +86,14 @@ export class PayloadDNFClient {
     }
 
     _handleEnvironmentChange (environment) {
-        // Fetch groups when environment changes
         if (environment !== this._lastEnvironment) {
             this._lastEnvironment = environment;
-            this.dispatch(getPayloadGroupsAction(environment));
+            this.dispatch(getPayloadGroupsAction(environment)).catch(() => {
+                this.dispatch({
+                    payload: { groups: [] },
+                    type: "SET_PAYLOAD_GROUPS",
+                });
+            });
         }
     }
 
@@ -112,6 +117,12 @@ export class PayloadDNFClient {
                             this._handleEnvironmentChange(args[1].PackagesSelection.v.environment.v);
                         }
                         this.dispatch(getPayloadPackagesSelectionAction());
+                    }
+                    /* Emitted once the set up sources task loaded the repository metadata */
+                    if (path === this.payload &&
+                        args[0] === INTERFACE_NAME &&
+                        Object.hasOwn(args[1], "Repositories")) {
+                        this.dispatch(refreshPayloadSoftwareSelectionAction());
                     }
                     break;
                 }

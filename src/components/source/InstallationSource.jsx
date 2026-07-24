@@ -22,8 +22,6 @@ import {
     tearDownSources,
 } from "../../apis/payload_source.js";
 
-import { getPayloadSourceAction } from "../../actions/payload-source-actions.js";
-
 import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
@@ -161,7 +159,7 @@ const InstallationSourceFooter = ({ applyCurrentSource, needsApply }) => {
     return <AnacondaWizardFooter footerHelperText={footerHelperText} onNext={onNext} />;
 };
 
-export const InstallationSource = ({ dispatch }) => {
+export const InstallationSource = () => {
     const { isFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const { source } = useContext(PayloadContext);
 
@@ -199,7 +197,6 @@ export const InstallationSource = ({ dispatch }) => {
 
             await setPayloadSources([sourcePath]);
             await setUpSources();
-            await dispatch(getPayloadSourceAction());
         } catch (e) {
             setStepNotification?.({
                 message: e.message || String(e),
@@ -208,7 +205,7 @@ export const InstallationSource = ({ dispatch }) => {
             });
             throw e;
         }
-    }, [dispatch, setStepNotification]);
+    }, [setStepNotification]);
 
     const needsApply = applyFailed ||
         protocol !== backendState.protocol ||
