@@ -86,6 +86,7 @@ export const payloadInitialState = {
         sourceType: null,
         updatesEnabled: true,
     },
+    sourceApplyPending: false,
     type: null,
 };
 
@@ -302,6 +303,8 @@ export const payloadReducer = (state = payloadInitialState, action) => {
                 ...action.payload,
             },
         };
+    } else if (action.type === "SET_SOURCE_APPLY_PENDING") {
+        return { ...state, sourceApplyPending: action.payload.pending };
     } else {
         return state;
     }

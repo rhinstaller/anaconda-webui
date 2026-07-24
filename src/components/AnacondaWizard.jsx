@@ -54,6 +54,7 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     };
 
     const pageContextValue = {
+        dispatch,
         isFormDisabled: isFormDisabled || isFetching,
         isFormValid,
         setIsFormDisabled,
