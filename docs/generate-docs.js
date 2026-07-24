@@ -171,6 +171,18 @@ class MockingSystem {
             }
         );
 
+        // Mock relative imports of plain JS files, e.g. helpers, which are not mocked
+        // themselves; 'index.js' files are mocked and kept as they are.
+        content = content.replace(
+            /import\s+\{\s*([^}]+)\s*\}\s+from\s+["'][^"']*\/(?!index\.js)[^"'/]*\.js["'];?/g,
+            (match, names) => {
+                return names.split(",").map(name => name.trim())
+                        .filter(name => name.length > 0)
+                        .map(name => `const ${name} = () => null;`)
+                        .join("\n");
+            }
+        );
+
         return content;
     }
 

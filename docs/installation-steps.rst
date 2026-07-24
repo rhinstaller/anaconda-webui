@@ -7,12 +7,13 @@ This document describes the step-by-step process for installing the system using
 1. **Welcome**
 2. **Network**
 3. **Date and time**
-4. **Software selection**
-5. **Installation method**
-6. **Storage configuration**
-7. **Create Account**
-8. **Review and install**
-9. **Installation progress**
+4. **Installation source**
+5. **Software selection**
+6. **Installation method**
+7. **Storage configuration**
+8. **Create Account**
+9. **Review and install**
+10. **Installation progress**
 
 Detailed Step Descriptions
 =============================
@@ -32,12 +33,17 @@ Configure network connections for the system.
 
 Configure your system's timezone, date, and time settings. You can also set up network time synchronization.
 
-4. Software selection
+4. Installation source
+----------------------
+
+Configure the installation source for package downloads.
+
+5. Software selection
 ---------------------
 
 Select packages to install by choosing a base environment.
 
-5. Installation method
+6. Installation method
 ----------------------
 
 Choose the target device(s) for the installation and the partitioning scenario.
@@ -79,23 +85,23 @@ Reinstalls Fedora while preserving your existing home directory and user data. U
 
 Installs using only unallocated free space, preserving existing partitions and data. Use when you want to dual-boot with existing operating systems. This option only appears when existing partitions are detected on the selected disks.
 
-6. Storage configuration
+7. Storage configuration
 ------------------------
 
 Automatic partitioning configuration, disk encryption, and storage options.
 
-7. Create Account
+8. Create Account
 -----------------
 
 Set up user accounts and administrator passwords for your system.
 
-8. Review and install
+9. Review and install
 ---------------------
 
 Review your installation settings and start the installation process.
 
-9. Installation progress
-------------------------
+10. Installation progress
+-------------------------
 
 Monitor the installation progress and completion.
 
