@@ -57,3 +57,10 @@ export const getPayloadSourceAction = () => {
         });
     };
 };
+
+export const setSourceApplyPendingAction = (pending) => {
+    return {
+        payload: { pending },
+        type: "SET_SOURCE_APPLY_PENDING",
+    };
+};
