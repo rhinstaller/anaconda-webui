@@ -27,6 +27,7 @@ class TestReview(VirtInstallMachineCase):
             - The review step shows the correct information after setting encryption
             - The hostname is shown for Live ISO
             - The timezone is not shown for Live ISO
+            - The installation source is not shown for Live ISO
             - The UI elements for accessing network configuration are not present
         """
 
@@ -63,6 +64,9 @@ class TestReview(VirtInstallMachineCase):
 
         # check timezone is not visible for Live ISO
         r.check_timezone_not_present()
+
+        # check installation source is not visible for Live ISO
+        r.check_installation_source_not_present()
 
         # Pixel test the review step
         b.assert_pixels(
