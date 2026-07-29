@@ -4,6 +4,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from anacondalib import VirtInstallMachineCase
+from bugzilla_mock import (
+    install_mock_bugzilla,
+    set_mock_bugzilla_bugs,
+    uninstall_mock_bugzilla,
+)
 from installer import Installer
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import get_pretty_name
@@ -201,6 +206,109 @@ class TestBasic(VirtInstallMachineCase):
             "myNonExistingFunction is not defined",
             m.execute("journalctl -b -t anaconda-webui")
         )
+
+    def _open_critical_error_report_step1(self):
+        b = self.browser
+        i = Installer(b, self.machine)
+
+        i.open()
+        b.wait_not_present("#critical-error-bz-report-modal")
+        b.eval_js("window.setTimeout(function() { myNonExistingFunction()}, 0);")
+        b.wait_in_text("#critical-error-bz-report-modal-details", "myNonExistingFunction is not defined")
+        b.wait_visible("#critical-error-bugzilla-apikey")
+
+    def testBugzillaDuplicateDetection(self):
+        """
+        Description:
+            Test duplicate detection in the Bugzilla reporting flow
+
+        Setup:
+            - Install a mock python-bugzilla package that returns canned open bugs
+            - Trigger a JS error to open the critical-error report modal
+
+        Expected results:
+            - After API key validation, potential duplicates are shown
+            - Users can continue to create a new report
+            - Back navigation returns to the duplicate list when matches exist
+            - When no duplicates are found, the duplicates step is skipped
+        """
+        b = self.browser
+        m = self.machine
+        dialog = "#critical-error-bz-report-modal"
+        mock_bugs = [
+            {
+                "id": 2428210,
+                "summary": "WebUI: org.fedoraproject.Anaconda.BootloaderInstallationError: boot loader install failed",
+                "status": "NEW",
+            },
+            {
+                "id": 2491005,
+                "summary": (
+                    "Installation of the system failed: Installing boot loader"
+                    " org.fedoraproject.Anaconda.BootloaderInstallationError:"
+                    " boot loader install failed"
+                ),
+                "status": "NEW",
+            },
+            {
+                "id": 2485664,
+                "summary": (
+                    "Installation of the system failed: Installing boot loader"
+                    " org.fedoraproject.Anaconda.BootloaderInstallationError:"
+                    " boot loader install failed"
+                ),
+                "status": "NEW",
+            },
+        ]
+
+        install_mock_bugzilla(m, mock_bugs)
+        self.addCleanup(uninstall_mock_bugzilla, m)
+
+        self._open_critical_error_report_step1()
+
+        # Step 1: enter API key and continue
+        b.set_input_text("#critical-error-bugzilla-apikey", "fake-valid-api-key")
+        b.wait_visible(f"{dialog} button:contains('Next'):not([disabled])")
+        b.click(f"{dialog} button:contains('Next')")
+
+        # Step 2: duplicates list
+        b.wait_visible("#critical-error-duplicates-alert")
+        b.wait_in_text("#critical-error-duplicates-alert", "Potential duplicate bugs found")
+        b.wait_visible("#critical-error-duplicates-list")
+        b.wait_in_text("#critical-error-duplicate-2428210", "#2428210")
+        b.wait_in_text("#critical-error-duplicate-2428210", "[NEW]")
+        b.wait_in_text("#critical-error-duplicate-2491005", "#2491005")
+        b.wait_in_text("#critical-error-duplicate-2485664", "#2485664")
+        b.wait_visible("#critical-error-continue-new-btn")
+
+        # Continue to create a new report (step 3)
+        b.click("#critical-error-continue-new-btn")
+        b.wait_visible("#critical-error-bug-summary")
+        b.wait_not_present("#critical-error-duplicates-list")
+        b.wait_visible(f"{dialog} button:contains('Report issue')")
+
+        # Back returns to the duplicates step when matches exist
+        b.click(f"{dialog} button:contains('Back')")
+        b.wait_visible("#critical-error-duplicates-list")
+        b.wait_not_present("#critical-error-bug-summary")
+
+        # Back from duplicates returns to API key entry
+        b.click(f"{dialog} button:contains('Back')")
+        b.wait_visible("#critical-error-bugzilla-apikey")
+        b.wait_not_present("#critical-error-duplicates-list")
+
+        # No duplicates: skip straight to bug details
+        set_mock_bugzilla_bugs(m, [])
+        b.set_input_text("#critical-error-bugzilla-apikey", "fake-valid-api-key")
+        b.click(f"{dialog} button:contains('Next')")
+        b.wait_visible("#critical-error-bug-summary")
+        b.wait_not_present("#critical-error-duplicates-list")
+        b.wait_visible(f"{dialog} button:contains('Report issue')")
+
+        # Back skips the empty duplicates step and returns to API key entry
+        b.click(f"{dialog} button:contains('Back')")
+        b.wait_visible("#critical-error-bugzilla-apikey")
+        b.wait_not_present("#critical-error-bug-summary")
 
 
 if __name__ == '__main__':
