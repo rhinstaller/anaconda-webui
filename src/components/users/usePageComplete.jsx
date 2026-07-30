@@ -18,11 +18,14 @@ export const usePageComplete = ({ isHidden } = {}) => {
     if (isHidden) {
         return true;
     }
+
     const hasUser = (accounts?.users?.length ?? 0) > 0;
 
     const rootDefined =
         accounts?.isRootEnabled === true &&
         accounts?.isRootPasswordSet === true;
 
-    return hasUser || rootDefined;
+    const adminUserExists = accounts?.adminUserExists === true;
+
+    return hasUser || rootDefined || adminUserExists;
 };

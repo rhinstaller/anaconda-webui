@@ -77,6 +77,7 @@ export const payloadInitialState = {
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
+    adminUserExists: false,
     canModifyRootConfiguration: true,
     canModifyUserConfiguration: true,
     confirmPassword: "",
