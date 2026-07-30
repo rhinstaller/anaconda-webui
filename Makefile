@@ -217,6 +217,10 @@ create-updates.img: bots
 	-rm *updates.img
 	make $(UPDATES_IMG)
 
+# Download dependency RPMs (cockpit, anaconda-core, udisks) via container.
+fetch-rpms:
+	test/fetch-rpms
+
 test/reference: test/common
 	test/common/pixel-tests pull
 
