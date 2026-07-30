@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import { getUserConfigurationPolicyAction, getUsersAction } from "../actions/users-actions.js";
+import { getAdminUserExistsAction, getUserConfigurationPolicyAction, getUsersAction } from "../actions/users-actions.js";
 
 import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
@@ -52,6 +52,7 @@ export class UsersClient {
         this.startEventMonitor(args);
         return Promise.all([
             this.dispatch(getUsersAction()),
+            this.dispatch(getAdminUserExistsAction()),
             this.dispatch(getUserConfigurationPolicyAction(args)),
         ]);
     }
@@ -119,4 +120,8 @@ export const getIsRootPasswordSet = () => {
 
 export const getCanChangeRootPassword = () => {
     return getProperty("CanChangeRootPassword");
+};
+
+export const getCheckAdminUserExists = () => {
+    return callClient("CheckAdminUserExists", []);
 };

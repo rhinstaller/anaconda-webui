@@ -88,6 +88,12 @@ export const AccountsReviewDescription = () => {
             </Flex>
         );
     }
+    // The root was specified as locked via kickstart
+    // and no user account was created
+    if (accounts.adminUserExists && !hasUsers) {
+        return _("Root account has been configured");
+    }
+
     return null;
 };
 
@@ -461,9 +467,10 @@ export const Accounts = ({
         setIsFormValid(
             (skipAccountCreation || isUserValid || kickstartUsersReadOnly) &&
             (skipRootCreation || isRootValid) &&
-            !(skipRootCreation && skipAccountCreation && !kickstartUsersReadOnly)
+            !(skipRootCreation && skipAccountCreation && !kickstartUsersReadOnly && !accounts.adminUserExists)
         );
     }, [
+        accounts.adminUserExists,
         accounts.isRootEnabled,
         accounts.canModifyUserConfiguration,
         isRootValid,
@@ -517,7 +524,7 @@ const CustomFooter = () => {
 
     return (
         <AnacondaWizardFooter
-          footerHelperText={(!accounts.isRootEnabled && noUserAccount) ? _("You have to enable the root account or create a local user account to proceed.") : null}
+          footerHelperText={(!accounts.isRootEnabled && noUserAccount && !accounts.adminUserExists) ? _("You have to enable the root account or create a local user account to proceed.") : null}
           onNext={onNext}
         />
     );
