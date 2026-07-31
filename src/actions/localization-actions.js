@@ -15,6 +15,11 @@ import {
     getXLayouts,
 } from "../apis/localization.js";
 
+export const setLanguageKickstartedAction = ({ languageKickstarted } = {}) => ({
+    payload: { languageKickstarted },
+    type: "SET_LANGUAGE_KICKSTARTED",
+});
+
 export const getLanguagesAction = () => {
     return async (dispatch) => {
         const languageIds = await getLanguages();

@@ -36,6 +36,7 @@ export const localizationInitialState = {
     compositorLayouts: [],
     keyboardLayouts: [],
     language: "",
+    languageKickstarted: false,
     languages: {},
     plannedVconsole: undefined,
     plannedXlayouts: undefined,
@@ -197,6 +198,8 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             plannedXlayouts: action.payload.plannedXlayouts,
             xlayouts: action.payload.xlayouts,
         };
+    } else if (action.type === "SET_LANGUAGE_KICKSTARTED") {
+        return { ...state, languageKickstarted: action.payload.languageKickstarted };
     } else {
         return state;
     }
