@@ -55,10 +55,6 @@ class TestInstallationProgress(VirtInstallMachineCase):
             "installation-progress-complete",
         )
 
-        # Check that at this stage 'Modify Storage' is not available
-        b.click("#toggle-kebab")
-        b.wait_visible("li.pf-m-aria-disabled #modify-storage")
-
         self.handleReboot()
 
 

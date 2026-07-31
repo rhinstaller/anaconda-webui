@@ -112,8 +112,7 @@ class StorageDestination():
         self.browser.wait_not_present("#cockpit-storage-integration-check-storage-dialog")
 
     def modify_storage(self):
-        self.browser.click("#toggle-kebab")
-        self.browser.click("#modify-storage")
+        self.browser.click("#anaconda-screen-method-launch-storage-editor")
 
     def enter_cockpit_storage(self):
         b = self.browser

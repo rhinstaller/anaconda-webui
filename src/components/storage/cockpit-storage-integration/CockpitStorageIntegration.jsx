@@ -8,19 +8,14 @@ import React, { useEffect, useState } from "react";
 import { Banner } from "@patternfly/react-core/dist/esm/components/Banner/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
-import { DropdownItem } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
-import { Tooltip } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { ArrowLeftIcon } from "@patternfly/react-icons/dist/esm/icons/arrow-left-icon";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-triangle-icon";
 import { TimesIcon } from "@patternfly/react-icons/dist/esm/icons/times-icon";
 
 import { useMaybeBackdrop } from "../../../hooks/CockpitIntegration.jsx";
-import {
-    useLaunchStorageEditor,
-} from "../../../hooks/Storage.jsx";
 
 import { CheckStorageDialog } from "./CheckStorageDialog.jsx";
 import { ModifyStorageSideBar } from "./CockpitStorageIntegrationSidebar.jsx";
@@ -161,32 +156,4 @@ export const CockpitStorageIntegration = ({
             </Modal>
         </>
     );
-};
-
-export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
-    const launchStorageEditor = useLaunchStorageEditor({ setShowStorage });
-    const isAriaDisabled = currentStepId !== "anaconda-screen-method";
-    const item = (
-        <DropdownItem
-          id="modify-storage"
-          isAriaDisabled={isAriaDisabled}
-          onClick={launchStorageEditor}
-        >
-            {_("Launch storage editor")}
-        </DropdownItem>
-    );
-
-    if (!isAriaDisabled) {
-        return item;
-    } else {
-        return (
-            <Tooltip
-              id="modify-storage-tooltip"
-              content={_("Storage editor is available only in the `Installation method` step.")}>
-                <span>
-                    {item}
-                </span>
-            </Tooltip>
-        );
-    }
 };
