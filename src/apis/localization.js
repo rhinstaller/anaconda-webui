@@ -5,10 +5,13 @@
 
 import cockpit from "cockpit";
 
-import { getKeyboardConfigurationAction, getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardConfigurationAction, getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction, setLanguageKickstartedAction } from "../actions/localization-actions.js";
 
+import { convertToCockpitLang, getLangCookie, setLangCookie } from "../helpers/language.js";
 import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
+
+import { setLocale } from "./boss.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Localization";
@@ -41,16 +44,30 @@ export class LocalizationClient {
         this.dispatch = dispatch;
     }
 
-    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Localization client closed"));
 
         this.startEventMonitor();
 
-        await this.initData();
+        await this.initData(args);
     }
 
-    async initData () {
+    async initData ({ automatedInstall = false } = {}) {
+        const languageKickstarted = await getLanguageKickstarted();
+        this.dispatch(setLanguageKickstartedAction({
+            languageKickstarted: Boolean(languageKickstarted)
+        }));
+
         await this.dispatch(getLanguageAction());
+
+        // Apply runtime locale for kickstarted automated installs
+        // (LanguageSelector.componentDidMount won't run since the wizard
+        //  jumps to review, so we must set locale here)
+        if (automatedInstall && languageKickstarted) {
+            const language = await getLanguage();
+            applyKickstartLanguage(language);
+        }
+
         await this.dispatch(getLanguagesAction());
         await this.dispatch(getKeyboardLayoutsAction());
         await this.dispatch(getKeyboardConfigurationAction());
@@ -192,6 +209,26 @@ export const getKeyboardLayouts = async () => {
  */
 export const getXLayouts = () => {
     return getProperty("XLayouts");
+};
+
+/**
+ * @returns {Promise<boolean>}   Whether the language was set in a kickstart
+ */
+export const getLanguageKickstarted = () => {
+    return getProperty("LanguageKickstarted");
+};
+
+/**
+ * Apply a kickstart language to the running installer UI.
+ * Mirrors LanguageSelector.componentDidMount() logic.
+ */
+const applyKickstartLanguage = (language) => {
+    const cockpitLang = convertToCockpitLang({ lang: language });
+    if (getLangCookie() !== cockpitLang) {
+        setLangCookie({ cockpitLang });
+        window.location.reload(true);
+    }
+    setLocale({ locale: language });
 };
 
 export const setXKeyboardDefaults = async () => {

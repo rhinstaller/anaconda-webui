@@ -210,6 +210,33 @@ class TestKickstartAutomatedNonCriticalError(VirtInstallMachineCase):
         p.wait_installation_failed()
 
 
+class TestKickstartAutomatedLangRuntime(VirtInstallMachineCase):
+    """Kickstart install with language set is applied during runtime."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testLang.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def testRuntimeLangSet(self):
+        """
+        Description:
+            Boot with kickstart setting language with lang command.
+
+        Expected results:
+            - The UI is translated into language set in kickstart.
+        """
+        b = self.browser
+        r = Review(b, self.machine)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        r.check_language("Italiano (Italia)")
+
+
 class TestKickstartAutomatedFatalError(VirtInstallMachineCase):
     """Kickstart install with a fatal error shows the critical report dialog."""
 
