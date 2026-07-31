@@ -182,6 +182,14 @@ class LanguageDBus():
             {LOCALIZATION_OBJECT_PATH} \
             {LOCALIZATION_INTERFACE} VirtualConsoleKeymap s ""')
 
+    def dbus_get_language_kickstarted(self):
+        out = self.machine.execute(f'busctl --address="{self._bus_address}" \
+            get-property \
+            {LOCALIZATION_SERVICE} \
+            {LOCALIZATION_OBJECT_PATH} \
+            {LOCALIZATION_INTERFACE} LanguageKickstarted')
+        return "true" in out
+
 
 class Language(Locale, Keyboard, LanguageDBus):
     def __init__(self, browser, machine):

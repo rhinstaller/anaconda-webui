@@ -156,8 +156,9 @@ class VirtInstallMachineCase(MachineCase):
         m = self.machine
         b = self.browser
         lang = Language(b, m)
-        lang.dbus_set_language("en_US.UTF-8")
-        lang.dbus_set_locale("en_US.UTF-8")
+        if not lang.dbus_get_language_kickstarted():
+            lang.dbus_set_language("en_US.UTF-8")
+            lang.dbus_set_locale("en_US.UTF-8")
         lang.dbus_set_compositor_layouts(["us"])
         lang.dbus_reset_xlayouts()
         lang.dbus_reset_virtual_console_keymap()
