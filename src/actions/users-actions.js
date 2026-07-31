@@ -5,6 +5,7 @@
 
 import {
     getCanChangeRootPassword,
+    getCheckAdminUserExists,
     getIsRootAccountLocked,
     getIsRootPasswordSet,
     getUsers,
@@ -62,6 +63,11 @@ export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) 
             usersSpecifiedByKickstart,
         }),
     }));
+};
+
+export const getAdminUserExistsAction = () => async (dispatch) => {
+    const adminUserExists = await getCheckAdminUserExists();
+    dispatch(setUsersAction({ adminUserExists: !!adminUserExists }));
 };
 
 export const getUsersAction = () => async (dispatch) => {
