@@ -107,6 +107,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               title={title}
               dispatch={dispatch}
               setCurrentStepId={setCurrentStepId}
+              setShowStorage={setShowStorage}
               showStorage={showStorage}
             />
         </>

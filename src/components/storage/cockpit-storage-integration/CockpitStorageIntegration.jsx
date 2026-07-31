@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Banner } from "@patternfly/react-core/dist/esm/components/Banner/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
@@ -17,16 +17,9 @@ import { ArrowLeftIcon } from "@patternfly/react-icons/dist/esm/icons/arrow-left
 import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/esm/icons/exclamation-triangle-icon";
 import { TimesIcon } from "@patternfly/react-icons/dist/esm/icons/times-icon";
 
-import {
-    getDeviceAncestors
-} from "../../../helpers/storage.js";
-
-import { StorageContext, TargetSystemRootContext } from "../../../contexts/Common.jsx";
-
 import { useMaybeBackdrop } from "../../../hooks/CockpitIntegration.jsx";
 import {
-    useMountPointConstraints,
-    useOriginalDevices,
+    useLaunchStorageEditor,
 } from "../../../hooks/Storage.jsx";
 
 import { CheckStorageDialog } from "./CheckStorageDialog.jsx";
@@ -171,30 +164,13 @@ export const CockpitStorageIntegration = ({
 };
 
 export const ModifyStorage = ({ currentStepId, setShowStorage }) => {
-    const targetSystemRoot = useContext(TargetSystemRootContext);
-    const { diskSelection } = useContext(StorageContext);
-    const devices = useOriginalDevices();
-    const availableDevices = [
-        ...diskSelection.selectedDisks,
-        ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
-    ];
-    const mountPointConstraints = useMountPointConstraints();
-    const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
-    const cockpitAnaconda = JSON.stringify({
-        available_devices: availableDevices.map(device => devices[device].path.v),
-        efi: isEfi,
-        mount_point_prefix: targetSystemRoot,
-    });
-    // Allow to modify storage only when we are in the scenario selection page
+    const launchStorageEditor = useLaunchStorageEditor({ setShowStorage });
     const isAriaDisabled = currentStepId !== "anaconda-screen-method";
     const item = (
         <DropdownItem
           id="modify-storage"
           isAriaDisabled={isAriaDisabled}
-          onClick={() => {
-              window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
-              setShowStorage(true);
-          }}
+          onClick={launchStorageEditor}
         >
             {_("Launch storage editor")}
         </DropdownItem>
