@@ -31,6 +31,10 @@ from machine.testvm import (
 # suite expects it to not exist
 os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
+# Single source of truth for installer VM RAM (CI scheduler, provision, local runs).
+# Cockpit's run-tests defaults nondestructive machines to ~1 GB; Anaconda needs more.
+INSTALLER_VM_MEMORY_MB = 4096
+
 
 class VirtInstallMachine(VirtMachine):
     http_install_server = None
@@ -41,6 +45,9 @@ class VirtInstallMachine(VirtMachine):
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
         self.pause_at_summary = kwargs.pop("pause_at_summary", False)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
+        # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
+        # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
+        kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
         super().__init__(image, **kwargs)
 
     def _attach_libvirt_domain(self, timeout_sec=120):

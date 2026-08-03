@@ -17,7 +17,7 @@ sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
 
 from installer import Installer
 from language import Language
-from machine_install import VirtInstallMachine
+from machine_install import INSTALLER_VM_MEMORY_MB, VirtInstallMachine  # noqa: F401  (INSTALLER_VM_MEMORY_MB re-exported)
 from payload_dnf import PayloadDNFDBus
 from progress import Progress
 from storage import Storage
@@ -27,9 +27,6 @@ from users import Users
 from utils import add_public_key
 
 pixel_tests_ignore = ["#anaconda-screen-review-target-system-timezone"]
-
-
-INSTALLER_VM_MEMORY_MB = 4096
 
 
 class VirtInstallMachineCase(MachineCase):
