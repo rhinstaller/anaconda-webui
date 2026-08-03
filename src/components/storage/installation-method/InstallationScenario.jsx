@@ -6,9 +6,13 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo } from "react";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
+import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { Hint, HintBody } from "@patternfly/react-core/dist/esm/components/Hint/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
+import { WrenchIcon } from "@patternfly/react-icons/dist/esm/icons/wrench-icon";
 
 import { setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
@@ -19,6 +23,7 @@ import {
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import {
+    useLaunchStorageEditor,
     useOriginalDevices,
 } from "../../../hooks/Storage.jsx";
 
@@ -111,11 +116,34 @@ const InstallationScenarioSelector = ({
     return scenarioItems;
 };
 
+const StorageEditorButton = ({ idPrefix, setShowStorage }) => {
+    const launchStorageEditor = useLaunchStorageEditor({ setShowStorage });
+
+    return (
+        <Hint className={idPrefix + "-storage-editor-hint"}>
+            <HintBody>
+                <Content component="p">
+                    {_("Need a different layout? Resize, create, or delete partitions and set up LVM in the storage editor. All changes take effect immediately.")}
+                </Content>
+                <Button
+                  icon={<WrenchIcon />}
+                  id={idPrefix + "-launch-storage-editor"}
+                  variant="secondary"
+                  onClick={launchStorageEditor}
+                >
+                    {_("Launch storage editor")}
+                </Button>
+            </HintBody>
+        </Hint>
+    );
+};
+
 export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFirstScreen,
     setIsScenarioValid,
+    setShowStorage,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
@@ -141,23 +169,30 @@ export const InstallationScenario = ({
     }
 
     return (
-        <FormSection
-          title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
-        >
-            <FormGroup className={idPrefix + "-scenario-group"} isStack data-scenario={storageScenarioId}>
-                {showLuksUnlock &&
-                (
-                    <EncryptedDevices
+        <>
+            <FormSection
+              title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
+            >
+                <FormGroup className={idPrefix + "-scenario-group"} isStack data-scenario={storageScenarioId}>
+                    {showLuksUnlock &&
+                    (
+                        <EncryptedDevices
+                          dispatch={dispatch}
+                          idPrefix={idPrefix}
+                          lockedLUKSDevices={lockedLUKSDevices}
+                        />
+                    )}
+                    <InstallationScenarioSelector
                       dispatch={dispatch}
                       idPrefix={idPrefix}
-                      lockedLUKSDevices={lockedLUKSDevices}
                     />
-                )}
-                <InstallationScenarioSelector
-                  dispatch={dispatch}
+                </FormGroup>
+            </FormSection>
+            {setShowStorage &&
+                <StorageEditorButton
                   idPrefix={idPrefix}
-                />
-            </FormGroup>
-        </FormSection>
+                  setShowStorage={setShowStorage}
+                />}
+        </>
     );
 };
