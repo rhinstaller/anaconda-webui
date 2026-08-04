@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { getActiveInstallationTask } from "../apis/boss.js";
+import { getActiveInstallationTask, getInstallationFinished } from "../apis/boss.js";
 
 import { PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
@@ -73,6 +73,12 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
                 .then(activeTask => {
                     if (activeTask) {
                         cockpit.location.go([finalStepId]);
+                    } else {
+                        getInstallationFinished().then(finished => {
+                            if (finished) {
+                                cockpit.location.go([finalStepId]);
+                            }
+                        });
                     }
                 });
     }, [finalStepId]);

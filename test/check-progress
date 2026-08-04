@@ -47,6 +47,12 @@ class TestInstallationProgress(VirtInstallMachineCase):
 
         p.wait_done()
         b.wait_in_text("h2", "Successfully installed")
+        # Reload after completion: InstallationFinished should prevent a new install attempt.
+        # Short timeout: success screen must appear in seconds, not minutes — a full
+        # re-install would take much longer, proving no new install was triggered.
+        b.reload()
+        with b.wait_timeout(30):
+            b.wait_in_text("h2", "Successfully installed")
         b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
 
         # Pixel test the complete progress step
