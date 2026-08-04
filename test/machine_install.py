@@ -223,12 +223,12 @@ class VirtInstallMachine(VirtMachine):
             if not self.is_live():
                 Machine.wait_boot(self, timeout_sec=300)
 
-                for _ in range(30):
+                for _ in range(150):
                     try:
                         Machine.execute(self, "journalctl -t anaconda | grep 'anaconda: ui.webui: cockpit web view has been started'")
                         break
                     except subprocess.CalledProcessError:
-                        time.sleep(10)
+                        time.sleep(2)
                 else:
                     raise AssertionError("Webui initialization did not finish")
 

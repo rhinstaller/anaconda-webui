@@ -82,6 +82,28 @@ The most robust way of doing this is::
 
     make create-updates.img
 
+For faster development cycles, use ``quick-updates.img`` to build an updates.img
+directly from sources without RPM packaging or a build VM::
+
+    make quick-updates.img
+
+To also include anaconda backend changes::
+
+    ANACONDA_DIR=~/src/anaconda make quick-updates.img
+
+This is significantly faster than ``make create-updates.img`` (~5s vs ~60s) as
+it skips the RPM build. It requires ``make fetch-rpms`` or ``make create-updates.img``
+to have run once to download the dependency RPMs.
+
+Note: this only includes source files (JS, Python, shell scripts, systemd units).
+It does not pull in RPM dependencies — use ``make create-updates.img`` if you need
+those. The resulting updates.img is larger than the RPM-only version, so test VMs
+may need more memory to unpack the initramfs (4 GB is recommended).
+
+For pure frontend development, ``make rsync`` is still the fastest option — it
+watches for source changes and syncs them to a running VM instantly, without
+rebuilding the updates.img or restarting the VM.
+
 Interactive browser
 -------------------
 
