@@ -21,7 +21,7 @@ import {
 } from "../../apis/payload_source.js";
 
 import { refreshPayloadSoftwareSelectionAction } from "../../actions/payload-dnf-actions.js";
-import { getPayloadSourceAction } from "../../actions/payload-source-actions.js";
+import { getPayloadSourceAction, setSourceApplyPendingAction } from "../../actions/payload-source-actions.js";
 
 import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
@@ -125,12 +125,12 @@ const buildDesiredSource = ({ protocol, url, urlType }) => {
     };
 };
 
-const InstallationSourceFooter = ({ applyCurrentSource, isDirty }) => {
+const InstallationSourceFooter = ({ applyCurrentSource, needsApply }) => {
     const { setIsFormDisabled } = useContext(PageContext) ?? {};
     const [isLoading, setIsLoading] = useState(false);
 
     const onNext = async ({ goToNextStep }) => {
-        if (!isDirty) {
+        if (!needsApply) {
             goToNextStep();
             return;
         }
@@ -159,7 +159,7 @@ const InstallationSourceFooter = ({ applyCurrentSource, isDirty }) => {
 
 export const InstallationSource = ({ dispatch }) => {
     const { isFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
-    const { source } = useContext(PayloadContext);
+    const { source, sourceApplyPending } = useContext(PayloadContext);
 
     const [protocol, setProtocol] = useState(PROTOCOL_CLOSEST_MIRROR);
     const [url, setUrl] = useState("");
@@ -224,7 +224,9 @@ export const InstallationSource = ({ dispatch }) => {
             await setUpSources();
             await dispatch(getPayloadSourceAction());
             await dispatch(refreshPayloadSoftwareSelectionAction());
+            dispatch(setSourceApplyPendingAction(false));
         } catch (e) {
+            dispatch(setSourceApplyPendingAction(true));
             setStepNotification?.({
                 message: e.message || String(e),
                 step: SCREEN_ID,
@@ -253,24 +255,26 @@ export const InstallationSource = ({ dispatch }) => {
         );
     }, [initialUiState, uiState]);
 
+    const needsApply = isDirty || sourceApplyPending;
+
     const applyCurrentSource = useCallback(async () => {
-        if (!isDirty) {
+        if (!needsApply) {
             return;
         }
 
         const desired = buildDesiredSource(uiState);
         await applySource(desired);
         setInitialUiState(uiState);
-    }, [applySource, isDirty, uiState]);
+    }, [applySource, needsApply, uiState]);
 
     const footer = useMemo(
         () => (
             <InstallationSourceFooter
               applyCurrentSource={applyCurrentSource}
-              isDirty={isDirty}
+              needsApply={needsApply}
             />
         ),
-        [applyCurrentSource, isDirty]
+        [applyCurrentSource, needsApply]
     );
     useWizardFooter(footer);
 
