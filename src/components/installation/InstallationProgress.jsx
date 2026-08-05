@@ -32,6 +32,7 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 const SCREEN_ID = "anaconda-screen-progress";
 const DETAIL_TYPE_YESNO = "yesno";
+const PROGRESS_STEPS_DONE = 4;
 
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
@@ -109,7 +110,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     setStatus("success");
-                    setCurrentProgressStep(4);
+                    setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
             };
             taskProxy.wait(() => {
@@ -211,11 +212,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               paragraph={
                   <Flex direction={{ default: "column" }}>
                       <Content component="p">
-                          {currentProgressStep < 4
+                          {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
                       </Content>
-                      {currentProgressStep < 4 && (
+                      {currentProgressStep < PROGRESS_STEPS_DONE && (
                           <>
                               <FlexItem spacer={{ default: "spacerXl" }} />
                               <ProgressStepper isCenterAligned>
