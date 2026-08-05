@@ -9,6 +9,7 @@ import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/reac
 
 import { BossClient } from "../apis/boss.js";
 
+import { getInstallationStatusAction, getPendingErrorAction } from "../actions/boss-actions.js";
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
 import { getInstallerConfValue, parseAnacondaConfBool, readConf } from "../helpers/conf.js";
@@ -34,7 +35,7 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+export const Application = ({ conf, dispatch, installationStatus, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
@@ -69,13 +70,17 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         document.addEventListener("click", allowExternalNavigation);
 
         new BossClient(address, dispatch).init({ automatedInstall, conf })
+                .then(() => Promise.all([
+                    dispatch(getInstallationStatusAction()),
+                    dispatch(getPendingErrorAction()),
+                ]))
                 .then(() => {
                     setStoreInitialized(true);
                 }, onCritFail({ context: N_("Reading information about the computer failed.") }));
     }, [address, automatedInstall, conf, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!address || !storeInitialized) {
+    if (!address || !storeInitialized || !installationStatus) {
         debug("Loading initial data...");
         return <ApplicationLoading />;
     }
@@ -210,6 +215,7 @@ export const ApplicationWithErrorBoundary = () => {
                     <Application
                       conf={conf}
                       dispatch={dispatch}
+                      installationStatus={state.boss.installationStatus}
                       isFetching={state.misc.isFetching}
                       onCritFail={onCritFail}
                       osRelease={osRelease}

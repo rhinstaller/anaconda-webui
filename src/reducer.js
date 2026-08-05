@@ -42,6 +42,14 @@ export const localizationInitialState = {
     xlayouts: undefined,
 };
 
+export const INSTALLATION_STATUS = { FAILED: 4, NOT_STARTED: 1, RUNNING: 2, SUCCEEDED: 3 };
+
+/* Initial state for the boss store substate */
+export const bossInitialState = {
+    installationStatus: null,
+    pendingError: { message: "", type: "" },
+};
+
 /* Intial state for the network store substate */
 export const networkInitialState = {
     connected: null
@@ -89,6 +97,7 @@ export const usersInitialState = {
 
 /* Initial state for the global store */
 export const initialState = {
+    boss: bossInitialState,
     localization: localizationInitialState,
     misc: miscInitialState,
     network: networkInitialState,
@@ -120,6 +129,7 @@ export const useReducerWithThunk = (reducer, initialState) => {
 
 export const reducer = (state, action) => {
     return ({
+        boss: bossReducer(state.boss, action),
         localization: localizationReducer(state.localization, action),
         misc: miscReducer(state.misc, action),
         network: networkReducer(state.network, action),
@@ -197,6 +207,16 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             plannedXlayouts: action.payload.plannedXlayouts,
             xlayouts: action.payload.xlayouts,
         };
+    } else {
+        return state;
+    }
+};
+
+export const bossReducer = (state = bossInitialState, action) => {
+    if (action.type === "GET_INSTALLATION_STATUS") {
+        return { ...state, installationStatus: action.payload.status };
+    } else if (action.type === "GET_PENDING_ERROR") {
+        return { ...state, pendingError: { message: action.payload.message, type: action.payload.type } };
     } else {
         return state;
     }
