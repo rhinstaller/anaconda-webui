@@ -7,6 +7,9 @@ import cockpit from "cockpit";
 
 import { useContext, useEffect, useState } from "react";
 
+import {
+    isDeviceEncrypted,
+} from "../../../../helpers/storage.js";
 import { AvailabilityState } from "../helpers.js";
 
 import {
@@ -39,7 +42,7 @@ export const useAvailabilityMountPointMapping = () => {
 
         const missingNMParts = getMissingNonmountablePartitions(usablePartitions, mountPointConstraints);
         const hasFilesystems = usablePartitions
-                .filter(device => device.formatData.mountable.v || device.formatData.type.v === "luks").length > 0;
+                .filter(device => device.formatData.mountable.v || isDeviceEncrypted(device)).length > 0;
 
         if (!hasFilesystems) {
             // No usable devices on the selected disks: hide the scenario to reduce UI clutter

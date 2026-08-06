@@ -13,7 +13,7 @@ import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js
 import { setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
 import {
-    getLockedLUKSDevices,
+    getLockedEncryptedDevices,
 } from "../../../helpers/storage.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
@@ -125,18 +125,18 @@ export const InstallationScenario = ({
         scenario.available && !scenario.hidden
     ));
 
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
+    const lockedEncryptedDevices = useMemo(
+        () => getLockedEncryptedDevices(diskSelection.selectedDisks, devices),
         [devices, diskSelection.selectedDisks]
     );
 
-    const showLuksUnlock = lockedLUKSDevices?.length > 0;
+    const showEncryptedUnlock = lockedEncryptedDevices?.length > 0;
 
     useEffect(() => {
         setIsScenarioValid(!!storageScenarioId);
     }, [storageScenarioId, setIsScenarioValid]);
 
-    if (noScenariosAvailable && !showLuksUnlock) {
+    if (noScenariosAvailable && !showEncryptedUnlock) {
         return null;
     }
 
@@ -145,12 +145,12 @@ export const InstallationScenario = ({
           title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
         >
             <FormGroup className={idPrefix + "-scenario-group"} isStack data-scenario={storageScenarioId}>
-                {showLuksUnlock &&
+                {showEncryptedUnlock &&
                 (
                     <EncryptedDevices
                       dispatch={dispatch}
                       idPrefix={idPrefix}
-                      lockedLUKSDevices={lockedLUKSDevices}
+                      lockedEncryptedDevices={lockedEncryptedDevices}
                     />
                 )}
                 <InstallationScenarioSelector

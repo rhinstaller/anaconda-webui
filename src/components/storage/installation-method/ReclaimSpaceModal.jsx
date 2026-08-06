@@ -30,7 +30,7 @@ import { UndoIcon } from "@patternfly/react-icons/dist/esm/icons/undo-icon";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/storage_partitioning_automatic_resizable.js";
 
-import { getDeviceAncestors, getDeviceTypeInfo, unitMultiplier } from "../../../helpers/storage.js";
+import { deviceHasEncryptionKey, getDeviceAncestors, getDeviceTypeInfo, isDeviceEncrypted, unitMultiplier } from "../../../helpers/storage.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
@@ -222,7 +222,7 @@ const ReclaimFooter = ({ onClose, onReclaim, unappliedActions }) => {
 const isDeviceLocked = ({ device }) => {
     return (
         device.formatData.type.v === "bitlocker" ||
-        (device.formatData.type.v === "luks" && device.formatData.attrs.v.has_key !== "True")
+        (isDeviceEncrypted(device) && !deviceHasEncryptionKey(device))
     );
 };
 
