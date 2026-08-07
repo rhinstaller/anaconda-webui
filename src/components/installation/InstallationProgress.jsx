@@ -101,16 +101,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     });
                 });
                 categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
-                    if (detailType === DETAIL_TYPE_YESNO) {
-                        setErrorDialogData({
-                            categoryProxy,
-                            message,
-                        });
-                    } else {
-                        setStatus("danger");
-                        categoryProxy.RespondToError(false);
-                        onCritFail()({ message });
-                    }
+                    handleError(message, detailType, categoryProxy);
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     setStatus("success");
@@ -129,45 +120,56 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 ret => setSteps(ret.v),
                                 onCritFail()
                             );
-                    if (pendingError.message) {
-                        if (pendingError.type === DETAIL_TYPE_YESNO) {
-                            setErrorDialogData({
-                                categoryProxy,
-                                message: pendingError.message,
-                            });
-                        } else {
-                            setStatus("danger");
-                            onCritFail()({ message: pendingError.message });
-                        }
-                    }
+                    handleError(pendingError.message, pendingError.type, categoryProxy);
                 }
             });
         };
 
-        if (installationStatus === INSTALLATION_STATUS.SUCCEEDED) {
-            setStatus("success");
-            setCurrentProgressStep(PROGRESS_STEPS_DONE);
-            setSteps([]);
-        } else if (installationStatus === INSTALLATION_STATUS.FAILED) {
-            onCritFail()({ message: pendingError.message });
-        } else if (installationStatus === INSTALLATION_STATUS.RUNNING) {
-            getActiveInstallationTask().then(activeTask => {
-                if (activeTask) {
-                    connectToTask(activeTask, false);
-                } else {
-                    // this should be impossible, but will guard against (and log) just in case...
-                    debug("Installation status is RUNNING but no active task found, starting installation");
-                    installWithTasks().then(
-                        tasks => connectToTask(tasks[0], true),
-                        onCritFail({ context: _("Installation of the system failed") })
-                    );
-                }
-            }, onCritFail({ context: _("Installation of the system failed") }));
-        } else {
+        const startNewInstallation = () =>
             installWithTasks().then(
                 tasks => connectToTask(tasks[0], true),
                 onCritFail({ context: _("Installation of the system failed") })
             );
+
+        const handleError = (message, detailType, categoryProxy) => {
+            if (!message) return;
+
+            if (detailType === DETAIL_TYPE_YESNO && categoryProxy) {
+                setErrorDialogData({ categoryProxy, message });
+            } else {
+                setStatus("danger");
+                categoryProxy?.RespondToError(false);
+                onCritFail()({ message });
+            }
+        };
+
+        switch (installationStatus) {
+        case INSTALLATION_STATUS.SUCCEEDED:
+            setStatus("success");
+            setCurrentProgressStep(PROGRESS_STEPS_DONE);
+            setSteps([]);
+            break;
+
+        case INSTALLATION_STATUS.FAILED:
+            handleError(pendingError.message, pendingError.type, null);
+            break;
+
+        case INSTALLATION_STATUS.RUNNING:
+            getActiveInstallationTask().then(
+                activeTask => {
+                    if (activeTask) {
+                        connectToTask(activeTask, false);
+                    } else {
+                        debug("Installation status is RUNNING but no active task found, starting installation");
+                        startNewInstallation();
+                    }
+                },
+                onCritFail({ context: _("Installation of the system failed") })
+            );
+            break;
+
+        default:
+            startNewInstallation();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- pendingError is read on reconnection only, not reactively
     }, [installationStatus, onCritFail]);
