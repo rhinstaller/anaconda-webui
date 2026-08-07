@@ -16,9 +16,12 @@ import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon
 
 import { BossClient, getActiveInstallationTask, getSteps, installWithTasks } from "../../apis/boss.js";
 
-import { exitGui, rebootSystem } from "../../helpers/exit.js";
+import { INSTALLATION_STATUS } from "../../reducer.js";
 
-import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { exitGui, rebootSystem } from "../../helpers/exit.js";
+import { debug } from "../../helpers/log.js";
+
+import { BossContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
@@ -32,7 +35,6 @@ const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 const SCREEN_ID = "anaconda-screen-progress";
 const DETAIL_TYPE_YESNO = "yesno";
-
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
     ENVIRONMENT_CONFIGURATION: 0,
@@ -40,6 +42,8 @@ const progressStepsMap = {
     STORAGE_CONFIGURATION: 0,
     SYSTEM_CONFIGURATION: 3,
 };
+
+const PROGRESS_STEPS_DONE = Math.max(...Object.values(progressStepsMap)) + 1;
 
 export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [status, setStatus] = useState();
@@ -50,6 +54,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
+    const { installationStatus, pendingError } = useContext(BossContext);
 
     useAutoReboot(status, automatedInstall);
 
@@ -96,20 +101,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     });
                 });
                 categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
-                    if (detailType === DETAIL_TYPE_YESNO) {
-                        setErrorDialogData({
-                            categoryProxy,
-                            message,
-                        });
-                    } else {
-                        setStatus("danger");
-                        categoryProxy.RespondToError(false);
-                        onCritFail()({ message });
-                    }
+                    handleError(message, detailType, categoryProxy);
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     setStatus("success");
-                    setCurrentProgressStep(4);
+                    setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
             };
             taskProxy.wait(() => {
@@ -124,27 +120,59 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 ret => setSteps(ret.v),
                                 onCritFail()
                             );
+                    handleError(pendingError.message, pendingError.type, categoryProxy);
                 }
             });
         };
 
-        getActiveInstallationTask()
-                .then(activeTask => {
+        const startNewInstallation = () =>
+            installWithTasks().then(
+                tasks => connectToTask(tasks[0], true),
+                onCritFail({ context: _("Installation of the system failed") })
+            );
+
+        const handleError = (message, detailType, categoryProxy) => {
+            if (!message) return;
+
+            if (detailType === DETAIL_TYPE_YESNO && categoryProxy) {
+                setErrorDialogData({ categoryProxy, message });
+            } else {
+                setStatus("danger");
+                categoryProxy?.RespondToError(false);
+                onCritFail()({ message });
+            }
+        };
+
+        switch (installationStatus) {
+        case INSTALLATION_STATUS.SUCCEEDED:
+            setStatus("success");
+            setCurrentProgressStep(PROGRESS_STEPS_DONE);
+            setSteps([]);
+            break;
+
+        case INSTALLATION_STATUS.FAILED:
+            handleError(pendingError.message, pendingError.type, null);
+            break;
+
+        case INSTALLATION_STATUS.RUNNING:
+            getActiveInstallationTask().then(
+                activeTask => {
                     if (activeTask) {
                         connectToTask(activeTask, false);
                     } else {
-                        installWithTasks()
-                                .then(
-                                    tasks => connectToTask(tasks[0], true),
-                                    onCritFail({
-                                        context: _("Installation of the system failed"),
-                                    })
-                                );
+                        debug("Installation status is RUNNING but no active task found, starting installation");
+                        startNewInstallation();
                     }
-                }, onCritFail({
-                    context: _("Installation of the system failed"),
-                }));
-    }, [onCritFail]);
+                },
+                onCritFail({ context: _("Installation of the system failed") })
+            );
+            break;
+
+        default:
+            startNewInstallation();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- pendingError is read on reconnection only, not reactively
+    }, [installationStatus, onCritFail]);
 
     const submitErrorDecision = (shouldContinue) => {
         if (!errorDialogData) {
@@ -211,11 +239,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               paragraph={
                   <Flex direction={{ default: "column" }}>
                       <Content component="p">
-                          {currentProgressStep < 4
+                          {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
                       </Content>
-                      {currentProgressStep < 4 && (
+                      {currentProgressStep < PROGRESS_STEPS_DONE && (
                           <>
                               <FlexItem spacer={{ default: "spacerXl" }} />
                               <ProgressStepper isCenterAligned>
