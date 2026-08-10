@@ -21,7 +21,7 @@ import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../conte
 
 import { UserIssue } from "./Error.jsx";
 import { CockpitNetworkConfiguration } from "./network/CockpitNetworkConfiguration.jsx";
-import { CockpitStorageIntegration, ModifyStorage } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
+import { CockpitStorageIntegration } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
 
 import "./HeaderKebab.scss";
 
@@ -82,7 +82,7 @@ const AnacondaAboutModal = ({ isModalOpen, setIsAboutModalOpen }) => {
     );
 };
 
-export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
+export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, setShowStorage, showStorage }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
@@ -117,11 +117,6 @@ export const HeaderKebab = ({ currentStepId, dispatch, isConnected, onCritFail, 
             ]
             : []
         ),
-        <ModifyStorage
-          currentStepId={currentStepId}
-          key="modify-storage"
-          setShowStorage={setShowStorage}
-        />,
         <DropdownItem id="about-modal-dropdown-item-about" key="about" onClick={handleAboutModal}>
             {_("About")}
         </DropdownItem>,

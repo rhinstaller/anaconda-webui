@@ -40,6 +40,7 @@ export const InstallationMethod = ({
     isEfi,
     isFirstScreen,
     onCritFail,
+    setShowStorage,
 }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
@@ -77,6 +78,7 @@ export const InstallationMethod = ({
                   idPrefix={idPrefix}
                   isFirstScreen={isFirstScreen}
                   setIsScenarioValid={setIsScenarioValid}
+                  setShowStorage={setShowStorage}
                 />
             </DialogsContext.Provider>
         </Form>
