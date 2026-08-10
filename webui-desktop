@@ -34,13 +34,15 @@ BROWSER_HOME=""
 
 THEME_ID="default"
 WEBUI_REMOTE=0
-while getopts t:r: option
+WEBUI_NOAUTH=0
+while getopts t:r:n: option
 do
     case "${option}"
         in
         t)THEME_ID=${OPTARG};;
         r)WEBUI_REMOTE=${OPTARG};;
-        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE]" >&2
+        n)WEBUI_NOAUTH=${OPTARG};;
+        *) echo "Usage: $0 [-t THEME_ID] [-r WEBUI_REMOTE] [-n WEBUI_NOAUTH]" >&2
        exit 1 ;;
     esac
 done
@@ -53,7 +55,21 @@ then
     WEBUI_ADDRESS="0.0.0.0"
 fi
 
+REMOTE_AUTH_DROPIN="/etc/anaconda/cockpit/conf.d/50-remote-auth.conf"
+REMOTE_AUTH_SOURCE="/usr/share/anaconda/cockpit/conf.d/50-remote-auth.conf"
+PIN_FILE="/run/anaconda/remote-pin"
+WEBUI_AUTH=0
+
+if [[ -f "$PIN_FILE" ]]; then
+    cp "$REMOTE_AUTH_SOURCE" "$REMOTE_AUTH_DROPIN"
+    WEBUI_AUTH=1
+else
+    rm -f "$REMOTE_AUTH_DROPIN"
+fi
+
 echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
+echo "WEBUI_AUTH=$WEBUI_AUTH" >> /tmp/webui-cockpit-ws.env
+
 systemctl start webui-cockpit-ws
 
 # Function to setup user-related environment

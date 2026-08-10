@@ -65,7 +65,13 @@ exit 0
 %files
 %dir %{_datadir}/cockpit/anaconda-webui
 %doc README.rst
-%license LICENSE dist/index.js.LEGAL.txt
+%license LICENSE dist/index.js.LEGAL.txt dist/anacondaLogin.js.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/login.html
+%{_datadir}/cockpit/anaconda-webui/anacondaLogin.js
+%{_datadir}/cockpit/anaconda-webui/anacondaLogin.js.map
+%{_datadir}/cockpit/anaconda-webui/anacondaLogin.js.LEGAL.txt
+%{_datadir}/cockpit/anaconda-webui/anacondaLogin.css
+%{_datadir}/cockpit/anaconda-webui/anacondaLogin.css.map
 %{_datadir}/cockpit/anaconda-webui/qr-code-feedback.svg
 %{_datadir}/cockpit/anaconda-webui/index.js.LEGAL.txt
 %{_datadir}/cockpit/anaconda-webui/index.html
@@ -81,6 +87,10 @@ exit 0
 %dir /etc/anaconda/cockpit
 %config(noreplace) /etc/anaconda/cockpit/cockpit.conf
 %dir /etc/anaconda/cockpit/conf.d
+%dir %{_datadir}/anaconda/cockpit
+%dir %{_datadir}/anaconda/cockpit/conf.d
+%{_datadir}/anaconda/cockpit/conf.d/50-remote-auth.conf
+%{_libexecdir}/anaconda/cockpit-pin-auth
 %dir %{_datadir}/anaconda/firefox-theme
 %dir %{_datadir}/anaconda/firefox-theme/default
 %dir %{_datadir}/anaconda/firefox-theme/default/chrome
@@ -98,6 +108,8 @@ exit 0
 %{_datadir}/applications/extlinks.desktop
 %{_datadir}/applications/anaconda-gnome-control-center.desktop
 %{_unitdir}/webui-cockpit-ws.service
+%{_unitdir}/cockpit-pin-auth.socket
+%{_unitdir}/cockpit-pin-auth@.service
 
 
 # The changelog is automatically generated and merged
