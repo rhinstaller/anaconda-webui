@@ -10,12 +10,11 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 
 import { LoginPage } from "./components/login/LoginPage.jsx";
+import { convertToCockpitLang } from "./helpers/language.js";
 
 import "./components/app.scss";
 import "../pkg/lib/patternfly/patternfly-6-cockpit.scss";
 import "../pkg/lib/patternfly/patternfly-6-overrides.scss";
-
-const _ = cockpit.gettext;
 
 document.addEventListener("DOMContentLoaded", () => {
     const root = createRoot(document.getElementById("app"));

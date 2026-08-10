@@ -134,14 +134,15 @@ install: $(DIST_TEST) po/LINGUAS
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/cockpit-pin-auth@.service $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/cockpit-pin-auth.socket $(DESTDIR)/usr/lib/systemd/system/
-	mkdir -p $(DESTDIR)/etc/cockpit
-	cp src/config/cockpit.conf $(DESTDIR)/etc/cockpit/
 	# static files for custom login page must be on this destination
 	mkdir -p $(DESTDIR)/usr/share/cockpit/static/
 	ln -sf ../anaconda-webui/login.js $(DESTDIR)/usr/share/cockpit/static/login-anaconda.js
 	ln -sf ../anaconda-webui/login.css $(DESTDIR)/usr/share/cockpit/static/login-anaconda.css
 	mkdir -p $(DESTDIR)/etc/anaconda/cockpit/conf.d/
 	cp src/config/cockpit/cockpit.conf $(DESTDIR)/etc/anaconda/cockpit/cockpit.conf
+	# Staged config, not active by default — webui-desktop copies it to conf.d/ at runtime
+	mkdir -p $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
+	cp src/config/cockpit/conf.d/50-remote-auth.conf $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 
 dist: $(TARFILE)
 	@ls -1 $(TARFILE)

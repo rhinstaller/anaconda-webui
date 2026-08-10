@@ -8,16 +8,17 @@ import sys
 import time
 
 logger = logging.getLogger(__name__)
+PASSWORD_FILE = "/run/anaconda/remote-password"
 
 
-def send_frame(content: 'dict[str, str]'):
+def send_frame(content: "dict[str, str]"):
     data = json.dumps(content).encode()
     os.write(1, str(len(data) + 1).encode())
     os.write(1, b"\n\n")
     os.write(1, data)
 
 
-def send_auth_command(challenge: 'str | None', response: 'str | None'):
+def send_auth_command(challenge: "str | None", response: "str | None"):
     cmd = {
         "command": "authorize",
     }
@@ -32,10 +33,7 @@ def send_auth_command(challenge: 'str | None', response: 'str | None'):
 
 
 def send_problem_init(problem, message, auth_methods):
-    cmd = {
-        "command": "init",
-        "problem": problem
-    }
+    cmd = {"command": "init", "problem": problem}
 
     if message:
         cmd["message"] = message
@@ -47,7 +45,7 @@ def send_problem_init(problem, message, auth_methods):
 
 
 def read_size(fd):
-    sep = b'\n'
+    sep = b"\n"
     size = 0
     seen = 0
 
@@ -86,8 +84,7 @@ def read_auth_reply():
     cmd = json.loads(data)
     logger.debug("cmd %s", cmd)
     response = cmd.get("response")
-    if cmd.get("command") != "authorize" or \
-       not cmd.get("cookie") or not response:
+    if cmd.get("command") != "authorize" or not cmd.get("cookie") or not response:
         raise ValueError("Did not receive a valid authorize command")
 
     return response
@@ -99,19 +96,17 @@ def decode_basic_header(response):
     assert response
     assert response.startswith(starts), response
 
-    val = base64.b64decode(response[len(starts):].encode()).decode()
-    return val.replace('\x00', '')
+    val = base64.b64decode(response[len(starts) :].encode()).decode()
+    # Standard Basic auth format is user:password — extract password after the colon
+    if ":" in val:
+        val = val.split(":", 1)[1]
+    return val.replace("\x00", "")
 
 
-def main(args):
-    logging.basicConfig(filename='/tmp/pin.log', encoding='utf-8', level=logging.DEBUG)
+def main():
+    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-    # logger.debug('goo')
     send_auth_command("*", None)
-    # message = base64.b64encode(b'Enter pin to login').decode()
-    # logging.debug("pre-conversation")
-    # send_auth_command(f"X-Conversation conv {message}", None)
-    logging.debug("post-conversation")
 
     password = ""
     try:
@@ -121,14 +116,19 @@ def main(args):
         send_problem_init("internal-error", str(e), {})
         raise
 
-    if password != "1234":
-        send_problem_init("authentication-failed", "PIN did not match",
-                          {"password": "denied"})
-        # send_auth_command(f"X-Conversation conv {message}", None)
+    try:
+        with open(PASSWORD_FILE) as f:
+            expected = f.read().strip()
+    except FileNotFoundError:
+        send_problem_init("internal-error", f"Password file {PASSWORD_FILE} not found", {})
+        return
+
+    if password != expected:
+        send_problem_init("authentication-failed", "PIN did not match", {"password": "denied"})
         return
 
     os.execlpe("python3", "python3", "-m", "cockpit.bridge", os.environ)
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()

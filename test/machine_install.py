@@ -45,6 +45,7 @@ class VirtInstallMachine(VirtMachine):
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
         self.pause_at_summary = kwargs.pop("pause_at_summary", False)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
+        self.remote_password = kwargs.pop("remote_password", "")
         # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
@@ -194,6 +195,7 @@ class VirtInstallMachine(VirtMachine):
             if self.console_file
             else ""
         )
+        auth_method = f"inst.webui.remote.password={self.remote_password}" if self.remote_password else "inst.webui.remote.noauth"
         try:
             self._execute(
                 "virt-install "
@@ -208,7 +210,7 @@ class VirtInstallMachine(VirtMachine):
                 f"{serial_opt}"
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {selinux}{inst_ks_arg} "
+                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {auth_method} {selinux}{inst_ks_arg} "
                 f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
                 f"{self.label}-updates.img' "
                 "--network none "

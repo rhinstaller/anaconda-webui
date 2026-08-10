@@ -89,6 +89,9 @@ exit 0
 %dir /etc/anaconda/cockpit
 %config(noreplace) /etc/anaconda/cockpit/cockpit.conf
 %dir /etc/anaconda/cockpit/conf.d
+%dir %{_datadir}/anaconda/cockpit
+%dir %{_datadir}/anaconda/cockpit/conf.d
+%{_datadir}/anaconda/cockpit/conf.d/50-remote-auth.conf
 %{_libexecdir}/anaconda/cockpit-pin-auth
 %dir %{_datadir}/anaconda/firefox-theme
 %dir %{_datadir}/anaconda/firefox-theme/default
@@ -109,7 +112,6 @@ exit 0
 %{_unitdir}/webui-cockpit-ws.service
 %{_unitdir}/cockpit-pin-auth.socket
 %{_unitdir}/cockpit-pin-auth@.service
-%config(noreplace) /etc/cockpit/cockpit.conf
 
 
 # The changelog is automatically generated and merged

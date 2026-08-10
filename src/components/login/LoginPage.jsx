@@ -5,15 +5,12 @@
 import cockpit from "cockpit";
 
 import React, { useState } from "react";
-import { Bullseye, ValidatedOptions } from "@patternfly/react-core";
+import { Bullseye } from "@patternfly/react-core";
 import {
     ActionGroup,
     Button,
     Form,
     FormGroup,
-    TextInputGroup,
-    TextInputGroupMain,
-    TextInputGroupUtilities,
 } from "@patternfly/react-core/dist/esm/components";
 import {
     Alert,
@@ -24,8 +21,10 @@ import {
     CardBody,
     CardTitle
 } from "@patternfly/react-core/dist/esm/components/Card";
-import EyeIcon from "@patternfly/react-icons/dist/esm/icons/eye-icon";
-import EyeSlashIcon from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
+import { InputGroup, InputGroupItem } from "@patternfly/react-core/dist/esm/components/InputGroup";
+import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput";
+import { EyeIcon } from "@patternfly/react-icons/dist/esm/icons/eye-icon";
+import { EyeSlashIcon } from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
 
 const _ = cockpit.gettext;
 
@@ -47,7 +46,9 @@ export const LoginPage = () => {
         setIsLoading(true);
 
         const headers = {
-            Authorization: "Basic " + window.btoa(unescape(encodeURIComponent(pin))),
+            // Cockpit Basic auth format: user:password\0known_hosts
+            // https://github.com/cockpit-project/cockpit/blob/25dd89e3d168861cd19acd50237f9c8884341cc5/pkg/static/login.js#L666
+            Authorization: `Basic ${window.btoa(unescape(encodeURIComponent(`:${pin}\0`)))}`,
         };
 
         try {
@@ -84,26 +85,28 @@ export const LoginPage = () => {
                     )}
                     <Form onSubmit={handleSubmit}>
                         <FormGroup isRequired fieldId="pin-input">
-                            <TextInputGroup validated={error ? ValidatedOptions.error : undefined}>
-                                <TextInputGroupMain
-                                  isRequired
-                                  type={pinHidden ? "password" : "text"}
-                                  id="pin-input"
-                                  name="pin"
-                                  value={pin}
-                                  onChange={(_event, value) => setPin(value)}
-                                  placeholder={_("Enter PIN")}
-
-                                />
-                                <TextInputGroupUtilities>
+                            <InputGroup>
+                                <InputGroupItem isFill>
+                                    <TextInput
+                                      isRequired
+                                      type={pinHidden ? "password" : "text"}
+                                      id="pin-input"
+                                      name="pin"
+                                      value={pin}
+                                      onChange={(_event, value) => setPin(value)}
+                                      placeholder={_("Enter PIN")}
+                                    />
+                                </InputGroupItem>
+                                <InputGroupItem>
                                     <Button
-                                      variant="plain"
+                                      variant="control"
                                       onClick={() => setPinHidden(!pinHidden)}
                                       aria-label={pinHidden ? _("Show password") : _("Hide password")}
-                                      icon={pinHidden ? <EyeIcon /> : <EyeSlashIcon />}
-                                    />
-                                </TextInputGroupUtilities>
-                            </TextInputGroup>
+                                    >
+                                        {pinHidden ? <EyeIcon /> : <EyeSlashIcon />}
+                                    </Button>
+                                </InputGroupItem>
+                            </InputGroup>
                         </FormGroup>
                         <ActionGroup>
                             <Button
