@@ -12,6 +12,11 @@ WEBUI_ADDRESS=$1
 # Start cockpit-bridge in unconfined context via su using coproc
 coproc BRIDGE { cockpit-bridge; }
 
-# Start cockpit-ws connected to the coproc
-# TLS settings are now in /etc/anaconda/cockpit/cockpit.conf (AllowUnencrypted)
-exec /usr/libexec/cockpit-ws -p 80 -a "$WEBUI_ADDRESS" --local-session=- <&${BRIDGE[0]} >&${BRIDGE[1]}
+# When auth is not enabled, use --local-session=- to connect
+# directly to the bridge (skips cockpit authentication).
+WS_EXTRA_ARGS=()
+if [[ "${WEBUI_AUTH:-0}" != "1" ]]; then
+    WS_EXTRA_ARGS+=(--local-session=-)
+fi
+
+exec /usr/libexec/cockpit-ws "${WS_EXTRA_ARGS[@]}" -p 80 -a "$WEBUI_ADDRESS" <&${BRIDGE[0]} >&${BRIDGE[1]}

@@ -1,0 +1,53 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
+from installer import Installer
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestRemoteAuth(VirtInstallMachineCase):
+    provision = {
+        "machine1": {
+            "remote_pin": "test1234",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.webui.remote inst.webui.remote.password=test1234``
+            and verify that PIN authentication is required.
+
+        Expected results:
+            - The login page is shown
+            - Wrong PIN is rejected with an error
+            - Correct PIN grants access to the installer
+        """
+        b = self.browser
+        m = self.machine
+        _i = Installer(b, m)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+
+        # Login page should be visible
+        b.wait_visible("#pin-input")
+
+        # Wrong password should be rejected
+        b.set_input_text("#pin-input", "wrongpin")
+        b.click("button[type=submit]")
+        b.wait_in_text(".pf-v6-c-alert", "Invalid PIN")
+
+        # Correct password should grant access
+        b.set_input_text("#pin-input", "test1234")
+        b.click("button[type=submit]")
+
+        # After login redirect, the installer loads at the root path
+        b.wait_js_cond('window.location.pathname === "/cockpit/@localhost/anaconda-webui/index.html"')
+
+
+if __name__ == "__main__":
+    test_main()
