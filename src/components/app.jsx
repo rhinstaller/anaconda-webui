@@ -89,7 +89,6 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               isFilled={false}
               stickyOnBreakpoint={{ default: "top" }}>
                 <AnacondaHeader
-                  currentStepId={currentStepId}
                   dispatch={dispatch}
                   title={title}
                   reportLinkURL={reportLinkURL}
@@ -107,6 +106,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               title={title}
               dispatch={dispatch}
               setCurrentStepId={setCurrentStepId}
+              setShowStorage={setShowStorage}
               showStorage={showStorage}
             />
         </>

@@ -35,7 +35,7 @@ import {
     systemMountPoints,
 } from "../helpers/storage.js";
 
-import { PageContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
+import { PageContext, StorageContext, StorageDefaultsContext, TargetSystemRootContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -312,4 +312,31 @@ export const useOriginalDevices = () => {
     const originalDeviceTree = useOriginalDeviceTree();
 
     return originalDeviceTree ? originalDeviceTree.devices : {};
+};
+
+export const useLaunchStorageEditor = ({ setShowStorage }) => {
+    const targetSystemRoot = useContext(TargetSystemRootContext);
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
+    const mountPointConstraints = useMountPointConstraints();
+
+    const launchStorageEditor = useMemo(() => {
+        const availableDevices = [
+            ...diskSelection.selectedDisks,
+            ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
+        ];
+        const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
+        const cockpitAnaconda = JSON.stringify({
+            available_devices: availableDevices.map(device => devices[device]?.path.v).filter(Boolean),
+            efi: isEfi,
+            mount_point_prefix: targetSystemRoot,
+        });
+
+        return () => {
+            window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
+            setShowStorage(true);
+        };
+    }, [devices, diskSelection.selectedDisks, mountPointConstraints, setShowStorage, targetSystemRoot]);
+
+    return launchStorageEditor;
 };

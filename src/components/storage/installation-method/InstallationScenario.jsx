@@ -6,6 +6,7 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo } from "react";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
@@ -19,6 +20,7 @@ import {
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import {
+    useLaunchStorageEditor,
     useOriginalDevices,
 } from "../../../hooks/Storage.jsx";
 
@@ -111,11 +113,27 @@ const InstallationScenarioSelector = ({
     return scenarioItems;
 };
 
+const ModifyStorageButton = ({ setShowStorage }) => {
+    const launchStorageEditor = useLaunchStorageEditor({ setShowStorage });
+
+    return (
+        <Button
+          id="modify-storage"
+          variant="link"
+          isInline
+          onClick={launchStorageEditor}
+        >
+            {_("If none of the options above apply, use the storage editor to create a custom partitioning before proceeding.")}
+        </Button>
+    );
+};
+
 export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFirstScreen,
     setIsScenarioValid,
+    setShowStorage,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
@@ -157,6 +175,7 @@ export const InstallationScenario = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                 />
+                <ModifyStorageButton setShowStorage={setShowStorage} />
             </FormGroup>
         </FormSection>
     );
