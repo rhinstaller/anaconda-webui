@@ -11,6 +11,7 @@ import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import { moduleClients } from "./index.js";
+import { PayloadsClient } from "./payloads.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
@@ -44,13 +45,21 @@ export class BossClient {
         this.dispatch = dispatch;
     }
 
-    init (args = {}) {
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Boss client closed"));
+
+        const status = await getInstallationStatus();
+        // PayloadsClient is problematic outside NOT_STARTED state, potentially leading
+        // to UnknownCompsEnvironmentError.
+        const payloadsNotNeeded = status !== INSTALLATION_STATUS.NOT_STARTED;
+        const clients = payloadsNotNeeded
+            ? moduleClients.filter(C => C !== PayloadsClient)
+            : moduleClients;
 
         return Promise.all([
             this.dispatch(getInstallationStatusAction()),
             this.dispatch(getPendingErrorAction()),
-            ...moduleClients.map(Client => new Client(this.address, this.dispatch).init(args))
+            ...clients.map(Client => new Client(this.address, this.dispatch).init(args))
         ]).then(() => {
             this.startEventMonitor();
         });
