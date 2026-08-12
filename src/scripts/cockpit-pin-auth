@@ -3,8 +3,68 @@
 # Copyright (C) 2026 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 #
-# Cockpit authentication handler that validates Basic credentials
-# against the PIN stored in /run/anaconda/remote-pin.
+# Cockpit authentication helper for Anaconda remote installation.
+#
+# This script implements the Cockpit authentication helper protocol to gate
+# remote WebUI access behind a PIN. It validates HTTP Basic credentials
+# (RFC 7617) against a one-time PIN stored in /run/anaconda/remote-pin.
+#
+# == End-to-end flow ==
+#
+# 1. The user boots the installer with `inst.webui.remote.pin=<PIN>`. Anaconda
+#    backend writes the PIN to /run/anaconda/remote-pin and webui-desktop
+#    copies 50-remote-auth.conf into Cockpit's active config directory,
+#    which sets:
+#      [Basic]
+#      Command = /usr/libexec/anaconda/cockpit-pin-auth
+#
+# 2. A remote browser connects to the installed system IP. Cockpit's custom
+#    login page (the Anaconda WebUI login component) collects the PIN from
+#    the user and sends it as an HTTP Basic auth header (user:password).
+#
+# 3. cockpit-ws spawns THIS script as a child process and communicates
+#    with it over stdin/stdout using Cockpit's length-prefixed JSON framing
+#    protocol (documented below). The systemd socket-activated service
+#    cockpit-pin-auth@.service handles the process lifecycle.
+#
+# 4. This script:
+#    a. Sends a challenge request ("*") to cockpit-ws, asking for credentials.
+#    b. Receives the Basic auth response from cockpit-ws.
+#    c. Decodes the base64 payload and extracts the PIN (password portion).
+#    d. Compares it against the expected PIN from /run/anaconda/remote-pin.
+#    e. On FAILURE: sends an "init" frame with a problem code back to
+#       cockpit-ws, which relays the error to the browser. Process exits.
+#    f. On SUCCESS: exec()s into cockpit-bridge, replacing this process.
+#       The bridge then sends the successful "init" message and handles the
+#       Cockpit session. This is how the protocol works - the auth helper
+#       *becomes* the bridge process via exec(), which replaces the current
+#       process image entirely. Each authenticated session gets its own
+#       bridge; there is no pre-existing bridge waiting for this session.
+#       This is the same pattern used by all upstream Cockpit auth helpers
+#       (cockpit-session, cockpit-auth-ssh-key, etc.).
+#
+# == Wire protocol ==
+#
+# Messages are length-prefixed JSON frames over stdio:
+#   <decimal-length>\n\n<json-payload>
+#
+# The length counts the JSON bytes plus the channel separator (one newline
+# for control-channel messages). Auth helpers use only the control channel.
+#
+# == References ==
+#
+# - Cockpit auth helper protocol:
+#   https://github.com/cockpit-project/cockpit/blob/b1433d5e8cd9786f1f357a9969a24d9634433850/doc/authentication.md
+# - Cockpit wire protocol (framing):
+#   https://github.com/cockpit-project/cockpit/blob/c1676a0d7c1ad664490ed5000b81077d295babdf/doc/protocol.md
+# - HTTP Basic authentication: RFC 7617
+#   https://datatracker.ietf.org/doc/html/rfc7617
+# - Upstream auth helper example (cockpit-auth-ssh-key):
+#   https://github.com/cockpit-project/cockpit/blob/a7ae147258a8102069cb7caa94fce1332ea49af1/containers/ws/cockpit-auth-ssh-key
+#
+# Note: Cockpit does not provide a reusable Python library for the auth
+# helper framing protocol. The read_size/read_frame/send_frame functions
+# below follow the same inline pattern used by upstream auth helpers.
 
 import base64
 import json
@@ -98,21 +158,32 @@ def read_auth_reply():
 
 
 def decode_basic_header(response):
+    """Decode an HTTP Basic auth header (RFC 7617) and return the password.
+
+    Input format: "Basic <base64(user:password)>"
+    The username is discarded - only the PIN (password) matters for our auth.
+    Split on ":" with maxsplit=1 to handle passwords containing colons.
+    Null bytes (\x00) are stripped as a defense against null-byte injection.
+    """
     b64_encoded_header = re.match(r"^Basic\s+(.+)\s*$", response)
     if not b64_encoded_header:
         raise ValueError(f"Invalid Basic auth header: {response}")
 
     decoded = base64.b64decode(b64_encoded_header.group(1)).decode()
-    # Standard Basic auth format is user:password — extract password after the colon
+    # Standard Basic auth format is user:password - extract password after the colon
     _, pin = decoded.split(":", 1)
     return pin.replace("\x00", "")
 
 
 def main():
+    """Authenticate a remote user via PIN and hand off to cockpit-bridge."""
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
+    # Step 1: Ask cockpit-ws for the user's credentials.
+    # Challenge "*" means "send me whatever credentials you have".
     send_auth_command("*", None)
 
+    # Step 2: Receive and decode the Basic auth response.
     password = ""
     try:
         response = read_auth_reply()
@@ -121,6 +192,7 @@ def main():
         send_problem_init("internal-error", str(e), {})
         raise
 
+    # Step 3: Load the expected PIN from the file written by webui-desktop.
     try:
         with open(PIN_FILE) as f:
             expected = f.read().strip()
@@ -128,10 +200,18 @@ def main():
         send_problem_init("internal-error", f"PIN file {PIN_FILE} not found", {})
         return
 
+    # Step 4: Compare. On mismatch, report failure and exit.
     if password != expected:
         send_problem_init("authentication-failed", "PIN did not match", {"password": "denied"})
         return
 
+    # Step 5: Replace this process with cockpit-bridge.
+    # The bridge sends the successful "init" message to cockpit-ws and
+    # takes over the Cockpit session. This is the standard auth helper
+    # exit path - the helper does not stay running alongside the bridge.
+    # Note: this code path only runs for remote (authenticated) access.
+    # For local/noauth installs, cockpit-ws is started with --local-session
+    # which spawns the bridge directly, bypassing auth helpers entirely.
     os.execlpe("python3", "python3", "-m", "cockpit.bridge", os.environ)
 
 
