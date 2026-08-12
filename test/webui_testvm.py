@@ -21,13 +21,15 @@ def cmd_cli():
     parser.add_argument("--kickstart", help="Kickstart file name from test/kickstarts/", dest="kickstart_file_name")
     parser.add_argument("--pause-at-summary", help="Pause automated kickstart install at the review screen",
                         action='store_true', dest="pause_at_summary")
+    parser.add_argument("--remote-pin", help="PIN for accessing the webui. Blank value defaults to inst.webui.remote.noauth",
+                        dest="remote_pin")
     args = parser.parse_args()
 
     if args.bios:
         os.environ["TEST_FIRMWARE"] = "bios"
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
                                  kickstart_file_name=args.kickstart_file_name,
-                                 pause_at_summary=args.pause_at_summary)
+                                 pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin)
     try:
         machine.start()
 
