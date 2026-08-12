@@ -48,13 +48,6 @@ do
 done
 
 URL_PATH="/cockpit/@localhost/anaconda-webui/index.html"
-
-WEBUI_ADDRESS="127.0.0.1"
-if [[ "$WEBUI_REMOTE" == "1" ]]
-then
-    WEBUI_ADDRESS="0.0.0.0"
-fi
-
 REMOTE_AUTH_DROPIN="/etc/anaconda/cockpit/conf.d/50-remote-auth.conf"
 REMOTE_AUTH_SOURCE="/usr/share/anaconda/cockpit/conf.d/50-remote-auth.conf"
 PIN_FILE="/run/anaconda/remote-pin"
@@ -66,11 +59,14 @@ if [[ -f "$PIN_FILE" ]]; then
 else
     rm -f "$REMOTE_AUTH_DROPIN"
 fi
-
-echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
-echo "WEBUI_AUTH=$WEBUI_AUTH" >> /tmp/webui-cockpit-ws.env
+echo "WEBUI_AUTH=$WEBUI_AUTH" > /tmp/webui-cockpit-ws.env
+echo "WEBUI_REMOTE=$WEBUI_REMOTE" >> /tmp/webui-cockpit-ws.env
 
 systemctl start webui-cockpit-ws
+
+if [[ "$WEBUI_REMOTE" == "1" ]]; then
+    systemctl start webui-tls-proxy
+fi
 
 # Function to setup user-related environment
 setup_user_environment() {
@@ -184,7 +180,7 @@ else
     # if we have netcat, use it for waiting until ws is up
     if type nc >/dev/null 2>&1; then
         for _ in `seq 10`; do
-            nc -z "$WEBUI_ADDRESS" 80 && break
+            nc -z 127.0.0.1 80 && break
             sleep 0.5;
         done
     else
@@ -230,7 +226,7 @@ else
     # start browser in a temporary home dir, so that it does not interfere with your real one
     BROWSER_HOME=$(mktemp --directory --tmpdir cockpit.desktop.XXXXXX)
     chown "${INSTALLER_USER}" "${BROWSER_HOME}"
-    WEBUI_URL=http://"$WEBUI_ADDRESS""$URL_PATH"
+    WEBUI_URL=http://127.0.0.1"$URL_PATH"
 
     if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
         if [ "$USER_GRAPHICAL_SESSION_AVAILABLE" = "1" ]; then
