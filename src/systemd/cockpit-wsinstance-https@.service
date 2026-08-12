@@ -1,0 +1,8 @@
+[Unit]
+Description=Anaconda Cockpit WS https instance %I
+Requires=cockpit-session.socket
+After=cockpit-session.socket
+
+[Service]
+Environment="XDG_CONFIG_DIRS=/run/anaconda"
+ExecStart=/usr/libexec/cockpit-ws --for-tls-proxy --port=0

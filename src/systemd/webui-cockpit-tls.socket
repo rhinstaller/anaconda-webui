@@ -1,0 +1,11 @@
+[Unit]
+Description=Cockpit TLS Socket for Anaconda Remote Installation
+Documentation=man:cockpit-tls(8)
+
+[Socket]
+ListenStream=443
+ExecStartPost=-/bin/ln -snf active.issue /run/cockpit/issue
+ExecStopPost=-/bin/ln -snf inactive.issue /run/cockpit/issue
+
+[Install]
+WantedBy=sockets.target

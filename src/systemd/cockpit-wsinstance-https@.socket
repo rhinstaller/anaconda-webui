@@ -1,0 +1,8 @@
+[Unit]
+Description=Socket for Anaconda Cockpit WS https instance %I
+BindsTo=webui-cockpit-tls.service
+BindsTo=cockpit-wsinstance-https@%i.service
+
+[Socket]
+ListenStream=/run/cockpit/wsinstance/https@%i.sock
+RemoveOnStop=yes

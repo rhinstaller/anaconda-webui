@@ -1,0 +1,9 @@
+[Unit]
+Description=Socket for Anaconda Cockpit WS https instance factory
+Documentation=man:cockpit-ws(8)
+BindsTo=webui-cockpit-tls.service
+
+[Socket]
+ListenStream=/run/cockpit/wsinstance/https-factory.sock
+Accept=yes
+RemoveOnStop=yes

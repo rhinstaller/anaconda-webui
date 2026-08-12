@@ -1,0 +1,15 @@
+[Unit]
+Description=Cockpit TLS Service for Anaconda Remote Installation
+Documentation=man:cockpit-tls(8)
+Requires=webui-cockpit-tls.socket
+Requires=webui-wsinstance-https-factory.socket
+After=webui-wsinstance-https-factory.socket
+
+[Service]
+RuntimeDirectory=cockpit/tls
+ExecStartPre=+/usr/libexec/anaconda/anaconda-cockpit-conf-merge
+ExecStartPre=+/usr/libexec/cockpit-certificate-ensure --for-cockpit-tls
+ExecStart=/usr/libexec/cockpit-tls --idle-timeout=0
+
+[Install]
+WantedBy=multi-user.target

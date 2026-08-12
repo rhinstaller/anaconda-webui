@@ -67,10 +67,20 @@ else
     rm -f "$REMOTE_AUTH_DROPIN"
 fi
 
-echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
-echo "WEBUI_AUTH=$WEBUI_AUTH" >> /tmp/webui-cockpit-ws.env
-
-systemctl start webui-cockpit-ws
+if [[ "$WEBUI_AUTH" == "1" ]]; then
+    # Remote with PIN auth: use cockpit-tls for TLS termination.
+    # The factory binary creates cockpit-wsinstance-https@ instances
+    # (hardcoded name). Override stock units with our versions that
+    # remove BindsTo=cockpit.service and DynamicUser sandboxing.
+    ln -sf /usr/share/anaconda/systemd/cockpit-wsinstance-https@.socket /run/systemd/system/
+    ln -sf /usr/share/anaconda/systemd/cockpit-wsinstance-https@.service /run/systemd/system/
+    systemctl daemon-reload
+    systemctl start webui-cockpit-tls.socket
+else
+    echo "WEBUI_ADDRESS=$WEBUI_ADDRESS" > /tmp/webui-cockpit-ws.env
+    echo "WEBUI_AUTH=$WEBUI_AUTH" >> /tmp/webui-cockpit-ws.env
+    systemctl start webui-cockpit-ws
+fi
 
 # Function to setup user-related environment
 setup_user_environment() {
