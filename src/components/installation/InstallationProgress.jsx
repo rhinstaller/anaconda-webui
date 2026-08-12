@@ -101,16 +101,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     });
                 });
                 categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
-                    if (detailType === DETAIL_TYPE_YESNO) {
-                        setErrorDialogData({
-                            categoryProxy,
-                            message,
-                        });
-                    } else {
-                        setStatus("danger");
-                        categoryProxy.RespondToError(false);
-                        onCritFail()({ message });
-                    }
+                    handleError(message, detailType, categoryProxy);
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     setStatus("success");
@@ -127,30 +118,43 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 ret => setSteps(ret.v),
                                 onCritFail()
                             );
-                    if (pendingError.message) {
-                        if (pendingError.type === DETAIL_TYPE_YESNO) {
-                            setErrorDialogData({
-                                categoryProxy,
-                                message: pendingError.message,
-                            });
-                        } else {
-                            setStatus("danger");
-                            onCritFail()({ message: pendingError.message });
-                        }
-                    }
+                    handleError(pendingError.message, pendingError.type, categoryProxy);
                 }
             });
         };
 
+        const startNewInstallation = () =>
+            installWithTasks().then(
+                tasks => connectToTask(tasks[0], true),
+                onCritFail(failureCtx)
+            );
+
+        const handleError = (message, detailType, categoryProxy) => {
+            if (!message) return;
+
+            if (detailType === DETAIL_TYPE_YESNO && categoryProxy) {
+                setErrorDialogData({ categoryProxy, message });
+            } else {
+                setStatus("danger");
+                categoryProxy?.RespondToError(false);
+                onCritFail()({ message });
+            }
+        };
+
         /** Sync UI with the backend installation status: finalize if done, reconnect if running, or start a new installation. */
         const syncInstallState = async () => {
-            if (installationStatus === INSTALLATION_STATUS.SUCCEEDED) {
+            switch (installationStatus) {
+            case INSTALLATION_STATUS.SUCCEEDED:
                 setStatus("success");
                 setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 setSteps([]);
-            } else if (installationStatus === INSTALLATION_STATUS.FAILED) {
-                onCritFail()({ message: pendingError.message });
-            } else if (installationStatus === INSTALLATION_STATUS.RUNNING) {
+                break;
+
+            case INSTALLATION_STATUS.FAILED:
+                handleError(pendingError.message, pendingError.type, null);
+                break;
+
+            case INSTALLATION_STATUS.RUNNING:
                 try {
                     const activeTask = await getActiveInstallationTask();
                     if (activeTask) {
@@ -164,11 +168,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 } catch (error) {
                     onCritFail(failureCtx)(error);
                 }
-            } else {
-                installWithTasks().then(
-                    tasks => connectToTask(tasks[0], true),
-                    onCritFail(failureCtx)
-                );
+                break;
+
+            default:
+                startNewInstallation();
             }
         };
         syncInstallState();
