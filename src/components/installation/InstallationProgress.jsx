@@ -55,6 +55,8 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     useAutoReboot(status, automatedInstall);
 
     useEffect(() => {
+        const failureCtx = { context: _("Installation of the system failed") };
+
         const connectToTask = (taskPath, shouldStart) => {
             const taskProxy = new BossClient().client.proxy(
                 "org.fedoraproject.Anaconda.Task",
@@ -116,9 +118,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
             taskProxy.wait(() => {
                 addEventListeners();
                 if (shouldStart) {
-                    taskProxy.Start().catch(onCritFail({
-                        context: _("Installation of the system failed"),
-                    }));
+                    taskProxy.Start().catch(onCritFail(failureCtx));
                 } else {
                     getSteps({ task: taskPath })
                             .then(
@@ -137,14 +137,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                         installWithTasks()
                                 .then(
                                     tasks => connectToTask(tasks[0], true),
-                                    onCritFail({
-                                        context: _("Installation of the system failed"),
-                                    })
+                                    onCritFail(failureCtx)
                                 );
                     }
-                }, onCritFail({
-                    context: _("Installation of the system failed"),
-                }));
+                }, onCritFail(failureCtx));
     }, [onCritFail]);
 
     const submitErrorDecision = (shouldContinue) => {
