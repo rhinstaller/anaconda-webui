@@ -13,7 +13,8 @@ import { TimezoneContext } from "../../contexts/Common.jsx";
  * @param {{ automatedInstall?: boolean, isHidden?: boolean }} [opts]
  * When **isHidden**, the date & time spoke is not in the wizard — treat as complete.
  * Otherwise: timezone must be valid in the catalog; under automated install, false
- * if the timezone module was not configured from kickstart.
+ * if the timezone module was not configured from kickstart and the user has not
+ * set a timezone in the UI yet.
  */
 export const usePageComplete = ({ automatedInstall, isHidden } = {}) => {
     const tz = useContext(TimezoneContext);
@@ -22,7 +23,8 @@ export const usePageComplete = ({ automatedInstall, isHidden } = {}) => {
         return true;
     }
     const kickstarted = tz?.kickstarted;
-    if (automatedInstall && !kickstarted) {
+    const userConfigured = tz?.userConfigured;
+    if (automatedInstall && !kickstarted && !userConfigured) {
         return false;
     }
     return isValidTimezone(tz?.timezone, tz?.allValidTimezones ?? {});

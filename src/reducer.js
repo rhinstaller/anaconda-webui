@@ -58,6 +58,7 @@ export const timezoneInitialState = {
     allValidTimezones: {},
     kickstarted: false,
     timezone: "",
+    userConfigured: false,
 };
 
 export const miscInitialState = {
@@ -234,11 +235,12 @@ export const runtimeReducer = (state = runtimeInitialState, action) => {
 
 export const timezoneReducer = (state = timezoneInitialState, action) => {
     if (action.type === "SET_TIMEZONE") {
-        const { kickstarted, timezone } = action.payload;
+        const { kickstarted, timezone, userConfigured } = action.payload;
         return {
             ...state,
             ...(kickstarted !== undefined && { kickstarted }),
             ...(timezone !== undefined && { timezone }),
+            ...(userConfigured !== undefined && { userConfigured }),
         };
     } else if (action.type === "SET_ALL_VALID_TIMEZONES") {
         return { ...state, allValidTimezones: action.payload.allValidTimezones };

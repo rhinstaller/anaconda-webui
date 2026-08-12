@@ -73,7 +73,7 @@ export class TimezoneClient {
                 switch (signal) {
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Timezone")) {
-                        this.dispatch(setTimezoneAction({ timezone: args[1].Timezone.v }));
+                        this.dispatch(setTimezoneAction({ timezone: args[1].Timezone.v, userConfigured: true }));
                     }
                     break;
                 }
