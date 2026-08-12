@@ -14,11 +14,12 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getActiveInstallationTask, getSteps, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
 
 import { exitGui, rebootSystem } from "../../helpers/exit.js";
+import { debug } from "../../helpers/log.js";
 
-import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { BossContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
@@ -51,6 +52,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
+    const { installationStatus, pendingError } = useContext(BossContext);
 
     useAutoReboot(status, automatedInstall);
 
@@ -125,23 +127,53 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 ret => setSteps(ret.v),
                                 onCritFail()
                             );
+                    if (pendingError.message) {
+                        if (pendingError.type === DETAIL_TYPE_YESNO) {
+                            setErrorDialogData({
+                                categoryProxy,
+                                message: pendingError.message,
+                            });
+                        } else {
+                            setStatus("danger");
+                            onCritFail()({ message: pendingError.message });
+                        }
+                    }
                 }
             });
         };
 
-        getActiveInstallationTask()
-                .then(activeTask => {
+        /** Sync UI with the backend installation status: finalize if done, reconnect if running, or start a new installation. */
+        const syncInstallState = async () => {
+            if (installationStatus === INSTALLATION_STATUS.SUCCEEDED) {
+                setStatus("success");
+                setCurrentProgressStep(PROGRESS_STEPS_DONE);
+                setSteps([]);
+            } else if (installationStatus === INSTALLATION_STATUS.FAILED) {
+                onCritFail()({ message: pendingError.message });
+            } else if (installationStatus === INSTALLATION_STATUS.RUNNING) {
+                try {
+                    const activeTask = await getActiveInstallationTask();
                     if (activeTask) {
                         connectToTask(activeTask, false);
                     } else {
-                        installWithTasks()
-                                .then(
-                                    tasks => connectToTask(tasks[0], true),
-                                    onCritFail(failureCtx)
-                                );
+                        // this should be impossible. How is the status = RUNNING and no task is active?
+                        const errMsg = "Installation status is RUNNING but no active installation task was found";
+                        debug(errMsg);
+                        throw new Error(errMsg);
                     }
-                }, onCritFail(failureCtx));
-    }, [onCritFail]);
+                } catch (error) {
+                    onCritFail(failureCtx)(error);
+                }
+            } else {
+                installWithTasks().then(
+                    tasks => connectToTask(tasks[0], true),
+                    onCritFail(failureCtx)
+                );
+            }
+        };
+        syncInstallState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- pendingError is read on reconnection only, not reactively
+    }, [installationStatus, onCritFail]);
 
     const submitErrorDecision = (shouldContinue) => {
         if (!errorDialogData) {

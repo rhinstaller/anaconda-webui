@@ -5,6 +5,8 @@
 
 import cockpit from "cockpit";
 
+import { getInstallationStatusAction, getPendingErrorAction } from "../actions/boss-actions.js";
+
 import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
@@ -12,6 +14,7 @@ import { moduleClients } from "./index.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
+export const INSTALLATION_STATUS = { FAILED: "failed", NOT_STARTED: "not_started", RUNNING: "running", SUCCEEDED: "succeeded" };
 
 const callClient = (...args) => {
     return _callClient(BossClient, OBJECT_PATH, INTERFACE_NAME, ...args);
@@ -44,9 +47,11 @@ export class BossClient {
     init (args = {}) {
         this.client.addEventListener("close", () => error("Boss client closed"));
 
-        return Promise.all(
-            moduleClients.map(Client => new Client(this.address, this.dispatch).init(args))
-        ).then(() => {
+        return Promise.all([
+            this.dispatch(getInstallationStatusAction()),
+            this.dispatch(getPendingErrorAction()),
+            ...moduleClients.map(Client => new Client(this.address, this.dispatch).init(args))
+        ]).then(() => {
             this.startEventMonitor();
         });
     }
@@ -107,4 +112,25 @@ export const installWithTasks = () => {
  */
 export const setLocale = ({ locale }) => {
     return callClient("SetLocale", [locale]);
+};
+
+/**
+ * @returns {Promise}           Resolves the installation status enum value
+ */
+export const getInstallationStatus = () => {
+    return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "InstallationStatus");
+};
+
+/**
+ * @returns {Promise}           Resolves the pending error message, or ""
+ */
+export const getPendingErrorMessage = () => {
+    return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "PendingErrorMessage");
+};
+
+/**
+ * @returns {Promise}           Resolves the pending error type
+ */
+export const getPendingErrorType = () => {
+    return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "PendingErrorType");
 };
