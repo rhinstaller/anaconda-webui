@@ -34,7 +34,7 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+export const Application = ({ conf, dispatch, installationStatus, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
@@ -75,7 +75,7 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
     }, [address, automatedInstall, conf, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!address || !storeInitialized) {
+    if (!address || !storeInitialized || !installationStatus) {
         debug("Loading initial data...");
         return <ApplicationLoading />;
     }
@@ -210,6 +210,7 @@ export const ApplicationWithErrorBoundary = () => {
                     <Application
                       conf={conf}
                       dispatch={dispatch}
+                      installationStatus={state.boss.installationStatus}
                       isFetching={state.misc.isFetching}
                       onCritFail={onCritFail}
                       osRelease={osRelease}

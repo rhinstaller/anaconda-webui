@@ -10,6 +10,7 @@ import { HelpIcon } from "@patternfly/react-icons/dist/esm/icons/help-icon";
 
 import { WithDialogs } from "dialogs.jsx";
 
+export const BossContext = createContext(null);
 export const PageContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const OsReleaseContext = createContext(null);
@@ -45,21 +46,23 @@ export const FormGroupHelpPopover = ({ helpContent }) => {
 
 const ModuleContextWrapper = ({ children, state }) => {
     return (
-        <LanguageContext.Provider value={state.localization}>
-            <RuntimeContext.Provider value={state.runtime}>
-                <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
-                    <UsersContext.Provider value={state.users}>
-                        <NetworkContext.Provider value={state.network}>
-                            <PayloadContext.Provider value={state.payload}>
-                                <TimezoneContext.Provider value={state.timezone}>
-                                    {children}
-                                </TimezoneContext.Provider>
-                            </PayloadContext.Provider>
-                        </NetworkContext.Provider>
-                    </UsersContext.Provider>
-                </StorageContext.Provider>
-            </RuntimeContext.Provider>
-        </LanguageContext.Provider>
+        <BossContext.Provider value={state.boss}>
+            <LanguageContext.Provider value={state.localization}>
+                <RuntimeContext.Provider value={state.runtime}>
+                    <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
+                        <UsersContext.Provider value={state.users}>
+                            <NetworkContext.Provider value={state.network}>
+                                <PayloadContext.Provider value={state.payload}>
+                                    <TimezoneContext.Provider value={state.timezone}>
+                                        {children}
+                                    </TimezoneContext.Provider>
+                                </PayloadContext.Provider>
+                            </NetworkContext.Provider>
+                        </UsersContext.Provider>
+                    </StorageContext.Provider>
+                </RuntimeContext.Provider>
+            </LanguageContext.Provider>
+        </BossContext.Provider>
     );
 };
 
