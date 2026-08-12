@@ -134,6 +134,8 @@ install: $(DIST_TEST) po/LINGUAS
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/cockpit-pin-auth@.service $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/cockpit-pin-auth.socket $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/webui-tls-proxy.service $(DESTDIR)/usr/lib/systemd/system/
+	cp src/scripts/webui-tls-proxy $(DESTDIR)/usr/libexec/anaconda/
 	mkdir -p $(DESTDIR)/etc/anaconda/cockpit/conf.d/
 	cp src/config/cockpit/cockpit.conf $(DESTDIR)/etc/anaconda/cockpit/cockpit.conf
 	# Staged config, not active by default — webui-desktop copies it to conf.d/ at runtime
