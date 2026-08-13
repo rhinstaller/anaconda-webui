@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
-from installer import Installer
-from testlib import test_main  # pylint: disable=import-error
+from machine_install import VirtInstallMachine
+from testlib import Error, test_main  # pylint: disable=import-error
 
 
 class TestRemoteAuth(VirtInstallMachineCase):
@@ -15,23 +15,35 @@ class TestRemoteAuth(VirtInstallMachineCase):
             "memory_mb": INSTALLER_VM_MEMORY_MB,
         },
     }
+    machine: VirtInstallMachine
 
     def testBasic(self):
         """
         Description:
             Boot with ``inst.webui.remote inst.webui.remote.password=test1234``
-            and verify that PIN authentication is required.
+            and verify that PIN authentication is required over HTTPS.
 
         Expected results:
-            - The login page is shown
+            - Plain HTTP on port 80 is not reachable
+            - The login page is shown over HTTPS
             - Wrong PIN is rejected with an error
             - Correct PIN grants access to the installer
         """
         b = self.browser
         m = self.machine
-        _i = Installer(b, m)
+        webui_path = "/cockpit/@localhost/anaconda-webui/index.html"
 
-        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        # HTTP should not be reachable — cockpit-ws is bound to localhost
+        # TODO: better to redirect from http to https
+        for url_path in [webui_path, "/"]:
+            with self.assertRaises(Error) as err:
+                b.open(url_path)
+            self.assertIn("net::ERR_", str(err.exception))
+        # Switch to HTTPS port
+        b.port = m.web_port_https
+        # Opening at "/" should work (using webui_path should work too, but that's given)
+        b.open("/", tls=True)
+
 
         # Login page should be visible
         b.wait_visible("#pin-input")
@@ -39,14 +51,14 @@ class TestRemoteAuth(VirtInstallMachineCase):
         # Wrong password should be rejected
         b.set_input_text("#pin-input", "wrongpin")
         b.click("button[type=submit]")
-        b.wait_in_text(".pf-v6-c-alert", "Invalid PIN")
+        b.wait_in_text(".pf-v6-c-helper-text__item.pf-m-error", "Invalid PIN")
 
         # Correct password should grant access
         b.set_input_text("#pin-input", "test1234")
         b.click("button[type=submit]")
 
         # After login redirect, the installer loads at the root path
-        b.wait_js_cond('window.location.pathname === "/cockpit/@localhost/anaconda-webui/index.html"')
+        b.wait_js_cond(f'window.location.pathname === "{webui_path}"')
 
 
 if __name__ == "__main__":

@@ -39,6 +39,7 @@ INSTALLER_VM_MEMORY_MB = 4096
 class VirtInstallMachine(VirtMachine):
     http_install_server = None
     http_install_port = None
+    web_port_https: int | str
 
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
@@ -50,6 +51,7 @@ class VirtInstallMachine(VirtMachine):
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
         super().__init__(image, **kwargs)
+        self.web_port_https = self._get_free_port(start_port=int(self.web_port) + 1)
 
     def _attach_libvirt_domain(self, timeout_sec=120):
         conn = self.virt_connection
@@ -217,7 +219,8 @@ class VirtInstallMachine(VirtMachine):
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
                 f"hostfwd=tcp:{self.ssh_address}:{self.ssh_port}-:22,"
-                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80 "
+                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80,"
+                f"hostfwd=tcp:{self.web_address}:{self.web_port_https}-:443 "
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"

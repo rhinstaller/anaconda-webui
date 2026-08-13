@@ -45,6 +45,10 @@ def cmd_cli():
             print(
                 f"http://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
             )
+            print("...or try https if a remote_pin was provided")
+            print(
+                f"https://{machine.web_address}:{machine.web_port_https}/cockpit/@localhost/anaconda-webui/index.html"
+            )
 
             # rsync development files over so /usr/local/share/cockpit is created with a development version
             if args.rsync:
