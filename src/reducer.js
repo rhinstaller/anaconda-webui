@@ -256,13 +256,14 @@ export const runtimeReducer = (state = runtimeInitialState, action) => {
 
 export const timezoneReducer = (state = timezoneInitialState, action) => {
     if (action.type === "SET_TIMEZONE") {
-        const { kickstarted, timezone, userConfigured } = action.payload;
+        const { kickstarted, timezone } = action.payload;
         return {
             ...state,
             ...(kickstarted !== undefined && { kickstarted }),
             ...(timezone !== undefined && { timezone }),
-            ...(userConfigured !== undefined && { userConfigured }),
         };
+    } else if (action.type === "SET_TIMEZONE_USER_CONFIGURED") {
+        return { ...state, userConfigured: true };
     } else if (action.type === "SET_ALL_VALID_TIMEZONES") {
         return { ...state, allValidTimezones: action.payload.allValidTimezones };
     } else {
