@@ -200,7 +200,7 @@ const DateAndTimeSection = ({ locale, setSectionValid, timezone }) => {
     );
 };
 
-export const DateAndTimePage = () => {
+export const DateAndTimePage = ({ dispatch }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const [dateTimeValid, setDateTimeValid] = useState(false);
     const [timezoneLabel, setTimezoneLabel] = useState("");
@@ -208,6 +208,10 @@ export const DateAndTimePage = () => {
 
     const { language } = useContext(LanguageContext);
     const locale = convertToCockpitLang({ lang: language || getUserLocale() });
+
+    useEffect(() => {
+        dispatch({ type: "SET_TIMEZONE_USER_CONFIGURED" });
+    }, [dispatch]);
 
     useEffect(() => {
         setIsFormValid(dateTimeValid && timezoneValid);
