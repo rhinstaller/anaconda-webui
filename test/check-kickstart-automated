@@ -5,6 +5,7 @@
 
 from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore
 from installer import Installer
+from language import Language
 from payload_dnf import PayloadDNF
 from progress import Progress
 from review import Review
@@ -276,7 +277,7 @@ class TestKickstartAutomatedFatalError(VirtInstallMachineCase):
 
 
 class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
-    """Incomplete kickstart (missing accounts and timezone) blocks install until filled in."""
+    """Incomplete kickstart (missing accounts, timezone, and lang) blocks install until filled in."""
 
     provision = {
         "machine1": {
@@ -290,19 +291,20 @@ class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
         """
         Description:
             Boot with ``inst.ks=TestKickstartAutomatedIncomplete-testBasic.ks``
-            which has neither accounts nor a ``timezone`` command.
+            which has neither accounts, ``timezone``, nor ``lang`` command.
 
         Expected results:
             - The review screen shows an incomplete-configuration warning,
-              with both timezone and account rows marked incomplete, and the
-              install button is disabled.
-            - After setting a timezone and creating a user the review screen
-              shows both, and the install button is enabled.
+              with language, timezone, and account rows marked incomplete,
+              and the install button is disabled.
+            - After setting a language, timezone, and creating a user the
+              review screen shows all three, and the install button is enabled.
         """
         b = self.browser
         m = self.machine
         i = Installer(b, m, scenario="use-configured-storage-kickstart")
         r = Review(b, m)
+        l = Language(b, m)
         dt = DateAndTime(b, m)
         u = Users(b, m)
 
@@ -310,9 +312,19 @@ class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
 
         b.wait_in_text(f"#{i.steps.REVIEW}-incomplete-configuration",
                        "Some installation steps still need to be completed before you can continue.")
+        r.check_language_incomplete()
         r.check_timezone_incomplete()
         r.check_account_incomplete()
 
+        i.check_next_disabled()
+
+        # Set language by visiting the language page and selecting a locale.
+        i.reach_on_sidebar(i.steps.LANGUAGE)
+        l.select_locale("en_US")
+
+        i.reach_on_sidebar(i.steps.REVIEW)
+        r.check_timezone_incomplete()
+        r.check_account_incomplete()
         i.check_next_disabled()
 
         i.reach_on_sidebar(i.steps.DATE_TIME)
@@ -320,7 +332,7 @@ class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
         dt.select_region("Europe")
         dt.select_city("Prague")
 
-        # Timezone alone is not enough while accounts are still missing.
+        # Timezone and language set, but accounts still missing.
         i.reach_on_sidebar(i.steps.REVIEW)
         r.check_timezone("Europe/Prague")
         r.check_account_incomplete()
