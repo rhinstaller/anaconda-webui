@@ -39,7 +39,7 @@ class TestRemoteAuth(VirtInstallMachineCase):
         # Wrong password should be rejected
         b.set_input_text("#pin-input", "wrongpin")
         b.click("button[type=submit]")
-        b.wait_in_text(".pf-v6-c-alert", "Invalid PIN")
+        b.wait_in_text(".pf-m-error", "Invalid PIN")
 
         # Correct password should grant access
         b.set_input_text("#pin-input", "test1234")
