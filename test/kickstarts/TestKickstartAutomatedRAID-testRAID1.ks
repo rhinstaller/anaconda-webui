@@ -1,3 +1,5 @@
+lang en
+
 bootloader --timeout=1
 clearpart --all --initlabel
 
