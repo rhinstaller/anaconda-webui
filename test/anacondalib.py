@@ -21,7 +21,7 @@ from machine_install import INSTALLER_VM_MEMORY_MB, VirtInstallMachine  # noqa: 
 from payload_dnf import PayloadDNFDBus
 from progress import Progress
 from storage import Storage
-from testlib import MachineCase, wait  # pylint: disable=import-error
+from testlib import Browser, MachineCase, wait  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users
 from utils import add_public_key
@@ -33,6 +33,11 @@ pixel_tests_ignore = [
 ]
 
 
+class TLSBrowser(Browser):
+    def open(self, href, cookie=None, tls=True):
+        super().open(href, cookie=cookie, tls=tls)
+
+
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
     boot_modes = ["efi"]
@@ -42,6 +47,17 @@ class VirtInstallMachineCase(MachineCase):
     report_file = os.path.join(TEST_DIR, "report.json")
     run_on_vm_setups: list[str] = [""]
     vm_setup = ""
+
+    def new_browser(self, *args, **kwargs):
+        # Swap the class to TLSBrowser so open() defaults to tls=True.
+        # Ideally MachineCase would favor composition over inheritance
+        # and accept a browser_class attribute (like machine_class),
+        # letting subclasses inject their own Browser without hacking
+        # the factory method.
+        # TODO: propose a PR in cockpit so we don't need this hack
+        browser = super().new_browser(*args, **kwargs)
+        browser.__class__ = TLSBrowser
+        return browser
 
     def partition_disk(self):
         """ Override this method to partition the disk """
