@@ -1,3 +1,5 @@
+lang en
+
 bootloader --timeout=1
 zerombr
 clearpart --all
