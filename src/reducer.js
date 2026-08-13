@@ -40,6 +40,7 @@ export const localizationInitialState = {
     languages: {},
     plannedVconsole: undefined,
     plannedXlayouts: undefined,
+    userConfigured: false,
     xlayouts: undefined,
 };
 
@@ -210,6 +211,8 @@ export const localizationReducer = (state = localizationInitialState, action) =>
         };
     } else if (action.type === "SET_LANGUAGE_KICKSTARTED") {
         return { ...state, languageKickstarted: action.payload.languageKickstarted };
+    } else if (action.type === "SET_LANGUAGE_USER_CONFIGURED") {
+        return { ...state, userConfigured: true };
     } else {
         return state;
     }

@@ -29,6 +29,12 @@ class Review(NetworkDBus, StorageDBus):
     def check_language(self, lang):
         self.browser.wait_in_text(f"#{self._step}-target-system-language > .pf-v6-c-description-list__text", lang)
 
+    def check_language_incomplete(self):
+        self.browser.wait_in_text(
+            f"#{self._step}-target-system-language > .pf-v6-c-description-list__text",
+            "incomplete",
+        )
+
     @log_step()
     def check_account(self, account):
         self.browser.wait_in_text(f"#{self._step}-target-system-account > .pf-v6-c-description-list__text", account)

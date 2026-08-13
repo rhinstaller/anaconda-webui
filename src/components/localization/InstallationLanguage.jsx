@@ -221,6 +221,10 @@ export const InstallationLanguage = ({ dispatch }) => {
     const [isKeyboardValid, setIsKeyboardValid] = useState(false);
 
     useEffect(() => {
+        dispatch({ type: "SET_LANGUAGE_USER_CONFIGURED" });
+    }, [dispatch]);
+
+    useEffect(() => {
         setIsLanguageValid(language !== "");
     }, [language]);
 

@@ -8,18 +8,28 @@ import { useContext } from "react";
 import { LanguageContext } from "../../contexts/Common.jsx";
 
 /**
-  * @param {{ isHidden?: boolean }} [opts] - When the welcome spoke is not in the wizard, skip validation.
-  */
-export const usePageComplete = ({ isHidden } = {}) => {
+ * @param {{ automatedInstall?: boolean, isHidden?: boolean }} [opts]
+ * When **isHidden**, the welcome spoke is not in the wizard — treat as complete.
+ * Otherwise: language must be set and keyboard valid; under automated install,
+ * false if the lang was not configured from kickstart and the user has
+ * not set a language in the UI yet.
+ */
+export const usePageComplete = ({ automatedInstall, isHidden } = {}) => {
     const {
         keyboardLayouts,
         language,
+        languageKickstarted,
         plannedVconsole,
         plannedXlayouts,
+        userConfigured,
     } = useContext(LanguageContext);
 
     if (isHidden) {
         return true;
+    }
+
+    if (automatedInstall && !languageKickstarted && !userConfigured) {
+        return false;
     }
 
     const languageOk = language !== "";
