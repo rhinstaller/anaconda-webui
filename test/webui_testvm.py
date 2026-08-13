@@ -43,7 +43,7 @@ def cmd_cli():
             )
             # print Cockpit web address
             print(
-                f"http://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
+                f"https://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
             )
 
             # rsync development files over so /usr/local/share/cockpit is created with a development version

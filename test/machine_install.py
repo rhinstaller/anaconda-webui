@@ -217,7 +217,7 @@ class VirtInstallMachine(VirtMachine):
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
                 f"hostfwd=tcp:{self.ssh_address}:{self.ssh_port}-:22,"
-                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80 "
+                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:443 "
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"
