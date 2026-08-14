@@ -10,9 +10,9 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from "rea
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { getActiveInstallationTask, startInstallation } from "../apis/boss.js";
+import { INSTALLATION_STATUS, startInstallation } from "../apis/boss.js";
 
-import { PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { BossContext, PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
@@ -27,6 +27,7 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
      */
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
+    const [isStartingInstallation, setIsStartingInstallation] = useState(false);
     const [stepNotification, setStepNotification] = useState(null);
 
     const { storageScenarioId } = useContext(StorageContext);
@@ -34,6 +35,7 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     const payloadType = useContext(PayloadContext).type;
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const { path } = usePageLocation();
+    const { installationStatus } = useContext(BossContext);
 
     const autoProceedBlockedRef = useRef(false);
 
@@ -65,25 +67,21 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
     const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
 
+    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
+
     useEffect(() => {
-        if (path[0] && path[0] !== currentStepId) {
+        if (installationStatus && installationStatus !== INSTALLATION_STATUS.NOT_STARTED) {
+            if (path[0] !== finalStepId) {
+                cockpit.location.go([finalStepId]);
+            }
+        } else if (path[0] && path[0] !== currentStepId) {
             // If path is set respect it
             setCurrentStepId(path[0]);
         } else if (!currentStepId) {
             // Otherwise set the first step as the current step
             setCurrentStepId(firstStepId);
         }
-    }, [currentStepId, firstStepId, path, setCurrentStepId]);
-
-    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
-    useEffect(() => {
-        getActiveInstallationTask()
-                .then(activeTask => {
-                    if (activeTask) {
-                        cockpit.location.go([finalStepId]);
-                    }
-                });
-    }, [finalStepId]);
+    }, [currentStepId, finalStepId, firstStepId, installationStatus, path, setCurrentStepId]);
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
@@ -139,15 +137,18 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         cockpit.location.go([newStep.id]);
     };
 
+    // Render the progress page only if the installation has started. Direct
+    // URL access with NOT_STARTED status would crash without installation context.
+    // While the installation is being triggered, render nothing to avoid flashing.
     const finalStep = stepsOrder[stepsOrder.length - 1];
-    if (path[0] === finalStep.id) {
+    if (path[0] === finalStep.id && installationStatus !== INSTALLATION_STATUS.NOT_STARTED) {
         return (
             <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
                 <finalStep.component {...componentProps} />
             </PageSection>
         );
     }
-    if (currentStepId === undefined) {
+    if (currentStepId === undefined || isStartingInstallation) {
         return null;
     }
 

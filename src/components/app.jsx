@@ -7,7 +7,7 @@ import cockpit from "cockpit";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
-import { BossClient, INSTALLATION_STATUS } from "../apis/boss.js";
+import { BossClient } from "../apis/boss.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
@@ -73,22 +73,6 @@ export const Application = ({ conf, dispatch, installationStatus, isFetching, on
                     setStoreInitialized(true);
                 }, onCritFail({ context: N_("Reading information about the computer failed.") }));
     }, [address, automatedInstall, conf, dispatch, onCritFail]);
-
-    // Redirect to the correct page based on installation status
-    useEffect(() => {
-        if (!installationStatus) {
-            return;
-        }
-        const PROGRESS_PAGE = "anaconda-screen-progress";
-        const currentPath = cockpit.location.path[0];
-        const shouldBeOnProgress = installationStatus !== INSTALLATION_STATUS.NOT_STARTED;
-
-        if (shouldBeOnProgress && currentPath !== PROGRESS_PAGE) {
-            cockpit.location.replace([PROGRESS_PAGE]);
-        } else if (!shouldBeOnProgress && currentPath === PROGRESS_PAGE) {
-            cockpit.location.replace([]);
-        }
-    }, [installationStatus]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!address || !storeInitialized || !installationStatus) {
