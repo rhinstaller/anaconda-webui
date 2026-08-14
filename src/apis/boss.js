@@ -11,7 +11,9 @@ import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import { moduleClients } from "./index.js";
-import { PayloadsClient } from "./payloads.js";
+import { LocalizationClient } from "./localization.js";
+import { NetworkClient } from "./network.js";
+import { RuntimeClient } from "./runtime.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
@@ -49,13 +51,12 @@ export class BossClient {
         this.client.addEventListener("close", () => error("Boss client closed"));
 
         const status = await getInstallationStatus();
-        // PayloadsClient is problematic outside NOT_STARTED state, potentially leading
-        // to UnknownCompsEnvironmentError.
-        const payloadsNotNeeded = status !== INSTALLATION_STATUS.NOT_STARTED;
-        const clients = payloadsNotNeeded
-            ? moduleClients.filter(C => C !== PayloadsClient)
-            : moduleClients;
-
+        const installationCompleted = status === INSTALLATION_STATUS.SUCCEEDED ||
+            status === INSTALLATION_STATUS.FAILED;
+        // If the installation is completed, only init strictly required modules. Loading others can be
+        // problematic. PayloadClient, for instance, consistently leads to an error on reconnection
+        // if the installation is completed.
+        const clients = installationCompleted ? [RuntimeClient, NetworkClient, LocalizationClient] : moduleClients;
         return Promise.all([
             this.dispatch(getInstallationStatusAction()),
             this.dispatch(getPendingErrorAction()),
