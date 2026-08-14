@@ -151,13 +151,13 @@ to test, you can run tests by picking a program and just executing it against th
 Pixel tests
 -----------
 
-The verify test suite contains ["pixel tests"](https://cockpit-project.org/blog/pixel-testing.html).
+The verify test suite contains `pixel tests <https://cockpit-project.org/blog/pixel-testing.html>`_.
 Make sure to create the test/reference submodule before running tests which contain pixel tests.::
 
     make test/reference
 
 For information on how to debug, update or review pixel tests reference the
-["pixel tests"](https://cockpit-project.org/blog/pixel-testing.html) documentation.
+`pixel tests <https://cockpit-project.org/blog/pixel-testing.html>`_ documentation.
 Make sure to set::
 
     GITHUB_BASE=rhinstaller/anaconda
@@ -189,7 +189,7 @@ When the images are correctly updated just call to push the changes to pixel rep
     make update-reference-images
 
 Then new commit is pushed to
-["anaconda pixel tests repository"](https://github.com/rhinstaller/pixel-test-reference)
+`anaconda pixel tests repository <https://github.com/rhinstaller/pixel-test-reference>`_
 and just add reference git submodule to your existing PR by::
 
     git add test/reference
@@ -205,7 +205,7 @@ From time to time you can face an issue that the fedora-X-boot image on Cockpit 
 missig dependency for your PR. **You should not push your PR without fixing the image first!**
 
 To update the image please ping #cockpit on IRC and they will provide a PR with the new image.
-It will look similar to ["this"](https://github.com/cockpit-project/bots/pull/4551).
+It will look similar to `this <https://github.com/cockpit-project/bots/pull/4551>`_.
 
 Then you can test your Anaconda PR against this new builded image on cockpit PR by::
 
