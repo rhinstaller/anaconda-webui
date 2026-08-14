@@ -112,6 +112,23 @@ export const installWithTasks = () => {
 };
 
 /**
+ * @returns {Promise}           Resolves when the first installation task has been started
+ */
+export const startInstallation = () => {
+    return installWithTasks().then(tasks => {
+        const taskProxy = new BossClient().client.proxy(
+            "org.fedoraproject.Anaconda.Task",
+            tasks[0]
+        );
+        return new Promise((resolve, reject) => {
+            taskProxy.wait(() => {
+                taskProxy.Start().then(resolve, reject);
+            });
+        });
+    });
+};
+
+/**
  * @param {string} locale       Locale id
  */
 export const setLocale = ({ locale }) => {

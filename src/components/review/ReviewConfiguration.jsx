@@ -76,7 +76,7 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, pauseAtSummary }) => {
+export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, beginInstallation, pauseAtSummary }) => {
     const osRelease = useContext(OsReleaseContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
@@ -131,17 +131,17 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, p
             return;
         }
         if (allValidatedReviewPagesComplete) {
-            cockpit.location.go(["anaconda-screen-progress"]);
+            beginInstallation();
         } else {
             autoProceedBlockedRef.current = true;
         }
-    }, [automatedInstall, pauseAtSummary, allValidatedReviewPagesComplete, storageValidationPending,
+    }, [automatedInstall, beginInstallation, pauseAtSummary, allValidatedReviewPagesComplete, storageValidationPending,
         autoProceedBlockedRef, reviewValidationPending]);
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter pageValidationOk={allValidatedReviewPagesComplete && !reviewValidationPending} />
-    ), [allValidatedReviewPagesComplete, reviewValidationPending]);
+        <CustomFooter beginInstallation={beginInstallation} pageValidationOk={allValidatedReviewPagesComplete && !reviewValidationPending} />
+    ), [allValidatedReviewPagesComplete, beginInstallation, reviewValidationPending]);
     useWizardFooter(getFooter);
 
     const languageDescription = localizationComplete
@@ -327,7 +327,7 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ pageValidationOk }) => {
+const CustomFooter = ({ beginInstallation, pageValidationOk }) => {
     const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
@@ -355,7 +355,7 @@ const CustomFooter = ({ pageValidationOk }) => {
           footerHelperText={confirmationCheckbox}
           nextButtonText={buttonLabel}
           nextButtonVariant={!installationIsClean ? "warning" : "primary"}
-          onNext={() => cockpit.location.go(["anaconda-screen-progress"])}
+          onNext={() => beginInstallation()}
         />
     );
 };

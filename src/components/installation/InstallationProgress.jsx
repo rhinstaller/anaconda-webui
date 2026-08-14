@@ -14,7 +14,7 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS } from "../../apis/boss.js";
 
 import { exitGui, rebootSystem } from "../../helpers/exit.js";
 import { debug } from "../../helpers/log.js";
@@ -123,12 +123,6 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
             });
         };
 
-        const startNewInstallation = () =>
-            installWithTasks().then(
-                tasks => connectToTask(tasks[0], true),
-                onCritFail(failureCtx)
-            );
-
         const handleError = (message, detailType, categoryProxy) => {
             if (!message) return;
 
@@ -170,8 +164,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 }
                 break;
 
-            default:
-                startNewInstallation();
+            default: {
+                const errMsg = "Progress page reached but installation has not started";
+                debug(errMsg);
+                onCritFail(failureCtx)({ message: errMsg });
+            }
             }
         };
         syncInstallState();
