@@ -87,8 +87,8 @@ class TestStorageMountPointsStratis(VirtInstallMachineCase):
 
         r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", True, "ext4")
-        r.check_disk_row(dev, "/", "vda3", "5.37 GB", True, "stratis xfs")
-        r.check_disk_row(dev, "/home", "vda3", "5.37 GB", False)
+        r.check_disk_row(dev, "/", "vda3, Stratis", "5.37 GB", True, "stratis xfs")
+        r.check_disk_row(dev, "/home", "vda3, Stratis", "5.37 GB", False)
 
     def _testEncryptedUnlockStratis_partition_disk(self):
         m = self.machine
@@ -154,7 +154,7 @@ class TestStorageMountPointsStratis(VirtInstallMachineCase):
         i.reach(i.steps.REVIEW)
         r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
-        r.check_disk_row(dev, "/", "vda3", "10.7 GB", True, "stratis xfs", True)
+        r.check_disk_row(dev, "/", "vda3, Stratis", "10.7 GB", True, "stratis xfs", True)
 
 
 if __name__ == '__main__':

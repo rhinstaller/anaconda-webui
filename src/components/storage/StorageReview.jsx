@@ -114,6 +114,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 return ", LVM";
             } else if (checkDeviceOnStorageType(devices, device, "mdarray")) {
                 return ", RAID";
+            } else if (checkDeviceOnStorageType(devices, device, "stratis pool")) {
+                return ", Stratis";
             } else {
                 return "";
             }
