@@ -19,6 +19,8 @@ BuildRequires: systemd-rpm-macros
 %global anacondacorever 42.5
 %endif
 
+%global webui_slitherer_spin_identities fedora-release-identity-budgie or fedora-release-identity-cinnamon or fedora-release-identity-kde-desktop or fedora-release-identity-kde-mobile or fedora-release-identity-lxde or fedora-release-identity-lxqt or fedora-release-identity-matecompiz or fedora-release-identity-sway or fedora-release-identity-xfce or fedora-release-identity-i3
+
 %global cockpitver 275
 
 %define _unitdir /usr/lib/systemd/system
@@ -33,7 +35,7 @@ Requires: python3-bugzilla
 # it can often fall back to a diferent browser. This does not work in the limited installer
 # environment, so we need to make sure Firefox is available. Exclude on RHEL, only Flatpak version will be there.
 %if ! 0%{?rhel}
-Requires: (firefox if fedora-release-workstation)
+Requires: (slitherer if (%{webui_slitherer_spin_identities}) else firefox)
 %endif
 %if 0%{?fedora}
 Requires: system-logos
