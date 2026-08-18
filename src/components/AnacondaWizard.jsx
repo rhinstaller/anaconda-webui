@@ -4,15 +4,13 @@
  */
 import cockpit from "cockpit";
 
-import { usePageLocation } from "hooks";
-
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { getActiveInstallationTask } from "../apis/boss.js";
+import { INSTALLATION_STATUS } from "../apis/boss.js";
 
-import { PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { BossContext, PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
@@ -33,14 +31,23 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const payloadType = useContext(PayloadContext).type;
     const userInterfaceConfig = useContext(UserInterfaceContext);
-    const { path } = usePageLocation();
+    const { installationStatus } = useContext(BossContext);
 
     const autoProceedBlockedRef = useRef(false);
+
+    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
+    const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
+    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
+
+    const goToProgressPage = useCallback(() => {
+        setCurrentStepId(finalStepId);
+    }, [finalStepId, setCurrentStepId]);
 
     const componentProps = {
         autoProceedBlockedRef,
         automatedInstall,
         dispatch,
+        goToProgressPage,
         onCritFail,
         pauseAtSummary,
         setShowStorage,
@@ -55,28 +62,28 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         stepNotification,
     };
 
-    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
-    const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
-
     useEffect(() => {
-        if (path[0] && path[0] !== currentStepId) {
-            // If path is set respect it
-            setCurrentStepId(path[0]);
-        } else if (!currentStepId) {
-            // Otherwise set the first step as the current step
+        if (installationStatus === null) {
+            return;
+        }
+
+        if (installationStatus !== INSTALLATION_STATUS.NOT_STARTED) {
+            if (currentStepId !== finalStepId) {
+                setCurrentStepId(finalStepId);
+            }
+            return;
+        }
+
+        if (!currentStepId) {
             setCurrentStepId(firstStepId);
         }
-    }, [currentStepId, firstStepId, path, setCurrentStepId]);
+    }, [currentStepId, finalStepId, firstStepId, installationStatus, setCurrentStepId]);
 
-    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
     useEffect(() => {
-        getActiveInstallationTask()
-                .then(activeTask => {
-                    if (activeTask) {
-                        cockpit.location.go([finalStepId]);
-                    }
-                });
-    }, [finalStepId]);
+        if (currentStepId) {
+            cockpit.location.go([currentStepId]);
+        }
+    }, [currentStepId]);
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
@@ -129,11 +136,11 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
             setStepNotification(null);
         }
 
-        cockpit.location.go([newStep.id]);
+        setCurrentStepId(newStep.id);
     };
 
     const finalStep = stepsOrder[stepsOrder.length - 1];
-    if (path[0] === finalStep.id) {
+    if (currentStepId === finalStep.id) {
         return (
             <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
                 <finalStep.component {...componentProps} />
