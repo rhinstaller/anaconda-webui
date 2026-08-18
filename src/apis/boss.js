@@ -61,13 +61,17 @@ export class BossClient {
             { },
             (path, iface, signal, args) => {
                 if (signal === "PropertiesChanged" &&
-                    args[0] === INTERFACE_NAME &&
-                    Object.hasOwn(args[1], "ActiveInstallationTask") &&
-                    args[1].ActiveInstallationTask.v) {
-                    for (const Client of moduleClients) {
-                        Client.instance?.stopEventMonitor();
+                    args[0] === INTERFACE_NAME) {
+                    if (Object.hasOwn(args[1], "InstallationStatus")) {
+                        this.dispatch(getInstallationStatusAction());
                     }
-                    this.stopEventMonitor();
+                    if (Object.hasOwn(args[1], "ActiveInstallationTask") &&
+                        args[1].ActiveInstallationTask.v) {
+                        for (const Client of moduleClients) {
+                            Client.instance?.stopEventMonitor();
+                        }
+                        this.stopEventMonitor();
+                    }
                 }
             }
         );
