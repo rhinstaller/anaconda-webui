@@ -11,6 +11,9 @@ import { error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import { moduleClients } from "./index.js";
+import { LocalizationClient } from "./localization.js";
+import { NetworkClient } from "./network.js";
+import { RuntimeClient } from "./runtime.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
@@ -44,13 +47,16 @@ export class BossClient {
         this.dispatch = dispatch;
     }
 
-    init (args = {}) {
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Boss client closed"));
 
+        const status = await getInstallationStatus();
+        const installationStarted = status !== INSTALLATION_STATUS.NOT_STARTED;
+        const clients = installationStarted ? [RuntimeClient, NetworkClient, LocalizationClient] : moduleClients;
         return Promise.all([
             this.dispatch(getInstallationStatusAction()),
             this.dispatch(getPendingErrorAction()),
-            ...moduleClients.map(Client => new Client(this.address, this.dispatch).init(args))
+            ...clients.map(Client => new Client(this.address, this.dispatch).init(args))
         ]).then(() => {
             this.startEventMonitor();
         });

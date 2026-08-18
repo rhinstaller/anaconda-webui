@@ -49,6 +49,11 @@ class TestInstallationProgress(VirtInstallMachineCase):
         b.wait_in_text("h2", "Successfully installed")
         b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
 
+        # Reload the page on success to make sure reconnect also works here
+        b.reload()
+        b.wait_in_text("h2", "Successfully installed")
+        b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
+
         # Pixel test the complete progress step
         b.assert_pixels(
             "#app",
