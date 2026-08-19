@@ -43,7 +43,7 @@ def vm_install(image, compose, verbose, quick):
 
         # If compose is specified enable the custom compose repository and disable the existing ones
         if compose:
-            machine.execute("sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/*.repo")
+            machine.execute("sed -i 's/enabled=1/enabled=0/' /usr/share/dnf5/repos.d/*.repo")
 
             compose_base_url = get_compose_url(compose)
             repo_url = f"{compose_base_url}/compose/Everything/x86_64/os/"
