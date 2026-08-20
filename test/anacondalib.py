@@ -26,7 +26,11 @@ from timezone import DateAndTime
 from users import Users
 from utils import add_public_key
 
-pixel_tests_ignore = ["#anaconda-screen-review-target-system-timezone"]
+pixel_tests_ignore = [
+    "#anaconda-screen-review-target-system-timezone",
+    "#anaconda-screen-review-target-operating-system",
+    ".pf-v6-c-page__main-group",  # ignore the header mentioning the OS details
+]
 
 
 class VirtInstallMachineCase(MachineCase):
