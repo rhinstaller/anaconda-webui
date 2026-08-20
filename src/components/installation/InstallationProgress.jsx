@@ -242,7 +242,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               variant="full"
               paragraph={
                   <Flex direction={{ default: "column" }}>
-                      <Content component="p">
+                      <Content component="p" id={SCREEN_ID + "-step-done-description"}>
                           {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}

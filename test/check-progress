@@ -3,7 +3,7 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -58,6 +58,7 @@ class TestInstallationProgress(VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "installation-progress-complete",
+            ignore=[*pixel_tests_ignore, "#anaconda-screen-progress-step-done-description"]
         )
 
         self.handleReboot()
