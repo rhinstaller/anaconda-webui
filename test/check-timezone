@@ -42,7 +42,7 @@ class TestDateAndTime(VirtInstallMachineCase):
         i.reach(i.steps.DATE_TIME)
         dt.check_auto_date_time(dt.dbus_get_ntp_enabled())
         dt.check_auto_timezone(True)
-        region, city = default_timezone.split('/')
+        region, city = default_timezone.split('/', 1)
         dt.check_region(region)
         dt.check_city(city)
 
