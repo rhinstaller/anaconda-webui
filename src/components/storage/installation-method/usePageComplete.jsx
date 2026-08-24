@@ -47,10 +47,9 @@ export const useStorageComplete = () => {
         requiredSpace != null && freeSpace != null && requiredSpace > freeSpace;
 
     const pending =
-        !appliedPartitioning ||
-        !storageScenarioId ||
-        !requiredSpace ||
-        !freeSpace;
+        appliedPartitioning === undefined ||
+        requiredSpace === undefined ||
+        freeSpace === undefined;
 
     if (pending) {
         return { freeSpace, requiredSpace, status: StorageCompleteStatus.PENDING };
@@ -59,7 +58,7 @@ export const useStorageComplete = () => {
     return {
         freeSpace,
         requiredSpace,
-        status: hasInsufficientSpace
+        status: hasInsufficientSpace || !appliedPartitioning || !storageScenarioId
             ? StorageCompleteStatus.INSUFFICIENT
             : StorageCompleteStatus.OK,
     };
@@ -74,7 +73,7 @@ const useApplyStorageOnReview = () => {
     const partitioningPath = partitioning?.path;
 
     useEffect(() => {
-        if (appliedPartitioning) {
+        if (appliedPartitioning || !partitioningPath) {
             return;
         }
 

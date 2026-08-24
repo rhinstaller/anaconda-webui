@@ -98,6 +98,10 @@ export class StorageClient {
             const lastPartitioning = partitioning[partitioning.length - 1];
             await this.dispatch(getPartitioningDataAction({ partitioning: lastPartitioning }));
         }
+
+        const appliedPartitioning = await getProperty("AppliedPartitioning");
+        this.dispatch(setAppliedPartitioningAction({ appliedPartitioning }));
+
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());
     }

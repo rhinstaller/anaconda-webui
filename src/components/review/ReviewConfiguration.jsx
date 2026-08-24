@@ -81,6 +81,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const { goToStepById } = useWizardContext();
+    const { appliedPartitioning } = useContext(StorageContext);
     const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
@@ -172,7 +173,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
                     <IncompleteStepIndicator />
                 </FlexItem>
             )}
-            <StorageInstallationReviewSummary />
+            {appliedPartitioning && <StorageInstallationReviewSummary />}
         </Flex>
     );
 
@@ -261,13 +262,14 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
                         </FlexItem>
                         <FlexItem>
                             <ReviewDescriptionList>
+                                {appliedPartitioning &&
                                 <ReviewDescriptionList>
                                     <ReviewDescriptionListItem
                                       id={`${SCREEN_ID}-target-system-mode`}
                                       term={_("Installation type")}
                                       description={installationScenarioDescription}
                                     />
-                                </ReviewDescriptionList>
+                                </ReviewDescriptionList>}
                                 <ReviewDescriptionList>
                                     <ReviewDescriptionListItem
                                       id={`${SCREEN_ID}-target-storage`}

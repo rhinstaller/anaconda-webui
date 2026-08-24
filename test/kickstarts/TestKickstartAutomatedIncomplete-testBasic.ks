@@ -1,12 +1,3 @@
-bootloader --timeout=1
-zerombr
-clearpart --all
-part /boot/efi --fstype=efi --size=500  # EFI_PARTITION_KICKSTART_SIZE_MB
-part /boot --fstype=xfs --size=1100
-part swap --size=1024
-part / --fstype=xfs --grow
-part /home --fstype=xfs --size=2048
-
 #rootpw testcase
 #user --name=alice --gecos="Alice Admin" --groups=wheel
 #user --name=bob --gecos="Bob User"
