@@ -85,17 +85,22 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         }
     }, [currentStepId]);
 
+    const flatStepIds = stepsOrder.flatMap(s => s.steps ? s.steps.map(sub => sub.id) : [s.id]);
+    const currentStepIndex = flatStepIds.indexOf(currentStepId);
+
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
-            const isVisited = firstStepId === s.id || currentStepId === s.id;
+            const stepIndex = s.steps
+                ? flatStepIds.indexOf(s.steps[0].id)
+                : flatStepIds.indexOf(s.id);
+            const isFutureStep = stepIndex > currentStepIndex;
             let stepProps = {
                 id: s.id,
                 isAriaDisabled: isFormDisabled || isFetching,
                 isDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden || s.isFinal,
-                isVisited,
                 name: s.label,
-                stepNavItemProps: { id: s.id },
+                navItem: { id: s.id, isDisabled: isFutureStep },
                 ...(s.steps?.length && { isExpandable: true }),
             };
             if (s.component) {
