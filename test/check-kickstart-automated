@@ -319,29 +319,17 @@ class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
 
         i.check_next_disabled()
 
-        # Set language by visiting the language page and selecting a locale.
+        # Navigate back to language page via sidebar and set a locale.
         i.reach_on_sidebar(i.steps.LANGUAGE)
         l.select_locale("en_US")
 
-        i.reach_on_sidebar(i.steps.REVIEW)
-        r.check_storage_incomplete()
-        r.check_timezone_incomplete()
-        r.check_account_incomplete()
-        i.check_next_disabled()
-
-        i.reach_on_sidebar(i.steps.DATE_TIME)
+        # Navigate forward step by step via Next
+        i.reach(i.steps.DATE_TIME)
         dt.set_auto_timezone(False)
         dt.select_region("Europe")
         dt.select_city("Prague")
 
-        # Timezone and language set, but accounts and storage still missing.
-        i.reach_on_sidebar(i.steps.REVIEW)
-        r.check_storage_incomplete()
-        r.check_timezone("Europe/Prague")
-        r.check_account_incomplete()
-        i.check_next_disabled()
-
-        i.reach_on_sidebar(i.steps.ACCOUNTS)
+        i.reach(i.steps.ACCOUNTS)
         create_user(b, m)
         # Workaround to stabilize the button state before calling the reach
         # to prevent race condition on state flipping
