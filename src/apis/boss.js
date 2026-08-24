@@ -7,7 +7,7 @@ import cockpit from "cockpit";
 
 import { getInstallationStatusAction, getPendingErrorAction } from "../actions/boss-actions.js";
 
-import { error } from "../helpers/log.js";
+import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import { moduleClients } from "./index.js";
@@ -69,6 +69,7 @@ export class BossClient {
                 if (signal === "PropertiesChanged" &&
                     args[0] === INTERFACE_NAME) {
                     if (Object.hasOwn(args[1], "InstallationStatus")) {
+                        debug("Boss: InstallationStatus property changed");
                         this.dispatch(getInstallationStatusAction());
                     }
                     if (Object.hasOwn(args[1], "ActiveInstallationTask") &&
