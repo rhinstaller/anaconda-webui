@@ -79,19 +79,23 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                 );
                     }
                     if (message) {
+                        debug("ProgressChanged:", message);
                         setStatusMessage(message);
                         refStatusMessage.current = message;
                     }
                 });
                 taskProxy.addEventListener("Failed", () => {
+                    debug("Installation task Failed signal received");
                     setStatus("danger");
                 });
                 taskProxy.addEventListener("Stopped", () => {
+                    debug("Installation task Stopped signal received");
                     taskProxy.Finish().catch(onCritFail({
                         context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
                     }));
                 });
                 categoryProxy.addEventListener("CategoryChanged", (_, category) => {
+                    debug("CategoryChanged:", category);
                     const step = progressStepsMap[category];
                     setCurrentProgressStep(current => {
                         if (step !== undefined && step >= current) {
@@ -104,6 +108,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     handleError(message, detailType, categoryProxy);
                 });
                 taskProxy.addEventListener("Succeeded", () => {
+                    debug("Installation task Succeeded signal received");
                     setStatus("success");
                     setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
@@ -143,6 +148,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
 
         /** Sync UI with the backend installation status: finalize if done, reconnect if running, or start a new installation. */
         const syncInstallState = async () => {
+            debug("syncInstallState: installationStatus=", installationStatus);
             switch (installationStatus) {
             case INSTALLATION_STATUS.SUCCEEDED:
                 setStatus("success");
