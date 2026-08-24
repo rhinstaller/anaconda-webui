@@ -65,6 +65,13 @@ class Review(NetworkDBus, StorageDBus):
     def check_storage_config(self, scenario):
         self.browser.wait_in_text(f"#{self._step}-target-system-mode > .pf-v6-c-description-list__text", scenario)
 
+    def check_storage_incomplete(self):
+        self.browser.wait_in_text(
+            f"#{self._step}-target-storage > .pf-v6-c-description-list__text",
+            "incomplete",
+        )
+        self.browser.wait_not_present(f"#{self._step}-target-system-mode")
+
     def check_disk(self, disk, text, prefix=""):
         self.browser.wait_text(f"{prefix} #disk-{disk}", text)
 
