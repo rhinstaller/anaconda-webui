@@ -20,7 +20,6 @@ import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
 import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import { UserIssue } from "./Error.jsx";
-import { CockpitNetworkConfiguration } from "./network/CockpitNetworkConfiguration.jsx";
 import { CockpitStorageIntegration } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
 
 import "./HeaderKebab.scss";
@@ -86,9 +85,6 @@ export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, 
     const [isOpen, setIsOpen] = useState(false);
     const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
     const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
-    const [isNetworkOpen, setIsNetworkOpen] = useState(false);
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-
     const onToggle = () => {
         setIsOpen(!isOpen);
     };
@@ -104,19 +100,7 @@ export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, 
         setIsReportIssueOpen(true);
     };
 
-    const handleNetwork = () => {
-        setIsNetworkOpen(true);
-    };
-
     const dropdownItems = [
-        ...(isBootIso
-            ? [
-                <DropdownItem id="about-modal-dropdown-item-network" key="network" onClick={handleNetwork}>
-                    {_("Configure network")}
-                </DropdownItem>
-            ]
-            : []
-        ),
         <DropdownItem id="about-modal-dropdown-item-about" key="about" onClick={handleAboutModal}>
             {_("About")}
         </DropdownItem>,
@@ -146,11 +130,6 @@ export const HeaderKebab = ({ dispatch, isConnected, onCritFail, reportLinkURL, 
                     {dropdownItems}
                 </DropdownList>
             </Dropdown>
-            {isNetworkOpen &&
-            <CockpitNetworkConfiguration
-              setIsNetworkOpen={setIsNetworkOpen}
-              onCritFail={onCritFail}
-            />}
             {isAboutModalOpen &&
                 <AnacondaAboutModal
                   isModalOpen={isAboutModalOpen}

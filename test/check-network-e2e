@@ -36,12 +36,14 @@ class TestNetwork_E2E(VirtInstallMachineCase):
         con_name = iface
 
         mtu_value = "1600"
-        n.set_mtu_on_iface(iface, mtu_value)
+        i.reach_on_sidebar(i.steps.NETWORK)
+        n.set_mtu_on_iface_wizard(iface, mtu_value)
 
         n.check_con_settings([
             [con_name, "802-3-ethernet.mtu", mtu_value, None],
         ])
 
+        i.reach(i.steps.REVIEW)
         i.begin_installation(needs_confirmation=False)
         p = Progress(b)
         p.wait_done()

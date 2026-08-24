@@ -76,60 +76,6 @@ class TestNetworkDestructive(VirtInstallMachineCase):
     # https://github.com/cockpit-project/cockpit/issues/22926 is fixed
     #@run_on_vm_setups("", "bootopts-net1")
     @run_on_vm_setups("bootopts-net1")
-    def testCockpitConfigurationPreInstall(self):
-        """
-        Description:
-            Test configuration of settings of a device.
-
-        Expected results:
-            - Change breaking connection raises expected confirmation dialog
-            - The configured values are correctly applied to connection profile and device.
-        """
-        b = self.browser
-        m = self.machine
-        i = Installer(b, m)
-        n = Network(b, m)
-
-        i.open()
-
-        iface = n.get_the_iface()
-
-        n.disable_ipv4_on_iface(iface)
-
-        # After editing, therefore persisting, the automatic default connection
-        # is updated by Cockpit (COCKPIT-1750)
-        con_name = iface
-
-        mtu_value = "1600"
-        n.set_mtu_on_iface(iface, mtu_value)
-
-        n.check_con_settings([
-            [con_name, "802-3-ethernet.mtu", mtu_value, None],
-        ])
-
-        dns_server = "8.8.8.8"
-        n.add_dns_server_to_iface(iface, dns_server)
-
-        n.check_con_settings([
-            [con_name, "ipv4.dns", dns_server, None],
-        ])
-
-        # Check that the checkpoint does not fail silently, ie check after
-        # checkpoint timeout (INSTALLER-4594)
-        time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
-
-        n.check_con_settings([
-            [con_name, "802-3-ethernet.mtu", mtu_value, None],
-        ])
-
-        n.check_con_settings([
-            [con_name, "ipv4.dns", dns_server, None],
-        ])
-
-    # FIXME add "" vm_setup back when
-    # https://github.com/cockpit-project/cockpit/issues/22926 is fixed
-    #@run_on_vm_setups("", "bootopts-net1")
-    @run_on_vm_setups("bootopts-net1")
     def testWizardCockpitConfigurationPreInstall(self):
         """
         Description:
@@ -210,7 +156,7 @@ class TestNetwork(VirtInstallMachineCase):
         n = Network(b, m)
 
         i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
+        i.reach(i.steps.NETWORK)
         n.enter_network()
 
         check_cockpit_module_js_error(b, "Network")
