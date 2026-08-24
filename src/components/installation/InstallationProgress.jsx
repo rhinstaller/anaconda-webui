@@ -59,7 +59,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     useEffect(() => {
         const failureCtx = { context: _("Installation of the system failed") };
 
-        const connectToTask = (taskPath, shouldStart) => {
+        const connectToTask = (taskPath) => {
             const taskProxy = new BossClient().client.proxy(
                 "org.fedoraproject.Anaconda.Task",
                 taskPath
@@ -110,24 +110,22 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
             };
             taskProxy.wait(() => {
                 addEventListeners();
-                if (shouldStart) {
-                    taskProxy.Start().catch(onCritFail(failureCtx));
-                } else {
-                    getSteps({ task: taskPath })
-                            .then(
-                                ret => setSteps(ret.v),
-                                onCritFail()
-                            );
-                    handleError(pendingError.message, pendingError.type, categoryProxy);
-                }
+                getSteps({ task: taskPath })
+                        .then(
+                            ret => setSteps(ret.v),
+                            onCritFail()
+                        );
+                handleError(pendingError.message, pendingError.type, categoryProxy);
             });
         };
 
         const startNewInstallation = () =>
             installWithTasks().then(
-                tasks => connectToTask(tasks[0], true),
-                onCritFail(failureCtx)
-            );
+                tasks => new BossClient().client.call(
+                    tasks[0], "org.fedoraproject.Anaconda.Task", "Start", []
+                ),
+            )
+                    .catch(onCritFail(failureCtx));
 
         const handleError = (message, detailType, categoryProxy) => {
             if (!message) return;
@@ -158,7 +156,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 try {
                     const activeTask = await getActiveInstallationTask();
                     if (activeTask) {
-                        connectToTask(activeTask, false);
+                        connectToTask(activeTask);
                     } else {
                         // this should be impossible. How is the status = RUNNING and no task is active?
                         const errMsg = "Installation status is RUNNING but no active installation task was found";
