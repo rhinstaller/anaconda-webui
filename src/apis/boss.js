@@ -76,7 +76,6 @@ export class BossClient {
                         for (const Client of moduleClients) {
                             Client.instance?.stopEventMonitor();
                         }
-                        this.stopEventMonitor();
                     }
                 }
             }
