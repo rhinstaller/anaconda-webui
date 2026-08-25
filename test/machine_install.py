@@ -8,6 +8,7 @@ import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 from tempfile import TemporaryDirectory
 
@@ -39,6 +40,7 @@ INSTALLER_VM_MEMORY_MB = 4096
 class VirtInstallMachine(VirtMachine):
     http_install_server = None
     http_install_port = None
+    _target_disk = None
 
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
@@ -50,6 +52,14 @@ class VirtInstallMachine(VirtMachine):
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
         super().__init__(image, **kwargs)
+
+    def _disk_arg(self):
+        if self.payload_type != "dnf":
+            return "none"
+        _, path = tempfile.mkstemp(suffix=".qcow2", prefix=f"disk-{self.label}-")
+        subprocess.check_call(["qemu-img", "create", "-f", "qcow2", path, "15G"])
+        self._target_disk = path
+        return f"{path},format=qcow2"
 
     def _attach_libvirt_domain(self, timeout_sec=120):
         conn = self.virt_connection
@@ -221,7 +231,7 @@ class VirtInstallMachine(VirtMachine):
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"
-                f"--disk=none "
+                f"--disk {self._disk_arg()} "
                 f"--location {location} &"
             )
 
@@ -256,6 +266,12 @@ class VirtInstallMachine(VirtMachine):
             f"virsh -q -c qemu:///session undefine --nvram "
             f"--remove-all-storage {self.label} || true"
         )
+        if self._target_disk:
+            try:
+                os.unlink(self._target_disk)
+            except FileNotFoundError:
+                pass
+            self._target_disk = None
         if self.http_install_server:
             self.http_install_server.kill()
             self.http_install_server = None
