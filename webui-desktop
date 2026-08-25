@@ -52,7 +52,7 @@ REMOTE_AUTH_DROPIN="/etc/anaconda/cockpit/conf.d/50-remote-auth.conf"
 REMOTE_AUTH_SOURCE="/usr/share/anaconda/cockpit/conf.d/50-remote-auth.conf"
 WEBUI_AUTH=0
 
-if [[ "$WEBUI_NOAUTH" == "0" ]]; then
+if [[ "$WEBUI_REMOTE" == "1" && "$WEBUI_NOAUTH" == "0" ]]; then
     cp "$REMOTE_AUTH_SOURCE" "$REMOTE_AUTH_DROPIN"
     WEBUI_AUTH=1
 else
