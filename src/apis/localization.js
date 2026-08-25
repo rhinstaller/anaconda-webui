@@ -231,10 +231,6 @@ const applyKickstartLanguage = (language) => {
     setLocale({ locale: language });
 };
 
-export const setXKeyboardDefaults = async () => {
-    // FIXME: Reset XLayouts before calling SetXKeyboardDefaults. Without this reset, the
-    // backend would see existing layouts and think they came from
-    // kickstart, preventing new defaults from being applied.
-    await setXLayouts({ layouts: [] });
-    await callClient("SetXKeyboardDefaults");
+export const setXKeyboardDefaults = () => {
+    return callClient("SetXKeyboardDefaults");
 };
