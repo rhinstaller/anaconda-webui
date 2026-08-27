@@ -7,8 +7,8 @@ import cockpit from "cockpit";
 
 import {
     getActions,
+    getAncestors,
     getDeviceData,
-    getDevices,
     getDiskFreeSpace,
     getDiskTotalSpace,
     getExistingSystems,
@@ -34,13 +34,30 @@ export const getDevicesAction = () => {
         });
 
         const actions = await getActions();
-        const devices = await getDevices();
-        const deviceData = {};
         const mountPoints = await getMountPoints();
         const existingSystems = await getExistingSystems();
-        for (const device of devices) {
+
+        // Start from stable physical disks (GetUsableDisks) rather than GetDevices
+        // which returns all devices including transient LUKS containers created during
+        // encryption setup. Walking the tree top-down via children.v avoids the race
+        // where GetDevices snapshots an ID that vanishes before GetDeviceData is called.
+        const rootDiskIds = await getUsableDisks();
+        const ancestorIds = await getAncestors({ diskIds: rootDiskIds });
+        const deviceData = {};
+        const toVisit = [...new Set([...rootDiskIds, ...ancestorIds])];
+        const visited = new Set();
+
+        while (toVisit.length > 0) {
+            const device = toVisit.pop();
+            if (visited.has(device)) continue;
+            visited.add(device);
+
             try {
                 const devData = await getDeviceData({ disk: device });
+
+                // Empty DeviceData (device-id="") means the device vanished between
+                // enumeration and fetch — skip it and do not recurse into its children.
+                if (!devData["device-id"]?.v) continue;
 
                 if (devData["is-disk"].v) {
                     const free = await getDiskFreeSpace({ diskNames: [device] });
@@ -58,6 +75,10 @@ export const getDevicesAction = () => {
                 devData.formatData = formatData;
 
                 deviceData[device] = devData;
+
+                for (const childId of (devData.children?.v ?? [])) {
+                    if (!visited.has(childId)) toVisit.push(childId);
+                }
             } catch (error) {
                 if (error.name === "org.fedoraproject.Anaconda.Modules.Storage.UnknownDeviceError") {
                     continue;
