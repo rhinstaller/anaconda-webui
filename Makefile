@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 
-# stamp file to check if/when npm install ran
-# one example file in dist/ to check if that already ran
-DIST_TEST=dist/manifest.json
+# build.js ran in non-watch mode
+DIST_TEST=runtime-npm-modules.txt
 PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' package.json)
 RPM_NAME := $(PACKAGE_NAME)
 VERSION := $(shell T=$$(git describe 2>/dev/null) || T=1; echo $$T | tr '-' '.')
@@ -153,7 +152,7 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
-		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) VERSION.txt \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(DIST_TEST) $(SPEC) VERSION.txt \
 		dist/
 
 srpm: $(TARFILE) $(SPEC)
