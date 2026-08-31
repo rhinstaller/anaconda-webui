@@ -23,13 +23,23 @@ def cmd_cli():
                         action='store_true', dest="pause_at_summary")
     parser.add_argument("--remote-pin", help="PIN for accessing the webui. Blank value defaults to inst.webui.remote.noauth",
                         dest="remote_pin")
+    def positive_int(value):
+        value = int(value)
+        if value <= 0:
+            raise argparse.ArgumentTypeError("must be a positive integer")
+        return value
+
+    parser.add_argument("--add-disk", help="Attach a virtual disk with the given size in GiB (e.g., --add-disk 15)",
+                        type=positive_int, metavar="SIZE", dest="add_disk")
     args = parser.parse_args()
 
     if args.bios:
         os.environ["TEST_FIRMWARE"] = "bios"
+    extra_disks = [args.add_disk] if args.add_disk is not None else []
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
                                  kickstart_file_name=args.kickstart_file_name,
-                                 pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin)
+                                 pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin,
+                                 extra_disks=extra_disks)
     try:
         machine.start()
 
@@ -62,7 +72,16 @@ def cmd_cli():
         signal.signal(signal.SIGTERM, lambda _, frame: machine.stop())
         signal.pause()
     except KeyboardInterrupt:
-        machine.stop()
+        pass
+    finally:
+        # Ignore additional Ctrl+C while cleaning up to avoid leaving disks behind.
+        previous_sigint = signal.getsignal(signal.SIGINT)
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+        try:
+            machine.stop()
+        finally:
+            # Restore previous SIGINT handler.
+            signal.signal(signal.SIGINT, previous_sigint)
 
 
 # This can be used as helper program for tests not written in Python: Run given
