@@ -5,7 +5,6 @@ import json
 import os
 import subprocess
 import sys
-import tempfile
 
 # import Cockpit's machinery for test VMs and its browser test API
 TEST_DIR = os.path.dirname(__file__)
@@ -62,21 +61,6 @@ class VirtInstallMachineCase(MachineCase):
     def partition_disk(self):
         """ Override this method to partition the disk """
         pass
-
-    @property
-    def temp_dir(self):
-        """Get temp directory for libvirt resources
-
-        We need to set the directory based on the fact if the test is started in the toolbx
-        """
-        # toolbox compatibility: /tmp is shared with the host, but may be too small for big overlays (tmpfs!)
-        # $HOME is shared, but we don't want to put our junk there (NFS, backups)
-        # /var/tmp is not shared with the host but the right place; just in case session libvirtd is already
-        # running, use the shared path so that the daemon can actually see our overlay.
-        # But this only makes sense if the host also has /run/host set up (toolbox ships a tmpfiles.d)
-        if os.path.exists("/run/host/var/tmp") and os.path.exists("/run/host/run/host"):
-            return "/run/host/var/tmp"
-        return "/var/tmp"
 
     @classmethod
     def setUpClass(cls):
@@ -142,33 +126,6 @@ class VirtInstallMachineCase(MachineCase):
             self.allow_browser_errors(".*client closed.*")
             self.allow_browser_errors(".*Server has closed the connection.*")
 
-    def add_disk(self, size, backing_file=None, target="vda"):
-        image = self._create_disk_image(size, backing_file=backing_file)
-        subprocess.check_call([
-            "virt-xml", "-c",  "qemu:///session", self.machine.label,
-            "--update", "--add-device", "--disk", f"{image},format=qcow2,target={target}"
-        ])
-
-        return image
-
-    def rem_disk(self, disk):
-        subprocess.check_call([
-            "virt-xml", "-c", "qemu:///session", self.machine.label,
-                "--update", "--remove-device", "--disk", disk
-        ])
-        os.remove(disk)
-
-    def _create_disk_image(self, size, image_path=None, backing_file=None):
-        if not image_path:
-            _, image_path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.machine.label}", dir=self.temp_dir)
-        subprocess.check_call([
-            "qemu-img", "create", "-f", "qcow2",
-            *(["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []),
-            image_path,
-            f"{size}G"
-        ])
-        return image_path
-
     def resetLanguage(self):
         m = self.machine
         b = self.browser
@@ -195,30 +152,27 @@ class VirtInstallMachineCase(MachineCase):
 
     def addAllDisks(self):
         # Add installation target disks
+        m = self.machine
         for index, (disk, size) in enumerate(self.disk_images):
             target = f"vd{chr(97 + index)}"
             backing_file = os.path.join(BOTS_DIR, f"./images/{disk}") if disk else None
             # Download the image if it doesn't exist
             if backing_file and not os.path.exists(backing_file):
                 subprocess.check_call([os.path.join(BOTS_DIR, "image-download"), disk])
-            self.add_disk(size, backing_file, target)
+            m.add_disk(size, backing_file, target)
 
         # Select the disk as boot device
         subprocess.check_call([
             "virt-xml", "-c", "qemu:///session",
-            self.machine.label, "--edit", "--boot", "hd"
+            m.label, "--edit", "--boot", "hd"
         ])
 
     def removeAllDisks(self):
         # Remove all disks
-        domblklist = subprocess.getoutput(
-            f"virsh domblklist {self.machine.label}",
-        )
-        for line in domblklist.splitlines():
-            name = line.split()[0]
-            if "vd" in name:
-                file = line.split()[1]
-                self.rem_disk(file)
+        m = self.machine
+        for disk in list(m._disks):
+            m.rem_disk(disk)
+        m._disks.clear()
 
     def resetStorage(self):
         # Ensures that anaconda has the latest storage configuration data

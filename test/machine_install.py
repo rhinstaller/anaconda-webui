@@ -8,6 +8,7 @@ import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 from tempfile import TemporaryDirectory
 
@@ -64,6 +65,38 @@ class VirtInstallMachine(VirtMachine):
         raise AssertionError(
             f"libvirt domain {self.label!r} did not appear within {timeout_sec}s"
         )
+
+    def add_disk(self, size, backing_file=None, target="vda"):
+        _, image = tempfile.mkstemp(
+            suffix='.qcow2',
+            prefix=f"disk-anaconda-{self.label}",
+            dir=self.run_dir,
+        )
+        subprocess.check_call([
+            "qemu-img", "create", "-f", "qcow2",
+            *(["-o", f"backing_file={backing_file},backing_fmt=qcow2"] if backing_file else []),
+            image, f"{size}G",
+        ])
+        subprocess.check_call([
+            "virt-xml", "-c", "qemu:///session", self.label,
+            "--update", "--add-device", "--disk", f"{image},format=qcow2,target={target}"
+        ])
+
+        disk = {
+            "filename": image,
+            "temporary": True,
+        }
+        self._disks.append(disk)
+        return disk
+
+    def rem_disk(self, disk, quick=False):
+        if not quick:
+            subprocess.check_call([
+                "virt-xml", "-c", "qemu:///session", self.label,
+                "--update", "--remove-device", "--disk", disk["filename"]
+            ])
+        if disk["temporary"]:
+            os.unlink(disk["filename"])
 
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
