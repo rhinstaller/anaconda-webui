@@ -116,7 +116,7 @@ export TEST_OS
 # Keep the scheduler's RAM budget in sync with VirtInstallMachine (capacity planning).
 # Actual VM memory is also enforced in VirtInstallMachine.__init__.
 INSTALLER_VM_MEMORY_MB=$(python3 -c "import sys; sys.path.insert(0, 'test'); from machine_install import INSTALLER_VM_MEMORY_MB; print(INSTALLER_VM_MEMORY_MB)")
-RUN_TESTS_COMMON_OPTS="--nondestructive-memory-mb ${INSTALLER_VM_MEMORY_MB}"
+RUN_TESTS_COMMON_OPTS="--nondestructive-memory-mb ${INSTALLER_VM_MEMORY_MB} --capacity-factor 0.5"
 TEST_AUDIT_NO_SELINUX=1 test/common/run-tests $RUN_TESTS_COMMON_OPTS --test-dir test/ $RUN_OPTS
 exit_code=$?
 
