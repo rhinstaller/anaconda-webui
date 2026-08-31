@@ -20,6 +20,7 @@ import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../../apis/storage.js";
+import { setBootloaderDrive } from "../../../apis/storage_bootloader.js";
 import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 
@@ -184,7 +185,10 @@ const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
                         setIsRescanningDisks(false);
                         errorHandler(exc);
                     },
-                    onSuccess: () => resetPartitioning()
+                    onSuccess: () => Promise.all([
+                        resetPartitioning(),
+                        setBootloaderDrive({ drive: "" }),
+                    ])
                             .then(() => Promise.all([
                                 dispatch(getDevicesAction()),
                                 dispatch(getDiskSelectionAction())
@@ -332,8 +336,11 @@ const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
         setUnappliedSelection(diskSelection.selectedDisks);
     }, [diskSelection.selectedDisks]);
 
-    const onSave = () => {
-        setSelectedDisks({ drives: unappliedSelection });
+    const onSave = async () => {
+        await Promise.all([
+            setSelectedDisks({ drives: unappliedSelection }),
+            setBootloaderDrive({ drive: "" }),
+        ]);
         setIsModalOpen(false);
     };
 
