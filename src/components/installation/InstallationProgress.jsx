@@ -50,6 +50,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [currentProgressStep, setCurrentProgressStep] = useState(0);
     const [errorDialogData, setErrorDialogData] = useState(null);
     const refStatusMessage = useRef("");
+    const taskConnected = useRef(false);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
     const { installationStatus, pendingError } = useContext(BossContext);
@@ -59,7 +60,8 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     useEffect(() => {
         const failureCtx = { context: _("Installation of the system failed") };
 
-        const connectToTask = (taskPath, shouldStart) => {
+        const connectToTask = (taskPath) => {
+            taskConnected.current = true;
             const taskProxy = new BossClient().client.proxy(
                 "org.fedoraproject.Anaconda.Task",
                 taskPath
@@ -115,24 +117,38 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
             };
             taskProxy.wait(() => {
                 addEventListeners();
-                if (shouldStart) {
-                    taskProxy.Start().catch(onCritFail(failureCtx));
-                } else {
-                    getSteps({ task: taskPath })
-                            .then(
-                                ret => setSteps(ret.v),
-                                onCritFail()
-                            );
-                    handleError(pendingError.message, pendingError.type, categoryProxy);
-                }
+                getSteps({ task: taskPath })
+                        .then(
+                            ret => setSteps(ret.v),
+                            onCritFail()
+                        );
+                handleError(pendingError.message, pendingError.type, categoryProxy);
+                categoryProxy.wait(() => {
+                    const category = categoryProxy.CurrentCategory;
+                    if (category) {
+                        const step = progressStepsMap[category];
+                        if (step !== undefined) {
+                            setCurrentProgressStep(current => step >= current ? step : current);
+                        }
+                    }
+                });
             });
         };
 
-        const startNewInstallation = () =>
-            installWithTasks().then(
-                tasks => connectToTask(tasks[0], true),
-                onCritFail(failureCtx)
-            );
+        const startNewInstallation = async () => {
+            try {
+                const tasks = await installWithTasks();
+                const taskProxy = new BossClient().client.proxy(
+                    "org.fedoraproject.Anaconda.Task",
+                    tasks[0]
+                );
+                taskProxy.wait(() => {
+                    taskProxy.Start().catch(onCritFail(failureCtx));
+                });
+            } catch (e) {
+                onCritFail(failureCtx)(e);
+            }
+        };
 
         const handleError = (message, detailType, categoryProxy) => {
             if (!message) return;
@@ -161,10 +177,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 break;
 
             case INSTALLATION_STATUS.RUNNING:
+                if (taskConnected.current) break;
                 try {
                     const activeTask = await getActiveInstallationTask();
                     if (activeTask) {
-                        connectToTask(activeTask, false);
+                        connectToTask(activeTask);
                     } else {
                         // this should be impossible. How is the status = RUNNING and no task is active?
                         const errMsg = "Installation status is RUNNING but no active installation task was found";
