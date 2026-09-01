@@ -274,6 +274,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
                     devices[bootloaderDriveMDRAID].name.v
                 )
             });
+            return;
         }
     }
 
