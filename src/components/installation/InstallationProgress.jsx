@@ -97,15 +97,17 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                         context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
                     }));
                 });
-                categoryProxy.addEventListener("CategoryChanged", (_, category) => {
-                    debug("CategoryChanged:", category);
-                    const step = progressStepsMap[category];
-                    setCurrentProgressStep(current => {
-                        if (step !== undefined && step >= current) {
-                            return step;
-                        }
-                        return current;
-                    });
+                categoryProxy.addEventListener("changed", (_, data) => {
+                    if ("CurrentCategory" in data) {
+                        debug("CategoryChanged:", data.CurrentCategory);
+                        const step = progressStepsMap[data.CurrentCategory];
+                        setCurrentProgressStep(current => {
+                            if (step !== undefined && step >= current) {
+                                return step;
+                            }
+                            return current;
+                        });
+                    }
                 });
                 categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
                     handleError(message, detailType, categoryProxy);
@@ -121,6 +123,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 if (shouldStart) {
                     taskProxy.Start().catch(onCritFail(failureCtx));
                 } else {
+                    const step = progressStepsMap[categoryProxy.CurrentCategory];
+                    if (step !== undefined) {
+                        setCurrentProgressStep(step);
+                    }
                     getSteps({ task: taskPath })
                             .then(
                                 ret => setSteps(ret.v),
