@@ -113,7 +113,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                     setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
             };
-            taskProxy.wait(() => {
+            Promise.all([taskProxy.wait(), categoryProxy.wait()]).then(() => {
                 addEventListeners();
                 if (shouldStart) {
                     taskProxy.Start().catch(onCritFail(failureCtx));
