@@ -16,6 +16,8 @@ import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon
 
 import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
 
+import { getInstallationStatusAction } from "../../actions/boss-actions.js";
+
 import { exitGui, rebootSystem } from "../../helpers/exit.js";
 import { debug } from "../../helpers/log.js";
 
@@ -56,6 +58,17 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const { installationStatus, pendingError } = useContext(BossContext);
 
     useAutoReboot(status, automatedInstall);
+
+    useEffect(() => {
+        if (installationStatus !== INSTALLATION_STATUS.RUNNING || status === "success" || status === "danger") {
+            return;
+        }
+        const intervalId = setInterval(() => {
+            debug("InstallationProgress: polling InstallationStatus (event-delivery fallback)");
+            new BossClient().dispatch(getInstallationStatusAction());
+        }, 30_000);
+        return () => clearInterval(intervalId);
+    }, [installationStatus, status]);
 
     useEffect(() => {
         const failureCtx = { context: _("Installation of the system failed") };
