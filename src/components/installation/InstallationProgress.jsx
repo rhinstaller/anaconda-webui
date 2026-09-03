@@ -69,16 +69,19 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 taskPath
             );
 
+            let lastStep = null;
+
             const addEventListeners = () => {
                 taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
-                    if (step === 0) {
+                    if (step === 0 && lastStep !== 0) {
                         getSteps({ task: taskPath })
                                 .then(
                                     ret => setSteps(ret.v),
                                     onCritFail()
                                 );
                     }
-                    if (message) {
+                    lastStep = step;
+                    if (message && message !== refStatusMessage.current) {
                         debug("ProgressChanged:", message);
                         setStatusMessage(message);
                         refStatusMessage.current = message;
