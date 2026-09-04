@@ -59,6 +59,7 @@ export class BossClient {
             ...clients.map(Client => new Client(this.address, this.dispatch).init(args))
         ]).then(() => {
             this.startEventMonitor();
+            this.dispatch(getInstallationStatusAction());
         });
     }
 
