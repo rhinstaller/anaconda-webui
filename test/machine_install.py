@@ -8,6 +8,7 @@ import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 from tempfile import TemporaryDirectory
 
@@ -46,6 +47,7 @@ class VirtInstallMachine(VirtMachine):
         self.pause_at_summary = kwargs.pop("pause_at_summary", False)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         self.remote_pin = kwargs.pop("remote_pin", "")
+        self.extra_disks = kwargs.pop("extra_disks", [])
         # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
@@ -196,7 +198,18 @@ class VirtInstallMachine(VirtMachine):
             else ""
         )
         auth_method = f"inst.webui.remote.pin={self.remote_pin}" if self.remote_pin else "inst.webui.remote.noauth"
+
         try:
+            disk_args = "--disk=none "
+            if self.extra_disks:
+                disk_parts = []
+                for size_gb in self.extra_disks:
+                    fd, path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.label}-")
+                    os.close(fd)
+                    os.unlink(path)
+                    disk_parts.append(f"--disk path={path},size={size_gb},bus=virtio ")
+                disk_args = "".join(disk_parts)
+
             self._execute(
                 "virt-install "
                 "--wait "
@@ -221,7 +234,7 @@ class VirtInstallMachine(VirtMachine):
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"
-                f"--disk=none "
+                f"{disk_args}"
                 f"--location {location} &"
             )
 
