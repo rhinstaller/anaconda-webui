@@ -38,9 +38,10 @@ const PROGRESS_STEPS_DONE = 4;
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
     ENVIRONMENT_CONFIGURATION: 0,
+    FINALIZATION: 3,
     SOFTWARE_INSTALLATION: 1,
     STORAGE_CONFIGURATION: 0,
-    SYSTEM_CONFIGURATION: 3,
+    SYSTEM_CONFIGURATION: 2,
 };
 
 export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
