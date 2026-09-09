@@ -189,7 +189,6 @@ const BZManualReportOption = ({ component, exception }) => {
  * Component for API key entry form (step 1)
  */
 const BZAPIKeyEntryForm = ({
-    bugCreationError,
     bugzillaApiKey,
     idPrefix,
     onApiKeyChange
@@ -203,12 +202,6 @@ const BZAPIKeyEntryForm = ({
             <Content>
                 {_("Enter your Bugzilla API key to create a bug report. You will be able to review and edit the bug details in the next step.")}
             </Content>
-            {bugCreationError && (
-                <Alert
-                  title={bugCreationError}
-                  variant="danger"
-                  isInline />
-            )}
             <FormGroup
               label={_("Bugzilla API key")}
               isRequired
@@ -342,7 +335,6 @@ const BZDuplicatesList = ({ duplicateBugs, idPrefix, isBootIso }) => {
  * Component for bug report details form (step 3)
  */
 const BZReportDetailsForm = ({
-    bugCreationError,
     bugDescription,
     bugSummary,
     exception,
@@ -360,16 +352,6 @@ const BZReportDetailsForm = ({
 
     return (
         <>
-            {bugCreationError && (
-                <Alert
-                  title={_("Failed to report issue")}
-                  variant="danger"
-                  isInline>
-                    <Content>
-                        {bugCreationError}
-                    </Content>
-                </Alert>
-            )}
             <Content component={ContentVariants.h4} className={idPrefix + "-bz-report-modal-intructions-header"}>
                 {_("Bug report details")}
             </Content>
@@ -620,7 +602,6 @@ const BZExceptionReportFlow = ({
                             <ExceptionInfo exception={exception} idPrefix={idPrefix} />
                             <Divider />
                             <BZAPIKeyEntryForm
-                              bugCreationError={bugCreationError}
                               bugzillaApiKey={bugzillaApiKey}
                               idPrefix={idPrefix}
                               onApiKeyChange={setBugzillaApiKey}
@@ -643,7 +624,6 @@ const BZExceptionReportFlow = ({
                     )}
                     {reportStep === 3 && (
                         <BZReportDetailsForm
-                          bugCreationError={bugCreationError}
                           bugDescription={bugDescription}
                           bugSummary={bugSummary}
                           exception={exception}
@@ -657,6 +637,12 @@ const BZExceptionReportFlow = ({
                 </Form>
             </ModalBody>
             <ModalFooter>
+                {bugCreationError && (
+                    <Alert
+                      title={bugCreationError}
+                      variant="danger"
+                      isInline />
+                )}
                 {reportStep === 1 && (
                     <Button
                       key="next"
