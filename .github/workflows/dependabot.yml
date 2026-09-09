@@ -11,10 +11,11 @@ jobs:
     environment: npm-update
     permissions:
       contents: read
+      issues: write
       pull-requests: write
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'node_modules') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'node_modules') && github.event.pull_request.head.repo.full_name == github.repository }}
 
     steps:
       - name: Clone repository
