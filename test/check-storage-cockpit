@@ -623,6 +623,99 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot btrfs noauto,subvol=root 0 0" in fstab)
         self.assertTrue("/mnt/sysroot/home btrfs noauto,subvol=home 0 0" in fstab)
 
+    def _createStratisPool(self, browser, poolname="fedorapool", passphrase=None):
+        self.reachCockpitStorage()
+        self.cockpitCreateBootloaderPartitions()
+
+        self.click_devices_dropdown("Create Stratis pool")
+        pool_dialog = {
+            "name": poolname,
+            "disks": {"/dev/vda": True},
+            "overprov.on": False,
+        }
+        if passphrase:
+            pool_dialog.update({
+                "encrypt_pass.on": True,
+                "passphrase": passphrase,
+                "passphrase2": passphrase,
+            })
+        self.dialog(pool_dialog)
+
+        self.click_card_row("Storage", name=poolname)
+
+        browser.click(self.card_button("Stratis filesystems", "Create new filesystem"))
+        self.dialog({"name": "root", "size": 5000, "mount_point": "/"})
+
+        browser.click(self.card_button("Stratis filesystems", "Create new filesystem"))
+        self.dialog({"name": "home", "size": 5000, "mount_point": "/home"})
+
+    def testStratis(self):
+        """
+        Description:
+            Test installation on a Stratis pool and filesystems created in Cockpit storage
+
+        Expected results:
+            - A Stratis pool and filesystems can be created and used for the root and home mount points
+            - The review screen shows the correct mount points and devices
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self._createStratisPool(b)
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        dev = "vda"
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(dev, "/", "vda3, Stratis", fs_type="stratis xfs")
+        r.check_disk_row(dev, "/home", "vda3, Stratis", fs_type="stratis xfs")
+
+    def testStratisEncrypted(self):
+        """
+        Description:
+            Test installation on an encrypted Stratis pool created in Cockpit storage
+
+        Expected results:
+            - An encrypted Stratis pool and filesystems can be created and used
+              for the root and home mount points
+            - Cockpit passes the passphrase to the installer so that the pool can
+              be used without an explicit unlock step
+            - The review screen shows the devices as encrypted
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        self._createStratisPool(b, passphrase="redhat")
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        dev = "vda"
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+
+        r.check_disk_row(dev, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
+        r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row(dev, "/", "vda3, Stratis", fs_type="stratis xfs", is_encrypted=True)
+        r.check_disk_row(dev, "/home", "vda3, Stratis", fs_type="stratis xfs", is_encrypted=True)
+
     @disk_images([("", 15), ("", 15), ("", 15)])
     def testRAIDUnsupportedNesting(self):
         """
