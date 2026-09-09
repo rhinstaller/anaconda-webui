@@ -57,6 +57,7 @@ const context = await esbuild.context({
         ".py": "text",
         ".txt": "text",
     },
+    metafile: true,
     minify: production,
     nodePaths,
     outdir,
@@ -98,7 +99,35 @@ const context = await esbuild.context({
 });
 
 try {
-    await context.rebuild();
+    const result = await context.rebuild();
+
+    // skip metafile and runtime module calculation in watch mode
+    if (!watchMode) {
+        fs.writeFileSync("metafile.json", JSON.stringify(result.metafile));
+
+        // Extract bundled npm packages for dependency tracking
+        const bundledPackages = new Set();
+        for (const inputPath of Object.keys(result.metafile.inputs)) {
+            // Match paths like node_modules/package-name/ or node_modules/@scope/package-name/
+            const match = inputPath.match(/^node_modules\/(@[^/]+\/[^/]+|[^/]+)\//);
+            if (match) { bundledPackages.add(match[1]) }
+        }
+
+        // Look up versions from package-lock.json and output simple format
+        const packageLock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
+        const deps = [];
+        for (const pkgName of Array.from(bundledPackages).sort()) {
+            const lockKey = `node_modules/${pkgName}`;
+            const pkgInfo = packageLock.packages?.[lockKey];
+            if (pkgInfo?.version) {
+                deps.push(`${pkgName} ${pkgInfo.version}`);
+            } else {
+                /* eslint-disable-next-line no-console */
+                console.error(`Warning: Could not find version for ${pkgName}`);
+            }
+        }
+        fs.writeFileSync("runtime-npm-modules.txt", deps.join("\n") + "\n");
+    }
 } catch (e) {
     if (!watchMode) {
         process.exit(1);
