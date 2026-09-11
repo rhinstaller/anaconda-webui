@@ -1,11 +1,21 @@
+#!/usr/bin/env python3
 # Copyright (C) 2023 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import sys
 from random import SystemRandom as sr
 
-import crypt_r  # type: ignore[import]
-
+try:
+    import crypt_r # type: ignore[import]
+except ImportError:
+    try:
+        import crypt as crypt_r
+    except ImportError:
+        sys.stderr.write("Missing crypt_r library\n")
+        sys.exit(1)
+except Exception as e:
+    sys.stderr.write("Missing crypt_r library\n")
+    sys.exit(1)
 
 # Using the function from pyanaconda/core/users.py
 def crypt_password(password):
@@ -35,12 +45,25 @@ def crypt_password(password):
             raise RuntimeError(
                 f"Unable to encrypt password: unsupported algorithm {crypt_r.METHOD_SHA512}"
             ) from exc
-
+    
+    print(cryptpw)
     return cryptpw
 
+def main() -> None:
+    args = sys.argv[1:]
 
-try:
-    print(crypt_password(sys.argv[1]), end="")
-except Exception as e:
-    sys.stderr.write(str(e) + "\n")
-    sys.exit(1)
+    if len(args) < 1:
+        sys.stderr.write("Usage: encrypt-user-pw.py <password>\n")
+        sys.exit(1)
+    elif len(args) == 1:
+        try:
+            crypt_password(args[1])
+        except Exception as exc:
+            sys.stderr.write(f"Error: {exc}\n")
+            sys.exit(1)
+    else:
+        sys.stderr.write("Error: expected exactly one argument (the password)\n")
+        sys.exit(1)
+    
+if __name__ == "__main__":
+    main()
