@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 import cockpit from "cockpit";
-
 import React, { useContext, useEffect, useRef, useState } from "react";
+
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { ProgressStep, ProgressStepper } from "@patternfly/react-core/dist/esm/components/ProgressStepper/index.js";
@@ -14,20 +14,18 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
-
-import { exitGui, rebootSystem } from "../../helpers/exit.js";
-import { debug } from "../../helpers/log.js";
-
-import { BossContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
-
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
+import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
+import { BossContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { exitGui, rebootSystem } from "../../helpers/exit.js";
+import { debug } from "../../helpers/log.js";
+import { AnacondaSnakeModal } from "./AnacondaSnake.jsx";
 import { Feedback } from "./Feedback.jsx";
 import { InstallationNonCriticalErrorDialog } from "./InstallationNonCriticalErrorDialog.jsx";
-import { useAutoReboot } from "./useAutoReboot.js";
 
 import "./InstallationProgress.scss";
+import { useAutoReboot } from "./useAutoReboot.js";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
@@ -49,6 +47,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [steps, setSteps] = useState();
     const [currentProgressStep, setCurrentProgressStep] = useState(0);
     const [errorDialogData, setErrorDialogData] = useState(null);
+    const [isGameOpen, setIsGameOpen] = useState(false);
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
@@ -307,6 +306,14 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                       );
                                   })}
                               </ProgressStepper>
+                              <FlexItem spacer={{ default: "spacerXl" }} align={{ default: "alignCenter" }}>
+                                  <Button
+                                    variant="secondary"
+                                    onClick={() => setIsGameOpen(true)}
+                                  >
+                                      {_("Play Anaconda")}
+                                  </Button>
+                              </FlexItem>
                           </>)}
                   </Flex>
               }
@@ -319,6 +326,11 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
               onSubmitDecision={submitErrorDecision}
             />
             {(status === "success" || status === "danger") && <Feedback />}
+            <AnacondaSnakeModal
+              isOpen={isGameOpen}
+              onClose={() => setIsGameOpen(false)}
+              progressPercent={Math.min(Math.round((currentProgressStep / PROGRESS_STEPS_DONE) * 100), 100)}
+            />
         </Flex>
     );
 };

@@ -1,0 +1,57 @@
+/*
+ * Copyright (C) 2026 Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+
+.snake-board-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  aspect-ratio: 20 / 15;
+  background-color: var(--pf-global--BackgroundColor--dark-100, #151515);
+  border: 2px solid var(--pf-global--BorderColor--100, #d2d2d2);
+  border-radius: var(--pf-global--BorderRadius--sm, 3px);
+  overflow: hidden;
+
+  .game-over-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    color: var(--pf-global--Color--light-100, #ffffff);
+
+    h2 {
+      margin-bottom: var(--pf-global--spacer--md, 16px);
+      color: var(--pf-global--danger-color--100, #c9190b);
+    }
+  }
+
+  .snake-board {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    .cell {
+      background-color: transparent;
+
+      &.snake-head {
+        background-color: var(--pf-global--success-color--100, #3e8635);
+        border-radius: 2px;
+      }
+
+      &.snake-body {
+        background-color: var(--pf-global--palette--green-300, #4e9a06);
+      }
+
+      &.food {
+        background-color: var(--pf-global--palette--red-100, #c9190b);
+        border-radius: 50%;
+      }
+    }
+  }
+}
