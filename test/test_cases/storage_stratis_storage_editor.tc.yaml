@@ -1,0 +1,66 @@
+name: Stratis installation via Storage Editor (Cockpit Storage)
+description: |
+  Verify that a Fedora installation onto a new Stratis pool can be performed
+  by creating the pool interactively inside the Cockpit Storage editor embedded
+  in the WebUI installer, then completing the installation normally.
+author: akankovs@redhat.com
+tags:
+  - anaconda
+  - stratis
+  - storage
+  - cockpit-storage
+priority: 5
+execution:
+  type: anaconda-webui
+  automation_data:
+    script_file: ./test/check-storage-cockpit
+    test_case: TestStorageCockpitIntegration.testStratis
+instructions:
+  setup:
+    - Boot a WebUI-enabled ISO in a VM with a single ≥16 GB disk (e.g. vda)
+    - No pre-partitioning needed; all disk setup happens inside the installer
+  steps:
+    - step: Open the WebUI installer and proceed to "Installation Method"
+      result: Disk selection screen is shown with vda pre-selected
+    - step: Click "Modify storage"
+      result: Confirmation dialog appears warning that changes take effect immediately
+    - step: Click "Launch storage editor"
+      result: Cockpit Storage iframe opens showing vda as an unpartitioned disk
+    - step: Create a partition table on vda, then add an EFI partition (~500 MiB) with mount point /boot/efi
+      result: vda1 = EFI System Partition
+    - step: Add a second partition (~1 GiB, ext4) with mount point /boot
+      result: vda2 = ext4 for /boot
+    - step: Add a third partition using the remaining space with type "empty" (no filesystem)
+      result: vda3 = raw/unformatted partition
+    - step: From the Storage card header dropdown, click "Create Stratis pool"
+      result: Create Stratis pool dialog appears
+    - step: Set pool name to "fedorapool", select vda3 as the member device, click Create
+      result: Stratis pool "fedorapool" appears in the storage view
+    - step: From the "fedorapool" card, click "Create filesystem"; set name "root" and mount point /
+      result: Stratis filesystem "root" appears under the pool with mount point /
+    - step: Click "Return to installation"
+      result: CheckStorage dialog validates the layout without errors
+    - step: Confirm the return; verify that "Use configured storage" scenario is selected
+      result: Installation method shows storage is based on the Cockpit Storage configuration
+    - step: Proceed through the wizard to the Review screen
+      result: Review shows vda3 with label "Stratis" as the device for /
+    - step: Click Install
+      result: Installation progresses without errors and the system reboots
+    - step: Boot the installed system and run `stratis filesystem list` and `findmnt /`
+      result: The Stratis pool "fedorapool" is active and / is mounted from its "root" filesystem
+  teardown:
+    - step: Remove the VM
+
+notes: |
+  KNOWN LIMITATION (Fedora 45): placing the root filesystem (/) directly on a
+  Stratis pool created via the Storage Editor installs successfully, but the
+  installed system does NOT boot — it hangs in early boot forever waiting for
+  "dev-stratis-<pool>-root.device" because the Stratis pool is not activated in
+  the initramfs. For this reason the automated coverage is the NONDESTRUCTIVE
+  UI test (TestStorageCockpitIntegration.testStratis), which verifies the full
+  Cockpit Storage flow and that the installer accepts the Stratis layout up to
+  the Review screen, but does not perform a booting install.
+
+  When executing the full install-and-boot steps above manually, expect the boot
+  to hang if / is on Stratis. A bootable configuration requires / on a regular
+  partition (e.g. ext4) with Stratis used only for non-root data (e.g. /home).

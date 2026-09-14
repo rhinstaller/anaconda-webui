@@ -984,5 +984,51 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         self.assertTrue("/mnt/sysroot auto noauto,subvol=/ 0 0" in fstab)
 
 
+    def testStratis(self):
+        """
+        Description:
+            Test installation on a Stratis pool created in Cockpit Storage
+
+        Expected results:
+            - A Stratis pool can be created in Cockpit Storage and used as the root mount point
+            - The review screen shows the Stratis pool as the root device
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+
+        dev = "vda"
+
+        self.reachCockpitStorage()
+        self.cockpitCreateBootloaderPartitions()
+
+        # Create a raw partition for Stratis on vda3
+        self.click_dropdown(self.card_row("Storage", 4), "Create partition")
+        self.dialog({"type": "empty"})
+
+        # Create the Stratis pool on vda3
+        self.click_devices_dropdown("Create Stratis pool")
+        self.dialog({"name": "fedorapool", "disks": {f"/dev/{dev}3": True}})
+
+        # Navigate into the pool and create the root filesystem
+        self.click_card_row("Storage", name="fedorapool")
+        b.click(self.card_button("Stratis filesystems", "Create new filesystem"))
+        self.dialog({"name": "root", "mount_point": "/"})
+
+        s.exit_cockpit_storage()
+        s.check_scenario_selected("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_disk(dev, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev, "/boot/efi", f"{dev}1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
+        r.check_disk_row(dev, "/boot", f"{dev}2", "1.07 GB", False)
+        # Stratis filesystems are thin-provisioned; a filesystem created without an
+        # explicit size defaults to the Stratis 1 TiB virtual size (shown as 1.10 TB).
+        r.check_disk_row(dev, "/", f"{dev}3, Stratis", "1.10 TB", False)
+
+
 if __name__ == '__main__':
     test_main()
