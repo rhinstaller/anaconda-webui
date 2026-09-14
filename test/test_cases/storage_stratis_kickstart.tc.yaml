@@ -1,0 +1,60 @@
+name: Stratis installation via kickstart
+description: |
+  Verify that a Fedora installation using a Stratis pool can be driven by
+  kickstart using Anaconda's native Stratis commands. A dedicated partition is
+  reserved with 'part stratis.01'; 'stratispool' creates the pool on it and
+  'stratisfs' creates a filesystem mounted at /home. The root filesystem stays
+  on a regular ext4 partition.
+author: akankovs@redhat.com
+tags:
+  - anaconda
+  - stratis
+  - kickstart
+priority: 5
+execution:
+  type: anaconda-webui
+  automation_data:
+    script_file: ./test/check-kickstart-automated
+    test_case: TestKickstartAutomatedStratis.testStratis
+instructions:
+  setup:
+    - Prepare a VM with a single >=16 GB disk (vda) and a WebUI-enabled ISO
+    - Use the kickstart at test/kickstarts/TestKickstartAutomatedStratis-testStratis.ks
+    - Host the kickstart via HTTP and pass inst.ks=<url> on the kernel command line
+  steps:
+    - step: |
+        Review the kickstart (test/kickstarts/TestKickstartAutomatedStratis-testStratis.ks):
+          - zerombr + clearpart --all --initlabel create a fresh GPT table
+          - part creates /boot/efi (EFI), /boot (ext4), / (ext4) and a dedicated
+            "stratis.01" partition (--grow) reserved for the Stratis pool
+          - stratispool fedorapool stratis.01 creates the pool on that partition
+          - stratisfs /home --size=5120 --name=home --poolname=fedorapool creates
+            a Stratis filesystem mounted at /home
+      result: Kickstart is syntactically valid (Anaconda/pykickstart >= F45) and
+              all required commands are present
+    - step: Boot the ISO with inst.ks=<url> pointing to the kickstart
+      result: Anaconda starts and processes the kickstart without errors
+    - step: Wait for Anaconda to apply the storage layout
+      result: The Stratis pool and /home filesystem are created; storage is not
+              marked incomplete on the Review screen
+    - step: Wait for the installation payload to finish and the system to reboot
+      result: Installation completes without errors
+    - step: Boot the installed system
+      result: System boots successfully (/ is on ext4, so no early-boot hang)
+    - step: Run `stratis filesystem list`
+      result: Pool "fedorapool" is shown with filesystem "home" as running/online
+    - step: Run `findmnt / /home`
+      result: / is mounted from the ext4 partition; /home from
+              /dev/stratis/fedorapool/home
+  teardown:
+    - step: Remove the VM
+
+notes: |
+  Anaconda provides native 'stratispool' and 'stratisfs' kickstart commands as of
+  Fedora 45 (pykickstart F45); no %pre workaround is required.
+
+  KNOWN LIMITATION (Fedora 45): the root filesystem (/) cannot be placed on
+  Stratis and still boot -- the installed system hangs in early boot forever on
+  "dev-stratis-<pool>-root.device" because the pool is not activated in the
+  initramfs. This kickstart therefore keeps / on a regular ext4 partition and
+  uses Stratis only for /home.

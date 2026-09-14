@@ -379,5 +379,58 @@ class TestKickstartAutomatedRAID(VirtInstallMachineCase):
         r.check_disk_row("vda", "/", "vda3, vdb3, RAID", "27.7 GB", True, "xfs")
 
 
+class TestKickstartAutomatedStratis(VirtInstallMachineCase):
+    """Kickstart automated install with /home on a Stratis pool created in %pre."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedStratis-testStratis.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    @timeout(1800)
+    def testStratis(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedStratis-testStratis.ks``.
+            The ``%pre`` section partitions the disk, creates a Stratis pool
+            "fedorapool" on vda4 and a "home" filesystem; Anaconda reuses the
+            existing partitions and keeps / on a regular ext4 partition (vda3).
+
+            Note: / is intentionally NOT on Stratis. A root-on-Stratis install
+            completes but does not boot (early boot hangs on
+            dev-stratis-<pool>-root.device, as the pool is not activated in the
+            initramfs), so Stratis is used only for /home here.
+
+        Expected results:
+            - Automated installation completes and the system reboots.
+            - The installed system boots with / on ext4 (vda3) and /home on the
+              Stratis "home" filesystem.
+        """
+        b = self.browser
+        m = self.machine
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_done()
+
+        self.handleReboot()
+
+        # Verify the installed system layout after reboot: / is on a regular
+        # vda partition (NOT Stratis), /home is on the Stratis pool.
+        root_src = m.execute("findmnt -n -o SOURCE /", timeout=60)
+        self.assertIn("/dev/vda", root_src)
+        self.assertNotIn("stratis", root_src)
+
+        home_src = m.execute("findmnt -n -o SOURCE /home", timeout=60)
+        self.assertIn("stratis", home_src)
+
+        out = m.execute("stratis filesystem list", timeout=60)
+        self.assertIn("fedorapool", out)
+        self.assertIn("home", out)
+
+
 if __name__ == "__main__":
     test_main()
