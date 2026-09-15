@@ -40,10 +40,17 @@ class TestInstallationProgress(VirtInstallMachineCase):
         with b.wait_timeout(300):
             b.wait_in_text("h2", "Installing")
 
+        # Wait until payload step transition to "in progress" to verify reconnect. This particular step
+        # was chosen because it should take longer than others to run - making it less prone to race
+        # when reloading
+        payload_status_selector = "p[data-ouia-component-id='anaconda-screen-progress-step-payload-phase']"
+        with b.wait_timeout(100):
+            b.wait_in_text(payload_status_selector, "In progress")
+
         # Reload the page while installation is running to verify reconnect
         b.reload()
         b.wait_visible(".pf-v6-c-progress-stepper")
-        b.wait_in_text("h2", "Installing")
+        b.wait_in_text(payload_status_selector, "In progress")
 
         p.wait_done()
         b.wait_in_text("h2", "Successfully installed")
