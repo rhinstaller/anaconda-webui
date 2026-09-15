@@ -5,6 +5,7 @@
 
 import cockpit from "cockpit";
 
+import { installationState } from "../apis/installation_state.js";
 import {
     getActions,
     getAncestors,
@@ -28,6 +29,10 @@ import {
 
 export const getDevicesAction = () => {
     return async (dispatch) => {
+        if (installationState.active) {
+            return;
+        }
+
         dispatch({
             payload: { isFetching: true },
             type: "SET_IS_FETCHING",
@@ -48,6 +53,15 @@ export const getDevicesAction = () => {
         const visited = new Set();
 
         while (toVisit.length > 0) {
+            // Installation may have started mid-walk and torn down a device already queued here.
+            if (installationState.active) {
+                dispatch({
+                    payload: { isFetching: false },
+                    type: "SET_IS_FETCHING",
+                });
+                return;
+            }
+
             const device = toVisit.pop();
             if (visited.has(device)) continue;
             visited.add(device);
