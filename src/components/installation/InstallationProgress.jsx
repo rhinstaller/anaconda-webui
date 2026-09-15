@@ -301,7 +301,7 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                                             description={
                                                 <Flex direction={{ default: "column" }}>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
-                                                        <Content component="p">{phaseText}</Content>
+                                                        <Content ouiaId={progressStep.id + "-phase"} component="p">{phaseText}</Content>
                                                     </FlexItem>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
                                                         <Content component="p">{statusText}</Content>
