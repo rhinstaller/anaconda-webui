@@ -23,6 +23,8 @@ def cmd_cli():
                         action='store_true', dest="pause_at_summary")
     parser.add_argument("--remote-pin", help="PIN for accessing the webui. Blank value defaults to inst.webui.remote.noauth",
                         dest="remote_pin")
+    parser.add_argument("--payload", help="Payload type (liveimg or dnf)", default="liveimg",
+                        choices=("liveimg", "dnf"), dest="payload_type")
     def positive_int(value):
         value = int(value)
         if value <= 0:
@@ -39,7 +41,7 @@ def cmd_cli():
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
                                  kickstart_file_name=args.kickstart_file_name,
                                  pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin,
-                                 extra_disks=extra_disks)
+                                 payload_type=args.payload_type, extra_disks=extra_disks)
     try:
         machine.start()
 
