@@ -83,15 +83,12 @@ This document outlines the detailed release procedure.
    - Koji builds
    - Bodhi updates
 
-Skipping a Release of One of the Packages
-=========================================
+Skipping the Koji Build
+=======================
 
-Packit by default triggers a **combined build of ``anaconda`` and ``anaconda-webui``**.
+If you need to do a combined Bodhi update with another package (e.g. ``anaconda``) and want to
+handle the Koji build and Bodhi update manually, add the ``skip-build`` label to the dist-git pull
+request **before merging**. This prevents Packit from triggering the automatic Koji build.
 
-If you need to skip releasing *anaconda* during a given release cycle, do the following:
+You will then need to perform the Koji build and Bodhi update manually.
 
-- In the last merged dist-git pull request for the anaconda, add this comment::
-
-    /packit koji-tag
-
-More details are available in the `Packit guide on skipping releases <https://packit.dev/docs/fedora-releases-guide/releasing-multiple-packages#skipping-release-of-some-packages>`_.
