@@ -71,13 +71,13 @@ export class StorageClient {
                         const last = args[1].CreatedPartitioning.v.length - 1;
                         this.dispatch(getPartitioningDataAction({ partitioning: args[1].CreatedPartitioning.v[last] }));
                     } else if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "AppliedPartitioning")) {
-                        // First set the partitioning data and then get the device information
-                        // as we store this in the store according the the deviceTree
                         this.dispatch(setAppliedPartitioningAction({ appliedPartitioning: args[1].AppliedPartitioning.v }));
-                        this.dispatch(getDevicesAction());
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
                     }
+                    break;
+                case "StorageChanged":
+                    this.dispatch(getDevicesAction());
                     break;
                 default:
                     debug(`Unhandled signal on ${path}: ${iface}.${signal} ${JSON.stringify(args)}`);
