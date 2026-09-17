@@ -24,7 +24,7 @@ import { setBootloaderDrive } from "../../../apis/storage_bootloader.js";
 import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 
-import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
+import { getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
 import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
@@ -189,10 +189,7 @@ const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
                         resetPartitioning(),
                         setBootloaderDrive({ drive: "" }),
                     ])
-                            .then(() => Promise.all([
-                                dispatch(getDevicesAction()),
-                                dispatch(getDiskSelectionAction())
-                            ]))
+                            .then(() => dispatch(getDiskSelectionAction()))
                             .finally(() => {
                                 setIsRescanningDisks(false);
                             })
