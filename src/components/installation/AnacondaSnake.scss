@@ -9,25 +9,34 @@
   max-width: 500px;
   margin: 0 auto;
   aspect-ratio: 20 / 15;
-  background-color: var(--pf-global--BackgroundColor--dark-100, #151515);
-  border: 2px solid var(--pf-global--BorderColor--100, #d2d2d2);
-  border-radius: var(--pf-global--BorderRadius--sm, 3px);
+  border: var(--pf-v6-global--BorderWidth--sm, 1px) solid var(--pf-v6-global--BorderColor--100, #d2d2d2);
+  border-radius: var(--pf-v6-global--BorderRadius--sm, 3px);
   overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  background-color: var(--pf-v6-global--BackgroundColor--100);
 
   .game-over-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: var(--pf-v6-global--spacer--md);
     z-index: 10;
-    color: var(--pf-global--Color--light-100, #ffffff);
+    background-color: var(--pf-v6-global--BackgroundColor--100, transparent);
+    opacity: 0.92;
+
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 0 25px var(--pf-v6-global--BoxShadow--inset, rgba(0, 0, 0, 0.3));
+
+    color: var(--pf-v6-global--Color--100);
 
     h2 {
-      margin-bottom: var(--pf-global--spacer--md, 16px);
-      color: var(--pf-global--danger-color--100, #c9190b);
+      margin-bottom: 0;
+      color: inherit;
+      font-weight: var(--pf-v6-global--FontWeight--bold, 700);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -38,19 +47,38 @@
 
     .cell {
       background-color: transparent;
+      transition: background-color 0.15s ease-in-out, opacity 0.15s ease;
 
       &.snake-head {
-        background-color: var(--pf-global--success-color--100, #3e8635);
-        border-radius: 2px;
+        border-radius: var(--pf-v6-global--BorderRadius--sm);
       }
 
       &.snake-body {
-        background-color: var(--pf-global--palette--green-300, #4e9a06);
+        border-radius: 1px;
       }
 
+      /* 1. Food --Danger palette */
       &.food {
-        background-color: var(--pf-global--palette--red-100, #c9190b);
+        background-color: var(--pf-v6-global--palette--red-400, #c9190b) !important;
+      border-radius: 50%;
+      box-shadow: 0 0 4px var(--pf-v6-global--palette--red-300, #e60000),
+                  0 0 10px rgba(230, 0, 0, 0.6);
+      }
+
+      /* 2. Ghost Power-Up --Purple palette */
+      &.food-ghost {
+        background-color: var(--pf-v6-global--palette--purple-400, #b388ff) !important;
         border-radius: 50%;
+        box-shadow: 0 0 4px var(--pf-v6-global--palette--purple-500, #8a3ffc),
+                  0 0 10px var(--pf-v6-global--palette--purple-300, #b388ff);
+      }
+
+      /* 3. Wall Pass Power-Up --Teal palette */
+      &.food-wallPass {
+        background-color: var(--pf-v6-global--palette--teal-400, #00e5ff) !important;
+        border-radius: 50%;
+        box-shadow: 0 0 4px var(--pf-v6-global--palette--teal-500, #007d8a),
+                  0 0 10px var(--pf-v6-global--palette--teal-300, #00e5ff);
       }
     }
   }
