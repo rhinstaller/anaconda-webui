@@ -14,7 +14,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-co
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import {
-    runStorageTask,
+    runStorageTaskAsync,
     scanDevicesWithTask,
 } from "../../../apis/storage.js";
 import {
@@ -353,21 +353,19 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
     }
 };
 
-const scanDevices = ({ onFail, setNextCheckStep }) => {
+const scanDevices = async ({ onFail, setNextCheckStep }) => {
     debug("rescan step started");
 
     // When the dialog is shown rescan to get latest configured storage
     // and check if we need to prepare manual partitioning
-    scanDevicesWithTask()
-            .then(task => {
-                return runStorageTask({
-                    onFail,
-                    onSuccess: () => resetPartitioning()
-                            .then(setNextCheckStep)
-                            .catch(onFail),
-                    task
-                });
-            });
+    try {
+        const task = await scanDevicesWithTask();
+        await runStorageTaskAsync({ task });
+        await resetPartitioning();
+        setNextCheckStep();
+    } catch (error) {
+        onFail(error);
+    }
 };
 
 const useStorageSetup = ({ dispatch, onCritFail, setNotification }) => {

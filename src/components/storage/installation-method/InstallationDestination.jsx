@@ -17,7 +17,7 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { SyncAltIcon } from "@patternfly/react-icons/dist/esm/icons/sync-alt-icon";
 
 import {
-    runStorageTask,
+    runStorageTaskAsync,
     scanDevicesWithTask,
 } from "../../../apis/storage.js";
 import { setBootloaderDrive } from "../../../apis/storage_bootloader.js";
@@ -176,27 +176,21 @@ const LocalDisksSelect = ({
     );
 };
 
-const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
+const rescanDisks = async (setIsRescanningDisks, dispatch, errorHandler) => {
     setIsRescanningDisks(true);
-    scanDevicesWithTask()
-            .then(task => {
-                return runStorageTask({
-                    onFail: exc => {
-                        setIsRescanningDisks(false);
-                        errorHandler(exc);
-                    },
-                    onSuccess: () => Promise.all([
-                        resetPartitioning(),
-                        setBootloaderDrive({ drive: "" }),
-                    ])
-                            .then(() => dispatch(getDiskSelectionAction()))
-                            .finally(() => {
-                                setIsRescanningDisks(false);
-                            })
-                            .catch(errorHandler),
-                    task
-                });
-            });
+    try {
+        const task = await scanDevicesWithTask();
+        await runStorageTaskAsync({ task });
+        await Promise.all([
+            resetPartitioning(),
+            setBootloaderDrive({ drive: "" }),
+        ]);
+    } catch (exc) {
+        errorHandler(exc);
+    } finally {
+        dispatch(getDiskSelectionAction());
+        setIsRescanningDisks(false);
+    }
 };
 
 export const InstallationDestination = ({
