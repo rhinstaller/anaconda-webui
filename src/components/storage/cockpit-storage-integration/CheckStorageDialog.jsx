@@ -361,7 +361,7 @@ const waitForNewSelectedDisks = ({ newSelectedDisks, selectedDisks, setNextCheck
     }
 };
 
-const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
+const scanDevices = ({ onFail, setNextCheckStep }) => {
     debug("rescan step started");
 
     // When the dialog is shown rescan to get latest configured storage
@@ -371,7 +371,6 @@ const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
                 return runStorageTask({
                     onFail,
                     onSuccess: () => resetPartitioning()
-                            .then(() => dispatch(getDevicesAction()))
                             .then(setNextCheckStep)
                             .catch(onFail),
                     task
@@ -420,7 +419,6 @@ const useStorageSetup = ({ dispatch, onCritFail, setNotification }) => {
             switch (checkStep) {
             case "rescan":
                 await scanDevices({
-                    dispatch,
                     onFail,
                     setNextCheckStep: () => setCheckStep("luks"),
                 });
