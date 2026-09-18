@@ -11,6 +11,7 @@ import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
 
 import { moduleClients } from "./index.js";
+import { installationState } from "./installation_state.js";
 import { LocalizationClient } from "./localization.js";
 import { NetworkClient } from "./network.js";
 import { RuntimeClient } from "./runtime.js";
@@ -52,6 +53,7 @@ export class BossClient {
 
         const status = await getInstallationStatus();
         const installationStarted = status !== INSTALLATION_STATUS.NOT_STARTED;
+        installationState.active = installationStarted;
         const clients = installationStarted ? [RuntimeClient, NetworkClient, LocalizationClient] : moduleClients;
         return Promise.all([
             this.dispatch(getInstallationStatusAction()),
@@ -74,6 +76,7 @@ export class BossClient {
                     }
                     if (Object.hasOwn(args[1], "ActiveInstallationTask") &&
                         args[1].ActiveInstallationTask.v) {
+                        installationState.active = true;
                         for (const Client of moduleClients) {
                             Client.instance?.stopEventMonitor();
                         }
