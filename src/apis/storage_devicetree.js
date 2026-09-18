@@ -5,7 +5,7 @@
 import { _callClient } from "./helpers.js";
 
 import {
-    runStorageTask,
+    runStorageTaskAsync,
     StorageClient,
 } from "./storage.js";
 
@@ -149,14 +149,15 @@ export const getMountPoints = () => {
 };
 
 export const findExistingSystems = async ({ onFail, onSuccess }) => {
-    const tasks = await new StorageClient().client.call(
-        OBJECT_PATH,
-        INTERFACE_NAME_HANDLER,
-        "FindExistingSystemsWithTask", []
-    );
-    return runStorageTask({
-        onFail,
-        onSuccess,
-        task: tasks[0],
-    });
+    try {
+        const tasks = await new StorageClient().client.call(
+            OBJECT_PATH,
+            INTERFACE_NAME_HANDLER,
+            "FindExistingSystemsWithTask", []
+        );
+        await runStorageTaskAsync({ task: tasks[0] });
+        onSuccess();
+    } catch (exc) {
+        onFail(exc);
+    }
 };
