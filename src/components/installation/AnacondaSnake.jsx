@@ -330,6 +330,7 @@ const HeaderInfo = ({ hasNotifiedFinish, progressPercent, score, highScore, diff
                 {Object.keys(DIFFICULTY_SPEEDS).map((level) => (
                     <FlexItem key={level}>
                         <Button 
+                            id={`snake-diff-${level}`}
                             variant={difficulty === level ? ButtonVariant.primary : ButtonVariant.control} 
                             onClick={() => setDifficulty(level)}
                             size="sm"
@@ -517,11 +518,31 @@ export const AnacondaSnakeModal = ({ isOpen, onClose, progressPercent = 0 }) => 
           isOpen={isOpen}
           onClose={onClose}
           actions={[
-              <Button key="pause" variant={ButtonVariant.tertiary} onClick={togglePause} isDisabled={isGameOver}>
+              <Button 
+                key="pause" 
+                variant={ButtonVariant.secondary} 
+                onClick={togglePause} 
+                isDisabled={isGameOver}
+                id="snake-pause-btn"
+              >
                   {isPaused ? "Resume" : "Pause"}
               </Button>,
-              <Button key="restart" variant={ButtonVariant.secondary} onClick={resetGame}>Restart</Button>,
-              <Button key="close" variant={ButtonVariant.primary} onClick={onClose}>Close</Button>,
+              <Button 
+                key="restart" 
+                variant={ButtonVariant.secondary} 
+                onClick={resetGame}
+                id="snake-restart-btn"
+              >
+                  Restart
+              </Button>,
+              <Button 
+                key="close" 
+                variant={ButtonVariant.secondary} 
+                onClick={onClose} 
+                id="snake-close-btn"
+              >
+                  Close
+              </Button>,
           ]}
         >
             <HeaderInfo
@@ -548,13 +569,7 @@ export const AnacondaSnakeModal = ({ isOpen, onClose, progressPercent = 0 }) => 
                   activeEffects={activeEffects}
                 />
             </div>
-            <FooterControls
-              togglePause={togglePause}
-              isGameOver={isGameOver}
-              isPaused={isPaused}
-              powerUpFood={powerUpFood}
-              activeEffects={activeEffects}
-            />
         </Modal>
     );
 };
+

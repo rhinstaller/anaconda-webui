@@ -308,8 +308,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                               </ProgressStepper>
                               <FlexItem spacer={{ default: "spacerXl" }} align={{ default: "alignCenter" }}>
                                   <Button
+                                    key="play"
                                     variant="secondary"
                                     onClick={() => setIsGameOpen(true)}
+                                    id="snake-play-btn"
                                   >
                                       {_("Play Anaconda")}
                                   </Button>
