@@ -48,9 +48,26 @@ const generateFood = (currentSnake, existingFoods = []) => {
         return null;
     }
 
-    // Random free cell
-    const randomIndex = Math.floor(Math.random() * freeCells.length);
+    // FIX 3: Správný index bez rizika přetečení pole (0 až length - 1)
+    const randomIndex = getRandomInt(0, freeCells.length - 1);
     return freeCells[randomIndex];
+};
+
+// FIX 1: Chybějící hook useSnakeRefs doplněn zpět do kódové základny
+const useSnakeRefs = (gameState) => {
+    const direction = useRef(INITIAL_DIRECTION);
+    const nextDirection = useRef(INITIAL_DIRECTION);
+    const state = useRef(gameState);
+
+    useEffect(() => {
+        state.current = gameState;
+    }, [gameState]);
+
+    return React.useMemo(() => ({
+        direction,
+        nextDirection,
+        state,
+    }), []);
 };
 
 // game logic
@@ -64,38 +81,24 @@ const computeNextGameState = (directionRef, nextDirectionRef, currentGameState) 
     let newHeadX = head.x + directionRef.current.x;
     let newHeadY = head.y + directionRef.current.y;
 
-    // walls collision or teleport
-    if (currentEffects.wallPassTicks > 0) {
-        if (newHeadX < 0) newHeadX = BOARD_WIDTH - 1;
-        else if (newHeadX >= BOARD_WIDTH) newHeadX = 0;
-
-        if (newHeadY < 0) newHeadY = BOARD_HEIGHT - 1;
-        else if (newHeadY >= BOARD_HEIGHT) newHeadY = 0;
-    } else if (
-        newHeadX < 0 ||
-        newHeadX >= BOARD_WIDTH ||
-        newHeadY < 0 ||
-        newHeadY >= BOARD_HEIGHT
-    ) {
-        return { isGameOver: true };
-    }
-
     const newHead = { x: newHeadX, y: newHeadY };
-
-    // collision with body
-    if (currentEffects.ghostTicks === 0 && snake.some((seg) => seg.x === newHead.x && seg.y === newHead.y)) {
-        return { isGameOver: true };
-    }
 
     const newSnake = [newHead, ...snake];
     let currentPowerUp = powerUpFood;
     let hasEatenFood = false;
     let nextFood = food;
 
+    // food collision
+    if (food && newHead.x === food.x && newHead.y === food.y) {
+        hasEatenFood = true;
+        nextFood = generateFood(newSnake, currentPowerUp ? [currentPowerUp] : []);
+    } else {
+        newSnake.pop();
+    }
+
     // power-up collision
     if (currentPowerUp && newHead.x === currentPowerUp.x && newHead.y === currentPowerUp.y) {
         const randomDuration = getRandomInt(20, 45);
-        hasEatenFood = true;
         if (currentPowerUp.type === "ghost") {
             currentEffects.ghostTicks = randomDuration;
             currentEffects.wallPassTicks = 0;
@@ -104,15 +107,7 @@ const computeNextGameState = (directionRef, nextDirectionRef, currentGameState) 
             currentEffects.ghostTicks = 0;
         }
         currentPowerUp = null;
-    
-    // food collision
-    } else if (food && newHead.x === food.x && newHead.y === food.y) {
-        hasEatenFood = true;
-        nextFood = generateFood(newSnake, currentPowerUp ? [currentPowerUp] : []);
-    } else {
-        newSnake.pop();
-    }
-    if (currentPowerUp) {
+    } else if (currentPowerUp) {
         if (currentPowerUp.remainingTicks <= 1) {
             currentPowerUp = null;
         } else {
@@ -129,6 +124,27 @@ const computeNextGameState = (directionRef, nextDirectionRef, currentGameState) 
                 remainingTicks: randomDespawn,
             };
         }
+    }
+
+    // walls collision or teleport
+    if (currentEffects.wallPassTicks > 0) {
+        if (newHeadX < 0) newHeadX = BOARD_WIDTH - 1;
+        else if (newHeadX >= BOARD_WIDTH) newHeadX = 0;
+
+        if (newHeadY < 0) newHeadY = BOARD_HEIGHT - 1;
+        else if (newHeadY >= BOARD_HEIGHT) newHeadY = 0;
+    } else if (
+        newHeadX < 0 ||
+        newHeadX >= BOARD_WIDTH ||
+        newHeadY < 0 ||
+        newHeadY >= BOARD_HEIGHT
+    ) {
+        return { isGameOver: true };
+    }
+    
+    // collision with body
+    if (currentEffects.ghostTicks === 0 && newSnake.slice(1).some((seg) => seg.x === newHead.x && seg.y === newHead.y)) {
+        return { isGameOver: true };
     }
 
     const updatedEffects = {
@@ -148,31 +164,24 @@ const computeNextGameState = (directionRef, nextDirectionRef, currentGameState) 
     };
 };
 
-const useSnakeRefs = (gameState) => {
-    const direction = useRef(INITIAL_DIRECTION);
-    const nextDirection = useRef(INITIAL_DIRECTION);
-    const state = useRef(gameState);
-
-    useEffect(() => {
-        state.current = gameState;
-    }, [gameState]);
-
-    return React.useMemo(() => ({
-        direction,
-        nextDirection,
-        state,
-    }), []);
-};
-
 const useSnakeControls = (isOpen, isPaused, isGameOver, togglePause, refs) => {
     useEffect(() => {
         if (!isOpen) return;
+        const DIRECTIONS = {
+            arrowup: { x: 0, y: -1 },
+            w: { x: 0, y: -1 },
+            arrowdown: { x: 0, y: 1 },
+            s: { x: 0, y: 1 },
+            arrowleft: { x: -1, y: 0 },
+            a: { x: -1, y: 0 },
+            arrowright: { x: 1, y: 0 },
+            d: { x: 1, y: 0 },
+        };
 
         const handleKeyDown = (e) => {
-            const dir = refs.direction.current;
             const key = e.key;
 
-            if (key === " " || key === "Spacebar") {
+            if ((key === " " || key === "Spacebar") && !isGameOver) {
                 e.preventDefault();
                 togglePause();
                 return;
@@ -180,33 +189,16 @@ const useSnakeControls = (isOpen, isPaused, isGameOver, togglePause, refs) => {
 
             if (isPaused || isGameOver) return;
 
-            switch (key) {
-            case "ArrowUp":
-            case "w":
-            case "W":
-                if (dir.y !== 1) refs.nextDirection.current = { x: 0, y: -1 };
+            // FIX 2: Převod e.key na malá písmena pro spolehlivou detekci šipek
+            const newDir = DIRECTIONS[key.toLowerCase()];
+            if (newDir) {
                 e.preventDefault();
-                break;
-            case "ArrowDown":
-            case "s":
-            case "S":
-                if (dir.y !== -1) refs.nextDirection.current = { x: 0, y: 1 };
-                e.preventDefault();
-                break;
-            case "ArrowLeft":
-            case "a":
-            case "A":
-                if (dir.x !== 1) refs.nextDirection.current = { x: -1, y: 0 };
-                e.preventDefault();
-                break;
-            case "ArrowRight":
-            case "d":
-            case "D":
-                if (dir.x !== -1) refs.nextDirection.current = { x: 1, y: 0 };
-                e.preventDefault();
-                break;
-            default:
-                break;
+                const dir = refs.direction.current;
+                const isOpposite = (newDir.x !== 0 && newDir.x === -dir.x) || 
+                                (newDir.y !== 0 && newDir.y === -dir.y);
+                if (!isOpposite) {
+                    refs.nextDirection.current = newDir;
+                }
             }
         };
 
@@ -335,42 +327,17 @@ const HeaderInfo = ({ hasNotifiedFinish, progressPercent, score, highScore, diff
         </FlexItem>
         <FlexItem>
             <Flex justifyContent={{ default: "justifyContentCenter" }} spaceItems={{ default: "spaceItemsSm" }} className="pf-v6-u-mt-xs">
-                <FlexItem>
-                    <Button 
-                      variant={difficulty === "easy" ? ButtonVariant.primary : ButtonVariant.control} 
-                      onClick={() => setDifficulty("easy")}
-                      size="sm"
-                    >
-                        Easy
-                    </Button>
-                </FlexItem>
-                <FlexItem>
-                    <Button 
-                      variant={difficulty === "medium" ? ButtonVariant.primary : ButtonVariant.control} 
-                      onClick={() => setDifficulty("medium")}
-                      size="sm"
-                    >
-                        Medium
-                    </Button>
-                </FlexItem>
-                <FlexItem>
-                    <Button 
-                      variant={difficulty === "hard" ? ButtonVariant.primary : ButtonVariant.control} 
-                      onClick={() => setDifficulty("hard")}
-                      size="sm"
-                    >
-                        Hard
-                    </Button>
-                </FlexItem>
-                <FlexItem>
-                    <Button 
-                      variant={difficulty === "insane" ? ButtonVariant.primary : ButtonVariant.control} 
-                      onClick={() => setDifficulty("insane")}
-                      size="sm"
-                    >
-                        Insane
-                    </Button>
-                </FlexItem>
+                {Object.keys(DIFFICULTY_SPEEDS).map((level) => (
+                    <FlexItem key={level}>
+                        <Button 
+                            variant={difficulty === level ? ButtonVariant.primary : ButtonVariant.control} 
+                            onClick={() => setDifficulty(level)}
+                            size="sm"
+                        >
+                            {level.charAt(0).toUpperCase() + level.slice(1)}
+                        </Button>
+                    </FlexItem>
+                ))}
             </Flex>
         </FlexItem>
     </Flex>
@@ -464,7 +431,6 @@ const GameBoard = ({ snake, food, powerUpFood, activeEffects }) => {
                     } else if (isFood) {
                         cellClass += " food";
                     } else if (isPowerUp) {
-                        // Všechny barvy, kulatost i stíny si vezme přímo z vašich SCSS tříd .food-ghost a .food-wallPass!
                         cellClass += ` food-powerup food-${powerUpFood.type}`;
                     }
 
