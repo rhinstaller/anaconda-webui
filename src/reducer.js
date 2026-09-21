@@ -80,8 +80,7 @@ export const payloadInitialState = {
     selection: null,
     source: {
         configuration: null,
-        deviceId: null,
-        repoPath: null,
+        description: "",
         sourcePath: null,
         sourceType: null,
         updatesEnabled: true,
