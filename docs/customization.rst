@@ -18,46 +18,15 @@ These customizations can be deployed in different ways:
 Branding and Chroming the User Interface
 -----------------------------------------
 
-The Installer Web UI can be customized to match your distribution's visual identity through branding. Cockpit provides branding files per distribution variant, located in the `Cockpit repository <https://github.com/cockpit-project/cockpit/tree/main/src/branding/>`_. The Installer Web UI utilizes these Cockpit branding files and adds anaconda-specific branding through the ``.anaconda`` CSS class wrapper in your distribution's Cockpit ``branding.css`` file.
+The Installer Web UI can be customized to match your distribution's visual identity through branding. The branding is defined in the distribution's logos package (e.g., ``fedora-logos``). The logos package installs a CSS file that is symlinked into Cockpit's branding directory, making it automatically available to the Installer Web UI through Cockpit's ``branding.css``.
 
-We propose using the following template, which defines three brand color variables:
+.. note::
 
-- ``--brand-default`` - Primary brand color (used in light theme and hover states in dark theme)
-- ``--brand-default-light`` - Lighter variant (used in dark theme)
-- ``--brand-default-dark`` - Darker variant (used for hover states in light theme)
-
-Example branding CSS:
-
-.. code-block:: css
-
-   .anaconda {
-       /* Brand palette */
-       --brand-default-light: #51a2da;
-       --brand-default: #3c6eb4;
-       --brand-default-dark: #294172;
-
-       .logo {
-           background-image: url("logo.png");
-       }
-   }
-
-   :not(.pf-v6-theme-dark) .anaconda {
-       /* Default (light theme) token mapping */
-       --pf-t--global--color--brand--default: var(--brand-default);
-       --pf-t--global--color--brand--hover: var(--brand-default-dark);
-   }
-
-   .pf-v6-theme-dark .anaconda {
-       /* Dark theme token mapping */
-       --pf-t--global--color--brand--default: var(--brand-default-light);
-       --pf-t--global--color--brand--hover: var(--brand-default);
-   }
+   The ``custom_stylesheet`` option in the Anaconda configuration profile is currently not supported for the Web UI. Support might be added in a future release.
 
 The CSS file is imported as-is, so you can add whatever customizations you want through CSS.
 
-Logos are automatically detected and symlinked from system directories during package installation. You only need to reference ``logo.png`` in your CSS using ``background-image: url("logo.png")``. The build system will create the appropriate symlinks.
-
-See the `Fedora branding example <https://github.com/cockpit-project/cockpit/blob/main/src/branding/fedora/branding.css>`_ for a complete reference implementation that you can use as a template.
+See the `Fedora branding in fedora-logos <https://src.fedoraproject.org/rpms/fedora-logos>`_ for a reference implementation.
 
 .. _changing-installer-behavior:
 
