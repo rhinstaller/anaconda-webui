@@ -5,6 +5,8 @@
 
 import cockpit from "cockpit";
 
+import { isSourceEditable } from "../../helpers/source.js";
+
 import { InstallationSource } from "./InstallationSource.jsx";
 import { SourceReviewDescription } from "./SourceReviewDescription.jsx";
 
@@ -15,10 +17,10 @@ export { SourceReviewDescription };
 export class Page {
     _description = "Configure the installation source for package downloads.";
 
-    constructor ({ payloadType }) {
+    constructor ({ payloadSource, payloadType }) {
         this.component = InstallationSource;
         this.id = "anaconda-screen-installation-source";
-        this.isHidden = payloadType !== "DNF";
+        this.isHidden = payloadType !== "DNF" || !isSourceEditable(payloadSource);
         this.label = _("Installation source");
         this.title = _("Installation source");
     }

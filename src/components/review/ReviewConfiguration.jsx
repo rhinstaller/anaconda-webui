@@ -13,6 +13,7 @@ import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
+import { isSourceEditable } from "../../helpers/source.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
@@ -35,10 +36,10 @@ import { DateAndTimeReviewDescription } from "../datetime/index.js";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { InstallationLanguageReviewDescription } from "../localization/index.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
-import { SourceReviewDescription } from "../source/index.js";
-import { usePageComplete as useSourcePageComplete } from "../source/usePageComplete.js";
 import { SoftwareReviewDescription } from "../software/index.js";
 import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
+import { SourceReviewDescription } from "../source/index.js";
+import { usePageComplete as useSourcePageComplete } from "../source/usePageComplete.js";
 import {
     StorageInstallationReviewSummary,
     StorageScenarioReviewDescription,
@@ -89,10 +90,11 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
     const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
-    const { type: payloadType } = useContext(PayloadContext) ?? {};
+    const { source, type: payloadType } = useContext(PayloadContext) ?? {};
     const sourcePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-installation-source");
-    const sourceComplete = useSourcePageComplete({ isHidden: sourcePageHidden });
+    const sourceSpokeHidden = sourcePageHidden || !isSourceEditable(source);
+    const sourceComplete = useSourcePageComplete({ isHidden: sourceSpokeHidden });
     const softwarePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
     const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
@@ -162,7 +164,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const installationScenarioDescription = <StorageScenarioReviewDescription />;
 
     const sourceDescription = sourceComplete
-        ? <SourceReviewDescription />
+        ? <SourceReviewDescription automatedInstall={automatedInstall} />
         : <IncompleteStepIndicator />;
 
     const softwareDescription = softwareSelectionComplete
