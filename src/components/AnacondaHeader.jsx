@@ -36,10 +36,10 @@ export const AnacondaHeader = ({ dispatch, onCritFail, reportLinkURL, setShowSto
     }, [onCritFail]);
 
     return (
-        <PageSection hasBodyWrapper={false}>
+        <PageSection id="anaconda-header-bar" hasBodyWrapper={false}>
             <Flex spaceItems={{ default: "spaceItemsSm" }} alignItems={{ default: "alignItemsCenter" }}>
                 <div className="logo" />
-                <Content>
+                <Content id="anaconda-header-title">
                     <Content component="h1">{title}</Content>
                 </Content>
                 {beta && <Beta />}
