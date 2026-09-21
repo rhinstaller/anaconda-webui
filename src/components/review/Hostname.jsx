@@ -151,7 +151,7 @@ export const HostnameRow = () => {
                     <FlexItem>
                         {initHostname !== ""
                             ? initHostname
-                            : <div className="pf-v6-u-color-400">transient, will use DHCP</div>}
+                            : <div className="pf-v6-u-color-400">{_("transient, will use DHCP")}</div>}
                     </FlexItem>
                     <FlexItem>
                         <ChangeHostname
