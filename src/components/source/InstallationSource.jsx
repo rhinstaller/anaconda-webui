@@ -15,13 +15,15 @@ import {
     createSource,
     setPayloadSources,
     setSourceConfiguration,
-    setUpSources,
     setUpdatesEnabled,
+    setUpSources,
     tearDownSources,
 } from "../../apis/payload_source.js";
 
 import { refreshPayloadSoftwareSelectionAction } from "../../actions/payload-dnf-actions.js";
 import { getPayloadSourceAction, setSourceApplyPendingAction } from "../../actions/payload-source-actions.js";
+
+import { hidePasswords } from "../../helpers/source.js";
 
 import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
@@ -103,7 +105,8 @@ const uiStateFromSource = (source) => {
     };
 };
 
-const buildDesiredSource = ({ protocol, url, urlType }) => {
+/* Options the spoke does not expose, e.g. from kickstart, are kept as they are. */
+const buildDesiredSource = ({ protocol, url, urlType }, configuration) => {
     if (isClosestMirrorProtocol(protocol)) {
         return {
             config: {
@@ -116,7 +119,9 @@ const buildDesiredSource = ({ protocol, url, urlType }) => {
     return {
         config: {
             repoConfig: {
-                "ssl-verification-enabled": true,
+                proxy: configuration?.proxy || "",
+                "ssl-configuration": configuration?.["ssl-configuration"] || {},
+                "ssl-verification-enabled": configuration?.["ssl-verification-enabled"] ?? true,
                 type: urlType,
                 url: buildHttpUrl(protocol, url.trim()),
             },
@@ -170,6 +175,19 @@ export const InstallationSource = ({ dispatch }) => {
     const applyingRef = useRef(false);
 
     const isClosestMirror = isClosestMirrorProtocol(protocol);
+    const sourceConfiguration = source?.sourceType === "URL" ? source.configuration : null;
+    const sslConfiguration = sourceConfiguration?.["ssl-configuration"] || {};
+    /* Options the spoke keeps but does not let the user change */
+    const readOnlyFields = [
+        { id: "proxy", label: _("Proxy"), value: hidePasswords(sourceConfiguration?.proxy) },
+        {
+            id: "ssl-verification",
+            label: _("SSL verification"),
+            value: sourceConfiguration?.["ssl-verification-enabled"] === false ? _("Disabled") : "",
+        },
+        { id: "ssl-ca-cert", label: _("SSL CA certificate"), value: sslConfiguration["ca-cert-path"] },
+        { id: "ssl-client-cert", label: _("SSL client certificate"), value: sslConfiguration["client-cert-path"] },
+    ].filter(field => field.value);
 
     const handleProtocolChange = useCallback((_ev, val) => {
         setProtocol(val);
@@ -262,10 +280,10 @@ export const InstallationSource = ({ dispatch }) => {
             return;
         }
 
-        const desired = buildDesiredSource(uiState);
+        const desired = buildDesiredSource(uiState, sourceConfiguration);
         await applySource(desired);
         setInitialUiState(uiState);
-    }, [applySource, needsApply, uiState]);
+    }, [applySource, needsApply, sourceConfiguration, uiState]);
 
     const footer = useMemo(
         () => (
@@ -331,6 +349,19 @@ export const InstallationSource = ({ dispatch }) => {
                     </FormSelect>
                 </div>
             </FormGroup>
+            {!isClosestMirror && readOnlyFields.map(field => (
+                <FormGroup
+                  fieldId={SCREEN_ID + "-" + field.id}
+                  key={field.id}
+                  label={field.label}
+                >
+                    <TextInput
+                      id={SCREEN_ID + "-" + field.id}
+                      readOnlyVariant="default"
+                      value={field.value}
+                    />
+                </FormGroup>
+            ))}
         </Form>
     );
 };

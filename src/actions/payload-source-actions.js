@@ -4,10 +4,9 @@
  */
 
 import {
-    getCdromDeviceId,
     getPayloadSources,
-    getRepoPath,
     getSourceConfiguration,
+    getSourceDescription,
     getSourceType,
     getUpdatesEnabled,
 } from "../apis/payload_source.js";
@@ -18,7 +17,7 @@ export const getPayloadSourceAction = () => {
 
         if (!sources || sources.length === 0) {
             return dispatch({
-                payload: { configuration: null, deviceId: null, repoPath: null, sourcePath: null, sourceType: null, updatesEnabled: true },
+                payload: { configuration: null, description: "", sourcePath: null, sourceType: null, updatesEnabled: true },
                 type: "SET_PAYLOAD_SOURCE",
             });
         }
@@ -28,8 +27,7 @@ export const getPayloadSourceAction = () => {
 
         const sourceData = {
             configuration: null,
-            deviceId: null,
-            repoPath: null,
+            description: await getSourceDescription(sourcePath),
             sourcePath,
             sourceType,
             updatesEnabled: true,
@@ -41,14 +39,6 @@ export const getPayloadSourceAction = () => {
 
         if (sourceType === "CLOSEST_MIRROR") {
             sourceData.updatesEnabled = await getUpdatesEnabled(sourcePath);
-        }
-
-        if (sourceType === "CDROM") {
-            sourceData.deviceId = await getCdromDeviceId(sourcePath);
-        }
-
-        if (sourceType === "REPO_PATH") {
-            sourceData.repoPath = await getRepoPath(sourcePath);
         }
 
         return dispatch({

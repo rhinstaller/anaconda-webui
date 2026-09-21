@@ -16,8 +16,6 @@ const PAYLOAD_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Payload";
 const SOURCE_BASE_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Source";
 const SOURCE_REPOSITORY_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Source.Repository";
 const SOURCE_CLOSEST_MIRROR_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Source.ClosestMirror";
-const SOURCE_CDROM_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Source.CDROM";
-const SOURCE_REPO_PATH_INTERFACE = "org.fedoraproject.Anaconda.Modules.Payloads.Source.RepoPath";
 
 const getClient = () => new PayloadsClient().client;
 
@@ -74,7 +72,13 @@ export const getSourceConfiguration = async (sourcePath) => {
     const structure = await _getProperty(
         PayloadsClient, sourcePath, SOURCE_REPOSITORY_INTERFACE, "Configuration"
     );
-    return objectFromDbus(structure);
+    const configuration = objectFromDbus(structure);
+
+    if (configuration["ssl-configuration"]) {
+        configuration["ssl-configuration"] = objectFromDbus(configuration["ssl-configuration"]);
+    }
+
+    return configuration;
 };
 
 /**
@@ -168,19 +172,10 @@ export const setUpSources = async () => {
 };
 
 /**
- * Get the DeviceID from a CDROM source.
- * @param {string} sourcePath
+ * Get the human readable description of a source, e.g. "NFS server srv:/path".
+ * @param {string} sourcePath - D-Bus object path
  * @returns {Promise<string>}
  */
-export const getCdromDeviceId = async (sourcePath) => {
-    return _getProperty(PayloadsClient, sourcePath, SOURCE_CDROM_INTERFACE, "DeviceID");
-};
-
-/**
- * Get the Path from a REPO_PATH source.
- * @param {string} sourcePath
- * @returns {Promise<string>}
- */
-export const getRepoPath = async (sourcePath) => {
-    return _getProperty(PayloadsClient, sourcePath, SOURCE_REPO_PATH_INTERFACE, "Path");
+export const getSourceDescription = async (sourcePath) => {
+    return _getProperty(PayloadsClient, sourcePath, SOURCE_BASE_INTERFACE, "Description");
 };
