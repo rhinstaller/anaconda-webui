@@ -8,6 +8,7 @@ PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' packa
 RPM_NAME := $(PACKAGE_NAME)
 VERSION := $(shell T=$$(git describe 2>/dev/null) || T=1; echo $$T | tr '-' '.')
 TARFILE=$(RPM_NAME)-$(VERSION).tar.xz
+NODE_CACHE=$(RPM_NAME)-node-$(VERSION).tar.xz
 SPEC=$(RPM_NAME).spec
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
@@ -155,7 +156,12 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(DIST_TEST) $(SPEC) VERSION.txt \
 		dist/
 
-srpm: $(TARFILE) $(SPEC)
+$(NODE_CACHE): $(NODE_MODULES_TEST)
+	tools/node-modules runtime-tar $(NODE_CACHE)
+
+node-cache: $(NODE_CACHE)
+
+srpm: $(TARFILE) $(NODE_CACHE) $(SPEC)
 	rpmbuild -bs \
 	  --define "_sourcedir `pwd`" \
 	  --define "_srcrpmdir `pwd`" \
