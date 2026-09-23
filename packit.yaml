@@ -10,10 +10,16 @@ copy_upstream_release_description: true
 srpm_build_deps:
 - nodejs
 - make
+- jq
 
 actions:
-  post-upstream-clone: make anaconda-webui.spec
-  create-archive: make dist
+  post-upstream-clone:
+    - make node-cache dist
+
+  fix-spec-file:
+    sed -i 's|^\(Source[0-9]*:\s*\).*\/|\1|' anaconda-webui.spec
+
+  get-current-version: make print-version
 
 jobs:
   - job: tests
