@@ -13,8 +13,12 @@ srpm_build_deps:
 - make
 
 actions:
-  post-upstream-clone: make anaconda-webui.spec
-  create-archive: make dist
+  post-upstream-clone:
+    - make node-cache dist
+
+  fix-spec-file:
+    # our locally built tarballs are not on the upstream releases page, point to the local files
+    sed -i 's|^\(Source[0-9]*:\s*\).*\/|\1|' anaconda-webui.spec
 
 jobs:
   - job: tests
