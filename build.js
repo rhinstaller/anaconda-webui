@@ -1,14 +1,24 @@
 #!/usr/bin/env node
-import esbuild from "esbuild";
 import copy from "esbuild-plugin-copy";
 import { sassPlugin } from "esbuild-sass-plugin";
 import fs from "fs";
+import { createRequire } from "module";
 import path from "path";
 
 import { cockpitPoEsbuildPlugin } from "./pkg/lib/cockpit-po-plugin.js";
 import { cockpitRsyncEsbuildPlugin } from "./pkg/lib/cockpit-rsync-plugin.js";
 import { cleanPlugin } from "./pkg/lib/esbuild-cleanup-plugin.js";
 import { cockpitCompressPlugin } from "./pkg/lib/esbuild-compress-plugin.js";
+
+const esbuild = await (async () => {
+    try {
+        return (await import("esbuild")).default;
+    } catch (e) {
+        if (e.code !== "ERR_MODULE_NOT_FOUND") { throw e }
+        const require = createRequire(import.meta.url);
+        return (await import(require.resolve("esbuild"))).default;
+    }
+})();
 
 const production = process.env.NODE_ENV === "production";
 const watchMode = process.env.ESBUILD_WATCH === "true" || false;
