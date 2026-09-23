@@ -6,12 +6,22 @@ License:        LGPL-2.1-or-later AND MIT
 URL:            https://github.com/rhinstaller/%{name}
 
 Source0:        https://github.com/rhinstaller/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source1:        %{name}-node-%{version}.tar.xz
 BuildArch:      noarch
 BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
 # Needed for the unitdir macro
 BuildRequires: systemd-rpm-macros
+
+%if 0%{?fedora} >= 42
+%define rebuild_bundle 1
+%endif
+
+%if %{defined rebuild_bundle}
+BuildRequires:  /usr/bin/node
+BuildRequires:  nodejs-esbuild
+%endif
 
 %global anacondacorever 0
 
@@ -49,9 +59,15 @@ Anaconda installer Web interface
 
 %prep
 %setup -q -n %{name}
+%if %{defined rebuild_bundle}
+%setup -q -D -T -a 1 -n %{name}
+%endif
 
 %build
-# Nothing to build
+%if %{defined rebuild_bundle}
+rm -rf dist
+NODE_ENV=production NODE_PATH=/usr/lib/node_modules ./build.js
+%endif
 
 %install
 %make_install PREFIX=/usr
