@@ -8,6 +8,7 @@ PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' packa
 RPM_NAME := $(PACKAGE_NAME)
 VERSION := $(shell T=$$(git describe 2>/dev/null) || T=1; echo $$T | tr '-' '.')
 TARFILE=$(RPM_NAME)-$(VERSION).tar.xz
+NODE_TARFILE=$(RPM_NAME)-node-$(VERSION).tar.xz
 SPEC=$(RPM_NAME).spec
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
@@ -141,8 +142,9 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 	cp src/config/cockpit/conf.d/50-remote-auth.conf $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 
-dist: $(TARFILE)
+dist: $(TARFILE) $(NODE_TARFILE)
 	@ls -1 $(TARFILE)
+	@ls -1 $(NODE_TARFILE)
 
 # when building a distribution tarball, call bundler with a 'production' environment
 # we don't ship most node_modules for license and compactness reasons, only the ones necessary for running tests
@@ -155,7 +157,10 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(DIST_TEST) $(SPEC) VERSION.txt \
 		dist/
 
-srpm: $(TARFILE) $(SPEC)
+$(NODE_TARFILE): $(NODE_MODULES_TEST)
+	tools/node-modules runtime-tar $(NODE_TARFILE)
+
+srpm: $(TARFILE) $(NODE_TARFILE) $(SPEC)
 	rpmbuild -bs \
 	  --define "_sourcedir `pwd`" \
 	  --define "_srcrpmdir `pwd`" \
@@ -235,6 +240,12 @@ update-reference-images: test/common test/reference
 FORCE:
 $(NODE_MODULES_TEST): FORCE tools/node-modules
 	tools/node-modules make_package_lock_json
+
+.PHONY: print-version
+print-version:
+	@echo "$(VERSION)"
+
+node-cache: $(NODE_TARFILE)
 
 .PHONY: print-test-os
 print-test-os:
