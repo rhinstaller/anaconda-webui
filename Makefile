@@ -88,8 +88,8 @@ dist_noinst_DATA = \
 	package.json \
 	build.js
 
-VERSION.txt: $(SPEC)
-	rpmspec -q --queryformat "%{version}\n" $(SPEC) | head -1 > $@
+VERSION.txt:
+	echo "$(VERSION)" > $@
 
 $(SPEC): packaging/$(SPEC).in $(DIST_TEST)
 	provides=$$(awk '{print "Provides: bundled(npm(" $$1 ")) = " $$2}' runtime-npm-modules.txt); \
