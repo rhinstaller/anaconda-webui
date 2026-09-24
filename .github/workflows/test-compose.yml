@@ -49,8 +49,6 @@ jobs:
 
           bots/tests-status - --wait 2>&1 | tee tests-status.log
 
-          if grep -q '^  not ok ' tests-status.log; then
-            echo "Failed test cases:"
-            grep '^  not ok ' tests-status.log
+          if grep -q '^Failed tests' tests-status.log; then
             exit 1
           fi
