@@ -5,9 +5,12 @@
 
 import cockpit from "cockpit";
 
+import { SoftwareReviewDescription } from "./SoftwareReviewDescription.jsx";
 import { SoftwareSelection } from "./SoftwareSelection.jsx";
 
 const _ = cockpit.gettext;
+
+export { SoftwareReviewDescription };
 
 export class Page {
     _description = "Select packages to install by choosing a base environment.";

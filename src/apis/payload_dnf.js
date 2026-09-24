@@ -84,10 +84,14 @@ export class PayloadDNFClient {
     }
 
     _handleEnvironmentChange (environment) {
-        // Fetch groups when environment changes
         if (environment !== this._lastEnvironment) {
             this._lastEnvironment = environment;
-            this.dispatch(getPayloadGroupsAction(environment));
+            this.dispatch(getPayloadGroupsAction(environment)).catch(() => {
+                this.dispatch({
+                    payload: { groups: [] },
+                    type: "SET_PAYLOAD_GROUPS",
+                });
+            });
         }
     }
 
