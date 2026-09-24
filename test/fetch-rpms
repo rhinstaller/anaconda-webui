@@ -1,0 +1,48 @@
+#!/bin/bash
+# Download dependency RPMs (cockpit, anaconda-core, udisks, etc.) via container.
+# Usage: test/fetch-rpms
+set -eu
+
+DESTDIR="$(pwd)/tmp/rpms"
+rm -rf "$DESTDIR"
+mkdir -p "$DESTDIR"
+
+SCENARIO="${TEST_SCENARIO:-}"
+
+# Cockpit packages
+if [[ "$SCENARIO" == *cockpit-pr-* ]]; then
+    COCKPIT_PR="${SCENARIO##*-}"
+    COCKPIT_COPR="packit/cockpit-project-cockpit-${COCKPIT_PR}"
+else
+    COCKPIT_COPR="@cockpit/main-builds"
+fi
+COCKPIT_REPO="copr:copr.fedorainfracloud.org:${COCKPIT_COPR//\//:}"
+COCKPIT_REPO="${COCKPIT_REPO//@/group_}"
+
+# Anaconda packages
+if [[ "$SCENARIO" == *anaconda-pr* ]]; then
+    ANACONDA_PR="${SCENARIO##*-}"
+    ANACONDA_COPR="packit/rhinstaller-anaconda-${ANACONDA_PR}"
+else
+    ANACONDA_COPR="@rhinstaller/Anaconda"
+fi
+ANACONDA_REPO="copr:copr.fedorainfracloud.org:${ANACONDA_COPR//\//:}"
+ANACONDA_REPO="${ANACONDA_REPO//@/group_}"
+
+MISSING_PACKAGES="fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
+
+podman run --rm -v "$DESTDIR:/output:z" registry.fedoraproject.org/fedora:rawhide bash -c "
+set -e
+dnf -y copr enable $COCKPIT_COPR
+dnf download --destdir /output --repo $COCKPIT_REPO --releasever rawhide \
+    cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager
+
+dnf -y copr enable $ANACONDA_COPR
+dnf download --destdir /output --repo $ANACONDA_REPO --releasever rawhide \
+    anaconda-core anaconda-tui
+
+dnf download --destdir /output --releasever rawhide $MISSING_PACKAGES
+"
+
+echo "RPMs downloaded to $DESTDIR"
+ls "$DESTDIR"
