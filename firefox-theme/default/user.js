@@ -52,3 +52,6 @@ user_pref("signon.rememberSignons", false);
 
 // Disable the translate popup
 user_pref("browser.translations.enable", false);
+
+// Don't auto-hide the toolbar in fullscreen
+user_pref("browser.fullscreen.autohide", false);
