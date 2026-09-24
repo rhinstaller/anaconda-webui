@@ -351,11 +351,11 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             ignore=["td[data-label=Space]", "#reclaim-space-modal-hint"],
         )
 
-    @disk_images([("ubuntu-stable", 15)])
+    @disk_images([("debian-testing", 15)])
     def testReclaimSpaceShrink(self):
         """
         Description:
-            Test reclaiming space from an existing Ubuntu system by resizing partitions
+            Test reclaiming space from an existing Debian system by resizing partitions
 
         Expected results:
             - The shrink operation works also with locales that use a comma as decimal separator
@@ -383,8 +383,8 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
 
         i.reach(i.steps.REVIEW)
         # Don't specify the exact original size as this might change with image refreshes
-        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.2 GB")
-        r.check_resized_system("Ubuntu", ["vda1"])
+        r.check_disk_row("vda", parent="vda1", size="7.00 GB", action="resized from 11.7 GB")
+        r.check_resized_system("Debian", ["vda1"])
 
         i.reach_on_sidebar(i.steps.LANGUAGE)
         l.select_locale("cs_CZ", is_common=False)
@@ -399,7 +399,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         i.next(next_page=i.steps.STORAGE_CONFIGURATION)
 
         i.reach(i.steps.REVIEW)
-        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z 11,2 GB")
+        r.check_disk_row("vda", parent="vda1", size="7,10 GB", action="změněna velikost z 11,7 GB")
 
 
 if __name__ == '__main__':

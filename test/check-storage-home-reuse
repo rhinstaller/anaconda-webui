@@ -159,7 +159,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
     def _testMultipleRoots_partition_disk(self):
         self._remove_unknown_mountpoints("vda")
 
-    @disk_images([("fedora-rawhide", 15), ("fedora-43", 15), ("ubuntu-stable", 15)])
+    @disk_images([("fedora-rawhide", 15), ("fedora-43", 15), ("debian-testing", 15)])
     @skipImage("btrfs support missing on fedora-eln image", "fedora-eln-boot")
     # FIXME: Reinstall option does not work with UEFI when /boot is on btrfs
     # @run_boot("bios", "efi")
@@ -187,7 +187,7 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
 
         dev_fedora1 = "vda"
         dev_fedora2 = "vdb"
-        dev_ubuntu = "vdc"
+        dev_debian = "vdc"
 
         pretend_default_scheme(self, "BTRFS")
 
@@ -195,19 +195,19 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
         i.reach(i.steps.INSTALLATION_METHOD)
 
         # Select both Fedora disks and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_ubuntu, False)])
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, True), (dev_debian, False)])
         s.wait_scenario_visible("home-reuse", False)
 
         # Select only single Ubuntu disk and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.select_disks([(dev_fedora1, False), (dev_fedora2, False), (dev_debian, True)])
         s.wait_scenario_visible("home-reuse", False)
 
         # Select Ubuntu disk and Fedora disk and verify that home reuse is not available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, True)])
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_debian, True)])
         s.wait_scenario_visible("home-reuse", False)
 
         # Select only single Fedora disk and verify that home reuse is available
-        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_ubuntu, False)])
+        s.select_disks([(dev_fedora1, True), (dev_fedora2, False), (dev_debian, False)])
         s.wait_scenario_visible("home-reuse", True)
         s.wait_scenario_available("home-reuse", True)
 
