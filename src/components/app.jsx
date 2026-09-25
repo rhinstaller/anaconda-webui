@@ -34,6 +34,15 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
+const ApplicationCompleted = () => (
+    <PageSection className="installation-page--loading" hasBodyWrapper={false} type={PageSectionTypes.wizard}>
+        <EmptyStatePanel
+          title={_("Installation completed")}
+          paragraph={_("You can close this browser window now.")}
+        />
+    </PageSection>
+);
+
 export const Application = ({ conf, dispatch, installationStatus, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
@@ -76,6 +85,9 @@ export const Application = ({ conf, dispatch, installationStatus, isFetching, on
 
     // Postpone rendering anything until we read the dbus address and the default configuration
     if (!address || !storeInitialized || !installationStatus) {
+        if (isExiting()) {
+            return <ApplicationCompleted />;
+        }
         debug("Loading initial data...");
         return <ApplicationLoading />;
     }
