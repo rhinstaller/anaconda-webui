@@ -2,13 +2,13 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 
-# stamp file to check if/when npm install ran
-# one example file in dist/ to check if that already ran
-DIST_TEST=dist/manifest.json
+# build.js ran in non-watch mode
+DIST_TEST=runtime-npm-modules.txt
 PACKAGE_NAME := $(shell awk '/"name":/ {gsub(/[",]/, "", $$2); print $$2}' package.json)
 RPM_NAME := $(PACKAGE_NAME)
 VERSION := $(shell T=$$(git describe 2>/dev/null) || T=1; echo $$T | tr '-' '.')
 TARFILE=$(RPM_NAME)-$(VERSION).tar.xz
+NODE_TARFILE=$(RPM_NAME)-node-$(VERSION).tar.xz
 SPEC=$(RPM_NAME).spec
 # one example file in pkg/lib to check if it was already checked out
 COCKPIT_REPO_STAMP=pkg/lib/cockpit-po-plugin.js
@@ -89,11 +89,11 @@ dist_noinst_DATA = \
 	package.json \
 	build.js
 
-VERSION.txt: $(SPEC)
-	rpmspec -q --queryformat "%{version}\n" $(SPEC) | head -1 > $@
+VERSION.txt:
+	echo "$(VERSION)" > $@
 
-$(SPEC): packaging/$(SPEC).in $(NODE_MODULES_TEST)
-	provides=$$(npm ls --omit dev --package-lock-only --depth=Infinity | grep -Eo '[^[:space:]]+@[^[:space:]]+' | sort -u | sed 's/^/Provides: bundled(npm(/; s/\(.*\)@/\1)) = /'); \
+$(SPEC): packaging/$(SPEC).in $(DIST_TEST)
+	provides=$$(awk '{print "Provides: bundled(npm(" $$1 ")) = " $$2}' runtime-npm-modules.txt); \
 	awk -v p="$$provides" '{gsub(/%{VERSION}/, "$(VERSION)"); gsub(/%{NPM_PROVIDES}/, p)}1' $< > $@
 
 $(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) package.json build.js
@@ -142,8 +142,9 @@ install: $(DIST_TEST) po/LINGUAS
 	mkdir -p $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 	cp src/config/cockpit/conf.d/50-remote-auth.conf $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 
-dist: $(TARFILE)
+dist: $(TARFILE) $(NODE_TARFILE)
 	@ls -1 $(TARFILE)
+	@ls -1 $(NODE_TARFILE)
 
 # when building a distribution tarball, call bundler with a 'production' environment
 # we don't ship most node_modules for license and compactness reasons, only the ones necessary for running tests
@@ -153,10 +154,13 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
-		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) VERSION.txt \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(DIST_TEST) $(SPEC) VERSION.txt \
 		dist/
 
-srpm: $(TARFILE) $(SPEC)
+$(NODE_TARFILE): $(NODE_MODULES_TEST)
+	tools/node-modules runtime-tar $(NODE_TARFILE)
+
+srpm: $(TARFILE) $(NODE_TARFILE) $(SPEC)
 	rpmbuild -bs \
 	  --define "_sourcedir `pwd`" \
 	  --define "_srcrpmdir `pwd`" \
@@ -236,6 +240,12 @@ update-reference-images: test/common test/reference
 FORCE:
 $(NODE_MODULES_TEST): FORCE tools/node-modules
 	tools/node-modules make_package_lock_json
+
+.PHONY: print-version
+print-version:
+	@echo "$(VERSION)"
+
+node-cache: $(NODE_TARFILE)
 
 .PHONY: print-test-os
 print-test-os:
