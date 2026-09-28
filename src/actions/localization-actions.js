@@ -85,6 +85,15 @@ export const getKeyboardConfigurationAction = ({ onError, onSuccess } = {}) => {
         getKeyboardConfiguration({
             onFail: (error) => {
                 // Handle KeyboardConfigurationError (e.g., live system has only non-XKB layouts)
+                dispatch({
+                    payload: {
+                        plannedVconsole: "",
+                        plannedXlayouts: [],
+                        xlayouts,
+                    },
+                    type: "GET_PLANNED_KEYBOARD_CONFIGURATION"
+                });
+
                 if (onError) {
                     onError(error?.toString());
                 }
