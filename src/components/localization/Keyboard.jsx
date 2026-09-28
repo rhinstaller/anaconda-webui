@@ -286,17 +286,8 @@ const KeyboardDialog = ({ currentLayouts = [], onClose, onSaved }) => {
     );
 };
 
-export const KeyboardGnome = ({ dispatch, onError, onSuccess }) => {
+export const KeyboardGnome = () => {
     const { plannedXlayouts } = useContext(LanguageContext);
-
-    useEffect(() => {
-        const onFocus = () => {
-            dispatch(getKeyboardConfigurationAction({ onError, onSuccess }));
-        };
-
-        window.addEventListener("focus", onFocus);
-        return () => window.removeEventListener("focus", onFocus);
-    }, [dispatch, onError, onSuccess]);
 
     return (
         <>
@@ -428,15 +419,7 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid }) => {
     );
     const keyboard = (
         isGnome
-            ? (
-                <KeyboardGnome
-                  dispatch={dispatch}
-                  onError={setKeyboardConfigError}
-                  onSuccess={() => {
-                      setKeyboardConfigError();
-                  }}
-                />
-            )
+            ? <KeyboardGnome />
             : <KeyboardNonGnome />
     );
 
