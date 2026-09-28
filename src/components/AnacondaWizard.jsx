@@ -12,6 +12,8 @@ import { INSTALLATION_STATUS } from "../apis/boss.js";
 
 import { BossContext, PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
+import { useGnomeKeyboardMonitor } from "../hooks/Localization.jsx";
+
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { getSteps } from "./steps.js";
@@ -86,6 +88,15 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     }, [currentStepId]);
 
     const flatStepIds = stepsOrder.flatMap(s => s.steps ? s.steps.map(sub => sub.id) : [s.id]);
+
+    useGnomeKeyboardMonitor({
+        currentStepId,
+        dispatch,
+        flatStepIds,
+        setIsFormValid,
+        setStepNotification,
+    });
+
     const currentStepIndex = flatStepIds.indexOf(currentStepId);
 
     const createSteps = (stepsOrder, componentProps) => {
