@@ -9,6 +9,8 @@ import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 
+import "./InstallationNonCriticalErrorDialog.scss";
+
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-progress";
 
