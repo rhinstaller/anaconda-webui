@@ -45,7 +45,7 @@ export const StorageConfiguration = ({ dispatch, onCritFail }) => {
 };
 
 const CustomFooter = ({ luks, partitioning }) => {
-    const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
+    const { setIsFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const step = SCREEN_ID;
     const [partitioningApplied, setPartitioningApplied] = useState(false);
 
@@ -66,12 +66,16 @@ const CustomFooter = ({ luks, partitioning }) => {
 
             setStepNotification(notification);
             setPartitioningApplied(notification?.variant === "warning");
+            // Applying the partitioning again would only fail again, this time with
+            // a misleading error, because the disks are already used up.
+            setIsFormValid(notification?.variant !== "danger");
 
             if (!notification) {
                 goToNextStep();
             }
         } catch (ex) {
             setPartitioningApplied(false);
+            setIsFormValid(false);
             setStepNotification({ message: ex.message || String(ex), step });
         } finally {
             setIsFormDisabled(false);

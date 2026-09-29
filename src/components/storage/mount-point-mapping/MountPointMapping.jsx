@@ -728,7 +728,7 @@ export const MountPointMapping = () => {
 };
 
 const CustomFooter = () => {
-    const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
+    const { setIsFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const step = SCREEN_ID;
@@ -762,12 +762,16 @@ const CustomFooter = () => {
 
             setStepNotification(notification);
             setPartitioningApplied(notification?.variant === "warning");
+            // Applying the partitioning again would only fail again, this time with
+            // a misleading error, because the disks are already used up.
+            setIsFormValid(notification?.variant !== "danger");
 
             if (!notification) {
                 goToNextStep();
             }
         } catch (ex) {
             setPartitioningApplied(false);
+            setIsFormValid(false);
             setStepNotification({ message: ex.message || String(ex), step });
         } finally {
             setIsFormDisabled(false);
