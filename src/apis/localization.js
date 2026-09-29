@@ -77,6 +77,20 @@ export class LocalizationClient {
         this._subscription?.remove();
     }
 
+    _scheduleKeyboardRefresh ({ includeLayouts = false } = {}) {
+        if (includeLayouts) {
+            this._pendingLayoutsRefresh = true;
+        }
+        clearTimeout(this._keyboardRefreshTimeout);
+        this._keyboardRefreshTimeout = setTimeout(async () => {
+            this.dispatch(getKeyboardConfigurationAction());
+            if (this._pendingLayoutsRefresh) {
+                this._pendingLayoutsRefresh = false;
+                this.dispatch(getKeyboardLayoutsAction());
+            }
+        }, 500);
+    }
+
     startEventMonitor () {
         this._subscription = this.client.subscribe(
             { },
@@ -84,7 +98,7 @@ export class LocalizationClient {
                 switch (signal) {
                 case "CompositorSelectedLayoutChanged":
                 case "CompositorLayoutsChanged":
-                    await this.dispatch(getKeyboardConfigurationAction());
+                    this._scheduleKeyboardRefresh();
                     break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
@@ -95,10 +109,7 @@ export class LocalizationClient {
                          * but the returned KeyboardLayouts still are translated with the previous locale.
                          * Workaround this by dispatching the KeyboardLayouts action with small delay.
                          */
-                        setTimeout(async () => {
-                            this.dispatch(getKeyboardConfigurationAction());
-                            this.dispatch(getKeyboardLayoutsAction());
-                        }, 500);
+                        this._scheduleKeyboardRefresh({ includeLayouts: true });
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
