@@ -13,6 +13,7 @@ import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/inde
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import { Tooltip } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Grid, GridItem } from "@patternfly/react-core/dist/esm/layouts/Grid/index.js";
@@ -44,7 +45,8 @@ const SCREEN_ID = "anaconda-screen-language";
 
 const SelectedKeyboards = ({ xlayouts }) => (
     <Content component="p" id={SCREEN_ID + "-selected-keyboards"}>
-        {!xlayouts?.length && _("No keyboard layouts selected")}
+        {xlayouts === undefined && <Spinner size="md" />}
+        {xlayouts !== undefined && !xlayouts?.length && _("No keyboard layouts selected")}
         {xlayouts?.length === 1 && xlayouts[0]}
         {xlayouts?.length > 1 && (
             <span>
@@ -415,10 +417,6 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid }) => {
         plannedXlayouts,
         setIsKeyboardValid
     ]);
-
-    if (!plannedXlayouts?.length && !keyboardConfigError) {
-        return null;
-    }
 
     const keyboardAlert = (
         <Alert

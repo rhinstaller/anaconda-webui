@@ -199,7 +199,7 @@ export const localizationReducer = (state = localizationInitialState, action) =>
     } else if (action.type === "GET_COMMON_LOCALES") {
         return { ...state, commonLocales: action.payload.commonLocales };
     } else if (action.type === "GET_LANGUAGE") {
-        return { ...state, language: action.payload.language };
+        return { ...state, language: action.payload.language, plannedXlayouts: undefined };
     } else if (action.type === "GET_KEYBOARD_LAYOUTS") {
         return { ...state, keyboardLayouts: action.payload.keyboardLayouts };
     } else if (action.type === "GET_PLANNED_KEYBOARD_CONFIGURATION") {
