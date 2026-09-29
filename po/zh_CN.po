@@ -46,9 +46,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-25 08:11+0000\n"
-"PO-Revision-Date: 2026-08-07 16:38+0000\n"
-"Last-Translator: Zhaojiang Sun <anstonsolar@outlook.com>\n"
+"POT-Creation-Date: 2026-09-29 09:03+0000\n"
+"PO-Revision-Date: 2026-09-29 09:03+0000\n"
+"Last-Translator: Kung Kun <kun17.kung317@silomails.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
 "projects/anaconda-webui/anaconda-webui/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -56,7 +56,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.8\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:143
 #: src/components/storage/installation-method/InstallationDestination.jsx:279
@@ -75,7 +75,7 @@ msgid "$0 error"
 msgid_plural "$0 errors"
 msgstr[0] "$0 个错误"
 
-#: src/components/app.jsx:84
+#: src/components/app.jsx:96
 msgid "$0 installation"
 msgstr "$0 安装"
 
@@ -466,11 +466,11 @@ msgstr "加密"
 
 #: src/components/login/LoginPage.jsx:88
 msgid "Enter PIN"
-msgstr ""
+msgstr "输入PIN密钥"
 
 #: src/components/login/LoginPage.jsx:77
 msgid "Enter PIN to access the installer"
-msgstr ""
+msgstr "输入PIN密钥以进入安装器"
 
 #: src/components/Error.jsx:203
 msgid ""
@@ -551,18 +551,16 @@ msgid "Hide API key"
 msgstr "隐藏 API 密钥"
 
 #: src/components/login/LoginPage.jsx:94
-#, fuzzy
-#| msgid "Hide API key"
 msgid "Hide PIN"
-msgstr "隐藏 API 密钥"
+msgstr "隐藏 PIN 密钥"
 
 #: src/components/Password.jsx:265
 msgid "Hide confirmed password"
-msgstr "隐藏确认密码"
+msgstr "隐藏确认的密码"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:166
 msgid "Hide passphrase"
-msgstr "隐藏密码"
+msgstr "隐藏口令"
 
 #: src/components/Password.jsx:229
 msgid "Hide password"
@@ -580,25 +578,25 @@ msgstr "您想如何安装？"
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr[0] "我了解所选磁盘上的所有现有数据将被删除"
+msgstr[0] "我明白所选磁盘上的所有现有数据将被删除"
 
 #: src/components/review/ReviewConfiguration.jsx:314
 msgid "I understand that some existing data will be erased"
-msgstr "我了解部分现有数据将被删除"
+msgstr "我明白部分现有数据将被删除"
 
 #: src/components/review/ReviewConfiguration.jsx:315
 msgid "I understand that some partitions will be modified"
-msgstr "我了解有些分区会被修改"
+msgstr "我明白有些分区会被修改"
 
 #: src/components/review/Hostname.jsx:114
 msgid "If empty, hostname will be transient and set by network information."
-msgstr "如果为空，主机名将是临时的并由网络信息设置。"
+msgstr "如果为空，主机名将是由网络信息设置的临时主机名。"
 
 #: src/components/storage/installation-method/InstallationScenario.jsx:126
 msgid ""
 "If none of the options above apply, use the storage editor to create a "
 "custom partitioning before proceeding."
-msgstr ""
+msgstr "如若以上选项都不适用，请在继续之前使用存储编辑器创建自定义分区。"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
@@ -610,7 +608,7 @@ msgid ""
 "Manual reporting allows you to review and selectively attach log files "
 "yourself."
 msgstr ""
-"如果您不同意自动上传日志文件，您可以改为 $0。手动报告允许您自己审查并选择性的"
+"如果您不同意自动上传日志文件，您可以改为 $0。手动报告允许您自己审查并选择是否"
 "附加日志文件。"
 
 #: src/components/AnacondaHeader.jsx:76
@@ -623,6 +621,8 @@ msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
 msgstr ""
+"如果你的问题与以上的问题匹配，你可以打开它并添加你的信息而不是新建一个重复的"
+"报告。"
 
 #: src/components/installation/InstallationProgress.jsx:284
 msgid "In progress"
@@ -637,6 +637,10 @@ msgstr "初始化中..."
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
 msgid "Install"
 msgstr "安装"
+
+#: src/components/app.jsx:40
+msgid "Installation completed"
+msgstr "安装完成"
 
 #: src/components/installation/InstallationProgress.jsx:219
 #: src/components/Error.jsx:849
@@ -669,7 +673,7 @@ msgstr "磁盘空间不足"
 
 #: src/components/login/LoginPage.jsx:68
 msgid "Invalid PIN. Please try again."
-msgstr ""
+msgstr "无效的PIN密钥，请重试。"
 
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:255
 msgid ""
@@ -731,11 +735,8 @@ msgid "Locked devices"
 msgstr "锁定的设备"
 
 #: src/components/login/LoginPage.jsx:118
-#, fuzzy
-#| msgctxt "GUI|Advanced Storage|iSCSI|Login|Login"
-#| msgid "_Log In"
 msgid "Log in"
-msgstr "登录(_L)"
+msgstr "登录"
 
 #: src/components/localization/Keyboard.jsx:122
 #: src/components/localization/Keyboard.jsx:126
@@ -796,7 +797,7 @@ msgstr "必须至少包含$0字符"
 
 #: src/components/Error.jsx:676
 msgid "My issue is different, continue"
-msgstr ""
+msgstr "我的问题是不同的，继续"
 
 #: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
@@ -937,10 +938,8 @@ msgid "Please attach the log file $0 to the issue."
 msgstr "请将日志文件 $0 附加到问题中。"
 
 #: src/components/login/LoginPage.jsx:44
-#, fuzzy
-#| msgid "Please enter a valid name."
 msgid "Please enter a PIN"
-msgstr "请输入有效名称。"
+msgstr "请输入PIN密钥"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:325
 msgid "Please select at least one disk to continue"
@@ -951,10 +950,8 @@ msgid "Pool"
 msgstr "池"
 
 #: src/components/Error.jsx:296
-#, fuzzy
-#| msgid "No mountable devices found"
 msgid "Potential duplicate bugs found"
-msgstr "未找到可挂载设备"
+msgstr "可能发现重复的漏洞"
 
 #: src/components/HeaderKebab.jsx:48
 msgid "Powered by Anaconda"
@@ -981,15 +978,15 @@ msgstr "退出"
 msgid "Quit installer?"
 msgstr "退出安装程序？"
 
-#: src/components/app.jsx:130
+#: src/components/app.jsx:142
 msgid "Reading information about the OS failed."
 msgstr "读取操作系统的信息失败。"
 
-#: src/components/app.jsx:74
+#: src/components/app.jsx:83
 msgid "Reading information about the computer failed."
 msgstr "读取计算机信息失败。"
 
-#: src/components/app.jsx:120
+#: src/components/app.jsx:132
 msgid "Reading installer configuration failed."
 msgstr "读取安装程序配置失败。"
 
@@ -1159,10 +1156,8 @@ msgid "Review and install"
 msgstr "检查并安装"
 
 #: src/components/users/Accounts.jsx:94
-#, fuzzy
-#| msgid "no NTP servers have been configured"
 msgid "Root account has been configured"
-msgstr "没有配置 NTP 服务器"
+msgstr "管理员账户已经配置完毕"
 
 #: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
@@ -1269,10 +1264,8 @@ msgid "Show API key"
 msgstr "显示 API 密钥"
 
 #: src/components/login/LoginPage.jsx:94
-#, fuzzy
-#| msgid "Show API key"
 msgid "Show PIN"
-msgstr "显示 API 密钥"
+msgstr "显示 PIN 密钥"
 
 #: src/components/Password.jsx:265
 msgid "Show confirmed password"
@@ -1394,7 +1387,7 @@ msgid ""
 "being configured."
 msgstr "系统配置： 软件安装完成。现在正在配置系统。"
 
-#: src/components/app.jsx:165
+#: src/components/app.jsx:177
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda安装意外停止。"
 
@@ -1403,6 +1396,8 @@ msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
 msgstr ""
+"以下的问题可能与你的问题有关，请你在创建新报告之前检查这些问题是否与你的问题"
+"有关。"
 
 #: src/components/users/Accounts.jsx:47
 msgid "The following user will be created:"
@@ -1524,14 +1519,10 @@ msgid "Unlock encrypted devices"
 msgstr "解锁加密设备"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:64
-#, fuzzy
-#| msgid ""
-#| "Unlock LUKS-encrypted partitions to keep existing data and show more "
-#| "installation methods."
 msgid ""
 "Unlock encrypted partitions to keep existing data and show more installation "
 "methods."
-msgstr "解锁 LUKS 加密分区以保留现有数据并显示更多安装方法。"
+msgstr "解锁加密分区以保留现有数据并显示更多安装方法。"
 
 #: src/components/storage/scenarios/use-configured-storage/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:41
@@ -1605,6 +1596,10 @@ msgstr "当您提交该缺陷报告时，如下日志文件将被自动上传：
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "使用 BitLocker 加密的 Windows 分区无法调整大小"
+
+#: src/components/app.jsx:41
+msgid "You can close this browser window now."
+msgstr "你现在可以关闭这个浏览器窗口了。"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
@@ -1698,8 +1693,9 @@ msgid "shrink to $0"
 msgstr "缩小至 $0"
 
 #: src/components/review/Hostname.jsx:154
+#, fuzzy
 msgid "transient, will use DHCP"
-msgstr ""
+msgstr "临时的，将使用DHCP"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
@@ -3614,9 +3610,6 @@ msgstr "撤消"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "Installation _Destination"
 #~ msgstr "安装目标位置(_D)"
-
-#~ msgid "Installation complete"
-#~ msgstr "安装完成"
 
 #, python-format
 #~ msgid "Installation complete. Press %s to quit"
