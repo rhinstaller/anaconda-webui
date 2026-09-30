@@ -135,7 +135,7 @@ class TestLanguage(VirtInstallMachineCase):
 
         # Select the 'German' language
         l.select_locale("de_DE")
-        l.check_selected_keyboard("de (nodeadkeys)")
+        l.check_selected_keyboards(["de (nodeadkeys)"])
 
         # Pixel test the language step
         b.assert_pixels(
@@ -222,33 +222,30 @@ class TestLanguage(VirtInstallMachineCase):
         # Verify we're in English
         b.wait_in_text("h2", "Welcome. Let's install Fedora Linux now.")
 
-        l.check_selected_keyboard("us")
+        l.check_selected_keyboards(["us"])
         l.check_selected_keyboards_on_device("us")
 
         # Changing language should set sensible keyboard defaults
         l.input_locale_search('Russian')
         l.select_locale("ru_RU")
-        l.check_selected_keyboard("us")
-        l.check_selected_keyboard("ru")
+        l.check_selected_keyboards(["us", "ru"])
         l.check_selected_keyboards_on_device(["us", "ru"], expected_variants=["", ""])
 
         # Reset language back to English for the rest of the test
         l.input_locale_search("English")
         l.select_locale("en_US")
-        l.check_selected_keyboard("ru", present=False)
+        l.check_selected_keyboards(["us"])
+        l.check_not_selected_keyboard("ru")
         l.check_selected_keyboards_on_device("us")
 
         # Select a second keyboard layout (it gets appended)
         l.select_keyboard("de__nodeadkeys_", "German (no dead keys)", is_common=True)
-        l.check_selected_keyboard("us")
-        l.check_selected_keyboard("de (nodeadkeys)")
+        l.check_selected_keyboards(["us", "de (nodeadkeys)"])
         l.check_selected_keyboards_on_device(["us", "de"], expected_variants=["", "nodeadkeys"])
 
         # Select non-ASCII keyboard warning
         l.select_keyboard("ara", "Arabic", is_common=True)
-        l.check_selected_keyboard("us")
-        l.check_selected_keyboard("de (nodeadkeys)")
-        l.check_selected_keyboard("ara")
+        l.check_selected_keyboards(["us", "de (nodeadkeys)", "ara"])
         l.check_selected_keyboards_on_device(["us", "de", "ara"], expected_variants=["", "nodeadkeys", ""])
 
         # Make Arabic keyboard the default (current) to trigger the ASCII warning
@@ -262,9 +259,7 @@ class TestLanguage(VirtInstallMachineCase):
         l.browser.click(f"#{l._step}-change-system-keyboard-layout-modal-save-button")
         l.browser.wait_not_present(f"#{l._step}-change-system-keyboard-layout-modal")
         # Verify the order: Arabic (default), German, US
-        l.check_selected_keyboard("us")
-        l.check_selected_keyboard("de")
-        l.check_selected_keyboard("ara")
+        l.check_selected_keyboards(["ara", "de (nodeadkeys)", "us"])
         l.check_selected_keyboards_on_device(["ara", "de", "us"], expected_variants=["", "nodeadkeys", ""])
 
         # Create a valid selection to test disk encryption

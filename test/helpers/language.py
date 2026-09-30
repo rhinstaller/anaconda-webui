@@ -86,11 +86,12 @@ class Keyboard():
     def input_keyboard_search(self, text):
         self.browser.set_input_text(self._keyboard_search, text)
 
-    def check_selected_keyboard(self, keyboard, is_common=True, present=True):
-        if present:
-            self.browser.wait_in_text("p", keyboard)
-        else:
-            self.browser.wait_not_present(f"p:contains('{keyboard}')")
+    def check_selected_keyboards(self, keyboards):
+        expected = ", ".join(keyboards)
+        self.browser.wait_text(f"#{self._step}-selected-keyboards", expected)
+
+    def check_not_selected_keyboard(self, keyboard):
+        self.browser.wait_not_in_text(f"#{self._step}-selected-keyboards", keyboard)
 
     def _check_selected_keyboards_on_device(self, expected_layouts, expected_variants=None):
         result = self.machine.execute("localectl status")
