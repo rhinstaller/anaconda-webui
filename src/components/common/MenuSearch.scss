@@ -2,6 +2,14 @@
  * Copyright (C) 2023 Red Hat, Inc.
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
+// The scrollable PF Menu sets z-index: 200 (z-index--sm) on its content —
+// the same value as the wizard nav overlay. In responsive mode, the menu
+// content paints on top of the expanded nav (later DOM order wins at equal
+// z-index). Reset it so the nav can overlay the menu.
+.pf-v6-c-menu {
+  --pf-v6-c-menu--ZIndex: auto;
+}
+
 // Adjust menu height for smaller screens
 @media (max-height: 768px) {
   .pf-v6-c-menu.pf-m-scrollable {
