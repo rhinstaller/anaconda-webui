@@ -43,12 +43,12 @@ export class StorageClient {
         this.dispatch = dispatch;
     }
 
-    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Storage client closed"));
 
         this.startEventMonitor();
 
-        await this.initData();
+        await this.initData(args);
     }
 
     stopEventMonitor () {
@@ -85,12 +85,12 @@ export class StorageClient {
             });
     }
 
-    async initData () {
+    async initData ({ automatedInstall = false } = {}) {
         const partitioning = await getProperty("CreatedPartitioning");
 
         // When there is just one partitioning created when the module is initialized we can assume
         // that it is the one specified in kickstart
-        if (partitioning.length === 1) {
+        if (automatedInstall && partitioning.length === 1) {
             this.dispatch(setStorageScenarioAction("use-configured-storage-kickstart"));
         }
 
@@ -99,8 +99,13 @@ export class StorageClient {
             await this.dispatch(getPartitioningDataAction({ partitioning: lastPartitioning }));
         }
 
+        // Reset partitioning so that the first getDevicesAction populates deviceTrees[""]
+        // with the original system state. On page refresh after partitioning was applied,
+        // the store is empty and needs the original device tree before any planned changes.
         const appliedPartitioning = await getProperty("AppliedPartitioning");
-        this.dispatch(setAppliedPartitioningAction({ appliedPartitioning }));
+        if (appliedPartitioning) {
+            await callClient("ResetPartitioning", []);
+        }
 
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());

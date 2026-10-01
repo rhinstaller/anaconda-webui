@@ -20,6 +20,7 @@ class TestInstallationProgress(VirtInstallMachineCase):
             Verify the installation progress page
 
         Expected results:
+            - Reloading the page before installation starts brings the user back to the first page
             - The installation steps are displayed in the correct order
             - After reloading the page, the UI reconnects to the ongoing installation
             - The 'Successfully installed' message is displayed at the end of the installation
@@ -35,6 +36,17 @@ class TestInstallationProgress(VirtInstallMachineCase):
         i.open()
 
         i.reach(i.steps.REVIEW)
+
+        # Simulate remote reconnection after partitioning was applied
+        b.reload()
+        i.wait_current_page(i.steps.LANGUAGE)
+
+        # FIXME: https://redhat.atlassian.net/browse/INSTALLER-4945
+        # Can't use i.reach() because create_user callback fails on prefilled account data
+        while i.get_current_page() != i.steps.REVIEW:
+            current = i.get_current_page()
+            b.click("#installation-next-btn")
+            b.wait_js_cond(f'window.location.hash !== "#/{current}"')
         i.begin_installation(needs_confirmation=False)
 
         with b.wait_timeout(300):
