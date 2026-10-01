@@ -92,6 +92,7 @@ class TestStorageCockpitIntegration(VirtInstallMachineCase, StorageCase):
         s.exit_cockpit_storage()
 
         s.check_scenario_selected("use-configured-storage")
+        s.wait_scenario_visible("use-configured-storage-kickstart", False)
 
         # Check that choosing another storage scenario without diving into that,
         # preserves the visibility of "Use configured storage"

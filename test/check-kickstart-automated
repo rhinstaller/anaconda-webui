@@ -75,6 +75,7 @@ class TestKickstartAutomatedPause(VirtInstallMachineCase):
 
         i.reach(i.steps.INSTALLATION_METHOD)
         s.check_scenario_selected("use-configured-storage-kickstart")
+        s.wait_scenario_visible("use-configured-storage", False)
 
         i.reach(i.steps.ACCOUNTS)
 

@@ -27,8 +27,7 @@ export const useAvailabilityConfiguredStorage = (args) => {
     useEffect(() => {
         const availability = new AvailabilityState();
 
-        const currentPartitioningMatches = storageScenarioId === "use-configured-storage" ||
-            storageScenarioId === "use-configured-storage-kickstart";
+        const currentPartitioningMatches = storageScenarioId === scenarioId;
         availability.showReview = scenarioId !== "use-configured-storage-kickstart";
         // Kickstart: always show the option, no inline storage review;
         // cockpit: show when we have applied storage and scenario matches
