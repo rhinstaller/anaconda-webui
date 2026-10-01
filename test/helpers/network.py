@@ -142,7 +142,7 @@ class Network():
 
     def select_iface(self, iface):
         b = self.browser
-        b.click(f"#networking-interfaces tr[data-interface='{iface}'] button")
+        b.click(f"#networking-interfaces button[data-interface='{iface}']")
         b.wait_visible("#network-interface")
 
     def set_autoreconnect(self, autoreconnect):
