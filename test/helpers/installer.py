@@ -134,6 +134,7 @@ class Installer():
             while next_page in self.steps.hidden_steps:
                 next_page = self.steps._steps_jump[next_page][0]
 
+        self.check_next_disabled(disabled=False)
         self.browser.click("#installation-next-btn")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
