@@ -14,6 +14,7 @@ class InstallerSteps(UserDict):
     DATE_TIME = steps.DATE_TIME
     CUSTOM_MOUNT_POINT = steps.CUSTOM_MOUNT_POINT
     INSTALLATION_METHOD = steps.INSTALLATION_METHOD
+    INSTALLATION_SOURCE = steps.INSTALLATION_SOURCE
     NETWORK = steps.NETWORK
     SOFTWARE_SELECTION = steps.SOFTWARE_SELECTION
     LANGUAGE = steps.LANGUAGE
@@ -31,6 +32,7 @@ class InstallerSteps(UserDict):
         CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
         DATE_TIME = self.DATE_TIME
         INSTALLATION_METHOD = self.INSTALLATION_METHOD
+        INSTALLATION_SOURCE = self.INSTALLATION_SOURCE
         NETWORK = self.NETWORK
         SOFTWARE_SELECTION = self.SOFTWARE_SELECTION
         LANGUAGE = self.LANGUAGE
@@ -41,7 +43,8 @@ class InstallerSteps(UserDict):
         _steps_jump = {
             LANGUAGE: [NETWORK],
             NETWORK: [DATE_TIME],
-            DATE_TIME: [SOFTWARE_SELECTION],
+            DATE_TIME: [INSTALLATION_SOURCE],
+            INSTALLATION_SOURCE: [SOFTWARE_SELECTION],
             SOFTWARE_SELECTION: [INSTALLATION_METHOD],
             STORAGE_CONFIGURATION: [ACCOUNTS],
             CUSTOM_MOUNT_POINT: [ACCOUNTS],
@@ -54,7 +57,7 @@ class InstallerSteps(UserDict):
         payload_type = getattr(machine, "payload_type", "liveimg") if machine is not None else "liveimg"
         if payload_type != "dnf":
             _steps_jump[DATE_TIME] = INSTALLATION_METHOD
-            _hidden_steps.append(SOFTWARE_SELECTION)
+            _hidden_steps.extend([INSTALLATION_SOURCE, SOFTWARE_SELECTION])
 
         if scenario in ['use-configured-storage', 'use-configured-storage-kickstart', 'home-reuse']:
             _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
