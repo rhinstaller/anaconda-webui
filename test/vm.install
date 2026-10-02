@@ -80,7 +80,7 @@ def vm_install(image, compose, verbose, quick):
 
             # build rpms
             mock_opts = ("--verbose" if verbose else "") + (" --nocheck" if quick else "")
-            machine.execute("su builder -c 'mock --no-clean --disablerepo=* --offline --resultdir /var/tmp/build "
+            machine.execute("su builder -c 'mock --no-clean --resultdir /var/tmp/build "
                             f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
 
         if compose:
