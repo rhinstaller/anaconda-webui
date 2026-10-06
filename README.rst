@@ -27,7 +27,7 @@ changes::
     - this new feature
     - fix bug #123
 
-Pushing the release tag triggers the `release.yml <github/workflows/release.yml>`_
+Pushing the release tag triggers the `release.yml <.github/workflows/release.yml>`_
 `GitHub action <https://github.com/features/actions>`_ workflow. This creates the
 official release tarball and publishes as upstream release to GitHub.
 

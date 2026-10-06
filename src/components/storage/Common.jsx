@@ -15,7 +15,7 @@ const _ = cockpit.gettext;
  * @param {Object} props - Component props
  * @param {Array<string>} props.warningMessages - Array of warning messages to display
  */
-export const StorageWarningList = ({ warningMessages }) => {
+export const StorageWarningList = ({ showProceedHint = true, warningMessages }) => {
     return (
         <>
             <List>
@@ -23,20 +23,48 @@ export const StorageWarningList = ({ warningMessages }) => {
                     <ListItem key={"warn-" + i}>{msg}</ListItem>
                 ))}
             </List>
-            <p>{_("Click 'Next' again to proceed despite these warnings.")}</p>
+            {showProceedHint &&
+            <p>{_("Click 'Next' again to proceed despite these warnings.")}</p>}
+        </>
+    );
+};
+
+export const StorageErrorList = ({ errorMessages }) => {
+    return (
+        <>
+            <List>
+                {errorMessages.map((msg, i) => (
+                    <ListItem key={"err-" + i}>{msg}</ListItem>
+                ))}
+            </List>
+            <p>{_("Correct these issues before continuing.")}</p>
         </>
     );
 };
 
 /**
- * Create a step notification object for storage validation warnings.
+ * Inline alert for storage validation (errors take precedence over warnings).
  *
  * @param {Object} validationReport - The validation report from storage validation
  * @param {string} step - The step ID for the notification
- * @returns {Object|null} - Notification object with title and message, or null if no warnings
+ * @returns {Object|null} notification for setStepNotification, or null if valid
  */
-export const createWarningNotification = (validationReport, step) => {
+export const createStorageValidationNotification = (validationReport, step) => {
+    const errorMessages = validationReport?.["error-messages"]?.v || [];
     const warningMessages = validationReport?.["warning-messages"]?.v || [];
+
+    if (errorMessages.length > 0) {
+        const errorTitle = cockpit.format(
+            cockpit.ngettext("$0 error", "$0 errors", errorMessages.length),
+            errorMessages.length
+        );
+        return {
+            message: <StorageErrorList errorMessages={errorMessages} />,
+            step,
+            title: errorTitle,
+            variant: "danger",
+        };
+    }
 
     if (warningMessages.length === 0) {
         return null;
@@ -48,7 +76,12 @@ export const createWarningNotification = (validationReport, step) => {
     );
 
     return {
-        message: <StorageWarningList warningMessages={warningMessages} />,
+        message: (
+            <StorageWarningList
+              showProceedHint={step !== "anaconda-screen-review"}
+              warningMessages={warningMessages}
+            />
+        ),
         step,
         title: warningTitle,
         variant: "warning",

@@ -9,7 +9,7 @@
 # storage              - storage related tests
 # cockpit              - storage related tests that utilize Cockpit Storage plugin
 # other                - all remaining tests
-# efi                  - tests in UEFI mode (they might be tests which are also present in other scenarios)
+# bios                 - tests in BIOS mode (they might be tests which are also present in other scenarios)
 # compose-{compose-id} - tests defined in wiki-testmap.json ran against given compose
 # bootoptns-net1       - tests run for installation with network configuration via boot options
 
@@ -36,7 +36,7 @@ BASIC_TESTS="$(echo "$ALL_TESTS" | grep -vE "$RE_EXPENSIVE" | grep -vE "$RE_DNF_
 
 # every known case needs to set RUN_OPTS to something non-empty, so that we can check if we hit any branch
 case "${TEST_SCENARIO:=}" in
-    *efi*) export TEST_FIRMWARE="efi";;&
+    *bios*) export TEST_FIRMWARE="bios";;&
 
     *bootopts-net1*) export TEST_EXTRA_BOOT_ARGS="net.ifnames.prefix=net ip=net0:dhcp" TEST_VM_SETUP="bootopts-net1";;&
 
@@ -55,7 +55,6 @@ case "${TEST_SCENARIO:=}" in
         ;;
     *dnf*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_DNF_PAYLOAD")"
-        export TEST_PAYLOAD="dnf"
         ;;
     *expensive*)
         RUN_OPTS="$(echo "$ALL_TESTS" | grep -E "$RE_EXPENSIVE" | grep -vE "$RE_DNF_PAYLOAD")"
@@ -76,16 +75,15 @@ esac
 
 # If TEST_COMPOSE is defined checkout the git repo to the corresponding tag
 if [ -n "${TEST_COMPOSE-}" ]; then
-    DIRECTORY=$(echo $TEST_OS | cut -d "-" -f2)
     COMPOSE_BASE_URL=$(python3 test/helpers/compose_path.py "$TEST_COMPOSE")
     COMPOSE_A_PACKAGES="${COMPOSE_BASE_URL}/compose/Everything/x86_64/os/Packages/a/"
-    ANACONDA_WEBUI_TAG=$(curl -s $COMPOSE_A_PACKAGES | grep -oP '>anaconda-webui-[0-9]+' | cut -d "-" -f3)
+    ANACONDA_WEBUI_TAG=$(curl -sfL "$COMPOSE_A_PACKAGES" | grep -oE 'anaconda-webui-[0-9]+' | sed 's/anaconda-webui-//' | sort -n | tail -1)
+
+    git fetch --tags origin
+    git checkout "$ANACONDA_WEBUI_TAG"
 
     # FIXME: Do not run pixel tests as we need a newer tasks container than the pixel tests used for generating the reference images
     echo "FIXME" > test/reference-image
-
-    # Commit the changes to the repo
-    git commit -m "Checkout to $ANACONDA_WEBUI_TAG with infra changes" || echo "Skipped infra checkout commit, no changes"
 fi
 
 # We need to know if a TEST_COMPOSE is specified before we start downloading the test images
@@ -115,7 +113,11 @@ echo "<pool type='dir'>
 virsh pool-define --file /tmp/storage-pool.xml
 
 export TEST_OS
-TEST_AUDIT_NO_SELINUX=1 test/common/run-tests --test-dir test/ $RUN_OPTS
+# Keep the scheduler's RAM budget in sync with VirtInstallMachine (capacity planning).
+# Actual VM memory is also enforced in VirtInstallMachine.__init__.
+INSTALLER_VM_MEMORY_MB=$(python3 -c "import sys; sys.path.insert(0, 'test'); from machine_install import INSTALLER_VM_MEMORY_MB; print(INSTALLER_VM_MEMORY_MB)")
+RUN_TESTS_COMMON_OPTS="--nondestructive-memory-mb ${INSTALLER_VM_MEMORY_MB} --capacity-factor 0.5"
+TEST_AUDIT_NO_SELINUX=1 test/common/run-tests $RUN_TESTS_COMMON_OPTS --test-dir test/ $RUN_OPTS
 exit_code=$?
 
 if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
@@ -137,7 +139,10 @@ if [ -n "${TEST_COMPOSE-}" ] && [ "$TESTING_BRANCH" == "main" ]; then
         cp $COCKPIT_FEDORA_WIKI_TOKEN ~/.openidc/oidc_wikitcms.json
         test/fedora-wiki/wiki-report.py test/report.json
     fi
-
+    report_exit=$?
+    if [ $report_exit -ne 0 ]; then
+        exit_code=$report_exit
+    fi
 fi
 
 exit $exit_code

@@ -7,11 +7,12 @@ import cockpit from "cockpit";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, PageGroup, PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
-import { clients } from "../apis/index.js";
+import { BossClient } from "../apis/boss.js";
 
 import { initialState, reducer, useReducerWithThunk } from "../reducer.js";
 
-import { readConf } from "../helpers/conf.js";
+import { getInstallerConfValue, parseAnacondaConfBool, readConf } from "../helpers/conf.js";
+import { isExiting } from "../helpers/exit.js";
 import { debug } from "../helpers/log.js";
 import { getAnacondaUIVersion, getAnacondaVersion } from "../helpers/product.js";
 
@@ -33,10 +34,21 @@ export const ApplicationLoading = () => (
     </PageSection>
 );
 
-export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
+const ApplicationCompleted = () => (
+    <PageSection className="installation-page--loading" hasBodyWrapper={false} type={PageSectionTypes.wizard}>
+        <EmptyStatePanel
+          title={_("Installation completed")}
+          paragraph={_("You can close this browser window now.")}
+        />
+    </PageSection>
+);
+
+export const Application = ({ conf, dispatch, installationStatus, isFetching, onCritFail, osRelease, reportLinkURL, setShowStorage, showStorage }) => {
     const [storeInitialized, setStoreInitialized] = useState(false);
     const [currentStepId, setCurrentStepId] = useState();
     const address = useAddress(onCritFail);
+    const automatedInstall = parseAnacondaConfBool(getInstallerConfValue(conf, "Runtime", "automated_install"));
+    const pauseAtSummary = parseAnacondaConfBool(getInstallerConfValue(conf, "Runtime", "pause_at_summary"));
 
     useEffect(() => {
         if (!address) {
@@ -65,14 +77,17 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
         // Attach a click event listener to detect external link clicks
         document.addEventListener("click", allowExternalNavigation);
 
-        Promise.all(clients.map(Client => new Client(address, dispatch).init()))
+        new BossClient(address, dispatch).init({ automatedInstall, conf })
                 .then(() => {
                     setStoreInitialized(true);
                 }, onCritFail({ context: N_("Reading information about the computer failed.") }));
-    }, [address, dispatch, onCritFail]);
+    }, [address, automatedInstall, conf, dispatch, onCritFail]);
 
     // Postpone rendering anything until we read the dbus address and the default configuration
-    if (!address || !storeInitialized) {
+    if (!address || !storeInitialized || !installationStatus) {
+        if (isExiting()) {
+            return <ApplicationCompleted />;
+        }
         debug("Loading initial data...");
         return <ApplicationLoading />;
     }
@@ -86,7 +101,6 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
               isFilled={false}
               stickyOnBreakpoint={{ default: "top" }}>
                 <AnacondaHeader
-                  currentStepId={currentStepId}
                   dispatch={dispatch}
                   title={title}
                   reportLinkURL={reportLinkURL}
@@ -96,13 +110,15 @@ export const Application = ({ conf, dispatch, isFetching, onCritFail, osRelease,
                 />
             </PageGroup>
             <AnacondaWizard
+              automatedInstall={automatedInstall}
               currentStepId={currentStepId}
               isFetching={isFetching}
               onCritFail={onCritFail}
+              pauseAtSummary={pauseAtSummary}
               title={title}
               dispatch={dispatch}
-              conf={conf}
               setCurrentStepId={setCurrentStepId}
+              setShowStorage={setShowStorage}
               showStorage={showStorage}
             />
         </>
@@ -156,7 +172,7 @@ const useAddress = (onCritFail) => {
 
                 setBackendReady(isReady);
 
-                if (!isReady && wasReadyRef.current && onCritFail) {
+                if (!isReady && wasReadyRef.current && onCritFail && !isExiting()) {
                     onCritFail()({
                         message: _("The Anaconda installation has stopped unexpectedly."),
                     });
@@ -204,12 +220,14 @@ export const ApplicationWithErrorBoundary = () => {
                   showStorage={showStorage}
                 >
                     <Application
+                      conf={conf}
                       dispatch={dispatch}
+                      installationStatus={state.boss.installationStatus}
                       isFetching={state.misc.isFetching}
+                      onCritFail={onCritFail}
                       osRelease={osRelease}
                       showStorage={showStorage}
                       setShowStorage={setShowStorage}
-                      state={state}
                     />
                 </ErrorBoundary>
             </Page>

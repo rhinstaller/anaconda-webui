@@ -15,7 +15,7 @@ import {
 
 import {
     DialogsContext,
-    FooterContext,
+    PageContext,
     StorageContext,
 } from "../../../contexts/Common.jsx";
 
@@ -25,7 +25,7 @@ import {
 } from "../../../hooks/Storage.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
-import { createWarningNotification } from "../Common.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 import { scenarios } from "../scenarios/index.js";
 import { InstallationDestination } from "./InstallationDestination.jsx";
 import { InstallationScenario } from "./InstallationScenario.jsx";
@@ -39,14 +39,12 @@ export const InstallationMethod = ({
     idPrefix,
     isEfi,
     isFirstScreen,
-    isFormDisabled,
     onCritFail,
-    setIsFormDisabled,
-    setIsFormValid,
-    setStepNotification,
+    setShowStorage,
 }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked] = useState();
-    const [isDestinationValid, setIsDestinationValid] = useState(false);
+    const [isDestinationValid, setIsDestinationValid] = useState(undefined);
     const [isScenarioValid, setIsScenarioValid] = useState(false);
 
     // Calculate overall form validity based on both children's validation states
@@ -56,12 +54,8 @@ export const InstallationMethod = ({
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter
-          isFormDisabled={isFormDisabled}
-          isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked}
-          setStepNotification={setStepNotification}
-        />
-    ), [isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification]);
+        <CustomFooter isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked} />
+    ), [isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
 
     return (
@@ -75,9 +69,7 @@ export const InstallationMethod = ({
               dispatch={dispatch}
               idPrefix={idPrefix}
               isFirstScreen={isFirstScreen}
-              isFormDisabled={isFormDisabled}
               setIsDestinationValid={setIsDestinationValid}
-              setIsFormDisabled={setIsFormDisabled}
               onCritFail={onCritFail}
             />
             <DialogsContext.Provider value={{ isReclaimSpaceCheckboxChecked, setIsReclaimSpaceCheckboxChecked }}>
@@ -85,25 +77,26 @@ export const InstallationMethod = ({
                   dispatch={dispatch}
                   idPrefix={idPrefix}
                   isFirstScreen={isFirstScreen}
-                  isFormDisabled={isFormDisabled}
-                  onCritFail={onCritFail}
                   setIsScenarioValid={setIsScenarioValid}
+                  setShowStorage={setShowStorage}
                 />
             </DialogsContext.Provider>
         </Form>
     );
 };
 
-const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNotification }) => {
+const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
+    const { setIsFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const [isReclaimSpaceModalOpen, setIsReclaimSpaceModalOpen] = useState(false);
     const [isNextClicked, setIsNextClicked] = useState(false);
     const { goToNextStep } = useWizardContext();
     const [newPartitioning, setNewPartitioning] = useState(-1);
     const [partitioningApplied, setPartitioningApplied] = useState(false);
     const nextRef = useRef();
-    const { partitioning, storageScenarioId } = useContext(StorageContext);
+    const { partitioning, storageScenarioId } = useContext(StorageContext) ?? {};
     const homeReuseOptions = useHomeReuseOptions();
-    const method = ["mount-point-mapping", "use-configured-storage"].includes(storageScenarioId) ? "MANUAL" : "AUTOMATIC";
+    /** Scenarios do not create or apply existing partitioning on this step. */
+    const SCENARIOS_WITHOUT_PARTITIONING_CREATION = ["mount-point-mapping", "use-configured-storage", "use-configured-storage-kickstart"];
 
     useEffect(() => {
         if (nextRef.current !== true && newPartitioning === partitioning.path && isNextClicked) {
@@ -112,15 +105,15 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
         }
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
-    const onNext = async ({ setIsFormDisabled }) => {
-        if (method === "MANUAL") {
+    const onNext = async () => {
+        if (SCENARIOS_WITHOUT_PARTITIONING_CREATION.includes(storageScenarioId)) {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
         } else {
             const part = await getNewPartitioning({
                 currentPartitioning: partitioning,
                 homeReuseOptions,
-                method,
+                method: "AUTOMATIC",
                 storageScenarioId,
             });
             setNewPartitioning(part);
@@ -130,7 +123,7 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 
             if (willShowReclaimSpaceModal) {
                 setIsReclaimSpaceModalOpen(true);
-            } else if (storageScenarioId !== "home-reuse") {
+            } else if (!["home-reuse"].includes(storageScenarioId)) {
                 setIsNextClicked(true);
             } else {
                 // If partitioning was already applied, proceed to next step
@@ -144,32 +137,32 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 
                 setIsFormDisabled(true);
                 const step = SCREEN_ID;
-                await applyStorage({
-                    onFail: ex => {
-                        setIsFormDisabled(false);
-                        setPartitioningApplied(false);
-                        setStepNotification({ step, ...ex });
-                    },
-                    onSuccess: (validationReport) => {
-                        const warningNotification = createWarningNotification(validationReport, step);
+                try {
+                    const { validationReport } = await applyStorage({ partitioning: part });
+                    const notification = createStorageValidationNotification(validationReport, step);
 
-                        setStepNotification(warningNotification);
-                        setPartitioningApplied(!!warningNotification);
+                    setStepNotification(notification);
+                    setPartitioningApplied(notification?.variant === "warning");
+                    // Applying the partitioning again would only fail again, this time
+                    // with a misleading error, because the disks are already used up.
+                    setIsFormValid(notification?.variant !== "danger");
 
-                        if (!warningNotification) {
-                            goToNextStep();
-                        }
-                        setIsFormDisabled(false);
-                    },
-                    partitioning: part,
-                });
+                    if (!notification) {
+                        goToNextStep();
+                    }
+                } catch (ex) {
+                    setPartitioningApplied(false);
+                    setIsFormValid(false);
+                    setStepNotification({ message: ex.message || String(ex), step });
+                } finally {
+                    setIsFormDisabled(false);
+                }
             }
         }
     };
 
     const reclaimSpaceModal = (
         <ReclaimSpaceModal
-          isFormDisabled={isFormDisabled}
           onNext={goToNextStep}
           onClose={() => setIsReclaimSpaceModalOpen(false)}
         />
@@ -192,9 +185,9 @@ const CustomFooter = ({ isFormDisabled, isReclaimSpaceCheckboxChecked, setStepNo
 };
 
 const InstallationMethodFooterHelper = () => {
-    const { isFormValid } = useContext(FooterContext);
+    const { isFormValid } = useContext(PageContext) ?? {};
 
-    if (isFormValid) {
+    if (isFormValid !== false) {
         return null;
     }
 

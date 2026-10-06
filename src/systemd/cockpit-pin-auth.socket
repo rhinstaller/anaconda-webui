@@ -1,0 +1,10 @@
+[Unit]
+Description=Socket for cockpit pin auth service activation
+PartOf=cockpit-pin-auth.service
+
+[Socket]
+ListenStream=/run/cockpit/wsinstance/cockpit-pin-auth.sock
+SocketUser=root
+SocketMode=0666
+RemoveOnStop=yes
+Accept=yes

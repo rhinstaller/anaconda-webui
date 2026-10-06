@@ -12,22 +12,24 @@ import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/in
 import { Form, FormGroup, FormHelperText, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { InputGroup } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
+import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
 import {
     guessUsernameFromFullName,
 } from "../../apis/users.js";
 
 import {
-    setUsersAction,
+    applyUsersPatch,
 } from "../../actions/users-actions.js";
 
 import {
     applyAccounts,
 } from "../../helpers/users.js";
 
-import { RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
+import { PageContext, RuntimeContext, UsersContext } from "../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { PasswordFormFields, ruleLength } from "../Password.jsx";
@@ -35,6 +37,65 @@ import { PasswordFormFields, ruleLength } from "../Password.jsx";
 import "./Accounts.scss";
 
 const _ = cockpit.gettext;
+
+/** Read-only summary when user(s) are specified by kickstart (like GTK User Creation greyed out). */
+const UsersReadOnlySummary = ({ users }) => {
+    if (!users?.length) return null;
+    return (
+        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
+            {cockpit.ngettext(
+                "The following user will be created:",
+                "The following users will be created:",
+                users.length
+            )}
+            <List isPlain>
+                {users.map((u, i) => (
+                    <ListItem
+                      key={u.name ?? i}
+                      data-testid={`accounts-users-readonly-user-${u.name ?? i}`}
+                    >
+                        {u.gecos ? `${u.gecos} (${u.name || ""})` : (u.name || "—")}
+                    </ListItem>
+                ))}
+            </List>
+        </Flex>
+    );
+};
+
+/** Review step summary for account / root choices (see users `Page.review`). */
+export const AccountsReviewDescription = () => {
+    const accounts = useContext(UsersContext);
+    const hasUsers = (accounts.users?.length ?? 0) > 0;
+    const userSummary = hasUsers
+        ? (
+            <div data-testid="accounts-review-users">
+                <UsersReadOnlySummary users={accounts.users} />
+            </div>
+        )
+        : null;
+
+    if (accounts.isRootEnabled && !hasUsers) {
+        return _("Root account is enabled, but no user account has been configured");
+    }
+    if (!accounts.isRootEnabled && hasUsers) {
+        return userSummary;
+    }
+    if (accounts.isRootEnabled && hasUsers) {
+        return (
+            <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
+                <div>{_("Root account is enabled")}</div>
+                {userSummary}
+            </Flex>
+        );
+    }
+    // The root was specified as locked via kickstart
+    // and no user account was created
+    if (accounts.adminUserExists && !hasUsers) {
+        return _("Root account has been configured");
+    }
+
+    return null;
+};
 
 const reservedNames = [
     "root",
@@ -67,14 +128,17 @@ const CreateAccount = ({
     idPrefix,
     setAccounts,
     setIsUserValid,
+    setSkipAccountCreation,
+    skipAccountCreation,
 }) => {
     const accounts = useContext(UsersContext);
-    const [fullName, setFullName] = useState(accounts.fullName);
-    const [checkFullName, setCheckFullName] = useState(accounts.fullName);
+    const firstUser = accounts.users?.[0] ?? {};
+    const [fullName, setFullName] = useState(firstUser.gecos ?? "");
+    const [checkFullName, setCheckFullName] = useState(firstUser.gecos ?? "");
     const [fullNameInvalidHint, setFullNameInvalidHint] = useState("");
     const [isFullNameValid, setIsFullNameValid] = useState(null);
-    const [userName, setUserName] = useState(accounts.userName);
-    const [checkUserName, setCheckUserName] = useState(accounts.userName);
+    const [userName, setUserName] = useState(firstUser.name ?? "");
+    const [checkUserName, setCheckUserName] = useState(firstUser.name ?? "");
     const [userNameInvalidHint, setUserNameInvalidHint] = useState("");
     const [isUserNameValid, setIsUserNameValid] = useState(null);
     const [password, setPassword] = useState(accounts.password);
@@ -82,7 +146,6 @@ const CreateAccount = ({
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const passwordPolicy = useContext(RuntimeContext).passwordPolicies.user;
     const [guessingUserName, setGuessingUserName] = useState(false);
-    const [skipAccountCreation, setSkipAccountCreation] = useState(accounts.skipAccountCreation);
 
     useEffect(() => {
         debounce(300, () => setCheckUserName(userName))();
@@ -92,9 +155,13 @@ const CreateAccount = ({
         debounce(300, () => setCheckFullName(fullName))();
     }, [fullName, setCheckFullName]);
 
+    // null means the field is empty: keep the default (non-error) input style on load.
+    // User name and password must be set (or explicitly accepted empty), so require
+    // isUserNameValid === true and isPasswordValid === true. Full name may be left
+    // empty, so only reject explicit errors (isFullNameValid !== false).
     useEffect(() => {
         setIsUserValid(
-            (isPasswordValid !== false && isUserNameValid !== false && isFullNameValid !== false) ||
+            (isPasswordValid === true && isUserNameValid === true && isFullNameValid !== false) ||
             skipAccountCreation
         );
     }, [skipAccountCreation, setIsUserValid, isPasswordValid, isUserNameValid, isFullNameValid]);
@@ -139,13 +206,25 @@ const CreateAccount = ({
           confirmPassword={confirmPassword}
           setConfirmPassword={setConfirmPassword}
           confirmPasswordLabel={_("Confirm passphrase")}
+          emptyPasswordHelperText={_("Leave both passphrase fields empty to use an empty password.")}
           rules={[ruleLength]}
           setIsValid={setIsPasswordValid}
         />
     );
 
     useEffect(() => {
-        setAccounts({ confirmPassword, fullName, password, skipAccountCreation, userName });
+        if (skipAccountCreation) {
+            setAccounts({ confirmPassword, password, users: [] });
+            return;
+        }
+        setAccounts({
+            firstUser: {
+                confirmPassword,
+                gecos: fullName,
+                name: userName,
+                password,
+            },
+        });
     }, [
         confirmPassword,
         fullName,
@@ -245,7 +324,42 @@ const CreateAccount = ({
     );
 };
 
-const RootAccount = ({
+/**
+ * Readonly "Root" section when root was specified via kickstart
+ */
+const RootAccountReadonly = ({ idPrefix, setIsRootValid }) => {
+    const accounts = useContext(UsersContext);
+    const isRootAccountEnabled = accounts.isRootEnabled;
+
+    useEffect(() => {
+        setIsRootValid(true);
+    }, [setIsRootValid]);
+
+    return (
+        <FormSection title={_("System")}>
+            <Checkbox
+              id={idPrefix + "-enable-root-account"}
+              label={_("Enable root account")}
+              isChecked={isRootAccountEnabled}
+              isDisabled
+              onChange={() => {}}
+              body={isRootAccountEnabled
+                  ? (
+                      <FormHelperText>
+                          <HelperText>
+                              <HelperTextItem variant="default">
+                                  {_("Root password has been set.")}
+                              </HelperTextItem>
+                          </HelperText>
+                      </FormHelperText>
+                  )
+                  : null}
+            />
+        </FormSection>
+    );
+};
+
+const RootAccountEditable = ({
     idPrefix,
     setAccounts,
     setIsRootValid,
@@ -259,7 +373,7 @@ const RootAccount = ({
     const passwordRef = useRef();
 
     useEffect(() => {
-        setIsRootValid(isPasswordValid || !isRootAccountEnabled);
+        setIsRootValid(isPasswordValid === true || !isRootAccountEnabled);
     }, [setIsRootValid, isPasswordValid, isRootAccountEnabled]);
 
     useEffect(() => {
@@ -313,31 +427,57 @@ const RootAccount = ({
     );
 };
 
+const RootAccount = ({ idPrefix, setAccounts, setIsRootValid }) => {
+    const accounts = useContext(UsersContext);
+    const canModifyRootConfiguration = accounts.canModifyRootConfiguration !== false;
+
+    if (!canModifyRootConfiguration) {
+        return (
+            <RootAccountReadonly
+              idPrefix={idPrefix}
+              setIsRootValid={setIsRootValid}
+            />
+        );
+    }
+    return (
+        <RootAccountEditable
+          idPrefix={idPrefix}
+          setAccounts={setAccounts}
+          setIsRootValid={setIsRootValid}
+        />
+    );
+};
+
 export const Accounts = ({
     dispatch,
     idPrefix,
-    setIsFormValid,
 }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const [isUserValid, setIsUserValid] = useState();
     const [isRootValid, setIsRootValid] = useState();
     const accounts = useContext(UsersContext);
-    const setAccounts = useMemo(() => args => dispatch(setUsersAction(args)), [dispatch]);
+    const setAccounts = useMemo(() => args => dispatch(applyUsersPatch(args)), [dispatch]);
+    const [skipAccountCreation, setSkipAccountCreation] = useState(false);
+
+    const kickstartUsersReadOnly = accounts.canModifyUserConfiguration === false;
 
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
-        const skipAccountCreation = accounts.skipAccountCreation;
 
         setIsFormValid(
-            (skipAccountCreation || isUserValid) &&
+            (skipAccountCreation || isUserValid || kickstartUsersReadOnly) &&
             (skipRootCreation || isRootValid) &&
-            !(skipRootCreation && skipAccountCreation)
+            !(skipRootCreation && skipAccountCreation && !kickstartUsersReadOnly && !accounts.adminUserExists)
         );
     }, [
+        accounts.adminUserExists,
         accounts.isRootEnabled,
-        accounts.skipAccountCreation,
+        accounts.canModifyUserConfiguration,
         isRootValid,
         isUserValid,
         setIsFormValid,
+        skipAccountCreation,
+        kickstartUsersReadOnly,
     ]);
 
     // Display custom footer
@@ -349,11 +489,21 @@ export const Accounts = ({
           isHorizontal
           id={idPrefix}
         >
-            <CreateAccount
-              idPrefix={idPrefix + "-create-account"}
-              setIsUserValid={setIsUserValid}
-              setAccounts={setAccounts}
-            />
+            {kickstartUsersReadOnly
+                ? (
+                    <FormSection title={_("User creation")} data-testid="accounts-users-readonly">
+                        <UsersReadOnlySummary users={accounts.users} />
+                    </FormSection>
+                )
+                : (
+                    <CreateAccount
+                      idPrefix={idPrefix + "-create-account"}
+                      setIsUserValid={setIsUserValid}
+                      setAccounts={setAccounts}
+                      setSkipAccountCreation={setSkipAccountCreation}
+                      skipAccountCreation={skipAccountCreation}
+                    />
+                )}
             <RootAccount
               idPrefix={idPrefix + "-root-account"}
               setIsRootValid={setIsRootValid}
@@ -370,9 +520,11 @@ const CustomFooter = () => {
         applyAccounts(accounts).then(goToNextStep);
     };
 
+    const noUserAccount = (accounts.users?.length ?? 0) === 0;
+
     return (
         <AnacondaWizardFooter
-          footerHelperText={(!accounts.isRootEnabled && accounts.skipAccountCreation) ? _("You have to enable the root account or create a local user account to proceed.") : null}
+          footerHelperText={(!accounts.isRootEnabled && noUserAccount && !accounts.adminUserExists) ? _("You have to enable the root account or create a local user account to proceed.") : null}
           onNext={onNext}
         />
     );

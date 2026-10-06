@@ -3,7 +3,9 @@
 
 import os
 import sys
+from types import SimpleNamespace
 
+from netlib import NetworkCase
 from testlib import wait
 
 HELPERS_DIR = os.path.dirname(__file__)
@@ -130,31 +132,13 @@ class Network():
             n_files_found = len(files_found)
         assert n_files_found == count
 
-    def configure_network(self):
-        b = self.browser
-        b.click("#toggle-kebab")
-        b.click("#about-modal-dropdown-item-network")
-
-    def check_no_network_ui(self):
-        b = self.browser
-        b.click("#toggle-kebab")
-        # Wait for the dropdown menu to be visible before checking for the specific item
-        b.wait_visible("#toggle-kebab[aria-expanded='true'], .pf-c-dropdown__menu")
-        b.wait_not_present("#about-modal-dropdown-item-network")
-        b.click("#toggle-kebab")
-
     def enter_network(self):
         b = self.browser
-        self.configure_network()
-        b._wait_present("iframe[name='cockpit-network']")
-        b.switch_to_frame("cockpit-network")
+        self._switch_to_frame()
         b.wait_visible("#networking-interfaces")
 
     def exit_network(self):
-        b = self.browser
-        b.switch_to_top()
-        b.click("#cockpit-network-configuration-modal button:contains('Close')")
-        b.wait_not_present("#cockpit-network-configuration-modal")
+        self.browser.switch_to_top()
 
     def select_iface(self, iface):
         b = self.browser
@@ -196,6 +180,7 @@ class Network():
             [con_name, "connection.autoconnect", "yes", None]
         ])
 
+        i.reach(i.steps.NETWORK)
         n.enter_network()
         n.select_iface(iface)
         # Edit the connection
@@ -219,6 +204,7 @@ class Network():
 
         i.reach(i.steps.REVIEW)
 
+        i.reach_on_sidebar(i.steps.NETWORK)
         n.enter_network()
         n.select_iface(iface)
         n.set_autoreconnect(True)
@@ -227,21 +213,22 @@ class Network():
             [con_name, "connection.autoconnect", "yes", None]
         ])
 
+        i.reach(i.steps.REVIEW)
+
     def configure_iface_setting(self, setting_title):
-        b = self.browser
-        b.click(f"dt:contains('{setting_title}') + dd button")
+        shim = SimpleNamespace(browser=self.browser)
+        NetworkCase.configure_iface_setting(shim, setting_title)
 
     def wait_for_iface_setting(self, setting_title, setting_value):
-        b = self.browser
-        b.wait_in_text(f"dt:contains('{setting_title}') + dd", setting_value)
+        shim = SimpleNamespace(browser=self.browser)
+        NetworkCase.wait_for_iface_setting(shim, setting_title, setting_value)
 
-    def set_mtu_on_iface(self, iface, mtu):
-        n = self
-        n.enter_network()
-        n.select_iface(iface)
-        n.set_mtu(mtu)
-        n.wait_for_iface_setting("MTU", mtu)
-        n.exit_network()
+    def set_mtu_on_iface_wizard(self, iface, mtu):
+        self._switch_to_frame()
+        self.select_iface(iface)
+        self.set_mtu(mtu)
+        self.wait_for_iface_setting("MTU", mtu)
+        self.browser.switch_to_top()
 
     def set_mtu(self, mtu):
         b = self.browser
@@ -261,12 +248,11 @@ class Network():
     def toggle_onoff(self, sel: str) -> None:
         self.browser.click(sel + " input[type=checkbox]")
 
-    def add_dns_server_to_iface(self, iface, ip):
-        n = self
-        n.enter_network()
-        n.select_iface(iface)
-        n.add_dns_server(ip)
-        n.exit_network()
+    def add_dns_server_to_iface_wizard(self, iface, ip):
+        self._switch_to_frame()
+        self.select_iface(iface)
+        self.add_dns_server(ip)
+        self.browser.switch_to_top()
 
     def add_dns_server(self, ip):
         b = self.browser
@@ -287,13 +273,17 @@ class Network():
             b.click("#confirm-breaking-change-popup button:contains('Keep connection')")
         b.wait_not_present("#confirm-breaking-change-popup")
 
-    def disable_ipv4_on_iface(self, iface):
-        n = self
-        n.enter_network()
-        n.select_iface(iface)
+    def _switch_to_frame(self, name="network-configuration"):
+        b = self.browser
+        b._wait_present(f"iframe[name='{name}']")
+        b.switch_to_frame(name)
+
+    def disable_ipv4_on_iface_wizard(self, iface):
+        self._switch_to_frame()
+        self.select_iface(iface)
         self.disable_ipv4()
-        n.keep_connection()
-        n.exit_network()
+        self.keep_connection()
+        self.browser.switch_to_top()
 
     def disable_ipv4(self):
         b = self.browser

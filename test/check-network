@@ -5,7 +5,7 @@
 
 import time
 
-from anacondalib import VirtInstallMachineCase, run_on_vm_setups
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, run_on_vm_setups
 from installer import Installer
 from network import COCKPIT_CHECKPOINT_ROLLBACK_TIME, SYSROOT_PATH, Network
 from progress import Progress
@@ -13,7 +13,8 @@ from testlib import nondestructive, test_main  # pylint: disable=import-error
 from utils import check_cockpit_module_js_error
 
 
-class TestNetwork(VirtInstallMachineCase):
+class TestNetworkDestructive(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     def testCockpitConnectionsPreInstall(self):
         """
@@ -75,10 +76,10 @@ class TestNetwork(VirtInstallMachineCase):
     # https://github.com/cockpit-project/cockpit/issues/22926 is fixed
     #@run_on_vm_setups("", "bootopts-net1")
     @run_on_vm_setups("bootopts-net1")
-    def testCockpitConfigurationPreInstall(self):
+    def testWizardCockpitConfigurationPreInstall(self):
         """
         Description:
-            Test configuration of settings of a device.
+            Test configuration of settings of a device from a wizard page.
 
         Expected results:
             - Change breaking connection raises expected confirmation dialog
@@ -91,23 +92,31 @@ class TestNetwork(VirtInstallMachineCase):
 
         i.open()
 
+        i.reach(i.steps.NETWORK)
+
         iface = n.get_the_iface()
 
-        n.disable_ipv4_on_iface(iface)
+        n.disable_ipv4_on_iface_wizard(iface)
+
+        i.next()
+        i.back()
 
         # After editing, therefore persisting, the automatic default connection
         # is updated by Cockpit (COCKPIT-1750)
         con_name = iface
 
         mtu_value = "1600"
-        n.set_mtu_on_iface(iface, mtu_value)
+        n.set_mtu_on_iface_wizard(iface, mtu_value)
 
         n.check_con_settings([
             [con_name, "802-3-ethernet.mtu", mtu_value, None],
         ])
 
+        i.next()
+        i.back()
+
         dns_server = "8.8.8.8"
-        n.add_dns_server_to_iface(iface, dns_server)
+        n.add_dns_server_to_iface_wizard(iface, dns_server)
 
         n.check_con_settings([
             [con_name, "ipv4.dns", dns_server, None],
@@ -125,7 +134,9 @@ class TestNetwork(VirtInstallMachineCase):
             [con_name, "ipv4.dns", dns_server, None],
         ])
 
-    @nondestructive
+
+@nondestructive
+class TestNetwork(VirtInstallMachineCase):
     def testCockpitJsErrorHandling(self):
         """
         Description:
@@ -145,7 +156,7 @@ class TestNetwork(VirtInstallMachineCase):
         n = Network(b, m)
 
         i.open()
-        i.reach(i.steps.INSTALLATION_METHOD)
+        i.reach(i.steps.NETWORK)
         n.enter_network()
 
         check_cockpit_module_js_error(b, "Network")

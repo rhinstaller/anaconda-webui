@@ -49,17 +49,12 @@ function watchDirs (dir, onChange) {
 
 const context = await esbuild.context({
     bundle: true,
-    entryPoints: ["./src/index.js"],
-    external: [
-        "*.woff", "*.woff2", "*.jpg",
-        "@patternfly/react-core/src/components/assets/*.svg",
-        "@patternfly/react-core/src/demos/assets/*svg"
-    ], // Allow external font files which live in ../../static/fonts
+    entryPoints: ["./src/index.js", "./src/anacondaLogin.js"],
+    external: ["*.woff", "*.woff2", "*.jpg", "*.svg", "../../assets*"],
     legalComments: "external", // Move all legal comments to a .LEGAL.txt file
     loader: {
         ".js": "jsx",
         ".py": "text",
-        ".svg": "dataurl",
         ".txt": "text",
     },
     minify: production,
@@ -74,6 +69,7 @@ const context = await esbuild.context({
                 { from: ["./images/qr-code-feedback.svg"], to: ["./qr-code-feedback.svg"] },
                 { from: ["./src/manifest.json"], to: ["./manifest.json"] },
                 { from: ["./src/index.html"], to: ["./index.html"] },
+                { from: ["./src/login.html"], to: ["./login.html"] },
                 { from: ["./VERSION.txt"], to: ["./VERSION.txt"] },
             ]
         }),
@@ -82,7 +78,9 @@ const context = await esbuild.context({
             quietDeps: true,
         }),
         cockpitPoEsbuildPlugin(),
-        cockpitCompressPlugin(),
+        // Login assets are served via /cockpit/static/ which does not
+        // support .gz transparent serving, causing MIME type mismatch.
+        cockpitCompressPlugin({ exclude: /anacondaLogin\.(js|css)$/ }),
         cockpitRsyncEsbuildPlugin({ dest: packageJson.name }),
 
         {

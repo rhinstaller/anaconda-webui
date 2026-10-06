@@ -13,7 +13,7 @@ import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { exitGui } from "../helpers/exit.js";
 
-import { FooterContext, SystemTypeContext } from "../contexts/Common.jsx";
+import { PageContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 const _ = cockpit.gettext;
 
@@ -31,28 +31,14 @@ export const AnacondaWizardFooter = ({
     const {
         isFormDisabled,
         isFormValid,
-        setIsFormDisabled,
-        setIsFormValid,
-    } = useContext(FooterContext);
+    } = useContext(PageContext) || {};
 
     const onNextButtonClicked = () => {
         if (onNext) {
-            onNext({
-                goToNextStep,
-                isFormDisabled,
-                isFormValid,
-                setIsFormDisabled,
-                setIsFormValid,
-            });
+            onNext({ goToNextStep });
         } else {
             goToNextStep();
         }
-    };
-
-    const onBack = () => {
-        // first reset validation state to default
-        setIsFormValid(true);
-        goToPrevStep();
     };
 
     return (
@@ -72,7 +58,7 @@ export const AnacondaWizardFooter = ({
                               id="installation-back-btn"
                               variant="secondary"
                               isAriaDisabled={isFirstScreen || isFormDisabled}
-                              onClick={() => onBack()}>
+                              onClick={goToPrevStep}>
                                 {_("Back")}
                             </Button>
                         </ActionListItem>

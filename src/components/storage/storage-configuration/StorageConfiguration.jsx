@@ -8,15 +8,16 @@ import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wiza
 
 import { applyStorage } from "../../../apis/storage_partitioning.js";
 
-import { StorageContext } from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
-import { createWarningNotification } from "../Common.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
 
-export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, setStepNotification }) => {
+export const StorageConfiguration = ({ dispatch, onCritFail }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { luks, partitioning } = useContext(StorageContext);
 
     // Display custom footer
@@ -25,9 +26,8 @@ export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, set
             <CustomFooter
               luks={luks}
               partitioning={partitioning.path}
-              setStepNotification={setStepNotification}
             />,
-        [luks, partitioning.path, setStepNotification]
+        [luks, partitioning.path]
     );
 
     useWizardFooter(getFooter);
@@ -40,46 +40,46 @@ export const StorageConfiguration = ({ dispatch, onCritFail, setIsFormValid, set
         <DiskEncryption
           dispatch={dispatch}
           onCritFail={onCritFail}
-          setIsFormValid={setIsFormValid}
         />
     );
 };
 
-const CustomFooter = ({ luks, partitioning, setStepNotification }) => {
+const CustomFooter = ({ luks, partitioning }) => {
+    const { setIsFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const step = SCREEN_ID;
     const [partitioningApplied, setPartitioningApplied] = useState(false);
 
-    const onNext = ({ goToNextStep, setIsFormDisabled }) => {
+    const onNext = async ({ goToNextStep }) => {
         // If partitioning was already applied, proceed to next step
         if (partitioningApplied) {
             setPartitioningApplied(false);
             setStepNotification();
             goToNextStep();
             setIsFormDisabled(false);
-            return Promise.resolve();
+            return;
         }
 
         setIsFormDisabled(true);
-        return applyStorage({
-            luks,
-            onFail: ex => {
-                setIsFormDisabled(false);
-                setPartitioningApplied(false);
-                setStepNotification({ step, ...ex });
-            },
-            onSuccess: (validationReport) => {
-                const warningNotification = createWarningNotification(validationReport, step);
+        try {
+            const { validationReport } = await applyStorage({ luks, partitioning });
+            const notification = createStorageValidationNotification(validationReport, step);
 
-                setStepNotification(warningNotification);
-                setPartitioningApplied(!!warningNotification);
+            setStepNotification(notification);
+            setPartitioningApplied(notification?.variant === "warning");
+            // Applying the partitioning again would only fail again, this time with
+            // a misleading error, because the disks are already used up.
+            setIsFormValid(notification?.variant !== "danger");
 
-                if (!warningNotification) {
-                    goToNextStep();
-                }
-                setIsFormDisabled(false);
-            },
-            partitioning,
-        });
+            if (!notification) {
+                goToNextStep();
+            }
+        } catch (ex) {
+            setPartitioningApplied(false);
+            setIsFormValid(false);
+            setStepNotification({ message: ex.message || String(ex), step });
+        } finally {
+            setIsFormDisabled(false);
+        }
     };
 
     return <AnacondaWizardFooter onNext={onNext} />;

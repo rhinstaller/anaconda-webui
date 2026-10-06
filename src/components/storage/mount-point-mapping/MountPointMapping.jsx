@@ -27,14 +27,17 @@ import {
     filterPartitioningRequests,
     getDeviceAncestors,
     getDeviceChildren,
-    getLockedLUKSDevices,
+    getLockedEncryptedDevices,
+    getMountPointFormatConstraintError,
     hasDuplicateFields,
+    isDeviceEncrypted,
     isDuplicateRequestField,
+    isOnEncryptedDevice,
     requestsFromDbus,
     requestsToDbus,
 } from "../../../helpers/storage.js";
 
-import { FooterContext, StorageContext } from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import { getNewPartitioning, useMountPointConstraints, useOriginalDevices } from "../../../hooks/Storage.jsx";
 
@@ -42,6 +45,7 @@ import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 import { ListingTable } from "cockpit-components-table.jsx";
 
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
+import { createStorageValidationNotification } from "../Common.jsx";
 
 import "./MountPointMapping.scss";
 
@@ -171,15 +175,17 @@ const isDeviceMountPointInvalid = (deviceData, mountPointConstraints, request) =
         return [false, ""];
     }
 
-    // we have constraints for filesystem type for required and recommended mount points from the backend) {
-    if (constrainedMountPointData && constrainedMountPointData["required-filesystem-type"].v !== "" &&
-        deviceData[device].formatData.type.v !== constrainedMountPointData["required-filesystem-type"].v) {
-        return [true,
-            cockpit.format(_("'$0' must be on a device formatted to '$1'"),
-                           request["mount-point"], constrainedMountPointData["required-filesystem-type"].v)];
+    const [formatInvalid, formatError] = getMountPointFormatConstraintError({
+        constraint: constrainedMountPointData,
+        device,
+        devices: deviceData,
+        mountPoint: request["mount-point"],
+    });
+    if (formatInvalid) {
+        return [true, formatError];
     }
     if (constrainedMountPointData && !constrainedMountPointData["encryption-allowed"].v &&
-        deviceData[device].type.v === "luks/dm-crypt") {
+        isOnEncryptedDevice(deviceData, device)) {
         return [true,
             cockpit.format(_("'$0' filesystem cannot be on an encrypted block device"),
                            request["mount-point"])];
@@ -241,7 +247,7 @@ export const DeviceColumnSelect = ({
     handleRequestChange,
     idPrefix,
     isRequiredMountPoint,
-    lockedLUKSDevices,
+    lockedEncryptedDevices,
     request,
     requestIndex
 }) => {
@@ -267,12 +273,12 @@ export const DeviceColumnSelect = ({
                 : cockpit.format("$0 $1", size, format)
         );
 
-        const isLockedLUKS = lockedLUKSDevices.some(p => device.includes(p));
+        const isLockedEncryptedDevice = lockedEncryptedDevices.some(p => device.includes(p));
         /* Disable the following devices:
          * - Locked LUKS devices
          * - Swap devices when the mount point is preset (required) as these reset it
          */
-        const isAriaDisabled = isLockedLUKS || (formatType === "swap" && isRequiredMountPoint);
+        const isAriaDisabled = isLockedEncryptedDevice || (formatType === "swap" && isRequiredMountPoint);
 
         const node = (
             <SelectOption
@@ -355,20 +361,24 @@ export const DeviceColumnSelect = ({
     );
 };
 
-const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedLUKSDevices, mountPointConstraints, request, requestIndex, requests }) => {
+const DeviceColumn = ({ deviceData, devices, handleRequestChange, idPrefix, isRequiredMountPoint, lockedEncryptedDevices, mountPointConstraints, request, requestIndex, requests }) => {
     const device = request["device-spec"];
     const duplicatedDevice = isDuplicateRequestField(requests, "device-spec", device);
     const [deviceInvalid, errorMessage] = isDeviceMountPointInvalid(deviceData, mountPointConstraints, request);
 
     return (
-        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsNone" }}>
+        <Flex
+          direction={{ default: "column" }}
+          id={idPrefix}
+          spaceItems={{ default: "spaceItemsNone" }}
+        >
             <DeviceColumnSelect
               deviceData={deviceData}
               devices={devices}
               idPrefix={idPrefix}
               isRequiredMountPoint={isRequiredMountPoint}
               handleRequestChange={handleRequestChange}
-              lockedLUKSDevices={lockedLUKSDevices}
+              lockedEncryptedDevices={lockedEncryptedDevices}
               request={request}
               requestIndex={requestIndex}
             />
@@ -435,7 +445,7 @@ const getRequestRow = ({
     deviceData,
     handleRequestChange,
     idPrefix,
-    lockedLUKSDevices,
+    lockedEncryptedDevices,
     mountPointConstraints,
     request,
     requestIndex,
@@ -475,7 +485,7 @@ const getRequestRow = ({
                       handleRequestChange={handleRequestChange}
                       idPrefix={rowId + "-device"}
                       isRequiredMountPoint={isRequiredMountPoint}
-                      lockedLUKSDevices={lockedLUKSDevices}
+                      lockedEncryptedDevices={lockedEncryptedDevices}
                       request={request}
                       requestIndex={requestIndex}
                       requests={requests}
@@ -529,9 +539,8 @@ const getNewRequestProps = ({ deviceSpec, mountPoint, reformat, requests }) => {
 
 const RequestsTable = ({
     idPrefix,
-    setIsFormValid,
-    setStepNotification,
 }) => {
+    const { setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const { diskSelection, partitioning } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
     const deviceData = useOriginalDevices();
@@ -542,8 +551,8 @@ const RequestsTable = ({
         return requests?.filter(r => isUsableDevice(r["device-spec"], deviceData)).map(r => r["device-spec"]) || [];
     }, [requests, deviceData]);
     const isLoadingPartitioning = mountPointConstraints === undefined || !requests;
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(selectedDisks, deviceData),
+    const lockedEncryptedDevices = useMemo(
+        () => getLockedEncryptedDevices(selectedDisks, deviceData),
         [deviceData, selectedDisks]
     );
 
@@ -621,7 +630,7 @@ const RequestsTable = ({
                               deviceData,
                               handleRequestChange,
                               idPrefix,
-                              lockedLUKSDevices,
+                              lockedEncryptedDevices,
                               mountPointConstraints,
                               request,
                               requestIndex: idx,
@@ -645,8 +654,8 @@ const isUsableDevice = (devSpec, deviceData) => {
         return false;
     }
 
-    // luks is allowed -- we need to be able to unlock it
-    if (device.formatData.type.v === "luks") {
+    // encrypted devices are allowed -- we need to be able to unlock it
+    if (isDeviceEncrypted(device)) {
         return true;
     }
 
@@ -659,7 +668,7 @@ const isUsableDevice = (devSpec, deviceData) => {
 };
 
 export const usePartitioningReuse = () => {
-    const { setIsFormDisabled } = useContext(FooterContext);
+    const { setIsFormDisabled } = useContext(PageContext) ?? {};
     const { partitioning } = useContext(StorageContext);
     const previousRequestsRef = useRef();
     const mergedRequestsRef = useRef();
@@ -708,55 +717,65 @@ export const usePartitioningReuse = () => {
     }, [partitioning?.requests, setIsFormDisabled]);
 };
 
-export const MountPointMapping = ({
-    setIsFormValid,
-    setStepNotification,
-}) => {
+export const MountPointMapping = () => {
     // Display custom footer
-    const getFooter = useMemo(() => <CustomFooter setStepNotification={setStepNotification} />, [setStepNotification]);
+    const getFooter = useMemo(() => <CustomFooter />, []);
     useWizardFooter(getFooter);
 
     return (
-        <RequestsTable
-          idPrefix={SCREEN_ID + "-table"}
-          setStepNotification={setStepNotification}
-          setIsFormValid={setIsFormValid}
-        />
+        <RequestsTable idPrefix={SCREEN_ID + "-table"} />
     );
 };
 
-const CustomFooter = ({ setStepNotification }) => {
+const CustomFooter = () => {
+    const { setIsFormDisabled, setIsFormValid, setStepNotification } = useContext(PageContext) ?? {};
     const { partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
     const step = SCREEN_ID;
-    const onNext = async ({ goToNextStep, setIsFormDisabled }) => {
+    const [partitioningApplied, setPartitioningApplied] = useState(false);
+
+    const onNext = async ({ goToNextStep }) => {
+        if (partitioningApplied) {
+            setPartitioningApplied(false);
+            setStepNotification();
+            goToNextStep();
+            setIsFormDisabled(false);
+            return;
+        }
+
         const partitioningPath = partitioning.path;
 
-        // Before applying storage, filter requests from partitioning.requests
-        // partitioning.requests are in plain format, but filterPartitioningRequests handles both
-        const filteredRequests = filterPartitioningRequests(partitioning.requests || []);
-        // Convert to DBus format before sending to backend
-        await setManualPartitioningRequests({
-            partitioning: partitioningPath,
-            requests: requestsToDbus(filteredRequests),
-        });
+        setIsFormDisabled(true);
 
-        return applyStorage({
-            devices,
-            onFail: ex => {
-                setIsFormDisabled(false);
-                setStepNotification({ step, ...ex });
-            },
-            onSuccess: () => {
+        try {
+            // Before applying storage, filter requests from partitioning.requests
+            // partitioning.requests are in plain format, but filterPartitioningRequests handles both
+            const filteredRequests = filterPartitioningRequests(partitioning.requests || []);
+            // Convert to DBus format before sending to backend
+            await setManualPartitioningRequests({
+                partitioning: partitioningPath,
+                requests: requestsToDbus(filteredRequests),
+            });
+
+            const { validationReport } = await applyStorage({ devices, partitioning: partitioningPath });
+            const notification = createStorageValidationNotification(validationReport, step);
+
+            setStepNotification(notification);
+            setPartitioningApplied(notification?.variant === "warning");
+            // Applying the partitioning again would only fail again, this time with
+            // a misleading error, because the disks are already used up.
+            setIsFormValid(notification?.variant !== "danger");
+
+            if (!notification) {
                 goToNextStep();
-
-                // Reset the state after the onNext call. Otherwise,
-                // React will try to render the current step again.
-                setIsFormDisabled(false);
-                setStepNotification();
-            },
-            partitioning: partitioningPath,
-        });
+            }
+        } catch (ex) {
+            setPartitioningApplied(false);
+            setIsFormValid(false);
+            setStepNotification({ message: ex.message || String(ex), step });
+        } finally {
+            setIsFormDisabled(false);
+        }
     };
 
     return <AnacondaWizardFooter onNext={onNext} />;

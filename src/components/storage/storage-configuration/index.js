@@ -7,6 +7,7 @@ import cockpit from "cockpit";
 
 import { usePartitioningReset } from "../../../hooks/Storage.jsx";
 
+import { USE_CONFIGURED_STORAGE_SCENARIO_IDS } from "../scenarios/use-configured-storage/index.js";
 import { StorageConfiguration } from "./StorageConfiguration.jsx";
 
 const _ = cockpit.gettext;
@@ -19,7 +20,7 @@ export class Page {
         this.id = "anaconda-screen-storage-configuration";
         this.label = _("Storage configuration");
         this.title = _("Storage configuration");
-        this.isHiddenForScenarios = ["mount-point-mapping", "use-configured-storage", "home-reuse"];
+        this.isHiddenForScenarios = ["mount-point-mapping", "home-reuse", ...USE_CONFIGURED_STORAGE_SCENARIO_IDS];
         this.isHidden = this.isHiddenForScenarios.includes(storageScenarioId);
         /* Reset partitioning on page load to prevent stacking planned changes */
         this.usePageInit = usePartitioningReset;

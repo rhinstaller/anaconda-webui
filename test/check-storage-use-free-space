@@ -3,15 +3,16 @@
 # Copyright (C) 2025 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase, disk_images
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images
 from installer import Installer
 from review import Review
 from storage import Storage
 from testlib import test_main  # pylint: disable=import-error
 
 
-# FIXME: add back @nondestructive
+# TODO: these tests should be made nondestructive
 class TestStorageUseFreeSpace(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     @disk_images([("debian-testing", 20)])
     def testBasic(self):
@@ -35,13 +36,21 @@ class TestStorageUseFreeSpace(VirtInstallMachineCase):
         i.reach(i.steps.INSTALLATION_METHOD)
         s.check_scenario_selected("use-free-space")
         i.next()
+        # debian's efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
 
         i.reach_on_sidebar(i.steps.STORAGE_CONFIGURATION)
+        # debian's efi partition is smaller than the recommended 500 MiB
+        # so we need to click 'Next' twice to move past the storage configuration step
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
         i.reach(i.steps.REVIEW)
         r.check_storage_config("Share disk with other operating systems: Debian GNU/Linux")
         r.check_disk_row("vda", "/", "vda3, LVM", "7.51 GB", True, "xfs")
+        r.check_disk_row("vda", "/boot/efi", "vda15", "130 MB", False)
+        r.check_disk_row("vda", "", "vda14", "3.15 MB", False, action="biosboot")
 
 
 if __name__ == '__main__':

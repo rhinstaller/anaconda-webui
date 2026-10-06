@@ -6,8 +6,10 @@ import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ActionList } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
+import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
@@ -38,11 +40,13 @@ import { getDevicesAction, setStorageScenarioAction } from "../../../actions/sto
 import { debug as loggerDebug } from "../../../helpers/log.js";
 import {
     bootloaderTypes,
+    deviceHasEncryptionKey,
     getDeviceAncestors,
     getDeviceByName,
     getDeviceByPath,
     getDeviceChildren,
     getUsableDevicesManualPartitioning,
+    isDeviceEncrypted,
 } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
@@ -54,14 +58,46 @@ import {
 
 import { EmptyStatePanel } from "cockpit-components-empty-state";
 
-import { StorageReview } from "../../review/StorageReview.jsx";
 import { useAvailabilityConfiguredStorage } from "../scenarios/use-configured-storage/UseConfiguredStorage.jsx";
 import { useAvailabilityUseFreeSpace } from "../scenarios/use-free-space/UseFreeSpace.jsx";
+import { StorageReview } from "../StorageReview.jsx";
 
 const _ = cockpit.gettext;
 
 const idPrefix = "cockpit-storage-integration";
 const debug = loggerDebug.bind(null, idPrefix + ":");
+
+const CheckStorageDialogErrorAlert = ({ messages }) => (
+    <Alert
+      isInline
+      title={cockpit.format(
+          cockpit.ngettext("$0 error", "$0 errors", messages.length),
+          messages.length
+      )}
+      variant="danger">
+        <List>
+            {messages.map((msg, i) => (
+                <ListItem key={"err-" + i}>{msg}</ListItem>
+            ))}
+        </List>
+    </Alert>
+);
+
+const CheckStorageDialogWarningAlert = ({ messages }) => (
+    <Alert
+      isInline
+      title={cockpit.format(
+          cockpit.ngettext("$0 warning", "$0 warnings", messages.length),
+          messages.length
+      )}
+      variant="warning">
+        <List>
+            {messages.map((msg, i) => (
+                <ListItem key={"warn-" + i}>{msg}</ListItem>
+            ))}
+        </List>
+    </Alert>
+);
 
 const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
     try {
@@ -94,7 +130,15 @@ const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
                      */
                     deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })[0];
                 } else {
-                    deviceSpec = getDeviceByName(devices, device);
+                    /* Subvolume names are only unique within their volume, and can collide
+                     * with the name of the volume or partition holding them, so match on
+                     * both the type and the parent's device tree.
+                     */
+                    deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })
+                            .find(child => (
+                                devices[child].name?.v === device &&
+                                devices[child].type?.v === "btrfs subvolume"
+                            ));
                 }
             }
 
@@ -238,6 +282,7 @@ const handleMDRAID = ({ devices, onFail, refDevices, setNextCheckStep }) => {
                     devices[bootloaderDriveMDRAID].name.v
                 )
             });
+            return;
         }
     }
 
@@ -253,6 +298,17 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
                         device = getDeviceByPath(devices, dev);
                     }
 
+                    // Cockpit stores passphrases keyed by backing block device name,
+                    // but for encrypted Stratis pools the encrypted entity is the pool
+                    // (a child of the block device), not the block device itself.
+                    if (device && !isDeviceEncrypted(devices[device])) {
+                        const encryptedChild = getDeviceChildren({ device, deviceData: devices })
+                                .find(child => isDeviceEncrypted(devices[child]) && !deviceHasEncryptionKey(devices[child]));
+                        if (encryptedChild) {
+                            device = encryptedChild;
+                        }
+                    }
+
                     return ({
                         device,
                         passphrase: cockpitPassphrases[dev]
@@ -264,8 +320,8 @@ const getDevicesToUnlock = ({ cockpitPassphrases, devices }) => {
                 }
 
                 return (
-                    devices[device].formatData.type.v === "luks" &&
-                        devices[device].formatData.attrs.v.has_key !== "True"
+                    isDeviceEncrypted(devices[device]) &&
+                        !deviceHasEncryptionKey(devices[device])
                 );
             });
 
@@ -323,7 +379,7 @@ const scanDevices = ({ dispatch, onFail, setNextCheckStep }) => {
             });
 };
 
-const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
+const useStorageSetup = ({ dispatch, onCritFail, setNotification }) => {
     const [checkStep, setCheckStep] = useState("rescan");
     const refCheckStep = useRef();
     const devices = useOriginalDevices();
@@ -355,7 +411,9 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
 
         const onFail = exc => {
             setCheckStep();
-            setError(exc);
+            setNotification({
+                errorMessages: [exc.message],
+            });
         };
 
         const runStep = async () => {
@@ -412,7 +470,7 @@ const useStorageSetup = ({ dispatch, onCritFail, setError }) => {
         onCritFail,
         selectedDisks,
         setCheckStep,
-        setError,
+        setNotification,
     ]);
 
     return checkStep !== undefined;
@@ -441,11 +499,11 @@ const CheckStorageDialogLoading = () => {
     );
 };
 
-const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setError, setLoadingNewStorage }) => {
+const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setLoadingNewStorage, setNotification }) => {
     const loadingNewStorage = useStorageSetup({
         dispatch,
         onCritFail,
-        setError,
+        setNotification,
     });
 
     useEffect(() => {
@@ -455,7 +513,12 @@ const CheckStorageDialogLoadingNewStorage = ({ dispatch, onCritFail, setError, s
     return <CheckStorageDialogLoading />;
 };
 
-const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, setError, setNeedsNewPartitioning }) => {
+const CheckStorageDialogLoadingNewPartitioning = ({
+    dispatch,
+    newMountPoints,
+    setNeedsNewPartitioning,
+    setNotification,
+}) => {
     const devices = useOriginalDevices();
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
     const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
@@ -467,21 +530,27 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
         }
         mounted.current = true;
 
-        // If "Use configured storage" is not available, skip Manual partitioning creation
-        if (!useConfiguredStorage) {
+        // If "Use configured storage" is not available and no mount points were
+        // specified, skip Manual partitioning creation
+        if (!useConfiguredStorage && Object.keys(newMountPoints).length === 0) {
             if (useFreeSpace) {
                 dispatch(setStorageScenarioAction("use-free-space"));
             } else {
                 dispatch(setStorageScenarioAction(""));
             }
+            setNotification(null);
             setNeedsNewPartitioning(false);
             return;
-        } else {
+        } else if (useConfiguredStorage) {
             dispatch(setStorageScenarioAction("use-configured-storage"));
+        } else {
+            dispatch(setStorageScenarioAction(""));
         }
 
         const onFail = (exc) => {
-            setError(exc);
+            setNotification({
+                errorMessages: [exc.message],
+            });
             setNeedsNewPartitioning(false);
         };
         debug("prepare partitioning step started");
@@ -491,20 +560,31 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
             try {
                 await setInitializationMode({ mode: 0 });
                 const partitioning = await preparePartitioning({ devices, newMountPoints, onFail });
+                if (!partitioning) {
+                    return;
+                }
 
-                applyStorage({
-                    devices,
-                    onFail,
-                    onSuccess: () => setNeedsNewPartitioning(false),
-                    partitioning,
-                });
+                const { errors, warnings } = await applyStorage({ devices, partitioning });
+                if (errors.length > 0) {
+                    setNotification({
+                        errorMessages: errors,
+                        ...(warnings.length > 0 && { warningMessages: warnings }),
+                    });
+                } else if (warnings.length > 0) {
+                    setNotification({
+                        warningMessages: warnings,
+                    });
+                } else {
+                    setNotification(null);
+                }
+                setNeedsNewPartitioning(false);
             } catch (exc) {
                 onFail(exc);
             }
         };
 
         applyNewPartitioning();
-    }, [devices, dispatch, newMountPoints, setError, setNeedsNewPartitioning, useConfiguredStorage, useFreeSpace]);
+    }, [devices, dispatch, newMountPoints, setNeedsNewPartitioning, setNotification, useConfiguredStorage, useFreeSpace]);
 
     return (
         <CheckStorageDialogLoading />
@@ -512,8 +592,8 @@ const CheckStorageDialogLoadingNewPartitioning = ({ dispatch, newMountPoints, se
 };
 
 const CheckStorageDialogLoaded = ({
-    error,
     newMountPoints,
+    notification,
     setShowDialog,
     setShowStorage,
 }) => {
@@ -522,7 +602,7 @@ const CheckStorageDialogLoaded = ({
     const selectedDisks = diskSelection.selectedDisks;
 
     const useConfiguredStorage = useAvailabilityConfiguredStorage({ newMountPoints })?.available;
-    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false });
+    const useFreeSpace = useAvailabilityUseFreeSpace({ allowReclaim: false })?.available;
 
     const mdArrays = useMemo(() => {
         return Object.keys(devices).filter(device => devices[device].type.v === "mdarray");
@@ -534,7 +614,8 @@ const CheckStorageDialogLoaded = ({
         ));
     }, [devices, mdArrays, selectedDisks]);
 
-    const storageRequirementsNotMet = error || (!useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk);
+    const layoutBlocked = !useConfiguredStorage && !useFreeSpace && !useEntireSoftwareDisk;
+    const storageRequirementsNotMet = layoutBlocked || (notification?.errorMessages?.length > 0);
 
     const goBackToInstallation = () => {
         setShowStorage(false);
@@ -559,22 +640,29 @@ const CheckStorageDialogLoaded = ({
               titleIconVariant={storageRequirementsNotMet && "warning"}
             />
             <ModalBody>
-                {storageRequirementsNotMet ? error?.message : null}
-                <HelperText>
-                    {!storageRequirementsNotMet &&
-                    <HelperTextItem variant="success">
-                        {useConfiguredStorage
-                            ? (
-                                <Stack hasGutter>
-                                    <span>{_("Detected valid storage layout:")}</span>
-                                    <StorageReview />
-                                </Stack>
-                            )
-                            : (
-                                useEntireSoftwareDisk ? _("Use the RAID device for automatic partitioning") : _("Use free space")
-                            )}
-                    </HelperTextItem>}
-                </HelperText>
+                <Stack hasGutter>
+                    {notification?.errorMessages?.length > 0 &&
+                    <CheckStorageDialogErrorAlert messages={notification.errorMessages} />}
+                    {notification?.warningMessages?.length > 0 &&
+                    <CheckStorageDialogWarningAlert messages={notification.warningMessages} />}
+                    <HelperText>
+                        {!storageRequirementsNotMet &&
+                        <HelperTextItem variant="success">
+                            {useConfiguredStorage
+                                ? (
+                                    <Stack hasGutter>
+                                        <span>{_("Detected valid storage layout:")}</span>
+                                        <StorageReview />
+                                    </Stack>
+                                )
+                                : (
+                                    useEntireSoftwareDisk
+                                        ? _("Use the RAID device for automatic partitioning")
+                                        : _("Use free space")
+                                )}
+                        </HelperTextItem>}
+                    </HelperText>
+                </Stack>
             </ModalBody>
             <ModalFooter>
                 <ActionList>
@@ -616,7 +704,7 @@ const CheckStorageDialogLoaded = ({
 };
 
 export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setShowStorage }) => {
-    const [error, setError] = useState();
+    const [notification, setNotification] = useState(null);
 
     const [loadingNewStorage, setLoadingNewStorage] = useState(true);
     const [needsNewPartitioning, setNeedsNewPartitioning] = useState(true);
@@ -624,26 +712,27 @@ export const CheckStorageDialog = ({ dispatch, onCritFail, setShowDialog, setSho
     const loadingCommonProps = {
         dispatch,
         onCritFail,
-        setError,
+        setNotification,
     };
 
     const newMountPoints = useMemo(() => JSON.parse(window.sessionStorage.getItem("cockpit_mount_points") || "{}"), []);
 
     return (
         <>
-            {!error && loadingNewStorage &&
+            {!notification && loadingNewStorage &&
                 <CheckStorageDialogLoadingNewStorage
                   setLoadingNewStorage={setLoadingNewStorage} {...loadingCommonProps}
                 />}
-            {!error && !loadingNewStorage && needsNewPartitioning &&
+            {!notification && !loadingNewStorage && needsNewPartitioning &&
                 <CheckStorageDialogLoadingNewPartitioning
                   newMountPoints={newMountPoints}
-                  setNeedsNewPartitioning={setNeedsNewPartitioning} {...loadingCommonProps}
+                  setNeedsNewPartitioning={setNeedsNewPartitioning}
+                  {...loadingCommonProps}
                 />}
-            {(error || (!loadingNewStorage && !needsNewPartitioning)) &&
+            {(notification || (!loadingNewStorage && !needsNewPartitioning)) &&
                 <CheckStorageDialogLoaded
-                  error={error}
                   newMountPoints={newMountPoints}
+                  notification={notification}
                   setShowDialog={setShowDialog}
                   setShowStorage={setShowStorage}
                 />}

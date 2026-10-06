@@ -127,6 +127,14 @@ export const getDevices = () => {
 };
 
 /**
+ * @param {string[]} diskIds    device IDs to find ancestors for
+ * @returns {Promise}           Resolves ancestor device IDs (excludes the devices themselves)
+ */
+export const getAncestors = ({ diskIds }) => {
+    return new DeviceTree().callViewer("GetAncestors", [diskIds]);
+};
+
+/**
  * @returns {Promise}           Resolves all actions in a device tree
  */
 export const getActions = () => {

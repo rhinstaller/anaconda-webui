@@ -17,27 +17,47 @@ sys.path.append(os.path.join(os.path.dirname(TEST_DIR), "bots/machine"))
 
 from installer import Installer
 from language import Language
-from machine_install import VirtInstallMachine
+from machine_install import INSTALLER_VM_MEMORY_MB, VirtInstallMachine  # noqa: F401  (INSTALLER_VM_MEMORY_MB re-exported)
 from payload_dnf import PayloadDNFDBus
 from progress import Progress
 from storage import Storage
-from testlib import MachineCase, wait  # pylint: disable=import-error
+from testlib import Browser, MachineCase, wait  # pylint: disable=import-error
 from timezone import DateAndTime
 from users import Users
 from utils import add_public_key
 
-pixel_tests_ignore = ["#anaconda-screen-review-target-system-timezone"]
+pixel_tests_ignore = [
+    "#anaconda-screen-review-target-system-timezone",
+    "#anaconda-screen-review-target-operating-system",
+    ".pf-v6-c-page__main-group",  # ignore the header mentioning the OS details
+]
+
+
+class TLSBrowser(Browser):
+    def open(self, href, cookie=None, tls=True):
+        super().open(href, cookie=cookie, tls=tls)
 
 
 class VirtInstallMachineCase(MachineCase):
     # The boot modes in which the test should run
-    boot_modes = ["bios"]
-    is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+    boot_modes = ["efi"]
+    is_efi = os.environ.get("TEST_FIRMWARE", "efi") == "efi"
     report_to_wiki = os.path.exists(os.path.join(TEST_DIR, "report.json"))
     MachineCase.machine_class = VirtInstallMachine
     report_file = os.path.join(TEST_DIR, "report.json")
     run_on_vm_setups: list[str] = [""]
     vm_setup = ""
+
+    def new_browser(self, *args, **kwargs):
+        # Swap the class to TLSBrowser so open() defaults to tls=True.
+        # Ideally MachineCase would favor composition over inheritance
+        # and accept a browser_class attribute (like machine_class),
+        # letting subclasses inject their own Browser without hacking
+        # the factory method.
+        # TODO: propose a PR in cockpit so we don't need this hack
+        browser = super().new_browser(*args, **kwargs)
+        browser.__class__ = TLSBrowser
+        return browser
 
     def partition_disk(self):
         """ Override this method to partition the disk """
@@ -64,7 +84,7 @@ class VirtInstallMachineCase(MachineCase):
 
     def setUp(self):
         method = getattr(self, self._testMethodName)
-        boot_modes = getattr(method, "boot_modes", ["bios"])
+        boot_modes = getattr(method, "boot_modes", ["efi"])
         self.run_on_vm_setups = getattr(method, "run_on_vm_setups", [""])
         self.disk_images = getattr(method, "disk_images", [("", 15)])
 
@@ -72,10 +92,6 @@ class VirtInstallMachineCase(MachineCase):
             self.skipTest("Skipping for EFI boot mode")
         elif not self.is_efi and "bios" not in boot_modes:
             self.skipTest("Skipping for BIOS boot mode")
-
-        if "TestPayloadDNF" in self.__class__.__name__:
-            if os.environ.get("TEST_PAYLOAD", None) != "dnf":
-                self.skipTest("Skipping DNF payload test when not using DNF payload")
 
         self.vm_setup = os.environ.get("TEST_VM_SETUP", "")
         if self.vm_setup not in self.run_on_vm_setups:
@@ -89,8 +105,7 @@ class VirtInstallMachineCase(MachineCase):
             self.addCleanup(self.resetLanguage)
             self.addCleanup(self.resetMisc)
             self.addCleanup(self.resetTimezone)
-            if os.environ.get("TEST_PAYLOAD", None) == "dnf":
-                self.addCleanup(self.resetPayloadDNF)
+            self.addCleanup(self.resetPayloadDNF)
 
         super().setUp()
 
@@ -118,6 +133,8 @@ class VirtInstallMachineCase(MachineCase):
         self.resetLanguage()
 
         self.allow_journal_messages('.*cockpit.bridge-WARNING: Could not start ssh-agent.*')
+        # Nested Cockpit (e.g. storage/network iframes) and language changes which reload the page can log this; harmless.
+        self.allow_journal_messages("Error .* data: Connection reset by peer")
         self.installation_finished = False
 
         if not self.is_nondestructive():
@@ -156,8 +173,9 @@ class VirtInstallMachineCase(MachineCase):
         m = self.machine
         b = self.browser
         lang = Language(b, m)
-        lang.dbus_set_language("en_US.UTF-8")
-        lang.dbus_set_locale("en_US.UTF-8")
+        if not lang.dbus_get_language_kickstarted():
+            lang.dbus_set_language("en_US.UTF-8")
+            lang.dbus_set_locale("en_US.UTF-8")
         lang.dbus_set_compositor_layouts(["us"])
         lang.dbus_reset_xlayouts()
         lang.dbus_reset_virtual_console_keymap()
@@ -167,6 +185,7 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         users = Users(b, m)
         users.dbus_clear_users()
+        users.dbus_set_root_locked(True)
 
     def resetTimezone(self):
         m = self.machine
@@ -210,7 +229,8 @@ class VirtInstallMachineCase(MachineCase):
         self.removeAllDisks()
         s.dbus_reset_scenario()
         # Create an AUTOMATIC partitioning because MANUAL partitioning tests might take the last created
-        s.dbus_create_partitioning("AUTOMATIC")
+        if len(s.dbus_get_created_partitioning()) != 0:
+            s.dbus_create_partitioning("AUTOMATIC")
         s.dbus_reset_selected_disks()
         # CLEAR_PARTITIONS_DEFAULT = -1
         s.dbus_set_initialization_mode(-1)
@@ -224,6 +244,8 @@ class VirtInstallMachineCase(MachineCase):
 
     def resetPayloadDNF(self):
         m = self.machine
+        if getattr(m, "payload_type", None) != "dnf":
+            return
         dnf_dbus = PayloadDNFDBus(m)
         dnf_dbus.dbus_reset_to_default_environment("server-product-environment")
 
@@ -333,7 +355,7 @@ def run_boot(*modes):
     The VirtMachine has self.is_efi = True/False set.
     We need to skip the test if self.is_efi is True but 'efi' is not in the modes list.
 
-    The absence of the decorator is equivalent to run_boot("bios").
+    The absence of the decorator is equivalent to run_boot("efi").
 
     :param modes: Boot modes in which the test should run (e.g., "bios", "efi").
     """

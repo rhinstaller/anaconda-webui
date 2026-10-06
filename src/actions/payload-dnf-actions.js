@@ -7,6 +7,7 @@ import {
     getEnvironmentData,
     getEnvironments,
     getGroupData,
+    getPackagesKickstarted,
     getPackagesSelection,
 } from "../apis/payload_dnf.js";
 
@@ -35,10 +36,13 @@ export const getPayloadEnvironmentsAction = () => {
 
 export const getPayloadPackagesSelectionAction = () => {
     return async (dispatch) => {
-        const selection = await getPackagesSelection();
+        const [selection, packagesKickstarted] = await Promise.all([
+            getPackagesSelection(),
+            getPackagesKickstarted(),
+        ]);
 
         return dispatch({
-            payload: { selection },
+            payload: { packagesKickstarted, selection },
             type: "SET_PAYLOAD_SELECTION"
         });
     };

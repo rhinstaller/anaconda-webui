@@ -28,9 +28,15 @@ import {
     resetPartitioning,
 } from "../apis/storage_partitioning.js";
 
-import { getDeviceAncestors, hasReusableFedoraWithWindowsOS, systemMountPoints } from "../helpers/storage.js";
+import {
+    getDeviceAncestors,
+    hasReusableFedoraWithWindowsOS,
+    intersectSelectedDisksWithUsable,
+    isDeviceEncrypted,
+    systemMountPoints,
+} from "../helpers/storage.js";
 
-import { FooterContext, StorageContext, StorageDefaultsContext } from "../contexts/Common.jsx";
+import { PageContext, StorageContext, StorageDefaultsContext, TargetSystemRootContext } from "../contexts/Common.jsx";
 
 import { scenarios } from "../components/storage/scenarios/index.js";
 
@@ -40,15 +46,17 @@ export const useDiskTotalSpace = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            const diskTotalSpace = await getDiskTotalSpace({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            const diskTotalSpace = await getDiskTotalSpace({ diskNames });
 
             setDiskTotalSpace(diskTotalSpace);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return diskTotalSpace;
 };
@@ -59,15 +67,17 @@ export const useDiskFreeSpace = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            const diskFreeSpace = await getDiskFreeSpace({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            const diskFreeSpace = await getDiskFreeSpace({ diskNames });
 
             setDiskFreeSpace(diskFreeSpace);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return diskFreeSpace;
 };
@@ -106,7 +116,7 @@ export const useUsablePartitions = () => {
             return (
                 device.formatData?.type.v === "biosboot" ||
              device.formatData?.mountable.v ||
-             device.formatData?.type.v === "luks") &&
+             isDeviceEncrypted(device)) &&
              ancestors.some(ancestor => selectedDisks.includes(ancestor));
         });
 
@@ -114,6 +124,21 @@ export const useUsablePartitions = () => {
     }, [selectedDisks, devices]);
 
     return usablePartitions;
+};
+
+export const useRequiredSpace = () => {
+    const [requiredSpace, setRequiredSpace] = useState();
+
+    useEffect(() => {
+        const update = async () => {
+            const requiredSpace = await getRequiredSpace();
+
+            setRequiredSpace(requiredSpace);
+        };
+        update();
+    }, []);
+
+    return requiredSpace;
 };
 
 export const useRequiredSize = () => {
@@ -138,10 +163,12 @@ export const useMountPointConstraints = () => {
     const devices = useOriginalDevices();
     const { diskSelection } = useContext(StorageContext);
     const selectedDisks = diskSelection.selectedDisks;
+    const usableDisks = diskSelection.usableDisks;
 
     useEffect(() => {
         const update = async () => {
-            let _mountPointConstraints = await getMountPointConstraints({ diskNames: selectedDisks });
+            const diskNames = intersectSelectedDisksWithUsable(selectedDisks, usableDisks);
+            let _mountPointConstraints = await getMountPointConstraints({ diskNames });
             _mountPointConstraints = await Promise.all(_mountPointConstraints.map(async c => {
                 let description = "";
                 const formatType = c["required-filesystem-type"].v;
@@ -154,7 +181,7 @@ export const useMountPointConstraints = () => {
             setMountPointConstraints(_mountPointConstraints);
         };
         update();
-    }, [selectedDisks, devices]);
+    }, [selectedDisks, usableDisks, devices]);
 
     return mountPointConstraints;
 };
@@ -208,13 +235,14 @@ export const getNewPartitioning = async ({
 };
 
 export const usePartitioningReset = () => {
-    const { setIsFormDisabled } = useContext(FooterContext);
+    const { setIsFormDisabled } = useContext(PageContext) ?? {};
     const { appliedPartitioning, partitioning } = useContext(StorageContext);
     const pageHasMounted = useRef(false);
     // Always reset the partitioning when entering the installation destination page
     // If the last partitioning applied was from the cockpit storage integration
-    // we should not reset it, as this option does apply the partitioning onNext
+    // or from a kickstart we should not reset it
     const needsReset = partitioning.storageScenarioId !== "use-configured-storage" &&
+        partitioning.storageScenarioId !== "use-configured-storage-kickstart" &&
         appliedPartitioning &&
         pageHasMounted.current !== true;
 
@@ -285,4 +313,31 @@ export const useOriginalDevices = () => {
     const originalDeviceTree = useOriginalDeviceTree();
 
     return originalDeviceTree ? originalDeviceTree.devices : {};
+};
+
+export const useLaunchStorageEditor = ({ setShowStorage }) => {
+    const targetSystemRoot = useContext(TargetSystemRootContext);
+    const { diskSelection } = useContext(StorageContext);
+    const devices = useOriginalDevices();
+    const mountPointConstraints = useMountPointConstraints();
+
+    const launchStorageEditor = useMemo(() => {
+        const availableDevices = [
+            ...diskSelection.selectedDisks,
+            ...diskSelection.selectedDisks.map(disk => getDeviceAncestors(devices, disk)).flat(),
+        ];
+        const isEfi = mountPointConstraints?.some(c => c["required-filesystem-type"]?.v === "efi");
+        const cockpitAnaconda = JSON.stringify({
+            available_devices: availableDevices.map(device => devices[device]?.path.v).filter(Boolean),
+            efi: isEfi,
+            mount_point_prefix: targetSystemRoot,
+        });
+
+        return () => {
+            window.sessionStorage.setItem("cockpit_anaconda", cockpitAnaconda);
+            setShowStorage(true);
+        };
+    }, [devices, diskSelection.selectedDisks, mountPointConstraints, setShowStorage, targetSystemRoot]);
+
+    return launchStorageEditor;
 };

@@ -21,6 +21,24 @@ ACCOUNTS_SCREEN = ACCOUNTS
 CREATE_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-create-account"
 ROOT_ACCOUNT_ID_PREFIX = f"{ACCOUNTS_SCREEN}-root-account"
 
+# Read-only mode (kickstart-defined users): data-testid selectors
+ACCOUNTS_READONLY_USERS = "[data-testid='accounts-users-readonly']"
+ACCOUNTS_READONLY_USER_ROW = "accounts-users-readonly-user"
+
+
+def override_user_interface_conf_keys(test, **kwargs):
+    """Patch `[User Interface]` boolean keys in `/run/anaconda/anaconda.conf` (single restore)."""
+    conf = '/run/anaconda/anaconda.conf'
+    test.restore_file(conf)
+    for key, value in kwargs.items():
+        text = value if isinstance(value, str) else str(value)
+        if "\n" in text:
+            lines = [line.strip() for line in text.strip().splitlines() if line.strip()]
+            sed_text = "\\\n".join([f"{key} =", *[f"    {line}" for line in lines]])
+            test.machine.execute(f"sed -i '/^{key} =/,/^$/c\\\n{sed_text}' {conf}")
+        else:
+            test.machine.execute(f"sed -i '/^{key} =/c\\{key} = {text}' {conf}")
+
 
 class UsersDBus():
     def __init__(self, machine):
@@ -51,6 +69,13 @@ class UsersDBus():
             {USERS_INTERFACE} IsRootAccountLocked')
 
         return ret.split()[1].strip() == "true"
+
+    def dbus_set_root_locked(self, locked):
+        self.machine.execute(f'busctl --address="{self._bus_address}" \
+            set-property  \
+            {USERS_SERVICE} \
+            {USERS_OBJECT_PATH} \
+            {USERS_INTERFACE} IsRootAccountLocked b {"true" if locked else "false"}')
 
     def dbus_get_is_root_password_set(self):
         ret = self.machine.execute(f'busctl --address="{self._bus_address}" \
@@ -116,6 +141,23 @@ class Users(UsersDBus):
         password = "password"
         p.set_password(password)
         p.set_password_confirm(password if valid else "X")
+
+    # Read-only mode (kickstart-defined users)
+
+    def check_readonly_users_section_visible(self):
+        """Assert the Accounts step shows the read-only user summary (kickstart-defined users)."""
+        self.browser.wait_visible(ACCOUNTS_READONLY_USERS)
+
+    def check_readonly_user_displayed(self, username, full_name=None):
+        """
+        Assert a user is listed in the read-only summary.
+        Optionally check the displayed text: 'Full Name (username)' or 'username'.
+        """
+        sel = f"[data-testid='{ACCOUNTS_READONLY_USER_ROW}-{username}']"
+        self.browser.wait_visible(sel)
+        if full_name is not None:
+            expected = f"{full_name} ({username})"
+            self.browser.wait_text(sel, expected)
 
 
 def create_user(browser, machine):

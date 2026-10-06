@@ -4,70 +4,120 @@
  */
 import cockpit from "cockpit";
 
-import { usePageLocation } from "hooks";
-
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { PageSection, PageSectionTypes } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
-import { FooterContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+import { INSTALLATION_STATUS } from "../apis/boss.js";
+
+import { BossContext, PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
+
+import { useGnomeKeyboardMonitor } from "../hooks/Localization.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { getSteps } from "./steps.js";
 
-export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail, setCurrentStepId, showStorage }) => {
-    // The Form should be disabled while backend checks are in progress
-    // or the page initialization is in progress
+export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFetching, onCritFail, pauseAtSummary, setCurrentStepId, setShowStorage, showStorage }) => {
+    /**
+     * Wizard step page state (reset in `AnacondaWizard` `goToStep` on step change).
+     * - **isFormValid** / **setIsFormValid** — Required fields satisfied; reset when the step changes in the wizard.
+     * - **isFormDisabled** / **setIsFormDisabled** — Block input during init or async work
+     * - **stepNotification** / **setStepNotification** — Inline alert for the active step; cleared on step change.
+     */
     const [isFormDisabled, setIsFormDisabled] = useState(false);
-    // The Form should be marked as invalid when the user filled data
-    // are failing the validation
     const [isFormValid, setIsFormValid] = useState(false);
+    const [stepNotification, setStepNotification] = useState(null);
+
     const { storageScenarioId } = useContext(StorageContext);
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const payloadType = useContext(PayloadContext).type;
     const userInterfaceConfig = useContext(UserInterfaceContext);
-    const { path } = usePageLocation();
+    const { installationStatus } = useContext(BossContext);
+
+    const autoProceedBlockedRef = useRef(false);
+
+    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
+    const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
+    const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
+
+    const goToProgressPage = useCallback(() => {
+        setCurrentStepId(finalStepId);
+    }, [finalStepId, setCurrentStepId]);
 
     const componentProps = {
+        autoProceedBlockedRef,
+        automatedInstall,
         dispatch,
-        isFormDisabled: isFormDisabled || isFetching,
+        goToProgressPage,
         onCritFail,
-        setIsFormDisabled,
-        setIsFormValid,
+        pauseAtSummary,
+        setShowStorage,
     };
 
-    const stepsOrder = getSteps(userInterfaceConfig, { isBootIso, payloadType, storageScenarioId });
-    const firstStepId = stepsOrder.filter(s => !s.isHidden)[0].id;
+    const pageContextValue = {
+        isFormDisabled: isFormDisabled || isFetching,
+        isFormValid,
+        setIsFormDisabled,
+        setIsFormValid,
+        setStepNotification,
+        stepNotification,
+    };
 
     useEffect(() => {
-        if (path[0] && path[0] !== currentStepId) {
-            // If path is set respect it
-            setCurrentStepId(path[0]);
-        } else if (!currentStepId) {
-            // Otherwise set the first step as the current step
+        if (installationStatus === null) {
+            return;
+        }
+
+        if (installationStatus !== INSTALLATION_STATUS.NOT_STARTED) {
+            if (currentStepId !== finalStepId) {
+                setCurrentStepId(finalStepId);
+            }
+            return;
+        }
+
+        if (!currentStepId) {
             setCurrentStepId(firstStepId);
         }
-    }, [currentStepId, firstStepId, path, setCurrentStepId]);
+    }, [currentStepId, finalStepId, firstStepId, installationStatus, setCurrentStepId]);
+
+    useEffect(() => {
+        if (currentStepId) {
+            cockpit.location.go([currentStepId]);
+        }
+    }, [currentStepId]);
+
+    const flatStepIds = stepsOrder.flatMap(s => s.steps ? s.steps.map(sub => sub.id) : [s.id]);
+
+    useGnomeKeyboardMonitor({
+        currentStepId,
+        dispatch,
+        flatStepIds,
+        setIsFormValid,
+        setStepNotification,
+    });
+
+    const currentStepIndex = flatStepIds.indexOf(currentStepId);
 
     const createSteps = (stepsOrder, componentProps) => {
         return stepsOrder.map(s => {
-            const isVisited = firstStepId === s.id || currentStepId === s.id;
+            const stepIndex = s.steps
+                ? flatStepIds.indexOf(s.steps[0].id)
+                : flatStepIds.indexOf(s.id);
+            const isFutureStep = stepIndex > currentStepIndex;
             let stepProps = {
                 id: s.id,
                 isAriaDisabled: isFormDisabled || isFetching,
+                isDisabled: isFormDisabled || isFetching,
                 isHidden: s.isHidden || s.isFinal,
-                isVisited,
                 name: s.label,
-                stepNavItemProps: { id: s.id },
+                navItem: { id: s.id, isDisabled: isFutureStep },
                 ...(s.steps?.length && { isExpandable: true }),
             };
             if (s.component) {
                 stepProps = {
                     children: (
                         <AnacondaPage
-                          isFormDisabled={isFormDisabled}
-                          setIsFormDisabled={setIsFormDisabled}
                           step={s.id}
                           title={s.title}
                           isFirstScreen={s.isFirstScreen}
@@ -99,25 +149,30 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
             // and disable the form so that the page can perform
             //  initialization before the user can interact with it
             setIsFormDisabled(true);
+            setStepNotification(null);
         }
 
-        cockpit.location.go([newStep.id]);
+        setCurrentStepId(newStep.id);
     };
 
     const finalStep = stepsOrder[stepsOrder.length - 1];
-    if (path[0] === finalStep.id) {
+    if (currentStepId === finalStep.id) {
         return (
             <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
                 <finalStep.component {...componentProps} />
             </PageSection>
         );
     }
+    if (currentStepId === undefined) {
+        return null;
+    }
 
-    const startIndex = steps.findIndex(step => {
-        // Find the first step that is not hidden if the Wizard is opening for the first time.
-        // Otherwise, find the first step that was last visited.
-        return currentStepId ? step.props.id === currentStepId : !step.props.isHidden;
-    }) + 1;
+    let startIndex = stepsOrder.findIndex(step => step.isFirstScreen) + 1;
+
+    // HACK: start index is calculated incorrectly for KS installations
+    if (automatedInstall) {
+        startIndex += 1;
+    }
 
     // Properties from usePage to be passed to the Wizard Footer,
     // in case the Page is not using custom footer.
@@ -130,12 +185,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
 
     return (
         <PageSection hasBodyWrapper={false} type={PageSectionTypes.wizard}>
-            <FooterContext.Provider value={{
-                isFormDisabled: isFormDisabled || isFetching,
-                isFormValid,
-                setIsFormDisabled,
-                setIsFormValid,
-            }}>
+            <PageContext.Provider value={pageContextValue}>
                 <Wizard
                   className={"anaconda-wizard-step-" + currentStepId}
                   id="installation-wizard"
@@ -146,7 +196,7 @@ export const AnacondaWizard = ({ currentStepId, dispatch, isFetching, onCritFail
                 >
                     {steps}
                 </Wizard>
-            </FooterContext.Provider>
+            </PageContext.Provider>
         </PageSection>
     );
 };

@@ -25,6 +25,7 @@ import "../pkg/lib/patternfly/patternfly-6-cockpit.scss";
 import "../pkg/lib/patternfly/patternfly-6-overrides.scss";
 
 document.addEventListener("DOMContentLoaded", function () {
+    cockpit.transport.wait(() => cockpit.hint("ignore_transport_health_check", { data: true }));
     const root = createRoot(document.getElementById("app"));
     root.render(<ApplicationWithErrorBoundary />);
     document.documentElement.setAttribute("dir", cockpit.language_direction);

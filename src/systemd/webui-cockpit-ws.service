@@ -6,7 +6,9 @@ After=network.target
 Type=simple
 EnvironmentFile=/tmp/webui-cockpit-ws.env
 Environment="COCKPIT_SUPERUSER=pkexec"
-ExecStart=/usr/libexec/anaconda/cockpit-coproc-wrapper.sh $WEBUI_ADDRESS
+Environment="XDG_CONFIG_DIRS=/run/anaconda"
+ExecStartPre=/usr/libexec/anaconda/anaconda-cockpit-conf-merge
+ExecStart=/usr/libexec/anaconda/cockpit-coproc-wrapper.sh
 Restart=on-failure
 RestartSec=5s
 

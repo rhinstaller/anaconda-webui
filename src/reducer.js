@@ -36,10 +36,18 @@ export const localizationInitialState = {
     compositorLayouts: [],
     keyboardLayouts: [],
     language: "",
+    languageKickstarted: false,
     languages: {},
     plannedVconsole: undefined,
     plannedXlayouts: undefined,
+    userConfigured: false,
     xlayouts: undefined,
+};
+
+/* Initial state for the boss store substate */
+export const bossInitialState = {
+    installationStatus: null,
+    pendingError: { message: "", type: "" },
 };
 
 /* Intial state for the network store substate */
@@ -49,13 +57,15 @@ export const networkInitialState = {
 
 /* Intial state for the runtime store substate */
 export const runtimeInitialState = {
-    connected: null
+    connected: null,
 };
 
 /* Initial state for the timezone store substate */
 export const timezoneInitialState = {
     allValidTimezones: {},
+    kickstarted: false,
     timezone: "",
+    userConfigured: false,
 };
 
 export const miscInitialState = {
@@ -66,6 +76,7 @@ export const miscInitialState = {
 export const payloadInitialState = {
     environments: [],
     groups: [],
+    packagesKickstarted: false,
     selection: null,
     type: null,
 };
@@ -74,18 +85,21 @@ export const payloadInitialState = {
 /* FIXME: This is not storing information from the anaconda backend, but also non-submitted user input */
 /* The Store is meant to store information from the backend only */
 export const usersInitialState = {
+    adminUserExists: false,
+    canModifyRootConfiguration: true,
+    canModifyUserConfiguration: true,
     confirmPassword: "",
-    fullName: "",
     isRootEnabled: false,
+    isRootPasswordSet: false,
     password: "",
     rootConfirmPassword: "",
     rootPassword: "",
-    skipAccountCreation: false,
-    userName: "",
+    users: [],
 };
 
 /* Initial state for the global store */
 export const initialState = {
+    boss: bossInitialState,
     localization: localizationInitialState,
     misc: miscInitialState,
     network: networkInitialState,
@@ -117,6 +131,7 @@ export const useReducerWithThunk = (reducer, initialState) => {
 
 export const reducer = (state, action) => {
     return ({
+        boss: bossReducer(state.boss, action),
         localization: localizationReducer(state.localization, action),
         misc: miscReducer(state.misc, action),
         network: networkReducer(state.network, action),
@@ -184,7 +199,7 @@ export const localizationReducer = (state = localizationInitialState, action) =>
     } else if (action.type === "GET_COMMON_LOCALES") {
         return { ...state, commonLocales: action.payload.commonLocales };
     } else if (action.type === "GET_LANGUAGE") {
-        return { ...state, language: action.payload.language };
+        return { ...state, language: action.payload.language, plannedXlayouts: undefined };
     } else if (action.type === "GET_KEYBOARD_LAYOUTS") {
         return { ...state, keyboardLayouts: action.payload.keyboardLayouts };
     } else if (action.type === "GET_PLANNED_KEYBOARD_CONFIGURATION") {
@@ -194,6 +209,20 @@ export const localizationReducer = (state = localizationInitialState, action) =>
             plannedXlayouts: action.payload.plannedXlayouts,
             xlayouts: action.payload.xlayouts,
         };
+    } else if (action.type === "SET_LANGUAGE_KICKSTARTED") {
+        return { ...state, languageKickstarted: action.payload.languageKickstarted };
+    } else if (action.type === "SET_LANGUAGE_USER_CONFIGURED") {
+        return { ...state, userConfigured: true };
+    } else {
+        return state;
+    }
+};
+
+export const bossReducer = (state = bossInitialState, action) => {
+    if (action.type === "GET_INSTALLATION_STATUS") {
+        return { ...state, installationStatus: action.payload.status };
+    } else if (action.type === "GET_PENDING_ERROR") {
+        return { ...state, pendingError: { message: action.payload.message, type: action.payload.type } };
     } else {
         return state;
     }
@@ -227,7 +256,14 @@ export const runtimeReducer = (state = runtimeInitialState, action) => {
 
 export const timezoneReducer = (state = timezoneInitialState, action) => {
     if (action.type === "SET_TIMEZONE") {
-        return { ...state, timezone: action.payload.timezone };
+        const { kickstarted, timezone } = action.payload;
+        return {
+            ...state,
+            ...(kickstarted !== undefined && { kickstarted }),
+            ...(timezone !== undefined && { timezone }),
+        };
+    } else if (action.type === "SET_TIMEZONE_USER_CONFIGURED") {
+        return { ...state, userConfigured: true };
     } else if (action.type === "SET_ALL_VALID_TIMEZONES") {
         return { ...state, allValidTimezones: action.payload.allValidTimezones };
     } else {
@@ -237,7 +273,13 @@ export const timezoneReducer = (state = timezoneInitialState, action) => {
 
 export const payloadReducer = (state = payloadInitialState, action) => {
     if (action.type === "SET_PAYLOAD_SELECTION") {
-        return { ...state, selection: action.payload.selection };
+        return {
+            ...state,
+            selection: action.payload.selection,
+            ...(action.payload.packagesKickstarted !== undefined
+                ? { packagesKickstarted: action.payload.packagesKickstarted }
+                : {}),
+        };
     } else if (action.type === "SET_PAYLOAD_ENVIRONMENTS") {
         return { ...state, environments: action.payload.environments || [] };
     } else if (action.type === "SET_PAYLOAD_TYPE") {
@@ -251,7 +293,33 @@ export const payloadReducer = (state = payloadInitialState, action) => {
 
 export const usersReducer = (state = usersInitialState, action) => {
     if (action.type === "SET_USERS") {
-        return { ...state, ...action.payload.users };
+        const { firstUser, ...rest } = action.payload;
+        let next = { ...state, ...rest };
+        if (firstUser !== undefined) {
+            const existing = state.users ?? [];
+            const [currentFirst = {}, ...tail] = existing;
+            const updatedFirst = {
+                ...currentFirst,
+                gecos: firstUser.gecos,
+                name: firstUser.name,
+            };
+            const updatedUsers = (firstUser.name || firstUser.gecos || tail.length > 0)
+                ? [updatedFirst, ...tail]
+                : [];
+            next = {
+                ...next,
+                users: updatedUsers,
+            };
+            if (firstUser.password !== undefined) {
+                next.password = firstUser.password;
+            }
+            if (firstUser.confirmPassword !== undefined) {
+                next.confirmPassword = firstUser.confirmPassword;
+            }
+        }
+        return next;
+    } else if (action.type === "SET_USER_CONFIGURATION_POLICY") {
+        return { ...state, ...action.payload };
     } else {
         return state;
     }

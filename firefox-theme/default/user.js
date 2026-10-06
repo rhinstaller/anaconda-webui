@@ -5,11 +5,6 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 // We want to use :has()
 user_pref("layout.css.has-selector.enabled", true);
 
-// New windows, not tabs
-user_pref("browser.link.open_newwindow", 2);
-user_pref("browser.link.open_newwindow.restriction", 1);
-user_pref("browser.link.open_newwindow.override.external", 2);
-
 // Dev stuff (for easier UI adusting with ctrl+shift+alt+i)
 user_pref("browser.aboutConfig.showWarning", false);
 user_pref("devtools.chrome.enabled", true);
@@ -54,3 +49,9 @@ user_pref("dom.disable_open_during_load", false);
 // Disable password manager popups
 user_pref("signon.showAutoCompleteFooter", false);
 user_pref("signon.rememberSignons", false);
+
+// Disable the translate popup
+user_pref("browser.translations.enable", false);
+
+// Don't auto-hide the toolbar in fullscreen
+user_pref("browser.fullscreen.autohide", false);

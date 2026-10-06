@@ -8,6 +8,7 @@ import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 from tempfile import TemporaryDirectory
 
@@ -19,6 +20,7 @@ BOTS_DIR = f'{ROOT_DIR}/bots'
 sys.path.append(BOTS_DIR)
 
 # pylint: disable=import-error
+import libvirt  # type: ignore[import-untyped]
 from machine.machine_core import timeout
 from machine.testvm import (
     Machine,  # nopep8
@@ -30,9 +32,40 @@ from machine.testvm import (
 # suite expects it to not exist
 os.environ["TEST_ALLOW_NOLOGIN"] = "true"
 
+# Single source of truth for installer VM RAM (CI scheduler, provision, local runs).
+# Cockpit's run-tests defaults nondestructive machines to ~1 GB; Anaconda needs more.
+INSTALLER_VM_MEMORY_MB = 4096
+
 
 class VirtInstallMachine(VirtMachine):
-    http_payload_server = None
+    http_install_server = None
+    http_install_port = None
+
+    def __init__(self, image, **kwargs):
+        # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
+        self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
+        self.pause_at_summary = kwargs.pop("pause_at_summary", False)
+        self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
+        self.remote_pin = kwargs.pop("remote_pin", "")
+        self.extra_disks = kwargs.pop("extra_disks", [])
+        # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
+        # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
+        kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
+        super().__init__(image, **kwargs)
+
+    def _attach_libvirt_domain(self, timeout_sec=120):
+        conn = self.virt_connection
+        assert conn is not None
+        deadline = time.monotonic() + timeout_sec
+        while time.monotonic() < deadline:
+            try:
+                self._domain = conn.lookupByName(self.label)
+                return
+            except libvirt.libvirtError:
+                time.sleep(0.5)
+        raise AssertionError(
+            f"libvirt domain {self.label!r} did not appear within {timeout_sec}s"
+        )
 
     def _execute(self, cmd):
         return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
@@ -54,29 +87,40 @@ class VirtInstallMachine(VirtMachine):
         with timeout.Timeout(seconds=50, error_message="Timeout while waiting for http server to start"):
             self._execute(WAIT_HTTP_RUNNING)
 
-    def _serve_updates_img(self):
-        http_updates_img_port = self._get_free_port()
-        self.http_updates_img_server = subprocess.Popen(["python3", "-m", "http.server", "-d", ROOT_DIR, str(http_updates_img_port)])
-        self._wait_http_server_running(http_updates_img_port)
+    def _serve_install_http(self):
+        """Serve ``ROOT_DIR`` (updates.img, ``test/kickstarts/``, payload tree under ``tmp/``).
 
-        return http_updates_img_port
+        Idempotent: returns the existing port without spawning a second server.
+        """
+        if self.http_install_server is not None:
+            return self.http_install_port
+        port = self._get_free_port()
+        self.http_install_server = subprocess.Popen([
+            "python3", "-m", "http.server", "-d", ROOT_DIR, str(port),
+        ])
+        self._wait_http_server_running(port)
+        self.http_install_port = port
+        return port
 
-    def _serve_payload(self):
-        serve_dir = os.path.realpath(self.payload_path)
-        http_payload_port = self._get_free_port()
-        self.http_payload_server = subprocess.Popen(["python3", "-m", "http.server", "-d", serve_dir, str(http_payload_port)])
-        self._wait_http_server_running(http_payload_port)
-        return http_payload_port
+    def _payload_http_relpath(self, *parts):
+        """URL path under the HTTP root for ``self.payload_path``, plus optional extra segments."""
+        base = os.path.relpath(self.payload_path, ROOT_DIR).replace(os.sep, "/")
+        return "/".join((base, *parts))
+
+    def _payload_source(self):
+        """Return liveimg or repo kickstart lines; URLs use the unified install HTTP root."""
+        mode = self.payload_type
+        port = self._serve_install_http()
+        if mode == "liveimg":
+            rel = self._payload_http_relpath("liveimg.tar.gz")
+            return f'liveimg --url="http://10.0.2.2:{port}/{rel}"'
+        if mode == "dnf":
+            rel = self._payload_http_relpath("repo")
+            return f'repo --name webuitests --baseurl="http://10.0.2.2:{port}/{rel}/"\n'
+        raise ValueError(f"Unsupported payload_type value: {mode!r}")
 
     def _write_interactive_defaults_ks(self, updates_image, updates_image_edited):
-        payload_mode = os.environ.get("TEST_PAYLOAD", "liveimg").lower()
-        content = ""
-        if payload_mode == "liveimg":
-            http_payload_port = self._serve_payload()
-            content = f'liveimg --url="http://10.0.2.2:{http_payload_port}/liveimg.tar.gz"'
-        elif payload_mode == "dnf":
-            http_payload_port = self._serve_payload()
-            content = f'repo --name webuitests --baseurl="http://10.0.2.2:{http_payload_port}/repo/"\n'
+        content = self._payload_source()
         defaults_path = "usr/share/anaconda/"
         print("Adding interactive defaults to updates.img")
         with TemporaryDirectory() as tmp_dir:
@@ -90,23 +134,29 @@ class VirtInstallMachine(VirtMachine):
             os.system(f"cd {tmp_dir} && find . | cpio -c -o | gzip -9cv > {updates_image_edited}")
 
     def start(self):
-        self.is_efi = os.environ.get("TEST_FIRMWARE", "bios") == "efi"
+        self.is_efi = os.environ.get("TEST_FIRMWARE", "efi") == "efi"
         self.os = os.environ.get("TEST_OS", "fedora-rawhide-boot").split("-boot")[0]
 
         self.payload_path = os.path.join(ROOT_DIR, f"tmp/{self.os}-anaconda-payload")
         if not os.path.exists(self.payload_path):
             raise FileNotFoundError(f"Missing payload in {self.payload_path}; use 'make payload'.")
 
+        self._serve_install_http()
+
         update_img_global_file = os.path.join(ROOT_DIR, f"updates-{self.os}.img")
         update_img_file = os.path.join(ROOT_DIR, f"{self.label}-updates.img")
         if not os.path.exists(update_img_global_file):
             raise FileNotFoundError("Missing updates.img file")
 
+        inst_ks_arg = ""
         if not self.is_live():
             # Configure the payload in interactive-defaults.ks
             self._write_interactive_defaults_ks(update_img_global_file, update_img_file)
-
-        self.http_updates_img_port = self._serve_updates_img()
+            if self.kickstart_file_name:
+                inst_ks_url = f"http://10.0.2.2:{self.http_install_port}/test/kickstarts/{self.kickstart_file_name}"
+                inst_ks_arg = f" inst.ks={inst_ks_url}"
+                if self.pause_at_summary:
+                    inst_ks_arg += " inst.pauseatsummary"
 
         # If custom compose if specified for fetching the image then use that
         # else get the image from the bots directory
@@ -114,6 +164,15 @@ class VirtInstallMachine(VirtMachine):
             iso_path = f"{os.getcwd()}/test/images/{compose}.iso"
         else:
             iso_path = f"{os.getcwd()}/bots/images/{self.image}"
+        # edd=off: EDD probing often hangs on virtio/QEMU ("Probing EDD" forever).
+        # console=ttyS0: send boot log to file-backed serial when VirtMachine enables console_file.
+        # Any console= on the kernel cmdline makes Anaconda default to TUI (argument_parsing.py) and
+        # prompt for text vs RDP; inst.graphical forces GUI so the Web UI can start.
+        virt_kargs = "edd=off "
+        inst_graphical = ""
+        if self.console_file:
+            virt_kargs += "console=ttyS0 "
+            inst_graphical = "inst.graphical "
         extra_args = ""
         if self.is_live():
             # Live install ISO has different directory structure inside
@@ -128,12 +187,29 @@ class VirtInstallMachine(VirtMachine):
             location = f"{iso_path}"
 
         # FIXME: Disable SELinux on DNF installation as it needs relabelling other wise ssh logins are prevented
-        selinux = "inst.noselinux " if os.environ.get("TEST_PAYLOAD", "liveimg").lower() == "dnf" else ""
+        selinux = "inst.noselinux " if self.payload_type == "dnf" else ""
 
         boot_arg = "--boot uefi " if self.is_efi else ""
         extra_boot_args = os.environ.get("TEST_EXTRA_BOOT_ARGS", "")
         extra_boot_args_option = f"--extra-args {shlex.quote(extra_boot_args)} " if extra_boot_args else ""
+        serial_opt = (
+            f"--serial type=file,path={shlex.quote(self.console_file.name)} "
+            if self.console_file
+            else ""
+        )
+        auth_method = f"inst.webui.remote.pin={self.remote_pin}" if self.remote_pin else "inst.webui.remote.noauth"
+
         try:
+            disk_args = "--disk=none "
+            if self.extra_disks:
+                disk_parts = []
+                for size_gb in self.extra_disks:
+                    fd, path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.label}-")
+                    os.close(fd)
+                    os.unlink(path)
+                    disk_parts.append(f"--disk path={path},size={size_gb},bus=virtio ")
+                disk_args = "".join(disk_parts)
+
             self._execute(
                 "virt-install "
                 "--wait "
@@ -142,22 +218,27 @@ class VirtInstallMachine(VirtMachine):
                 f"{boot_arg} "
                 f"--name {self.label} "
                 f"--os-variant=detect=on "
-                "--memory 4096 "
+                f"--memory {self.memory_mb} "
                 "--noautoconsole "
+                f"{serial_opt}"
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'inst.sshd inst.webui.remote {selinux} inst.updates=http://10.0.2.2:{self.http_updates_img_port}/{self.label}-updates.img' "
+                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {auth_method} {selinux}{inst_ks_arg} "
+                f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
+                f"{self.label}-updates.img' "
                 "--network none "
                 f"--qemu-commandline="
                 "'-netdev user,id=hostnet0,"
                 f"hostfwd=tcp:{self.ssh_address}:{self.ssh_port}-:22,"
-                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:80 "
+                f"hostfwd=tcp:{self.web_address}:{self.web_port}-:443 "
                 "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"
-                f"--disk=none "
+                f"{disk_args}"
                 f"--location {location} &"
             )
+
+            self._attach_libvirt_domain()
 
             # Live install ISO does not have sshd service enabled by default
             # so we can't run any Machine.* methods on it.
@@ -176,31 +257,22 @@ class VirtInstallMachine(VirtMachine):
                 # Symlink /usr/share/cockpit to /usr/local/share/cockpit so that rsync works without killing cockpit-bridge
                 Machine.execute(self, "mkdir -p /usr/local/share/cockpit/anaconda-webui && mount --bind /usr/share/cockpit /usr/local/share/cockpit")
         except Exception as e:
+            self.print_console_log()
             self.kill()
             raise e
 
-    def kill(self):
-        self._execute(f"virsh -q -c qemu:///session destroy {self.label} || true")
+    def _cleanup(self, quick=False):
+        super()._cleanup(quick=quick)
+        # VirtMachine.kill / wait_poweroff destroy the guest but leave persistent XML (virt-install);
+        # undefine so the domain and EFI NVRAM do not accumulate in the session connection.
         self._execute(
-            f"virsh -q -c qemu:///session undefine --nvram "  # tell undefine to also delete the EFI NVRAM device
+            f"virsh -q -c qemu:///session undefine --nvram "
             f"--remove-all-storage {self.label} || true"
         )
-        if self.http_updates_img_server:
-            self.http_updates_img_server.kill()
-        if self.http_payload_server:
-            self.http_payload_server.kill()
-
-    # pylint: disable=arguments-differ  # this fails locally if you have bots checked out
-    def wait_poweroff(self):
-        for _ in range(10):
-            try:
-                self._execute(f"virsh -q -c qemu:///session domstate {self.label} | grep 'shut off'")
-                Machine.disconnect(self)
-                break
-            except subprocess.CalledProcessError:
-                time.sleep(2)
-        else:
-            raise AssertionError("Test VM did not shut off")
+        if self.http_install_server:
+            self.http_install_server.kill()
+            self.http_install_server = None
+            self.http_install_port = None
 
     def is_live(self):
         return "live" in self.image

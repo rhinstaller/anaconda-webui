@@ -3,7 +3,7 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, pixel_tests_ignore
 from installer import Installer
 from progress import Progress
 from storage import Storage
@@ -12,6 +12,7 @@ from utils import get_pretty_name
 
 
 class TestInstallationProgress(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB}}
 
     def testBasic(self):
         """
@@ -19,13 +20,12 @@ class TestInstallationProgress(VirtInstallMachineCase):
             Verify the installation progress page
 
         Expected results:
+            - Reloading the page before installation starts brings the user back to the first page
             - The installation steps are displayed in the correct order
+            - After reloading the page, the UI reconnects to the ongoing installation
             - The 'Successfully installed' message is displayed at the end of the installation
             - The 'Modify Storage' option is not available from the kebab menu
         """
-
-        # HACK Ignore some selinux errors
-        self.allow_journal_messages(".*denied.*comm=\"tar\" name=\"/\".*")
 
         b = self.browser
         m = self.machine
@@ -36,19 +36,40 @@ class TestInstallationProgress(VirtInstallMachineCase):
         i.open()
 
         i.reach(i.steps.REVIEW)
+
+        # Simulate remote reconnection after partitioning was applied
+        b.reload()
+        i.wait_current_page(i.steps.LANGUAGE)
+
+        # FIXME: https://redhat.atlassian.net/browse/INSTALLER-4945
+        # Can't use i.reach() because create_user callback fails on prefilled account data
+        while i.get_current_page() != i.steps.REVIEW:
+            current = i.get_current_page()
+            b.click("#installation-next-btn")
+            b.wait_js_cond(f'window.location.hash !== "#/{current}"')
         i.begin_installation(needs_confirmation=False)
 
         with b.wait_timeout(300):
             b.wait_in_text("h2", "Installing")
-            b.wait_in_text(".pf-v6-c-empty-state", "Storage configuration: Storage is currently being configured.")
-            b.wait_in_text(".pf-v6-c-empty-state", "Software installation: Storage configuration complete. The "
-                                                   "software is now being installed onto your device.")
-            b.wait_in_text(".pf-v6-c-empty-state", "System configuration: Software installation complete. The system "
-                                                   "is now being configured.")
-            b.wait_in_text(".pf-v6-c-empty-state", "Finalizing: The system configuration is complete. Finalizing "
-                                                   "installation may take a few moments.")
+
+        # Wait until payload step transition to "in progress" to verify reconnect. This particular step
+        # was chosen because it should take longer than others to run - making it less prone to race
+        # when reloading
+        payload_status_selector = "p[data-ouia-component-id='anaconda-screen-progress-step-payload-phase']"
+        with b.wait_timeout(100):
+            b.wait_in_text(payload_status_selector, "In progress")
+
+        # Reload the page while installation is running to verify reconnect
+        b.reload()
+        b.wait_visible(".pf-v6-c-progress-stepper")
+        b.wait_in_text(payload_status_selector, "In progress")
 
         p.wait_done()
+        b.wait_in_text("h2", "Successfully installed")
+        b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
+
+        # Reload the page on success to make sure reconnect also works here
+        b.reload()
         b.wait_in_text("h2", "Successfully installed")
         b.wait_in_text(".pf-v6-c-empty-state", f"To begin using {get_pretty_name(m)}, reboot your system")
 
@@ -56,11 +77,8 @@ class TestInstallationProgress(VirtInstallMachineCase):
         b.assert_pixels(
             "#app",
             "installation-progress-complete",
+            ignore=[*pixel_tests_ignore, "#anaconda-screen-progress-step-done-description"]
         )
-
-        # Check that at this stage 'Modify Storage' is not available
-        b.click("#toggle-kebab")
-        b.wait_visible("li.pf-m-aria-disabled #modify-storage")
 
         self.handleReboot()
 

@@ -1,7 +1,6 @@
 # Copyright (C) 2022 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import os
 from collections import UserDict
 
 import steps
@@ -15,13 +14,14 @@ class InstallerSteps(UserDict):
     DATE_TIME = steps.DATE_TIME
     CUSTOM_MOUNT_POINT = steps.CUSTOM_MOUNT_POINT
     INSTALLATION_METHOD = steps.INSTALLATION_METHOD
+    NETWORK = steps.NETWORK
     SOFTWARE_SELECTION = steps.SOFTWARE_SELECTION
     LANGUAGE = steps.LANGUAGE
     PROGRESS = steps.PROGRESS
     REVIEW = steps.REVIEW
     STORAGE_CONFIGURATION = steps.STORAGE_CONFIGURATION
 
-    def __init__(self, hidden_steps=None, scenario=None):
+    def __init__(self, hidden_steps=None, scenario=None, machine=None):
         super().__init__()
 
         if (scenario == "mount-point-mapping"):
@@ -31,6 +31,7 @@ class InstallerSteps(UserDict):
         CUSTOM_MOUNT_POINT = self.CUSTOM_MOUNT_POINT
         DATE_TIME = self.DATE_TIME
         INSTALLATION_METHOD = self.INSTALLATION_METHOD
+        NETWORK = self.NETWORK
         SOFTWARE_SELECTION = self.SOFTWARE_SELECTION
         LANGUAGE = self.LANGUAGE
         PROGRESS = self.PROGRESS
@@ -38,7 +39,8 @@ class InstallerSteps(UserDict):
         STORAGE_CONFIGURATION = self.STORAGE_CONFIGURATION
 
         _steps_jump = {
-            LANGUAGE: [DATE_TIME],
+            LANGUAGE: [NETWORK],
+            NETWORK: [DATE_TIME],
             DATE_TIME: [SOFTWARE_SELECTION],
             SOFTWARE_SELECTION: [INSTALLATION_METHOD],
             STORAGE_CONFIGURATION: [ACCOUNTS],
@@ -49,13 +51,18 @@ class InstallerSteps(UserDict):
         }
         _hidden_steps = hidden_steps or []
 
-        if os.environ.get("TEST_PAYLOAD", None) != "dnf":
+        payload_type = getattr(machine, "payload_type", "liveimg") if machine is not None else "liveimg"
+        if payload_type != "dnf":
             _steps_jump[DATE_TIME] = INSTALLATION_METHOD
             _hidden_steps.append(SOFTWARE_SELECTION)
 
-        if scenario in ['use-configured-storage', 'home-reuse']:
+        if scenario in ['use-configured-storage', 'use-configured-storage-kickstart', 'home-reuse']:
             _steps_jump[INSTALLATION_METHOD] = [ACCOUNTS]
             _hidden_steps.extend([CUSTOM_MOUNT_POINT, STORAGE_CONFIGURATION])
+
+            if scenario != 'use-configured-storage':
+                del _steps_jump[STORAGE_CONFIGURATION]
+                del _steps_jump[CUSTOM_MOUNT_POINT]
         else:
             _steps_jump[INSTALLATION_METHOD] = [STORAGE_CONFIGURATION, CUSTOM_MOUNT_POINT]
 
@@ -78,7 +85,7 @@ class Installer():
     def __init__(self, browser, machine, hidden_steps=None, scenario=None):
         self.browser = browser
         self.machine = machine
-        self.steps = InstallerSteps(hidden_steps, scenario)
+        self.steps = InstallerSteps(hidden_steps, scenario, machine)
 
 
     @log_step(snapshot_before=True)
@@ -130,6 +137,8 @@ class Installer():
         self.browser.click("#installation-next-btn")
         expected_page = current_page if should_fail else next_page
         self.wait_current_page(expected_page)
+        if should_fail:
+            self.browser.wait_visible(f"#{expected_page}-step-notification")
         return expected_page
 
     @log_step()
@@ -139,8 +148,10 @@ class Installer():
         :param disabled: True if Next button should be disabled, False if not
         :type disabled: bool, optional
         """
-        value = "false" if disabled else "true"
-        self.browser.wait_visible(f"#installation-next-btn:not([aria-disabled={value}]")
+        if disabled:
+            self.browser.wait_visible("#installation-next-btn[aria-disabled=true]")
+        else:
+            self.browser.wait_visible("#installation-next-btn:not([aria-disabled=true])")
 
     def check_sidebar_step_disabled(self, step, disabled=True):
         """Check if a sidebar step is disabled.
@@ -178,6 +189,7 @@ class Installer():
 
     def click_step_on_sidebar(self, step=None):
         step = step or self.get_current_page()
+        self.browser.wait_visible(f"#{step}:not([disabled])")
         self.browser.click(f"#{step}")
 
     @log_step()

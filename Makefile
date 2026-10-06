@@ -63,10 +63,10 @@ po/$(PACKAGE_NAME).js.pot:
 		--keyword=gettextCatalog.getString:1,3c --keyword=gettextCatalog.getPlural:2,3,4c \
 		--from-code=UTF-8 $$(find src/ -name '*.js' -o -name '*.jsx')
 
-po/$(PACKAGE_NAME).html.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
+po/$(PACKAGE_NAME).html.pot: $(COCKPIT_REPO_STAMP)
 	pkg/lib/html2po -o $@ $$(find src -name '*.html')
 
-po/$(PACKAGE_NAME).manifest.pot: $(NODE_MODULES_TEST) $(COCKPIT_REPO_STAMP)
+po/$(PACKAGE_NAME).manifest.pot: $(COCKPIT_REPO_STAMP)
 	pkg/lib/manifest2po src/manifest.json -o $@
 
 po/$(PACKAGE_NAME).pot: po/$(PACKAGE_NAME).html.pot po/$(PACKAGE_NAME).js.pot po/$(PACKAGE_NAME).manifest.pot
@@ -128,13 +128,19 @@ install: $(DIST_TEST) po/LINGUAS
 	cp browser-ext $(DESTDIR)/usr/libexec/anaconda
 	cp gnome-control-center-ext $(DESTDIR)/usr/libexec/anaconda
 	cp src/scripts/cockpit-coproc-wrapper.sh $(DESTDIR)/usr/libexec/anaconda/
+	cp src/scripts/cockpit-pin-auth $(DESTDIR)/usr/libexec/anaconda/
+	cp src/scripts/anaconda-cockpit-conf-merge $(DESTDIR)/usr/libexec/anaconda/
 	mkdir -p $(DESTDIR)/usr/lib/systemd/system/
 	cp src/systemd/webui-cockpit-ws.service $(DESTDIR)/usr/lib/systemd/system/
-
-# required for running integration tests;
-TEST_NPMS = \
-	node_modules/sizzle \
-	$(NULL)
+	cp src/systemd/cockpit-pin-auth@.service $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/cockpit-pin-auth.socket $(DESTDIR)/usr/lib/systemd/system/
+	cp src/systemd/webui-tls-proxy.service $(DESTDIR)/usr/lib/systemd/system/
+	cp src/scripts/webui-tls-proxy $(DESTDIR)/usr/libexec/anaconda/
+	mkdir -p $(DESTDIR)/etc/anaconda/cockpit/conf.d/
+	cp src/config/cockpit/cockpit.conf $(DESTDIR)/etc/anaconda/cockpit/cockpit.conf
+	# Staged config, not active by default — webui-desktop copies it to conf.d/ at runtime
+	mkdir -p $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
+	cp src/config/cockpit/conf.d/50-remote-auth.conf $(DESTDIR)/usr/share/anaconda/cockpit/conf.d/
 
 dist: $(TARFILE)
 	@ls -1 $(TARFILE)
@@ -147,7 +153,7 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 	tar --xz $(TAR_ARGS) -cf $(TARFILE) --transform 's,^,$(RPM_NAME)/,' \
 		--exclude '*.in' --exclude test/reference \
 		$$(git ls-files | grep -v node_modules) \
-		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) $(TEST_NPMS) VERSION.txt \
+		$(COCKPIT_REPO_FILES) $(NODE_MODULES_TEST) $(SPEC) VERSION.txt \
 		dist/
 
 srpm: $(TARFILE) $(SPEC)
@@ -168,7 +174,7 @@ COCKPIT_REPO_FILES = \
 	$(NULL)
 
 COCKPIT_REPO_URL = https://github.com/cockpit-project/cockpit.git
-COCKPIT_REPO_COMMIT = 92e0108df1034207bcf7852c7747707d7da044ac # 358 + 2 commits
+COCKPIT_REPO_COMMIT = 566c1ca3cee80285f988b0d503d6f3118add0a79 # 368 + 9 commits
 
 $(COCKPIT_REPO_FILES): $(COCKPIT_REPO_STAMP)
 COCKPIT_REPO_TREE = '$(strip $(COCKPIT_REPO_COMMIT))^{tree}'
@@ -231,12 +237,16 @@ FORCE:
 $(NODE_MODULES_TEST): FORCE tools/node-modules
 	tools/node-modules make_package_lock_json
 
+.PHONY: print-test-os
+print-test-os:
+	@echo $(TEST_OS)
+
 .PHONY: test-compose
 test-compose: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}"
-	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}"
+	bots/tests-trigger --force "-" "${TEST_OS}/bios-compose-${TEST_COMPOSE}"
 
 .PHONY: test-compose-staging
 test-compose-staging: bots
 	bots/tests-trigger --force "-" "${TEST_OS}/compose-${TEST_COMPOSE}-staging"
-	bots/tests-trigger --force "-" "${TEST_OS}/efi-compose-${TEST_COMPOSE}-staging"
+	bots/tests-trigger --force "-" "${TEST_OS}/bios-compose-${TEST_COMPOSE}-staging"

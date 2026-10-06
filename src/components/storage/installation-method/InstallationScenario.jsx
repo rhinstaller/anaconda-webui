@@ -5,7 +5,8 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
+import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
@@ -13,19 +14,19 @@ import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js
 import { setStorageScenarioAction } from "../../../actions/storage-actions.js";
 
 import {
-    getLockedLUKSDevices,
+    getLockedEncryptedDevices,
 } from "../../../helpers/storage.js";
 
-import {
-    StorageContext,
-} from "../../../contexts/Common.jsx";
+import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 
 import {
+    useLaunchStorageEditor,
     useOriginalDevices,
 } from "../../../hooks/Storage.jsx";
 
-import { StorageReview } from "../../review/StorageReview.jsx";
 import { scenarios, useScenariosAvailability } from "../scenarios/index.js";
+import { USE_CONFIGURED_STORAGE_SCENARIO_IDS } from "../scenarios/use-configured-storage/index.js";
+import { StorageReview } from "../StorageReview.jsx";
 import { EncryptedDevices } from "./EncryptedDevices.jsx";
 
 import "./InstallationScenario.scss";
@@ -34,20 +35,17 @@ const _ = cockpit.gettext;
 
 export const useScenario = () => {
     const { storageScenarioId } = useContext(StorageContext);
-    const [scenario, setScenario] = useState({});
-
-    useEffect(() => {
-        setScenario(scenarios.find(s => s.id === storageScenarioId) || {});
-    }, [storageScenarioId]);
-
-    return scenario;
+    return useMemo(
+        () => scenarios.find(s => s.id === storageScenarioId) || {},
+        [storageScenarioId]
+    );
 };
 
 const InstallationScenarioSelector = ({
     dispatch,
     idPrefix,
-    isFormDisabled,
 }) => {
+    const { isFormDisabled } = useContext(PageContext) ?? {};
     const { appliedPartitioning, storageScenarioId } = useContext(StorageContext);
     const scenarioAvailability = useScenariosAvailability();
     const scenarioAvailabilityLoading = scenarioAvailability === undefined;
@@ -61,7 +59,7 @@ const InstallationScenarioSelector = ({
 
         // If there is still an applied partitioning we should wait for the
         // reset to take effect in the backend before deciding on the selected scenario
-        if (appliedPartitioning && storageScenarioId !== "use-configured-storage") {
+        if (appliedPartitioning && !USE_CONFIGURED_STORAGE_SCENARIO_IDS.includes(storageScenarioId)) {
             return;
         }
 
@@ -115,12 +113,27 @@ const InstallationScenarioSelector = ({
     return scenarioItems;
 };
 
+const ModifyStorageButton = ({ setShowStorage }) => {
+    const launchStorageEditor = useLaunchStorageEditor({ setShowStorage });
+
+    return (
+        <Button
+          id="modify-storage"
+          variant="link"
+          isInline
+          onClick={launchStorageEditor}
+        >
+            {_("If none of the options above apply, use the storage editor to create a custom partitioning before proceeding.")}
+        </Button>
+    );
+};
+
 export const InstallationScenario = ({
     dispatch,
     idPrefix,
     isFirstScreen,
-    isFormDisabled,
     setIsScenarioValid,
+    setShowStorage,
 }) => {
     const headingLevel = isFirstScreen ? "h3" : "h2";
     const { diskSelection, storageScenarioId } = useContext(StorageContext);
@@ -130,18 +143,18 @@ export const InstallationScenario = ({
         scenario.available && !scenario.hidden
     ));
 
-    const lockedLUKSDevices = useMemo(
-        () => getLockedLUKSDevices(diskSelection.selectedDisks, devices),
+    const lockedEncryptedDevices = useMemo(
+        () => getLockedEncryptedDevices(diskSelection.selectedDisks, devices),
         [devices, diskSelection.selectedDisks]
     );
 
-    const showLuksUnlock = lockedLUKSDevices?.length > 0;
+    const showEncryptedUnlock = lockedEncryptedDevices?.length > 0;
 
     useEffect(() => {
         setIsScenarioValid(!!storageScenarioId);
     }, [storageScenarioId, setIsScenarioValid]);
 
-    if (noScenariosAvailable && !showLuksUnlock) {
+    if (noScenariosAvailable && !showEncryptedUnlock) {
         return null;
     }
 
@@ -150,19 +163,19 @@ export const InstallationScenario = ({
           title={<Title headingLevel={headingLevel}>{_("How would you like to install?")}</Title>}
         >
             <FormGroup className={idPrefix + "-scenario-group"} isStack data-scenario={storageScenarioId}>
-                {showLuksUnlock &&
+                {showEncryptedUnlock &&
                 (
                     <EncryptedDevices
                       dispatch={dispatch}
                       idPrefix={idPrefix}
-                      lockedLUKSDevices={lockedLUKSDevices}
+                      lockedEncryptedDevices={lockedEncryptedDevices}
                     />
                 )}
                 <InstallationScenarioSelector
                   dispatch={dispatch}
                   idPrefix={idPrefix}
-                  isFormDisabled={isFormDisabled}
                 />
+                <ModifyStorageButton setShowStorage={setShowStorage} />
             </FormGroup>
         </FormSection>
     );

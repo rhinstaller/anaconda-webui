@@ -9,9 +9,9 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
-import { getDefaultEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
+import { getDefaultEnvironment, resolveEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
 
-import { PayloadContext } from "../../contexts/Common.jsx";
+import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
 import { MenuSearch } from "../common/MenuSearch.jsx";
 
@@ -167,17 +167,32 @@ const GroupPackagesSelection = () => {
     );
 };
 
-export const SoftwareSelection = ({ setIsFormValid }) => {
-    const { environments, groups, selection } = useContext(PayloadContext);
+export const SoftwareSelection = ({ automatedInstall }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
+    const { packagesKickstarted, selection } = useContext(PayloadContext);
     const environment = selection?.environment;
-    const selectedGroups = selection?.groups;
 
+    /*
+     * Match pyanaconda.ui.lib.software.is_software_selection_complete (and GTK spoke `completed`).
+     * kickstarted=True in Anaconda means flags.automatedInstall and payload PackagesKickstarted.
+     */
     useEffect(() => {
-        setIsFormValid(
-            !!environment && environments?.length > 0 &&
-            groups?.length > 0 && selectedGroups?.length >= 0
-        );
-    }, [environment, environments, groups, selectedGroups?.length, setIsFormValid]);
+        const kickstarted =
+            packagesKickstarted === true && automatedInstall === true;
+
+        (async () => {
+            if (kickstarted && !environment) {
+                setIsFormValid(true);
+                return;
+            }
+            if (!environment) {
+                setIsFormValid(false);
+                return;
+            }
+            const resolved = await resolveEnvironment(environment);
+            setIsFormValid(Boolean(resolved));
+        })();
+    }, [environment, packagesKickstarted, automatedInstall, setIsFormValid]);
 
     return (
         <Form>

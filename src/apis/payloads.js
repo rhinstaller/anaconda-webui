@@ -42,30 +42,34 @@ export class PayloadsClient {
         this.dispatch = dispatch;
     }
 
-    init () {
+    init (args = {}) {
         this.client.addEventListener(
             "close", () => error("Payloads client closed")
         );
 
-        this.initData();
+        this.initData(args);
     }
 
-    async initData () {
+    stopEventMonitor () {
+        PayloadDNFClient.instance?.stopEventMonitor();
+    }
+
+    async initData (args = {}) {
         const activePayload = await getActivePayload();
 
         const payloadType = await getPayloadType(activePayload);
         this.dispatch(setPayloadTypeAction(payloadType));
 
         // Check payload type and initialize DNF client if needed
-        await this.initPayloadClient(activePayload);
+        await this.initPayloadClient(activePayload, args);
     }
 
-    async initPayloadClient (payload) {
+    async initPayloadClient (payload, args = {}) {
         // Initialize DNF client if payload type is DNF
         const payloadType = await getPayloadType(payload);
         if (payloadType === "DNF") {
             const dnfClient = new PayloadDNFClient(this.client, this.dispatch, payload);
-            await dnfClient.init();
+            await dnfClient.init(args);
         }
     }
 }

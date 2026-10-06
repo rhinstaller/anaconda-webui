@@ -4,11 +4,17 @@
  */
 import cockpit from "cockpit";
 
-import { error } from "../helpers/log.js";
-import { _callClient, _setProperty } from "./helpers.js";
+import { getAdminUserExistsAction, getUserConfigurationPolicyAction, getUsersAction } from "../actions/users-actions.js";
+
+import { debug, error } from "../helpers/log.js";
+import { _callClient, _getProperty, _setProperty, objectFromDbus } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Users";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Users";
+
+const getProperty = (...args) => {
+    return _getProperty(UsersClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
 
 const setProperty = (...args) => {
     return _setProperty(UsersClient, OBJECT_PATH, INTERFACE_NAME, ...args);
@@ -36,9 +42,37 @@ export class UsersClient {
         this.dispatch = dispatch;
     }
 
-    init () {
+    /**
+     * @param {object} args  Bootstrap args from `Application` (`conf`, `automatedInstall`).
+     */
+    init (args = {}) {
         this.client.addEventListener(
             "close", () => error("Users client closed")
+        );
+        this.startEventMonitor(args);
+        return Promise.all([
+            this.dispatch(getUsersAction()),
+            this.dispatch(getAdminUserExistsAction()),
+            this.dispatch(getUserConfigurationPolicyAction(args)),
+        ]);
+    }
+
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
+    startEventMonitor () {
+        this._subscription = this.client.subscribe(
+            { },
+            async (path, iface, signal, args) => {
+                switch (signal) {
+                case "PropertiesChanged":
+                    await this.dispatch(getUsersAction());
+                    break;
+                default:
+                    debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
+                }
+            }
         );
     }
 }
@@ -70,4 +104,24 @@ export const clearRootPassword = () => {
 
 export const guessUsernameFromFullName = (fullName) => {
     return callClient("GuessUsernameFromFullName", [fullName]);
+};
+
+export const getUsers = () => {
+    return getProperty("Users").then(arr => (arr || []).map(item => objectFromDbus(item)));
+};
+
+export const getIsRootAccountLocked = () => {
+    return getProperty("IsRootAccountLocked");
+};
+
+export const getIsRootPasswordSet = () => {
+    return getProperty("IsRootPasswordSet");
+};
+
+export const getCanChangeRootPassword = () => {
+    return getProperty("CanChangeRootPassword");
+};
+
+export const getCheckAdminUserExists = () => {
+    return callClient("CheckAdminUserExists", []);
 };

@@ -122,6 +122,52 @@ The default browser for Fedora is `Slitherer <https://gitlab.com/VelocityLimitle
 - `anaconda/data/profile.d/fedora-workstation.conf <https://github.com/rhinstaller/anaconda/blob/main/data/profile.d/fedora-workstation.conf>`_
 - `anaconda/data/profile.d/fedora.conf <https://github.com/rhinstaller/anaconda/blob/main/data/profile.d/fedora.conf>`_
 
+.. _cockpit-web-service-configuration:
+
+Cockpit Web Service Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Installer Web UI runs on Cockpit's web service (``cockpit-ws``). Its configuration lives under an Anaconda-owned path at ``/etc/anaconda/cockpit/`` instead of the default ``/etc/cockpit/`` to prevent installer-specific settings (such as disabled TLS or authentication) from leaking into the installed system.
+
+The base configuration file is ``/etc/anaconda/cockpit/cockpit.conf``. It uses the standard `cockpit.conf(5) <https://cockpit-project.org/guide/latest/cockpit.conf.5.html>`_ INI format.
+
+Default settings:
+
+.. code-block:: ini
+
+   [WebService]
+   AllowUnencrypted = true
+   LoginTo = false
+   AllowMultiHost = false
+
+   [Session]
+   IdleTimeout = 0
+
+conf.d drop-in overrides
+'''''''''''''''''''''''''
+
+To customize the Cockpit web service for specific environments without modifying the base configuration, place ``*.conf`` files in ``/etc/anaconda/cockpit/conf.d/``. Files are applied in lexicographic order, and later files override values from earlier ones and from the base configuration.
+
+Example -- enable TLS for a network-based installation:
+
+.. code-block:: ini
+
+   # /etc/anaconda/cockpit/conf.d/50-tls.conf
+   [WebService]
+   AllowUnencrypted = false
+
+Example -- set a custom login title:
+
+.. code-block:: ini
+
+   # /etc/anaconda/cockpit/conf.d/50-branding.conf
+   [WebService]
+   LoginTitle = My Custom Installer
+
+The merged configuration is written to ``/run/anaconda/cockpit/cockpit.conf`` at service start and is used by ``cockpit-ws`` via the ``XDG_CONFIG_DIRS`` environment variable.
+
+For the full list of available cockpit.conf options, see the `cockpit.conf(5) man page <https://cockpit-project.org/guide/latest/cockpit.conf.5.html>`_.
+
 Future: Add-on Support
 -----------------------
 

@@ -28,6 +28,8 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-date-time";
 const NTP_REGEX = /^[a-z0-9.-]+\.[a-z]{2,}$/i;
 
+const hasNtsOption = (src) => (src.options?.v ?? []).includes("nts");
+
 const CustomNTPModal = ({ onClose }) => {
     const [errors, setErrors] = useState();
     const [ntpSources, setNtpSources] = useState([]);
@@ -35,7 +37,7 @@ const CustomNTPModal = ({ onClose }) => {
     useEffect(() => {
         const loadNtpSources = async () => {
             let srcs = await getTimeSources();
-            const ntps = srcs.filter((s) => s.type?.v === "NTP" || s.type?.v === "POOL");
+            const ntps = srcs.filter((s) => s.type?.v === "SERVER" || s.type?.v === "POOL");
             if (ntps.length) {
                 srcs = ntps;
             } else {
@@ -52,7 +54,7 @@ const CustomNTPModal = ({ onClose }) => {
             srcs.map(async src => {
                 const isAvailable = await checkNTPServer({
                     hostname: src.hostname.v,
-                    isNTS: !!src.isNTS,
+                    isNTS: hasNtsOption(src),
                 });
                 return ({ ...src, isAvailable });
             });
@@ -62,19 +64,26 @@ const CustomNTPModal = ({ onClose }) => {
         loadNtpSources();
     }, []);
 
-    const handleEdit = async ({ hostname, index, isNTS, isPool, validateServer }) => {
+    const handleEdit = async ({ hostname, index, isPool, ntsEnabled, validateServer }) => {
         setErrors(errors => ({ ...errors, [index]: undefined }));
         const source = ntpSources[index];
 
         setNtpSources((prev) => {
             const updated = [...prev];
-            updated[index] = {
+            const row = {
                 ...updated[index],
                 hostname: { v: hostname !== undefined ? hostname : source.hostname.v },
                 isAvailable: true, // Reset availability while editing
-                isNTS: isNTS !== undefined ? isNTS : source.isNTS,
-                type: { v: isPool !== undefined ? (isPool ? "POOL" : "NTP") : source.type.v },
+                type: { v: isPool !== undefined ? (isPool ? "POOL" : "SERVER") : source.type.v },
             };
+            if (ntsEnabled !== undefined) {
+                const opts = [...(source.options?.v ?? [])].filter(o => o !== "nts");
+                if (ntsEnabled) {
+                    opts.push("nts");
+                }
+                row.options = { v: opts };
+            }
+            updated[index] = row;
             return updated;
         });
 
@@ -92,7 +101,7 @@ const CustomNTPModal = ({ onClose }) => {
                 });
                 const isAvailable = await checkNTPServer({
                     hostname: hostname !== undefined ? hostname : source.hostname.v,
-                    isNTS: isNTS !== undefined ? isNTS : !!source.isNTS,
+                    isNTS: ntsEnabled !== undefined ? ntsEnabled : hasNtsOption(source),
                 });
                 setNtpSources(prev => {
                     const updated = [...prev];
@@ -195,9 +204,9 @@ const CustomNTPModal = ({ onClose }) => {
                                             <Checkbox
                                               label={_("NTS")}
                                               id={SCREEN_ID + "-ntp-table-row-" + index + "-secure-checkbox"}
-                                              isChecked={!!src.isNTS}
+                                              isChecked={hasNtsOption(src)}
                                               isDisabled={src.isCommitted}
-                                              onChange={() => handleEdit({ index, isNTS: !src.isNTS, validateServer: true })}
+                                              onChange={() => handleEdit({ index, ntsEnabled: !hasNtsOption(src), validateServer: true })}
                                             />
                                             <FlexItem align={{ default: "alignRight" }}>
                                                 <Button
@@ -235,7 +244,11 @@ const CustomNTPModal = ({ onClose }) => {
                 >
                     {_("Save")}
                 </Button>
-                <Button variant="link" onClick={onClose}>
+                <Button
+                  id={SCREEN_ID + "-ntp-modal-cancel-button"}
+                  variant="link"
+                  onClick={onClose}
+                >
                     {_("Cancel")}
                 </Button>
             </ModalFooter>

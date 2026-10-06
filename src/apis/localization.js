@@ -5,10 +5,13 @@
 
 import cockpit from "cockpit";
 
-import { getKeyboardConfigurationAction, getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction } from "../actions/localization-actions.js";
+import { getKeyboardConfigurationAction, getKeyboardLayoutsAction, getLanguageAction, getLanguagesAction, setLanguageKickstartedAction } from "../actions/localization-actions.js";
 
+import { convertToCockpitLang, getLangCookie, setLangCookie } from "../helpers/language.js";
 import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty, _setProperty } from "./helpers.js";
+
+import { setLocale } from "./boss.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Localization";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Localization";
@@ -41,29 +44,61 @@ export class LocalizationClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Localization client closed"));
 
         this.startEventMonitor();
 
-        await this.initData();
+        await this.initData(args);
     }
 
-    async initData () {
+    async initData ({ automatedInstall = false } = {}) {
+        const languageKickstarted = await getLanguageKickstarted();
+        this.dispatch(setLanguageKickstartedAction({
+            languageKickstarted: Boolean(languageKickstarted)
+        }));
+
         await this.dispatch(getLanguageAction());
+
+        // Apply runtime locale for kickstarted automated installs
+        // (LanguageSelector.componentDidMount won't run since the wizard
+        //  jumps to review, so we must set locale here)
+        if (automatedInstall && languageKickstarted) {
+            const language = await getLanguage();
+            applyKickstartLanguage(language);
+        }
+
         await this.dispatch(getLanguagesAction());
         await this.dispatch(getKeyboardLayoutsAction());
         await this.dispatch(getKeyboardConfigurationAction());
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
+    _scheduleKeyboardRefresh ({ includeLayouts = false } = {}) {
+        if (includeLayouts) {
+            this._pendingLayoutsRefresh = true;
+        }
+        clearTimeout(this._keyboardRefreshTimeout);
+        this._keyboardRefreshTimeout = setTimeout(async () => {
+            this.dispatch(getKeyboardConfigurationAction());
+            if (this._pendingLayoutsRefresh) {
+                this._pendingLayoutsRefresh = false;
+                this.dispatch(getKeyboardLayoutsAction());
+            }
+        }, 500);
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             async (path, iface, signal, args) => {
                 switch (signal) {
                 case "CompositorSelectedLayoutChanged":
                 case "CompositorLayoutsChanged":
-                    await this.dispatch(getKeyboardConfigurationAction());
+                    this._scheduleKeyboardRefresh();
                     break;
                 case "PropertiesChanged":
                     if (args[0] === INTERFACE_NAME && Object.hasOwn(args[1], "Language")) {
@@ -74,10 +109,7 @@ export class LocalizationClient {
                          * but the returned KeyboardLayouts still are translated with the previous locale.
                          * Workaround this by dispatching the KeyboardLayouts action with small delay.
                          */
-                        setTimeout(async () => {
-                            this.dispatch(getKeyboardConfigurationAction());
-                            this.dispatch(getKeyboardLayoutsAction());
-                        }, 500);
+                        this._scheduleKeyboardRefresh({ includeLayouts: true });
                     } else {
                         debug(`Unhandled signal on ${path}: ${iface}.${signal}`, JSON.stringify(args));
                     }
@@ -179,18 +211,8 @@ export const getKeyboardConfiguration = async ({ onFail, onSuccess }) => {
  * @returns {Promise}           Resolves a list of locale keyboards
  */
 export const getKeyboardLayouts = async () => {
-    // FIXME: GetKeyboardLayouts is not available in Fedora 42
-    // Remove this try/catch when we stop testing Fedora 42
-    try {
-        const keyboards = await callClient("GetKeyboardLayouts", []);
-        return keyboards;
-    } catch (e) {
-        if (e.name === "org.freedesktop.DBus.Error.UnknownMethod") {
-            return [];
-        } else {
-            throw e;
-        }
-    }
+    const keyboards = await callClient("GetKeyboardLayouts", []);
+    return keyboards;
 };
 
 /**
@@ -198,6 +220,26 @@ export const getKeyboardLayouts = async () => {
  */
 export const getXLayouts = () => {
     return getProperty("XLayouts");
+};
+
+/**
+ * @returns {Promise<boolean>}   Whether the language was set in a kickstart
+ */
+export const getLanguageKickstarted = () => {
+    return getProperty("LanguageKickstarted");
+};
+
+/**
+ * Apply a kickstart language to the running installer UI.
+ * Mirrors LanguageSelector.componentDidMount() logic.
+ */
+const applyKickstartLanguage = (language) => {
+    const cockpitLang = convertToCockpitLang({ lang: language });
+    if (getLangCookie() !== cockpitLang) {
+        setLangCookie({ cockpitLang });
+        window.location.reload(true);
+    }
+    setLocale({ locale: language });
 };
 
 export const setXKeyboardDefaults = async () => {

@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 04:31+0000\n"
+"POT-Creation-Date: 2026-10-06 09:25+0000\n"
 "PO-Revision-Date: 2026-02-03 04:28+0000\n"
 "Last-Translator: Yoshiaki Ishii "
 "<zouforestyoppy@users.noreply.translate.fedoraproject.org>\n"
@@ -73,29 +73,37 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.15.2\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:143
+#: src/components/storage/installation-method/InstallationDestination.jsx:279
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
+#: src/components/storage/installation-method/InstallationDestination.jsx:163
+#: src/components/storage/installation-method/InstallationDestination.jsx:272
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:81
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:74
+#: src/components/storage/Common.jsx:58
+#, fuzzy
+#| msgid "Error"
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "エラー"
+
+#: src/components/app.jsx:96
 msgid "$0 installation"
 msgstr "$0 のインストール"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:47
 msgid "$0 installer"
 msgstr "$0 のインストーラー"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -103,57 +111,77 @@ msgstr ""
 "$0 は論理パーティションを含む MBR 拡張パーティションです。全ての論理パーティ"
 "ションを削除すると拡張パーティションも自動的に削除されます。"
 
-#: src/components/review/ReviewConfiguration.jsx:106
+#: src/components/storage/installation-method/usePageComplete.jsx:114
 msgid "$0 is required, but only $1 is available."
 msgstr "$0 が必要ですが、 $1 のみ利用可能です。"
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:90
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] ""
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:290
 msgid "$0 will be deleted"
 msgstr "$0 は削除されます"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:190
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr ""
 "ファイルシステム '$0' は、暗号化ブロックデバイス上に置くことができません"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/helpers/storage.js:267
+#, fuzzy
+#| msgid "'$0' must be on a device formatted to '$1'"
+msgid "'$0' must be assigned to $1"
+msgstr "'$0' は、'$1' にフォーマットされたデバイス上でなければなりません"
+
+#: src/helpers/storage.js:270
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "'$0' は、'$1' にフォーマットされたデバイス上でなければなりません"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/helpers/storage.js:261
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:272
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:177
+#: src/components/users/Accounts.jsx:256
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr "システム全体の変更を行うための管理者権限を持つ標準ユーザーアカウント。"
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:50
+#, fuzzy
+#| msgid "$0 installation"
+msgid "Abort installation"
+msgstr "$0 のインストール"
+
+#: src/components/HeaderKebab.jsx:105
 msgid "About"
 msgstr "About"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:254
 msgid "Account"
 msgstr "アカウント"
 
-#: src/components/review/StorageReview.jsx:235
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 msgid "Actions"
 msgstr "アクション"
 
-#: src/components/datetime/CustomNTPModal.jsx:223
+#: src/components/datetime/CustomNTPModal.jsx:232
 msgid "Add another server..."
 msgstr "他のサーバーの追加..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:644
 msgid "Add mount"
 msgstr "マウントの追加"
 
@@ -167,7 +195,7 @@ msgstr "選択した環境のその他のソフトウェア"
 msgid "Add-ons not specific to your environment"
 msgstr ""
 
-#: src/components/localization/InstallationLanguage.jsx:143
+#: src/components/localization/InstallationLanguage.jsx:148
 #, fuzzy
 #| msgid "Available languages"
 msgid "Additional languages"
@@ -179,7 +207,7 @@ msgstr "使用可能な言語"
 msgid "Additional software for the selected environment"
 msgstr "選択した環境のその他のソフトウェア"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:67
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:55
 msgid "All changes made in the storage editor take effect immediately."
 msgstr "ストレージエディターで行った変更は全て即座に反映されます。"
 
@@ -191,11 +219,11 @@ msgstr "すべてのデバイスは、このパスフレーズにてロック解
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Anaconda Web UI"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:77
 msgid "Anaconda project page"
 msgstr "Anacondaプロジェクトページ"
 
@@ -203,7 +231,7 @@ msgstr "Anacondaプロジェクトページ"
 msgid "Apply mount point assignment and install"
 msgstr "マウントポイントの割り当てを適用してインストールする"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #, fuzzy
 #| msgid "Applying new disk selection..."
 msgid "Applying changes..."
@@ -216,7 +244,7 @@ msgstr ""
 "パーティションをマウントポイントに割り当てます。カスタムレイアウトを事前設定"
 "している場合に便利です。"
 
-#: src/components/Error.jsx:367
+#: src/components/Error.jsx:396
 #, fuzzy
 #| msgid "Automatic partitioning failed."
 msgid "Automatic log file upload"
@@ -231,11 +259,12 @@ msgstr "タイムサーバーを利用して、自動で日付と時間を設定
 msgid "Automatically set timezone"
 msgstr "タイムゾーンの自動設定"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:197
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "利用可能な空き領域: $0。 インストールに必要な領域: $1。"
 
-#: src/components/Error.jsx:591 src/components/AnacondaWizardFooter.jsx:76
+#: src/components/Error.jsx:668 src/components/Error.jsx:693
+#: src/components/AnacondaWizardFooter.jsx:62
 msgid "Back"
 msgstr "戻る"
 
@@ -243,19 +272,19 @@ msgstr "戻る"
 msgid "Base environment"
 msgstr "ベース環境"
 
-#: src/components/Error.jsx:338
+#: src/components/Error.jsx:367
 msgid "Brief description of the issue"
 msgstr "この問題の簡単な説明"
 
-#: src/components/Error.jsx:327
+#: src/components/Error.jsx:356
 msgid "Bug report details"
 msgstr "バグ レポートの詳細"
 
-#: src/components/Error.jsx:212
+#: src/components/Error.jsx:206
 msgid "Bugzilla API key"
 msgstr "Bugzilla API キー"
 
-#: src/components/AnacondaHeader.jsx:75
+#: src/components/AnacondaHeader.jsx:73
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
 "associated with pre-released software, that you intend to use this for "
@@ -267,12 +296,12 @@ msgstr ""
 "用して、このソフトウェアを強化するためにバグや問題を率先して報告するものとし"
 "ます。"
 
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/datetime/CustomNTPModal.jsx:239
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "取り消し"
 
@@ -280,7 +309,7 @@ msgstr "取り消し"
 msgid "Change"
 msgstr "変更"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:350
 msgid "Change destination"
 msgstr "インストール先を変更"
 
@@ -288,26 +317,32 @@ msgstr "インストール先を変更"
 msgid "Change hostname"
 msgstr "ホスト名の変更"
 
-#: src/components/review/ReviewConfiguration.jsx:123
+#: src/components/storage/installation-method/usePageComplete.jsx:128
 msgid "Change partition layout"
 msgstr "インストール先を変更"
 
-#: src/components/localization/Keyboard.jsx:213
-#: src/components/localization/Keyboard.jsx:308
-#: src/components/localization/Keyboard.jsx:359
+#: src/components/localization/Keyboard.jsx:215
+#: src/components/localization/Keyboard.jsx:301
+#: src/components/localization/Keyboard.jsx:352
 msgid "Change system keyboard layout"
 msgstr "システムのキーボードレイアウトを変更"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:139
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:127
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 "ここで行う変更はシステムに直ちに影響を及ぼします。操作を'元に戻す'ことはでき"
 "ません。"
 
+#: src/components/review/ReviewConfiguration.jsx:191
+#, fuzzy
+#| msgid "Checking storage configuration..."
+msgid "Checking installation configuration..."
+msgstr "ストレージ設定をチェック中..."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:475
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:481
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
 msgid "Checking storage configuration"
 msgstr "ストレージ設定をチェック中"
 
@@ -317,83 +352,101 @@ msgstr "ストレージ設定をチェック中"
 msgid "Clear search"
 msgstr "入力した値をクリアします"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr "'Next' を再度押し、警告を無視して実行する。"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/InstallationDestination.jsx:383
 msgid "Close"
 msgstr "閉じる"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:143
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:131
 msgid "Close storage editor"
 msgstr "ストレージエディターを閉じる"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:328
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 "Cockpit ストレージが暗号化デバイス解除用のパスフレーズを提示しませんてした。"
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:279
 msgid "Completed"
 msgstr "完了しました"
 
-#: src/components/datetime/CustomNTPModal.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:212
+#, fuzzy
+#| msgid "Apply configuration in installer"
+msgid "Configuration is incomplete"
+msgstr "インストーラーの設定を適用"
+
+#: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
 msgstr "NTP サーバーの設定"
 
-#: src/components/datetime/CustomNTPModal.jsx:145
+#: src/components/datetime/CustomNTPModal.jsx:154
 msgid "Configure custom NTP servers"
 msgstr "カスタム NTP サーバーの設定"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 #, fuzzy
 #| msgid "Configure storage"
 msgid "Configure network"
 msgstr "ストレージの設定"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:129
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:117
 msgid "Configure storage"
 msgstr "ストレージの設定"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:682
 msgid "Configure storage again"
 msgstr "ストレージを再度設定"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:95
-#: src/components/users/Accounts.jsx:141 src/components/users/Accounts.jsx:297
+#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "パスフレーズの確認"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:667
 msgid "Continue"
 msgstr "続行"
 
-#: src/components/AnacondaWizardFooter.jsx:140
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:43
+#: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "インストールを続行する"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:30
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Continue installation?"
+msgstr "インストールを続行する"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:620
 msgid "Continue with installation"
 msgstr "インストールを続行する"
 
-#: src/components/users/index.js:18
+#: src/components/storage/Common.jsx:40
+#, fuzzy
+#| msgid "Please complete all spokes before continuing"
+msgid "Correct these issues before continuing."
+msgstr "すべてのスポークを完了してから継続してください"
+
+#: src/components/users/index.js:20
 msgid "Create Account"
 msgstr "アカウントを作成"
 
-#: src/components/users/Accounts.jsx:239
+#: src/components/users/Accounts.jsx:318
 msgid "Create account"
 msgstr "アカウントを作成"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:66
 msgid "Currently installed: $0"
 msgstr "インストール済み: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
 msgid "Custom"
 msgstr "カスタム"
 
@@ -402,19 +455,25 @@ msgid "Date"
 msgstr ""
 
 #: src/components/datetime/DateAndTime.jsx:151
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 msgid "Date and time"
 msgstr "日付と時刻"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+#, fuzzy
+#| msgid "Recommended partitions:"
+msgid "Delete partition"
+msgstr "推奨されるパーティション:"
+
+#: src/components/storage/StorageReview.jsx:348
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
-#: src/components/Error.jsx:268
+#: src/components/Error.jsx:262
 msgid "Description"
 msgstr "説明"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:264
 msgid "Destination"
 msgstr "インストール先"
 
@@ -422,44 +481,52 @@ msgstr "インストール先"
 msgid "Destination is encrypted"
 msgstr "インストール先は暗号化されています"
 
-#: src/components/Error.jsx:273
+#: src/components/Error.jsx:267
 #, fuzzy
 #| msgid "Device description"
 msgid "Detailed description of the issue"
 msgstr "デバイスの説明"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:646
 msgid "Detected valid storage layout:"
 msgstr "有効なストレージ構成が見つかりました:"
 
-#: src/components/review/StorageReview.jsx:233
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
+#: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "デバイス"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
 msgstr "重複されたデバイスです。"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:237
 msgid "Duplicate mount point."
 msgstr "重複されたマウントポイントです。"
 
-#: src/components/users/Accounts.jsx:279
+#: src/components/users/Accounts.jsx:342 src/components/users/Accounts.jsx:393
 msgid "Enable root account"
 msgstr "rootアカウントを有効化"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:62
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:63
 msgid "Encrypt my data"
 msgstr "データを暗号化する"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:249
 msgid "Encrypted"
 msgstr "暗号化済み"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:105
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:106
 msgid "Encryption"
 msgstr "暗号化"
+
+#: src/components/login/LoginPage.jsx:88
+msgid "Enter PIN"
+msgstr ""
+
+#: src/components/login/LoginPage.jsx:77
+msgid "Enter PIN to access the installer"
+msgstr ""
 
 #: src/components/Error.jsx:203
 msgid ""
@@ -467,7 +534,7 @@ msgid ""
 "review and edit the bug details in the next step."
 msgstr ""
 
-#: src/components/Error.jsx:285
+#: src/components/Error.jsx:279
 msgid "Environment"
 msgstr "環境"
 
@@ -475,24 +542,24 @@ msgstr "環境"
 msgid "Erase data and install"
 msgstr "データを消去してインストールします"
 
-#: src/components/Error.jsx:716
+#: src/components/Error.jsx:818
 msgid "Error details"
 msgstr "エラーの詳細"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:249
 msgid "Exit to live desktop"
 msgstr "ライブデスクトップに戻る"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:238
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:245
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
 msgstr "拡張パーティション"
 
-#: src/components/Error.jsx:318
+#: src/components/Error.jsx:642
 msgid "Failed to report issue"
 msgstr "Issueの報告に失敗しました"
 
-#: src/components/localization/Keyboard.jsx:202
+#: src/components/localization/Keyboard.jsx:204
 msgid "Failed to save layouts"
 msgstr "レイアウトの保存に失敗しました"
 
@@ -500,11 +567,11 @@ msgstr "レイアウトの保存に失敗しました"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora Linux は最低でも $0 のディスク領域を必要とします。"
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:243
 msgid "Finalization"
 msgstr "終了処理"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:241
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -512,11 +579,11 @@ msgstr ""
 "最終処理中: システム構成が完了しました。 インストールの完了には少し時間がかか"
 "る場合があります。"
 
-#: src/components/localization/Keyboard.jsx:218
+#: src/components/localization/Keyboard.jsx:220
 msgid "Find layout"
 msgstr "レイアウトの追加"
 
-#: src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:409
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -524,25 +591,31 @@ msgstr ""
 "セキュリティのために、Root アカウントを直接使うことを避けてください。代わり"
 "に、システムの管理にローカルアカウントを使用してください。"
 
-#: src/components/users/Accounts.jsx:179
+#: src/components/users/Accounts.jsx:258
 msgid "Full name"
 msgstr "フルネーム"
 
-#: src/components/users/Accounts.jsx:127
+#: src/components/users/Accounts.jsx:194
 msgid "Full name cannot contain colon characters"
 msgstr "フルネームにはコロン ':' を使用できません"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:251
 msgid "Helper text"
 msgstr ""
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 #, fuzzy
 #| msgid "Bugzilla API key"
 msgid "Hide API key"
 msgstr "Bugzilla API キー"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+#, fuzzy
+#| msgid "Bugzilla API key"
+msgid "Hide PIN"
+msgstr "Bugzilla API キー"
+
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "確認済みパスワードを非表示にする"
 
@@ -550,7 +623,7 @@ msgstr "確認済みパスワードを非表示にする"
 msgid "Hide passphrase"
 msgstr "パスフレーズを非表示にする"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "パスワードを非表示にする"
 
@@ -558,24 +631,23 @@ msgstr "パスワードを非表示にする"
 msgid "Hostname"
 msgstr "ホスト名"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:150
+#: src/components/storage/installation-method/InstallationScenario.jsx:163
 msgid "How would you like to install?"
 msgstr "どのようにインストールしますか？"
 
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:309
+#, fuzzy
+#| msgid "I understand that all existing data will be erased"
 msgid "I understand that all existing data will be erased"
-msgstr "既存のデータが全て削除されることを理解しました"
-
-#: src/components/review/ReviewConfiguration.jsx:253
-msgid ""
+msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr "選択したディスクから既存のデータが全て削除されることを理解しました"
+msgstr[0] "既存のデータが全て削除されることを理解しました"
 
-#: src/components/review/ReviewConfiguration.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:314
 msgid "I understand that some existing data will be erased"
 msgstr "既存のデータが一部削除されることを理解しました"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:315
 msgid "I understand that some partitions will be modified"
 msgstr "一部のパーティションが変更されることを理解しました"
 
@@ -583,66 +655,88 @@ msgstr "一部のパーティションが変更されることを理解しまし
 msgid "If empty, hostname will be transient and set by network information."
 msgstr "空白にすると、ホストネームはネットワーク情報によって設定されます。"
 
+#: src/components/storage/installation-method/InstallationScenario.jsx:126
+msgid ""
+"If none of the options above apply, use the storage editor to create a "
+"custom partitioning before proceeding."
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
 msgstr "パーティション構成をする場合は以下が必要になります:"
 
-#: src/components/Error.jsx:382
+#: src/components/Error.jsx:411
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
 "yourself."
 msgstr ""
 
-#: src/components/AnacondaHeader.jsx:78
+#: src/components/AnacondaHeader.jsx:76
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "リスクを理解または承諾しない場合は、このプログラムを終了してください。"
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/Error.jsx:328
+msgid ""
+"If your issue matches one of the bugs above, you can open it and add your "
+"information there instead of creating a duplicate report."
+msgstr ""
+
+#: src/components/installation/InstallationProgress.jsx:284
 msgid "In progress"
 msgstr "進行中"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "初期化中..."
 
 #: src/components/storage/scenarios/use-free-space/index.js:27
-#: src/components/storage/scenarios/use-configured-storage/index.js:20
+#: src/components/storage/scenarios/use-configured-storage/index.js:25
+#: src/components/storage/scenarios/use-configured-storage/index.js:39
 msgid "Install"
 msgstr "インストール"
 
-#: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/app.jsx:40
+#, fuzzy
+#| msgid "Installation complete"
+msgid "Installation completed"
+msgstr "インストールの完了"
+
+#: src/components/installation/InstallationProgress.jsx:219
+#: src/components/Error.jsx:849
 msgid "Installation failed"
 msgstr "インストールに失敗しました"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "インストール方法"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:61
 msgid "Installation of the system failed"
 msgstr "システムのインストールに失敗しました"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:98
 msgid "Installation of the system failed: $0"
 msgstr "システムのインストールに失敗しました: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:209
+#: src/components/review/ReviewConfiguration.jsx:269
 msgid "Installation type"
 msgstr "インストールタイプ"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Installing"
 msgstr "インストール中"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Insufficient disk space"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/login/LoginPage.jsx:68
+msgid "Invalid PIN. Please try again."
+msgstr ""
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:255
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -651,9 +745,15 @@ msgid ""
 "will be ignored."
 msgstr ""
 
-#: src/components/datetime/CustomNTPModal.jsx:83
+#: src/components/datetime/CustomNTPModal.jsx:92
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
+
+#: src/components/review/ReviewConfiguration.jsx:208
+#, fuzzy
+#| msgid "completed step"
+msgid "Jump to first incomplete step"
+msgstr "完了した手順"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -663,31 +763,34 @@ msgstr ""
 "別の OS とデュアルブートできるように、現在のディスクレイアウトを維持し、利用"
 "可能な領域を使用します。"
 
-#: src/components/localization/InstallationLanguage.jsx:243
+#: src/components/localization/InstallationLanguage.jsx:254
 msgid "Keyboard"
 msgstr "キーボード"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:74
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:75
 msgid "Keyboard layout during boot"
 msgstr "起動時のキーボードレイアウト"
 
-#: src/components/review/ReviewConfiguration.jsx:180
-#: src/components/localization/InstallationLanguage.jsx:227
+#: src/components/localization/InstallationLanguage.jsx:240
+#: src/components/review/ReviewConfiguration.jsx:234
 msgid "Language"
 msgstr "言語"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:77
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:199
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:65
 msgid "Launch storage editor"
 msgstr "ストレージエディターを起動"
 
-#: src/components/Error.jsx:358
+#: src/components/Error.jsx:387
 #, fuzzy
 #| msgid "Learn more about your storage options."
 msgid "Learn more about restricted access in the configuration"
 msgstr "ストレージオプションの詳細をご確認ください。"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/users/Accounts.jsx:209
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "場所"
 
@@ -695,8 +798,15 @@ msgstr "場所"
 msgid "Locked devices"
 msgstr "ロックされたデバイス"
 
-#: src/components/localization/Keyboard.jsx:122
-#: src/components/localization/Keyboard.jsx:126
+#: src/components/login/LoginPage.jsx:118
+#, fuzzy
+#| msgctxt "GUI|Advanced Storage|iSCSI|Login|Login"
+#| msgid "_Log In"
+msgid "Log in"
+msgstr "ログイン(_L)"
+
+#: src/components/localization/Keyboard.jsx:124
+#: src/components/localization/Keyboard.jsx:128
 msgid "Make current"
 msgstr ""
 
@@ -712,7 +822,7 @@ msgstr "手動のディスク構成: マウントポイントの割り当て"
 msgid "May contain letters, numbers, and dashes."
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "より多くの空き容量が必要かもしれません"
 
@@ -720,31 +830,31 @@ msgstr "より多くの空き容量が必要かもしれません"
 msgid "Medium"
 msgstr "まあまあ"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:313
 msgid "Minimum of $0 required"
 msgstr ""
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr "親デバイスと子デバイスの再フォーマットの選択が一致していません。"
 
-#: src/components/review/StorageReview.jsx:237
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
+#: src/components/storage/StorageReview.jsx:250
 msgid "Mount point"
 msgstr "マウントポイント"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point assignment"
 msgstr "マウントポイントの割り当て"
 
-#: src/components/localization/Keyboard.jsx:144
-#: src/components/localization/Keyboard.jsx:148
+#: src/components/localization/Keyboard.jsx:146
+#: src/components/localization/Keyboard.jsx:150
 msgid "Move down"
 msgstr ""
 
-#: src/components/localization/Keyboard.jsx:133
-#: src/components/localization/Keyboard.jsx:137
+#: src/components/localization/Keyboard.jsx:135
+#: src/components/localization/Keyboard.jsx:139
 msgid "Move up"
 msgstr ""
 
@@ -752,29 +862,38 @@ msgstr ""
 msgid "Must be at least $0 characters"
 msgstr "$0文字以上である必要があります"
 
-#: src/components/datetime/CustomNTPModal.jsx:148
+#: src/components/Error.jsx:676
+msgid "My issue is different, continue"
+msgstr ""
+
+#: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
 msgstr "NTP サーバー"
 
-#: src/components/datetime/CustomNTPModal.jsx:196
+#: src/components/datetime/CustomNTPModal.jsx:205
 msgid "NTS"
 msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "名前"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr ""
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "ネットワーク"
+
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
+#: src/components/network/index.js:20
 #, fuzzy
 #| msgid "Network configuration"
 msgid "Network Configuration"
 msgstr "ネットワークの設定"
 
-#: src/components/Error.jsx:624
+#: src/components/Error.jsx:726
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -782,36 +901,42 @@ msgstr ""
 "ネットワークが利用できません。 問題を報告するには、上のバーのメニューでネット"
 "ワークを構成します。"
 
-#: src/components/Error.jsx:625
+#: src/components/Error.jsx:727
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "ネットワークが利用できません。 問題を報告するには、ネットワークを設定してくだ"
 "さい。"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 #, fuzzy
 #| msgid "Node login failed."
 msgid "Network plugin failed"
 msgstr "ストレージプラグインが失敗しました"
 
-#: src/components/Error.jsx:581 src/components/AnacondaWizardFooter.jsx:85
+#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
 msgstr "次へ"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:624
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 msgid "No devices"
 msgstr "デバイスがありません"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:125
 msgid "No disks available"
 msgstr "利用可能なディスクがありません"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "No disks selected"
 msgstr "ディスクが選択されていません"
 
-#: src/components/localization/Keyboard.jsx:240
+#: src/components/localization/Keyboard.jsx:49
+#, fuzzy
+#| msgid "No layouts selected yet"
+msgid "No keyboard layouts selected"
+msgstr "レイアウトが選択されていません"
+
+#: src/components/localization/Keyboard.jsx:242
 msgid "No layouts selected yet"
 msgstr "レイアウトが選択されていません"
 
@@ -819,13 +944,13 @@ msgstr "レイアウトが選択されていません"
 msgid "No results found"
 msgstr "結果が見つかりません"
 
-#: src/components/localization/Keyboard.jsx:394
+#: src/components/localization/Keyboard.jsx:416
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:104
+#: src/components/storage/installation-method/usePageComplete.jsx:112
 msgid "Not enough available free space"
 msgstr "十分な空き領域がありません"
 
@@ -837,11 +962,7 @@ msgstr "選択したディスクには十分な空き領域がありません。
 msgid "Not enough space on selected disks."
 msgstr "選択したディスクには十分な空き領域がありません。"
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "注記"
-
-#: src/components/AnacondaHeader.jsx:72
+#: src/components/AnacondaHeader.jsx:70
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
 "testing purposes only. Do NOT use this software for any critical work or for "
@@ -850,19 +971,19 @@ msgstr ""
 "注記: これは、開発およびテストのみを目的としたプレリリースのソフトウェアで"
 "す。このソフトウェアは、重要な作業や実稼働環境では使用しないでください。"
 
-#: src/components/Error.jsx:180
+#: src/components/Error.jsx:181
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:223
 msgid "Operating system"
 msgstr "オペレーティングシステム"
 
-#: src/components/datetime/CustomNTPModal.jsx:152
+#: src/components/datetime/CustomNTPModal.jsx:161
 msgid "Options"
 msgstr "オプション"
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Other keyboards"
 msgstr "他のキーボード"
 
@@ -870,10 +991,10 @@ msgstr "他のキーボード"
 msgid "Partitions (advanced)"
 msgstr "パーティション (上級者向け)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:92
+#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:138 src/components/users/Accounts.jsx:293
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "パスフレーズ"
 
@@ -881,60 +1002,72 @@ msgstr "パスフレーズ"
 msgid "Passphrase did not match any locked device"
 msgstr "パスフレーズがロックされたデバイスのどれとも一致しませんでした"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "パスワードは一致する必要があります"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:273
 msgid "Pending"
 msgstr "保留中"
 
-#: src/components/Error.jsx:93
+#: src/components/Error.jsx:94
 msgid "Please attach the log file $0 to the issue."
 msgstr "ログファイル $0 をIssueに添付してください。"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/login/LoginPage.jsx:44
+#, fuzzy
+#| msgid "Please enter a valid name."
+msgid "Please enter a PIN"
+msgstr "有効な名前を入力してください。"
+
+#: src/components/storage/installation-method/InstallationDestination.jsx:325
 msgid "Please select at least one disk to continue"
 msgstr "続行するには少なくともディスクを 1 つ選択してください"
 
-#: src/components/datetime/CustomNTPModal.jsx:189
+#: src/components/datetime/CustomNTPModal.jsx:198
 msgid "Pool"
 msgstr "プール"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/Error.jsx:296
+#, fuzzy
+#| msgid "No mountable devices found"
+msgid "Potential duplicate bugs found"
+msgstr "マウント可能なデバイスが見つかりません"
+
+#: src/components/HeaderKebab.jsx:48
 msgid "Powered by Anaconda"
 msgstr "Powered by Anaconda"
 
-#: src/components/AnacondaHeader.jsx:62
+#: src/components/AnacondaHeader.jsx:60
 msgid "Pre-release"
 msgstr "プレリリース"
 
-#: src/components/Error.jsx:178
+#: src/components/Error.jsx:179
 msgid "Prefer to report manually? $0"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Proceed with installation"
 msgstr "インストールを継続"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Quit"
 msgstr "終了"
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Quit installer?"
 msgstr "インストーラーを終了しますか？"
 
-#: src/components/app.jsx:126
+#: src/components/app.jsx:142
 msgid "Reading information about the OS failed."
 msgstr "OS に関する情報の読み取りに失敗しました。"
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:83
 msgid "Reading information about the computer failed."
 msgstr "コンピュータに関する情報の読み取りに失敗しました。"
 
-#: src/components/app.jsx:116
+#: src/components/app.jsx:132
 msgid "Reading installer configuration failed."
 msgstr "インストーラーの設定の読み込みに失敗しました。"
 
@@ -954,26 +1087,21 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "ホスト名は、64 文字以下の長さにする必要があります。"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/installation/InstallationProgress.jsx:248
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Reboot"
 msgstr "再起動"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Reboot system?"
 msgstr "システムを再起動しますか？"
-
-#: src/components/installation/InstallationProgress.jsx:218
-#, fuzzy
-#| msgid "/boot file system"
-msgid "Reboot to installed system"
-msgstr "/boot ファイルシステム"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 #, fuzzy
@@ -982,9 +1110,9 @@ msgstr "/boot ファイルシステム"
 msgid "Reclaim additional space"
 msgstr "領域の再利用(_R)"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:114
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:134
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:205
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
 msgstr "領域の再利用"
 
@@ -992,7 +1120,7 @@ msgstr "領域の再利用"
 msgid "Reclaim space (required)"
 msgstr "領域の再利用 (必須)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 msgid "Recommended"
 msgstr "推奨"
 
@@ -1000,8 +1128,8 @@ msgstr "推奨"
 msgid "Recommended partitions:"
 msgstr "推奨されるパーティション:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:408
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:621
 msgid "Reformat"
 msgstr "再フォーマット"
 
@@ -1010,10 +1138,10 @@ msgstr "再フォーマット"
 msgid "Reinstall Fedora"
 msgstr "Fedora を再インストールする"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
-#: src/components/localization/Keyboard.jsx:155
-#: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:435
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
+#: src/components/localization/Keyboard.jsx:157
+#: src/components/localization/Keyboard.jsx:161
 msgid "Remove"
 msgstr "削除"
 
@@ -1025,18 +1153,18 @@ msgstr ""
 "既存のオペレーティングシステムを含む、選択したデバイス上のすべてのパーティ"
 "ションを削除します。"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:118
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
 "インストール用の領域を解放するために、既存のファイルシステムを削除・リサイズ"
 "してください。"
 
-#: src/components/datetime/CustomNTPModal.jsx:207
+#: src/components/datetime/CustomNTPModal.jsx:216
 msgid "Remove server"
 msgstr "サーバーの削除"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1050,25 +1178,25 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr ""
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:108
 msgid "Report Issue"
 msgstr "Issueを報告する"
 
-#: src/components/Error.jsx:159
+#: src/components/Error.jsx:160
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 
-#: src/components/Error.jsx:601 src/components/Error.jsx:768
+#: src/components/Error.jsx:703 src/components/Error.jsx:870
 msgid "Report issue"
 msgstr "Issueを報告する"
 
-#: src/components/Error.jsx:601
+#: src/components/Error.jsx:703
 msgid "Reporting issue..."
 msgstr "Issueを報告中..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
 msgstr "必要です"
 
@@ -1076,35 +1204,41 @@ msgstr "必要です"
 msgid "Requirements"
 msgstr "必要条件"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:116
 msgid "Rescan devices"
 msgstr "デバイスの再スキャン"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:97
 msgid "Rescanning of the disks failed."
 msgstr "ディスクの再スキャンに失敗しました。"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:513
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
 msgstr "サイズの変更"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+#, fuzzy
+#| msgid "Extended partition"
+msgid "Resize partition"
+msgstr "拡張パーティション"
+
+#: src/components/storage/StorageReview.jsx:354
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
-#: src/components/Error.jsx:352
+#: src/components/Error.jsx:381
 msgid "Restrict access to the report"
 msgstr ""
 
-#: src/components/Error.jsx:354
+#: src/components/Error.jsx:383
 msgid "Restricts the report to the $0 group. $1"
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:34
 msgid "Return to installation"
 msgstr "インストールに戻る"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:673
 msgid "Return to storage editor"
 msgstr "ストレージエディターに戻る"
 
@@ -1112,17 +1246,27 @@ msgstr "ストレージエディターに戻る"
 msgid "Review and install"
 msgstr "確認とインストール"
 
-#: src/components/review/ReviewConfiguration.jsx:74
+#: src/components/users/Accounts.jsx:94
+#, fuzzy
+#| msgid "no NTP servers have been configured"
+msgid "Root account has been configured"
+msgstr "NTP サーバーは設定されていません"
+
+#: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
 msgstr "root アカウントは有効です"
 
-#: src/components/review/ReviewConfiguration.jsx:68
+#: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
 msgstr "root アカウントが有効ですが、ユーザーアカウントが設定されていません"
 
+#: src/components/users/Accounts.jsx:351
+msgid "Root password has been set."
+msgstr "ルートパスワードが設定されました。"
+
+#: src/components/datetime/CustomNTPModal.jsx:245
+#: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
-#: src/components/datetime/CustomNTPModal.jsx:236
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "保存"
 
@@ -1130,7 +1274,7 @@ msgstr "保存"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "携帯電話でQRコードを読み取るか、こちらをご覧ください:"
 
-#: src/components/localization/InstallationLanguage.jsx:196
+#: src/components/localization/InstallationLanguage.jsx:204
 msgid "Search for a language"
 msgstr "言語の検索"
 
@@ -1144,25 +1288,25 @@ msgstr "追加のソフトウェアを検索"
 msgid "Search for an environment"
 msgstr "言語の選択"
 
-#: src/components/localization/Keyboard.jsx:222
+#: src/components/localization/Keyboard.jsx:224
 #, fuzzy
 #| msgid "Choose a language"
 msgid "Search keyboard layout"
 msgstr "言語の選択"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:109
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
 "ディスクベースの暗号化でデータを保護します。新規パーティションにのみ適用され"
 "ます"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:375
 msgid "Select"
 msgstr "選択"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:304
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:338
 msgid "Select a device"
 msgstr "デバイスを選択する"
 
@@ -1172,7 +1316,7 @@ msgstr "デバイスを選択する"
 msgid "Select city"
 msgstr "選択"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:358
 msgid "Select destination"
 msgstr "インストール先を選択"
 
@@ -1180,13 +1324,13 @@ msgstr "インストール先を選択"
 msgid "Select region"
 msgstr "地域の選択"
 
-#: src/components/localization/Keyboard.jsx:233
+#: src/components/localization/Keyboard.jsx:235
 #, fuzzy
 #| msgid "Selected Layouts"
 msgid "Selected (top = current)"
 msgstr "選択されたレイアウト"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:120
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "選択したデバイスのフォーマット '$0' は再フォーマットできません。"
 
@@ -1194,14 +1338,14 @@ msgstr "選択したデバイスのフォーマット '$0' は再フォーマッ
 msgid "Send us feedback on your installation"
 msgstr "インストールに関するフィードバックをお寄せください"
 
-#: src/components/datetime/CustomNTPModal.jsx:151
+#: src/components/datetime/CustomNTPModal.jsx:160
 #, fuzzy
 #| msgctxt "GUI|Software Source"
 #| msgid "_Server:"
 msgid "Server"
 msgstr "サーバー(_S):"
 
-#: src/components/datetime/CustomNTPModal.jsx:181
+#: src/components/datetime/CustomNTPModal.jsx:190
 msgid "Server is not reachable"
 msgstr ""
 
@@ -1223,13 +1367,19 @@ msgstr ""
 msgid "Show AM/PM"
 msgstr "AM/PM を表示"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 #, fuzzy
 #| msgid "Show AM/PM"
 msgid "Show API key"
 msgstr "AM/PM を表示"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+#, fuzzy
+#| msgid "Show AM/PM"
+msgid "Show PIN"
+msgstr "AM/PM を表示"
+
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "パスワードの確認を表示する"
 
@@ -1237,19 +1387,19 @@ msgstr "パスワードの確認を表示する"
 msgid "Show passphrase"
 msgstr "パスフレーズを表示する"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "パスワードを表示する"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:247
 msgid "Size"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:233
 msgid "Software installation"
 msgstr "ソフトウェアのインストール"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:231
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1258,56 +1408,63 @@ msgstr ""
 "バイスにインストールされています。"
 
 #: src/components/software/index.js:19 src/components/software/index.js:20
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Software selection"
 msgstr "ソフトウェアの選択"
 
-#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
+#: src/components/review/ReviewConfiguration.jsx:215
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr ""
+
+#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:52
 msgid "Some required partitions are missing: $0"
 msgstr "いくつかのパーティションが見つかりません: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
 msgstr "領域"
 
-#: src/components/Error.jsx:279
+#: src/components/Error.jsx:273
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:216
+#: src/components/review/ReviewConfiguration.jsx:276
 msgid "Storage"
 msgstr "ストレージ"
 
-#: src/components/installation/InstallationProgress.jsx:129
-#: src/components/storage/storage-configuration/index.js:20
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
-#: src/components/steps.js:33
+#: src/components/storage/storage-configuration/index.js:22
 msgid "Storage configuration"
 msgstr "ストレージの設定"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:226
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "ストレージの構成: ストレージは現在構成中です。"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:58
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
 msgid "Storage editor"
 msgstr "ストレージエディター"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
-msgid "Storage editor is available only in the `Installation method` step."
-msgstr ""
-"ストレージエディターは「インストール方法」のステップでのみ利用可能です。"
-
-#: src/components/storage/scenarios/use-configured-storage/index.js:21
+#: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
 msgstr "ストレージは「ストレージの変更」の設定に基づいています。"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
+#: src/components/storage/scenarios/use-configured-storage/index.js:40
+msgid ""
+"Storage layout is defined by the kickstart file. The planned partitioning "
+"layout can be reviewed in the summary step."
+msgstr ""
+
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 #, fuzzy
 #| msgid "Node login failed."
 msgid "Storage plugin failed"
 msgstr "ストレージプラグインが失敗しました"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:618
 msgid "Storage requirements not met"
 msgstr "ストレージ要件が満たされていません"
 
@@ -1315,7 +1472,7 @@ msgstr "ストレージ要件が満たされていません"
 msgid "Strong"
 msgstr "強固"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:216
 msgid "Successfully installed"
 msgstr "インストールが成功しました"
 
@@ -1323,23 +1480,23 @@ msgstr "インストールが成功しました"
 msgid "Successfully unlocked $0."
 msgstr "$0 の解除に成功しました。"
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Suggested keyboards"
 msgstr "提案されたキーボード"
 
-#: src/components/localization/InstallationLanguage.jsx:122
+#: src/components/localization/InstallationLanguage.jsx:127
 msgid "Suggested languages"
 msgstr "提案された言語"
 
-#: src/components/users/Accounts.jsx:309
+#: src/components/users/Accounts.jsx:339 src/components/users/Accounts.jsx:423
 msgid "System"
 msgstr "システム"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:238
 msgid "System configuration"
 msgstr "システム設定"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:236
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1347,11 +1504,25 @@ msgstr ""
 "システムの構成: ソフトウェアのインストールが完了しました。 現在システムを構成"
 "中です。"
 
-#: src/components/app.jsx:161
+#: src/components/app.jsx:177
 #, fuzzy
 #| msgid "Choose an installation source type."
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "インストールソースのタイプを選択してください。"
+
+#: src/components/Error.jsx:301
+msgid ""
+"The following open bugs may be related to your issue. Please review them "
+"before creating a new report."
+msgstr ""
+
+#: src/components/users/Accounts.jsx:47
+#, fuzzy
+#| msgid "The following disk was detected: $0"
+#| msgid_plural "The following disks were detected: $0"
+msgid "The following user will be created:"
+msgid_plural "The following users will be created:"
+msgstr[0] "以下のディスクが検出されました: $0"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
@@ -1359,13 +1530,19 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:676
+#: src/components/Error.jsx:778
 msgid "The installer cannot continue due to a critical error."
 msgstr "重大なエラーが発生したため、インストーラーは続行できません。"
 
-#: src/components/Error.jsx:675
+#: src/components/Error.jsx:777
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "重大なエラーが発生したため、インストーラーは続行できません: $0"
+
+#: src/hooks/Localization.jsx:68
+msgid ""
+"The keyboard layout has changed since the disk encryption passphrase was "
+"set. Please re-enter the passphrase."
+msgstr ""
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:35
 msgid ""
@@ -1375,13 +1552,13 @@ msgstr ""
 "入力した パスフレーズに ASCII 以外の文字が含まれています。入力する際、キー"
 "ボードレイアウトの切り替えができない場合があります。"
 
-#: src/components/localization/Keyboard.jsx:262
+#: src/components/localization/Keyboard.jsx:264
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
 msgstr ""
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:52
 msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
@@ -1391,7 +1568,7 @@ msgstr ""
 "の設定なども可能です。これは高度なユーティリティであり、通常のインストールで"
 "使用することは想定されていません。"
 
-#: src/components/Error.jsx:378
+#: src/components/Error.jsx:407
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1401,11 +1578,11 @@ msgstr ""
 msgid "This hostname can't be submitted"
 msgstr ""
 
-#: src/components/AnacondaHeader.jsx:66
+#: src/components/AnacondaHeader.jsx:64
 msgid "This is unstable, pre-release software"
 msgstr "これは、プレリリースの不安定なソフトウェアです"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:86
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:87
 msgid "This layout will be used for unlocking your system on boot"
 msgstr "このレイアウトは起動時にシステムのロック解除で使用されます"
 
@@ -1413,7 +1590,7 @@ msgstr "このレイアウトは起動時にシステムのロック解除で使
 msgid "This may take a moment"
 msgstr "これには少し時間がかかる場合があります"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:476
 msgid "This will take a few moments"
 msgstr "これには少し時間がかかります"
 
@@ -1421,20 +1598,20 @@ msgstr "これには少し時間がかかります"
 msgid "Time"
 msgstr "時間"
 
-#: src/components/review/ReviewConfiguration.jsx:187
 #: src/components/datetime/Timezone.jsx:130
+#: src/components/review/ReviewConfiguration.jsx:241
 msgid "Timezone"
 msgstr "タイムゾーン"
 
-#: src/components/Error.jsx:330
+#: src/components/Error.jsx:359
 msgid "Title"
 msgstr ""
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:264
 msgid "To begin using $0, reboot your system."
 msgstr "$0の使用を開始するには、システムを再起動します。"
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:205
+#: src/components/storage/installation-method/InstallationMethod.jsx:198
 msgid "To continue, select the devices to install to."
 msgstr "続行するには、インストール先のデバイスを選択します。"
 
@@ -1446,36 +1623,48 @@ msgstr ""
 "このオプションを使用するには、既存のパーティションをリサイズ・削除して、少な"
 "くとも $0 の容量を解放してください。"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "タイプ"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:85
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr "$0 の削除を予約できません"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr "$0 のリサイズを予約できません"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+#, fuzzy
+#| msgctxt "GUI|Blivet Gui Partitioning"
+#| msgid "_Undo last action"
+msgid "Undo last action"
+msgstr "前回の動作を元に戻す(_U)"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
 msgid "Unlock"
 msgstr "ロック解除"
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:64
-msgid ""
-"Unlock LUKS-encrypted partitions to keep existing data and show more "
-"installation methods."
-msgstr ""
-"既存データを保持し、より多くのインストール方法を表示するため、LUKS で暗号化さ"
-"れたパーティションをロック解除してください。"
-
 #: src/components/storage/installation-method/EncryptedDevices.jsx:138
 msgid "Unlock encrypted devices"
 msgstr "暗号化されたデバイスのロック解除を行います"
 
-#: src/components/storage/scenarios/use-configured-storage/index.js:22
+#: src/components/storage/installation-method/EncryptedDevices.jsx:64
+#, fuzzy
+#| msgid ""
+#| "Unlock LUKS-encrypted partitions to keep existing data and show more "
+#| "installation methods."
+msgid ""
+"Unlock encrypted partitions to keep existing data and show more installation "
+"methods."
+msgstr ""
+"既存データを保持し、より多くのインストール方法を表示するため、LUKS で暗号化さ"
+"れたパーティションをロック解除してください。"
+
+#: src/components/storage/scenarios/use-configured-storage/index.js:27
+#: src/components/storage/scenarios/use-configured-storage/index.js:41
 msgid "Use configured storage"
 msgstr "構成したストレージを使用する"
 
@@ -1483,27 +1672,31 @@ msgstr "構成したストレージを使用する"
 msgid "Use entire disk"
 msgstr "ディスク全体を使用"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Use free space"
 msgstr "空き領域を使用する"
 
-#: src/components/users/Accounts.jsx:165
+#: src/components/users/Accounts.jsx:244
 #, fuzzy
 #| msgid "Create account"
 msgid "Use local account"
 msgstr "アカウントを作成"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:652
 #, fuzzy
 #| msgid "No big enough free space on disks for automatic partitioning"
 msgid "Use the RAID device for automatic partitioning"
 msgstr "自動パーティション設定に十分に大きな空き領域がディスクにありません"
 
-#: src/components/users/Accounts.jsx:210
+#: src/components/users/Accounts.jsx:494
+msgid "User creation"
+msgstr "ユーザー作成"
+
+#: src/components/users/Accounts.jsx:289
 msgid "User name"
 msgstr "ユーザー名"
 
-#: src/components/users/Accounts.jsx:115
+#: src/components/users/Accounts.jsx:182
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1511,15 +1704,15 @@ msgstr ""
 "ユーザー名は次の文字のみを使用できます: a-z の文字、0-9 の数字、ダッシュ $0、"
 "ピリオド $1、アンダースコア $2"
 
-#: src/components/users/Accounts.jsx:112
+#: src/components/users/Accounts.jsx:179
 msgid "User name must not be a reserved word"
 msgstr "ユーザ名は指定された文字のみを使用してください"
 
-#: src/components/users/Accounts.jsx:109
+#: src/components/users/Accounts.jsx:176
 msgid "User names must be shorter than 33 characters"
 msgstr "ユーザー名は 33 文字未満にしてください"
 
-#: src/components/Error.jsx:581
+#: src/components/Error.jsx:658
 #, fuzzy
 #| msgid "Initializing..."
 msgid "Validating..."
@@ -1529,29 +1722,33 @@ msgstr "初期化中..."
 msgid "Weak"
 msgstr "弱い"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "ようこそ"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 #, fuzzy
 #| msgid "Welcome to Fedora"
 msgid "Welcome to Fedora Linux"
 msgstr "Fedora へようこそ"
 
-#: src/components/AnacondaPage.jsx:86
+#: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
 msgstr "ようこそ。今すぐ $0 をインストールしましょう。"
 
-#: src/components/Error.jsx:373
+#: src/components/Error.jsx:402
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:531
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "BitLocker で暗号化された Windows パーティションはリサイズできません"
+
+#: src/components/app.jsx:41
+msgid "You can close this browser window now."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
@@ -1561,11 +1758,11 @@ msgstr ""
 "ここでインストールに十分な領域を確保して、あとはインストーラーに任せることも"
 "できますし、手動でパーティションを構成することもできます。"
 
-#: src/components/Error.jsx:238
+#: src/components/Error.jsx:232
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
-#: src/components/users/Accounts.jsx:375
+#: src/components/users/Accounts.jsx:527
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1575,21 +1772,21 @@ msgstr ""
 msgid "You must be connected to a network to enable automatic date and time."
 msgstr ""
 
-#: src/components/AnacondaWizardFooter.jsx:122
+#: src/components/AnacondaWizardFooter.jsx:108
 msgid "Your progress will not be saved."
 msgstr "進行状況は保存されません。"
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:278
 msgid "completed step"
 msgstr "完了した手順"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:283
 msgid "current step"
 msgstr "現在の手順"
 
-#: src/components/review/StorageReview.jsx:158
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:376
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:389
+#: src/components/storage/StorageReview.jsx:168
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 #, fuzzy
 #| msgid "Delete"
 msgid "delete"
@@ -1599,56 +1796,87 @@ msgstr "削除"
 msgid "edit"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypt"
 msgstr "暗号化"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypted"
 msgstr "暗号化済み"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:234
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 #, fuzzy
 #| msgid "Recommended partitions:"
 msgid "extended partition"
 msgstr "推奨されるパーティション:"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "$0 としてフォーマットする"
 
-#: src/components/Error.jsx:161 src/components/Error.jsx:241
+#: src/components/Error.jsx:162 src/components/Error.jsx:235
 msgid "here"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/review/ReviewConfiguration.jsx:57
+#, fuzzy
+#| msgid "Completed"
+msgid "incomplete"
+msgstr "完了しました"
+
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "マウント"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:272
 msgid "pending step"
 msgstr "保留中の手順"
 
-#: src/components/Error.jsx:384
+#: src/components/Error.jsx:413
 msgid "report the issue manually"
 msgstr ""
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:173
 msgid "resized from $0"
 msgstr ""
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:460
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:464
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
 msgstr "縮小"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:410
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr "$0 に縮小"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:370
+#: src/components/review/Hostname.jsx:154
+msgid "transient, will use DHCP"
+msgstr ""
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr ""
+
+#~ msgid "Storage editor is available only in the `Installation method` step."
+#~ msgstr ""
+#~ "ストレージエディターは「インストール方法」のステップでのみ利用可能です。"
+
+#, fuzzy
+#~| msgid "/boot file system"
+#~ msgid "Reboot to installed system"
+#~ msgstr "/boot ファイルシステム"
+
+#~ msgid "Note"
+#~ msgstr "注記"
+
+#~ msgid ""
+#~ "I understand that all existing data will be erased from the selected disks"
+#~ msgstr "選択したディスクから既存のデータが全て削除されることを理解しました"
+
+#, fuzzy
+#~| msgid "User %s will be created"
+#~ msgid "The following users will be created:"
+#~ msgstr "ユーザー %s が作成されます"
 
 #~ msgid "More than one layout detected. Remove additional layouts to proceed"
 #~ msgstr ""
@@ -1667,11 +1895,6 @@ msgstr ""
 #~ msgstr ""
 #~ "複数のレイアウトが検出されました。続行するには余分なレイアウトを削除してく"
 #~ "ださい"
-
-#, fuzzy
-#~| msgid "no NTP servers have been configured"
-#~ msgid "No user or root account has been configured"
-#~ msgstr "NTP サーバーは設定されていません"
 
 #, fuzzy
 #~| msgid "This account will have administration priviledge with sudo."
@@ -1826,10 +2049,6 @@ msgstr ""
 #~ msgid "The following disk is no longer available: $0"
 #~ msgid_plural "The following disks are no longer available: $0"
 #~ msgstr[0] "以下のディスクは利用不可です: $0"
-
-#~ msgid "The following disk was detected: $0"
-#~ msgid_plural "The following disks were detected: $0"
-#~ msgstr[0] "以下のディスクが検出されました: $0"
 
 #, fuzzy
 #~| msgid "No usable disks detected"
@@ -2525,9 +2744,6 @@ msgstr ""
 #~ msgid "Apple EFI Boot Partition"
 #~ msgstr "Apple EFI Boot パーティション"
 
-#~ msgid "Apply configuration in installer"
-#~ msgstr "インストーラーの設定を適用"
-
 #~ msgid ""
 #~ "Are you sure you want to delete all of the data on {}, including "
 #~ "snapshots?"
@@ -2792,9 +3008,6 @@ msgstr ""
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "ソフトウェアの依存関係をチェック中..."
-
-#~ msgid "Checking storage configuration..."
-#~ msgstr "ストレージ設定をチェック中..."
 
 #~ msgid ""
 #~ "Choose device from above to assign mount point and set format.\n"
@@ -3216,9 +3429,6 @@ msgstr ""
 
 #~ msgid "Entitlements"
 #~ msgstr "エンタイトルメント"
-
-#~ msgid "Error"
-#~ msgstr "エラー"
 
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "FCoE SAN 追加時にエラー。"
@@ -3656,9 +3866,6 @@ msgstr ""
 #~ msgid "Installation _Destination"
 #~ msgstr "インストール先(_D)"
 
-#~ msgid "Installation complete"
-#~ msgstr "インストールの完了"
-
 #, python-format
 #~ msgid "Installation complete. Press %s to quit"
 #~ msgstr "インストールは完了しました。%s を押して終了します"
@@ -4040,9 +4247,6 @@ msgstr ""
 #~ msgid "Need Space"
 #~ msgstr "領域が必要です"
 
-#~ msgid "Network"
-#~ msgstr "ネットワーク"
-
 #~ msgid "Network Config Box"
 #~ msgstr "ネットワーク設定ボックス"
 
@@ -4107,9 +4311,6 @@ msgstr ""
 
 #~ msgid "No match found for given boot drive \"{}\"."
 #~ msgstr "指定されたブートドライブ \"{}\" と一致するものがありません。"
-
-#~ msgid "No mountable devices found"
-#~ msgstr "マウント可能なデバイスが見つかりません"
 
 #~ msgid "No network devices available"
 #~ msgstr "ネットワークデバイスは利用できません"
@@ -4348,9 +4549,6 @@ msgstr ""
 #~ "物理ボリューム \"{}\" が \"{}\" の形式になっています。\"lvmpv\" 形式に修正"
 #~ "してください。"
 
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "すべてのスポークを完了してから継続してください"
-
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
 #~ "step."
@@ -4384,9 +4582,6 @@ msgstr ""
 
 #~ msgid "Please enter a valid mount point."
 #~ msgstr "有効なマウントポイントを記入して下さい。"
-
-#~ msgid "Please enter a valid name."
-#~ msgstr "有効な名前を入力してください。"
 
 #, python-format
 #~ msgid "Please manually connect your vnc client to %s to begin the install."
@@ -4810,9 +5005,6 @@ msgstr ""
 
 #~ msgid "Root password"
 #~ msgstr "root パスワード"
-
-#~ msgid "Root password has been set."
-#~ msgstr "ルートパスワードが設定されました。"
 
 #~ msgid "Root password is not set"
 #~ msgstr "root パスワードが設定されていません"
@@ -5993,10 +6185,6 @@ msgstr ""
 #~ msgid "Use the credentials from discovery"
 #~ msgstr "検索の証明書を使用"
 
-#, python-format
-#~ msgid "User %s will be created"
-#~ msgstr "ユーザー %s が作成されます"
-
 #~ msgid "User Name"
 #~ msgstr "ユーザー名"
 
@@ -6006,9 +6194,6 @@ msgstr ""
 
 #~ msgid "User and Group IDs"
 #~ msgstr "ユーザー IDとグループ ID"
-
-#~ msgid "User creation"
-#~ msgstr "ユーザー作成"
 
 #~ msgid "User name: "
 #~ msgstr "ユーザー名: "
@@ -6896,10 +7081,6 @@ msgstr ""
 #~ msgid "_Language Support"
 #~ msgstr "言語サポート(_L)"
 
-#~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Login"
-#~ msgid "_Log In"
-#~ msgstr "ログイン(_L)"
-
 #~ msgctxt "GUI|Network|Proxy"
 #~ msgid "_Method"
 #~ msgstr "メソッド(_M)"
@@ -7248,10 +7429,6 @@ msgstr ""
 #~ msgctxt "GUI|Software Source"
 #~ msgid "_URL:"
 #~ msgstr "URL(_U):"
-
-#~ msgctxt "GUI|Blivet Gui Partitioning"
-#~ msgid "_Undo last action"
-#~ msgstr "前回の動作を元に戻す(_U)"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"

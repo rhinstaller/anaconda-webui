@@ -52,18 +52,30 @@ export class PayloadDNFClient {
         this._lastEnvironment = null;
     }
 
-    async init () {
+    async init (args = {}) {
         this.startEventMonitor();
 
-        await this.initData();
+        await this.initData(args);
     }
 
-    async initData () {
+    async initData ({ automatedInstall = false } = {}) {
         await this.dispatch(getPayloadEnvironmentsAction());
         await this.dispatch(getPayloadPackagesSelectionAction());
 
+        let selection = await getPackagesSelection();
+        const packagesKickstarted = await getPackagesKickstarted();
+
+        const kickstarted = automatedInstall && packagesKickstarted;
+        if (!kickstarted && !selection?.environment) {
+            const defaultEnv = await getDefaultEnvironment();
+            if (defaultEnv) {
+                await setPackagesSelection({ environment: defaultEnv });
+                await this.dispatch(getPayloadPackagesSelectionAction());
+                selection = await getPackagesSelection();
+            }
+        }
+
         // Fetch groups for initial environment
-        const selection = await getPackagesSelection();
         const environment = selection?.environment;
         this._lastEnvironment = environment;
         if (environment) {
@@ -79,8 +91,12 @@ export class PayloadDNFClient {
         }
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             (path, iface, signal, args) => {
                 switch (signal) {
@@ -125,6 +141,10 @@ export const getGroupData = async (groupSpec) => {
 export const getPackagesSelection = async () => {
     const structure = await getProperty("PackagesSelection");
     return objectFromDbus(structure);
+};
+
+export const getPackagesKickstarted = async () => {
+    return getProperty("PackagesKickstarted");
 };
 
 export const setPackagesSelection = async ({ environment, groups } = {}) => {

@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Merge anaconda's base cockpit.conf with conf.d drop-in overrides.
+# The merged result is written to a runtime path so that cockpit-ws
+# picks it up via XDG_CONFIG_DIRS.
+
+import configparser
+import glob
+import os
+import sys
+
+CONF_BASE = "/etc/anaconda/cockpit/cockpit.conf"
+CONF_D = "/etc/anaconda/cockpit/conf.d"
+CONF_OUT = "/run/anaconda/cockpit/cockpit.conf"
+
+
+def main():
+    config = configparser.ConfigParser()
+    # Preserve CamelCase keys required by cockpit.conf (e.g. AllowUnencrypted)
+    setattr(config, "optionxform", str)  # noqa: B010
+
+    if not os.path.exists(CONF_BASE):
+        print(f"anaconda-cockpit-conf-merge: base config {CONF_BASE} not found, skipping", file=sys.stderr)
+        return
+
+    config.read(CONF_BASE)
+
+    dropins = sorted(glob.glob(os.path.join(CONF_D, "*.conf")))
+    if dropins:
+        config.read(dropins)
+        names = [os.path.basename(f) for f in dropins]
+        print(f"anaconda-cockpit-conf-merge: applied drop-ins: {', '.join(names)}", file=sys.stderr)
+
+    os.makedirs(os.path.dirname(CONF_OUT), exist_ok=True)
+    with open(CONF_OUT, "w") as f:
+        config.write(f)
+
+    print(f"anaconda-cockpit-conf-merge: wrote merged config to {CONF_OUT}", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

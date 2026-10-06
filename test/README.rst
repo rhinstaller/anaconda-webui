@@ -29,10 +29,24 @@ Then download the ISO file that the test VMs will use::
 
     ./bots/image-download fedora-rawhide-boot
 
-In most cases you want to run an individual test in a suite.
-You also need to specify `TEST_OS` for each test run, for example::
+If you did already run some anaconda-webui tests in the past, both the `bots` repository checkout
+and the testing image might be out of date. So run `git pull` in the `bots` folder followed by the
+image-download command above.
 
-   TEST_OS=fedora-rawhide-boot test/check-basic TestBasic.testNavigation
+A good rule of thumb is to do this full bots & image refresh about every two weeks to avoid both drifting too much.
+
+In most cases you want to run an individual test in a suite.
+You also need to specify `TEST_OS` for each test run, such as::
+
+   TEST_OS=fedora-rawhide-boot
+
+A good example invocation for Web UI test run looks like this::
+
+   TEST_SHOW_BROWSER=true TEST_AUDIT_NO_SELINUX=1 TEST_OS=fedora-rawhide-boot test/check-basic TestBasic.testNavigation
+
+This will run the given test in an interactive browser, so you can see how the test frame work performs the testing.
+To run the test in headless mode, just remove `TEST_SHOW_BROWSER=true` from the invocation. The `TEST_AUDIT_NO_SELINUX=1`
+variable currently needs to be used to avoid some SELinux related issues breaking the test run.
 
 You can get a list of tests by inspecting the `def test*` in the source, or by
 running the suite with `-l`/`--list`::
@@ -137,13 +151,13 @@ to test, you can run tests by picking a program and just executing it against th
 Pixel tests
 -----------
 
-The verify test suite contains ["pixel tests"](https://cockpit-project.org/blog/pixel-testing.html).
+The verify test suite contains `pixel tests <https://cockpit-project.org/blog/pixel-testing.html>`_.
 Make sure to create the test/reference submodule before running tests which contain pixel tests.::
 
     make test/reference
 
 For information on how to debug, update or review pixel tests reference the
-["pixel tests"](https://cockpit-project.org/blog/pixel-testing.html) documentation.
+`pixel tests <https://cockpit-project.org/blog/pixel-testing.html>`_ documentation.
 Make sure to set::
 
     GITHUB_BASE=rhinstaller/anaconda
@@ -175,7 +189,7 @@ When the images are correctly updated just call to push the changes to pixel rep
     make update-reference-images
 
 Then new commit is pushed to
-["anaconda pixel tests repository"](https://github.com/rhinstaller/pixel-test-reference)
+`anaconda pixel tests repository <https://github.com/rhinstaller/pixel-test-reference>`_
 and just add reference git submodule to your existing PR by::
 
     git add test/reference
@@ -191,7 +205,7 @@ From time to time you can face an issue that the fedora-X-boot image on Cockpit 
 missig dependency for your PR. **You should not push your PR without fixing the image first!**
 
 To update the image please ping #cockpit on IRC and they will provide a PR with the new image.
-It will look similar to ["this"](https://github.com/cockpit-project/bots/pull/4551).
+It will look similar to `this <https://github.com/cockpit-project/bots/pull/4551>`_.
 
 Then you can test your Anaconda PR against this new builded image on cockpit PR by::
 
@@ -235,7 +249,7 @@ You can set these environment variables to configure the test suite::
     TEST_FIRMWARE  The firmware to run the tests against. Currently supported values:
                      "bios"
                      "efi"
-                  "bios" is the default.
+                  "efi" is the default.
 
 Debugging tests
 ---------------

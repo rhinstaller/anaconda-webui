@@ -5,43 +5,58 @@
 import cockpit from "cockpit";
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
+import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
-import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
-    FooterContext,
-    LanguageContext,
     OsReleaseContext,
+    PageContext,
+    PayloadContext,
     StorageContext,
-    SystemTypeContext,
-    TimezoneContext,
     UserInterfaceContext,
-    UsersContext,
 } from "../../contexts/Common.jsx";
 
 import {
-    useFreeSpaceForSystem,
     useOriginalDevices,
     usePlannedActions,
-    useRequiredSize,
 } from "../../hooks/Storage.jsx";
 
+import { EmptyStatePanel } from "cockpit-components-empty-state";
+
 import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
+import { DateAndTimeReviewDescription } from "../datetime/index.js";
+import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
+import { InstallationLanguageReviewDescription } from "../localization/index.js";
+import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
+import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
+import {
+    StorageInstallationReviewSummary,
+    StorageScenarioReviewDescription,
+} from "../storage/index.js";
 import { useScenario } from "../storage/installation-method/InstallationScenario.jsx";
+import { usePageComplete as useStorageInstallationPageComplete } from "../storage/installation-method/usePageComplete.jsx";
+import { AccountsReviewDescription } from "../users/index.js";
+import { usePageComplete as useUsersPageComplete } from "../users/usePageComplete.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
-import { StorageReview, StorageReviewNote } from "./StorageReview.jsx";
 
 import "./ReviewConfiguration.scss";
 
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-review";
+
+const IncompleteStepIndicator = () => (
+    <Label isCompact status="danger">
+        {_("incomplete")}
+    </Label>
+);
 
 const ReviewDescriptionList = ({ children }) => {
     return (
@@ -61,169 +76,211 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-const AccountsDescription = () => {
-    const accounts = useContext(UsersContext);
-
-    if (accounts.skipAccountCreation && accounts.isRootEnabled) {
-        return _("Root account is enabled, but no user account has been configured");
-    } else if (!accounts.skipAccountCreation && !accounts.isRootEnabled) {
-        return accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName;
-    } else {
-        return (
-            <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsXs" }}>
-                <div>{_("Root account is enabled")}</div>
-                <div>{cockpit.format("User account: $0", accounts.fullName ? `${accounts.fullName} (${accounts.userName})` : accounts.userName)}</div>
-            </Flex>
-        );
-    }
-};
-
-export const ReviewConfiguration = ({ setIsFormValid, setStepNotification }) => {
+export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, goToProgressPage, pauseAtSummary }) => {
     const osRelease = useContext(OsReleaseContext);
-    const localizationData = useContext(LanguageContext);
-    const timezone = useContext(TimezoneContext)?.timezone;
-    const { getLabel, id: scenarioId } = useScenario();
-    const scenarioLabel = getLabel?.({ isReview: true });
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    const [hasValidSpaceCheck, setHasValidSpaceCheck] = useState(true);
-    const freeSpace = useFreeSpaceForSystem();
-    const requiredSize = useRequiredSize();
-    const { setIsFormDisabled } = useContext(FooterContext);
     const { goToStepById } = useWizardContext();
+    const { appliedPartitioning } = useContext(StorageContext);
+    const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
+    const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
+    const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
+    const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
+    const { environments, selection, type: payloadType } = useContext(PayloadContext) ?? {};
+    const softwarePageHidden =
+        payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
+    const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
+    const {
+        complete: storageComplete,
+        validationPending: storageValidationPending,
+    } = useStorageInstallationPageComplete();
+    const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
+    const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 
-    useEffect(() => {
-        const step = SCREEN_ID;
-        const hasInsufficientSpace = requiredSize > freeSpace;
-        const fixupPage = scenarioId === "mount-point-mapping"
-            ? "anaconda-screen-mount-point-mapping"
-            : "anaconda-screen-method";
+    const pages = [
+        { complete: localizationComplete, id: "anaconda-screen-language" },
+        { complete: datetimeComplete, id: "anaconda-screen-date-time" },
+        { complete: softwareSelectionComplete, id: "anaconda-screen-software-selection" },
+        { complete: storageComplete, id: "anaconda-screen-method" },
+        { complete: usersComplete, id: "anaconda-screen-accounts" },
+    ];
+    const reviewValidationPending = pages.some(p => p.complete === undefined);
+    const allValidatedReviewPagesComplete = pages.every(p => p.complete === true);
+    const firstIncompleteStepId = !reviewValidationPending
+        ? (pages.find(p => p.complete !== true)?.id ?? null)
+        : null;
 
-        if (hasInsufficientSpace) {
-            const title = _("Not enough available free space");
-            const message = cockpit.format(
-                _("$0 is required, but only $1 is available."),
-                cockpit.format_bytes(requiredSize),
-                cockpit.format_bytes(freeSpace)
-            );
-            const actionLinks = (
-                <Button
-                  id={`${SCREEN_ID}-change-partition-layout`}
-                  variant="link"
-                  isInline
-                  onClick={() => {
-                      // Reset form state like the wizard does during navigation
-                      setIsFormValid(false);
-                      setIsFormDisabled(true);
-                      cockpit.location.go([fixupPage]);
-                      goToStepById(fixupPage);
-                  }}
-                >
-                    {_("Change partition layout")}
-                </Button>
-            );
-            setStepNotification({ actionLinks, message, step, title });
-        } else {
-            setStepNotification();
+    const jumpToFirstIncomplete = () => {
+        if (!firstIncompleteStepId) {
+            return;
         }
+        goToStepById(firstIncompleteStepId);
+    };
 
-        setHasValidSpaceCheck(!hasInsufficientSpace);
-    }, [
-        requiredSize,
-        freeSpace,
-        goToStepById,
-        setIsFormDisabled,
-        setIsFormValid,
-        setStepNotification,
-        setHasValidSpaceCheck,
-        scenarioId,
-    ]);
+    // Auto-proceed to installation when kickstart is used without inst.pauseatsummary.
+    // This is a one-shot check: once validations complete and any issue is found
+    // (incomplete pages), auto-proceed is permanently disabled so the user must
+    // manually click "Begin installation" after fixing the issue.
+    // Storage warnings do NOT block auto-proceed, matching GTK/TUI behavior.
+    useEffect(() => {
+        if (!automatedInstall || pauseAtSummary || autoProceedBlockedRef.current) {
+            return;
+        }
+        // Wait until all validations have finished
+        if (reviewValidationPending || storageValidationPending) {
+            return;
+        }
+        if (allValidatedReviewPagesComplete) {
+            goToProgressPage();
+        } else {
+            autoProceedBlockedRef.current = true;
+        }
+    }, [automatedInstall, goToProgressPage, pauseAtSummary, allValidatedReviewPagesComplete, storageValidationPending,
+        autoProceedBlockedRef, reviewValidationPending]);
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter
-          setIsFormValid={setIsFormValid}
-          hasValidSpaceCheck={hasValidSpaceCheck}
-        />
-    ), [setIsFormValid, hasValidSpaceCheck]);
+        <CustomFooter goToProgressPage={goToProgressPage} pageValidationOk={allValidatedReviewPagesComplete && !reviewValidationPending} />
+    ), [allValidatedReviewPagesComplete, goToProgressPage, reviewValidationPending]);
     useWizardFooter(getFooter);
 
-    const language = useMemo(() => {
-        for (const l of Object.keys(localizationData.languages)) {
-            const locale = localizationData.languages[l].locales.find(locale => locale["locale-id"].v === localizationData.language);
+    const languageDescription = localizationComplete
+        ? <InstallationLanguageReviewDescription />
+        : <IncompleteStepIndicator />;
 
-            if (locale) {
-                return locale;
-            }
+    const timezoneDescription = datetimeComplete
+        ? <DateAndTimeReviewDescription />
+        : <IncompleteStepIndicator />;
+
+    const installationScenarioDescription = <StorageScenarioReviewDescription />;
+
+    const softwareDescription = useMemo(() => {
+        if (!softwareSelectionComplete) {
+            return <IncompleteStepIndicator />;
         }
-    }, [localizationData]);
+        const envId = selection?.environment;
+        if (!envId) {
+            return "";
+        }
+        const env = environments?.find(e => e.id === envId);
+        return env?.name || envId;
+    }, [softwareSelectionComplete, environments, selection?.environment]);
+
+    const storageDescription = (
+        <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
+            {!storageComplete && (
+                <FlexItem>
+                    <IncompleteStepIndicator />
+                </FlexItem>
+            )}
+            {appliedPartitioning && <StorageInstallationReviewSummary />}
+        </Flex>
+    );
+
+    const accountDescription = usersComplete
+        ? <AccountsReviewDescription />
+        : <IncompleteStepIndicator />;
 
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-operating-system`}
-                          term={_("Operating system")}
-                          description={osRelease.PRETTY_NAME}
+            {reviewValidationPending
+                ? (
+                    <FlexItem id={`${SCREEN_ID}-validation-loading`}>
+                        <EmptyStatePanel
+                          loading
+                          title={_("Checking installation configuration...")}
                         />
-                    </ReviewDescriptionList>
-                </ReviewDescriptionList>
-            </FlexItem>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-system-language`}
-                          term={_("Language")}
-                          description={language ? language["native-name"].v : localizationData.language}
-                        />
-                    </ReviewDescriptionList>
-                    {!hiddenScreens.includes("anaconda-screen-date-time") &&
-                    <ReviewDescriptionListItem
-                      id={`${SCREEN_ID}-target-system-timezone`}
-                      term={_("Timezone")}
-                      description={timezone}
-                    />}
-                    {!hiddenScreens.includes("anaconda-screen-accounts") &&
-                        <ReviewDescriptionList>
-                            <ReviewDescriptionListItem
-                              id={`${SCREEN_ID}-target-system-account`}
-                              term={_("Account")}
-                              description={<AccountsDescription />}
-                            />
-                        </ReviewDescriptionList>}
-                    {isBootIso &&
-                        <ReviewDescriptionList>
-                            <HostnameRow />
-                        </ReviewDescriptionList>}
-                </ReviewDescriptionList>
-            </FlexItem>
-            <FlexItem>
-                <ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-system-mode`}
-                          term={_("Installation type")}
-                          description={scenarioLabel}
-                        />
-                    </ReviewDescriptionList>
-                    <ReviewDescriptionList>
-                        <ReviewDescriptionListItem
-                          id={`${SCREEN_ID}-target-storage`}
-                          term={_("Storage")}
-                          description={
-                              <Stack hasGutter>
-                                  <StorageReview isReviewScreen />
-                              </Stack>
-                          }
-                        />
-                        <StorageReviewNote />
-                    </ReviewDescriptionList>
-                </ReviewDescriptionList>
-            </FlexItem>
+                    </FlexItem>
+                )
+                : (
+                    <>
+                        {firstIncompleteStepId &&
+                        <FlexItem>
+                            <Alert
+                              id={`${SCREEN_ID}-incomplete-configuration`}
+                              actionLinks={(
+                                  <Button
+                                    id={`${SCREEN_ID}-go-first-incomplete`}
+                                    variant="link"
+                                    isInline
+                                    onClick={jumpToFirstIncomplete}
+                                  >
+                                      {_("Jump to first incomplete step")}
+                                  </Button>
+                              )}
+                              isInline
+                              title={_("Configuration is incomplete")}
+                              variant="danger"
+                            >
+                                {_("Some installation steps still need to be completed before you can continue.")}
+                            </Alert>
+                        </FlexItem>}
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-operating-system`}
+                                      term={_("Operating system")}
+                                      description={osRelease.PRETTY_NAME}
+                                    />
+                                </ReviewDescriptionList>
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-language`}
+                                      term={_("Language")}
+                                      description={languageDescription}
+                                    />
+                                </ReviewDescriptionList>
+                                {!hiddenScreens.includes("anaconda-screen-date-time") &&
+                                <ReviewDescriptionListItem
+                                  id={`${SCREEN_ID}-target-system-timezone`}
+                                  term={_("Timezone")}
+                                  description={timezoneDescription}
+                                />}
+                                {!softwarePageHidden &&
+                                <ReviewDescriptionListItem
+                                  id={`${SCREEN_ID}-target-system-software`}
+                                  term={_("Software selection")}
+                                  description={softwareDescription}
+                                />}
+                                {!accountsPageHidden &&
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-account`}
+                                      term={_("Account")}
+                                      description={accountDescription}
+                                    />
+                                </ReviewDescriptionList>}
+                                <ReviewDescriptionList>
+                                    <HostnameRow />
+                                </ReviewDescriptionList>
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                        <FlexItem>
+                            <ReviewDescriptionList>
+                                {appliedPartitioning &&
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-system-mode`}
+                                      term={_("Installation type")}
+                                      description={installationScenarioDescription}
+                                    />
+                                </ReviewDescriptionList>}
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      id={`${SCREEN_ID}-target-storage`}
+                                      term={_("Storage")}
+                                      description={storageDescription}
+                                    />
+                                </ReviewDescriptionList>
+                            </ReviewDescriptionList>
+                        </FlexItem>
+                    </>
+                )}
         </Flex>
     );
 };
@@ -249,8 +306,8 @@ const useConfirmationCheckboxLabel = () => {
 
     useEffect(() => {
         const allDevicesDeletedText = cockpit.ngettext(
-            _("I understand that all existing data will be erased"),
-            _("I understand that all existing data will be erased from the selected disks"),
+            "I understand that all existing data will be erased",
+            "I understand that all existing data will be erased from the selected disks",
             usableDisks.length
         );
 
@@ -271,7 +328,8 @@ const useConfirmationCheckboxLabel = () => {
     return scenarioConfirmationLabel;
 };
 
-const CustomFooter = ({ hasValidSpaceCheck, setIsFormValid }) => {
+const CustomFooter = ({ goToProgressPage, pageValidationOk }) => {
+    const { setIsFormValid } = useContext(PageContext) ?? {};
     const { getButtonLabel } = useScenario();
     const buttonLabel = getButtonLabel?.();
     const scenarioConfirmationLabel = useConfirmationCheckboxLabel();
@@ -290,15 +348,15 @@ const CustomFooter = ({ hasValidSpaceCheck, setIsFormValid }) => {
 
     useEffect(() => {
         const isConfirmationValid = isConfirmed || installationIsClean;
-        setIsFormValid(isConfirmationValid && hasValidSpaceCheck);
-    }, [setIsFormValid, isConfirmed, installationIsClean, hasValidSpaceCheck]);
+        setIsFormValid(isConfirmationValid && pageValidationOk);
+    }, [setIsFormValid, isConfirmed, installationIsClean, pageValidationOk]);
 
     return (
         <AnacondaWizardFooter
           footerHelperText={confirmationCheckbox}
           nextButtonText={buttonLabel}
           nextButtonVariant={!installationIsClean ? "warning" : "primary"}
-          onNext={() => cockpit.location.go(["anaconda-screen-progress"])}
+          onNext={() => goToProgressPage()}
         />
     );
 };

@@ -5,10 +5,11 @@
 
 import cockpit from "cockpit";
 
+import { installationState } from "../apis/installation_state.js";
 import {
     getActions,
+    getAncestors,
     getDeviceData,
-    getDevices,
     getDiskFreeSpace,
     getDiskTotalSpace,
     getExistingSystems,
@@ -28,31 +29,70 @@ import {
 
 export const getDevicesAction = () => {
     return async (dispatch) => {
+        if (installationState.active) {
+            return;
+        }
+
         dispatch({
             payload: { isFetching: true },
             type: "SET_IS_FETCHING",
         });
 
         const actions = await getActions();
-        const devices = await getDevices();
-        const deviceData = {};
         const mountPoints = await getMountPoints();
         const existingSystems = await getExistingSystems();
-        for (const device of devices) {
+
+        // Start from stable physical disks (GetUsableDisks) rather than GetDevices
+        // which returns all devices including transient LUKS containers created during
+        // encryption setup. Walking the tree top-down via children.v avoids the race
+        // where GetDevices snapshots an ID that vanishes before GetDeviceData is called.
+        const rootDiskIds = await getUsableDisks();
+        const ancestorIds = await getAncestors({ diskIds: rootDiskIds });
+        const deviceData = {};
+        const toVisit = [...new Set([...rootDiskIds, ...ancestorIds])];
+        const visited = new Set();
+
+        while (toVisit.length > 0) {
+            // Installation may have started mid-walk and torn down a device already queued here.
+            if (installationState.active) {
+                dispatch({
+                    payload: { isFetching: false },
+                    type: "SET_IS_FETCHING",
+                });
+                return;
+            }
+
+            const device = toVisit.pop();
+            if (visited.has(device)) continue;
+            visited.add(device);
+
             try {
                 const devData = await getDeviceData({ disk: device });
 
-                const free = await getDiskFreeSpace({ diskNames: [device] });
-                // extend it with variants to keep the format consistent
-                devData.free = cockpit.variant(String, free);
+                // Empty DeviceData (device-id="") means the device vanished between
+                // enumeration and fetch — skip it and do not recurse into its children.
+                if (!devData["device-id"]?.v) continue;
 
-                const total = await getDiskTotalSpace({ diskNames: [device] });
-                devData.total = cockpit.variant(String, total);
+                if (devData["is-disk"].v) {
+                    const free = await getDiskFreeSpace({ diskNames: [device] });
+                    // extend it with variants to keep the format consistent
+                    devData.free = cockpit.variant(String, free);
+
+                    const total = await getDiskTotalSpace({ diskNames: [device] });
+                    devData.total = cockpit.variant(String, total);
+                } else {
+                    devData.free = cockpit.variant(String, 0);
+                    devData.total = cockpit.variant(String, devData.size.v);
+                }
 
                 const formatData = await getFormatData({ diskName: device });
                 devData.formatData = formatData;
 
                 deviceData[device] = devData;
+
+                for (const childId of (devData.children?.v ?? [])) {
+                    if (!visited.has(childId)) toVisit.push(childId);
+                }
             } catch (error) {
                 if (error.name === "org.fedoraproject.Anaconda.Modules.Storage.UnknownDeviceError") {
                     continue;
@@ -109,10 +149,12 @@ export const getPartitioningDataAction = ({ partitioning, requests }) => {
                 const reqs = await gatherRequests({ partitioning });
 
                 props.requests = convertRequests(reqs);
-            } else {
+            } else if (props.method === "AUTOMATIC") {
                 const reqs = await getAutomaticPartitioningRequest({ partitioning });
 
                 props.requests = convertRequests([reqs]);
+            } else {
+                props.requests = [];
             }
         } else {
             props.requests = convertRequests(requests);

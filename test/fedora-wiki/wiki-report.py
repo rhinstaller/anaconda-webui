@@ -15,6 +15,9 @@ from wikitcms.wiki import ResTuple, Wiki  # type: ignore[import-untyped]
 logger = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+# Printed on successful report; CI looks for this in the log to verify the job succeeded.
+REPORT_SUCCESS_MARKER = "Compose test report submitted successfully."
+
 class LoginError(Exception):
     """Raised when cannot log in to wiki to submit results."""
     pass
@@ -121,4 +124,5 @@ if __name__ == "__main__":
     parser.add_argument("--staging", action="store_true", help="Operate on the staging wiki (for testing)")
     args = parser.parse_args()
 
-    report = WikiReport(args.report, staging=args.staging).run()
+    WikiReport(args.report, staging=args.staging).run()
+    print(REPORT_SUCCESS_MARKER)

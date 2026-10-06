@@ -8,10 +8,13 @@ import cockpit from "cockpit";
 import { getPasswordPoliciesAction } from "../actions/runtime-actions.js";
 
 import { debug, error } from "../helpers/log.js";
-import { _getProperty } from "./helpers.js";
+import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime/UserInterface";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime.UserInterface";
+
+const RUNTIME_OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Runtime";
+const RUNTIME_INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Runtime";
 
 const getProperty = (...args) => {
     return _getProperty(RuntimeClient, OBJECT_PATH, INTERFACE_NAME, ...args);
@@ -35,7 +38,7 @@ export class RuntimeClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener(
             "close", () => error("Runtime client closed")
         );
@@ -45,8 +48,12 @@ export class RuntimeClient {
         await this.initData();
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             (path, iface, signal, args) => {
                 switch (signal) {
@@ -98,4 +105,23 @@ export const getIsFinal = async () => {
  */
 export const getPasswordPolicies = () => {
     return getProperty("PasswordPolicies");
+};
+
+/**
+ * @returns {Promise}           Returns the RebootData structure (action, eject, kexec)
+ */
+export const getRebootData = () => {
+    return _getProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME, "Reboot");
+};
+
+/**
+ * @param {Object} rebootData    The RebootData structure (action, eject, kexec)
+ */
+export const setRebootData = (rebootData) => {
+    return _setProperty(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME,
+                        "Reboot", cockpit.variant("a{sv}", rebootData));
+};
+
+export const exitInstaller = () => {
+    return _callClient(RuntimeClient, RUNTIME_OBJECT_PATH, RUNTIME_INTERFACE_NAME, "Exit", []);
 };

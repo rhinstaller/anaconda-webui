@@ -14,8 +14,8 @@ import {
     getDeviceAncestors,
     getDeviceChildren,
     getParentPartitions,
-    hasEncryptedAncestor,
     isBootloaderDevice,
+    isOnEncryptedDevice,
     systemMountPoints,
 } from "../../helpers/storage.js";
 
@@ -30,12 +30,10 @@ import {
     usePlannedActions,
     usePlannedDevices,
     usePlannedMountPoints,
-    useRequiredSize,
+    useRequiredSpace,
 } from "../../hooks/Storage.jsx";
 
 import { ListingTable } from "cockpit-components-table.jsx";
-
-import { ReviewDescriptionListItem } from "./Common.jsx";
 
 import "./StorageReview.scss";
 
@@ -67,12 +65,13 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     const actions = usePlannedActions();
     const mountPoints = usePlannedMountPoints();
     const devices = usePlannedDevices();
-    const requiredSize = useRequiredSize();
+    const requiredSpace = useRequiredSpace();
     const freeSpace = useFreeSpaceForSystem();
 
     const requests = partitioning.requests;
     const deviceData = devices?.[disk];
     const reusedMountPoints = requests.find(request => request["reused-mount-points"])?.["reused-mount-points"];
+    const reformattedMountPoints = requests.find(request => request["reformatted-mount-points"])?.["reformatted-mount-points"];
     const plannedSystemMountPoints = Object.entries(mountPoints).filter(mp => systemMountPoints.includes(mp[0]));
 
     if (!deviceData) {
@@ -80,9 +79,9 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
     }
 
     let insufficientSizeMessage = "";
-    if (requiredSize > freeSpace) {
+    if (requiredSpace > freeSpace) {
         if (Object.keys(plannedSystemMountPoints).length === 1) {
-            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSize));
+            insufficientSizeMessage = cockpit.format(_("Needs at least $0"), cockpit.format_bytes(requiredSpace));
         } else if (Object.keys(plannedSystemMountPoints).length > 1) {
             insufficientSizeMessage = _("May need more free space");
         }
@@ -92,7 +91,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
         const size = cockpit.format_bytes(devices[device].size.v);
         const request = requests.find(request => request["device-spec"] === device);
         let format = devices[device].formatData.type.v;
-        const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount)) || request?.reformat;
+        const isImplicitlyReusedMountPoint = originalDevices[device] && !reformattedMountPoints?.includes(mount) && !isDeviceDeleted({ actions, device }) && !isDeviceResized({ actions, device });
+        const isReformattedMountPoint = (!request && !reusedMountPoints?.includes(mount) && !isImplicitlyReusedMountPoint) || request?.reformat;
 
         // If the format is btrfs, we want to show the type of the device (aka btrfs subvolume)
         if (format === "btrfs") {
@@ -114,6 +114,8 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 return ", LVM";
             } else if (checkDeviceOnStorageType(devices, device, "mdarray")) {
                 return ", RAID";
+            } else if (checkDeviceOnStorageType(devices, device, "stratis pool")) {
+                return ", Stratis";
             } else {
                 return "";
             }
@@ -130,18 +132,26 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                 )
                 : ""
         );
-
+        const encryptedText = isOnEncryptedDevice(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "";
+        const deviceText = cockpit.format("$0$1", parents.join(", "), showMaybeType());
         return (
             {
                 columns: [
-                    { title: cockpit.format("$0$1", parents.join(", "), showMaybeType()), width: 17 },
+                    { title: deviceText, width: 17 },
                     { title: size, width: 15 },
                     { title: action, width: 17 },
-                    { title: hasEncryptedAncestor(devices, device) ? (isReformattedMountPoint ? _("encrypt") : _("encrypted")) : "", width: 17 },
+                    { title: encryptedText, width: 17 },
                     { title: mount, width: 17 },
                     ...(isReviewScreen ? [{ title: helperText, width: 17 }] : []),
                 ],
-                props: { key: device },
+                props: {
+                    "data-action": action,
+                    "data-device": deviceText,
+                    "data-mount": mount,
+                    "data-size": size,
+                    ...(encryptedText ? { "data-encrypted": encryptedText } : {}),
+                    key: device
+                },
             }
         );
     };
@@ -177,6 +187,9 @@ const DeviceRow = ({ disk, isReviewScreen }) => {
                     ...(isReviewScreen ? [{ title: "" }] : []),
                 ],
                 props: {
+                    "data-action": actionDescriptionText,
+                    "data-device": device,
+                    "data-size": sizeText,
                     key: device + actionType,
                 },
             }
@@ -365,19 +378,11 @@ export const StorageReviewNote = () => {
     );
     if (!hasNote) return null;
 
-    const description = (
-        <List isPlain>
+    return (
+        <List isPlain id="anaconda-screen-review-target-storage-note">
             <DeletedSystems />
             <AffectedSystems type="delete" />
             <AffectedSystems type="resize" />
         </List>
-    );
-
-    return (
-        <ReviewDescriptionListItem
-          id="anaconda-screen-review-target-storage-note"
-          term={_("Note")}
-          description={description}
-        />
     );
 };

@@ -15,6 +15,11 @@ import {
     getXLayouts,
 } from "../apis/localization.js";
 
+export const setLanguageKickstartedAction = ({ languageKickstarted } = {}) => ({
+    payload: { languageKickstarted },
+    type: "SET_LANGUAGE_KICKSTARTED",
+});
+
 export const getLanguagesAction = () => {
     return async (dispatch) => {
         const languageIds = await getLanguages();
@@ -72,12 +77,27 @@ export const getKeyboardLayoutsAction = () => {
     };
 };
 
-export const getKeyboardConfigurationAction = () => {
+export const getKeyboardConfigurationAction = ({ onError, onSuccess } = {}) => {
     return async (dispatch) => {
         const xlayouts = await getXLayouts();
         let resultDispatched = false;
 
         getKeyboardConfiguration({
+            onFail: (error) => {
+                // Handle KeyboardConfigurationError (e.g., live system has only non-XKB layouts)
+                dispatch({
+                    payload: {
+                        plannedVconsole: "",
+                        plannedXlayouts: [],
+                        xlayouts,
+                    },
+                    type: "GET_PLANNED_KEYBOARD_CONFIGURATION"
+                });
+
+                if (onError) {
+                    onError(error?.toString());
+                }
+            },
             onSuccess: (keyboardConfiguration) => {
                 // The API triggers the onSuccess callback two times, we want to dispatch only once
                 if (resultDispatched) {
@@ -93,6 +113,10 @@ export const getKeyboardConfigurationAction = () => {
                     },
                     type: "GET_PLANNED_KEYBOARD_CONFIGURATION"
                 });
+
+                if (onSuccess) {
+                    onSuccess();
+                }
             }
         });
     };

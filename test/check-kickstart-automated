@@ -1,0 +1,384 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2025 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase, disk_images, pixel_tests_ignore
+from installer import Installer
+from language import Language
+from payload_dnf import PayloadDNF
+from progress import Progress
+from review import Review
+from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from testlib import test_main, timeout  # pylint: disable=import-error
+from timezone import DateAndTime
+from users import Users, create_user, override_user_interface_conf_keys
+
+
+class TestKickstartAutomatedPause(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedPause-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedPause-testBasic.ks``
+            with inst.pauseatsummary option.
+
+        Expected results:
+            - Automated install pause on the review step with the install action enabled.
+            - Users specified in kickstart are correctly picked up on the Accounts step
+              and cannot be changed.
+            - Root settings cannot be changed when rootpw is in kickstart.
+            - Timezone and timesource lines from kickstart appear on the date & time screen;
+              NTP servers, pool, and NTS options are visible in the Configure NTP servers modal.
+            - Scenario is preset to 'Use configured storage' and the partitioning appears on the Review storage section.
+            - Environment and groups from the ``%packages`` section in the kickstart appear on the Software selection step.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage-kickstart")
+        u = Users(b, m)
+        dt = DateAndTime(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
+
+        i.reach_on_sidebar(i.steps.LANGUAGE)
+        i.reach(i.steps.DATE_TIME)
+
+        tz = dt.dbus_get_timezone()
+        region, city = tz.split("/", 1)
+        dt.check_region(region)
+        dt.check_city(city)
+        dt.check_auto_date_time(dt.dbus_get_ntp_enabled())
+        dt.check_ntp_modal_rows([
+            {"hostname": "ntp.cesnet.cz", "pool": False, "nts": False},
+            {"hostname": "nts-test.strangled.net", "pool": False, "nts": True},
+            {"hostname": "0.pool.ntp.org", "pool": True, "nts": False},
+        ])
+
+        i.reach(i.steps.SOFTWARE_SELECTION)
+        dnf = PayloadDNF(b)
+        dnf.check_selected_environment("workstation-product-environment")
+        dnf.check_group_selected("domain-client")
+
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.check_scenario_selected("use-configured-storage-kickstart")
+        s.wait_scenario_visible("use-configured-storage", False)
+
+        i.reach(i.steps.ACCOUNTS)
+
+        # Verify kickstart users (read-only) and locked root
+        u.check_readonly_users_section_visible()
+        u.check_readonly_user_displayed("alice", full_name="Alice Admin")
+        u.check_readonly_user_displayed("bob", full_name="Bob User")
+        u.check_readonly_user_displayed("carol", full_name="Carol Dev")
+        b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:disabled")
+        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-accounts", "users-kickstarted", ignore=pixel_tests_ignore)
+
+        i.reach(i.steps.REVIEW)
+
+        r.check_storage_config("Use configured storage")
+        dev1 = "vda"
+        r.check_disk(dev1, "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row(dev1, "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, True, "efi")
+        r.check_disk_row(dev1, "/", "vda5", "11.2 GB", True, "xfs")
+        r.check_disk_row(dev1, "/boot", "vda2", "1.15 GB", True, "xfs")
+        r.check_disk_row(dev1, "/home", "vda3", "2.15 GB", True, "xfs")
+        r.check_disk_row(dev1, "swap", "vda4", "1.07 GB", True, "swap")
+
+        i.check_next_disabled(disabled=False)
+        b.assert_pixels(".anaconda-wizard-step-anaconda-screen-review", "review-kickstarted", ignore=pixel_tests_ignore)
+
+    def testUserInterfaceCanChangeAccountsConf(self):
+        """
+        Description:
+            Non-default ``can_change_root`` and ``can_change_users`` in ``anaconda.conf``
+            (both ``True``): root must stay interactive and the user section must show the
+            editable create-account UI instead of the kickstart read-only summary.
+
+        Expected results:
+            - Read-only kickstart user summary is not shown; create-account controls are present
+            - Root enable checkbox is not disabled
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage-kickstart")
+
+        override_user_interface_conf_keys(self, can_change_root=True, can_change_users=True)
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
+        i.reach_on_sidebar(i.steps.ACCOUNTS)
+
+        b.wait_visible("#anaconda-screen-accounts-root-account-enable-root-account:not(:disabled)")
+        b.wait_visible("#anaconda-screen-accounts-create-account-set-user-account:not(:disabled)")
+
+
+class TestKickstartAutomatedWarning(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedWarning-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedWarning-testBasic.ks``
+
+        Expected results:
+            - Automated installation starts despite storage warnings.
+            - Storage warnings do not block auto-proceed (matching GTK/TUI behavior).
+        """
+        b = self.browser
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_in_text("h2", "Installing")
+
+
+class TestKickstartAutomated(VirtInstallMachineCase):
+    """Destructive tests for kickstart-driven automated installations."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    @timeout(1200)
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomated-testBasic.ks``
+
+        Expected results:
+            - Automated installation starts.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_done()
+
+        self.handleReboot()
+
+
+class TestKickstartAutomatedNonCriticalError(VirtInstallMachineCase):
+    """Kickstart install with a missing package triggers a non-critical error dialog."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testNonCriticalError.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testMissingPackageAbort(self):
+        """
+        Description:
+            Boot with kickstart that requests a non-existent package during
+            ``%packages``.
+
+        Expected results:
+            - During installation the UI must show a continue/abort dialog.
+            - The dialog mentions the missing package.
+            - Choosing abort ends installation with a failure state.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_installation_error_dialog("domain-client-nonexisting")
+        b.wait_visible("#anaconda-screen-progress-installation-error-continue-btn")
+        # Simulate remote reconnection
+        b.reload()
+        b.wait_visible(".pf-v6-c-page")
+        p.wait_installation_error_dialog("domain-client-nonexisting")
+        b.wait_visible("#anaconda-screen-progress-installation-error-continue-btn")
+        p.respond_installation_error_abort()
+        p.wait_installation_failed()
+
+
+class TestKickstartAutomatedLangRuntime(VirtInstallMachineCase):
+    """Kickstart install with language set is applied during runtime."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testLang.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def testRuntimeLangSet(self):
+        """
+        Description:
+            Boot with kickstart setting language with lang command.
+
+        Expected results:
+            - The UI is translated into language set in kickstart.
+        """
+        b = self.browser
+        r = Review(b, self.machine)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        r.check_language("Italiano (Italia)")
+
+
+class TestKickstartAutomatedFatalError(VirtInstallMachineCase):
+    """Kickstart install with a fatal error shows the critical report dialog."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomated-testFatalError.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testPreInstallScriptFailure(self):
+        """
+        Description:
+            Boot with kickstart whose ``%pre-install --erroronfail`` script fails.
+
+        Expected results:
+            - Installation does not show the non-critical continue/abort dialog.
+            - The critical error report dialog appears with script failure details.
+        """
+        b = self.browser
+        p = Progress(b)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        p.wait_installation_failed("This is a fatal error", timeout=1200)
+        b.wait_not_present("#anaconda-screen-progress-installation-error-continue-btn")
+
+        # Simulate remote reconnection — error should persist
+        b.reload()
+        b.wait_visible(".pf-v6-c-page")
+        p.wait_installation_failed("This is a fatal error", timeout=10)
+
+
+class TestKickstartAutomatedIncomplete(VirtInstallMachineCase):
+    """Incomplete kickstart (missing storage, accounts, timezone, and lang) blocks install until filled in."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedIncomplete-testBasic.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+        },
+    }
+
+    def testBasic(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedIncomplete-testBasic.ks``
+            which has no partitioning, ``timezone``, ``lang``, or account commands.
+
+        Expected results:
+            - The review screen shows an incomplete-configuration warning,
+              with storage, language, timezone, and account rows marked incomplete,
+              and the install button is disabled.
+            - After setting language, timezone, and accounts (navigating forward
+              through the storage screen configures storage), all steps are complete.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        r = Review(b, m)
+        l = Language(b, m)
+        dt = DateAndTime(b, m)
+        u = Users(b, m)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+
+        b.wait_in_text(f"#{i.steps.REVIEW}-incomplete-configuration",
+                       "Some installation steps still need to be completed before you can continue.")
+        r.check_storage_incomplete()
+        r.check_language_incomplete()
+        r.check_timezone_incomplete()
+        r.check_account_incomplete()
+
+        i.check_next_disabled()
+
+        # Navigate back to language page via sidebar and set a locale.
+        i.reach_on_sidebar(i.steps.LANGUAGE)
+        l.select_locale("en_US")
+
+        # Navigate forward step by step via Next
+        i.reach(i.steps.DATE_TIME)
+        dt.set_auto_timezone(False)
+        dt.select_region("Europe")
+        dt.select_city("Prague")
+
+        i.reach(i.steps.ACCOUNTS)
+        create_user(b, m)
+        # Workaround to stabilize the button state before calling the reach
+        # to prevent race condition on state flipping
+        u.enable_user_account(False)
+        u.enable_user_account(True)
+
+        i.reach(i.steps.REVIEW)
+
+        b.wait_in_text(f"#{i.steps.REVIEW}-target-system-account",
+                       "The following user will be created")
+        r.check_timezone("Europe/Prague")
+
+
+class TestKickstartAutomatedRAID(VirtInstallMachineCase):
+    """Kickstart automated install with RAID layout from kickstart-tests raid-1.ks."""
+
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartAutomatedRAID-testRAID1.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def setUp(self):
+        super().setUp()
+        s = Storage(self.browser, self.machine)
+        s.dbus_reset_selected_disks()
+        s.dbus_scan_devices()
+
+    @disk_images([("", 15), ("", 15)])
+    def testRAID1(self):
+        """
+        Description:
+            Boot with ``inst.ks=TestKickstartAutomatedRAID-testRAID1.ks`` on two disks
+
+        Expected results:
+            - Automated install pauses on review without bootloader warnings;
+              /boot on vda, RAID1 swap, and RAID0 /.
+        """
+        b = self.browser
+        r = Review(b, self.machine)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        r.check_disk_row("vda", "/boot", "vda1", "1.15 GB", True, "xfs")
+        r.check_disk_row("vda", "/", "vda3, vdb3, RAID", "27.7 GB", True, "xfs")
+
+
+if __name__ == "__main__":
+    test_main()

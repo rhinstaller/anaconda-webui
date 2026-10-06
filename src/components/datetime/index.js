@@ -6,8 +6,11 @@
 import cockpit from "cockpit";
 
 import { DateAndTimePage } from "./DateAndTime.jsx";
+import { DateAndTimeReviewDescription } from "./DateAndTimeReviewDescription.jsx";
 
 const _ = cockpit.gettext;
+
+export { DateAndTimeReviewDescription };
 
 export class Page {
     _description = "Configure your system's timezone, date, and time settings. You can also set up network time synchronization.";

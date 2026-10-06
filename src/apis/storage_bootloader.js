@@ -4,15 +4,23 @@
  */
 import cockpit from "cockpit";
 
-import { _setProperty } from "./helpers.js";
+import { _getProperty, _setProperty } from "./helpers.js";
 
 import { StorageClient } from "./storage.js";
 
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Storage.Bootloader";
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Storage/Bootloader";
 
+const getProperty = (...args) => {
+    return _getProperty(StorageClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
+
 const setProperty = (...args) => {
     return _setProperty(StorageClient, OBJECT_PATH, INTERFACE_NAME, ...args);
+};
+
+export const getBootloaderDrive = () => {
+    return getProperty("Drive");
 };
 
 /**

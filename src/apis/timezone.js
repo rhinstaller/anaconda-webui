@@ -15,6 +15,7 @@ import { _callClient, _getProperty, _setProperty } from "./helpers.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Modules/Timezone";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Modules.Timezone";
+const KICKSTART_MODULE_INTERFACE = "org.fedoraproject.Anaconda.Modules";
 
 /**
  * Helper for DBus Timezone API.
@@ -46,21 +47,27 @@ export class TimezoneClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) { // eslint-disable-line no-unused-vars -- optional bootstrap args from Application
         this.client.addEventListener("close", () => error("Timezone client closed"));
         // You can subscribe to DBus signals here if needed.
 
         this.startEventMonitor();
 
-        const timezone = await getTimezone();
-        this.dispatch(setTimezoneAction({ timezone }));
-
-        const allValidTimezones = await getAllValidTimezones();
+        const [timezone, allValidTimezones, kickstarted] = await Promise.all([
+            getTimezone(),
+            getAllValidTimezones(),
+            getKickstarted(),
+        ]);
+        this.dispatch(setTimezoneAction({ kickstarted: Boolean(kickstarted), timezone }));
         this.dispatch(setAllValidTimezonesAction({ allValidTimezones }));
     }
 
+    stopEventMonitor () {
+        this._subscription?.remove();
+    }
+
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             async (path, iface, signal, args) => {
                 switch (signal) {
@@ -81,6 +88,14 @@ export class TimezoneClient {
  */
 export const getTimezone = () => {
     return getProperty("Timezone");
+};
+
+/**
+ * Whether the timezone module was configured from kickstart
+ * @returns {Promise<boolean>}
+ */
+export const getKickstarted = () => {
+    return _getProperty(TimezoneClient, OBJECT_PATH, KICKSTART_MODULE_INTERFACE, "Kickstarted");
 };
 
 /**

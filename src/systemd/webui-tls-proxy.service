@@ -1,0 +1,16 @@
+[Unit]
+Description=TLS Proxy for Anaconda Remote Installation
+After=webui-cockpit-ws.service
+Requires=webui-cockpit-ws.service
+
+[Service]
+# RuntimeDirectory is required by cockpit-certificate-ensure
+RuntimeDirectory=cockpit/tls
+# Cert is saved to /etc/cockpit/ws-certs.d/ (hardcoded in cockpit)
+ExecStartPre=+/usr/libexec/cockpit-certificate-ensure --for-cockpit-tls
+ExecStart=/usr/bin/python3 /usr/libexec/anaconda/webui-tls-proxy
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

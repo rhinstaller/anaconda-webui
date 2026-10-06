@@ -8,8 +8,8 @@ Setting up development container
 --------------------------------
 
 The anaconda team uses a containerized development environment using toolbx.
-If you can install [toolbx](https://containertoolbx.org/) or
-[distrobox](https://distrobox.privatedns.org/) on your system, it is highly
+If you can install `toolbx <https://containertoolbx.org/>`_ or
+`distrobox <https://distrobox.privatedns.org/>`_ on your system, it is highly
 recommended to do that:
 
  - It is known to work and gives you reproducible results.

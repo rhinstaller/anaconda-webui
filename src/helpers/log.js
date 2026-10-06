@@ -5,6 +5,14 @@
 
 import cockpit from "cockpit";
 
+// So JSON.stringify(error) includes message, name, and stack instead of "{}"
+if (typeof Error.prototype.toJSON !== "function") {
+    // eslint-disable-next-line no-extend-native
+    Error.prototype.toJSON = function toJSON () {
+        return { message: this.message, name: this.name, stack: this.stack };
+    };
+}
+
 const LOG_FILE = "/tmp/anaconda-webui.log";
 
 class Logger {
@@ -12,13 +20,17 @@ class Logger {
         this.logger = cockpit.file(LOG_FILE);
     }
 
+    _stringifyArgs (args) {
+        return JSON.stringify(args);
+    }
+
     _write_to_journal (level, args) {
-        cockpit.spawn(["logger", "-t", "anaconda-webui", "-p", level, args.join(" ")]);
+        return cockpit.spawn(["logger", "-t", "anaconda-webui", "-p", level, this._stringifyArgs(args)]);
     }
 
     _write (level, args) {
         const timestamp = new Date().toISOString();
-        const message = `${timestamp} [${level}] ${args.join(" ")}\n`;
+        const message = `${timestamp} [${level}] ${this._stringifyArgs(args)}\n`;
 
         this.logger.modify(oldContent => oldContent + message);
     }

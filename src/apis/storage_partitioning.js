@@ -11,12 +11,16 @@ import {
 import { _callClient, _getProperty } from "./helpers.js";
 
 import {
-    runStorageTask,
+    runStorageTaskAsync,
     StorageClient,
 } from "./storage.js";
 import {
+    getBootloaderDrive,
     setBootloaderDrive,
 } from "./storage_bootloader.js";
+import {
+    getSelectedDisks,
+} from "./storage_disks_selection.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";
@@ -100,6 +104,7 @@ export const getAutopartReuseDBusRequest = ({ reuseEFIPart, scheme }) => {
         LVM: cockpit.variant("i", 2),
         LVM_THINP: cockpit.variant("i", 3),
         PLAIN: cockpit.variant("i", 0),
+        STRATIS: cockpit.variant("i", 4),
     };
     const request = {
         "partitioning-scheme": configurationSchemeToDBus?.[scheme],
@@ -112,8 +117,8 @@ export const getAutopartReuseDBusRequest = ({ reuseEFIPart, scheme }) => {
         const removed = reuseEFIPart ? ["/", "/boot"] : ["/", "/boot", "bootloader"];
         request["removed-mount-points"] = cockpit.variant("as", removed);
     } else {
-        // "LVM", "BTRFS", "LVM_THINP"
-        // "/" can't be reallocated by autopartitioing as it is sharing container device with /home
+        // "LVM", "BTRFS", "LVM_THINP", "STRATIS"
+        // "/" can't be reallocated by autopartitioning as it is sharing container device with /home
         const removed = reuseEFIPart ? ["/boot"] : ["/boot", "bootloader"];
         request["removed-mount-points"] = cockpit.variant("as", removed);
         request["reformatted-mount-points"] = cockpit.variant("as", ["/"]);
@@ -215,25 +220,29 @@ export const partitioningConfigureWithTask = ({ partitioning }) => {
     );
 };
 
-const partitioningValidate = async ({ onFail, onSuccess, partitioning }) => {
+const partitioningValidateAsync = async ({ partitioning }) => {
     const tasks = await new StorageClient().client.call(
         partitioning,
         INTERFACE_NAME_PARTITIONING,
         "ValidateWithTask", []
     );
-    return runStorageTask({
-        onFail,
+    return runStorageTaskAsync({
         onSuccess: async () => {
             const taskProxy = new StorageClient().client.proxy(
                 "org.fedoraproject.Anaconda.Task",
                 tasks[0]
             );
             const result = await taskProxy.GetResult();
-            return onSuccess(result.v);
+            return result.v;
         },
         task: tasks[0],
     });
 };
+
+const parseStorageValidationReport = (validationReport) => ({
+    errors: validationReport?.["error-messages"]?.v || [],
+    warnings: validationReport?.["warning-messages"]?.v || [],
+});
 
 export const resetPartitioning = () => {
     return callClient("ResetPartitioning", []);
@@ -270,13 +279,19 @@ export const gatherRequests = ({ partitioning }) => {
     ).then(res => res[0]);
 };
 
-export const applyStorage = async ({ devices, luks, onFail, onSuccess, partitioning }) => {
+export const applyStorage = async ({ devices, luks, partitioning }) => {
     if (luks?.encrypted !== undefined) {
         await partitioningSetEncrypt({ encrypt: luks.encrypted, partitioning });
     }
     if (luks?.passphrase) {
         await partitioningSetPassphrase({ partitioning, passphrase: luks.passphrase });
     }
+
+    const [currentBootDrive, selectedDisks] = await Promise.all([
+        getBootloaderDrive(),
+        getSelectedDisks(),
+    ]);
+    const shouldResetBootDrive = currentBootDrive && !selectedDisks?.includes(currentBootDrive);
 
     const method = await getPartitioningMethod({ partitioning });
     if (method === "MANUAL") {
@@ -288,31 +303,24 @@ export const applyStorage = async ({ devices, luks, onFail, onSuccess, partition
 
         if (bootloaderDisk !== rootDisk && !!bootloaderDisk) {
             await setBootloaderDrive({ drive: bootloaderDisk });
-        } else {
+        } else if (shouldResetBootDrive || !currentBootDrive) {
             await setBootloaderDrive({ drive: "" });
         }
-    } else {
+    } else if (shouldResetBootDrive) {
         await setBootloaderDrive({ drive: "" });
     }
 
     const configureTasks = await partitioningConfigureWithTask({ partitioning });
 
-    const onConfigureTaskSuccess = async () => {
-        try {
+    const validationReport = await runStorageTaskAsync({
+        onSuccess: async () => {
             await applyPartitioning({ partitioning });
-            await partitioningValidate({
-                onFail,
-                onSuccess,
-                partitioning,
-            });
-        } catch (error) {
-            onFail(error);
-        }
-    };
-
-    runStorageTask({
-        onFail,
-        onSuccess: onConfigureTaskSuccess,
+            return partitioningValidateAsync({ partitioning });
+        },
         task: configureTasks[0],
     });
+
+    const { errors, warnings } = parseStorageValidationReport(validationReport);
+
+    return { errors, validationReport, warnings };
 };

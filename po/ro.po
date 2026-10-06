@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 04:31+0000\n"
-"PO-Revision-Date: 2026-03-03 04:28+0000\n"
+"POT-Creation-Date: 2026-10-06 09:25+0000\n"
+"PO-Revision-Date: 2026-09-28 08:57+0000\n"
 "Last-Translator: Petru Rebeja <petru@rebeja.eu>\n"
 "Language-Team: Romanian <https://translate.fedoraproject.org/projects/"
 "anaconda-webui/anaconda-webui/ro/>\n"
@@ -29,28 +29,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:143
+#: src/components/storage/installation-method/InstallationDestination.jsx:279
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
+#: src/components/storage/installation-method/InstallationDestination.jsx:163
+#: src/components/storage/installation-method/InstallationDestination.jsx:272
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:81
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:74
+#: src/components/storage/Common.jsx:58
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 eroare"
+msgstr[1] "$0 erori"
+msgstr[2] "$0 erori"
+
+#: src/components/app.jsx:96
 msgid "$0 installation"
 msgstr "Instalare $0"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:47
 msgid "$0 installer"
 msgstr "Instalare $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -58,30 +66,46 @@ msgstr ""
 "$0 este o partiție extinsă MBR care conține partiții logice. Eliminarea "
 "tuturor partițiilor logice va elimina automat partiția extinsă."
 
-#: src/components/review/ReviewConfiguration.jsx:106
+#: src/components/storage/installation-method/usePageComplete.jsx:114
 msgid "$0 is required, but only $1 is available."
 msgstr "este nevoie de $0, însă doar $1 sunt disponibili."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:90
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 avertisment"
 msgstr[1] "$0 avertismente"
 msgstr[2] "$0 avertismente"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:290
 msgid "$0 will be deleted"
 msgstr "$0 va fi eliminat"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:190
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "sistemul de fișiere '$0' nu poate fi pe un dispozitiv-bloc criptat"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/helpers/storage.js:267
+msgid "'$0' must be assigned to $1"
+msgstr "„$0” trebuie să fie atribuit la $1"
+
+#: src/helpers/storage.js:270
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "„$0” trebuie să fie pe un dispozitiv formatat ca „$1”"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/helpers/storage.js:261
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"'$0' trebuie să fie pe o partiție de sistem EFI. Partiția selectată "
+"folosește un sistem de fișiere FAT, dar nu e marcată ca fiind o partiție de "
+"sistem extinsă (ESP). Setați tipul partiției la sistem EFI și activați "
+"opțiunea ESP."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:272
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -89,37 +113,39 @@ msgstr ""
 "A fost detectată partiția „$0” pe dispozitivul MDRAID $1. Partițiile de tip "
 "bootloader pe dispozitive MDRAID nu sunt suportate."
 
-#: src/components/users/Accounts.jsx:177
+#: src/components/users/Accounts.jsx:256
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "Un cont de utilizator standard cu acces la privilegii administrative pentru "
 "a efectua modificări la nivel de sistem."
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:50
+msgid "Abort installation"
+msgstr "Anulare instalare"
+
+#: src/components/HeaderKebab.jsx:105
 msgid "About"
 msgstr "Despre aplicație"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:254
 msgid "Account"
 msgstr "Cont"
 
-#: src/components/review/StorageReview.jsx:235
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 msgid "Actions"
 msgstr "Acțiuni"
 
-#: src/components/datetime/CustomNTPModal.jsx:223
+#: src/components/datetime/CustomNTPModal.jsx:232
 msgid "Add another server..."
-msgstr "Adaugă server NTP..."
+msgstr "Adaugă alt server..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:644
 msgid "Add mount"
 msgstr "Adaugă montură"
 
 #: src/components/software/SoftwareSelection.jsx:122
-#, fuzzy
-#| msgid "Add-Ons for Selected Environment"
 msgid "Add-ons for your chosen environment"
 msgstr "Suplimente pentru mediul selectat"
 
@@ -127,7 +153,7 @@ msgstr "Suplimente pentru mediul selectat"
 msgid "Add-ons not specific to your environment"
 msgstr "Suplimente nespecifice mediului dumneavoastră"
 
-#: src/components/localization/InstallationLanguage.jsx:143
+#: src/components/localization/InstallationLanguage.jsx:148
 msgid "Additional languages"
 msgstr "Limbi suplimentare"
 
@@ -135,7 +161,7 @@ msgstr "Limbi suplimentare"
 msgid "Additional software for the selected environment"
 msgstr "Software suplimentar pentru mediul selectat"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:67
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:55
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
 "Toate modificările făcute în editorul de stocare sunt aplicate imediat."
@@ -148,11 +174,11 @@ msgstr "Toate dispozitivele care folosesc această parolă vor fi deblocate"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Interfața Web Anaconda"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:77
 msgid "Anaconda project page"
 msgstr "Pagina proiectului Anaconda"
 
@@ -160,9 +186,9 @@ msgstr "Pagina proiectului Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "Aplică asocierea punctului de montură și instalează"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
-msgstr ""
+msgstr "Se aplică modificările..."
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:22
 msgid ""
@@ -171,7 +197,7 @@ msgstr ""
 "Repartizarea partițiilor la punctele de montare. Utilă pentru aranjamente "
 "pre-configurate particularizate."
 
-#: src/components/Error.jsx:367
+#: src/components/Error.jsx:396
 msgid "Automatic log file upload"
 msgstr "Upload automat al fișierului jurnal"
 
@@ -184,33 +210,32 @@ msgstr "Setarea automată a datei și orei, folosind servere de timp"
 msgid "Automatically set timezone"
 msgstr "Setare automată a fusului orar"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:197
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Spațiu liber disponibil: $0. Instalarea necesită: $1."
 
-#: src/components/Error.jsx:591 src/components/AnacondaWizardFooter.jsx:76
+#: src/components/Error.jsx:668 src/components/Error.jsx:693
+#: src/components/AnacondaWizardFooter.jsx:62
 msgid "Back"
 msgstr "Înapoi"
 
 #: src/components/software/SoftwareSelection.jsx:63
 msgid "Base environment"
-msgstr "Mediu de bază."
+msgstr "Mediu de bază"
 
-#: src/components/Error.jsx:338
+#: src/components/Error.jsx:367
 msgid "Brief description of the issue"
 msgstr "Scurtă descriere a problemei"
 
-#: src/components/Error.jsx:327
-#, fuzzy
-#| msgid "Error details"
+#: src/components/Error.jsx:356
 msgid "Bug report details"
-msgstr "Detalii eroare"
+msgstr "Detaliile raportului de eroare"
 
-#: src/components/Error.jsx:212
+#: src/components/Error.jsx:206
 msgid "Bugzilla API key"
 msgstr "Cheie API Bugzilla"
 
-#: src/components/AnacondaHeader.jsx:75
+#: src/components/AnacondaHeader.jsx:73
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
 "associated with pre-released software, that you intend to use this for "
@@ -223,12 +248,12 @@ msgstr ""
 "sunteți dispus(ă) să raportați orice defecte sau incidente pentru a "
 "îmbunătăți acest produs."
 
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/datetime/CustomNTPModal.jsx:239
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Renunță"
 
@@ -236,7 +261,7 @@ msgstr "Renunță"
 msgid "Change"
 msgstr "Modifică"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:350
 msgid "Change destination"
 msgstr "Modifică destinația"
 
@@ -244,26 +269,30 @@ msgstr "Modifică destinația"
 msgid "Change hostname"
 msgstr "Modifică numele calculatorului"
 
-#: src/components/review/ReviewConfiguration.jsx:123
+#: src/components/storage/installation-method/usePageComplete.jsx:128
 msgid "Change partition layout"
 msgstr "Modifică aranjamentul partițiilor"
 
-#: src/components/localization/Keyboard.jsx:213
-#: src/components/localization/Keyboard.jsx:308
-#: src/components/localization/Keyboard.jsx:359
+#: src/components/localization/Keyboard.jsx:215
+#: src/components/localization/Keyboard.jsx:301
+#: src/components/localization/Keyboard.jsx:352
 msgid "Change system keyboard layout"
 msgstr "Modifică aranjamentul tastaturii de sistem"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:139
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:127
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 "Modificările făcute aici vor afecta sistemul imediat. Revenirea la starea "
 "anterioară nu este posibilă."
 
+#: src/components/review/ReviewConfiguration.jsx:191
+msgid "Checking installation configuration..."
+msgstr "Se verifică configurația de instalare..."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:475
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:481
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
 msgid "Checking storage configuration"
 msgstr "Se verifică configurația de stocare"
 
@@ -271,83 +300,95 @@ msgstr "Se verifică configurația de stocare"
 msgid "Clear search"
 msgstr "Goliți caseta de căutare"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Faceți click din nou pe „Următorul” pentru a continua în pofida acestor "
 "avertismente."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/InstallationDestination.jsx:383
 msgid "Close"
 msgstr "Închide"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:143
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:131
 msgid "Close storage editor"
 msgstr "Închide editorul spațiului de stocare"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:328
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 "Stocarea Cockpit nu a furnizat parola pentru deblocarea dispozitivul criptat."
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:279
 msgid "Completed"
 msgstr "Finalizat"
 
-#: src/components/datetime/CustomNTPModal.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:212
+msgid "Configuration is incomplete"
+msgstr "Configurația este incompletă"
+
+#: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
 msgstr "Configurează serverele NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:145
+#: src/components/datetime/CustomNTPModal.jsx:154
 msgid "Configure custom NTP servers"
 msgstr "Configurează serverele NTP particulare"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Configurează rețeaua"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:129
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:117
 msgid "Configure storage"
 msgstr "Configurează spațiul de stocare"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:682
 msgid "Configure storage again"
 msgstr "Configurează din nou spațiul de stocare"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:95
-#: src/components/users/Accounts.jsx:141 src/components/users/Accounts.jsx:297
+#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Confirmă parola"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:667
 msgid "Continue"
 msgstr "Continuă"
 
-#: src/components/AnacondaWizardFooter.jsx:140
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:43
+#: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Continuă instalarea"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:30
+msgid "Continue installation?"
+msgstr "Continuați instalarea?"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:620
 msgid "Continue with installation"
 msgstr "Continuă cu instalarea"
 
-#: src/components/users/index.js:18
+#: src/components/storage/Common.jsx:40
+msgid "Correct these issues before continuing."
+msgstr "Remediați aceste probleme înainte de a continua."
+
+#: src/components/users/index.js:20
 msgid "Create Account"
 msgstr "Creează cont"
 
-#: src/components/users/Accounts.jsx:239
+#: src/components/users/Accounts.jsx:318
 msgid "Create account"
 msgstr "Creează cont"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:66
 msgid "Currently installed: $0"
 msgstr "Instalat curent: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
 msgid "Custom"
 msgstr "Personalizat"
 
@@ -356,62 +397,74 @@ msgid "Date"
 msgstr "Data"
 
 #: src/components/datetime/DateAndTime.jsx:151
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 msgid "Date and time"
 msgstr "Data și ora"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+msgid "Delete partition"
+msgstr "Eliminare partiție"
+
+#: src/components/storage/StorageReview.jsx:348
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Ștergerea anumitor partiții poate împiedica $0 să pornească: $1"
 
-#: src/components/Error.jsx:268
+#: src/components/Error.jsx:262
 msgid "Description"
 msgstr "Descriere"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:264
 msgid "Destination"
 msgstr "Destinație"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:52
 msgid "Destination is encrypted"
-msgstr "Destinația este criptată."
+msgstr "Destinația este criptată"
 
-#: src/components/Error.jsx:273
+#: src/components/Error.jsx:267
 msgid "Detailed description of the issue"
 msgstr "Descriere detaliată a problemei"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:646
 msgid "Detected valid storage layout:"
 msgstr "Aranjamentul de stocare valid detectat:"
 
-#: src/components/review/StorageReview.jsx:233
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
+#: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Dispozitiv"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
 msgstr "Dispozitiv duplicat."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:237
 msgid "Duplicate mount point."
 msgstr "Punct de montură duplicat."
 
-#: src/components/users/Accounts.jsx:279
+#: src/components/users/Accounts.jsx:342 src/components/users/Accounts.jsx:393
 msgid "Enable root account"
 msgstr "Activează contul root"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:62
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:63
 msgid "Encrypt my data"
-msgstr "Cript_ează datele mele"
+msgstr "Criptează datele mele"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:249
 msgid "Encrypted"
 msgstr "Criptat"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:105
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:106
 msgid "Encryption"
 msgstr "Criptare"
+
+#: src/components/login/LoginPage.jsx:88
+msgid "Enter PIN"
+msgstr "Introduceți codul PIN"
+
+#: src/components/login/LoginPage.jsx:77
+msgid "Enter PIN to access the installer"
+msgstr "Introduceți codul PIN pentru a accesa aplicația de instalare"
 
 #: src/components/Error.jsx:203
 msgid ""
@@ -421,7 +474,7 @@ msgstr ""
 "Introduceți cheia dumneavoastră pentru API-ul Bugzilla pentru a raporta o "
 "problemă. Veți putea revizui și edita detaliile problemei în pasul următor."
 
-#: src/components/Error.jsx:285
+#: src/components/Error.jsx:279
 msgid "Environment"
 msgstr "Mediu"
 
@@ -429,24 +482,24 @@ msgstr "Mediu"
 msgid "Erase data and install"
 msgstr "Șterge datele și instalează"
 
-#: src/components/Error.jsx:716
+#: src/components/Error.jsx:818
 msgid "Error details"
 msgstr "Detalii eroare"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:249
 msgid "Exit to live desktop"
 msgstr "Ieși la sesiunea live"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:238
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:245
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
 msgstr "Partiție extinsă"
 
-#: src/components/Error.jsx:318
+#: src/components/Error.jsx:642
 msgid "Failed to report issue"
 msgstr "Raportarea incidentului a eșuat"
 
-#: src/components/localization/Keyboard.jsx:202
+#: src/components/localization/Keyboard.jsx:204
 msgid "Failed to save layouts"
 msgstr "Eșec la salvarea aranjamentelor"
 
@@ -454,11 +507,11 @@ msgstr "Eșec la salvarea aranjamentelor"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux necesită cel puțin $0 spațiu disk."
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:243
 msgid "Finalization"
 msgstr "Finalizare"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:241
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -466,11 +519,11 @@ msgstr ""
 "Finalizare: Configurarea sistemului este completă. Finalizarea instalării "
 "poate dura câteva momente."
 
-#: src/components/localization/Keyboard.jsx:218
+#: src/components/localization/Keyboard.jsx:220
 msgid "Find layout"
 msgstr "Caută aranjament"
 
-#: src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:409
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -478,23 +531,27 @@ msgstr ""
 "Pentru securitate îmbunătățită, evitați utilizarea directă a contului root. "
 "În schimb, folosiți contul de mai sus pentru a gestiona sistemul."
 
-#: src/components/users/Accounts.jsx:179
+#: src/components/users/Accounts.jsx:258
 msgid "Full name"
 msgstr "Nume complet"
 
-#: src/components/users/Accounts.jsx:127
+#: src/components/users/Accounts.jsx:194
 msgid "Full name cannot contain colon characters"
 msgstr "Numele complet nu poate conține caractere „două puncte”"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:251
 msgid "Helper text"
 msgstr "Text de asistență"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 msgid "Hide API key"
 msgstr "Ascunde cheie API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Hide PIN"
+msgstr "Ascunde codul PIN"
+
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Ascunde confirmarea parolei"
 
@@ -502,7 +559,7 @@ msgstr "Ascunde confirmarea parolei"
 msgid "Hide passphrase"
 msgstr "Ascunde parola"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Ascunde parola"
 
@@ -510,25 +567,25 @@ msgstr "Ascunde parola"
 msgid "Hostname"
 msgstr "Nume sistem"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:150
+#: src/components/storage/installation-method/InstallationScenario.jsx:163
 msgid "How would you like to install?"
 msgstr "Cum doriți să efectuați instalarea?"
 
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:309
 msgid "I understand that all existing data will be erased"
-msgstr "Înțeleg că toate datele existente vor fi șterse"
-
-#: src/components/review/ReviewConfiguration.jsx:253
-msgid ""
+msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr ""
+msgstr[0] "Înțeleg că toate datele existente vor fi șterse"
+msgstr[1] ""
+"Înțeleg că toate datele existente vor fi șterse de pe diskurile selectate"
+msgstr[2] ""
 "Înțeleg că toate datele existente vor fi șterse de pe diskurile selectate"
 
-#: src/components/review/ReviewConfiguration.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:314
 msgid "I understand that some existing data will be erased"
 msgstr "Înțeleg că o parte din datele existente vor fi șterse"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:315
 msgid "I understand that some partitions will be modified"
 msgstr "Înțeleg că unele partiții vor fi modificate"
 
@@ -538,11 +595,19 @@ msgstr ""
 "Dacă e lăsat gol, numele sistemului nu va fi salvat și va fi setat de "
 "informațiile din rețea."
 
+#: src/components/storage/installation-method/InstallationScenario.jsx:126
+msgid ""
+"If none of the options above apply, use the storage editor to create a "
+"custom partitioning before proceeding."
+msgstr ""
+"Dacă niciuna din opțiunile de mai sus nu se potrivesc, utilizați editorul "
+"spațiului de stocare pentru a crea partiții specifice înainte de a continua."
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
 msgstr "La configurarea partițiilor sunt necesare următoarele:"
 
-#: src/components/Error.jsx:382
+#: src/components/Error.jsx:411
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -552,57 +617,74 @@ msgstr ""
 "să $0. Raportarea manuală vă permite să revizuiți și să atașați doar "
 "fișierele pe care le alegeți."
 
-#: src/components/AnacondaHeader.jsx:78
+#: src/components/AnacondaHeader.jsx:76
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
 "Dacă nu înțelegeți sau nu acceptați riscurile, vă rugăm să ieșiți din "
 "această aplicație."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/Error.jsx:328
+msgid ""
+"If your issue matches one of the bugs above, you can open it and add your "
+"information there instead of creating a duplicate report."
+msgstr ""
+"Dacă incidentul dumneavoastră se potrivește cu un bug menționat mai sus, "
+"puteți să îl deschideți și să adăugați informația dumneavoastră la el în loc "
+"să creați un raport duplicat."
+
+#: src/components/installation/InstallationProgress.jsx:284
 msgid "In progress"
 msgstr "În desfășurare"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "Se inițializează..."
 
 #: src/components/storage/scenarios/use-free-space/index.js:27
-#: src/components/storage/scenarios/use-configured-storage/index.js:20
+#: src/components/storage/scenarios/use-configured-storage/index.js:25
+#: src/components/storage/scenarios/use-configured-storage/index.js:39
 msgid "Install"
 msgstr "Instalează"
 
-#: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/app.jsx:40
+msgid "Installation completed"
+msgstr "Instalare finalizată"
+
+#: src/components/installation/InstallationProgress.jsx:219
+#: src/components/Error.jsx:849
 msgid "Installation failed"
 msgstr "Instalarea a eșuat"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "Metoda de instalare"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:61
 msgid "Installation of the system failed"
 msgstr "Instalarea sistemului a eșuat"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:98
 msgid "Installation of the system failed: $0"
 msgstr "Instalarea sistemului a eșuat: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:209
+#: src/components/review/ReviewConfiguration.jsx:269
 msgid "Installation type"
 msgstr "Tipul de instalare"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Installing"
 msgstr "Se instalează"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Insufficient disk space"
 msgstr "Spațiu de stocare insuficient"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/login/LoginPage.jsx:68
+msgid "Invalid PIN. Please try again."
+msgstr "Codul PIN nu este valid. Vă rugăm să încercați din nou."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:255
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -616,9 +698,13 @@ msgstr ""
 "singur sistem de fișiere (de ex. LVM PV). Toate partițiile existente pe "
 "această colecție vor fi ignorate."
 
-#: src/components/datetime/CustomNTPModal.jsx:83
+#: src/components/datetime/CustomNTPModal.jsx:92
 msgid "Invalid hostname"
 msgstr "Numele sistemului este invalid"
+
+#: src/components/review/ReviewConfiguration.jsx:208
+msgid "Jump to first incomplete step"
+msgstr "Treci la prima etapă incompletă"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -628,38 +714,47 @@ msgstr ""
 "Păstrează aranjamentul curent al disk-ului și utilizează spațiul disponibil "
 "(pentru dual-boot cu alt Sistem de Operare)."
 
-#: src/components/localization/InstallationLanguage.jsx:243
+#: src/components/localization/InstallationLanguage.jsx:254
 msgid "Keyboard"
 msgstr "Tastatură"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:74
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:75
 msgid "Keyboard layout during boot"
 msgstr "Aranjament tastatură în timpul pornirii"
 
-#: src/components/review/ReviewConfiguration.jsx:180
-#: src/components/localization/InstallationLanguage.jsx:227
+#: src/components/localization/InstallationLanguage.jsx:240
+#: src/components/review/ReviewConfiguration.jsx:234
 msgid "Language"
 msgstr "Limbă"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:77
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:199
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:65
 msgid "Launch storage editor"
 msgstr "Pornește editorul spațiului de stocare"
 
-#: src/components/Error.jsx:358
+#: src/components/Error.jsx:387
 msgid "Learn more about restricted access in the configuration"
-msgstr ""
+msgstr "Aflați mai multe despre accesul restricționat la configurare"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/users/Accounts.jsx:209
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+"Lăsați ambele câmpuri pentru fraza de acces goale pentru a utiliza o parolă "
+"goală."
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
-msgstr "Amplasament"
+msgstr "Locație"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:147
 msgid "Locked devices"
 msgstr "Dispozitive blocate"
 
-#: src/components/localization/Keyboard.jsx:122
-#: src/components/localization/Keyboard.jsx:126
+#: src/components/login/LoginPage.jsx:118
+msgid "Log in"
+msgstr "Autentificare"
+
+#: src/components/localization/Keyboard.jsx:124
+#: src/components/localization/Keyboard.jsx:128
 msgid "Make current"
 msgstr "Definește ca actual"
 
@@ -675,7 +770,7 @@ msgstr "Configurare manuală disk-uri: Asociere puncte de montură"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Poate conține litere, numere și cratime."
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Poate necesita mai mult spațiu liber"
 
@@ -683,33 +778,33 @@ msgstr "Poate necesita mai mult spațiu liber"
 msgid "Medium"
 msgstr "Mediu"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:313
 msgid "Minimum of $0 required"
 msgstr "Este necesar minim $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Neconcordanță între dispozitivele părinte și copil selectate pentru "
 "reformatare."
 
-#: src/components/review/StorageReview.jsx:237
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
+#: src/components/storage/StorageReview.jsx:250
 msgid "Mount point"
 msgstr "Punct de montare"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point assignment"
 msgstr "Atribuirea punctelor de montură"
 
-#: src/components/localization/Keyboard.jsx:144
-#: src/components/localization/Keyboard.jsx:148
+#: src/components/localization/Keyboard.jsx:146
+#: src/components/localization/Keyboard.jsx:150
 msgid "Move down"
 msgstr "Mută în jos"
 
-#: src/components/localization/Keyboard.jsx:133
-#: src/components/localization/Keyboard.jsx:137
+#: src/components/localization/Keyboard.jsx:135
+#: src/components/localization/Keyboard.jsx:139
 msgid "Move up"
 msgstr "Mută în sus"
 
@@ -717,27 +812,36 @@ msgstr "Mută în sus"
 msgid "Must be at least $0 characters"
 msgstr "Trebuie să fie cel puțin $0 simboluri"
 
-#: src/components/datetime/CustomNTPModal.jsx:148
+#: src/components/Error.jsx:676
+msgid "My issue is different, continue"
+msgstr "Incidentul meu este diferit, continuă"
+
+#: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
 msgstr "Servere NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:196
+#: src/components/datetime/CustomNTPModal.jsx:205
 msgid "NTS"
 msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "Nume"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Necesită cel puțin $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Rețea"
+
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
+#: src/components/network/index.js:20
 msgid "Network Configuration"
 msgstr "Configurare rețea"
 
-#: src/components/Error.jsx:624
+#: src/components/Error.jsx:726
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -745,33 +849,37 @@ msgstr ""
 "Rețeaua nu este disponibilă. Configurați rețeaua în meniul din bara de sus "
 "pentru a semnala incidentul."
 
-#: src/components/Error.jsx:625
+#: src/components/Error.jsx:727
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Rețeaua nu este disponibilă. Configurați rețeaua pentru a semnala incidentul."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Plugin-ul pentru rețea a eșuat"
 
-#: src/components/Error.jsx:581 src/components/AnacondaWizardFooter.jsx:85
+#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
 msgstr "Următorul"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:624
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 msgid "No devices"
 msgstr "Niciun dispozitiv"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:125
 msgid "No disks available"
 msgstr "Niciun disk disponibil"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "No disks selected"
 msgstr "Nu au fost selectate discuri"
 
-#: src/components/localization/Keyboard.jsx:240
+#: src/components/localization/Keyboard.jsx:49
+msgid "No keyboard layouts selected"
+msgstr "Nu ați selectat niciun aranjament al tastaturii"
+
+#: src/components/localization/Keyboard.jsx:242
 msgid "No layouts selected yet"
 msgstr "Niciun aranjament selectat"
 
@@ -779,7 +887,7 @@ msgstr "Niciun aranjament selectat"
 msgid "No results found"
 msgstr "Nu a fost găsit niciun rezultat"
 
-#: src/components/localization/Keyboard.jsx:394
+#: src/components/localization/Keyboard.jsx:416
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
@@ -787,7 +895,7 @@ msgstr ""
 "Nu se poate obține keymap VConsole valid pentru aranjamentul(ele) "
 "selectat(e) al(e) tastaturii. Vă rugăm să selectați alt aranjament."
 
-#: src/components/review/ReviewConfiguration.jsx:104
+#: src/components/storage/installation-method/usePageComplete.jsx:112
 msgid "Not enough available free space"
 msgstr "Spațiu liber insuficient"
 
@@ -799,11 +907,7 @@ msgstr "Spațiu liber insuficient pe disk-urile selectate."
 msgid "Not enough space on selected disks."
 msgstr "Nu este suficient spațiu liber pe discurile selectate."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "Remarcă"
-
-#: src/components/AnacondaHeader.jsx:72
+#: src/components/AnacondaHeader.jsx:70
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
 "testing purposes only. Do NOT use this software for any critical work or for "
@@ -813,19 +917,19 @@ msgstr ""
 "destinat folosirii doar pentru dezvoltare și testare. NU utilizați acest "
 "software pentru activități critice sau în medii de producție."
 
-#: src/components/Error.jsx:180
+#: src/components/Error.jsx:181
 msgid "Open Bugzilla bug entry form"
 msgstr "Deschide formularul Bugzilla pentru introducerea problemei"
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:223
 msgid "Operating system"
 msgstr "Sistem de operare"
 
-#: src/components/datetime/CustomNTPModal.jsx:152
+#: src/components/datetime/CustomNTPModal.jsx:161
 msgid "Options"
 msgstr "Opțiuni"
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Other keyboards"
 msgstr "Alte tastaturi"
 
@@ -833,10 +937,10 @@ msgstr "Alte tastaturi"
 msgid "Partitions (advanced)"
 msgstr "Partiții (avansat)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:92
+#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:138 src/components/users/Accounts.jsx:293
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Frază secretă"
 
@@ -844,60 +948,68 @@ msgstr "Frază secretă"
 msgid "Passphrase did not match any locked device"
 msgstr "Parola nu corespunde niciunui dispozitiv blocat"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Parolele trebuie să fie aceleași"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:273
 msgid "Pending"
 msgstr "În așteptare"
 
-#: src/components/Error.jsx:93
+#: src/components/Error.jsx:94
 msgid "Please attach the log file $0 to the issue."
 msgstr "Vă rugăm atașați fișierul jurnal $0 la incident."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/login/LoginPage.jsx:44
+msgid "Please enter a PIN"
+msgstr "Vă rugăm introduceți un cod PIN valid."
+
+#: src/components/storage/installation-method/InstallationDestination.jsx:325
 msgid "Please select at least one disk to continue"
 msgstr "Vă rugăm să selectați cel puțin un disk pentru a continua"
 
-#: src/components/datetime/CustomNTPModal.jsx:189
+#: src/components/datetime/CustomNTPModal.jsx:198
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/Error.jsx:296
+msgid "Potential duplicate bugs found"
+msgstr "Au fost identificate bug-uri potențial duplicate"
+
+#: src/components/HeaderKebab.jsx:48
 msgid "Powered by Anaconda"
 msgstr "Împuternicit de Anaconda"
 
-#: src/components/AnacondaHeader.jsx:62
+#: src/components/AnacondaHeader.jsx:60
 msgid "Pre-release"
 msgstr "Pre-lansare"
 
-#: src/components/Error.jsx:178
+#: src/components/Error.jsx:179
 msgid "Prefer to report manually? $0"
 msgstr "Preferați să raportați manual? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Proceed with installation"
 msgstr "Continuați cu instalarea"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Quit"
 msgstr "Ieșire"
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Quit installer?"
 msgstr "Părăsiți aplicația de instalare?"
 
-#: src/components/app.jsx:126
+#: src/components/app.jsx:142
 msgid "Reading information about the OS failed."
 msgstr "Citirea informaţiilor despre sistemul de operare a eşuat."
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:83
 msgid "Reading information about the computer failed."
 msgstr "Citirea de informaţii despre calculator a eşuat."
 
-#: src/components/app.jsx:116
+#: src/components/app.jsx:132
 msgid "Reading installer configuration failed."
 msgstr "Citirea configuraţiei aplicaţiei de instalare a eşuat."
 
@@ -918,12 +1030,13 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Numele sistemului nu trebuie să depășească 64 de semne"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/installation/InstallationProgress.jsx:248
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Reboot"
 msgstr "Repornire"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -931,21 +1044,17 @@ msgstr ""
 "Reporniți în Windows pentru a redimensiona partițiile criptate cu BitLocker. "
 "Asigurațivă că aveți cel puțin $0 spațiu disponibil pentru instalare."
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Reboot system?"
 msgstr "Reporniți sistemul?"
-
-#: src/components/installation/InstallationProgress.jsx:218
-msgid "Reboot to installed system"
-msgstr "Reporniți cu sistemul instalat"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 msgid "Reclaim additional space"
 msgstr "Recuperare spațiu suplimentar"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:114
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:134
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:205
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
 msgstr "Recuperare spațiu"
 
@@ -953,7 +1062,7 @@ msgstr "Recuperare spațiu"
 msgid "Reclaim space (required)"
 msgstr "Re_cuperare spațiu (obligatoriu)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 msgid "Recommended"
 msgstr "Recomandat"
 
@@ -961,8 +1070,8 @@ msgstr "Recomandat"
 msgid "Recommended partitions:"
 msgstr "Partiții recomandate:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:408
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:621
 msgid "Reformat"
 msgstr "Reformatare"
 
@@ -971,10 +1080,10 @@ msgstr "Reformatare"
 msgid "Reinstall Fedora"
 msgstr "Reinstalare Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
-#: src/components/localization/Keyboard.jsx:155
-#: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:435
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
+#: src/components/localization/Keyboard.jsx:157
+#: src/components/localization/Keyboard.jsx:161
 msgid "Remove"
 msgstr "Elimină"
 
@@ -986,18 +1095,18 @@ msgstr ""
 "Eliminați toate partițiile de pe dispozitivele selectate împreună cu "
 "sistemele de operare."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:118
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
 "Eliminați sau redimensionați sistemele de fișiere existente pentru a elibera "
 "spațiu pentru instalare."
 
-#: src/components/datetime/CustomNTPModal.jsx:207
+#: src/components/datetime/CustomNTPModal.jsx:216
 msgid "Remove server"
 msgstr "Eliminare server"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1013,26 +1122,26 @@ msgid "Replace current installation, but keep files in home."
 msgstr ""
 "Înlocuiți instalarea curentă, dar păstrați fișierele în directorul /home."
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:108
 msgid "Report Issue"
 msgstr "Raportați incident"
 
-#: src/components/Error.jsx:159
+#: src/components/Error.jsx:160
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 "Raportați un incident sau oferiți feedback deschizând formularul Bugzilla $0."
 
-#: src/components/Error.jsx:601 src/components/Error.jsx:768
+#: src/components/Error.jsx:703 src/components/Error.jsx:870
 msgid "Report issue"
 msgstr "Raportați incident"
 
-#: src/components/Error.jsx:601
+#: src/components/Error.jsx:703
 msgid "Reporting issue..."
 msgstr "Raportare incident..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
 msgstr "Obligatoriu"
 
@@ -1040,35 +1149,39 @@ msgstr "Obligatoriu"
 msgid "Requirements"
 msgstr "Cerințe"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:116
 msgid "Rescan devices"
 msgstr "Rescanare dispozitive"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:97
 msgid "Rescanning of the disks failed."
 msgstr "Se re-scanează discurile finalizate."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:513
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
 msgstr "Redimensionare"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+msgid "Resize partition"
+msgstr "Redimensionare partiție"
+
+#: src/components/storage/StorageReview.jsx:354
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Redimensionarea următoarelor partiții de la $0:$1"
 
-#: src/components/Error.jsx:352
+#: src/components/Error.jsx:381
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Restricționează accesul la raport"
 
-#: src/components/Error.jsx:354
+#: src/components/Error.jsx:383
 msgid "Restricts the report to the $0 group. $1"
-msgstr ""
+msgstr "Restricționează accesul la raport la grupul $0. $1"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:34
 msgid "Return to installation"
 msgstr "Înapoi la instalare"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:673
 msgid "Return to storage editor"
 msgstr "Întoarcere la editorul de stocare"
 
@@ -1076,18 +1189,26 @@ msgstr "Întoarcere la editorul de stocare"
 msgid "Review and install"
 msgstr "Revizuiți și instalați"
 
-#: src/components/review/ReviewConfiguration.jsx:74
+#: src/components/users/Accounts.jsx:94
+msgid "Root account has been configured"
+msgstr "Contul root a fost configurat"
+
+#: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
 msgstr "Contul root este activat"
 
-#: src/components/review/ReviewConfiguration.jsx:68
+#: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 "Contul root este activat, dar nu a fost configurat niciun cont de utilizator"
 
+#: src/components/users/Accounts.jsx:351
+msgid "Root password has been set."
+msgstr "Parola root a fost setată."
+
+#: src/components/datetime/CustomNTPModal.jsx:245
+#: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
-#: src/components/datetime/CustomNTPModal.jsx:236
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Salvează"
 
@@ -1095,7 +1216,7 @@ msgstr "Salvează"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Scanați codul QR cu telefonul sau accesați:"
 
-#: src/components/localization/InstallationLanguage.jsx:196
+#: src/components/localization/InstallationLanguage.jsx:204
 msgid "Search for a language"
 msgstr "Căutați o limbă"
 
@@ -1107,23 +1228,23 @@ msgstr "Căutați software suplimentar"
 msgid "Search for an environment"
 msgstr "Căutați un mediu"
 
-#: src/components/localization/Keyboard.jsx:222
+#: src/components/localization/Keyboard.jsx:224
 msgid "Search keyboard layout"
 msgstr "Căutați aranjament de tastatură"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:109
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
 "Securizați-vă datele cu ajutorul criptării la nivel de disk. Se aplică doar "
-"pentru partițiile noi."
+"pentru partițiile noi"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:375
 msgid "Select"
 msgstr "Selectează"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:304
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:338
 msgid "Select a device"
 msgstr "Selectați un dispozitiv"
 
@@ -1131,7 +1252,7 @@ msgstr "Selectați un dispozitiv"
 msgid "Select city"
 msgstr "Selectare oraș"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:358
 msgid "Select destination"
 msgstr "Selectați destinația"
 
@@ -1139,11 +1260,11 @@ msgstr "Selectați destinația"
 msgid "Select region"
 msgstr "Selectați regiunea"
 
-#: src/components/localization/Keyboard.jsx:233
+#: src/components/localization/Keyboard.jsx:235
 msgid "Selected (top = current)"
 msgstr "Aranjamente selectate (cel de sus = curent)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:120
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Formatul $0 al dispozitivului selectat nu poate fi reformatat."
 
@@ -1151,11 +1272,11 @@ msgstr "Formatul $0 al dispozitivului selectat nu poate fi reformatat."
 msgid "Send us feedback on your installation"
 msgstr "Trimiteți feedback despre instalarea dumneavoastră"
 
-#: src/components/datetime/CustomNTPModal.jsx:151
+#: src/components/datetime/CustomNTPModal.jsx:160
 msgid "Server"
 msgstr "Server"
 
-#: src/components/datetime/CustomNTPModal.jsx:181
+#: src/components/datetime/CustomNTPModal.jsx:190
 msgid "Server is not reachable"
 msgstr "Serverul nu este accesibil"
 
@@ -1175,11 +1296,15 @@ msgstr "Partajați disk-ul cu alte sisteme de operare: $0"
 msgid "Show AM/PM"
 msgstr "Afișează AM/PM"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 msgid "Show API key"
 msgstr "Afișează cheia API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Show PIN"
+msgstr "Afișează codul PIN"
+
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Afișează confirmarea parolei"
 
@@ -1187,19 +1312,19 @@ msgstr "Afișează confirmarea parolei"
 msgid "Show passphrase"
 msgstr "Arată parola"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Arată parola"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:247
 msgid "Size"
 msgstr "Dimensiune"
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:233
 msgid "Software installation"
 msgstr "Instalare software"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:231
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1208,54 +1333,65 @@ msgstr ""
 "în curs de instalare pe dispozitivul dumneavoastră."
 
 #: src/components/software/index.js:19 src/components/software/index.js:20
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Software selection"
 msgstr "Selecție software"
 
-#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
+#: src/components/review/ReviewConfiguration.jsx:215
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr ""
+"Mai sunt câteva etape de instalare care trebuie finalizate înainte de a "
+"putea continua."
+
+#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:52
 msgid "Some required partitions are missing: $0"
 msgstr "Lipsesc câteva partiții obligatorii: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
 msgstr "Spațiu"
 
-#: src/components/Error.jsx:279
+#: src/components/Error.jsx:273
 msgid "Stacktrace"
 msgstr "Desfășurător de stivă"
 
-#: src/components/review/ReviewConfiguration.jsx:216
+#: src/components/review/ReviewConfiguration.jsx:276
 msgid "Storage"
 msgstr "Stocare"
 
-#: src/components/installation/InstallationProgress.jsx:129
-#: src/components/storage/storage-configuration/index.js:20
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
-#: src/components/steps.js:33
+#: src/components/storage/storage-configuration/index.js:22
 msgid "Storage configuration"
 msgstr "Configurare stocare"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:226
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Configurare stocare: Stocarea este în curs de configurare."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:58
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
 msgid "Storage editor"
 msgstr "Editor stocare"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
-msgid "Storage editor is available only in the `Installation method` step."
-msgstr ""
-"Editorul de stocare este disponibil doar în pasul „Metoda de instalare”."
-
-#: src/components/storage/scenarios/use-configured-storage/index.js:21
+#: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
 msgstr "Stocarea se bazează pe configurarea din „Modificare stocare”."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
+#: src/components/storage/scenarios/use-configured-storage/index.js:40
+msgid ""
+"Storage layout is defined by the kickstart file. The planned partitioning "
+"layout can be reviewed in the summary step."
+msgstr ""
+"Aranjamentul de stocare este definit de fișierul kickstart. Aranjamentul "
+"planificat al partițiilor poate fi revizuit în etapa rezumat."
+
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid "Storage plugin failed"
 msgstr "Plugin-ul pentru stocare a eșuat"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:618
 msgid "Storage requirements not met"
 msgstr "Cerințele pentru stocare nu sunt satisfăcute"
 
@@ -1263,7 +1399,7 @@ msgstr "Cerințele pentru stocare nu sunt satisfăcute"
 msgid "Strong"
 msgstr "Puternică"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:216
 msgid "Successfully installed"
 msgstr "Instalat cu succes"
 
@@ -1271,23 +1407,23 @@ msgstr "Instalat cu succes"
 msgid "Successfully unlocked $0."
 msgstr "A fost deblocat cu succes $0."
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Suggested keyboards"
 msgstr "Tastaturi sugerate"
 
-#: src/components/localization/InstallationLanguage.jsx:122
+#: src/components/localization/InstallationLanguage.jsx:127
 msgid "Suggested languages"
 msgstr "Limbi sugerate"
 
-#: src/components/users/Accounts.jsx:309
+#: src/components/users/Accounts.jsx:339 src/components/users/Accounts.jsx:423
 msgid "System"
 msgstr "Sistem"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:238
 msgid "System configuration"
 msgstr "Configurare sistem"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:236
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1295,9 +1431,24 @@ msgstr ""
 "Configurare sistem: Instalarea software este completă. Sistemul este în curs "
 "de configurare."
 
-#: src/components/app.jsx:161
+#: src/components/app.jsx:177
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Instalarea Anaconda s-a oprit pe neașteptate."
+
+#: src/components/Error.jsx:301
+msgid ""
+"The following open bugs may be related to your issue. Please review them "
+"before creating a new report."
+msgstr ""
+"Următoarele erori deschise ar putea avea legătură cu problema dumneavoastră. "
+"Vă rugăm să le verificați înainte de a crea un nou raport."
+
+#: src/components/users/Accounts.jsx:47
+msgid "The following user will be created:"
+msgid_plural "The following users will be created:"
+msgstr[0] "Va fi creat următorul utilizator:"
+msgstr[1] "Vor fi creați următorii utilizatori:"
+msgstr[2] "Vor fi creați următorii utilizatori:"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
@@ -1307,13 +1458,19 @@ msgstr ""
 "Instalarea necesită $0 spațiu-disk însă capacitatea diskurilor selectate "
 "este de doar $1."
 
-#: src/components/Error.jsx:676
+#: src/components/Error.jsx:778
 msgid "The installer cannot continue due to a critical error."
 msgstr "Instalarea nu poate continua din cauza unei erori critice."
 
-#: src/components/Error.jsx:675
+#: src/components/Error.jsx:777
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Instalarea nu poate continua din cauza unei erori critice: $0"
+
+#: src/hooks/Localization.jsx:68
+msgid ""
+"The keyboard layout has changed since the disk encryption passphrase was "
+"set. Please re-enter the passphrase."
+msgstr ""
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:35
 msgid ""
@@ -1323,7 +1480,7 @@ msgstr ""
 "Parola introdusă conține simboluri non-ASCII. Este posibil să nu puteți "
 "schimba aranjamentul tastaturii când o veți introduce."
 
-#: src/components/localization/Keyboard.jsx:262
+#: src/components/localization/Keyboard.jsx:264
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
@@ -1331,7 +1488,7 @@ msgstr ""
 "Aranjamentul selectat al tastaturii nu suportă simboluri ASCII. Vă rugăm să "
 "selectați un aranjament care suportă simbolurile ASCII ca implicit."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:52
 msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
@@ -1342,29 +1499,23 @@ msgstr ""
 "destinat utilizării ca utilitar avansat și nu este destinat utilizării într-"
 "o instalare tipică."
 
-#: src/components/Error.jsx:378
-#, fuzzy
-#| msgid ""
-#| "These log files may contain sensitive information such as IP addresses, "
-#| "usernames, or other system details. Attachments on Bugzilla issues are "
-#| "marked private by default."
+#: src/components/Error.jsx:407
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
 msgstr ""
 "Aceste fișiere-jurnal pot conține informații sensibile precum adrese IP, "
-"nume de utilizatori sau alte detalii ale sistemului. Atașamentele la "
-"incidentele Bugzilla sunt marcate implicit ca fiind date private."
+"nume de utilizatori sau alte detalii ale sistemului."
 
 #: src/components/review/Hostname.jsx:51
 msgid "This hostname can't be submitted"
 msgstr "Acest nume de sistem nu poate fi trimis"
 
-#: src/components/AnacondaHeader.jsx:66
+#: src/components/AnacondaHeader.jsx:64
 msgid "This is unstable, pre-release software"
 msgstr "Acest software este în pre-lansare și nu este stabil"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:86
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:87
 msgid "This layout will be used for unlocking your system on boot"
 msgstr ""
 "Acest aranjament va fi folosit pentru deblocarea sistemului dumneavoastră la "
@@ -1374,7 +1525,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Aceasta ar putea dura ceva timp"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:476
 msgid "This will take a few moments"
 msgstr "Aceasta ar putea dura câteva momente"
 
@@ -1382,20 +1533,20 @@ msgstr "Aceasta ar putea dura câteva momente"
 msgid "Time"
 msgstr "Timp"
 
-#: src/components/review/ReviewConfiguration.jsx:187
 #: src/components/datetime/Timezone.jsx:130
+#: src/components/review/ReviewConfiguration.jsx:241
 msgid "Timezone"
 msgstr "Fus orar"
 
-#: src/components/Error.jsx:330
+#: src/components/Error.jsx:359
 msgid "Title"
 msgstr "Titlu"
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:264
 msgid "To begin using $0, reboot your system."
 msgstr "Pentru a începe utilizarea $0, reporniți sistemul."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:205
+#: src/components/storage/installation-method/InstallationMethod.jsx:198
 msgid "To continue, select the devices to install to."
 msgstr ""
 "Pentru a continua selectați dispozitivele pe care se va efectua instalarea."
@@ -1408,36 +1559,41 @@ msgstr ""
 "Pentru a utiliza această opțiune, redimensionați sau eliminați partițiile "
 "existente pentru a elibera cel puțin $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Tip"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:85
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr "Nu se poate planifica ștergerea$0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr "Nu se poate planifica redimensionarea $0"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+msgid "Undo last action"
+msgstr "Anulare acțiune anterioară"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
 msgid "Unlock"
 msgstr "Deblocare"
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:64
-msgid ""
-"Unlock LUKS-encrypted partitions to keep existing data and show more "
-"installation methods."
-msgstr ""
-"Deblocați partițiile criptate cu LUKS pentru a păstra datele existente și a "
-"vedea mai multe modalități de instalare."
-
 #: src/components/storage/installation-method/EncryptedDevices.jsx:138
 msgid "Unlock encrypted devices"
 msgstr "Deblocați dispozitivele criptate"
 
-#: src/components/storage/scenarios/use-configured-storage/index.js:22
+#: src/components/storage/installation-method/EncryptedDevices.jsx:64
+msgid ""
+"Unlock encrypted partitions to keep existing data and show more installation "
+"methods."
+msgstr ""
+"Deblocați partițiile criptate pentru a păstra datele existente și pentru a "
+"afișa mai multe metode de instalare."
+
+#: src/components/storage/scenarios/use-configured-storage/index.js:27
+#: src/components/storage/scenarios/use-configured-storage/index.js:41
 msgid "Use configured storage"
 msgstr "Utilizează spațiul de stocare configurat"
 
@@ -1445,23 +1601,27 @@ msgstr "Utilizează spațiul de stocare configurat"
 msgid "Use entire disk"
 msgstr "Folosește întregul disk"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Use free space"
 msgstr "Folosește spațiul liber"
 
-#: src/components/users/Accounts.jsx:165
+#: src/components/users/Accounts.jsx:244
 msgid "Use local account"
 msgstr "Folosește utilizator local"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:652
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Folosește dispozitivul RAID pentru partiționare automată"
 
-#: src/components/users/Accounts.jsx:210
+#: src/components/users/Accounts.jsx:494
+msgid "User creation"
+msgstr "Creare utilizatori"
+
+#: src/components/users/Accounts.jsx:289
 msgid "User name"
 msgstr "Nume utilizator"
 
-#: src/components/users/Accounts.jsx:115
+#: src/components/users/Accounts.jsx:182
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1469,15 +1629,15 @@ msgstr ""
 "Numele utilizatorului poate conține doar: litere a-z, cifre 0-9, cratimă $0, "
 "punct $1, linie de subliniere $2"
 
-#: src/components/users/Accounts.jsx:112
+#: src/components/users/Accounts.jsx:179
 msgid "User name must not be a reserved word"
 msgstr "Numele utilizatorului nu trebuie să fie un cuvânt rezervat"
 
-#: src/components/users/Accounts.jsx:109
+#: src/components/users/Accounts.jsx:176
 msgid "User names must be shorter than 33 characters"
 msgstr "Numele utilizatorului trebuie să fie mai scurt de 33 de simboluri"
 
-#: src/components/Error.jsx:581
+#: src/components/Error.jsx:658
 msgid "Validating..."
 msgstr "În curs de validare..."
 
@@ -1485,19 +1645,19 @@ msgstr "În curs de validare..."
 msgid "Weak"
 msgstr "Slabă"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Bine ați venit"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 msgid "Welcome to Fedora Linux"
 msgstr "Bun venit în Fedora Linux"
 
-#: src/components/AnacondaPage.jsx:86
+#: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
 msgstr "Bine ați venit. Haideți să instalăm $0 acum."
 
-#: src/components/Error.jsx:373
+#: src/components/Error.jsx:402
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1505,9 +1665,13 @@ msgstr ""
 "La trimiterea acestui incident, următoarele fișiere-jurnal vor fi încărcate "
 "automat: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:531
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr "Partițiile Windows cu criptare BitLocker nu pot fi redimensionate"
+
+#: src/components/app.jsx:41
+msgid "You can close this browser window now."
+msgstr "Acum puteți închide această fereastră a navigatorului."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
@@ -1517,16 +1681,16 @@ msgstr ""
 "Puteți elibera suficient spațiu aici și să lăsați aplicația de instalare să "
 "gestioneze restul, sau să configurați manual partițiile."
 
-#: src/components/Error.jsx:238
+#: src/components/Error.jsx:232
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Puteți genera cheia API pentru contul dumneavoastră Bugzilla $0."
 
-#: src/components/users/Accounts.jsx:375
+#: src/components/users/Accounts.jsx:527
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
 msgstr ""
-"Trebuie să activați contul root sau să creați un cont local de utilizator "
+"Trebuie să activați contul root sau să creați un cont de utilizator local "
 "pentru a continua."
 
 #: src/components/datetime/DateAndTime.jsx:142
@@ -1535,21 +1699,21 @@ msgstr ""
 "Trebuie să fiți conectați la o rețea pentru a activa configurarea automată a "
 "datei și orei."
 
-#: src/components/AnacondaWizardFooter.jsx:122
+#: src/components/AnacondaWizardFooter.jsx:108
 msgid "Your progress will not be saved."
 msgstr "Progresul nu va fi salvat."
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:278
 msgid "completed step"
 msgstr "etapă finalizată"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:283
 msgid "current step"
 msgstr "etapa curentă"
 
-#: src/components/review/StorageReview.jsx:158
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:376
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:389
+#: src/components/storage/StorageReview.jsx:168
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 msgid "delete"
 msgstr "șterge"
 
@@ -1557,54 +1721,82 @@ msgstr "șterge"
 msgid "edit"
 msgstr "modifică"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypt"
 msgstr "criptează"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypted"
 msgstr "criptat"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:234
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 msgid "extended partition"
 msgstr "partiție extinsă"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "formatează ca $0"
 
-#: src/components/Error.jsx:161 src/components/Error.jsx:241
+#: src/components/Error.jsx:162 src/components/Error.jsx:235
 msgid "here"
 msgstr "aici"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/review/ReviewConfiguration.jsx:57
+msgid "incomplete"
+msgstr "incompletă"
+
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "montează"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:272
 msgid "pending step"
 msgstr "etapă în așteptare"
 
-#: src/components/Error.jsx:384
+#: src/components/Error.jsx:413
 msgid "report the issue manually"
 msgstr "raportați incidentul manual"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:173
 msgid "resized from $0"
 msgstr "redimensionat de la $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:460
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:464
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
 msgstr "micșorează"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:410
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr "micșorează la $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:370
+#: src/components/review/Hostname.jsx:154
+msgid "transient, will use DHCP"
+msgstr "temporar, se va utiliza DHCP"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "anulează"
+
+#~ msgid "Storage editor is available only in the `Installation method` step."
+#~ msgstr ""
+#~ "Editorul de stocare este disponibil doar în pasul „Metoda de instalare”."
+
+#~ msgid "Reboot to installed system"
+#~ msgstr "Reporniți cu sistemul instalat"
+
+#~ msgid "Note"
+#~ msgstr "Remarcă"
+
+#~ msgid ""
+#~ "I understand that all existing data will be erased from the selected disks"
+#~ msgstr ""
+#~ "Înțeleg că toate datele existente vor fi șterse de pe diskurile selectate"
+
+#, fuzzy
+#~| msgid "User %s will be created"
+#~ msgid "The following users will be created:"
+#~ msgstr "Utilizatorul %s va fi creat"
 
 #~ msgid ""
 #~ "After creating the issue, click 'Add attachment' and attach file $0 and "
@@ -1652,11 +1844,6 @@ msgstr "anulează"
 
 #~ msgid "Unusable layout"
 #~ msgstr "Aranjament inutilizabil"
-
-#, fuzzy
-#~| msgid "no NTP servers have been configured"
-#~ msgid "No user or root account has been configured"
-#~ msgstr "nu au fost configurate servere NTP"
 
 #, fuzzy
 #~ msgid "Preparing report"
@@ -1738,14 +1925,6 @@ msgstr "anulează"
 #, fuzzy
 #~ msgid "Select a disk"
 #~ msgstr "Dispozitiv selectat"
-
-#, fuzzy
-#~| msgid "The following mandatory spokes are not completed:"
-#~ msgid "The following disk was detected: $0"
-#~ msgid_plural "The following disks were detected: $0"
-#~ msgstr[0] "Următoarele spițe (spokes) nu sunt completate:"
-#~ msgstr[1] "Următoarele spițe (spokes) nu sunt completate:"
-#~ msgstr[2] "Următoarele spițe (spokes) nu sunt completate:"
 
 #, fuzzy
 #~ msgid "The usable disks have changed"
@@ -2301,9 +2480,6 @@ msgstr "anulează"
 #~ msgid "Apple EFI Boot Partition"
 #~ msgstr "Partiție de pornire Apple EFI"
 
-#~ msgid "Apply configuration in installer"
-#~ msgstr "Confirmă configurația pentru instalare"
-
 #, fuzzy
 #~| msgid ""
 #~| "Are you sure you want to delete all of the data on %s, including "
@@ -2587,9 +2763,6 @@ msgstr "anulează"
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "Se verifică dependențele software..."
-
-#~ msgid "Checking storage configuration..."
-#~ msgstr "Se verifică configurația de stocare..."
 
 #~ msgid "City"
 #~ msgstr "Oraș"
@@ -2915,9 +3088,6 @@ msgstr "anulează"
 
 #~ msgid "Enterprise"
 #~ msgstr "Enterprise"
-
-#~ msgid "Error"
-#~ msgstr "Eroare"
 
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Eroare la adăugare SAN FCoE"
@@ -3276,9 +3446,6 @@ msgstr "anulează"
 #~ msgid "Installation _Destination"
 #~ msgstr "_Destinația instalării"
 
-#~ msgid "Installation complete"
-#~ msgstr "Instalare completă"
-
 #, python-format
 #~ msgid "Installation complete. Press %s to quit"
 #~ msgstr "Instalarea este completă. Apăsați %s pentru a ieși"
@@ -3586,9 +3753,6 @@ msgstr "anulează"
 #~ msgid "Need Space"
 #~ msgstr "Este necesar spațiu"
 
-#~ msgid "Network"
-#~ msgstr "Rețea"
-
 #~ msgid "Network Config Box"
 #~ msgstr "Server de configurare în rețea"
 
@@ -3638,9 +3802,6 @@ msgstr "anulează"
 
 #~ msgid "No host url"
 #~ msgstr "Nu e setat url „host”"
-
-#~ msgid "No mountable devices found"
-#~ msgstr "Nu s-au găsit dispozitive montabile"
 
 #~ msgid "No network devices available"
 #~ msgstr "Nu se găsesc dispozitive de rețea"
@@ -3846,9 +4007,6 @@ msgstr "anulează"
 #~ "Volumul fizic „%(device)s” este formatat ca „%(format)s”, dar ar trebui "
 #~ "să aibă formatul „lvmpv”."
 
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Vă rugăm să completați toate spițele (spokes) înainte de a continua"
-
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
 #~ "step."
@@ -3878,9 +4036,6 @@ msgstr "anulează"
 
 #~ msgid "Please enter a valid mount point."
 #~ msgstr "Vă rugăm introduceți un punct de montare valid."
-
-#~ msgid "Please enter a valid name."
-#~ msgstr "Vă rugăm introduceți un nume valid."
 
 #, python-format
 #~ msgid "Please manually connect your vnc client to %s to begin the install."
@@ -4224,9 +4379,6 @@ msgstr "anulează"
 
 #~ msgid "Root password"
 #~ msgstr "Parolă root"
-
-#~ msgid "Root password is not set"
-#~ msgstr "Parola root nu este setată"
 
 #~ msgid "Root password is set"
 #~ msgstr "Parola root este setată"
@@ -5194,10 +5346,6 @@ msgstr "anulează"
 #~ msgid "Use the credentials from discovery"
 #~ msgstr "Utilizează autorizări în urma descoperirii"
 
-#, python-format
-#~ msgid "User %s will be created"
-#~ msgstr "Utilizatorul %s va fi creat"
-
 #~ msgid "User Name"
 #~ msgstr "Nume utilizator"
 
@@ -5207,9 +5355,6 @@ msgstr "anulează"
 
 #~ msgid "User and Group IDs"
 #~ msgstr "ID-uri de utilizator și grup"
-
-#~ msgid "User creation"
-#~ msgstr "Creare utilizatori"
 
 #~ msgid "User name: "
 #~ msgstr "Nume utilizator:"
@@ -6051,10 +6196,6 @@ msgstr "anulează"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Language Support"
 #~ msgstr "Suport _limbă"
-
-#~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Login"
-#~ msgid "_Log In"
-#~ msgstr "Au_tentificare"
 
 #~ msgctxt "GUI|Network|Proxy"
 #~ msgid "_Method"

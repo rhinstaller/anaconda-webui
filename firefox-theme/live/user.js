@@ -49,3 +49,6 @@ user_pref("dom.disable_open_during_load", false);
 // Disable password manager popups
 user_pref("signon.showAutoCompleteFooter", false);
 user_pref("signon.rememberSignons", false);
+
+// Disable the translate popup
+user_pref("browser.translations.enable", false);

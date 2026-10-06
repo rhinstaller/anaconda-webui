@@ -9,6 +9,7 @@ import {
     getDiskSelectionAction,
     getPartitioningDataAction,
     setAppliedPartitioningAction,
+    setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
 import { debug, error } from "../helpers/log.js";
@@ -42,16 +43,20 @@ export class StorageClient {
         this.dispatch = dispatch;
     }
 
-    async init () {
+    async init (args = {}) {
         this.client.addEventListener("close", () => error("Storage client closed"));
 
         this.startEventMonitor();
 
-        await this.initData();
+        await this.initData(args);
+    }
+
+    stopEventMonitor () {
+        this._subscription?.remove();
     }
 
     startEventMonitor () {
-        this.client.subscribe(
+        this._subscription = this.client.subscribe(
             { },
             (path, iface, signal, args) => {
                 switch (signal) {
@@ -80,12 +85,28 @@ export class StorageClient {
             });
     }
 
-    async initData () {
+    async initData ({ automatedInstall = false } = {}) {
         const partitioning = await getProperty("CreatedPartitioning");
+
+        // When there is just one partitioning created when the module is initialized we can assume
+        // that it is the one specified in kickstart
+        if (automatedInstall && partitioning.length === 1) {
+            this.dispatch(setStorageScenarioAction("use-configured-storage-kickstart"));
+        }
+
         if (partitioning.length !== 0) {
             const lastPartitioning = partitioning[partitioning.length - 1];
             await this.dispatch(getPartitioningDataAction({ partitioning: lastPartitioning }));
         }
+
+        // Reset partitioning so that the first getDevicesAction populates deviceTrees[""]
+        // with the original system state. On page refresh after partitioning was applied,
+        // the store is empty and needs the original device tree before any planned changes.
+        const appliedPartitioning = await getProperty("AppliedPartitioning");
+        if (appliedPartitioning) {
+            await callClient("ResetPartitioning", []);
+        }
+
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());
     }
@@ -118,6 +139,21 @@ export const runStorageTask = ({ onFail, onSuccess, task }) => {
     taskProxy.wait(() => {
         addEventListeners();
         taskProxy.Start().catch(onFail);
+    });
+};
+
+export const runStorageTaskAsync = ({ onSuccess, task }) => {
+    return new Promise((resolve, reject) => {
+        runStorageTask({
+            onFail: reject,
+            onSuccess: () => {
+                Promise.resolve()
+                        .then(() => (onSuccess !== undefined ? onSuccess() : undefined))
+                        .then(resolve)
+                        .catch(reject);
+            },
+            task,
+        });
     });
 };
 

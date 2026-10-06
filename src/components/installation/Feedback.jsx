@@ -8,9 +8,9 @@ import React, { useContext } from "react";
 import { Content } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
-import { SystemTypeContext } from "../../contexts/Common.jsx";
+import { convertToExtlinkIfNeeded } from "../../helpers/extlink.js";
 
-import feedbackQRcode from "../../../images/qr-code-feedback.svg";
+import { SystemTypeContext } from "../../contexts/Common.jsx";
 
 import "./Feedback.scss";
 
@@ -21,7 +21,7 @@ export const Feedback = () => {
 
     return (
         <Flex className="feedback-section">
-            <img className="feedback-qr-code" src={feedbackQRcode} />
+            <img className="feedback-qr-code" src="qr-code-feedback.svg" />
             <Content>
                 <Content component="h3">{_("Send us feedback on your installation")}</Content>
                 <Content component="p" className="feedback-hint">{_("Scan the QR code with your phone or visit:")}</Content>
@@ -29,7 +29,7 @@ export const Feedback = () => {
                   component="a"
                   target={isBootIso ? "_blank" : ""}
                   rel={isBootIso ? "noreferrer" : ""}
-                  href={(isBootIso ? "https://" : "extlink://") + "discussion.fedoraproject.org/tag/anaconda"}>
+                  href={convertToExtlinkIfNeeded("https://discussion.fedoraproject.org/tag/anaconda", !isBootIso)}>
                     https://discussion.fedoraproject.org/tag/anaconda
                 </Content>
             </Content>

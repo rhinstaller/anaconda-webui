@@ -8,6 +8,7 @@ import os
 import signal
 import subprocess
 
+from anacondalib import INSTALLER_VM_MEMORY_MB
 from machine_install import VirtInstallMachine
 
 
@@ -16,12 +17,31 @@ def cmd_cli():
     parser.add_argument("image", help="Image name")
     parser.add_argument("--rsync", help="Rsync development files over on startup", action='store_true')
     parser.add_argument("--host", help="Hostname to rsync", default='test-updates')
-    parser.add_argument("--efi", help="Start the VM with an EFI firmware", action='store_true')
+    parser.add_argument("--bios", help="Start the VM with BIOS firmware (UEFI is the default)", action='store_true')
+    parser.add_argument("--kickstart", help="Kickstart file name from test/kickstarts/", dest="kickstart_file_name")
+    parser.add_argument("--pause-at-summary", help="Pause automated kickstart install at the review screen",
+                        action='store_true', dest="pause_at_summary")
+    parser.add_argument("--remote-pin", help="PIN for accessing the webui. Blank value defaults to inst.webui.remote.noauth",
+                        dest="remote_pin")
+    parser.add_argument("--payload", help="Payload type (liveimg or dnf)", default="liveimg",
+                        choices=("liveimg", "dnf"), dest="payload_type")
+    def positive_int(value):
+        value = int(value)
+        if value <= 0:
+            raise argparse.ArgumentTypeError("must be a positive integer")
+        return value
+
+    parser.add_argument("--add-disk", help="Attach a virtual disk with the given size in GiB (e.g., --add-disk 15)",
+                        type=positive_int, metavar="SIZE", dest="add_disk")
     args = parser.parse_args()
 
-    if args.efi:
-        os.environ["TEST_FIRMWARE"] = "efi"
-    machine = VirtInstallMachine(image=args.image)
+    if args.bios:
+        os.environ["TEST_FIRMWARE"] = "bios"
+    extra_disks = [args.add_disk] if args.add_disk is not None else []
+    machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
+                                 kickstart_file_name=args.kickstart_file_name,
+                                 pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin,
+                                 payload_type=args.payload_type, extra_disks=extra_disks)
     try:
         machine.start()
 
@@ -35,7 +55,7 @@ def cmd_cli():
             )
             # print Cockpit web address
             print(
-                f"http://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
+                f"https://{machine.web_address}:{machine.web_port}/cockpit/@localhost/anaconda-webui/index.html"
             )
 
             # rsync development files over so /usr/local/share/cockpit is created with a development version
@@ -45,7 +65,7 @@ def cmd_cli():
         else:
             print("You can start the installer by running the following command on the terminal in the test VM:")
             print(
-                f"liveinst --graphical --updates=http://10.0.2.2:{machine.http_updates_img_port}/updates.img"
+                f"liveinst --graphical --updates=http://10.0.2.2:{machine.http_install_port}/updates.img"
             )
 
         # print marker that the VM is ready; tests can poll for this to wait for the VM
@@ -54,7 +74,16 @@ def cmd_cli():
         signal.signal(signal.SIGTERM, lambda _, frame: machine.stop())
         signal.pause()
     except KeyboardInterrupt:
-        machine.stop()
+        pass
+    finally:
+        # Ignore additional Ctrl+C while cleaning up to avoid leaving disks behind.
+        previous_sigint = signal.getsignal(signal.SIGINT)
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+        try:
+            machine.stop()
+        finally:
+            # Restore previous SIGINT handler.
+            signal.signal(signal.SIGINT, previous_sigint)
 
 
 # This can be used as helper program for tests not written in Python: Run given

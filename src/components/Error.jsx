@@ -32,15 +32,16 @@ import {
     BUGZILLA_BASE_URL,
     buildBugDescription,
     buildBugSummary,
-    convertToExtlinkIfNeeded,
     createBugzillaEnterBug
 } from "../helpers/bugzilla.js";
 import { exitGui } from "../helpers/exit.js";
+import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
 import { debug, error } from "../helpers/log.js";
 
 import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
 import createBugzillaBug from "../scripts/create-bugzilla-bug.py";
+import searchBugzillaBugs from "../scripts/search-bugzilla-bugs.py";
 import validateBugzillaApiKeyScript from "../scripts/validate-bugzilla-api-key.py";
 import { ExternalLink } from "./common/ExternalLink.jsx";
 
@@ -188,7 +189,6 @@ const BZManualReportOption = ({ component, exception }) => {
  * Component for API key entry form (step 1)
  */
 const BZAPIKeyEntryForm = ({
-    bugCreationError,
     bugzillaApiKey,
     idPrefix,
     onApiKeyChange
@@ -202,12 +202,6 @@ const BZAPIKeyEntryForm = ({
             <Content>
                 {_("Enter your Bugzilla API key to create a bug report. You will be able to review and edit the bug details in the next step.")}
             </Content>
-            {bugCreationError && (
-                <Alert
-                  title={bugCreationError}
-                  variant="danger"
-                  isInline />
-            )}
             <FormGroup
               label={_("Bugzilla API key")}
               isRequired
@@ -292,10 +286,55 @@ const BZReportTabs = ({
 };
 
 /**
- * Component for bug report details form (step 2)
+ * Component for displaying potential duplicate bugs found in Bugzilla
+ */
+const BZDuplicatesList = ({ duplicateBugs, idPrefix, isBootIso }) => {
+    return (
+        <>
+            <Alert
+              id={idPrefix + "-duplicates-alert"}
+              title={_("Potential duplicate bugs found")}
+              variant="info"
+              isInline
+            >
+                <Content>
+                    {_("The following open bugs may be related to your issue. Please review them before creating a new report.")}
+                </Content>
+            </Alert>
+            <div
+              id={idPrefix + "-duplicates-list"}
+              className="bug-report-duplicates-list"
+            >
+                {duplicateBugs.map(bug => {
+                    const bugUrl = convertToExtlinkIfNeeded(bug.url, !isBootIso);
+                    return (
+                        <div
+                          key={bug.id}
+                          id={idPrefix + "-duplicate-" + bug.id}
+                          className="bug-report-duplicate-item"
+                        >
+                            <Content component={ContentVariants.p}>
+                                <ExternalLink href={bugUrl}>
+                                    <strong>#{bug.id}</strong>
+                                </ExternalLink>
+                                {" "}<span className="bug-report-duplicate-status">[{bug.status}]</span>{" "}
+                                {bug.summary}
+                            </Content>
+                        </div>
+                    );
+                })}
+            </div>
+            <Content>
+                {_("If your issue matches one of the bugs above, you can open it and add your information there instead of creating a duplicate report.")}
+            </Content>
+        </>
+    );
+};
+
+/**
+ * Component for bug report details form (step 3)
  */
 const BZReportDetailsForm = ({
-    bugCreationError,
     bugDescription,
     bugSummary,
     exception,
@@ -313,16 +352,6 @@ const BZReportDetailsForm = ({
 
     return (
         <>
-            {bugCreationError && (
-                <Alert
-                  title={_("Failed to report issue")}
-                  variant="danger"
-                  isInline>
-                    <Content>
-                        {bugCreationError}
-                    </Content>
-                </Alert>
-            )}
             <Content component={ContentVariants.h4} className={idPrefix + "-bz-report-modal-intructions-header"}>
                 {_("Bug report details")}
             </Content>
@@ -399,7 +428,8 @@ const componentFromException = (exception) => {
 };
 
 /**
- * Exception report flow component - handles the 2-step for exception reporting
+ * Exception report flow component - handles the 3-step flow for exception reporting
+ * Step 1: API key entry, Step 2: Duplicate check (skipped if none found), Step 3: Bug details + submit
  */
 const BZExceptionReportFlow = ({
     buttons,
@@ -418,8 +448,9 @@ const BZExceptionReportFlow = ({
     const [isCreatingBug, setIsCreatingBug] = useState(false);
     const [bugCreationError, setBugCreationError] = useState(null);
     const [bugzillaApiKey, setBugzillaApiKey] = useState("");
-    const [reportStep, setReportStep] = useState(1); // 1 = API key entry, 2 = bug report details
+    const [reportStep, setReportStep] = useState(1); // 1 = API key entry, 2 = duplicate check, 3 = bug report details
     const [isValidatingApiKey, setIsValidatingApiKey] = useState(false);
+    const [duplicateBugs, setDuplicateBugs] = useState([]);
 
     // Note: Summary and description are editable by the user, which is why they're stored in state.
     // The stacktrace and environmentInfo are auto-added to the bug report and are not editable.
@@ -451,6 +482,29 @@ const BZExceptionReportFlow = ({
         }
     }, [exception]);
 
+    const searchDuplicates = async () => {
+        try {
+            const searchData = JSON.stringify({
+                api_key: bugzillaApiKey,
+                component,
+                limit: 5,
+                product,
+                summary: bugSummary,
+            });
+            const searchProcess = python.spawn(searchBugzillaBugs, [], {
+                environ: ["LC_ALL=C.UTF-8"],
+                err: "message"
+            });
+            searchProcess.input(searchData);
+            const searchResult = await searchProcess;
+            const searchResponse = JSON.parse(searchResult);
+            return searchResponse.bugs || [];
+        } catch (e) {
+            debug("Duplicate search failed, continuing without results:", e.message);
+            return [];
+        }
+    };
+
     const handleNext = async () => {
         setBugCreationError(null);
         setIsValidatingApiKey(true);
@@ -463,7 +517,15 @@ const BZExceptionReportFlow = ({
             });
             process.input(inputData);
             await process;
-            setReportStep(2);
+
+            const bugs = await searchDuplicates();
+            setDuplicateBugs(bugs);
+
+            if (bugs.length > 0) {
+                setReportStep(2);
+            } else {
+                setReportStep(3);
+            }
         } catch (e) {
             setBugCreationError(e.message);
         } finally {
@@ -540,7 +602,6 @@ const BZExceptionReportFlow = ({
                             <ExceptionInfo exception={exception} idPrefix={idPrefix} />
                             <Divider />
                             <BZAPIKeyEntryForm
-                              bugCreationError={bugCreationError}
                               bugzillaApiKey={bugzillaApiKey}
                               idPrefix={idPrefix}
                               onApiKeyChange={setBugzillaApiKey}
@@ -555,8 +616,14 @@ const BZExceptionReportFlow = ({
                         </>
                     )}
                     {reportStep === 2 && (
+                        <BZDuplicatesList
+                          duplicateBugs={duplicateBugs}
+                          idPrefix={idPrefix}
+                          isBootIso={isBootIso}
+                        />
+                    )}
+                    {reportStep === 3 && (
                         <BZReportDetailsForm
-                          bugCreationError={bugCreationError}
                           bugDescription={bugDescription}
                           bugSummary={bugSummary}
                           exception={exception}
@@ -570,6 +637,16 @@ const BZExceptionReportFlow = ({
                 </Form>
             </ModalBody>
             <ModalFooter>
+                {bugCreationError && (
+                    <Alert
+                      title={_("Failed to report issue")}
+                      variant="danger"
+                      isInline>
+                        <Content>
+                            {bugCreationError}
+                        </Content>
+                    </Alert>
+                )}
                 {reportStep === 1 && (
                     <Button
                       key="next"
@@ -587,6 +664,31 @@ const BZExceptionReportFlow = ({
                           key="back"
                           variant="secondary"
                           onClick={() => setReportStep(1)}
+                        >
+                            {_("Back")}
+                        </Button>
+                        <Button
+                          id={idPrefix + "-continue-new-btn"}
+                          key="continue-new"
+                          variant="primary"
+                          onClick={() => setReportStep(3)}
+                        >
+                            {_("My issue is different, continue")}
+                        </Button>
+                    </>
+                )}
+                {reportStep === 3 && (
+                    <>
+                        <Button
+                          key="back"
+                          variant="secondary"
+                          onClick={() => {
+                              if (duplicateBugs.length > 0) {
+                                  setReportStep(2);
+                              } else {
+                                  setReportStep(1);
+                              }
+                          }}
                         >
                             {_("Back")}
                         </Button>
@@ -809,8 +911,8 @@ export class ErrorBoundary extends React.Component {
     // Add window.onerror and window.onunhandledrejection handlers
     componentDidMount () {
         const errorHandler = async (_error) => {
-            error("ErrorBoundary caught an error:", _error);
             const stateUpdate = await buildExceptionState(_error, {});
+            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
             this.setState(stateUpdate);
             return true;
         };
@@ -828,8 +930,11 @@ export class ErrorBoundary extends React.Component {
         const { context } = arg || {};
 
         return async (_error) => {
-            error("ErrorBoundary caught an error:", _error, context);
+            if (this.state.hasError) {
+                return;
+            }
             const stateUpdate = await buildExceptionState(_error, { context });
+            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
             this.setState(stateUpdate);
         };
     };

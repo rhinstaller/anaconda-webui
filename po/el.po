@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 04:31+0000\n"
-"PO-Revision-Date: 2026-03-17 04:31+0000\n"
+"POT-Creation-Date: 2026-10-06 09:25+0000\n"
+"PO-Revision-Date: 2026-09-23 07:58+0000\n"
 "Last-Translator: Jim Spentzos <jimspentzos2000@gmail.com>\n"
 "Language-Team: Greek <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/el/>\n"
@@ -33,29 +33,36 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
-"X-Generator: Weblate 5.16.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.9.1\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:143
+#: src/components/storage/installation-method/InstallationDestination.jsx:279
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
+#: src/components/storage/installation-method/InstallationDestination.jsx:163
+#: src/components/storage/installation-method/InstallationDestination.jsx:272
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:81
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:74
+#: src/components/storage/Common.jsx:58
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 σφάλμα"
+msgstr[1] "$0 σφάλματα"
+
+#: src/components/app.jsx:96
 msgid "$0 installation"
 msgstr "Εγκατάσταση του $0"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:47
 msgid "$0 installer"
 msgstr "Βοηθός εγκατάστασης $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -64,31 +71,47 @@ msgstr ""
 "Η κατάργηση όλων των λογικών διαμερισμάτων θα διαγράψει αυτόματα και το "
 "εκτεταμένο διαμέρισμα."
 
-#: src/components/review/ReviewConfiguration.jsx:106
+#: src/components/storage/installation-method/usePageComplete.jsx:114
 msgid "$0 is required, but only $1 is available."
 msgstr "Απαιτούνται $0, αλλά διατίθενται μόνο $1."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:90
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 προειδοποίηση"
 msgstr[1] "$0 προειδοποιήσεις"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:290
 msgid "$0 will be deleted"
 msgstr "Το λειτουργικό σύστημα «$0» θα διαγραφεί"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:190
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr ""
 "Το σύστημα αρχείων «$0» δεν μπορεί να βρίσκεται σε κρυπτογραφημένη συσκευή "
 "μπλοκ"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/helpers/storage.js:267
+msgid "'$0' must be assigned to $1"
+msgstr "Το «$0» πρέπει να ανατεθεί στο «$1»"
+
+#: src/helpers/storage.js:270
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "Το «$0» πρέπει να βρίσκεται σε συσκευή με διαμόρφωση «$1»"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/helpers/storage.js:261
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"Το «$0» πρέπει να βρίσκεται σε διαμέρισμα συστήματος EFI. Το επιλεγμένο "
+"διαμέρισμα χρησιμοποιεί το σύστημα αρχείων FAT, αλλά δεν έχει σημανθεί ως "
+"ESP. Ορίστε τον τύπο διαμερίσματος σε «Σύστημα EFI» και ενεργοποιήστε τη "
+"σημαία «esp»."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:272
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -96,31 +119,35 @@ msgstr ""
 "Βρέθηκε διαμέρισμα «$0» στη συσκευή MDRAID $1. Δεν υποστηρίζονται "
 "διαμερίσματα bootloader σε συσκευές MDRAID."
 
-#: src/components/users/Accounts.jsx:177
+#: src/components/users/Accounts.jsx:256
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "Ένας τυπικός λογαριασμός χρήστη με δικαιώματα διαχειριστή για την "
 "πραγματοποίηση αλλαγών σε επίπεδο συστήματος."
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:50
+msgid "Abort installation"
+msgstr "Ακύρωση εγκατάστασης"
+
+#: src/components/HeaderKebab.jsx:105
 msgid "About"
 msgstr "Πληροφορίες"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:254
 msgid "Account"
 msgstr "Λογαριασμός"
 
-#: src/components/review/StorageReview.jsx:235
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 msgid "Actions"
 msgstr "Ενέργειες"
 
-#: src/components/datetime/CustomNTPModal.jsx:223
+#: src/components/datetime/CustomNTPModal.jsx:232
 msgid "Add another server..."
 msgstr "Προσθήκη άλλου διακομιστή..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:644
 msgid "Add mount"
 msgstr "Προσθήκη προσάρτησης"
 
@@ -132,7 +159,7 @@ msgstr "Πρόσθετα για το επιλεγμένο σας περιβάλ�
 msgid "Add-ons not specific to your environment"
 msgstr "Πρόσθετα που δεν αφορούν συγκεκριμένα το περιβάλλον σας"
 
-#: src/components/localization/InstallationLanguage.jsx:143
+#: src/components/localization/InstallationLanguage.jsx:148
 msgid "Additional languages"
 msgstr "Πρόσθετες γλώσσες"
 
@@ -140,7 +167,7 @@ msgstr "Πρόσθετες γλώσσες"
 msgid "Additional software for the selected environment"
 msgstr "Πρόσθετο λογισμικό για το επιλεγμένο περιβάλλον"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:67
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:55
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
 "Όλες οι αλλαγές, που πραγματοποιείτε στην επεξεργασία αποθηκευτικού χώρου, "
@@ -155,11 +182,11 @@ msgstr ""
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Anaconda Web UI"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:77
 msgid "Anaconda project page"
 msgstr "Σελίδα έργου Anacoda"
 
@@ -167,7 +194,7 @@ msgstr "Σελίδα έργου Anacoda"
 msgid "Apply mount point assignment and install"
 msgstr "Εφαρμογή εκχώρησης σημείου προσάρτησης και εγκατάσταση"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
 msgstr "Εφαρμογή αλλαγών..."
 
@@ -178,7 +205,7 @@ msgstr ""
 "Εκχώρηση διαμερισμάτων σε σημεία προσάρτησης. Χρήσιμο για προρυθμισμένες "
 "προσαρμοσμένες διατάξεις."
 
-#: src/components/Error.jsx:367
+#: src/components/Error.jsx:396
 msgid "Automatic log file upload"
 msgstr "Αυτόματη μεταφόρτωση αρχείου καταγραφής"
 
@@ -192,11 +219,12 @@ msgstr ""
 msgid "Automatically set timezone"
 msgstr "Αυτόματη ρύθμιση ζώνης ώρας"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:197
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Διαθέσιμος ελεύθερος χώρος: $0. Η εγκατάσταση απαιτεί: $1."
 
-#: src/components/Error.jsx:591 src/components/AnacondaWizardFooter.jsx:76
+#: src/components/Error.jsx:668 src/components/Error.jsx:693
+#: src/components/AnacondaWizardFooter.jsx:62
 msgid "Back"
 msgstr "Επιστροφή"
 
@@ -204,19 +232,19 @@ msgstr "Επιστροφή"
 msgid "Base environment"
 msgstr "Βασικό περιβάλλον"
 
-#: src/components/Error.jsx:338
+#: src/components/Error.jsx:367
 msgid "Brief description of the issue"
 msgstr "Σύντομη περιγραφή του προβλήματος"
 
-#: src/components/Error.jsx:327
+#: src/components/Error.jsx:356
 msgid "Bug report details"
 msgstr "Λεπτομέρειες αναφοράς σφάλματος"
 
-#: src/components/Error.jsx:212
+#: src/components/Error.jsx:206
 msgid "Bugzilla API key"
 msgstr "Κλειδί Bugzilla API"
 
-#: src/components/AnacondaHeader.jsx:75
+#: src/components/AnacondaHeader.jsx:73
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
 "associated with pre-released software, that you intend to use this for "
@@ -229,12 +257,12 @@ msgstr ""
 "πρόθυμοι να αναφέρετε τυχόν σφάλματα ή προβλήματα για τη βελτίωση αυτού του "
 "έργου."
 
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/datetime/CustomNTPModal.jsx:239
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -242,7 +270,7 @@ msgstr "Ακύρωση"
 msgid "Change"
 msgstr "Αλλαγή"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:350
 msgid "Change destination"
 msgstr "Αλλαγή προορισμού"
 
@@ -250,26 +278,30 @@ msgstr "Αλλαγή προορισμού"
 msgid "Change hostname"
 msgstr "Αλλαγή ονόματος υπολογιστή"
 
-#: src/components/review/ReviewConfiguration.jsx:123
+#: src/components/storage/installation-method/usePageComplete.jsx:128
 msgid "Change partition layout"
 msgstr "Αλλαγή διάταξης διαμερισμάτων"
 
-#: src/components/localization/Keyboard.jsx:213
-#: src/components/localization/Keyboard.jsx:308
-#: src/components/localization/Keyboard.jsx:359
+#: src/components/localization/Keyboard.jsx:215
+#: src/components/localization/Keyboard.jsx:301
+#: src/components/localization/Keyboard.jsx:352
 msgid "Change system keyboard layout"
 msgstr "Αλλαγή διάταξης πληκτρολογίου συστήματος"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:139
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:127
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 "Οι αλλαγές που πραγματοποιείτε εδώ θα επηρεάσουν άμεσα το σύστημα. Δεν θα "
 "είναι δυνατή η αναίρεσή τους."
 
+#: src/components/review/ReviewConfiguration.jsx:191
+msgid "Checking installation configuration..."
+msgstr "Έλεγχος διαμόρφωσης εγκατάστασης..."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:475
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:481
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
 msgid "Checking storage configuration"
 msgstr "Έλεγχος ρυθμίσεων αποθηκευτικού χώρου"
 
@@ -277,84 +309,96 @@ msgstr "Έλεγχος ρυθμίσεων αποθηκευτικού χώρου"
 msgid "Clear search"
 msgstr "Απαλοιφή αναζήτησης"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Κάντε ξανά κλικ στο «Επόμενο» για να συνεχίσετε παρά τις προειδοποιήσεις "
 "αυτές."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/InstallationDestination.jsx:383
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:143
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:131
 msgid "Close storage editor"
 msgstr "Κλείσιμο επεξεργασίας αποθηκευτικού χώρου"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:328
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 "Ο αποθηκευτικός χώρος Cockpit δεν παρείχε τη φράση πρόσβασης για το "
 "ξεκλείδωμα της κρυπτογραφημένης συσκευής."
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:279
 msgid "Completed"
 msgstr "Ολοκληρώθηκε"
 
-#: src/components/datetime/CustomNTPModal.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:212
+msgid "Configuration is incomplete"
+msgstr "Η διαμόρφωση δεν είναι ολοκληρωμένη"
+
+#: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
 msgstr "Ρύθμιση διακομιστών NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:145
+#: src/components/datetime/CustomNTPModal.jsx:154
 msgid "Configure custom NTP servers"
 msgstr "Ρύθμιση προσαρμοσμένων διακομιστών NTP"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
 msgstr "Ρύθμιση δικτύου"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:129
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:117
 msgid "Configure storage"
 msgstr "Ρύθμιση αποθηκευτικού χώρου"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:682
 msgid "Configure storage again"
 msgstr "Ρύθμιση αποθηκευτικού χώρου ξανά"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:95
-#: src/components/users/Accounts.jsx:141 src/components/users/Accounts.jsx:297
+#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Επιβεβαίωση φράσης πρόσβασης"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:667
 msgid "Continue"
 msgstr "Συνέχεια"
 
-#: src/components/AnacondaWizardFooter.jsx:140
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:43
+#: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Συνέχεια εγκατάστασης"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:30
+msgid "Continue installation?"
+msgstr "Συνέχεια εγκατάστασης;"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:620
 msgid "Continue with installation"
 msgstr "Συνέχεια με εγκατάσταση"
 
-#: src/components/users/index.js:18
+#: src/components/storage/Common.jsx:40
+msgid "Correct these issues before continuing."
+msgstr "Διορθώστε αυτά τα ζητήματα πριν συνεχίσετε."
+
+#: src/components/users/index.js:20
 msgid "Create Account"
 msgstr "Δημιουργία λογαριασμού"
 
-#: src/components/users/Accounts.jsx:239
+#: src/components/users/Accounts.jsx:318
 msgid "Create account"
 msgstr "Δημιουργία λογαριασμού"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:66
 msgid "Currently installed: $0"
 msgstr "Τρέχουσα εγκατάσταση: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
 msgid "Custom"
 msgstr "Προσαρμοσμένο"
 
@@ -363,21 +407,25 @@ msgid "Date"
 msgstr "Ημερομηνία"
 
 #: src/components/datetime/DateAndTime.jsx:151
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 msgid "Date and time"
 msgstr "Ημερομηνία και ώρα"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+msgid "Delete partition"
+msgstr "Διαγραφή διαμερίσματος"
+
+#: src/components/storage/StorageReview.jsx:348
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 "Η διαγραφή ορισμένων διαμερισμάτων ενδέχεται να εμποδίσει την εκκίνηση του "
 "«$0»: $1"
 
-#: src/components/Error.jsx:268
+#: src/components/Error.jsx:262
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:264
 msgid "Destination"
 msgstr "Προορισμός"
 
@@ -385,42 +433,51 @@ msgstr "Προορισμός"
 msgid "Destination is encrypted"
 msgstr "Ο προορισμός είναι κρυπτογραφημένος"
 
-#: src/components/Error.jsx:273
+#: src/components/Error.jsx:267
 msgid "Detailed description of the issue"
 msgstr "Λεπτομερής περιγραφή του προβλήματος"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:646
 msgid "Detected valid storage layout:"
 msgstr "Εντοπίστηκε έγκυρη διάταξη αποθηκευτικού χώρου:"
 
-#: src/components/review/StorageReview.jsx:233
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
+#: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Συσκευή"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
 msgstr "Διπλότυπη συσκευή."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:237
 msgid "Duplicate mount point."
 msgstr "Διπλότυπο σημείο πρόσαρτησης."
 
-#: src/components/users/Accounts.jsx:279
+#: src/components/users/Accounts.jsx:342 src/components/users/Accounts.jsx:393
 msgid "Enable root account"
 msgstr "Ενεργοποίηση λογαριασμού root"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:62
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:63
 msgid "Encrypt my data"
 msgstr "Κρυπτογράφηση δεδομένων"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:249
 msgid "Encrypted"
 msgstr "Κρυπτογραφημένο"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:105
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:106
 msgid "Encryption"
 msgstr "Κρυπτογράφηση"
+
+#: src/components/login/LoginPage.jsx:88
+msgid "Enter PIN"
+msgstr "Εισαγωγή PIN"
+
+#: src/components/login/LoginPage.jsx:77
+msgid "Enter PIN to access the installer"
+msgstr ""
+"Εισαγάγετε το PIN για να αποκτήσετε πρόσβαση στο πρόγραμμα εγκατάστασης"
 
 #: src/components/Error.jsx:203
 msgid ""
@@ -431,7 +488,7 @@ msgstr ""
 "αναφορά σφάλματος. Θα μπορέσετε να ελέγξετε και να επεξεργαστείτε τις "
 "λεπτομέρειες του σφάλματος στο επόμενο βήμα."
 
-#: src/components/Error.jsx:285
+#: src/components/Error.jsx:279
 msgid "Environment"
 msgstr "Περιβάλλον"
 
@@ -439,24 +496,24 @@ msgstr "Περιβάλλον"
 msgid "Erase data and install"
 msgstr "Διαγραφή δεδομένων και εγκατάσταση"
 
-#: src/components/Error.jsx:716
+#: src/components/Error.jsx:818
 msgid "Error details"
 msgstr "Λεπτομέρειες σφάλματος"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:249
 msgid "Exit to live desktop"
 msgstr "Έξοδος στην επιφάνεια εργασίας"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:238
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:245
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
 msgstr "Εκτεταμένο διαμέρισμα"
 
-#: src/components/Error.jsx:318
+#: src/components/Error.jsx:642
 msgid "Failed to report issue"
 msgstr "Αποτυχία αναφοράς του προβλήματος"
 
-#: src/components/localization/Keyboard.jsx:202
+#: src/components/localization/Keyboard.jsx:204
 msgid "Failed to save layouts"
 msgstr "Αποτυχία αποθήκευσης διατάξεων"
 
@@ -464,11 +521,11 @@ msgstr "Αποτυχία αποθήκευσης διατάξεων"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Το Fedora Linux απαιτεί τουλάχιστον $0 χώρου στον δίσκο."
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:243
 msgid "Finalization"
 msgstr "Οριστικοποίηση"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:241
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -476,11 +533,11 @@ msgstr ""
 "Οριστικοποίηση: Η διαμόρφωση του συστήματος έχει ολοκληρωθεί. Η "
 "οριστικοποίηση της εγκατάστασης ενδέχεται να χρειαστεί λίγη ώρα."
 
-#: src/components/localization/Keyboard.jsx:218
+#: src/components/localization/Keyboard.jsx:220
 msgid "Find layout"
 msgstr "Εύρεση διάταξης"
 
-#: src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:409
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -489,24 +546,28 @@ msgstr ""
 "root. Αντ' αυτού, χρησιμοποιήστε τον παραπάνω τοπικό λογαριασμό για να "
 "διαχειριστείτε το σύστημα."
 
-#: src/components/users/Accounts.jsx:179
+#: src/components/users/Accounts.jsx:258
 msgid "Full name"
 msgstr "Ονοματεπώνυμο"
 
-#: src/components/users/Accounts.jsx:127
+#: src/components/users/Accounts.jsx:194
 msgid "Full name cannot contain colon characters"
 msgstr ""
 "Το ονοματεπώνυμο δεν μπορεί να περιέχει χαρακτήρες άνω και κάτω τελείας"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:251
 msgid "Helper text"
 msgstr "Κείμενο βοηθού"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 msgid "Hide API key"
 msgstr "Απόκρυψη κλειδιού API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Hide PIN"
+msgstr "Απόκρυψη PIN"
+
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Απόκρυψη επιβεβαιωμένου κωδικού πρόσβασης"
 
@@ -514,7 +575,7 @@ msgstr "Απόκρυψη επιβεβαιωμένου κωδικού πρόσβ�
 msgid "Hide passphrase"
 msgstr "Απόκρυψη φράσης πρόσβασης"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Απόκρυψη κωδικού πρόσβασης"
 
@@ -522,26 +583,24 @@ msgstr "Απόκρυψη κωδικού πρόσβασης"
 msgid "Hostname"
 msgstr "Όνομα υπολογιστή"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:150
+#: src/components/storage/installation-method/InstallationScenario.jsx:163
 msgid "How would you like to install?"
 msgstr "Με ποιον τρόπο θέλετε να κάνετε την εγκατάσταση;"
 
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:309
 msgid "I understand that all existing data will be erased"
-msgstr "Κατανοώ ότι όλα τα υπάρχοντα δεδομένα θα διαγραφούν"
-
-#: src/components/review/ReviewConfiguration.jsx:253
-msgid ""
+msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr ""
+msgstr[0] "Κατανοώ ότι όλα τα υπάρχοντα δεδομένα θα διαγραφούν"
+msgstr[1] ""
 "Κατανοώ ότι όλα τα υπάρχοντα δεδομένα θα διαγραφούν από τους επιλεγμένους "
 "δίσκους"
 
-#: src/components/review/ReviewConfiguration.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:314
 msgid "I understand that some existing data will be erased"
 msgstr "Κατανοώ ότι ορισμένα από τα υπάρχοντα δεδομένα θα διαγραφούν"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:315
 msgid "I understand that some partitions will be modified"
 msgstr "Κατανοώ ότι ορισμένα από τα υπάρχοντα διαμέρισματα θα τροποποιηθούν"
 
@@ -551,11 +610,20 @@ msgstr ""
 "Εάν το αφήσετε κενό, το όνομα υπολογιστή θα είναι προσωρινό και θα οριστεί "
 "με βάση τις πληροφορίες δικτύου."
 
+#: src/components/storage/installation-method/InstallationScenario.jsx:126
+msgid ""
+"If none of the options above apply, use the storage editor to create a "
+"custom partitioning before proceeding."
+msgstr ""
+"Εάν δεν ισχύει καμία από τις παραπάνω επιλογές, χρησιμοποιήστε το εργαλείο "
+"επεξεργασίας αποθηκευτικού χώρου για να δημιουργήσετε μια προσαρμοσμένη "
+"διαμέριση πριν συνεχίσετε."
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
 msgstr "Εάν κάνετε ρύθμιση διαμερισμάτων, απαιτούνται τα εξής:"
 
-#: src/components/Error.jsx:382
+#: src/components/Error.jsx:411
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -565,57 +633,76 @@ msgstr ""
 "να $0. Η χειροκίνητη αναφορά σάς επιτρέπει να ελέγξετε και να επισυνάψετε "
 "επιλεκτικά τα αρχεία καταγραφής."
 
-#: src/components/AnacondaHeader.jsx:78
+#: src/components/AnacondaHeader.jsx:76
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
 "Εάν δεν κατανοείτε ή αποδέχεστε τους κινδύνους, τότε κλείστε αυτό το "
 "πρόγραμμα."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/Error.jsx:328
+msgid ""
+"If your issue matches one of the bugs above, you can open it and add your "
+"information there instead of creating a duplicate report."
+msgstr ""
+"Εάν το πρόβλημά σας αντιστοιχεί σε κάποιο από τα παραπάνω σφάλματα, μπορείτε "
+"να το ανοίξετε και να προσθέσετε τις πληροφορίες σας αντί να δημιουργήσετε "
+"μια διπλότυπη αναφορά."
+
+#: src/components/installation/InstallationProgress.jsx:284
 msgid "In progress"
 msgstr "Σε εξέλιξη"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "Αρχικοποίηση..."
 
 #: src/components/storage/scenarios/use-free-space/index.js:27
-#: src/components/storage/scenarios/use-configured-storage/index.js:20
+#: src/components/storage/scenarios/use-configured-storage/index.js:25
+#: src/components/storage/scenarios/use-configured-storage/index.js:39
 msgid "Install"
 msgstr "Εγκατάσταση"
 
-#: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/app.jsx:40
+#, fuzzy
+#| msgid "Installation method"
+msgid "Installation completed"
+msgstr "Μέθοδος εγκατάστασης"
+
+#: src/components/installation/InstallationProgress.jsx:219
+#: src/components/Error.jsx:849
 msgid "Installation failed"
 msgstr "Αποτυχία εγκατάστασης"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "Μέθοδος εγκατάστασης"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:61
 msgid "Installation of the system failed"
 msgstr "Η εγκατάσταση του συστήματος απέτυχε"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:98
 msgid "Installation of the system failed: $0"
 msgstr "Αποτυχία εγκατάστασης συστήματος: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:209
+#: src/components/review/ReviewConfiguration.jsx:269
 msgid "Installation type"
 msgstr "Τύπος εγκατάστασης"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Installing"
 msgstr "Γίνεται εγκατάσταση"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Insufficient disk space"
 msgstr "Ανεπαρκής χώρος στον δίσκο"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/login/LoginPage.jsx:68
+msgid "Invalid PIN. Please try again."
+msgstr "Μη έγκυρο PIN. Δοκιμάστε ξανά."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:255
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -630,9 +717,13 @@ msgstr ""
 "αρχείων ή μορφή (π.χ. LVM PV). Τυχόν υπάρχοντα διαμερίσματα σε αυτήν τη "
 "συστοιχία θα αγνοηθούν."
 
-#: src/components/datetime/CustomNTPModal.jsx:83
+#: src/components/datetime/CustomNTPModal.jsx:92
 msgid "Invalid hostname"
 msgstr "Μη έγκυρο όνομα υπολογιστή"
+
+#: src/components/review/ReviewConfiguration.jsx:208
+msgid "Jump to first incomplete step"
+msgstr "Μετάβαση στο πρώτο μη ολοκληρωμένο βήμα"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -642,29 +733,34 @@ msgstr ""
 "Διατήρηση της τρέχουσας διάταξης δίσκου και χρήση του διαθέσιμου χώρου, για "
 "την παράλληλη εγκατάσταση με κάποιο άλλο λειτουργικό σύστημα."
 
-#: src/components/localization/InstallationLanguage.jsx:243
+#: src/components/localization/InstallationLanguage.jsx:254
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:74
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:75
 msgid "Keyboard layout during boot"
 msgstr "Διάταξη πληκτρολογίου κατά την εκκίνηση"
 
-#: src/components/review/ReviewConfiguration.jsx:180
-#: src/components/localization/InstallationLanguage.jsx:227
+#: src/components/localization/InstallationLanguage.jsx:240
+#: src/components/review/ReviewConfiguration.jsx:234
 msgid "Language"
 msgstr "Γλώσσα"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:77
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:199
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:65
 msgid "Launch storage editor"
 msgstr "Άνοιγμα επεξεργασίας χώρων αποθήκευσης"
 
-#: src/components/Error.jsx:358
+#: src/components/Error.jsx:387
 msgid "Learn more about restricted access in the configuration"
 msgstr "Μάθετε περισσότερα για την περιορισμένη πρόσβαση στη διαμόρφωση"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/users/Accounts.jsx:209
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr ""
+"Αφήστε κενά και τα δύο πεδία φράσης πρόσβασης για να χρησιμοποιήσετε έναν "
+"κενό κωδικό πρόσβασης."
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Τοποθεσία"
 
@@ -672,8 +768,12 @@ msgstr "Τοποθεσία"
 msgid "Locked devices"
 msgstr "Κλειδωμένες συσκευές"
 
-#: src/components/localization/Keyboard.jsx:122
-#: src/components/localization/Keyboard.jsx:126
+#: src/components/login/LoginPage.jsx:118
+msgid "Log in"
+msgstr "Σύνδεση"
+
+#: src/components/localization/Keyboard.jsx:124
+#: src/components/localization/Keyboard.jsx:128
 msgid "Make current"
 msgstr "Ορισμός ως τρέχον"
 
@@ -689,7 +789,7 @@ msgstr "Χειροκίνητη διαμόρφωση δίσκου: αντιστο
 msgid "May contain letters, numbers, and dashes."
 msgstr "Μπορεί να περιέχει γράμματα, αριθμούς και παύλες."
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Ενδέχεται να απαιτείται περισσότερος ελεύθερος χώρος"
 
@@ -697,33 +797,33 @@ msgstr "Ενδέχεται να απαιτείται περισσότερος ε
 msgid "Medium"
 msgstr "Μέτριος"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:313
 msgid "Minimum of $0 required"
 msgstr "Απαιτούνται τουλάχιστον $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Αναντιστοιχία επιλογής επαναδιαμόρφωσης μεταξύ της γονικής και της "
 "θυγατρικής συσκευής."
 
-#: src/components/review/StorageReview.jsx:237
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
+#: src/components/storage/StorageReview.jsx:250
 msgid "Mount point"
 msgstr "Σημείο προσάρτησης"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point assignment"
 msgstr "Εκχώρηση σημείου προσάρτησης"
 
-#: src/components/localization/Keyboard.jsx:144
-#: src/components/localization/Keyboard.jsx:148
+#: src/components/localization/Keyboard.jsx:146
+#: src/components/localization/Keyboard.jsx:150
 msgid "Move down"
 msgstr "Μετακίνηση κάτω"
 
-#: src/components/localization/Keyboard.jsx:133
-#: src/components/localization/Keyboard.jsx:137
+#: src/components/localization/Keyboard.jsx:135
+#: src/components/localization/Keyboard.jsx:139
 msgid "Move up"
 msgstr "Μετακίνηση πάνω"
 
@@ -731,27 +831,36 @@ msgstr "Μετακίνηση πάνω"
 msgid "Must be at least $0 characters"
 msgstr "Πρέπει να αποτελείται από τουλάχιστον $0 χαρακτήρες"
 
-#: src/components/datetime/CustomNTPModal.jsx:148
+#: src/components/Error.jsx:676
+msgid "My issue is different, continue"
+msgstr "Το πρόβλημά μου είναι διαφορετικό, συνέχεια"
+
+#: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
 msgstr "Διακομιστές NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:196
+#: src/components/datetime/CustomNTPModal.jsx:205
 msgid "NTS"
 msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "Όνομα"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Απαιτεί τουλάχιστον $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Δίκτυο"
+
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
+#: src/components/network/index.js:20
 msgid "Network Configuration"
 msgstr "Διαμόρφωση δικτύου"
 
-#: src/components/Error.jsx:624
+#: src/components/Error.jsx:726
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -759,33 +868,37 @@ msgstr ""
 "Κανένα διαθέσιμο δίκτυο. Ρυθμίστε το δίκτυο στο μενού της γραμμής στο επάνω "
 "μέρος για να αναφέρετε το πρόβλημα."
 
-#: src/components/Error.jsx:625
+#: src/components/Error.jsx:727
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Κανένα διαθέσιμο δίκτυο. Ρυθμίστε το δίκτυο για να αναφέρετε το πρόβλημα."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
 msgstr "Αποτυχία αρθρώματος δικτύου"
 
-#: src/components/Error.jsx:581 src/components/AnacondaWizardFooter.jsx:85
+#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
 msgstr "Επόμενο"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:624
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 msgid "No devices"
 msgstr "Δεν υπάρχει καμία συσκευή"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:125
 msgid "No disks available"
 msgstr "Δεν διατίθεται κανένας δίσκος"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "No disks selected"
 msgstr "Δεν έχει επιλεχθεί κανένας δίσκος"
 
-#: src/components/localization/Keyboard.jsx:240
+#: src/components/localization/Keyboard.jsx:49
+msgid "No keyboard layouts selected"
+msgstr "Δεν έχουν επιλεγεί διατάξεις πληκτρολογίου"
+
+#: src/components/localization/Keyboard.jsx:242
 msgid "No layouts selected yet"
 msgstr "Δεν έχουν επιλεγεί διατάξεις ακόμα"
 
@@ -793,7 +906,7 @@ msgstr "Δεν έχουν επιλεγεί διατάξεις ακόμα"
 msgid "No results found"
 msgstr "Δεν βρέθηκαν αποτελέσματα"
 
-#: src/components/localization/Keyboard.jsx:394
+#: src/components/localization/Keyboard.jsx:416
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
@@ -802,7 +915,7 @@ msgstr ""
 "VConsole για τις επιλεγμένες διατάξεις πληκτρολογίου. Επιλέξτε άλλες "
 "διατάξεις πληκτρολογίου."
 
-#: src/components/review/ReviewConfiguration.jsx:104
+#: src/components/storage/installation-method/usePageComplete.jsx:112
 msgid "Not enough available free space"
 msgstr "Μη επαρκής διαθέσιμος χώρος"
 
@@ -814,11 +927,7 @@ msgstr "Δεν υπάρχει επαρκής ελεύθερος χώρος στ�
 msgid "Not enough space on selected disks."
 msgstr "Δεν υπάρχει επαρκής χώρος στους επιλεγμένους δίσκους."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "Σημείωση"
-
-#: src/components/AnacondaHeader.jsx:72
+#: src/components/AnacondaHeader.jsx:70
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
 "testing purposes only. Do NOT use this software for any critical work or for "
@@ -828,19 +937,19 @@ msgstr ""
 "σκοπούς δοκιμών και προγραμματισμού. ΜΗΝ χρησιμοποιήσετε αυτό το λογισμικό "
 "για σημαντικές εργασίες σε περιβάλλοντα παραγωγής."
 
-#: src/components/Error.jsx:180
+#: src/components/Error.jsx:181
 msgid "Open Bugzilla bug entry form"
 msgstr "Άνοιγμα φόρμας καταχώρησης σφαλμάτων Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:223
 msgid "Operating system"
 msgstr "Λειτουργικό σύστημα"
 
-#: src/components/datetime/CustomNTPModal.jsx:152
+#: src/components/datetime/CustomNTPModal.jsx:161
 msgid "Options"
 msgstr "Επιλογές"
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Other keyboards"
 msgstr "Άλλα πληκτρολόγια"
 
@@ -848,10 +957,10 @@ msgstr "Άλλα πληκτρολόγια"
 msgid "Partitions (advanced)"
 msgstr "Διαμερίσματα (σύνθετες επιλογές)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:92
+#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:138 src/components/users/Accounts.jsx:293
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Φράση πρόσβασης"
 
@@ -859,60 +968,68 @@ msgstr "Φράση πρόσβασης"
 msgid "Passphrase did not match any locked device"
 msgstr "Η φράση πρόσβασης δεν ταίριαξε με καμία κλειδωμένη συσκευή"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Οι φράσεις πρόσβασης πρέπει να ταιριάζουν"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:273
 msgid "Pending"
 msgstr "Σε εκκρεμότητα"
 
-#: src/components/Error.jsx:93
+#: src/components/Error.jsx:94
 msgid "Please attach the log file $0 to the issue."
 msgstr "Επισυνάψτε το αρχείο καταγραφής $0 στο πρόβλημα."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/login/LoginPage.jsx:44
+msgid "Please enter a PIN"
+msgstr "Εισαγάγετε ένα PIN"
+
+#: src/components/storage/installation-method/InstallationDestination.jsx:325
 msgid "Please select at least one disk to continue"
 msgstr "Επιλέξτε τουλάχιστον έναν δίσκο για να συνεχίσετε"
 
-#: src/components/datetime/CustomNTPModal.jsx:189
+#: src/components/datetime/CustomNTPModal.jsx:198
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/Error.jsx:296
+msgid "Potential duplicate bugs found"
+msgstr "Βρέθηκαν πιθανώς διπλότυπα σφάλματα"
+
+#: src/components/HeaderKebab.jsx:48
 msgid "Powered by Anaconda"
 msgstr "Με την υποστήριξη του Anaconda"
 
-#: src/components/AnacondaHeader.jsx:62
+#: src/components/AnacondaHeader.jsx:60
 msgid "Pre-release"
 msgstr "Πρώιμη έκδοση"
 
-#: src/components/Error.jsx:178
+#: src/components/Error.jsx:179
 msgid "Prefer to report manually? $0"
 msgstr "Προτιμάτε να κάνετε χειροκίνητα αναφορά; $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Proceed with installation"
 msgstr "Συνέχεια με την εγκατάσταση"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Quit installer?"
 msgstr "Έξοδος από τον βοηθό εγκατάστασης;"
 
-#: src/components/app.jsx:126
+#: src/components/app.jsx:142
 msgid "Reading information about the OS failed."
 msgstr "Η ανάγνωση πληροφοριών σχετικά με το λειτουργικό σύστημα απέτυχε."
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:83
 msgid "Reading information about the computer failed."
 msgstr "Η ανάγνωση πληροφοριών σχετικά με τον υπολογιστή απέτυχε."
 
-#: src/components/app.jsx:116
+#: src/components/app.jsx:132
 msgid "Reading installer configuration failed."
 msgstr "Η ανάγνωση διαμόρφωσης του βοηθού εγκατάστασης απέτυχε."
 
@@ -934,12 +1051,13 @@ msgstr ""
 "Το πραγματικό όνομα υπολογιστή πρέπει να αποτελείται από 64 χαρακτήρες ή "
 "λιγότερους"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/installation/InstallationProgress.jsx:248
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Reboot"
 msgstr "Επανεκκίνηση"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -948,21 +1066,17 @@ msgstr ""
 "με κρυπτογράφηση BitLocker. Απελευθερώστε τουλάχιστον $0 χώρου για την "
 "εγκατάσταση."
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Reboot system?"
 msgstr "Επανεκκίνηση συστήματος;"
-
-#: src/components/installation/InstallationProgress.jsx:218
-msgid "Reboot to installed system"
-msgstr "Επανεκκίνηση στο εγκατεστημένο σύστημα"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 msgid "Reclaim additional space"
 msgstr "Ανάκτηση πρόσθετου χώρου"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:114
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:134
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:205
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
 msgstr "Ανάκτηση χώρου"
 
@@ -970,7 +1084,7 @@ msgstr "Ανάκτηση χώρου"
 msgid "Reclaim space (required)"
 msgstr "Ανάκτηση χώρου (απαιτείται)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 msgid "Recommended"
 msgstr "Προτείνεται"
 
@@ -978,8 +1092,8 @@ msgstr "Προτείνεται"
 msgid "Recommended partitions:"
 msgstr "Προτεινόμενα διαμερίσματα:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:408
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:621
 msgid "Reformat"
 msgstr "Επαναδιαμόρφωση"
 
@@ -988,10 +1102,10 @@ msgstr "Επαναδιαμόρφωση"
 msgid "Reinstall Fedora"
 msgstr "Επανεγκατάσταση του Fedora"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
-#: src/components/localization/Keyboard.jsx:155
-#: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:435
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
+#: src/components/localization/Keyboard.jsx:157
+#: src/components/localization/Keyboard.jsx:161
 msgid "Remove"
 msgstr "Αφαίρεση"
 
@@ -1003,18 +1117,18 @@ msgstr ""
 "Κατάργηση όλων των διαμερισμάτων στις επιλεγμένες συσκευές, "
 "συμπεριλαμβανομένων των υπαρχόντων λειτουργικών συστημάτων."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:118
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
 "Καταργήστε ή αλλάξτε το μέγεθος των υπαρχόντων συστήματων αρχείων για να "
 "απελευθερώσετε χώρο για την εγκατάσταση."
 
-#: src/components/datetime/CustomNTPModal.jsx:207
+#: src/components/datetime/CustomNTPModal.jsx:216
 msgid "Remove server"
 msgstr "Αφαίρεση διακομιστή"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1032,11 +1146,11 @@ msgstr ""
 "Αντικατάσταση της τρέχουσας εγκατάστασης, αλλά διατήρηση των αρχείων του "
 "προσωπικού φακέλου (/home)."
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:108
 msgid "Report Issue"
 msgstr "Αναφορά προβλήματος"
 
-#: src/components/Error.jsx:159
+#: src/components/Error.jsx:160
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
@@ -1044,15 +1158,15 @@ msgstr ""
 "Αναφέρετε ένα ζήτημα ή στείλτε σχόλια ανοίγοντας τη φόρμα καταχώρησης "
 "σφαλμάτων του Bugzilla, $0."
 
-#: src/components/Error.jsx:601 src/components/Error.jsx:768
+#: src/components/Error.jsx:703 src/components/Error.jsx:870
 msgid "Report issue"
 msgstr "Αναφορά προβλήματος"
 
-#: src/components/Error.jsx:601
+#: src/components/Error.jsx:703
 msgid "Reporting issue..."
 msgstr "Αναφορά προβλήματος..."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
 msgstr "Απαιτείται"
 
@@ -1060,35 +1174,39 @@ msgstr "Απαιτείται"
 msgid "Requirements"
 msgstr "Απαιτήσεις"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:116
 msgid "Rescan devices"
 msgstr "Νέα σάρωση συσκευών"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:97
 msgid "Rescanning of the disks failed."
 msgstr "Η επανασάρωση των δίσκων απέτυχε."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:513
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
 msgstr "Αλλαγή μεγέθους"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+msgid "Resize partition"
+msgstr "Αλλαγή μεγέθους διαμερίσματος"
+
+#: src/components/storage/StorageReview.jsx:354
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Αλλαγή μεγέθους των εξής διαμερισμάτων από το $0: $1"
 
-#: src/components/Error.jsx:352
+#: src/components/Error.jsx:381
 msgid "Restrict access to the report"
 msgstr "Περιορισμός πρόσβασης στην αναφορά"
 
-#: src/components/Error.jsx:354
+#: src/components/Error.jsx:383
 msgid "Restricts the report to the $0 group. $1"
 msgstr "Περιορίζει την αναφορά στην ομάδα «$0». $1"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:34
 msgid "Return to installation"
 msgstr "Επιστροφή στην εγκατάσταση"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:673
 msgid "Return to storage editor"
 msgstr "Επιστροφή στην επεξεργασία χώρων αποθήκευσης"
 
@@ -1096,19 +1214,27 @@ msgstr "Επιστροφή στην επεξεργασία χώρων αποθή
 msgid "Review and install"
 msgstr "Έλεγχος και εγκατάσταση"
 
-#: src/components/review/ReviewConfiguration.jsx:74
+#: src/components/users/Accounts.jsx:94
+msgid "Root account has been configured"
+msgstr "Έχει ρυθμιστεί λογαριασμός root"
+
+#: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
 msgstr "Ο λογαριασμός root έχει ενεργοποιηθεί"
 
-#: src/components/review/ReviewConfiguration.jsx:68
+#: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 "Ο λογαριασμός root έχει ενεργοποιηθεί, αλλά δεν έχει ρυθμιστεί κανένας "
 "λογαριασμός χρήστη"
 
+#: src/components/users/Accounts.jsx:351
+msgid "Root password has been set."
+msgstr "Ο κωδικός πρόσβασης root έχει οριστεί."
+
+#: src/components/datetime/CustomNTPModal.jsx:245
+#: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
-#: src/components/datetime/CustomNTPModal.jsx:236
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Αποθήκευση"
 
@@ -1116,7 +1242,7 @@ msgstr "Αποθήκευση"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Σαρώστε τον κωδικό QR με το τηλέφωνό σας ή επισκεφθείτε το:"
 
-#: src/components/localization/InstallationLanguage.jsx:196
+#: src/components/localization/InstallationLanguage.jsx:204
 msgid "Search for a language"
 msgstr "Αναζήτηση γλώσσας"
 
@@ -1128,23 +1254,23 @@ msgstr "Αναζήτηση για πρόσθετο λογισμικό"
 msgid "Search for an environment"
 msgstr "Αναζήτηση για περιβάλλον"
 
-#: src/components/localization/Keyboard.jsx:222
+#: src/components/localization/Keyboard.jsx:224
 msgid "Search keyboard layout"
 msgstr "Αναζήτηση διάταξης πληκτρολογίου"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:109
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
 "Ασφαλίστε τα δεδομένα σας με κρυπτογράφηση σε επίπεδο δίσκου. Ισχύει μόνο "
 "για νέα διαμερίσματα"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:375
 msgid "Select"
 msgstr "Επιλογή"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:304
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:338
 msgid "Select a device"
 msgstr "Επιλέξτε μια συσκευή"
 
@@ -1152,7 +1278,7 @@ msgstr "Επιλέξτε μια συσκευή"
 msgid "Select city"
 msgstr "Επιλογή πόλης"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:358
 msgid "Select destination"
 msgstr "Επιλέξτε προορισμό"
 
@@ -1160,11 +1286,11 @@ msgstr "Επιλέξτε προορισμό"
 msgid "Select region"
 msgstr "Επιλογή περιοχής"
 
-#: src/components/localization/Keyboard.jsx:233
+#: src/components/localization/Keyboard.jsx:235
 msgid "Selected (top = current)"
 msgstr "Επιλεγμένο (κορυφαίο = τρέχον)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:120
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr ""
 "Δεν είναι δυνατή η επαναδιαμόρφωση της μορφής «$0» της επιλεγμένης συσκευής."
@@ -1173,11 +1299,11 @@ msgstr ""
 msgid "Send us feedback on your installation"
 msgstr "Στείλτε μας σχόλια για την εγκατάστασή σας"
 
-#: src/components/datetime/CustomNTPModal.jsx:151
+#: src/components/datetime/CustomNTPModal.jsx:160
 msgid "Server"
 msgstr "Διακομιστής"
 
-#: src/components/datetime/CustomNTPModal.jsx:181
+#: src/components/datetime/CustomNTPModal.jsx:190
 msgid "Server is not reachable"
 msgstr "Δεν είναι δυνατή η επικοινωνία με τον διακομιστή"
 
@@ -1197,11 +1323,15 @@ msgstr "Κοινή χρήση του δίσκου με άλλα λειτουργ
 msgid "Show AM/PM"
 msgstr "Εμφάνιση ΠΜ/ΜΜ"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 msgid "Show API key"
 msgstr "Εμφάνιση κλειδιού API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Show PIN"
+msgstr "Εμφάνιση PIN"
+
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Εμφάνιση επιβεβαιωμένου κωδικού πρόσβασης"
 
@@ -1209,19 +1339,19 @@ msgstr "Εμφάνιση επιβεβαιωμένου κωδικού πρόσβ�
 msgid "Show passphrase"
 msgstr "Εμφάνιση φράσης πρόσβασης"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Εμφάνιση κωδικού πρόσβασης"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:247
 msgid "Size"
 msgstr "Μέγεθος"
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:233
 msgid "Software installation"
 msgstr "Εγκατάσταση λογισμικού"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:231
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1230,58 +1360,69 @@ msgstr ""
 "ολοκληρωθεί. Γίνεται τώρα εγκατάσταση του λογισμικού στη συσκευή σας."
 
 #: src/components/software/index.js:19 src/components/software/index.js:20
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Software selection"
 msgstr "Επιλογή λογισμικού"
 
-#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
+#: src/components/review/ReviewConfiguration.jsx:215
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr ""
+"Πρέπει να ολοκληρώσετε ορισμένα βήματα της εγκατάστασης πριν μπορέσετε να "
+"συνεχίσετε."
+
+#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:52
 msgid "Some required partitions are missing: $0"
 msgstr "Απουσιάζουν ορισμένα απαραίτητα διαμερίσματα: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
 msgstr "Χώρος"
 
-#: src/components/Error.jsx:279
+#: src/components/Error.jsx:273
 msgid "Stacktrace"
 msgstr "Ιχνηλάτηση στοίβας"
 
-#: src/components/review/ReviewConfiguration.jsx:216
+#: src/components/review/ReviewConfiguration.jsx:276
 msgid "Storage"
 msgstr "Αποθηκευτικός χώρος"
 
-#: src/components/installation/InstallationProgress.jsx:129
-#: src/components/storage/storage-configuration/index.js:20
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
-#: src/components/steps.js:33
+#: src/components/storage/storage-configuration/index.js:22
 msgid "Storage configuration"
 msgstr "Διαμόρφωση χώρου"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:226
 msgid "Storage configuration: Storage is currently being configured."
 msgstr ""
 "Διαμόρφωση χώρου: αυτήν τη στιγμή γίνεται διαμόρφωση του αποθηκευτικού χώρου."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:58
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
 msgid "Storage editor"
 msgstr "Επεξεργασία αποθηκευτικού χώρου"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
-msgid "Storage editor is available only in the `Installation method` step."
-msgstr ""
-"Η επεξεργασία αποθηκευτικού χώρου είναι διαθέσιμη μόνο στο βήμα `Μέθοδος "
-"εγκατάστασης`."
-
-#: src/components/storage/scenarios/use-configured-storage/index.js:21
+#: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
 msgstr ""
 "Ο αποθηκευτικός χώρος βασίζεται στη διαμόρφωση από το μενού «Τροποποίηση "
 "χώρου»."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
+#: src/components/storage/scenarios/use-configured-storage/index.js:40
+msgid ""
+"Storage layout is defined by the kickstart file. The planned partitioning "
+"layout can be reviewed in the summary step."
+msgstr ""
+"Η διάταξη του αποθηκευτικού χώρου καθορίζεται από το αρχείο kickstart. "
+"Μπορείτε να ελέγξετε την προγραμματισμένη διάταξη διαμέρισης στο βήμα της "
+"σύνοψης."
+
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid "Storage plugin failed"
 msgstr "Αποτυχία αρθρώματος αποθηκευτικού χώρου"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:618
 msgid "Storage requirements not met"
 msgstr "Δεν πληρούνται οι απαιτήσεις αποθηκευτικού χώρου"
 
@@ -1289,7 +1430,7 @@ msgstr "Δεν πληρούνται οι απαιτήσεις αποθηκευτ
 msgid "Strong"
 msgstr "Ισχυρός"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:216
 msgid "Successfully installed"
 msgstr "Επιτυχής εγκατάσταση"
 
@@ -1297,23 +1438,23 @@ msgstr "Επιτυχής εγκατάσταση"
 msgid "Successfully unlocked $0."
 msgstr "Το $0 ξεκλειδώθηκε επιτυχώς."
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Suggested keyboards"
 msgstr "Προτεινόμενα πληκτρολόγια"
 
-#: src/components/localization/InstallationLanguage.jsx:122
+#: src/components/localization/InstallationLanguage.jsx:127
 msgid "Suggested languages"
 msgstr "Προτεινόμενες γλώσσες"
 
-#: src/components/users/Accounts.jsx:309
+#: src/components/users/Accounts.jsx:339 src/components/users/Accounts.jsx:423
 msgid "System"
 msgstr "Σύστημα"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:238
 msgid "System configuration"
 msgstr "Διαμόρφωση συστήματος"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:236
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1321,9 +1462,23 @@ msgstr ""
 "Διαμόρφωση συστήματος: η εγκατάσταση του λογισμικού έχει ολοκληρωθεί. "
 "Γίνεται τώρα διαμόρφωση του συστήματος."
 
-#: src/components/app.jsx:161
+#: src/components/app.jsx:177
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Η εγκατάσταση Anaconda διακόπηκε απροσδόκητα."
+
+#: src/components/Error.jsx:301
+msgid ""
+"The following open bugs may be related to your issue. Please review them "
+"before creating a new report."
+msgstr ""
+"Τα παρακάτω ανοικτά σφάλματα ενδέχεται να σχετίζονται με το πρόβλημά σας. "
+"Ελέγξτε τα πριν δημιουργήσετε μια νέα αναφορά."
+
+#: src/components/users/Accounts.jsx:47
+msgid "The following user will be created:"
+msgid_plural "The following users will be created:"
+msgstr[0] "Θα δημιουργηθεί ο παρακάτω χρήστης:"
+msgstr[1] "Θα δημιουργηθούν οι παρακάτω χρήστες:"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
@@ -1333,16 +1488,22 @@ msgstr ""
 "Η εγκατάσταση απαιτεί $0 χώρου στον δίσκο, αλλά η χωρητικότητα των "
 "επιλεγμένων δίσκων είναι μόνο $1."
 
-#: src/components/Error.jsx:676
+#: src/components/Error.jsx:778
 msgid "The installer cannot continue due to a critical error."
 msgstr ""
 "Ο βοηθός εγκατάστασης δεν μπορεί να συνεχίσει λόγω ενός κρίσιμου σφάλματος."
 
-#: src/components/Error.jsx:675
+#: src/components/Error.jsx:777
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr ""
 "Ο βοηθός εγκατάστασης δεν μπορεί να συνεχίσει λόγω ενός κρίσιμου σφάλματος: "
 "$0"
+
+#: src/hooks/Localization.jsx:68
+msgid ""
+"The keyboard layout has changed since the disk encryption passphrase was "
+"set. Please re-enter the passphrase."
+msgstr ""
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:35
 msgid ""
@@ -1353,7 +1514,7 @@ msgstr ""
 "ASCII. Ενδέχεται να μην μπορείτε να κάνετε εναλλαγή μεταξύ διατάξεων "
 "πληκτρολογίου κατά την πληκτρολόγησή της."
 
-#: src/components/localization/Keyboard.jsx:262
+#: src/components/localization/Keyboard.jsx:264
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
@@ -1362,7 +1523,7 @@ msgstr ""
 "χαρακτήρες ASCII. Επιλέξτε μια διάταξη με υποστήριξη ASCII ως την "
 "προεπιλεγμένη."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:52
 msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
@@ -1374,7 +1535,7 @@ msgstr ""
 "βοηθητικό εργαλείο με σύνθετες λειτουργίες και δεν προορίζεται για τυπικές "
 "εγκαταστάσεις."
 
-#: src/components/Error.jsx:378
+#: src/components/Error.jsx:407
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1386,11 +1547,11 @@ msgstr ""
 msgid "This hostname can't be submitted"
 msgstr "Δεν είναι δυνατή η υποβολή αυτού του ονόματος υπολογιστή"
 
-#: src/components/AnacondaHeader.jsx:66
+#: src/components/AnacondaHeader.jsx:64
 msgid "This is unstable, pre-release software"
 msgstr "Αυτό το λογισμικό πρώιμης έκδοσης είναι ασταθές"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:86
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:87
 msgid "This layout will be used for unlocking your system on boot"
 msgstr ""
 "Αυτή η διάταξη θα χρησιμοποιείται για το ξεκλείδωμα του συστήματός σας κατά "
@@ -1400,7 +1561,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Αυτό μπορεί να διαρκέσει λίγη ώρα"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:476
 msgid "This will take a few moments"
 msgstr "Αυτό θα διαρκέσει λίγα λεπτά"
 
@@ -1408,20 +1569,20 @@ msgstr "Αυτό θα διαρκέσει λίγα λεπτά"
 msgid "Time"
 msgstr "Ώρα"
 
-#: src/components/review/ReviewConfiguration.jsx:187
 #: src/components/datetime/Timezone.jsx:130
+#: src/components/review/ReviewConfiguration.jsx:241
 msgid "Timezone"
 msgstr "Ζώνη ώρας"
 
-#: src/components/Error.jsx:330
+#: src/components/Error.jsx:359
 msgid "Title"
 msgstr "Τίτλος"
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:264
 msgid "To begin using $0, reboot your system."
 msgstr "Για να ξεκινήσετε τη χρήση του $0, επανεκκινήστε το σύστημά σας."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:205
+#: src/components/storage/installation-method/InstallationMethod.jsx:198
 msgid "To continue, select the devices to install to."
 msgstr "Για να συνεχίσετε, επιλέξτε τις συσκευές όπου θα γίνει η εγκατάσταση."
 
@@ -1433,36 +1594,41 @@ msgstr ""
 "Για να χρησιμοποιήσετε αυτήν την επιλογή, αλλάξτε το μέγεθος ή καταργήστε "
 "υπάρχοντα διαμερίσματα για να ελευθερώσετε τουλάχιστον $0."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Τύπος"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:85
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr "Δεν είναι δυνατός ο προγραμματισμός της διαγραφής του $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr "Δεν είναι δυνατός ο προγραμματισμός της αλλαγής μεγέθους του $0"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+msgid "Undo last action"
+msgstr "Αναίρεση τελευταίας ενέργειας"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
 msgid "Unlock"
 msgstr "Ξεκλείδωμα"
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:64
-msgid ""
-"Unlock LUKS-encrypted partitions to keep existing data and show more "
-"installation methods."
-msgstr ""
-"Ξεκλειδώστε τα διαμερίσματα με κρυπτογράφηση LUKS για να διατηρήσετε τα "
-"υπάρχοντα δεδομένα και να δείτε περισσότερες μεθόδους εγκατάστασης."
-
 #: src/components/storage/installation-method/EncryptedDevices.jsx:138
 msgid "Unlock encrypted devices"
 msgstr "Ξεκλείδωμα κρυπτογραφημένων συσκευών"
 
-#: src/components/storage/scenarios/use-configured-storage/index.js:22
+#: src/components/storage/installation-method/EncryptedDevices.jsx:64
+msgid ""
+"Unlock encrypted partitions to keep existing data and show more installation "
+"methods."
+msgstr ""
+"Ξεκλειδώστε τα κρυπτογραφημένα διαμερίσματα για να διατηρήσετε τα υπάρχοντα "
+"δεδομένα και να δείτε περισσότερες μεθόδους εγκατάστασης."
+
+#: src/components/storage/scenarios/use-configured-storage/index.js:27
+#: src/components/storage/scenarios/use-configured-storage/index.js:41
 msgid "Use configured storage"
 msgstr "Χρήση του διαμορφωμένου αποθηκευτικού χώρου"
 
@@ -1470,23 +1636,27 @@ msgstr "Χρήση του διαμορφωμένου αποθηκευτικού 
 msgid "Use entire disk"
 msgstr "Χρήση ολόκληρου του δίσκου"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Use free space"
 msgstr "Χρήση του ελεύθερου χώρου"
 
-#: src/components/users/Accounts.jsx:165
+#: src/components/users/Accounts.jsx:244
 msgid "Use local account"
 msgstr "Χρήση τοπικού λογαριασμού"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:652
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Χρήση της συσκευής RAID για αυτόματη κατάτμηση"
 
-#: src/components/users/Accounts.jsx:210
+#: src/components/users/Accounts.jsx:494
+msgid "User creation"
+msgstr "Δημιουργία χρήστη"
+
+#: src/components/users/Accounts.jsx:289
 msgid "User name"
 msgstr "Όνομα χρήστη"
 
-#: src/components/users/Accounts.jsx:115
+#: src/components/users/Accounts.jsx:182
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1494,15 +1664,15 @@ msgstr ""
 "Το όνομα χρήστη μπορεί να περιέχει μόνο: γράμματα από a έως z, ψηφία 0-9, "
 "παύλες «$0», τελείες «$1», κάτω παύλες «$2»"
 
-#: src/components/users/Accounts.jsx:112
+#: src/components/users/Accounts.jsx:179
 msgid "User name must not be a reserved word"
 msgstr "Το όνομα χρήστη δεν πρέπει να είναι δεσμευμένη λέξη"
 
-#: src/components/users/Accounts.jsx:109
+#: src/components/users/Accounts.jsx:176
 msgid "User names must be shorter than 33 characters"
 msgstr "Τα ονόματα χρηστών πρέπει να περιέχουν λιγότερους από 33 χαρακτήρες"
 
-#: src/components/Error.jsx:581
+#: src/components/Error.jsx:658
 msgid "Validating..."
 msgstr "Επικύρωση..."
 
@@ -1510,19 +1680,19 @@ msgstr "Επικύρωση..."
 msgid "Weak"
 msgstr "Αδύναμος"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Καλώς ορίσατε"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 msgid "Welcome to Fedora Linux"
 msgstr "Καλώς ήρθατε στο Fedora Linux"
 
-#: src/components/AnacondaPage.jsx:86
+#: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
 msgstr "Καλώς ορίσατε. Ας εγκαταστήσουμε το $0 τώρα."
 
-#: src/components/Error.jsx:373
+#: src/components/Error.jsx:402
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1530,11 +1700,15 @@ msgstr ""
 "Όταν υποβάλετε αυτήν την αναφορά σφάλματος, θα μεταφορτωθούν αυτόματα τα "
 "εξής αρχεία καταγραφής: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:531
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
 "Δεν είναι δυνατή η αλλαγή μεγέθους για διαμερίσματα των Windows με "
 "κρυπτογράφηση BitLocker"
+
+#: src/components/app.jsx:41
+msgid "You can close this browser window now."
+msgstr ""
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
@@ -1545,12 +1719,12 @@ msgstr ""
 "εγκατάστασης να αναλάβει τα υπόλοιπα, είτε να ορίσετε τα διαμερίσματα "
 "χειροκίνητα."
 
-#: src/components/Error.jsx:238
+#: src/components/Error.jsx:232
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 "Μπορείτε να δημιουργήσετε το κλειδί API για τον λογαριασμό Bugzilla σας $0."
 
-#: src/components/users/Accounts.jsx:375
+#: src/components/users/Accounts.jsx:527
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1564,21 +1738,21 @@ msgstr ""
 "Πρέπει να διαθέτετε σύνδεση σε ένα δίκτυο για να ενεργοποιήσετε την αυτόματη "
 "ημερομηνία και ώρα."
 
-#: src/components/AnacondaWizardFooter.jsx:122
+#: src/components/AnacondaWizardFooter.jsx:108
 msgid "Your progress will not be saved."
 msgstr "Η πρόοδός σας δεν θα αποθηκευτεί."
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:278
 msgid "completed step"
 msgstr "ολοκληρωμένο βήμα"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:283
 msgid "current step"
 msgstr "τρέχον βήμα"
 
-#: src/components/review/StorageReview.jsx:158
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:376
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:389
+#: src/components/storage/StorageReview.jsx:168
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 msgid "delete"
 msgstr "διαγραφή"
 
@@ -1586,54 +1760,82 @@ msgstr "διαγραφή"
 msgid "edit"
 msgstr "επεξεργασία"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypt"
 msgstr "κρυπτογράφηση"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypted"
 msgstr "κρυπτογραφημένο"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:234
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 msgid "extended partition"
 msgstr "εκτεταμένο διαμέρισμα"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "διαμόρφωση ως $0"
 
-#: src/components/Error.jsx:161 src/components/Error.jsx:241
+#: src/components/Error.jsx:162 src/components/Error.jsx:235
 msgid "here"
 msgstr "εδώ"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/review/ReviewConfiguration.jsx:57
+msgid "incomplete"
+msgstr "μη ολοκληρωμένο"
+
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "προσάρτηση"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:272
 msgid "pending step"
 msgstr "εκκρεμές βήμα"
 
-#: src/components/Error.jsx:384
+#: src/components/Error.jsx:413
 msgid "report the issue manually"
 msgstr "αναφέρετε χειροκίνητα το πρόβλημα"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:173
 msgid "resized from $0"
 msgstr "αλλαγή μεγέθους από $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:460
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:464
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
 msgstr "συρρίκνωση"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:410
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr "συρρίκνωση σε $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:370
+#: src/components/review/Hostname.jsx:154
+msgid "transient, will use DHCP"
+msgstr "μεταβατικό, θα χρησιμοποιεί DHCP"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "αναίρεση"
+
+#~ msgid "Storage editor is available only in the `Installation method` step."
+#~ msgstr ""
+#~ "Η επεξεργασία αποθηκευτικού χώρου είναι διαθέσιμη μόνο στο βήμα `Μέθοδος "
+#~ "εγκατάστασης`."
+
+#~ msgid "Reboot to installed system"
+#~ msgstr "Επανεκκίνηση στο εγκατεστημένο σύστημα"
+
+#~ msgid "Note"
+#~ msgstr "Σημείωση"
+
+#~ msgid ""
+#~ "I understand that all existing data will be erased from the selected disks"
+#~ msgstr ""
+#~ "Κατανοώ ότι όλα τα υπάρχοντα δεδομένα θα διαγραφούν από τους επιλεγμένους "
+#~ "δίσκους"
+
+#~ msgid "The following users will be created:"
+#~ msgstr "Θα δημιουργηθούν οι παρακάτω χρήστες:"
 
 #~ msgid ""
 #~ "After creating the issue, click 'Add attachment' and attach file $0 and "
@@ -1688,9 +1890,6 @@ msgstr "αναίρεση"
 #~ msgstr ""
 #~ "Εντοπίστηκαν περισσότερες από μία διατάξεις. Αφαιρέστε τις πρόσθετες "
 #~ "διατάξεις για να συνεχίσετε"
-
-#~ msgid "No user or root account has been configured"
-#~ msgstr "Δεν έχει ρυθμιστεί κανένας λογαριασμός χρήστη ή root"
 
 #~ msgid ""
 #~ "Skipping account creation during installation. It will happen on first "
@@ -2030,9 +2229,6 @@ msgstr "αναίρεση"
 #~ msgid "Enter size and unit."
 #~ msgstr "Εισάγετε μέγεθος και μονάδες."
 
-#~ msgid "Error"
-#~ msgstr "Σφάλμα"
-
 #, fuzzy
 #~| msgid "Additional repositories"
 #~ msgid "Error setting up repositories"
@@ -2190,9 +2386,6 @@ msgstr "αναίρεση"
 #~| msgid "Add a new repository."
 #~ msgid "Name of the repository"
 #~ msgstr "Προσθήκη νέου αποθετηρίου."
-
-#~ msgid "Network Name"
-#~ msgstr "Όνομα δικτύου"
 
 #, fuzzy
 #~| msgid "not configured"

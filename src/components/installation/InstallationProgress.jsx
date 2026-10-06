@@ -14,97 +14,196 @@ import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/esm/icons/ex
 import { InProgressIcon } from "@patternfly/react-icons/dist/esm/icons/in-progress-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/esm/icons/pending-icon";
 
-import { BossClient, getSteps, installWithTasks } from "../../apis/boss.js";
+import { BossClient, getActiveInstallationTask, getSteps, INSTALLATION_STATUS, installWithTasks } from "../../apis/boss.js";
 
-import { exitGui } from "../../helpers/exit.js";
+import { exitGui, rebootSystem } from "../../helpers/exit.js";
+import { debug } from "../../helpers/log.js";
 
-import { OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
+import { BossContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
 import { EmptyStatePanel } from "cockpit-components-empty-state.jsx";
 
 import { Feedback } from "./Feedback.jsx";
+import { InstallationNonCriticalErrorDialog } from "./InstallationNonCriticalErrorDialog.jsx";
+import { useAutoReboot } from "./useAutoReboot.js";
 
 import "./InstallationProgress.scss";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
 const SCREEN_ID = "anaconda-screen-progress";
+const DETAIL_TYPE_YESNO = "yesno";
+const PROGRESS_STEPS_DONE = 4;
 
 const progressStepsMap = {
     BOOTLOADER_INSTALLATION: 2,
     ENVIRONMENT_CONFIGURATION: 0,
+    FINALIZATION: 3,
     SOFTWARE_INSTALLATION: 1,
     STORAGE_CONFIGURATION: 0,
-    SYSTEM_CONFIGURATION: 3,
+    SYSTEM_CONFIGURATION: 2,
 };
 
-export const InstallationProgress = ({ onCritFail }) => {
+export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
     const [status, setStatus] = useState();
     const [statusMessage, setStatusMessage] = useState("");
     const [steps, setSteps] = useState();
     const [currentProgressStep, setCurrentProgressStep] = useState(0);
+    const [errorDialogData, setErrorDialogData] = useState(null);
     const refStatusMessage = useRef("");
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const osRelease = useContext(OsReleaseContext);
+    const { installationStatus, pendingError } = useContext(BossContext);
+
+    useAutoReboot(status, automatedInstall);
 
     useEffect(() => {
-        installWithTasks()
-                .then(tasks => {
-                    const taskProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.Task",
-                        tasks[0]
-                    );
-                    const categoryProxy = new BossClient().client.proxy(
-                        "org.fedoraproject.Anaconda.TaskCategory",
-                        tasks[0]
-                    );
+        const failureCtx = { context: _("Installation of the system failed") };
 
-                    const addEventListeners = () => {
-                        taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
-                            if (step === 0) {
-                                getSteps({ task: tasks[0] })
-                                        .then(
-                                            ret => setSteps(ret.v),
-                                            onCritFail()
-                                        );
+        const connectToTask = (taskPath, shouldStart) => {
+            const taskProxy = new BossClient().client.proxy(
+                "org.fedoraproject.Anaconda.Task",
+                taskPath
+            );
+            const categoryProxy = new BossClient().client.proxy(
+                "org.fedoraproject.Anaconda.TaskCategory",
+                taskPath
+            );
+
+            let lastStep = null;
+
+            const addEventListeners = () => {
+                taskProxy.addEventListener("ProgressChanged", (_, step, message) => {
+                    if (step === 0 && lastStep !== 0) {
+                        getSteps({ task: taskPath })
+                                .then(
+                                    ret => setSteps(ret.v),
+                                    onCritFail()
+                                );
+                    }
+                    lastStep = step;
+                    if (message && message !== refStatusMessage.current) {
+                        debug("ProgressChanged:", message);
+                        setStatusMessage(message);
+                        refStatusMessage.current = message;
+                    }
+                });
+                taskProxy.addEventListener("Failed", () => {
+                    debug("Installation task Failed signal received");
+                    setStatus("danger");
+                });
+                taskProxy.addEventListener("Stopped", () => {
+                    debug("Installation task Stopped signal received");
+                    taskProxy.Finish().catch(onCritFail({
+                        context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
+                    }));
+                });
+                categoryProxy.addEventListener("changed", (_, data) => {
+                    if ("CurrentCategory" in data) {
+                        debug("CategoryChanged:", data.CurrentCategory);
+                        const step = progressStepsMap[data.CurrentCategory];
+                        setCurrentProgressStep(current => {
+                            if (step !== undefined && step >= current) {
+                                return step;
                             }
-                            if (message) {
-                                setStatusMessage(message);
-                                refStatusMessage.current = message;
-                            }
+                            return current;
                         });
-                        taskProxy.addEventListener("Failed", () => {
-                            setStatus("danger");
-                        });
-                        taskProxy.addEventListener("Stopped", () => {
-                            taskProxy.Finish().catch(onCritFail({
-                                context: cockpit.format(N_("Installation of the system failed: $0"), refStatusMessage.current),
-                            }));
-                        });
-                        categoryProxy.addEventListener("CategoryChanged", (_, category) => {
-                            const step = progressStepsMap[category];
-                            setCurrentProgressStep(current => {
-                                if (step !== undefined && step >= current) {
-                                    return step;
-                                }
-                                return current;
-                            });
-                        });
-                        taskProxy.addEventListener("Succeeded", () => {
-                            setStatus("success");
-                            setCurrentProgressStep(4);
-                        });
-                    };
-                    taskProxy.wait(() => {
-                        addEventListeners();
-                        taskProxy.Start().catch(onCritFail({
-                            context: _("Installation of the system failed"),
-                        }));
-                    });
-                }, onCritFail({
-                    context: _("Installation of the system failed"),
-                }));
-    }, [onCritFail]);
+                    }
+                });
+                categoryProxy.addEventListener("ErrorRaised", (_, message, detailType) => {
+                    handleError(message, detailType, categoryProxy);
+                });
+                taskProxy.addEventListener("Succeeded", () => {
+                    debug("Installation task Succeeded signal received");
+                    setStatus("success");
+                    setCurrentProgressStep(PROGRESS_STEPS_DONE);
+                });
+            };
+            Promise.all([taskProxy.wait(), categoryProxy.wait()]).then(() => {
+                addEventListeners();
+                if (shouldStart) {
+                    taskProxy.Start().catch(onCritFail(failureCtx));
+                } else {
+                    const step = progressStepsMap[categoryProxy.CurrentCategory];
+                    if (step !== undefined) {
+                        setCurrentProgressStep(step);
+                    }
+                    getSteps({ task: taskPath })
+                            .then(
+                                ret => setSteps(ret.v),
+                                onCritFail()
+                            );
+                    handleError(pendingError.message, pendingError.type, categoryProxy);
+                }
+            });
+        };
+
+        const startNewInstallation = () =>
+            installWithTasks().then(
+                tasks => connectToTask(tasks[0], true),
+                onCritFail(failureCtx)
+            );
+
+        const handleError = (message, detailType, categoryProxy) => {
+            if (!message) return;
+
+            if (detailType === DETAIL_TYPE_YESNO && categoryProxy) {
+                setErrorDialogData({ categoryProxy, message });
+            } else {
+                setStatus("danger");
+                categoryProxy?.RespondToError(false);
+                onCritFail()({ message });
+            }
+        };
+
+        /** Sync UI with the backend installation status: finalize if done, reconnect if running, or start a new installation. */
+        const syncInstallState = async () => {
+            debug("syncInstallState: installationStatus=", installationStatus);
+            switch (installationStatus) {
+            case INSTALLATION_STATUS.SUCCEEDED:
+                setStatus("success");
+                setCurrentProgressStep(PROGRESS_STEPS_DONE);
+                setSteps([]);
+                break;
+
+            case INSTALLATION_STATUS.FAILED:
+                handleError(pendingError.message, pendingError.type, null);
+                break;
+
+            case INSTALLATION_STATUS.RUNNING:
+                try {
+                    const activeTask = await getActiveInstallationTask();
+                    if (activeTask) {
+                        connectToTask(activeTask, false);
+                    } else {
+                        // this should be impossible. How is the status = RUNNING and no task is active?
+                        const errMsg = "Installation status is RUNNING but no active installation task was found";
+                        debug(errMsg);
+                        throw new Error(errMsg);
+                    }
+                } catch (error) {
+                    onCritFail(failureCtx)(error);
+                }
+                break;
+
+            default:
+                startNewInstallation();
+            }
+        };
+        syncInstallState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- pendingError is read on reconnection only, not reactively
+    }, [installationStatus, onCritFail]);
+
+    const submitErrorDecision = (shouldContinue) => {
+        if (!errorDialogData) {
+            return;
+        }
+
+        errorDialogData.categoryProxy.RespondToError(shouldContinue)
+                .finally(() => {
+                    setErrorDialogData(null);
+                });
+    };
 
     if (steps === undefined) {
         return null;
@@ -145,6 +244,11 @@ export const InstallationProgress = ({ onCritFail }) => {
         },
     ];
 
+    const successActions = [
+        <Button key="reboot" onClick={rebootSystem}>{_("Reboot")}</Button>,
+        ...(!isBootIso ? [<Button key="exit" variant="link" onClick={exitGui}>{_("Exit to live desktop")}</Button>] : []),
+    ];
+
     return (
         <Flex direction={{ default: "column" }} className={SCREEN_ID + "-status " + SCREEN_ID + "-status-" + status}>
             <EmptyStatePanel
@@ -154,12 +258,12 @@ export const InstallationProgress = ({ onCritFail }) => {
               variant="full"
               paragraph={
                   <Flex direction={{ default: "column" }}>
-                      <Content component="p">
-                          {currentProgressStep < 4
+                      <Content component="p" id={SCREEN_ID + "-step-done-description"}>
+                          {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
                               : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
                       </Content>
-                      {currentProgressStep < 4 && (
+                      {currentProgressStep < PROGRESS_STEPS_DONE && (
                           <>
                               <FlexItem spacer={{ default: "spacerXl" }} />
                               <ProgressStepper isCenterAligned>
@@ -197,7 +301,7 @@ export const InstallationProgress = ({ onCritFail }) => {
                                             description={
                                                 <Flex direction={{ default: "column" }}>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
-                                                        <Content component="p">{phaseText}</Content>
+                                                        <Content ouiaId={progressStep.id + "-phase"} component="p">{phaseText}</Content>
                                                     </FlexItem>
                                                     <FlexItem spacer={{ default: "spacerNone" }}>
                                                         <Content component="p">{statusText}</Content>
@@ -213,12 +317,13 @@ export const InstallationProgress = ({ onCritFail }) => {
                           </>)}
                   </Flex>
               }
-              secondary={
-                  status === "success" &&
-                  <Button onClick={exitGui}>{isBootIso ? _("Reboot to installed system") : _("Exit to live desktop")}</Button>
-              }
+              secondary={status === "success" && successActions}
               title={title}
               headingLevel="h2"
+            />
+            <InstallationNonCriticalErrorDialog
+              errorDialogData={errorDialogData}
+              onSubmitDecision={submitErrorDecision}
             />
             {(status === "success" || status === "danger") && <Feedback />}
         </Flex>

@@ -20,13 +20,14 @@ import {
     runStorageTask,
     scanDevicesWithTask,
 } from "../../../apis/storage.js";
+import { setBootloaderDrive } from "../../../apis/storage_bootloader.js";
 import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 
 import { getDevicesAction, getDiskSelectionAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
-import { getDeviceChildren } from "../../../helpers/storage.js";
+import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
 import { checkIfArraysAreEqual } from "../../../helpers/utils.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -47,32 +48,6 @@ const N_ = cockpit.noop;
 
 const idPrefix = "anaconda-screen-method";
 const debug = loggerDebug.bind(null, idPrefix + ":");
-
-/**
- *  Select default disks for the partitioning.
- *
- * If there are some usable disks already selected, show these.
- * In the automatic installation, select all disks. In
- * the interactive installation, select a disk if there
- * is only one available.
- * @return: the list of selected disks
- */
-const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
-    if (selectedDisks.length && selectedDisks.some(disk => usableDisks.includes(disk))) {
-        // Filter the selection by checking the usable disks if there are some disks selected
-        debug("Selecting disks selected in backend:", selectedDisks.join(","));
-        return selectedDisks.filter(disk => usableDisks.includes(disk));
-    } else {
-        const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
-        debug("Selecting one or less disks by default:", availableDisks.join(","));
-
-        // Select a usable disk if there is only one available
-        if (availableDisks.length === 1) {
-            return availableDisks;
-        }
-        return [];
-    }
-};
 
 const DeviceExistingInstallation = ({ device }) => {
     const originalExistingSystems = useOriginalExistingSystems();
@@ -210,7 +185,10 @@ const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
                         setIsRescanningDisks(false);
                         errorHandler(exc);
                     },
-                    onSuccess: () => resetPartitioning()
+                    onSuccess: () => Promise.all([
+                        resetPartitioning(),
+                        setBootloaderDrive({ drive: "" }),
+                    ])
                             .then(() => Promise.all([
                                 dispatch(getDevicesAction()),
                                 dispatch(getDiskSelectionAction())
@@ -262,10 +240,22 @@ export const InstallationDestination = ({
     }, [diskSelection]);
 
     const selectedDisksCnt = diskSelection.selectedDisks.length;
+    const diskTotalSpace = useDiskTotalSpace();
+    const requiredSize = useRequiredSize();
 
     useEffect(() => {
-        setIsDestinationValid(selectedDisksCnt > 0);
-    }, [selectedDisksCnt, setIsDestinationValid]);
+        if (selectedDisksCnt === 0) {
+            setIsDestinationValid(false);
+            return;
+        }
+
+        if (diskTotalSpace == null || requiredSize == null) {
+            setIsDestinationValid(undefined);
+            return;
+        }
+
+        setIsDestinationValid(diskTotalSpace >= requiredSize);
+    }, [selectedDisksCnt, diskTotalSpace, requiredSize, setIsDestinationValid]);
 
     const headingLevel = isFirstScreen ? "h3" : "h2";
 
@@ -342,8 +332,15 @@ const ChangeDestination = ({ dispatch, idPrefix, onCritFail }) => {
     const { diskSelection } = useContext(StorageContext);
     const [unappliedSelection, setUnappliedSelection] = useState(diskSelection.selectedDisks);
 
-    const onSave = () => {
-        setSelectedDisks({ drives: unappliedSelection });
+    useEffect(() => {
+        setUnappliedSelection(diskSelection.selectedDisks);
+    }, [diskSelection.selectedDisks]);
+
+    const onSave = async () => {
+        await Promise.all([
+            setSelectedDisks({ drives: unappliedSelection }),
+            setBootloaderDrive({ drive: "" }),
+        ]);
         setIsModalOpen(false);
     };
 

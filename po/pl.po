@@ -31,9 +31,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-17 04:31+0000\n"
-"PO-Revision-Date: 2025-12-06 12:39+0000\n"
-"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"POT-Creation-Date: 2026-10-06 09:25+0000\n"
+"PO-Revision-Date: 2026-09-29 09:03+0000\n"
+"Last-Translator: Tomasz Bojanowski <tomasz@bojanowski.me>\n"
 "Language-Team: Polish <https://translate.fedoraproject.org/projects/anaconda-"
 "webui/anaconda-webui/pl/>\n"
 "Language: pl\n"
@@ -42,28 +42,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.9.1\n"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:168
-#: src/components/storage/installation-method/InstallationDestination.jsx:289
+#: src/components/storage/installation-method/InstallationDestination.jsx:143
+#: src/components/storage/installation-method/InstallationDestination.jsx:279
 msgid "$0 $1"
 msgstr "$0 $1"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:343
-#: src/components/storage/installation-method/InstallationDestination.jsx:188
-#: src/components/storage/installation-method/InstallationDestination.jsx:282
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
+#: src/components/storage/installation-method/InstallationDestination.jsx:163
+#: src/components/storage/installation-method/InstallationDestination.jsx:272
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
-#: src/components/app.jsx:81
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:74
+#: src/components/storage/Common.jsx:58
+msgid "$0 error"
+msgid_plural "$0 errors"
+msgstr[0] "$0 błąd"
+msgstr[1] "$0 błędy"
+msgstr[2] "$0 błędów"
+
+#: src/components/app.jsx:96
 msgid "$0 installation"
 msgstr "Instalacja systemu $0"
 
-#: src/components/HeaderKebab.jsx:46
+#: src/components/HeaderKebab.jsx:47
 msgid "$0 installer"
 msgstr "Instalator systemu $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:244
 msgid ""
 "$0 is an MBR extended partition that contains logical partitions. Removing "
 "all logical partitions will also automatically remove the extended partition."
@@ -72,30 +80,45 @@ msgstr ""
 "wszystkich partycji logicznych spowoduje także automatyczne usunięcie "
 "partycji rozszerzonej."
 
-#: src/components/review/ReviewConfiguration.jsx:106
+#: src/components/storage/installation-method/usePageComplete.jsx:114
 msgid "$0 is required, but only $1 is available."
 msgstr "Wymagane jest $0, ale dostępne jest tylko $1."
 
-#: src/components/storage/Common.jsx:46
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:90
+#: src/components/storage/Common.jsx:74
 msgid "$0 warning"
 msgid_plural "$0 warnings"
 msgstr[0] "$0 ostrzeżenie"
 msgstr[1] "$0 ostrzeżenia"
 msgstr[2] "$0 ostrzeżeń"
 
-#: src/components/review/StorageReview.jsx:277
+#: src/components/storage/StorageReview.jsx:290
 msgid "$0 will be deleted"
 msgstr "System $0 zostanie usunięty"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:184
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:190
 msgid "'$0' filesystem cannot be on an encrypted block device"
 msgstr "System plików „$0” nie może być na zaszyfrowanym urządzeniu blokowym"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:178
+#: src/helpers/storage.js:267
+msgid "'$0' must be assigned to $1"
+msgstr "Punkt montowania „$0” musi być na urządzeniu przypisanym jako „$1”"
+
+#: src/helpers/storage.js:270
 msgid "'$0' must be on a device formatted to '$1'"
 msgstr "Punkt montowania „$0” musi być na urządzeniu sformatowanym jako „$1”"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:236
+#: src/helpers/storage.js:261
+msgid ""
+"'$0' must be on an EFI System Partition. The selected partition uses a FAT "
+"filesystem, but is not marked as an ESP. Set the partition type to EFI "
+"System and enable the esp flag."
+msgstr ""
+"'$0' musi być na partycji systemowej EFI. Wybrana partycja używa systemu "
+"plików FAT, lecz nie jest zaznaczona jako ESP. Wybierz typ partycji jako "
+"System EFI i włącz flagę ESP."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:272
 msgid ""
 "'$0' partition on MDRAID device $1 found. Bootloader partitions on MDRAID "
 "devices are not supported."
@@ -103,31 +126,35 @@ msgstr ""
 "Odnaleziono partycję „$0” na urządzeniu MDRAID $1. Partycje programu "
 "startowego na urządzeniach MDRAID nie są obsługiwane."
 
-#: src/components/users/Accounts.jsx:177
+#: src/components/users/Accounts.jsx:256
 msgid ""
 "A standard user account with admin access for making system-wide changes."
 msgstr ""
 "Standardowe konto użytkownika z dostępem administratora do wprowadzania "
 "zmian w systemie."
 
-#: src/components/HeaderKebab.jsx:124
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:50
+msgid "Abort installation"
+msgstr "Anuluj instalację"
+
+#: src/components/HeaderKebab.jsx:105
 msgid "About"
 msgstr "Informacje"
 
-#: src/components/review/ReviewConfiguration.jsx:194
+#: src/components/review/ReviewConfiguration.jsx:254
 msgid "Account"
 msgstr "Konto"
 
-#: src/components/review/StorageReview.jsx:235
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
+#: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 msgid "Actions"
 msgstr "Działania"
 
-#: src/components/datetime/CustomNTPModal.jsx:223
+#: src/components/datetime/CustomNTPModal.jsx:232
 msgid "Add another server..."
 msgstr "Dodaj kolejny serwer…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:635
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:644
 msgid "Add mount"
 msgstr "Dodaj punkt montowania"
 
@@ -139,7 +166,7 @@ msgstr "Dodatki do wybranego środowiska"
 msgid "Add-ons not specific to your environment"
 msgstr "Dodatki niezwiązane ze środowiskiem użytkownika"
 
-#: src/components/localization/InstallationLanguage.jsx:143
+#: src/components/localization/InstallationLanguage.jsx:148
 msgid "Additional languages"
 msgstr "Dodatkowe języki"
 
@@ -147,7 +174,7 @@ msgstr "Dodatkowe języki"
 msgid "Additional software for the selected environment"
 msgstr "Dodatkowe oprogramowanie dla wybranego środowiska"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:67
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:55
 msgid "All changes made in the storage editor take effect immediately."
 msgstr ""
 "Wszystkie zmiany wprowadzone w edytorze urządzeń do przechowywania danych są "
@@ -161,11 +188,11 @@ msgstr "Wszystkie urządzenia używające tego hasła zostaną odblokowane"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Interfejs użytkownika Anaconda Web"
 
-#: src/components/HeaderKebab.jsx:76
+#: src/components/HeaderKebab.jsx:77
 msgid "Anaconda project page"
 msgstr "Strona projektu Anaconda"
 
@@ -173,11 +200,9 @@ msgstr "Strona projektu Anaconda"
 msgid "Apply mount point assignment and install"
 msgstr "Zastosuj przydział punktów montowania i zainstaluj"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
-#, fuzzy
-#| msgid "Applying new disk selection..."
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Applying changes..."
-msgstr "Zastosowywanie nowego wyboru dysków…"
+msgstr "Zastosowywanie zmian…"
 
 #: src/components/storage/scenarios/mount-point-mapping/index.js:22
 msgid ""
@@ -186,11 +211,9 @@ msgstr ""
 "Przydziela partycje do punktów montowania. Przydatne dla wstępnie "
 "skonfigurowanych niestandardowych układów."
 
-#: src/components/Error.jsx:367
-#, fuzzy
-#| msgid "Automatic partitioning failed."
+#: src/components/Error.jsx:396
 msgid "Automatic log file upload"
-msgstr "Automatyczne partycjonowanie się nie powiodło."
+msgstr "Automatyczne wysyłanie pliku dziennika"
 
 #: src/components/datetime/DateAndTime.jsx:133
 msgid "Automatically set date and time, using time servers"
@@ -201,11 +224,12 @@ msgstr "Automatyczne ustawianie daty i czasu za pomocą serwerów czasu"
 msgid "Automatically set timezone"
 msgstr "Automatyczne ustawianie strefy czasowej"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:197
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:200
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Dostępne wolne miejsce: $0. Instalacja wymaga: $1."
 
-#: src/components/Error.jsx:591 src/components/AnacondaWizardFooter.jsx:76
+#: src/components/Error.jsx:668 src/components/Error.jsx:693
+#: src/components/AnacondaWizardFooter.jsx:62
 msgid "Back"
 msgstr "Wstecz"
 
@@ -213,23 +237,19 @@ msgstr "Wstecz"
 msgid "Base environment"
 msgstr "Podstawowe środowisko"
 
-#: src/components/Error.jsx:338
-#, fuzzy
-#| msgid "Description goes here."
+#: src/components/Error.jsx:367
 msgid "Brief description of the issue"
-msgstr "Miejsce na opis."
+msgstr "Krótki opis błędu (w języku angielskim)"
 
-#: src/components/Error.jsx:327
-#, fuzzy
-#| msgid "Error details"
+#: src/components/Error.jsx:356
 msgid "Bug report details"
-msgstr "Informacje o błędzie"
+msgstr "Informacje o zgłoszeniu błędu"
 
-#: src/components/Error.jsx:212
+#: src/components/Error.jsx:206
 msgid "Bugzilla API key"
-msgstr ""
+msgstr "Klucz API serwisu Bugzilla"
 
-#: src/components/AnacondaHeader.jsx:75
+#: src/components/AnacondaHeader.jsx:73
 msgid ""
 "By continuing to use this software, you understand and accept the risks "
 "associated with pre-released software, that you intend to use this for "
@@ -241,12 +261,12 @@ msgstr ""
 "wyłącznie do testowania i rozwijania, a także chce zgłaszać błędy lub "
 "problemy w celu jego ulepszenia."
 
-#: src/components/review/Hostname.jsx:127 src/components/Error.jsx:759
-#: src/components/datetime/CustomNTPModal.jsx:239
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
-#: src/components/storage/installation-method/InstallationDestination.jsx:381
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:84
-#: src/components/localization/Keyboard.jsx:280
+#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
+#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
+#: src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -254,7 +274,7 @@ msgstr "Anuluj"
 msgid "Change"
 msgstr "Zmień"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:353
+#: src/components/storage/installation-method/InstallationDestination.jsx:350
 msgid "Change destination"
 msgstr "Zmień miejsce docelowe"
 
@@ -262,26 +282,30 @@ msgstr "Zmień miejsce docelowe"
 msgid "Change hostname"
 msgstr "Zmień nazwę komputera"
 
-#: src/components/review/ReviewConfiguration.jsx:123
+#: src/components/storage/installation-method/usePageComplete.jsx:128
 msgid "Change partition layout"
 msgstr "Zmień układ partycji"
 
-#: src/components/localization/Keyboard.jsx:213
-#: src/components/localization/Keyboard.jsx:308
-#: src/components/localization/Keyboard.jsx:359
+#: src/components/localization/Keyboard.jsx:215
+#: src/components/localization/Keyboard.jsx:301
+#: src/components/localization/Keyboard.jsx:352
 msgid "Change system keyboard layout"
 msgstr "Zmień układ klawiatury systemu"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:139
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:127
 msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 "Zmiany wprowadzone w tym miejscu będą miały natychmiastowy wpływ na "
 "komputer. Nie ma możliwości cofnięcia."
 
+#: src/components/review/ReviewConfiguration.jsx:191
+msgid "Checking installation configuration..."
+msgstr "Sprawdzanie konfiguracji instalacji…"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:475
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:481
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:39
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:425
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:431
 msgid "Checking storage configuration"
 msgstr "Sprawdzanie konfiguracji urządzeń do przechowywania danych"
 
@@ -289,84 +313,94 @@ msgstr "Sprawdzanie konfiguracji urządzeń do przechowywania danych"
 msgid "Clear search"
 msgstr "Wyczyść wyszukiwanie"
 
-#: src/components/storage/Common.jsx:26
+#: src/components/storage/Common.jsx:27
 msgid "Click 'Next' again to proceed despite these warnings."
 msgstr "Kliknięcie „Dalej” drugi raz kontynuuje pomimo tych ostrzeżeń."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:386
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
-#: src/components/network/CockpitNetworkConfiguration.jsx:95
+#: src/components/storage/installation-method/InstallationDestination.jsx:383
 msgid "Close"
 msgstr "Zamknij"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:143
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:131
 msgid "Close storage editor"
 msgstr "Zamknij edytora urządzeń do przechowywania danych"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:280
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:328
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
 msgstr ""
 "Cockpit-Storage nie dostarczyło hasła do odblokowania zaszyfrowanego "
 "urządzenia."
 
-#: src/components/installation/InstallationProgress.jsx:175
+#: src/components/installation/InstallationProgress.jsx:279
 msgid "Completed"
 msgstr "Ukończono"
 
-#: src/components/datetime/CustomNTPModal.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:212
+msgid "Configuration is incomplete"
+msgstr "Konfiguracja jest niepełna"
+
+#: src/components/datetime/CustomNTPModal.jsx:270
 msgid "Configure NTP servers"
 msgstr "Skonfiguruj serwery NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:145
+#: src/components/datetime/CustomNTPModal.jsx:154
 msgid "Configure custom NTP servers"
 msgstr "Konfiguracja niestandardowych serwerów NTP"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:70
-#: src/components/HeaderKebab.jsx:113
-#, fuzzy
-#| msgid "Configure storage"
+#: src/components/network/CockpitNetworkConfiguration.jsx:40
 msgid "Configure network"
-msgstr "Skonfiguruj urządzenia do przechowywania danych"
+msgstr "Skonfiguruj sieć"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:129
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:117
 msgid "Configure storage"
 msgstr "Skonfiguruj urządzenia do przechowywania danych"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:602
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:682
 msgid "Configure storage again"
 msgstr "Ponownie skonfiguruj urządzenia do przechowywania danych"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:95
-#: src/components/users/Accounts.jsx:141 src/components/users/Accounts.jsx:297
+#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:96
 msgid "Confirm passphrase"
 msgstr "Potwierdzenie hasła"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:587
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:667
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: src/components/AnacondaWizardFooter.jsx:140
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:43
+#: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Kontynuuj instalację"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:547
+#: src/components/installation/InstallationNonCriticalErrorDialog.jsx:30
+msgid "Continue installation?"
+msgstr "Kontynuować instalację?"
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:620
 msgid "Continue with installation"
 msgstr "Kontynuuj instalację"
 
-#: src/components/users/index.js:18
-msgid "Create Account"
-msgstr "Utwórz konto"
+#: src/components/storage/Common.jsx:40
+msgid "Correct these issues before continuing."
+msgstr "Proszę naprawić te problemy przed kontynuowaniem."
 
-#: src/components/users/Accounts.jsx:239
+#: src/components/users/index.js:20
+msgid "Create Account"
+msgstr "Utwórz Konto"
+
+#: src/components/users/Accounts.jsx:318
 msgid "Create account"
 msgstr "Utwórz konto"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:91
+#: src/components/storage/installation-method/InstallationDestination.jsx:66
 msgid "Currently installed: $0"
 msgstr "Obecnie zainstalowane: $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:225
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
 msgid "Custom"
 msgstr "Niestandardowy"
 
@@ -375,20 +409,24 @@ msgid "Date"
 msgstr "Data"
 
 #: src/components/datetime/DateAndTime.jsx:151
-#: src/components/datetime/index.js:18
+#: src/components/datetime/index.js:21
 msgid "Date and time"
 msgstr "Data i czas"
 
-#: src/components/review/StorageReview.jsx:335
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:395
+msgid "Delete partition"
+msgstr "Usuwa partycję"
+
+#: src/components/storage/StorageReview.jsx:348
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 "Usunięcie pewnych partycji może uniemożliwić uruchomienie systemu $0: $1"
 
-#: src/components/Error.jsx:268
+#: src/components/Error.jsx:262
 msgid "Description"
 msgstr "Opis"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:274
+#: src/components/storage/installation-method/InstallationDestination.jsx:264
 msgid "Destination"
 msgstr "Miejsce docelowe"
 
@@ -396,81 +434,85 @@ msgstr "Miejsce docelowe"
 msgid "Destination is encrypted"
 msgstr "Miejsce docelowe jest zaszyfrowane"
 
-#: src/components/Error.jsx:273
-#, fuzzy
-#| msgid "Device description"
+#: src/components/Error.jsx:267
 msgid "Detailed description of the issue"
-msgstr "Opis urządzenia"
+msgstr "Szczegółowy opis błędu (w języku angielskim)"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:569
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:646
 msgid "Detected valid storage layout:"
 msgstr "Wykryto prawidłowy układ urządzeń do przechowywania danych:"
 
-#: src/components/review/StorageReview.jsx:233
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:611
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
+#: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Urządzenie"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:378
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
 msgstr "Podwójne urządzenie."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:231
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:237
 msgid "Duplicate mount point."
 msgstr "Podwójny punkt montowania."
 
-#: src/components/users/Accounts.jsx:279
+#: src/components/users/Accounts.jsx:342 src/components/users/Accounts.jsx:393
 msgid "Enable root account"
 msgstr "Włączone konto roota"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:62
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:63
 msgid "Encrypt my data"
 msgstr "Szyfrowanie danych"
 
-#: src/components/review/StorageReview.jsx:236
+#: src/components/storage/StorageReview.jsx:249
 msgid "Encrypted"
 msgstr "Zaszyfrowane"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:105
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:106
 msgid "Encryption"
 msgstr "Szyfrowanie"
+
+#: src/components/login/LoginPage.jsx:88
+msgid "Enter PIN"
+msgstr "Wprowadź PIN"
+
+#: src/components/login/LoginPage.jsx:77
+msgid "Enter PIN to access the installer"
+msgstr "Wprowadź PIN żeby uzyskać dostęp do instalatora"
 
 #: src/components/Error.jsx:203
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
+"Proszę podać klucz API serwisu Bugzilla, aby utworzyć zgłoszenie błędu. "
+"W następnym kroku będzie można przejrzeć i zmodyfikować informacje o błędzie."
 
-#: src/components/Error.jsx:285
-#, fuzzy
-#| msgid "Base Environment"
+#: src/components/Error.jsx:279
 msgid "Environment"
-msgstr "Podstawowe środowisko"
+msgstr "Środowisko"
 
 #: src/components/storage/scenarios/erase-all/index.js:20
 msgid "Erase data and install"
 msgstr "Usuń dane i zainstaluj"
 
-#: src/components/Error.jsx:716
+#: src/components/Error.jsx:818
 msgid "Error details"
 msgstr "Informacje o błędzie"
 
-#: src/components/installation/InstallationProgress.jsx:218
+#: src/components/installation/InstallationProgress.jsx:249
 msgid "Exit to live desktop"
 msgstr "Wyjdź do pulpitu"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:238
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:245
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:241
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:248
 msgid "Extended partition"
 msgstr "Partycja rozszerzona"
 
-#: src/components/Error.jsx:318
-#, fuzzy
-#| msgid "Report issue"
+#: src/components/Error.jsx:642
 msgid "Failed to report issue"
-msgstr "Zgłoś błąd"
+msgstr "Zgłoszenie błędu się nie powiodło"
 
-#: src/components/localization/Keyboard.jsx:202
+#: src/components/localization/Keyboard.jsx:204
 msgid "Failed to save layouts"
 msgstr "Zapisanie układów się nie powiodło"
 
@@ -478,11 +520,11 @@ msgstr "Zapisanie układów się nie powiodło"
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora Linux wymaga co najmniej $0 wolnego miejsca na dysku."
 
-#: src/components/installation/InstallationProgress.jsx:144
+#: src/components/installation/InstallationProgress.jsx:243
 msgid "Finalization"
 msgstr "Kończenie"
 
-#: src/components/installation/InstallationProgress.jsx:142
+#: src/components/installation/InstallationProgress.jsx:241
 msgid ""
 "Finalizing: The system configuration is complete. Finalizing installation "
 "may take a few moments."
@@ -490,11 +532,11 @@ msgstr ""
 "Kończenie: ukończono konfigurację systemu. Dokończenie instalacji może "
 "chwilę zająć."
 
-#: src/components/localization/Keyboard.jsx:218
+#: src/components/localization/Keyboard.jsx:220
 msgid "Find layout"
 msgstr "Wyszukiwanie układu"
 
-#: src/components/users/Accounts.jsx:295
+#: src/components/users/Accounts.jsx:409
 msgid ""
 "For better security, avoid using the root account directly. Instead, use the "
 "local account above to manage the system."
@@ -503,23 +545,27 @@ msgstr ""
 "roota. Zamiast tego do zarządzania systemem należy używać powyższego "
 "lokalnego konta."
 
-#: src/components/users/Accounts.jsx:179
+#: src/components/users/Accounts.jsx:258
 msgid "Full name"
 msgstr "Imię i nazwisko"
 
-#: src/components/users/Accounts.jsx:127
+#: src/components/users/Accounts.jsx:194
 msgid "Full name cannot contain colon characters"
 msgstr "Imię i nazwisko nie mogą zawierać dwukropków"
 
-#: src/components/review/StorageReview.jsx:238
+#: src/components/storage/StorageReview.jsx:251
 msgid "Helper text"
 msgstr "Tekst pomocniczy"
 
-#: src/components/Error.jsx:229
+#: src/components/Error.jsx:223
 msgid "Hide API key"
-msgstr ""
+msgstr "Ukryj klucz API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Hide PIN"
+msgstr "Ukryj PIN"
+
+#: src/components/Password.jsx:265
 msgid "Hide confirmed password"
 msgstr "Ukryj potwierdzone hasło"
 
@@ -527,7 +573,7 @@ msgstr "Ukryj potwierdzone hasło"
 msgid "Hide passphrase"
 msgstr "Ukryj hasło"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Hide password"
 msgstr "Ukryj hasło"
 
@@ -535,25 +581,25 @@ msgstr "Ukryj hasło"
 msgid "Hostname"
 msgstr "Nazwa komputera"
 
-#: src/components/storage/installation-method/InstallationScenario.jsx:150
+#: src/components/storage/installation-method/InstallationScenario.jsx:163
 msgid "How would you like to install?"
 msgstr "W jaki sposób zainstalować?"
 
-#: src/components/review/ReviewConfiguration.jsx:252
+#: src/components/review/ReviewConfiguration.jsx:309
 msgid "I understand that all existing data will be erased"
-msgstr "Rozumiem, że wszystkie istniejące dane zostaną usunięte"
-
-#: src/components/review/ReviewConfiguration.jsx:253
-msgid ""
+msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
-msgstr ""
+msgstr[0] "Rozumiem, że wszystkie istniejące dane zostaną usunięte"
+msgstr[1] ""
+"Rozumiem, że wszystkie istniejące dane zostaną usunięte z wybranych dysków"
+msgstr[2] ""
 "Rozumiem, że wszystkie istniejące dane zostaną usunięte z wybranych dysków"
 
-#: src/components/review/ReviewConfiguration.jsx:257
+#: src/components/review/ReviewConfiguration.jsx:314
 msgid "I understand that some existing data will be erased"
 msgstr "Rozumiem, że część istniejących danych zostanie usunięta"
 
-#: src/components/review/ReviewConfiguration.jsx:258
+#: src/components/review/ReviewConfiguration.jsx:315
 msgid "I understand that some partitions will be modified"
 msgstr "Rozumiem, że część partycji zostanie zmodyfikowanych"
 
@@ -563,68 +609,95 @@ msgstr ""
 "Jeśli puste, nazwa komputera będzie tymczasowa i zostanie ustawiona na "
 "podstawie informacji sieciowych."
 
+#: src/components/storage/installation-method/InstallationScenario.jsx:126
+msgid ""
+"If none of the options above apply, use the storage editor to create a "
+"custom partitioning before proceeding."
+msgstr ""
+"Jeśli żadna z powyższych opcji nie ma zastosowania, przed kontynuacją utwórz "
+"niestandardowe partycjonowanie za pomocą edytora pamięci masowej."
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:56
 msgid "If you are configuring partitions the following are required:"
 msgstr "W przypadku konfigurowania partycji wymagane są następujące elementy:"
 
-#: src/components/Error.jsx:382
+#: src/components/Error.jsx:411
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
 "yourself."
 msgstr ""
+"Jeśli użytkownik nie wyrazi zgody na automatyczne wysyłanie pliku dziennika, "
+"to można zamiast tego $0. Ręczne zgłoszenie umożliwia przejrzenie "
+"i samodzielne dołączenie wybranych plików dziennika."
 
-#: src/components/AnacondaHeader.jsx:78
+#: src/components/AnacondaHeader.jsx:76
 msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
 "Jeśli użytkownik nie rozumie lub nie akceptuje ryzyka, to proszę zakończyć "
 "ten program."
 
-#: src/components/installation/InstallationProgress.jsx:180
+#: src/components/Error.jsx:328
+msgid ""
+"If your issue matches one of the bugs above, you can open it and add your "
+"information there instead of creating a duplicate report."
+msgstr ""
+"Jeśli Twój problem pasuje do jednego z powyższych błędów, otwórz go i dodaj "
+"swoje informacje, zamiast tworzyć duplikat."
+
+#: src/components/installation/InstallationProgress.jsx:284
 msgid "In progress"
 msgstr "W trakcie"
 
-#: src/components/app.jsx:32
+#: src/components/app.jsx:33
 msgid "Initializing..."
 msgstr "Inicjowanie…"
 
 #: src/components/storage/scenarios/use-free-space/index.js:27
-#: src/components/storage/scenarios/use-configured-storage/index.js:20
+#: src/components/storage/scenarios/use-configured-storage/index.js:25
+#: src/components/storage/scenarios/use-configured-storage/index.js:39
 msgid "Install"
 msgstr "Zainstaluj"
 
-#: src/components/Error.jsx:747
-#: src/components/installation/InstallationProgress.jsx:120
+#: src/components/app.jsx:40
+msgid "Installation completed"
+msgstr "Instalacja zakończona"
+
+#: src/components/installation/InstallationProgress.jsx:219
+#: src/components/Error.jsx:849
 msgid "Installation failed"
 msgstr "Instalacja się nie powiodła"
 
-#: src/components/storage/installation-method/index.js:20
+#: src/components/storage/installation-method/index.js:24
 msgid "Installation method"
 msgstr "Metoda instalacji"
 
-#: src/components/installation/InstallationProgress.jsx:101
-#: src/components/installation/InstallationProgress.jsx:105
+#: src/components/installation/InstallationProgress.jsx:61
 msgid "Installation of the system failed"
 msgstr "Instalacja systemu się nie powiodła"
 
-#: src/components/installation/InstallationProgress.jsx:81
+#: src/components/installation/InstallationProgress.jsx:98
 msgid "Installation of the system failed: $0"
 msgstr "Instalacja systemu się nie powiodła: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:209
+#: src/components/review/ReviewConfiguration.jsx:269
 msgid "Installation type"
 msgstr "Typ instalacji"
 
-#: src/components/installation/InstallationProgress.jsx:122
+#: src/components/installation/InstallationProgress.jsx:221
 msgid "Installing"
 msgstr "Instalowanie"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:320
+#: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Insufficient disk space"
 msgstr "Za mało miejsca na dysku"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:219
+#: src/components/login/LoginPage.jsx:68
+msgid "Invalid PIN. Please try again."
+msgstr "Nieprawidłowy PIN. Spróbuj ponownie."
+
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:255
 msgid ""
 "Invalid RAID configuration detected. If your RAID array is created directly "
 "on top of disks, a partition table must be created on the array. If your "
@@ -638,9 +711,13 @@ msgstr ""
 "system plików lub format (np. wolumin fizyczny LVM). Wszystkie istniejące "
 "partycje na tej macierzy będą ignorowane."
 
-#: src/components/datetime/CustomNTPModal.jsx:83
+#: src/components/datetime/CustomNTPModal.jsx:92
 msgid "Invalid hostname"
 msgstr "Nieprawidłowa nazwa komputera"
+
+#: src/components/review/ReviewConfiguration.jsx:208
+msgid "Jump to first incomplete step"
+msgstr "Przejdź do pierwszego nieukończonego kroku"
 
 #: src/components/storage/scenarios/use-free-space/index.js:28
 msgid ""
@@ -650,31 +727,32 @@ msgstr ""
 "Zachowuje obecny układ dysku i wykorzystuje dostępne miejsce, aby móc "
 "uruchamiać się jednocześnie z innym systemem operacyjnym."
 
-#: src/components/localization/InstallationLanguage.jsx:243
+#: src/components/localization/InstallationLanguage.jsx:254
 msgid "Keyboard"
 msgstr "Klawiatura"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:74
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:75
 msgid "Keyboard layout during boot"
 msgstr "Układ klawiatury podczas uruchamiania"
 
-#: src/components/review/ReviewConfiguration.jsx:180
-#: src/components/localization/InstallationLanguage.jsx:227
+#: src/components/localization/InstallationLanguage.jsx:240
+#: src/components/review/ReviewConfiguration.jsx:234
 msgid "Language"
 msgstr "Język"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:77
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:199
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:65
 msgid "Launch storage editor"
 msgstr "Uruchom edytor urządzeń do przechowywania danych"
 
-#: src/components/Error.jsx:358
-#, fuzzy
-#| msgid "Learn more about your storage options."
+#: src/components/Error.jsx:387
 msgid "Learn more about restricted access in the configuration"
-msgstr "Więcej informacji o opcjach przechowywania danych."
+msgstr "Więcej informacji o ograniczonym dostępie znajduje się w konfiguracji"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/users/Accounts.jsx:209
+msgid "Leave both passphrase fields empty to use an empty password."
+msgstr "Zostaw oba pola hasła puste żeby użyć pustego hasła."
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
 msgid "Location"
 msgstr "Położenie"
 
@@ -682,8 +760,12 @@ msgstr "Położenie"
 msgid "Locked devices"
 msgstr "Zablokowane urządzenia"
 
-#: src/components/localization/Keyboard.jsx:122
-#: src/components/localization/Keyboard.jsx:126
+#: src/components/login/LoginPage.jsx:118
+msgid "Log in"
+msgstr "Zaloguj"
+
+#: src/components/localization/Keyboard.jsx:124
+#: src/components/localization/Keyboard.jsx:128
 msgid "Make current"
 msgstr "Ustaw jako obecnie używany"
 
@@ -699,7 +781,7 @@ msgstr "Ręczna konfiguracja dysku: mapowanie punktów montowania"
 msgid "May contain letters, numbers, and dashes."
 msgstr "Może zawierać litery, cyfry i myślniki."
 
-#: src/components/review/StorageReview.jsx:87
+#: src/components/storage/StorageReview.jsx:86
 msgid "May need more free space"
 msgstr "Może potrzebować więcej wolnego miejsca"
 
@@ -707,33 +789,33 @@ msgstr "Może potrzebować więcej wolnego miejsca"
 msgid "Medium"
 msgstr "Średnie"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:323
+#: src/components/storage/installation-method/InstallationDestination.jsx:313
 msgid "Minimum of $0 required"
 msgstr "Wymagane jest co najmniej $0"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:133
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
 msgstr ""
 "Rozbieżność między wyborem ponownego formatowania urządzenia nadrzędnego "
 "i urządzenia potomnego."
 
-#: src/components/review/StorageReview.jsx:237
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:610
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
+#: src/components/storage/StorageReview.jsx:250
 msgid "Mount point"
 msgstr "Punkt montowania"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:608
 #: src/components/storage/scenarios/mount-point-mapping/index.js:23
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:617
 msgid "Mount point assignment"
 msgstr "Przydzielenie punktów montowania"
 
-#: src/components/localization/Keyboard.jsx:144
-#: src/components/localization/Keyboard.jsx:148
+#: src/components/localization/Keyboard.jsx:146
+#: src/components/localization/Keyboard.jsx:150
 msgid "Move down"
 msgstr "Przenieś w dół"
 
-#: src/components/localization/Keyboard.jsx:133
-#: src/components/localization/Keyboard.jsx:137
+#: src/components/localization/Keyboard.jsx:135
+#: src/components/localization/Keyboard.jsx:139
 msgid "Move up"
 msgstr "Przenieś w górę"
 
@@ -741,29 +823,36 @@ msgstr "Przenieś w górę"
 msgid "Must be at least $0 characters"
 msgstr "Minimalna liczba znaków: $0"
 
-#: src/components/datetime/CustomNTPModal.jsx:148
+#: src/components/Error.jsx:676
+msgid "My issue is different, continue"
+msgstr "Mam inny problem, kontynuuj"
+
+#: src/components/datetime/CustomNTPModal.jsx:157
 msgid "NTP Servers"
 msgstr "Serwery NTP"
 
-#: src/components/datetime/CustomNTPModal.jsx:196
+#: src/components/datetime/CustomNTPModal.jsx:205
 msgid "NTS"
 msgstr "NTS"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:137
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
 msgid "Name"
 msgstr "Nazwa"
 
-#: src/components/review/StorageReview.jsx:85
+#: src/components/storage/StorageReview.jsx:84
 msgid "Needs at least $0"
 msgstr "Potrzebuje co najmniej $0"
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:76
-#, fuzzy
-#| msgid "Network configuration"
+#: src/components/network/index.js:19
+msgid "Network"
+msgstr "Sieć"
+
+#: src/components/network/CockpitNetworkConfiguration.jsx:46
+#: src/components/network/index.js:20
 msgid "Network Configuration"
 msgstr "Konfiguracja sieci"
 
-#: src/components/Error.jsx:624
+#: src/components/Error.jsx:726
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -771,34 +860,36 @@ msgstr ""
 "Sieć jest niedostępna. Proszę skonfigurować sieć w menu na górnym pasku, aby "
 "zgłosić problem."
 
-#: src/components/Error.jsx:625
+#: src/components/Error.jsx:727
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Sieć jest niedostępna. Proszę skonfigurować sieć, aby zgłosić problem."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:54
-#, fuzzy
-#| msgid "Storage plugin failed"
+#: src/components/network/NetworkConfiguration.jsx:53
 msgid "Network plugin failed"
-msgstr "Wtyczka urządzeń do przechowywania danych się nie powiodła"
+msgstr "Wtyczka sieci się nie powiodła"
 
-#: src/components/Error.jsx:581 src/components/AnacondaWizardFooter.jsx:85
+#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
 msgstr "Dalej"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:615
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:624
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 msgid "No devices"
 msgstr "Brak urządzeń"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:150
+#: src/components/storage/installation-method/InstallationDestination.jsx:125
 msgid "No disks available"
 msgstr "Brak dostępnych dysków"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:332
+#: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "No disks selected"
 msgstr "Nie wybrano dysków"
 
-#: src/components/localization/Keyboard.jsx:240
+#: src/components/localization/Keyboard.jsx:49
+msgid "No keyboard layouts selected"
+msgstr "Nie wybrano żadnego układu klawiatury"
+
+#: src/components/localization/Keyboard.jsx:242
 msgid "No layouts selected yet"
 msgstr "Nie wybrano jeszcze żadnego układu"
 
@@ -806,7 +897,7 @@ msgstr "Nie wybrano jeszcze żadnego układu"
 msgid "No results found"
 msgstr "Brak wyników"
 
-#: src/components/localization/Keyboard.jsx:394
+#: src/components/localization/Keyboard.jsx:416
 msgid ""
 "No valid VConsole keymap can be obtained for the selected keyboard "
 "layout(s). Please make a different keyboard layout selection."
@@ -814,7 +905,7 @@ msgstr ""
 "Nie można uzyskać prawidłowej mapy klawiszy VConsole dla wybranego układu "
 "klawiatury. Proszę wybrać inny układ."
 
-#: src/components/review/ReviewConfiguration.jsx:104
+#: src/components/storage/installation-method/usePageComplete.jsx:112
 msgid "Not enough available free space"
 msgstr "Za mało dostępnego wolnego miejsca"
 
@@ -826,11 +917,7 @@ msgstr "Za mało wolnego miejsca na wybranych dyskach."
 msgid "Not enough space on selected disks."
 msgstr "Za mało miejsca na wybranych dyskach."
 
-#: src/components/review/StorageReview.jsx:379
-msgid "Note"
-msgstr "Uwaga"
-
-#: src/components/AnacondaHeader.jsx:72
+#: src/components/AnacondaHeader.jsx:70
 msgid ""
 "Notice: This is pre-released software that is intended for development and "
 "testing purposes only. Do NOT use this software for any critical work or for "
@@ -840,19 +927,19 @@ msgstr ""
 "i testowania. Nie należy używać tego oprogramowania w środowiskach "
 "produkcyjnych."
 
-#: src/components/Error.jsx:180
+#: src/components/Error.jsx:181
 msgid "Open Bugzilla bug entry form"
-msgstr ""
+msgstr "Otwórz formularz zgłaszania błędu w serwisie Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:169
+#: src/components/review/ReviewConfiguration.jsx:223
 msgid "Operating system"
 msgstr "System operacyjny"
 
-#: src/components/datetime/CustomNTPModal.jsx:152
+#: src/components/datetime/CustomNTPModal.jsx:161
 msgid "Options"
 msgstr "Opcje"
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Other keyboards"
 msgstr "Inne klawiatury"
 
@@ -860,10 +947,10 @@ msgstr "Inne klawiatury"
 msgid "Partitions (advanced)"
 msgstr "Partycje (zaawansowane)"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:92
+#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/users/Accounts.jsx:138 src/components/users/Accounts.jsx:293
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 msgid "Passphrase"
 msgstr "Hasło"
 
@@ -871,60 +958,68 @@ msgstr "Hasło"
 msgid "Passphrase did not match any locked device"
 msgstr "Hasło nie pasuje do żadnego zablokowanego urządzenia"
 
-#: src/components/Password.jsx:241
+#: src/components/Password.jsx:278
 msgid "Passphrases must match"
 msgstr "Hasła muszą się zgadzać"
 
-#: src/components/installation/InstallationProgress.jsx:169
+#: src/components/installation/InstallationProgress.jsx:273
 msgid "Pending"
 msgstr "Nieukończone"
 
-#: src/components/Error.jsx:93
+#: src/components/Error.jsx:94
 msgid "Please attach the log file $0 to the issue."
 msgstr "Proszę załączyć plik dziennika $0 w zgłoszeniu."
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:335
+#: src/components/login/LoginPage.jsx:44
+msgid "Please enter a PIN"
+msgstr "Proszę podać PIN"
+
+#: src/components/storage/installation-method/InstallationDestination.jsx:325
 msgid "Please select at least one disk to continue"
 msgstr "Proszę wybrać co najmniej jeden dysk, aby kontynuować"
 
-#: src/components/datetime/CustomNTPModal.jsx:189
+#: src/components/datetime/CustomNTPModal.jsx:198
 msgid "Pool"
 msgstr "Pula"
 
-#: src/components/HeaderKebab.jsx:47
+#: src/components/Error.jsx:296
+msgid "Potential duplicate bugs found"
+msgstr "Znaleziono podobne zgłoszenia błędów"
+
+#: src/components/HeaderKebab.jsx:48
 msgid "Powered by Anaconda"
 msgstr "Używa technologii Anaconda"
 
-#: src/components/AnacondaHeader.jsx:62
+#: src/components/AnacondaHeader.jsx:60
 msgid "Pre-release"
 msgstr "Wydanie testowe"
 
-#: src/components/Error.jsx:178
+#: src/components/Error.jsx:179
 msgid "Prefer to report manually? $0"
-msgstr ""
+msgstr "Zgłosić ręcznie? $0"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:608
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Proceed with installation"
 msgstr "Kontynuuj instalację"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Quit"
 msgstr "Zakończ"
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Quit installer?"
 msgstr "Zakończyć instalatora?"
 
-#: src/components/app.jsx:126
+#: src/components/app.jsx:142
 msgid "Reading information about the OS failed."
 msgstr "Odczytanie informacji o systemie operacyjnym się nie powiodło."
 
-#: src/components/app.jsx:71
+#: src/components/app.jsx:83
 msgid "Reading information about the computer failed."
 msgstr "Odczytanie informacji o komputerze się nie powiodło."
 
-#: src/components/app.jsx:116
+#: src/components/app.jsx:132
 msgid "Reading installer configuration failed."
 msgstr "Odczytanie konfiguracji instalatora się nie powiodło."
 
@@ -944,12 +1039,13 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Prawdziwa nazwa komputera nie może mieć więcej niż 64 znaki"
 
-#: src/components/Error.jsx:736 src/components/AnacondaWizardFooter.jsx:98
-#: src/components/AnacondaWizardFooter.jsx:133
+#: src/components/installation/InstallationProgress.jsx:248
+#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:119
 msgid "Reboot"
 msgstr "Uruchom ponownie"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:533
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:565
 msgid ""
 "Reboot into Windows to resize BitLocker-encrypted partitions. Make at least "
 "$0 of free space available for installation."
@@ -958,21 +1054,17 @@ msgstr ""
 "zaszyfrowanych funkcją BitLocker. Instalacja wymaga co najmniej $0 wolnego "
 "miejsca."
 
-#: src/components/AnacondaWizardFooter.jsx:118
+#: src/components/AnacondaWizardFooter.jsx:104
 msgid "Reboot system?"
 msgstr "Uruchomić komputer ponownie?"
-
-#: src/components/installation/InstallationProgress.jsx:218
-msgid "Reboot to installed system"
-msgstr "Uruchom ponownie do zainstalowanego systemu"
 
 #: src/components/storage/scenarios/use-free-space/UseFreeSpace.jsx:80
 msgid "Reclaim additional space"
 msgstr "Odzyskanie dodatkowego miejsca"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:114
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:134
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:205
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:116
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:136
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:208
 msgid "Reclaim space"
 msgstr "Odzyskaj miejsce"
 
@@ -980,7 +1072,7 @@ msgstr "Odzyskaj miejsce"
 msgid "Reclaim space (required)"
 msgstr "Odzyskanie miejsca (wymagane)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:224
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:230
 msgid "Recommended"
 msgstr "Zalecany"
 
@@ -988,8 +1080,8 @@ msgstr "Zalecany"
 msgid "Recommended partitions:"
 msgstr "Zalecane partycje:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:398
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:612
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:408
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:621
 msgid "Reformat"
 msgstr "Ponowne formatowanie"
 
@@ -998,10 +1090,10 @@ msgstr "Ponowne formatowanie"
 msgid "Reinstall Fedora"
 msgstr "Ponownie zainstaluj Fedorę"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:425
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:613
-#: src/components/localization/Keyboard.jsx:155
-#: src/components/localization/Keyboard.jsx:159
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:435
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
+#: src/components/localization/Keyboard.jsx:157
+#: src/components/localization/Keyboard.jsx:161
 msgid "Remove"
 msgstr "Usuń"
 
@@ -1013,18 +1105,18 @@ msgstr ""
 "Usuwa wszystkie partycje na wybranych urządzeniach, w tym istniejące systemy "
 "operacyjne."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:118
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
 msgid ""
 "Remove or resize existing filesystems to free up space for the installation."
 msgstr ""
 "Należy usunąć lub zmienić rozmiar istniejących systemów plików, aby zwolnić "
 "miejsce na instalację."
 
-#: src/components/datetime/CustomNTPModal.jsx:207
+#: src/components/datetime/CustomNTPModal.jsx:216
 msgid "Remove server"
 msgstr "Usuń serwer"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:120
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:122
 msgid ""
 "Removing a filesystem will permanently delete all of the data it contains. "
 "Resizing a partition can free up unused space, but is not risk-free. Be sure "
@@ -1039,27 +1131,27 @@ msgstr ""
 msgid "Replace current installation, but keep files in home."
 msgstr "Zastępuje obecną instalację, ale zachowuje pliki w katalogu domowym."
 
-#: src/components/HeaderKebab.jsx:127
+#: src/components/HeaderKebab.jsx:108
 msgid "Report Issue"
 msgstr "Zgłoś błąd"
 
-#: src/components/Error.jsx:159
+#: src/components/Error.jsx:160
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
+"Proszę zgłosić błąd lub podzielić się opinią, otwierając formularz "
+"zgłaszania błędu w serwisie Bugzilla $0."
 
-#: src/components/Error.jsx:601 src/components/Error.jsx:768
+#: src/components/Error.jsx:703 src/components/Error.jsx:870
 msgid "Report issue"
 msgstr "Zgłoś błąd"
 
-#: src/components/Error.jsx:601
-#, fuzzy
-#| msgid "Report issue"
+#: src/components/Error.jsx:703
 msgid "Reporting issue..."
-msgstr "Zgłoś błąd"
+msgstr "Zgłaszanie błędu…"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:223
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
 msgstr "Wymagany"
 
@@ -1067,35 +1159,39 @@ msgstr "Wymagany"
 msgid "Requirements"
 msgstr "Wymagania"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:141
+#: src/components/storage/installation-method/InstallationDestination.jsx:116
 msgid "Rescan devices"
 msgstr "Ponownie skanuj urządzenia"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:122
+#: src/components/storage/installation-method/InstallationDestination.jsx:97
 msgid "Rescanning of the disks failed."
 msgstr "Ponowne skanowanie dysków się nie powiodło."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:513
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
 msgstr "Zmień rozmiar"
 
-#: src/components/review/StorageReview.jsx:341
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:548
+msgid "Resize partition"
+msgstr "Zmienia rozmiar partycji"
+
+#: src/components/storage/StorageReview.jsx:354
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Zmienianie rozmiaru następujących partycji systemu $0: $1"
 
-#: src/components/Error.jsx:352
+#: src/components/Error.jsx:381
 msgid "Restrict access to the report"
-msgstr ""
+msgstr "Ograniczenie dostępu do zgłoszenia"
 
-#: src/components/Error.jsx:354
+#: src/components/Error.jsx:383
 msgid "Restricts the report to the $0 group. $1"
-msgstr ""
+msgstr "Ogranicza zgłoszenie do grupy $0. $1"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:34
 msgid "Return to installation"
 msgstr "Wróć do instalacji"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:593
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:673
 msgid "Return to storage editor"
 msgstr "Wróć do edytora urządzeń do przechowywania danych"
 
@@ -1103,19 +1199,27 @@ msgstr "Wróć do edytora urządzeń do przechowywania danych"
 msgid "Review and install"
 msgstr "Przegląd i instalacja"
 
-#: src/components/review/ReviewConfiguration.jsx:74
+#: src/components/users/Accounts.jsx:94
+msgid "Root account has been configured"
+msgstr "Skonfigurowano konto roota"
+
+#: src/components/users/Accounts.jsx:86
 msgid "Root account is enabled"
 msgstr "Konto roota jest włączone"
 
-#: src/components/review/ReviewConfiguration.jsx:68
+#: src/components/users/Accounts.jsx:78
 msgid "Root account is enabled, but no user account has been configured"
 msgstr ""
 "Konto roota jest włączone, ale żadne konto użytkownika nie jest "
 "skonfigurowane"
 
+#: src/components/users/Accounts.jsx:351
+msgid "Root password has been set."
+msgstr "Ustawiono hasło roota."
+
+#: src/components/datetime/CustomNTPModal.jsx:245
+#: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
-#: src/components/datetime/CustomNTPModal.jsx:236
-#: src/components/localization/Keyboard.jsx:277
 msgid "Save"
 msgstr "Zapisz"
 
@@ -1123,7 +1227,7 @@ msgstr "Zapisz"
 msgid "Scan the QR code with your phone or visit:"
 msgstr "Proszę zeskanować kod QR za pomocą telefonu lub otworzyć stronę:"
 
-#: src/components/localization/InstallationLanguage.jsx:196
+#: src/components/localization/InstallationLanguage.jsx:204
 msgid "Search for a language"
 msgstr "Wyszukiwanie języka"
 
@@ -1135,23 +1239,23 @@ msgstr "Wyszukiwanie dodatkowego oprogramowania"
 msgid "Search for an environment"
 msgstr "Wyszukiwanie środowiska"
 
-#: src/components/localization/Keyboard.jsx:222
+#: src/components/localization/Keyboard.jsx:224
 msgid "Search keyboard layout"
 msgstr "Wyszukiwanie układów klawiatury"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:109
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
 "Zabezpiecza dane za pomocą szyfrowania na poziomie dysku. Ma zastosowanie "
 "tylko do nowych partycji"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:378
+#: src/components/storage/installation-method/InstallationDestination.jsx:375
 msgid "Select"
 msgstr "Wybierz"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:298
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:332
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:304
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:338
 msgid "Select a device"
 msgstr "Wybierz urządzenie"
 
@@ -1159,7 +1263,7 @@ msgstr "Wybierz urządzenie"
 msgid "Select city"
 msgstr "Wybierz miasto"
 
-#: src/components/storage/installation-method/InstallationDestination.jsx:361
+#: src/components/storage/installation-method/InstallationDestination.jsx:358
 msgid "Select destination"
 msgstr "Wybierz miejsce docelowe"
 
@@ -1167,11 +1271,11 @@ msgstr "Wybierz miejsce docelowe"
 msgid "Select region"
 msgstr "Wybierz region"
 
-#: src/components/localization/Keyboard.jsx:233
+#: src/components/localization/Keyboard.jsx:235
 msgid "Selected (top = current)"
 msgstr "Wybrane (na górze jest obecnie używany)"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:116
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:120
 msgid "Selected device's format '$0' cannot be reformatted."
 msgstr "Nie można ponownie formatować formatu „$0” wybranego urządzenia."
 
@@ -1179,11 +1283,11 @@ msgstr "Nie można ponownie formatować formatu „$0” wybranego urządzenia."
 msgid "Send us feedback on your installation"
 msgstr "Prześlij nam swoją opinię na temat instalacji"
 
-#: src/components/datetime/CustomNTPModal.jsx:151
+#: src/components/datetime/CustomNTPModal.jsx:160
 msgid "Server"
 msgstr "Serwer"
 
-#: src/components/datetime/CustomNTPModal.jsx:181
+#: src/components/datetime/CustomNTPModal.jsx:190
 msgid "Server is not reachable"
 msgstr "Nie można połączyć się z serwerem"
 
@@ -1203,13 +1307,15 @@ msgstr "Dziel dysk z innymi systemami operacyjnymi: $0"
 msgid "Show AM/PM"
 msgstr "Wyświetlanie AM/PM"
 
-#: src/components/Error.jsx:229
-#, fuzzy
-#| msgid "Show AM/PM"
+#: src/components/Error.jsx:223
 msgid "Show API key"
-msgstr "Wyświetlanie AM/PM"
+msgstr "Wyświetl klucz API"
 
-#: src/components/Password.jsx:228
+#: src/components/login/LoginPage.jsx:94
+msgid "Show PIN"
+msgstr "Wyświetl PIN"
+
+#: src/components/Password.jsx:265
 msgid "Show confirmed password"
 msgstr "Wyświetl potwierdzone hasło"
 
@@ -1217,19 +1323,19 @@ msgstr "Wyświetl potwierdzone hasło"
 msgid "Show passphrase"
 msgstr "Wyświetl hasło"
 
-#: src/components/Password.jsx:200
+#: src/components/Password.jsx:229
 msgid "Show password"
 msgstr "Wyświetl hasło"
 
-#: src/components/review/StorageReview.jsx:234
+#: src/components/storage/StorageReview.jsx:247
 msgid "Size"
 msgstr "Rozmiar"
 
-#: src/components/installation/InstallationProgress.jsx:134
+#: src/components/installation/InstallationProgress.jsx:233
 msgid "Software installation"
 msgstr "Instalacja oprogramowania"
 
-#: src/components/installation/InstallationProgress.jsx:132
+#: src/components/installation/InstallationProgress.jsx:231
 msgid ""
 "Software installation: Storage configuration complete. The software is now "
 "being installed onto your device."
@@ -1238,57 +1344,66 @@ msgstr ""
 "danych. Oprogramowanie jest teraz instalowane na urządzeniu."
 
 #: src/components/software/index.js:19 src/components/software/index.js:20
+#: src/components/review/ReviewConfiguration.jsx:247
 msgid "Software selection"
 msgstr "Wybór oprogramowania"
 
-#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:49
+#: src/components/review/ReviewConfiguration.jsx:215
+msgid ""
+"Some installation steps still need to be completed before you can continue."
+msgstr "Część kroków instalacji nadal musi zostać ukończona, aby kontynuować."
+
+#: src/components/storage/scenarios/mount-point-mapping/MountPointMapping.jsx:52
 msgid "Some required partitions are missing: $0"
 msgstr "Brakuje części wymaganych partycji: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:139
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:141
 msgid "Space"
 msgstr "Miejsce"
 
-#: src/components/Error.jsx:279
+#: src/components/Error.jsx:273
 msgid "Stacktrace"
-msgstr ""
+msgstr "Ślad stosu"
 
-#: src/components/review/ReviewConfiguration.jsx:216
+#: src/components/review/ReviewConfiguration.jsx:276
 msgid "Storage"
 msgstr "Urządzenia do przechowywania danych"
 
-#: src/components/installation/InstallationProgress.jsx:129
-#: src/components/storage/storage-configuration/index.js:20
+#: src/components/steps.js:35
+#: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
-#: src/components/steps.js:33
+#: src/components/storage/storage-configuration/index.js:22
 msgid "Storage configuration"
 msgstr "Konfiguracja urządzeń do przechowywania danych"
 
-#: src/components/installation/InstallationProgress.jsx:127
+#: src/components/installation/InstallationProgress.jsx:226
 msgid "Storage configuration: Storage is currently being configured."
 msgstr "Konfiguracja urządzeń do przechowywania danych: w trakcie."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:58
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:46
 msgid "Storage editor"
 msgstr "Edytor urządzeń do przechowywania danych"
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:209
-msgid "Storage editor is available only in the `Installation method` step."
-msgstr ""
-"Edytor urządzeń do przechowywania danych jest dostępny tylko w kroku „Metoda "
-"instalacji”."
-
-#: src/components/storage/scenarios/use-configured-storage/index.js:21
+#: src/components/storage/scenarios/use-configured-storage/index.js:26
 msgid "Storage is based on the configuration from 'Modify storage'."
 msgstr ""
 "Urządzenia do przechowywania danych są na podstawie konfiguracji "
 "z „Modyfikuj urządzenia do przechowywania danych”."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:106
+#: src/components/storage/scenarios/use-configured-storage/index.js:40
+msgid ""
+"Storage layout is defined by the kickstart file. The planned partitioning "
+"layout can be reviewed in the summary step."
+msgstr ""
+"Układ urządzeń do przechowywania danych jest określony przez plik kickstart. "
+"Zaplanowany układ partycjonowania może zostać przejrzany w kroku "
+"podsumowania."
+
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid "Storage plugin failed"
 msgstr "Wtyczka urządzeń do przechowywania danych się nie powiodła"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:545
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:618
 msgid "Storage requirements not met"
 msgstr "Wymagania urządzeń do przechowywania danych nie zostały spełnione"
 
@@ -1296,7 +1411,7 @@ msgstr "Wymagania urządzeń do przechowywania danych nie zostały spełnione"
 msgid "Strong"
 msgstr "Silne"
 
-#: src/components/installation/InstallationProgress.jsx:117
+#: src/components/installation/InstallationProgress.jsx:216
 msgid "Successfully installed"
 msgstr "Zainstalowano pomyślnie"
 
@@ -1304,23 +1419,23 @@ msgstr "Zainstalowano pomyślnie"
 msgid "Successfully unlocked $0."
 msgstr "Pomyślnie odblokowano urządzenie $0."
 
-#: src/components/localization/Keyboard.jsx:96
+#: src/components/localization/Keyboard.jsx:98
 msgid "Suggested keyboards"
 msgstr "Proponowane klawiatury"
 
-#: src/components/localization/InstallationLanguage.jsx:122
+#: src/components/localization/InstallationLanguage.jsx:127
 msgid "Suggested languages"
 msgstr "Proponowane języki"
 
-#: src/components/users/Accounts.jsx:309
+#: src/components/users/Accounts.jsx:339 src/components/users/Accounts.jsx:423
 msgid "System"
 msgstr "System"
 
-#: src/components/installation/InstallationProgress.jsx:139
+#: src/components/installation/InstallationProgress.jsx:238
 msgid "System configuration"
 msgstr "Konfiguracja systemu"
 
-#: src/components/installation/InstallationProgress.jsx:137
+#: src/components/installation/InstallationProgress.jsx:236
 msgid ""
 "System configuration: Software installation complete. The system is now "
 "being configured."
@@ -1328,11 +1443,24 @@ msgstr ""
 "Konfiguracja systemu: ukończono instalację oprogramowania. System jest teraz "
 "konfigurowany."
 
-#: src/components/app.jsx:161
-#, fuzzy
-#| msgid "Choose an installation source type."
+#: src/components/app.jsx:177
 msgid "The Anaconda installation has stopped unexpectedly."
-msgstr "Proszę wybrać typ źródła instalacji."
+msgstr "Instalacja Anaconda nieoczekiwanie zakończyła działanie."
+
+#: src/components/Error.jsx:301
+msgid ""
+"The following open bugs may be related to your issue. Please review them "
+"before creating a new report."
+msgstr ""
+"Poniższe otwarte błędy mogą być związane z twoim problemem. Proszę sprawdź "
+"je przed utworzeniem nowego raportu."
+
+#: src/components/users/Accounts.jsx:47
+msgid "The following user will be created:"
+msgid_plural "The following users will be created:"
+msgstr[0] "Ten użytkownik zostanie utworzony:"
+msgstr[1] "Następujący użytkownicy zostaną utworzeni:"
+msgstr[2] "Następujący użytkownicy zostaną utworzeni:"
 
 #: src/components/storage/scenarios/erase-all/EraseAll.jsx:45
 msgid ""
@@ -1340,13 +1468,19 @@ msgid ""
 "selected disks is only $1."
 msgstr "Wymagane miejsce na dysku: $0, pojemność wybranych dysków: $1."
 
-#: src/components/Error.jsx:676
+#: src/components/Error.jsx:778
 msgid "The installer cannot continue due to a critical error."
 msgstr "Instalator nie może kontynuować z powodu krytycznego błędu."
 
-#: src/components/Error.jsx:675
+#: src/components/Error.jsx:777
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Instalator nie może kontynuować z powodu krytycznego błędu: $0"
+
+#: src/hooks/Localization.jsx:68
+msgid ""
+"The keyboard layout has changed since the disk encryption passphrase was "
+"set. Please re-enter the passphrase."
+msgstr ""
 
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:35
 msgid ""
@@ -1356,7 +1490,7 @@ msgstr ""
 "Podane hasło zawiera znaki spoza zestawu ASCII. Nie można przełączać między "
 "układami klawiatury podczas wpisywania hasła."
 
-#: src/components/localization/Keyboard.jsx:262
+#: src/components/localization/Keyboard.jsx:264
 msgid ""
 "The selected default keyboard layout does not support ASCII characters. "
 "Please choose an ASCII-capable layout as the default."
@@ -1364,7 +1498,7 @@ msgstr ""
 "Wybrany domyślny układ klawiatury nie obsługuje znaków ASCII. Proszę wybrać "
 "układ zdolny do wprowadzania znaków ASCII jako domyślny."
 
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:64
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:52
 msgid ""
 "The storage editor lets you resize, delete, and create partitions. It can "
 "set up LVM and much more. It is meant to be used as an advanced utility and "
@@ -1375,28 +1509,23 @@ msgstr ""
 "przeznaczony do używania jako zaawansowane narzędzie i nie powinien być "
 "używany do typowej instalacji."
 
-#: src/components/Error.jsx:378
-#, fuzzy
-#| msgid ""
-#| "Logs may contain sensitive information like IP addresses or usernames. "
-#| "Attachments on Bugzilla issues are marked private by default."
+#: src/components/Error.jsx:407
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
 msgstr ""
-"Dzienniki mogą zawierać prywatne informacje, takie jak adresy IP lub nazwy "
-"użytkowników. Załączniki w serwisie Bugzilla są domyślnie oznaczone jako "
-"niepubliczne."
+"Te pliki dziennika mogą zawierać prywatne informacje, takie jak adresy IP, "
+"nazwy użytkowników lub inne informacje o systemie."
 
 #: src/components/review/Hostname.jsx:51
 msgid "This hostname can't be submitted"
 msgstr "Ta nazwa komputera nie może zostać przesłana"
 
-#: src/components/AnacondaHeader.jsx:66
+#: src/components/AnacondaHeader.jsx:64
 msgid "This is unstable, pre-release software"
 msgstr "To jest niestabilne, testowe oprogramowanie"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:86
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:87
 msgid "This layout will be used for unlocking your system on boot"
 msgstr ""
 "Ten układ będzie używany do odblokowywania komputera podczas uruchamiania"
@@ -1405,7 +1534,7 @@ msgstr ""
 msgid "This may take a moment"
 msgstr "Może to chwilę zająć"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:426
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:476
 msgid "This will take a few moments"
 msgstr "To zajmie chwilę"
 
@@ -1413,20 +1542,20 @@ msgstr "To zajmie chwilę"
 msgid "Time"
 msgstr "Czas"
 
-#: src/components/review/ReviewConfiguration.jsx:187
 #: src/components/datetime/Timezone.jsx:130
+#: src/components/review/ReviewConfiguration.jsx:241
 msgid "Timezone"
 msgstr "Strefa czasowa"
 
-#: src/components/Error.jsx:330
+#: src/components/Error.jsx:359
 msgid "Title"
-msgstr ""
+msgstr "Tytuł"
 
-#: src/components/installation/InstallationProgress.jsx:160
+#: src/components/installation/InstallationProgress.jsx:264
 msgid "To begin using $0, reboot your system."
 msgstr "Uruchom komputer ponownie, aby zacząć korzystać z systemu $0."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:205
+#: src/components/storage/installation-method/InstallationMethod.jsx:198
 msgid "To continue, select the devices to install to."
 msgstr "Aby kontynuować, proszę wybrać urządzenia, na których zainstalować."
 
@@ -1438,36 +1567,41 @@ msgstr ""
 "Należy zmienić rozmiar lub usunąć istniejące partycje i zwolnić co najmniej "
 "$0, aby móc użyć tej opcji."
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:138
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Typ"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:85
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
 msgstr "Nie można zaplanować usunięcia $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:89
 msgid "Unable to schedule resizing of $0"
 msgstr "Nie można zaplanować zmiany rozmiaru $0"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:374
+msgid "Undo last action"
+msgstr "Cofa ostatnie działanie"
 
 #: src/components/storage/installation-method/EncryptedDevices.jsx:58
 #: src/components/storage/installation-method/EncryptedDevices.jsx:178
 msgid "Unlock"
 msgstr "Odblokuj"
 
-#: src/components/storage/installation-method/EncryptedDevices.jsx:64
-msgid ""
-"Unlock LUKS-encrypted partitions to keep existing data and show more "
-"installation methods."
-msgstr ""
-"Odblokowanie partycji zaszyfrowanych za pomocą LUKS umożliwi zachowanie "
-"istniejących danych i użycie innych metod instalacji."
-
 #: src/components/storage/installation-method/EncryptedDevices.jsx:138
 msgid "Unlock encrypted devices"
 msgstr "Odblokowanie zaszyfrowanych urządzeń"
 
-#: src/components/storage/scenarios/use-configured-storage/index.js:22
+#: src/components/storage/installation-method/EncryptedDevices.jsx:64
+msgid ""
+"Unlock encrypted partitions to keep existing data and show more installation "
+"methods."
+msgstr ""
+"Odblokowanie zaszyfrowanych partycji pozwoli zachować dane i odkryć kolejne "
+"metody instalacji."
+
+#: src/components/storage/scenarios/use-configured-storage/index.js:27
+#: src/components/storage/scenarios/use-configured-storage/index.js:41
 msgid "Use configured storage"
 msgstr "Użyj skonfigurowanych urządzeń do przechowywania danych"
 
@@ -1475,23 +1609,27 @@ msgstr "Użyj skonfigurowanych urządzeń do przechowywania danych"
 msgid "Use entire disk"
 msgstr "Użyj całego dysku"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:653
 msgid "Use free space"
 msgstr "Użycie wolnego miejsca"
 
-#: src/components/users/Accounts.jsx:165
+#: src/components/users/Accounts.jsx:244
 msgid "Use local account"
 msgstr "Użycie lokalnego konta"
 
-#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:574
+#: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:652
 msgid "Use the RAID device for automatic partitioning"
 msgstr "Użycie urządzenia RAID do automatycznego partycjonowania"
 
-#: src/components/users/Accounts.jsx:210
+#: src/components/users/Accounts.jsx:494
+msgid "User creation"
+msgstr "Utworzenie użytkownika"
+
+#: src/components/users/Accounts.jsx:289
 msgid "User name"
 msgstr "Nazwa użytkownika"
 
-#: src/components/users/Accounts.jsx:115
+#: src/components/users/Accounts.jsx:182
 msgid ""
 "User name may only contain: letters from a-z, digits 0-9, dash $0, period "
 "$1, underscore $2"
@@ -1499,46 +1637,50 @@ msgstr ""
 "Nazwa użytkownika może zawierać tylko: litery od a do z, cyfry od 0 do 9, "
 "myślnik ($0), kropkę ($1), podkreślenie ($2)"
 
-#: src/components/users/Accounts.jsx:112
+#: src/components/users/Accounts.jsx:179
 msgid "User name must not be a reserved word"
 msgstr "Nazwa użytkownika nie może być słowem zastrzeżonym"
 
-#: src/components/users/Accounts.jsx:109
+#: src/components/users/Accounts.jsx:176
 msgid "User names must be shorter than 33 characters"
 msgstr "Nazwy użytkowników nie mogą mieć więcej niż 33 znaki"
 
-#: src/components/Error.jsx:581
-#, fuzzy
-#| msgid "Initializing..."
+#: src/components/Error.jsx:658
 msgid "Validating..."
-msgstr "Inicjowanie…"
+msgstr "Sprawdzanie poprawności…"
 
 #: src/components/Password.jsx:45
 msgid "Weak"
 msgstr "Słabe"
 
-#: src/components/localization/index.js:18
+#: src/components/localization/index.js:21
 msgid "Welcome"
 msgstr "Witaj"
 
-#: src/components/localization/index.js:19
+#: src/components/localization/index.js:22
 msgid "Welcome to Fedora Linux"
 msgstr "Witaj w Fedorze Linux"
 
-#: src/components/AnacondaPage.jsx:86
+#: src/components/AnacondaPage.jsx:88
 msgid "Welcome. Let's install $0 now."
 msgstr "Witaj w instalacji systemu $0."
 
-#: src/components/Error.jsx:373
+#: src/components/Error.jsx:402
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
 msgstr ""
+"Podczas wysyłania tego zgłoszenia błędu, następujące pliki dziennika zostaną "
+"automatycznie wysłane: $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:531
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:563
 msgid "Windows partitions with BitLocker encryption cannot be resized"
 msgstr ""
 "Nie można zmienić rozmiaru partycji systemu Windows z szyfrowaniem BitLocker"
+
+#: src/components/app.jsx:41
+msgid "You can close this browser window now."
+msgstr "Możesz teraz zamknąć to okno przeglądarki."
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:83
 msgid ""
@@ -1548,11 +1690,11 @@ msgstr ""
 "Można zwolnić odpowiednią ilość miejsca i pozwolić instalatorowi zająć się "
 "resztą, albo ręcznie skonfigurować partycje."
 
-#: src/components/Error.jsx:238
+#: src/components/Error.jsx:232
 msgid "You can generate the API key for your Bugzilla account $0."
-msgstr ""
+msgstr "Można utworzyć klucz API dla konta w serwisie Bugzilla $0."
 
-#: src/components/users/Accounts.jsx:375
+#: src/components/users/Accounts.jsx:527
 msgid ""
 "You have to enable the root account or create a local user account to "
 "proceed."
@@ -1564,21 +1706,21 @@ msgstr ""
 msgid "You must be connected to a network to enable automatic date and time."
 msgstr "Włączenie automatycznej daty i czasu wymaga połączenia z siecią."
 
-#: src/components/AnacondaWizardFooter.jsx:122
+#: src/components/AnacondaWizardFooter.jsx:108
 msgid "Your progress will not be saved."
 msgstr "Postęp nie zostanie zapisany."
 
-#: src/components/installation/InstallationProgress.jsx:174
+#: src/components/installation/InstallationProgress.jsx:278
 msgid "completed step"
 msgstr "ukończony krok"
 
-#: src/components/installation/InstallationProgress.jsx:179
+#: src/components/installation/InstallationProgress.jsx:283
 msgid "current step"
 msgstr "obecny krok"
 
-#: src/components/review/StorageReview.jsx:158
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:376
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:389
+#: src/components/storage/StorageReview.jsx:168
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
 msgid "delete"
 msgstr "usuń"
 
@@ -1586,54 +1728,83 @@ msgstr "usuń"
 msgid "edit"
 msgstr "modyfikuj"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypt"
 msgstr "zaszyfruj"
 
-#: src/components/review/StorageReview.jsx:140
+#: src/components/storage/StorageReview.jsx:135
 msgid "encrypted"
 msgstr "zaszyfrowane"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:234
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:237
 msgid "extended partition"
 msgstr "partycja rozszerzona"
 
-#: src/components/review/StorageReview.jsx:104
+#: src/components/storage/StorageReview.jsx:104
 msgid "format as $0"
 msgstr "sformatuj jako $0"
 
-#: src/components/Error.jsx:161 src/components/Error.jsx:241
+#: src/components/Error.jsx:162 src/components/Error.jsx:235
 msgid "here"
-msgstr ""
+msgstr "w tym miejscu"
 
-#: src/components/review/StorageReview.jsx:108
+#: src/components/review/ReviewConfiguration.jsx:57
+msgid "incomplete"
+msgstr "nieukończone"
+
+#: src/components/storage/StorageReview.jsx:108
 msgid "mount"
 msgstr "punkt montowania"
 
-#: src/components/installation/InstallationProgress.jsx:168
+#: src/components/installation/InstallationProgress.jsx:272
 msgid "pending step"
 msgstr "nieukończony krok"
 
-#: src/components/Error.jsx:384
+#: src/components/Error.jsx:413
 msgid "report the issue manually"
-msgstr ""
+msgstr "ręcznie zgłosić błąd"
 
-#: src/components/review/StorageReview.jsx:163
+#: src/components/storage/StorageReview.jsx:173
 msgid "resized from $0"
 msgstr "zmieniono rozmiar z $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:460
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:464
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:478
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:486
 msgid "shrink"
 msgstr "zmniejsz"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:410
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:419
 msgid "shrink to $0"
 msgstr "zmniejsz do $0"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:370
+#: src/components/review/Hostname.jsx:154
+msgid "transient, will use DHCP"
+msgstr "tymczasowy, użyje DHCP"
+
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:375
 msgid "undo"
 msgstr "cofnij"
+
+#~ msgid "Storage editor is available only in the `Installation method` step."
+#~ msgstr ""
+#~ "Edytor urządzeń do przechowywania danych jest dostępny tylko w kroku "
+#~ "„Metoda instalacji”."
+
+#~ msgid "Reboot to installed system"
+#~ msgstr "Uruchom ponownie do zainstalowanego systemu"
+
+#~ msgid "Note"
+#~ msgstr "Uwaga"
+
+#~ msgid ""
+#~ "I understand that all existing data will be erased from the selected disks"
+#~ msgstr ""
+#~ "Rozumiem, że wszystkie istniejące dane zostaną usunięte z wybranych dysków"
+
+#, fuzzy
+#~| msgid "User %s will be created"
+#~ msgid "The following users will be created:"
+#~ msgstr "Użytkownik %s zostanie utworzony"
 
 #~ msgid ""
 #~ "After creating the issue, click 'Add attachment' and attach file $0 and "
@@ -1687,9 +1858,6 @@ msgstr "cofnij"
 #~ msgstr ""
 #~ "Wykryto więcej niż jeden układ. Należy usunąć dodatkowe układy, aby "
 #~ "kontynuować"
-
-#~ msgid "No user or root account has been configured"
-#~ msgstr "Nie skonfigurowano żadnego konta użytkownika ani roota"
 
 #~ msgid ""
 #~ "Skipping account creation during installation. It will happen on first "
@@ -1856,12 +2024,6 @@ msgstr "cofnij"
 #~ msgstr[0] "Dysk nie jest już dostępny: $0"
 #~ msgstr[1] "Dyski nie są już dostępne: $0"
 #~ msgstr[2] "Dyski nie są już dostępne: $0"
-
-#~ msgid "The following disk was detected: $0"
-#~ msgid_plural "The following disks were detected: $0"
-#~ msgstr[0] "Wykryty dysk: $0"
-#~ msgstr[1] "Wykryte dyski: $0"
-#~ msgstr[2] "Wykryte dyski: $0"
 
 #, fuzzy
 #~| msgid "No usable disks detected"
@@ -2570,9 +2732,6 @@ msgstr "cofnij"
 #~ msgid "Apple EFI Boot Partition"
 #~ msgstr "Partycja startowa Apple EFI"
 
-#~ msgid "Apply configuration in installer"
-#~ msgstr "Zastosowanie konfiguracji w instalatorze"
-
 #~ msgid ""
 #~ "Are you sure you want to delete all of the data on {}, including "
 #~ "snapshots?"
@@ -2838,9 +2997,6 @@ msgstr "cofnij"
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "Sprawdzanie zależności oprogramowania…"
-
-#~ msgid "Checking storage configuration..."
-#~ msgstr "Sprawdzanie konfiguracji urządzeń do przechowywania danych…"
 
 #~ msgid ""
 #~ "Choose device from above to assign mount point and set format.\n"
@@ -3267,9 +3423,6 @@ msgstr "cofnij"
 
 #~ msgid "Entitlements"
 #~ msgstr "Ważności"
-
-#~ msgid "Error"
-#~ msgstr "Błąd"
 
 #~ msgid "Error adding FCoE SAN."
 #~ msgstr "Błąd podczas dodawania SAN FCoE."
@@ -3717,9 +3870,6 @@ msgstr "cofnij"
 #~ msgid "Installation _Destination"
 #~ msgstr "Miejsce _docelowe instalacji"
 
-#~ msgid "Installation complete"
-#~ msgstr "Ukończono instalację"
-
 #, python-format
 #~ msgid "Installation complete. Press %s to quit"
 #~ msgstr "Ukończono instalację. Naciśnięcie klawisza %s zakończy"
@@ -4094,9 +4244,6 @@ msgstr "cofnij"
 #~ msgid "Need Space"
 #~ msgstr "Wymagane jest miejsce"
 
-#~ msgid "Network"
-#~ msgstr "Sieć"
-
 #~ msgid "Network Config Box"
 #~ msgstr "Okno konfiguracji sieci"
 
@@ -4163,9 +4310,6 @@ msgstr "cofnij"
 
 #~ msgid "No match found for given boot drive \"{}\"."
 #~ msgstr "Nie odnaleziono wyników dla podanego napędu startowego „{}”."
-
-#~ msgid "No mountable devices found"
-#~ msgstr "Nie odnaleziono urządzeń możliwych do zamontowania"
 
 #~ msgid "No network devices available"
 #~ msgstr "Brak dostępnych urządzeń sieciowych"
@@ -4408,9 +4552,6 @@ msgstr "cofnij"
 #~ msgstr ""
 #~ "Wolumin fizyczny „{}” ma format „{}”, kiedy powinien mieć format „lvmpv”."
 
-#~ msgid "Please complete all spokes before continuing"
-#~ msgstr "Proszę wypełnić wszystkie ekrany przed kontynuowaniem"
-
 #~ msgid ""
 #~ "Please complete items marked with this icon before continuing to the next "
 #~ "step."
@@ -4444,9 +4585,6 @@ msgstr "cofnij"
 
 #~ msgid "Please enter a valid mount point."
 #~ msgstr "Proszę podać prawidłowy punkt montowania."
-
-#~ msgid "Please enter a valid name."
-#~ msgstr "Proszę podać prawidłową nazwę."
 
 #, python-format
 #~ msgid "Please manually connect your vnc client to %s to begin the install."
@@ -4874,9 +5012,6 @@ msgstr "cofnij"
 
 #~ msgid "Root password"
 #~ msgstr "Hasło roota"
-
-#~ msgid "Root password has been set."
-#~ msgstr "Ustawiono hasło roota."
 
 #~ msgid "Root password is not set"
 #~ msgstr "Nie ustawiono hasła roota"
@@ -6072,10 +6207,6 @@ msgstr "cofnij"
 #~ msgid "Use the credentials from discovery"
 #~ msgstr "Użycie danych uwierzytelniających z kroku wykrywania"
 
-#, python-format
-#~ msgid "User %s will be created"
-#~ msgstr "Użytkownik %s zostanie utworzony"
-
 #~ msgid "User Name"
 #~ msgstr "Nazwa użytkownika"
 
@@ -6085,9 +6216,6 @@ msgstr "cofnij"
 
 #~ msgid "User and Group IDs"
 #~ msgstr "Identyfikatory użytkowników i grup"
-
-#~ msgid "User creation"
-#~ msgstr "Utworzenie użytkownika"
 
 #~ msgid "User name: "
 #~ msgstr "Nazwa użytkownika: "
@@ -6993,10 +7121,6 @@ msgstr "cofnij"
 #~ msgid "_Language Support"
 #~ msgstr "_Obsługa języków"
 
-#~ msgctxt "GUI|Advanced Storage|iSCSI|Login|Login"
-#~ msgid "_Log In"
-#~ msgstr "_Zaloguj"
-
 #~ msgctxt "GUI|Network|Proxy"
 #~ msgid "_Method"
 #~ msgstr "_Metoda"
@@ -7346,10 +7470,6 @@ msgstr "cofnij"
 #~ msgctxt "GUI|Software Source"
 #~ msgid "_URL:"
 #~ msgstr "Adres _URL:"
-
-#~ msgctxt "GUI|Blivet Gui Partitioning"
-#~ msgid "_Undo last action"
-#~ msgstr "_Cofnij ostatnie działanie"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"

@@ -56,13 +56,45 @@ export const getDeviceChildren = ({ device, deviceData }) => {
     }, []);
 };
 
-/* Get the list of IDs of all LUKS devices
+/* Check if a device is encrypted (LUKS format or encrypted Stratis pool)
+ * @param {Object} device - The device data object
+ * @returns {boolean}
+ */
+export const isDeviceEncrypted = (device) => {
+    if (!device) {
+        return false;
+    }
+
+    return (
+        device.formatData?.type?.v === "luks" ||
+        (device.type?.v === "stratis pool" && device.attrs?.v?.encrypted === "True")
+    );
+};
+
+/* Check if an encrypted device has its encryption key set
+ * @param {Object} device - The device data object
+ * @returns {boolean}
+ */
+export const deviceHasEncryptionKey = (device) => {
+    if (!device) {
+        return false;
+    }
+
+    if (device.formatData?.type?.v === "luks") {
+        return device.formatData.attrs?.v?.has_key === "True";
+    }
+    if (device.type?.v === "stratis pool" && device.attrs?.v?.encrypted === "True") {
+        return device.attrs?.v?.has_key === "True";
+    }
+    return false;
+};
+
+/* Get the list of IDs of all locked encrypted devices
+ * @param {Array} selectedDisks - The list of selected disks
  * @param {Object} deviceData - The device data object
- * @param {Array} requests - The list of requests from a partitioning
  * @returns {Array}
  */
-export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
-    // check for selected disks and their children devices for locked LUKS devices
+export const getLockedEncryptedDevices = (selectedDisks, deviceData) => {
     const relevantDevs = selectedDisks.flatMap(disk => (
         [disk, ...getDeviceChildren({ device: disk, deviceData })]
     ));
@@ -70,8 +102,8 @@ export const getLockedLUKSDevices = (selectedDisks, deviceData) => {
     return Object.keys(deviceData).filter(d => {
         return (
             relevantDevs.includes(d) &&
-            deviceData[d].formatData.type.v === "luks" &&
-            deviceData[d].formatData.attrs.v.has_key !== "True"
+            isDeviceEncrypted(deviceData[d]) &&
+            !deviceHasEncryptionKey(deviceData[d])
         );
     });
 };
@@ -114,20 +146,24 @@ export const getDeviceByName = (deviceData, name) => {
     return Object.keys(deviceData).find(d => deviceData[d].name?.v === name);
 };
 
-/* Check if a device has a LUKS encrypted parent
+/* Check if a device is encrypted or resides on an encrypted device
  * @param {Object} deviceData - The device data object
  * @param {string} device - The ID of the device
  * @returns {boolean}
  * */
-export const hasEncryptedAncestor = (deviceData, device) => {
+export const isOnEncryptedDevice = (deviceData, device) => {
     if (deviceData[device].type.v === "luks/dm-crypt") {
+        return true;
+    }
+
+    if (isDeviceEncrypted(deviceData[device])) {
         return true;
     }
 
     const parent = deviceData[device].parents.v?.[0];
 
     if (parent) {
-        return hasEncryptedAncestor(deviceData, parent);
+        return isOnEncryptedDevice(deviceData, parent);
     } else {
         return false;
     }
@@ -193,6 +229,46 @@ export const unitMultiplier = {
 };
 
 export const bootloaderTypes = ["efi", "biosboot", "appleboot", "prepboot"];
+
+const _ = cockpit.gettext;
+
+/* Blivet reports plain FAT without ESP flags as "vfat", not "efi". */
+const VFAT_FORMAT_TYPE = "vfat";
+
+/**
+ * Check whether a device satisfies the format constraint for a mount point.
+ *
+ * The backend's required-filesystem-type field actually carries blivet format
+ * types (efi, biosboot, ext4, ...). Bootloader format types such as "efi" are
+ * not filesystem types; use constraint.description (from GetFormatTypeData)
+ * when presenting them to the user.
+ *
+ * @returns {[boolean, string]} [invalid, errorMessage]
+ */
+export const getMountPointFormatConstraintError = ({ constraint, device, devices, mountPoint }) => {
+    const requiredFormatType = constraint?.["required-filesystem-type"]?.v;
+    const deviceFormatType = devices[device]?.formatData?.type?.v;
+
+    if (!requiredFormatType || !deviceFormatType || deviceFormatType === requiredFormatType) {
+        return [false, ""];
+    }
+
+    const formatLabel = constraint.description || requiredFormatType;
+
+    if (requiredFormatType === "efi" && deviceFormatType === VFAT_FORMAT_TYPE) {
+        return [true,
+            cockpit.format(
+                _("'$0' must be on an EFI System Partition. The selected partition uses a FAT filesystem, but is not marked as an ESP. Set the partition type to EFI System and enable the esp flag."),
+                mountPoint
+            )];
+    }
+
+    if (bootloaderTypes.includes(requiredFormatType)) {
+        return [true, cockpit.format(_("'$0' must be assigned to $1"), mountPoint, formatLabel)];
+    }
+
+    return [true, cockpit.format(_("'$0' must be on a device formatted to '$1'"), mountPoint, formatLabel)];
+};
 
 /* Filter requests to remove devices that should not be sent to the backend.
  * Keeps:
@@ -303,4 +379,38 @@ export const hasReusableFedoraWithWindowsOS = (deviceData, selectedDisks, existi
             getOSDisks(deviceData, windowsSystems[0])
         )
     );
+};
+
+/**
+ * Select default disks for the partitioning (mirrors Anaconda ``select_default_disks`` for
+ * the Web UI disk list).
+ *
+ * If some selected disks are usable, keep those (filtered to usable). Otherwise select a disk
+ * only when there is exactly one usable non-ignored candidate.
+ */
+export const selectDefaultDisks = ({ ignoredDisks, selectedDisks, usableDisks }) => {
+    const availableDisks = usableDisks.filter(disk => !ignoredDisks.includes(disk));
+
+    if (selectedDisks.length && selectedDisks.some(disk => usableDisks.includes(disk))) {
+        return selectedDisks.filter(disk => usableDisks.includes(disk));
+    }
+    if (availableDisks.length === 1) {
+        return availableDisks;
+    }
+    return [];
+};
+
+/**
+ * Selected disks that also appear in the module usable list. SelectedDisks can still name
+ * removed disks after a rescan.
+ *
+ * @param {string[]} selectedDisks
+ * @param {string[]} usableDisks
+ * @returns {string[]}
+ */
+export const intersectSelectedDisksWithUsable = (selectedDisks, usableDisks) => {
+    if (!usableDisks) {
+        return selectedDisks;
+    }
+    return selectedDisks.filter(disk => usableDisks.includes(disk));
 };

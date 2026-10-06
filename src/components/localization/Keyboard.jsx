@@ -13,6 +13,7 @@ import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/inde
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { List, ListItem } from "@patternfly/react-core/dist/esm/components/List/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
+import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import { Tooltip } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Grid, GridItem } from "@patternfly/react-core/dist/esm/layouts/Grid/index.js";
@@ -33,7 +34,7 @@ import {
 
 import { getLocaleById } from "../../helpers/localization.js";
 
-import { LanguageContext } from "../../contexts/Common.jsx";
+import { LanguageContext, PageContext } from "../../contexts/Common.jsx";
 
 import { MenuSearch } from "../common/MenuSearch.jsx";
 
@@ -43,17 +44,18 @@ const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-language";
 
 const SelectedKeyboards = ({ xlayouts }) => (
-    <Content component="p">
-        {xlayouts.length === 1
-            ? xlayouts[0]
-            : (
-                <span>
-                    <strong>{xlayouts[0]}</strong>
-                    {xlayouts.slice(1).map((layout, index) => (
-                        <span key={`${layout}-${index}`}>, {layout}</span>
-                    ))}
-                </span>
-            )}
+    <Content component="p" id={SCREEN_ID + "-selected-keyboards"}>
+        {xlayouts === undefined && <Spinner size="md" />}
+        {xlayouts !== undefined && !xlayouts?.length && _("No keyboard layouts selected")}
+        {xlayouts?.length === 1 && xlayouts[0]}
+        {xlayouts?.length > 1 && (
+            <span>
+                <strong>{xlayouts[0]}</strong>
+                {xlayouts.slice(1).map((layout, index) => (
+                    <span key={`${layout}-${index}`}>, {layout}</span>
+                ))}
+            </span>
+        )}
     </Content>
 );
 
@@ -284,17 +286,8 @@ const KeyboardDialog = ({ currentLayouts = [], onClose, onSaved }) => {
     );
 };
 
-export const KeyboardGnome = ({ dispatch }) => {
+export const KeyboardGnome = () => {
     const { plannedXlayouts } = useContext(LanguageContext);
-
-    useEffect(() => {
-        const onFocus = () => {
-            dispatch(getKeyboardConfigurationAction());
-        };
-
-        window.addEventListener("focus", onFocus);
-        return () => window.removeEventListener("focus", onFocus);
-    }, [dispatch]);
 
     return (
         <>
@@ -376,16 +369,45 @@ const KeyboardNonGnome = () => {
     );
 };
 
-export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotification }) => {
+export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid }) => {
     const { plannedVconsole, plannedXlayouts } = useContext(LanguageContext);
+    const { setStepNotification } = useContext(PageContext) ?? {};
+    const [keyboardConfigError, setKeyboardConfigError] = useState();
 
     useEffect(() => {
-        setIsKeyboardValid((plannedVconsole ?? "") !== "" && (plannedXlayouts?.length > 0));
-    }, [plannedVconsole, plannedXlayouts, isGnome, setIsKeyboardValid]);
+        if (!keyboardConfigError) {
+            setStepNotification?.(null);
+            return;
+        }
+        setStepNotification?.({
+            message: keyboardConfigError,
+            step: "anaconda-screen-language",
+        });
+    }, [keyboardConfigError, setStepNotification]);
 
-    if (!plannedXlayouts?.length) {
-        return null;
-    }
+    // Fetch keyboard configuration when component mounts
+    useEffect(() => {
+        dispatch(getKeyboardConfigurationAction({
+            onError: setKeyboardConfigError,
+            onSuccess: () => {
+                setKeyboardConfigError();
+            }
+        }));
+    }, [dispatch]);
+
+    useEffect(() => {
+        setIsKeyboardValid(
+            (plannedVconsole ?? "") !== "" &&
+            (plannedXlayouts?.length > 0) &&
+            !keyboardConfigError
+        );
+    }, [
+        isGnome,
+        keyboardConfigError,
+        plannedVconsole,
+        plannedXlayouts,
+        setIsKeyboardValid
+    ]);
 
     const keyboardAlert = (
         <Alert
@@ -397,8 +419,8 @@ export const Keyboard = ({ dispatch, isGnome, setIsKeyboardValid, setStepNotific
     );
     const keyboard = (
         isGnome
-            ? <KeyboardGnome dispatch={dispatch} />
-            : <KeyboardNonGnome setStepNotification={setStepNotification} />
+            ? <KeyboardGnome />
+            : <KeyboardNonGnome />
     );
 
     return (
