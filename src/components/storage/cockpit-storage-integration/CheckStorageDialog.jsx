@@ -130,7 +130,15 @@ const preparePartitioning = async ({ devices, newMountPoints, onFail }) => {
                      */
                     deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })[0];
                 } else {
-                    deviceSpec = getDeviceByName(devices, device);
+                    /* Subvolume names are only unique within their volume, and can collide
+                     * with the name of the volume or partition holding them, so match on
+                     * both the type and the parent's device tree.
+                     */
+                    deviceSpec = getDeviceChildren({ device: parent, deviceData: devices })
+                            .find(child => (
+                                devices[child].name?.v === device &&
+                                devices[child].type?.v === "btrfs subvolume"
+                            ));
                 }
             }
 
