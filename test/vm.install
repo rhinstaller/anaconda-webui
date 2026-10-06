@@ -83,11 +83,18 @@ def vm_install(image, compose, verbose, quick):
             machine.execute("su builder -c 'mock --no-clean --disablerepo=* --offline --resultdir /var/tmp/build "
                             f"{mock_opts} --rebuild /var/tmp/build/SRPMS/*.src.rpm'", timeout=1800)
 
-        if scenario and "blivet-pr" in scenario:
+        if compose:
+            # If we are testing a custom compose do *not* download the blivet packages, they are in the ISO already
+            pass
+        elif scenario and "blivet-pr" in scenario:
             # If we are testing a PR on storaged-project/blivet, then pull it from the PR COPR repo
             blivet_pr = scenario.split("-")[-1]
             # python3-blivet is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/storaged-project-blivet-{blivet_pr}", "python3-blivet", machine)
+        else:
+            # Pull python3-blivet from the COPR repo packit builds from main branch
+            # python3-blivet is also available in the default rawhide compose, make sure we don't pull it from there
+            download_from_copr("@storage/blivet-daily", "python3-blivet", machine)
 
         if compose:
             # If we are testing a custom compose do *not* download the anaconda packages, they are in the ISO already
