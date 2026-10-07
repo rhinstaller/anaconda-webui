@@ -14,8 +14,35 @@ sys.path.append(BOTS_DIR)
 TEST_HELPERS_DIR = os.path.realpath(f'{__file__}/../helpers')
 sys.path.append(TEST_HELPERS_DIR)
 
+# subman_and_deps = [
+#     "subscription-manager",
+#     # "bash",
+#     # "dmidecode",
+#     # "filesystem",
+#     # "glib2",
+#     # "glibc",
+#     # "iproute",
+#     # "libdnf-plugin-subscription-manager",
+#     # "python3",
+#     "python3-cloud-what",
+#     "python3-dateutil",
+#     "python3-dbus",
+#     "python3-decorator",
+#     "python3-dnf",
+#     "python3-dnf-plugins-core",
+#     "python3-gobject-base",
+#     "python3-iniparse",
+#     "python3-inotify",
+#     "python3-librepo",
+#     "python3-subscription-manager-rhsm",
+#     # "subscription-manager-rhsm-certificates",
+#     # "systemd",
+#     # "virt-what",
+# ]
+
 # FIXME: python3-bugzilla should be removed from missing_packages once it's included in boot.iso
-missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
+missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla "
+# missing_packages += " ".join(subman_and_deps)
 
 from compose_path import get_compose_url
 from machine.machine_core import machine_virtual
@@ -56,9 +83,9 @@ def vm_install(image, compose, verbose, quick):
             cockpit_pr = scenario.split("-")[-1]
             # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
             download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}",
-                               "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager", machine)
+                               "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager subscription-manager-cockpit", machine)
         else:
-            download_from_copr("@cockpit/main-builds", "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager", machine)
+            download_from_copr("@cockpit/main-builds", "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager subscription-manager-cockpit", machine)
 
         if scenario and scenario.startswith("anaconda-webui-pr-"):
             # If we are testing a anaconda-webui PR scenario from a different repository
