@@ -50,7 +50,7 @@ export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) 
         getCanChangeRootPassword(),
     ]);
     const userList = users ?? [];
-    const usersSpecifiedByKickstart = userList.length > 0;
+    const usersAlreadyPresent = userList.length > 0;
 
     dispatch(setUserConfigurationPolicyAction({
         canModifyRootConfiguration: canModifyRootConfiguration({
@@ -59,8 +59,9 @@ export const getUserConfigurationPolicyAction = (args = {}) => async (dispatch) 
             canChangeRootPassword: !!canChangeRootPassword,
         }),
         canModifyUserConfiguration: canModifyUserConfiguration({
+            automatedInstall: !!automatedInstall,
             canChangeUsers,
-            usersSpecifiedByKickstart,
+            usersAlreadyPresent,
         }),
     }));
 };
