@@ -111,6 +111,73 @@ class TestStorageMountPointsLVM(VirtInstallMachineCase):
         r.check_disk_row(disk, "/", "vda3, LVM", "5.80 GB", True, "ext4")
         r.check_disk_row(disk, "swap", "vda3, LVM", "872 MB", False)
 
+    def _testNonEmptyRootReformat_partition_disk(self):
+        m = self.machine
+        b = self.browser
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        vgname = "fedoravg"
+
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", None)])
+        m.execute(f"""
+        vgcreate -y -f {vgname} {disk}3
+        lvcreate -y -l100%FREE -n root {vgname}
+        mkfs.ext4 -F /dev/{vgname}/root
+        """)
+
+        m.execute(f"""
+            mount /dev/{vgname}/root /mnt
+            touch /mnt/some-existing-file
+            umount /mnt
+        """)
+
+    def testNonEmptyRootReformat(self):
+        """
+        Description:
+            Test that reformatting is enforced for a non-empty existing root
+            filesystem on an LVM logical volume in the mount point mapping scenario.
+
+        Expected results:
+            - Assigning "/" to an existing non-empty LVM volume without selecting
+              reformat is rejected by the backend and the user cannot proceed.
+            - Selecting reformat for "/" resolves the error and lets the user
+              continue.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="mount-point-mapping")
+        s = Storage(b, m)
+
+        vgname = "fedoravg"
+        dev = "vda"
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([(dev, True)])
+
+        # Assign the required boot mount points
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.check_mountpoint_row(2, "/boot/efi", f"{dev}1", False, "EFI System Partition")
+        s.check_mountpoint_row(3, "/boot", f"{dev}2", False, "ext4")
+
+        # Assign the non-empty root LVM volume to "/" and deselect reformat
+        s.select_mountpoint_row_device(1, f"{vgname}-root")
+        s.select_mountpoint_row_reformat(1, False)
+
+        # The backend rejects a non-empty root filesystem that is not reformatted
+        i.next(should_fail=True)
+        b.wait_in_text(
+            f"#{i.steps.CUSTOM_MOUNT_POINT}-step-notification",
+            "You must create a new file system on the root device"
+        )
+
+        # Selecting reformat for "/" resolves the error and lets the user continue
+        s.select_mountpoint_row_reformat(1, True)
+        i.next(next_page=i.steps.ACCOUNTS)
+
 
 if __name__ == '__main__':
     test_main()
