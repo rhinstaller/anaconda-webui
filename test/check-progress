@@ -41,12 +41,7 @@ class TestInstallationProgress(VirtInstallMachineCase):
         b.reload()
         i.wait_current_page(i.steps.LANGUAGE)
 
-        # FIXME: https://redhat.atlassian.net/browse/INSTALLER-4945
-        # Can't use i.reach() because create_user callback fails on prefilled account data
-        while i.get_current_page() != i.steps.REVIEW:
-            current = i.get_current_page()
-            b.click("#installation-next-btn")
-            b.wait_js_cond(f'window.location.hash !== "#/{current}"')
+        i.reach(i.steps.REVIEW)
         i.begin_installation(needs_confirmation=False)
 
         with b.wait_timeout(300):
