@@ -300,7 +300,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
 
         # EFI system partition, /boot partition, /
         disk1 = "/dev/vda"
-        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("", "xfs")])
+        s.partition_disk(disk1, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "xfs"), ("1GiB", "xfs"), ("500MiB", "xfs"), ("", "xfs")])
 
     @disk_images([("", 15)])
     def testPayloadSizeCheck(self):
@@ -365,7 +365,7 @@ class TestStorageMountPoints(VirtInstallMachineCase, StorageCase):
         # check that there is a hint suitable for multiple devices
         r.check_disk_row(dev, "/", f"{dev}3", "1.07 GB", True, "xfs", is_encrypted=False)
         r.check_disk_mount_point_helper_text(dev, "/", "May need more free space")
-        r.check_disk_row(dev, "/usr", f"{dev}4", "1.07 GB", True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/usr", f"{dev}4", "524 MB", True, "xfs", is_encrypted=False)
         r.check_disk_mount_point_helper_text(dev, "/usr", "May need more free space")
 
         # check that it is not possible to continue on the next page (install)
