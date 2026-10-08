@@ -156,6 +156,84 @@ class TestStorageMountPointsStratis(VirtInstallMachineCase):
         r.check_disk_row(dev, "/boot", "vda2", "1.07 GB", False)
         r.check_disk_row(dev, "/", "vda3, Stratis", "10.7 GB", True, "stratis xfs", True)
 
+    def _testNonEmptyRootReformat_partition_disk(self):
+        m = self.machine
+        b = self.browser
+        s = Storage(b, m)
+
+        disk = "/dev/vda"
+        poolname = "fedorapool"
+        tmp_mount = "/tmp/stratis-mount-test"
+
+        s.partition_disk(disk, [(EFI_PARTITION_DEFAULT_SIZE, "efi"), ("1GiB", "ext4"), ("", None)])
+        m.execute(f"""
+        stratis pool create --no-overprovision {poolname} {disk}3
+        stratis filesystem create --size 5GiB {poolname} root
+        """,
+        environment={"STRATIS_DBUS_TIMEOUT": "360000"})
+
+        m.execute(f"""
+        udevadm settle
+        mkdir -p {tmp_mount}
+        mount /dev/stratis/{poolname}/root {tmp_mount}
+        touch {tmp_mount}/some-existing-file
+        umount {tmp_mount}
+        rmdir {tmp_mount}
+        """)
+
+        self.addCleanup(
+            lambda: m.execute(f"""
+            stratis pool stop --name {poolname} || true
+            """, timeout=90)
+        )
+
+    def testNonEmptyRootReformat(self):
+        """
+        Description:
+            Test that reformatting is enforced for a non-empty existing root
+            Stratis filesystem in the mount point mapping scenario.
+
+        Expected results:
+            - Assigning "/" to an existing non-empty Stratis filesystem without
+              selecting reformat is rejected by the backend and the user cannot
+              proceed.
+            - Selecting reformat for "/" resolves the error and lets the user
+              continue.
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="mount-point-mapping")
+        s = Storage(b, m)
+
+        poolname = "fedorapool"
+        dev = "vda"
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.select_mountpoint([(dev, True)])
+
+        # Assign the required boot mount points
+        s.select_mountpoint_row_device(2, f"{dev}1")
+        s.select_mountpoint_row_device(3, f"{dev}2")
+        s.check_mountpoint_row(1, "/", "Select a device", True)
+        s.check_mountpoint_row(2, "/boot/efi", f"{dev}1", False, "EFI System Partition")
+        s.check_mountpoint_row(3, "/boot", f"{dev}2", False, "ext4")
+
+        # Assign the non-empty root Stratis filesystem to "/" and deselect reformat
+        s.select_mountpoint_row_device(1, f"{poolname}/root")
+        s.select_mountpoint_row_reformat(1, False)
+
+        # The backend rejects a non-empty root filesystem that is not reformatted
+        i.next(should_fail=True)
+        b.wait_in_text(
+            f"#{i.steps.CUSTOM_MOUNT_POINT}-step-notification",
+            "You must create a new file system on the root device"
+        )
+
+        # Selecting reformat for "/" resolves the error and lets the user continue
+        s.select_mountpoint_row_reformat(1, True)
+        i.next(next_page=i.steps.ACCOUNTS)
+
 
 if __name__ == '__main__':
     test_main()
