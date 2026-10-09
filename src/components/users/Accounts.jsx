@@ -515,9 +515,24 @@ export const Accounts = ({
 
 const CustomFooter = () => {
     const accounts = useContext(UsersContext);
+    const { setIsFormDisabled } = useContext(PageContext) ?? {};
 
     const onNext = ({ goToNextStep }) => {
-        applyAccounts(accounts).then(goToNextStep);
+        console.log("onNext called, starting applyAccounts");
+        setIsFormDisabled?.(true);
+        applyAccounts(accounts)
+            .then(() => {
+                console.log("applyAccounts completed, navigating to next step");
+                goToNextStep();
+            })
+            .catch(err => {
+                console.error("applyAccounts failed:", err);
+                throw err;
+            })
+            .finally(() => {
+                console.log("applyAccounts finally block");
+                setIsFormDisabled?.(false);
+            });
     };
 
     const noUserAccount = (accounts.users?.length ?? 0) === 0;
