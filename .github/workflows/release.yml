@@ -38,7 +38,7 @@ jobs:
           git fetch --force origin ${TAG_VERSION}:refs/tags/${TAG_VERSION}
 
       - name: Build release
-        run: make dist
+        run: make dist node-cache
 
       - name: Create a release
         run: |
@@ -50,7 +50,8 @@ jobs:
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
           gh release create --title ${TAG_VERSION} --notes-file release-note.txt  \
             ${TAG_VERSION} \
-            ${REPO_NAME}-${TAG_VERSION}.tar.xz
+            ${REPO_NAME}-${TAG_VERSION}.tar.xz \
+            ${REPO_NAME}-node-${TAG_VERSION}.tar.xz
 
   node-cache:
     # doesn't depend on it, but let's make sure the build passes before we do this
