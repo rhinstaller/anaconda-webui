@@ -13,6 +13,7 @@ import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
+import { isSourceEditable } from "../../helpers/source.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
@@ -35,7 +36,10 @@ import { DateAndTimeReviewDescription } from "../datetime/index.js";
 import { usePageComplete as useDatetimePageComplete } from "../datetime/usePageComplete.js";
 import { InstallationLanguageReviewDescription } from "../localization/index.js";
 import { usePageComplete as useLocalizationPageComplete } from "../localization/usePageComplete.js";
+import { SoftwareReviewDescription } from "../software/index.js";
 import { usePageComplete as useSoftwarePageComplete } from "../software/usePageComplete.js";
+import { SourceReviewDescription } from "../source/index.js";
+import { usePageComplete as useSourcePageComplete } from "../source/usePageComplete.js";
 import {
     StorageInstallationReviewSummary,
     StorageScenarioReviewDescription,
@@ -86,7 +90,12 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
     const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
-    const { environments, selection, type: payloadType } = useContext(PayloadContext) ?? {};
+    const { source, type: payloadType } = useContext(PayloadContext) ?? {};
+    const sourceHidden =
+        payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-installation-source");
+    /* Sources which the spoke can not configure are shown in the review only */
+    const sourcePageHidden = sourceHidden || !isSourceEditable(source);
+    const sourceComplete = useSourcePageComplete({ isHidden: sourcePageHidden });
     const softwarePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
     const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
@@ -100,6 +109,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const pages = [
         { complete: localizationComplete, id: "anaconda-screen-language" },
         { complete: datetimeComplete, id: "anaconda-screen-date-time" },
+        { complete: sourceComplete, id: "anaconda-screen-installation-source" },
         { complete: softwareSelectionComplete, id: "anaconda-screen-software-selection" },
         { complete: storageComplete, id: "anaconda-screen-method" },
         { complete: usersComplete, id: "anaconda-screen-accounts" },
@@ -154,17 +164,13 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
 
     const installationScenarioDescription = <StorageScenarioReviewDescription />;
 
-    const softwareDescription = useMemo(() => {
-        if (!softwareSelectionComplete) {
-            return <IncompleteStepIndicator />;
-        }
-        const envId = selection?.environment;
-        if (!envId) {
-            return "";
-        }
-        const env = environments?.find(e => e.id === envId);
-        return env?.name || envId;
-    }, [softwareSelectionComplete, environments, selection?.environment]);
+    const sourceDescription = sourceComplete
+        ? <SourceReviewDescription automatedInstall={automatedInstall} />
+        : <IncompleteStepIndicator />;
+
+    const softwareDescription = softwareSelectionComplete
+        ? <SoftwareReviewDescription />
+        : <IncompleteStepIndicator />;
 
     const storageDescription = (
         <Flex direction={{ default: "column" }} spaceItems={{ default: "spaceItemsSm" }}>
@@ -240,6 +246,12 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
                                   id={`${SCREEN_ID}-target-system-timezone`}
                                   term={_("Timezone")}
                                   description={timezoneDescription}
+                                />}
+                                {!sourceHidden &&
+                                <ReviewDescriptionListItem
+                                  id={`${SCREEN_ID}-target-system-source`}
+                                  term={_("Installation source")}
+                                  description={sourceDescription}
                                 />}
                                 {!softwarePageHidden &&
                                 <ReviewDescriptionListItem

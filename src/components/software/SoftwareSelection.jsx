@@ -5,14 +5,24 @@
 
 import cockpit from "cockpit";
 
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
-import { getDefaultEnvironment, resolveEnvironment, setPackagesSelection } from "../../apis/payload_dnf.js";
+import {
+    resolveEnvironment,
+    setPackagesSelection,
+} from "../../apis/payload_dnf.js";
+
+import {
+    getPayloadGroupsAction,
+} from "../../actions/payload-dnf-actions.js";
 
 import { PageContext, PayloadContext } from "../../contexts/Common.jsx";
 
+import { AnacondaWizardFooter } from "../AnacondaWizardFooter.jsx";
 import { MenuSearch } from "../common/MenuSearch.jsx";
 
 import "./SoftwareSelection.scss";
@@ -20,19 +30,12 @@ import "./SoftwareSelection.scss";
 const _ = cockpit.gettext;
 const SCREEN_ID = "anaconda-screen-software-selection";
 
-const EnvironmentSelection = () => {
-    const { environments, selection } = useContext(PayloadContext);
-    const environment = selection?.environment;
-
-    useEffect(() => {
-        (async () => {
-            if (!environment) {
-                const defaultEnv = await getDefaultEnvironment();
-                await setPackagesSelection({ environment: defaultEnv, groups: [] });
-            }
-        })();
-    }, [environment]);
-
+const EnvironmentSelection = ({
+    environment,
+    environments,
+    onEnvironmentSelect,
+    selectionError,
+}) => {
     const options = useMemo(() => {
         if (!environments) {
             return [];
@@ -52,19 +55,23 @@ const EnvironmentSelection = () => {
         }));
     }, [environments]);
 
-    const handleOnSelect = (_ev, itemId) => {
-        // Reset groups selection when changing environment
-        setPackagesSelection({ environment: itemId, groups: [] });
-    };
-
     return (
         <FormGroup
           className="anaconda-screen-software-selection-form-group"
           label={_("Base environment")}
         >
+            {selectionError && (
+                <Alert
+                  isInline
+                  title={_("Failed to load the selected environment")}
+                  variant="danger"
+                >
+                    {selectionError}
+                </Alert>
+            )}
             <MenuSearch
               ariaLabelSearch={_("Search for an environment")}
-              handleOnSelect={handleOnSelect}
+              handleOnSelect={(_ev, itemId) => onEnvironmentSelect(itemId)}
               menuType="environment"
               options={options}
               screenId={SCREEN_ID}
@@ -74,10 +81,11 @@ const EnvironmentSelection = () => {
     );
 };
 
-const GroupPackagesSelection = () => {
-    const { groups, selection } = useContext(PayloadContext);
-    const selectedGroups = selection?.groups || [];
-
+const GroupPackagesSelection = ({
+    groups,
+    onGroupSelect,
+    selectedGroups,
+}) => {
     const groupOptions = useMemo(() => {
         if (!groups) {
             return [];
@@ -137,19 +145,6 @@ const GroupPackagesSelection = () => {
         return options;
     }, [groups]);
 
-    const handleGroupSelect = async (_ev, groupId) => {
-        // Toggle selection
-        let newSelectedGroups;
-        if (selectedGroups.includes(groupId)) {
-            newSelectedGroups = selectedGroups.filter(id => id !== groupId);
-        } else {
-            newSelectedGroups = [...selectedGroups, groupId];
-        }
-
-        // Update packages selection
-        await setPackagesSelection({ groups: newSelectedGroups });
-    };
-
     return (
         <FormGroup
           className="anaconda-screen-software-selection-form-group"
@@ -157,7 +152,7 @@ const GroupPackagesSelection = () => {
         >
             <MenuSearch
               ariaLabelSearch={_("Search for additional software")}
-              handleOnSelect={handleGroupSelect}
+              handleOnSelect={(_ev, groupId) => onGroupSelect(groupId)}
               menuType="groups"
               options={groupOptions}
               screenId={SCREEN_ID}
@@ -167,38 +162,138 @@ const GroupPackagesSelection = () => {
     );
 };
 
-export const SoftwareSelection = ({ automatedInstall }) => {
-    const { setIsFormValid } = useContext(PageContext) ?? {};
-    const { packagesKickstarted, selection } = useContext(PayloadContext);
-    const environment = selection?.environment;
+const SoftwareSelectionFooter = ({ applyCurrentSelection }) => {
+    const { setIsFormDisabled } = useContext(PageContext) ?? {};
 
-    /*
-     * Match pyanaconda.ui.lib.software.is_software_selection_complete (and GTK spoke `completed`).
-     * kickstarted=True in Anaconda means flags.automatedInstall and payload PackagesKickstarted.
-     */
+    const onNext = async ({ goToNextStep }) => {
+        setIsFormDisabled?.(true);
+        try {
+            await applyCurrentSelection();
+            goToNextStep();
+        } catch {
+            // Error alert is shown by applyCurrentSelection.
+        } finally {
+            setIsFormDisabled?.(false);
+        }
+    };
+
+    return <AnacondaWizardFooter onNext={onNext} />;
+};
+
+export const SoftwareSelection = ({ automatedInstall, dispatch }) => {
+    const { setIsFormDisabled, setIsFormValid } = useContext(PageContext) ?? {};
+    const { environments, groups, packagesKickstarted, selection } = useContext(PayloadContext);
+
+    const [localSelection, setLocalSelection] = useState({
+        environment: selection?.environment || "",
+        groups: selection?.groups || [],
+        isEnvironmentValid: Boolean(selection?.environment),
+    });
+    const [selectionError, setSelectionError] = useState(null);
+    const [applyError, setApplyError] = useState(null);
+
+    useEffect(() => {
+        setIsFormDisabled?.(false);
+    }, [setIsFormDisabled]);
+
+    const handleEnvironmentSelect = useCallback(async (itemId) => {
+        setSelectionError(null);
+        setApplyError(null);
+
+        try {
+            const resolved = await resolveEnvironment(itemId);
+            if (!resolved) {
+                setSelectionError(_("The selected environment is not available from the current installation source."));
+                setLocalSelection({ environment: "", groups: [], isEnvironmentValid: false });
+                return;
+            }
+
+            setLocalSelection({
+                environment: resolved,
+                groups: [],
+                isEnvironmentValid: true,
+            });
+            await dispatch(getPayloadGroupsAction(resolved));
+        } catch (e) {
+            setSelectionError(e.message || String(e));
+            setLocalSelection(current => ({ ...current, isEnvironmentValid: false }));
+        }
+    }, [dispatch]);
+
+    const handleGroupSelect = useCallback((groupId) => {
+        setLocalSelection((current) => {
+            const selectedGroups = current.groups || [];
+            const nextGroups = selectedGroups.includes(groupId)
+                ? selectedGroups.filter(id => id !== groupId)
+                : [...selectedGroups, groupId];
+            return { ...current, groups: nextGroups };
+        });
+    }, []);
+
+    const applyCurrentSelection = useCallback(async () => {
+        setApplyError(null);
+        try {
+            await setPackagesSelection({
+                environment: localSelection.environment,
+                groups: localSelection.groups || [],
+            });
+        } catch (e) {
+            setApplyError(e.message || String(e));
+            throw e;
+        }
+    }, [localSelection]);
+
+    const footer = useMemo(
+        () => <SoftwareSelectionFooter applyCurrentSelection={applyCurrentSelection} />,
+        [applyCurrentSelection]
+    );
+    useWizardFooter(footer);
+
     useEffect(() => {
         const kickstarted =
             packagesKickstarted === true && automatedInstall === true;
 
-        (async () => {
-            if (kickstarted && !environment) {
-                setIsFormValid(true);
-                return;
-            }
-            if (!environment) {
-                setIsFormValid(false);
-                return;
-            }
-            const resolved = await resolveEnvironment(environment);
-            setIsFormValid(Boolean(resolved));
-        })();
-    }, [environment, packagesKickstarted, automatedInstall, setIsFormValid]);
+        if (kickstarted && !localSelection.environment) {
+            setIsFormValid(true);
+            return;
+        }
+        if (!localSelection.environment) {
+            setIsFormValid(false);
+            return;
+        }
+
+        setIsFormValid(localSelection.isEnvironmentValid);
+    }, [
+        automatedInstall,
+        localSelection.environment,
+        localSelection.isEnvironmentValid,
+        packagesKickstarted,
+        setIsFormValid,
+    ]);
 
     return (
         <Form>
+            {applyError && (
+                <Alert
+                  isInline
+                  title={_("Failed to save software selection")}
+                  variant="danger"
+                >
+                    {applyError}
+                </Alert>
+            )}
             <Flex spaceItems={{ default: "spaceItemsXl" }}>
-                <EnvironmentSelection />
-                <GroupPackagesSelection />
+                <EnvironmentSelection
+                  environment={localSelection.environment}
+                  environments={environments}
+                  onEnvironmentSelect={handleEnvironmentSelect}
+                  selectionError={selectionError}
+                />
+                <GroupPackagesSelection
+                  groups={groups}
+                  onGroupSelect={handleGroupSelect}
+                  selectedGroups={localSelection.groups || []}
+                />
             </Flex>
         </Form>
     );

@@ -25,23 +25,26 @@ def cmd_cli():
                         dest="remote_pin")
     parser.add_argument("--payload", help="Payload type (liveimg or dnf)", default="liveimg",
                         choices=("liveimg", "dnf"), dest="payload_type")
-    def positive_int(value):
-        value = int(value)
-        if value <= 0:
-            raise argparse.ArgumentTypeError("must be a positive integer")
-        return value
+    def disk_arg(value):
+        """A disk is either a size in GiB or a path to an existing image."""
+        if value.isdigit() and int(value) > 0:
+            return value
+        if os.path.exists(value):
+            return os.path.abspath(value)
+        raise argparse.ArgumentTypeError("must be a positive integer (GiB) or a path to an existing image")
 
-    parser.add_argument("--add-disk", help="Attach a virtual disk with the given size in GiB (e.g., --add-disk 15)",
-                        type=positive_int, metavar="SIZE", dest="add_disk")
+    parser.add_argument("--add-disk", help="Attach a virtual disk, can be given more than once (e.g., --add-disk 15 "
+                        "--add-disk /var/tmp/src.qcow2). A size creates an empty disk, a path attaches a prepared "
+                        "image; the VM writes to a throwaway overlay, so the image itself is left alone",
+                        type=disk_arg, action="append", default=[], metavar="SIZE|PATH", dest="extra_disks")
     args = parser.parse_args()
 
     if args.bios:
         os.environ["TEST_FIRMWARE"] = "bios"
-    extra_disks = [args.add_disk] if args.add_disk is not None else []
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
                                  kickstart_file_name=args.kickstart_file_name,
                                  pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin,
-                                 payload_type=args.payload_type, extra_disks=extra_disks)
+                                 payload_type=args.payload_type, extra_disks=args.extra_disks)
     try:
         machine.start()
 

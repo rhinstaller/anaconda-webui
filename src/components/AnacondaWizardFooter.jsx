@@ -20,9 +20,11 @@ const _ = cockpit.gettext;
 export const AnacondaWizardFooter = ({
     extraActions,
     footerHelperText,
+    isLoading,
     nextButtonText,
     nextButtonVariant,
     onNext,
+    spinnerAriaValueText,
 }) => {
     const [quitWaitsConfirmation, setQuitWaitsConfirmation] = useState(false);
     const { activeStep, goToNextStep, goToPrevStep, steps } = useWizardContext();
@@ -67,6 +69,8 @@ export const AnacondaWizardFooter = ({
                               id="installation-next-btn"
                               variant={nextButtonVariant || "primary"}
                               isAriaDisabled={!isFormValid || isFormDisabled}
+                              isLoading={isLoading || null}
+                              spinnerAriaValueText={isLoading ? (spinnerAriaValueText || _("Loading")) : undefined}
                               onClick={onNextButtonClicked}>
                                 {nextButtonText || _("Next")}
                             </Button>

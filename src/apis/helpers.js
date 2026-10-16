@@ -71,7 +71,9 @@ export const objectToDbus = (obj) => {
             }
         }
 
-        structure[key] = cockpit.variant(dbusType, value);
+        // Nested dictionaries, e.g. the SSL configuration of a repository, need
+        // their values wrapped in variants as well.
+        structure[key] = cockpit.variant(dbusType, dbusType === "a{sv}" ? objectToDbus(value) : value);
     }
 
     return structure;

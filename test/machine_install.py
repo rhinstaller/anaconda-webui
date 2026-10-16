@@ -201,13 +201,23 @@ class VirtInstallMachine(VirtMachine):
 
         try:
             disk_args = "--disk=none "
-            if self.extra_disks:
-                disk_parts = []
-                for size_gb in self.extra_disks:
-                    fd, path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.label}-")
-                    os.close(fd)
-                    os.unlink(path)
-                    disk_parts.append(f"--disk path={path},size={size_gb},bus=virtio ")
+            disk_parts = []
+            # A disk is either a size in GiB or a path to a prepared image.
+            for disk in self.extra_disks:
+                fd, path = tempfile.mkstemp(suffix='.qcow2', prefix=f"disk-anaconda-{self.label}-")
+                os.close(fd)
+                os.unlink(path)
+                if str(disk).isdigit():
+                    disk_parts.append(f"--disk path={path},size={disk},bus=virtio ")
+                    continue
+                # The domain is undefined with --remove-all-storage, so give the VM an
+                # overlay and leave the prepared image alone.
+                self._execute(
+                    f"qemu-img create -q -f qcow2 -o backing_file={shlex.quote(disk)},backing_fmt=qcow2 "
+                    f"{shlex.quote(path)}"
+                )
+                disk_parts.append(f"--disk path={path},bus=virtio ")
+            if disk_parts:
                 disk_args = "".join(disk_parts)
 
             self._execute(

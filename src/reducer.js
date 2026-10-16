@@ -78,6 +78,14 @@ export const payloadInitialState = {
     groups: [],
     packagesKickstarted: false,
     selection: null,
+    source: {
+        configuration: null,
+        description: "",
+        sourcePath: null,
+        sourceType: null,
+        updatesEnabled: true,
+    },
+    sourceApplyPending: false,
     type: null,
 };
 
@@ -286,6 +294,16 @@ export const payloadReducer = (state = payloadInitialState, action) => {
         return { ...state, type: action.payload.type };
     } else if (action.type === "SET_PAYLOAD_GROUPS") {
         return { ...state, groups: action.payload.groups };
+    } else if (action.type === "SET_PAYLOAD_SOURCE") {
+        return {
+            ...state,
+            source: {
+                ...state.source,
+                ...action.payload,
+            },
+        };
+    } else if (action.type === "SET_SOURCE_APPLY_PENDING") {
+        return { ...state, sourceApplyPending: action.payload.pending };
     } else {
         return state;
     }
