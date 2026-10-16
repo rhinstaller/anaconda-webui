@@ -17,6 +17,7 @@ import {
 import { objectToDbus } from "../apis/helpers.js";
 
 import encryptUserPw from "../scripts/encrypt-user-pw.py";
+import { warn } from "./log.js";
 
 /**
  * Whether the installer UI may change root password / lock state.
@@ -57,16 +58,28 @@ export const canModifyRootConfiguration = ({
 
 /**
  * Whether the Accounts user-creation section may be edited when the Users module
- * already lists accounts (e.g. kickstart / interactive defaults).
- * Aligns with Anaconda’s use of `conf.ui.can_change_users` for the user spoke.
+ * already lists accounts (e.g. kickstart / interactive apply).
+ * Aligns with Anaconda GUI/TUI: lock only for automated installs when users were
+ * already present and `can_change_users` is false. Interactive mode must stay
+ * editable after a browser refresh (remote reconnect) even though users already
+ * exist in the Users module from a prior apply.
  *
  * @param {object} opts
+ * @param {boolean} opts.automatedInstall  Same role as Anaconda `flags.automatedInstall`
  * @param {boolean} opts.canChangeUsers Same role as Anaconda `conf.ui.can_change_users`
- * @param {boolean} opts.usersSpecifiedByKickstart Installer already has user entries to show
+ * @param {boolean} opts.usersAlreadyPresent Users module already has entries (any source)
  * @returns {boolean}
  */
-export const canModifyUserConfiguration = ({ canChangeUsers, usersSpecifiedByKickstart }) => {
-    return !usersSpecifiedByKickstart || canChangeUsers;
+export const canModifyUserConfiguration = ({
+    automatedInstall,
+    canChangeUsers,
+    usersAlreadyPresent,
+}) => {
+    if (!automatedInstall) {
+        return true;
+    }
+
+    return !usersAlreadyPresent || canChangeUsers;
 };
 
 const cryptUserPassword = async (password) => {
@@ -75,36 +88,64 @@ const cryptUserPassword = async (password) => {
 };
 
 export const applyAccounts = async (accounts) => {
+    // FIXME: temporary instrumentation to find which call hangs on the
+    // post-refresh path (INSTALLER-4945). Drop before merging.
+    warn("applyAccounts: enter", {
+        canModifyRootConfiguration: accounts.canModifyRootConfiguration,
+        canModifyUserConfiguration: accounts.canModifyUserConfiguration,
+        hasPassword: (accounts.password?.length ?? 0) > 0,
+        isRootEnabled: accounts.isRootEnabled,
+        userCount: accounts.users?.length ?? 0,
+    });
     if ((accounts.users?.length ?? 0) === 0) {
+        warn("applyAccounts: setUsers([]) start");
         await setUsers([]);
+        warn("applyAccounts: setUsers([]) done");
     } else if (accounts.canModifyUserConfiguration) {
         const password = typeof accounts.password === "string" ? accounts.password : "";
         const hasUserPassword = password.length > 0;
+        const first = accounts.users?.[0] ?? {};
+        // After refresh, plaintext is gone; keep the existing crypted hash from D-Bus.
+        const preservedPassword = !hasUserPassword ? (first.password ?? "") : "";
+        warn("applyAccounts: cryptUserPassword start", { hasUserPassword });
         const userPassword = hasUserPassword
             ? await cryptUserPassword(password)
-            : "";
-        const first = accounts.users?.[0] ?? {};
+            : preservedPassword;
+        warn("applyAccounts: cryptUserPassword done");
         const firstUserDbus = firstUserToDbus({
             ...first,
-            isCrypted: hasUserPassword,
+            isCrypted: hasUserPassword
+                ? true
+                : (preservedPassword
+                    ? (first["is-crypted"] ?? first.isCrypted ?? true)
+                    : false),
             password: userPassword,
         });
         const existing = accounts.users ?? [];
         const users = existing.length > 0
             ? [firstUserDbus, ...existing.slice(1).map(u => objectToDbus(u))]
             : [firstUserDbus];
+        warn("applyAccounts: setUsers start", { count: users.length });
         await setUsers(users);
+        warn("applyAccounts: setUsers done");
     }
 
     if (accounts.canModifyRootConfiguration) {
+        warn("applyAccounts: setIsRootAccountLocked start");
         await setIsRootAccountLocked(!accounts.isRootEnabled);
+        warn("applyAccounts: setIsRootAccountLocked done");
         if (accounts.isRootEnabled) {
             const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
+            warn("applyAccounts: setCryptedRootPassword start");
             await setCryptedRootPassword({ password: cryptedRootPw });
+            warn("applyAccounts: setCryptedRootPassword done");
         } else {
+            warn("applyAccounts: clearRootPassword start");
             await clearRootPassword();
+            warn("applyAccounts: clearRootPassword done");
         }
     }
+    warn("applyAccounts: leave");
 };
 
 const firstUserToDbus = (firstUser) => {

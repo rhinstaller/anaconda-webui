@@ -25,6 +25,7 @@ import {
     applyUsersPatch,
 } from "../../actions/users-actions.js";
 
+import { error, warn } from "../../helpers/log.js";
 import {
     applyAccounts,
 } from "../../helpers/users.js";
@@ -464,6 +465,13 @@ export const Accounts = ({
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
 
+        // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+        warn(
+            `Accounts validity: isUserValid=${isUserValid} isRootValid=${isRootValid}` +
+            ` skipAccountCreation=${skipAccountCreation} readOnly=${kickstartUsersReadOnly}` +
+            ` isRootEnabled=${accounts.isRootEnabled} adminUserExists=${accounts.adminUserExists}`
+        );
+
         setIsFormValid(
             (skipAccountCreation || isUserValid || kickstartUsersReadOnly) &&
             (skipRootCreation || isRootValid) &&
@@ -516,8 +524,21 @@ export const Accounts = ({
 const CustomFooter = () => {
     const accounts = useContext(UsersContext);
 
+    // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+    useEffect(() => {
+        warn("Accounts CustomFooter: mounted");
+        return () => warn("Accounts CustomFooter: unmounted");
+    }, []);
+
     const onNext = ({ goToNextStep }) => {
-        applyAccounts(accounts).then(goToNextStep);
+        // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+        warn("Accounts onNext: clicked");
+        applyAccounts(accounts)
+                .then(() => {
+                    warn("Accounts onNext: applyAccounts resolved, navigating");
+                    goToNextStep();
+                })
+                .catch(ex => error("Accounts onNext: applyAccounts failed", ex));
     };
 
     const noUserAccount = (accounts.users?.length ?? 0) === 0;

@@ -4,7 +4,7 @@
  */
 import cockpit from "cockpit";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ActionList, ActionListGroup, ActionListItem } from "@patternfly/react-core/dist/esm/components/ActionList/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
@@ -12,6 +12,7 @@ import { useWizardContext, WizardFooterWrapper } from "@patternfly/react-core/di
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
 import { exitGui } from "../helpers/exit.js";
+import { warn } from "../helpers/log.js";
 
 import { PageContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -33,10 +34,26 @@ export const AnacondaWizardFooter = ({
         isFormValid,
     } = useContext(PageContext) || {};
 
+    // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+    useEffect(() => {
+        warn("WizardFooter: mounted", { activeStep: activeStep?.id });
+        return () => warn("WizardFooter: unmounted");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const onNextButtonClicked = () => {
+        // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+        warn("WizardFooter: next clicked", {
+            activeStep: activeStep?.id,
+            hasOnNext: !!onNext,
+            isFormDisabled,
+            isFormValid,
+            steps: steps.map(s => `${s.index}:${s.id}${s.isDisabled ? ":disabled" : ""}${s.isHidden ? ":hidden" : ""}`),
+        });
         if (onNext) {
             onNext({ goToNextStep });
         } else {
+            warn("WizardFooter: no onNext, using plain goToNextStep");
             goToNextStep();
         }
     };
