@@ -17,6 +17,7 @@ import {
 import { objectToDbus } from "../apis/helpers.js";
 
 import encryptUserPw from "../scripts/encrypt-user-pw.py";
+import { warn } from "./log.js";
 
 /**
  * Whether the installer UI may change root password / lock state.
@@ -87,17 +88,30 @@ const cryptUserPassword = async (password) => {
 };
 
 export const applyAccounts = async (accounts) => {
+    // FIXME: temporary instrumentation to find which call hangs on the
+    // post-refresh path (INSTALLER-4945). Drop before merging.
+    warn("applyAccounts: enter", {
+        canModifyRootConfiguration: accounts.canModifyRootConfiguration,
+        canModifyUserConfiguration: accounts.canModifyUserConfiguration,
+        hasPassword: (accounts.password?.length ?? 0) > 0,
+        isRootEnabled: accounts.isRootEnabled,
+        userCount: accounts.users?.length ?? 0,
+    });
     if ((accounts.users?.length ?? 0) === 0) {
+        warn("applyAccounts: setUsers([]) start");
         await setUsers([]);
+        warn("applyAccounts: setUsers([]) done");
     } else if (accounts.canModifyUserConfiguration) {
         const password = typeof accounts.password === "string" ? accounts.password : "";
         const hasUserPassword = password.length > 0;
         const first = accounts.users?.[0] ?? {};
         // After refresh, plaintext is gone; keep the existing crypted hash from D-Bus.
         const preservedPassword = !hasUserPassword ? (first.password ?? "") : "";
+        warn("applyAccounts: cryptUserPassword start", { hasUserPassword });
         const userPassword = hasUserPassword
             ? await cryptUserPassword(password)
             : preservedPassword;
+        warn("applyAccounts: cryptUserPassword done");
         const firstUserDbus = firstUserToDbus({
             ...first,
             isCrypted: hasUserPassword
@@ -111,18 +125,27 @@ export const applyAccounts = async (accounts) => {
         const users = existing.length > 0
             ? [firstUserDbus, ...existing.slice(1).map(u => objectToDbus(u))]
             : [firstUserDbus];
+        warn("applyAccounts: setUsers start", { count: users.length });
         await setUsers(users);
+        warn("applyAccounts: setUsers done");
     }
 
     if (accounts.canModifyRootConfiguration) {
+        warn("applyAccounts: setIsRootAccountLocked start");
         await setIsRootAccountLocked(!accounts.isRootEnabled);
+        warn("applyAccounts: setIsRootAccountLocked done");
         if (accounts.isRootEnabled) {
             const cryptedRootPw = await cryptUserPassword(accounts.rootPassword);
+            warn("applyAccounts: setCryptedRootPassword start");
             await setCryptedRootPassword({ password: cryptedRootPw });
+            warn("applyAccounts: setCryptedRootPassword done");
         } else {
+            warn("applyAccounts: clearRootPassword start");
             await clearRootPassword();
+            warn("applyAccounts: clearRootPassword done");
         }
     }
+    warn("applyAccounts: leave");
 };
 
 const firstUserToDbus = (firstUser) => {

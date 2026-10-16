@@ -10,6 +10,8 @@ import { Wizard, WizardStep } from "@patternfly/react-core/dist/esm/components/W
 
 import { INSTALLATION_STATUS } from "../apis/boss.js";
 
+import { warn } from "../helpers/log.js";
+
 import { BossContext, PageContext, PayloadContext, StorageContext, SystemTypeContext, UserInterfaceContext } from "../contexts/Common.jsx";
 
 import { useGnomeKeyboardMonitor } from "../hooks/Localization.jsx";
@@ -87,6 +89,40 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         }
     }, [currentStepId]);
 
+    // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+    // A click does reach the document but AnacondaWizardFooter's handler never runs,
+    // so log what was actually hit and whether it is still the live Next button.
+    useEffect(() => {
+        const describe = node => {
+            if (!node?.tagName) {
+                return String(node);
+            }
+            const id = node.id ? `#${node.id}` : "";
+            const cls = typeof node.className === "string" ? `.${node.className.split(" ").join(".")}` : "";
+            return `${node.tagName}${id}${cls}`;
+        };
+        const log = ev => {
+            const target = ev.target;
+            const nextBtn = target?.closest?.("#installation-next-btn");
+            const liveBtn = document.querySelector("#installation-next-btn");
+            warn(
+                `DOM ${ev.type} target=${describe(target)}` +
+                ` connected=${target?.isConnected}` +
+                ` onNextBtn=${!!nextBtn}` +
+                ` isLiveBtn=${!!nextBtn && nextBtn === liveBtn}` +
+                ` liveBtnDisabled=${liveBtn?.getAttribute("aria-disabled")}`
+            );
+        };
+        for (const type of ["pointerdown", "pointerup", "click"]) {
+            document.addEventListener(type, log, true);
+        }
+        return () => {
+            for (const type of ["pointerdown", "pointerup", "click"]) {
+                document.removeEventListener(type, log, true);
+            }
+        };
+    }, []);
+
     const flatStepIds = stepsOrder.flatMap(s => s.steps ? s.steps.map(sub => sub.id) : [s.id]);
 
     useGnomeKeyboardMonitor({
@@ -136,7 +172,10 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
                 };
             }
             return (
-                <WizardStep key={s.id + s.isVisited + (stepProps.isAriaDisabled ? "-disabled" : "-not-disabled")} {...stepProps} />
+                /* Do not include the disabled state in the key: it would remount the whole
+                 * step subtree (page body, footer, Next button) on every isFormDisabled /
+                 * isFetching flip, and a click landing in that window is silently lost. */
+                <WizardStep key={s.id + s.isVisited} {...stepProps} />
             );
         });
     };
