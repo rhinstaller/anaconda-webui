@@ -134,10 +134,20 @@ export const PasswordFormFields = ({
 
     const allowEmptyPassword = policy?.["allow-empty"]?.v ?? false;
     const bothFieldsEmpty = (checkPassword?.length ?? 0) === 0 && (checkConfirmPassword?.length ?? 0) === 0;
-    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmpty;
     const ruleConfirmMatches = bothFieldsEmpty
         ? (allowEmptyPassword ? true : null)
         : checkPassword === checkConfirmPassword;
+
+    /* The debounced copies above only drive the helper text, so that rules do not flash
+     * while the user is still typing. They land independently, which leaves a window where
+     * one field has been applied and the other has not; validity derived from that pair
+     * reports a mismatch while both inputs are in fact complete, and silently disables the
+     * Next button under the user. Validity therefore tracks the live fields. */
+    const bothFieldsEmptyLive = (password?.length ?? 0) === 0 && (confirmPassword?.length ?? 0) === 0;
+    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmptyLive;
+    const confirmMatchesLive = bothFieldsEmptyLive
+        ? (allowEmptyPassword ? true : null)
+        : password === confirmPassword;
 
     const ruleHelperItems = ruleResults.map(rule => {
         let variant = rule.isSatisfied === null ? "indeterminate" : rule.isSatisfied ? "success" : "error";
@@ -181,7 +191,7 @@ export const PasswordFormFields = ({
             return;
         }
 
-        if (!ruleConfirmMatches) {
+        if (!confirmMatchesLive) {
             setIsValid(false);
             return;
         }
@@ -192,12 +202,12 @@ export const PasswordFormFields = ({
         }
 
         // Non-strict: length/strength are shown but not required; only confirmation must match.
-        setIsValid((checkPassword?.length ?? 0) > 0);
+        setIsValid((password?.length ?? 0) > 0);
     }, [
-        checkPassword,
+        password,
         isEmptyPasswordAccepted,
         policy,
-        ruleConfirmMatches,
+        confirmMatchesLive,
         ruleResults,
         passwordStrength,
         setIsValid,
