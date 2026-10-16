@@ -20,6 +20,14 @@ import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
 import { getSteps } from "./steps.js";
 
+/* Screens which render the device tree and must not be used while it is being refetched */
+const STORAGE_STEP_IDS = [
+    "anaconda-screen-method",
+    "anaconda-screen-storage-configuration",
+    "anaconda-screen-storage-configuration-manual",
+    "anaconda-screen-mount-point-mapping",
+];
+
 export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFetching, onCritFail, pauseAtSummary, setCurrentStepId, setShowStorage, showStorage }) => {
     /**
      * Wizard step page state (reset in `AnacondaWizard` `goToStep` on step change).
@@ -57,8 +65,14 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         setShowStorage,
     };
 
+    // Applying the partitioning triggers a device tree refetch which outlives the storage
+    // screens: the AppliedPartitioning signal arrives once the wizard has already moved on.
+    // Blocking the whole wizard for it silently disables Next under the user's cursor, so
+    // only hold back the screens whose content is the device tree itself.
+    const blockedByFetch = isFetching && STORAGE_STEP_IDS.includes(currentStepId);
+
     const pageContextValue = {
-        isFormDisabled: isFormDisabled || isFetching,
+        isFormDisabled: isFormDisabled || blockedByFetch,
         isFormValid,
         setIsFormDisabled,
         setIsFormValid,
@@ -143,8 +157,8 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
             const isFutureStep = stepIndex > currentStepIndex;
             let stepProps = {
                 id: s.id,
-                isAriaDisabled: isFormDisabled || isFetching,
-                isDisabled: isFormDisabled || isFetching,
+                isAriaDisabled: isFormDisabled || blockedByFetch,
+                isDisabled: isFormDisabled || blockedByFetch,
                 isHidden: s.isHidden || s.isFinal,
                 name: s.label,
                 navItem: { id: s.id, isDisabled: isFutureStep },
