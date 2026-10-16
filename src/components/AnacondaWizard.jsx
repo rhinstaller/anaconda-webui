@@ -80,6 +80,17 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         stepNotification,
     };
 
+    // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+    // The Next button is aria-disabled at click time; log which input is responsible.
+    useEffect(() => {
+        warn(
+            `Flags step=${currentStepId} isFormValid=${isFormValid}` +
+            ` isFormDisabled=${isFormDisabled} isFetching=${isFetching}` +
+            ` blockedByFetch=${blockedByFetch}` +
+            ` nextDisabled=${!isFormValid || isFormDisabled || blockedByFetch}`
+        );
+    }, [currentStepId, isFormValid, isFormDisabled, isFetching, blockedByFetch]);
+
     useEffect(() => {
         if (installationStatus === null) {
             return;

@@ -465,6 +465,13 @@ export const Accounts = ({
     useEffect(() => {
         const skipRootCreation = !accounts.isRootEnabled;
 
+        // FIXME: temporary instrumentation (INSTALLER-4945). Drop before merging.
+        warn(
+            `Accounts validity: isUserValid=${isUserValid} isRootValid=${isRootValid}` +
+            ` skipAccountCreation=${skipAccountCreation} readOnly=${kickstartUsersReadOnly}` +
+            ` isRootEnabled=${accounts.isRootEnabled} adminUserExists=${accounts.adminUserExists}`
+        );
+
         setIsFormValid(
             (skipAccountCreation || isUserValid || kickstartUsersReadOnly) &&
             (skipRootCreation || isRootValid) &&
