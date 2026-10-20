@@ -186,6 +186,10 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 }
                 break;
 
+            case INSTALLATION_STATUS.ABORTED:
+                // The backend is shutting down; don't start a new installation.
+                break;
+
             default:
                 startNewInstallation();
             }
