@@ -34,7 +34,7 @@ import {
     buildBugSummary,
     createBugzillaEnterBug
 } from "../helpers/bugzilla.js";
-import { exitGui } from "../helpers/exit.js";
+import { abortGui } from "../helpers/exit.js";
 import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
 import { debug, error } from "../helpers/log.js";
 
@@ -834,7 +834,7 @@ const ExceptionInfo = ({ exception, idPrefix }) => {
 const QuitButton = () => {
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     return (
-        <Button variant="secondary" onClick={exitGui} key="reboot">
+        <Button variant="secondary" onClick={abortGui} key="reboot">
             {isBootIso ? _("Reboot") : _("Quit")}
         </Button>
     );
