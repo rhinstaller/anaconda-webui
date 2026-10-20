@@ -120,13 +120,17 @@ export const PasswordFormFields = ({
     const [checkConfirmPassword, setCheckConfirmPassword] = useState(confirmPassword);
     const [passwordStrength, setPasswordStrength] = useState("");
 
-    useEffect(() => {
-        debounce(300, () => setCheckPassword(password))();
-    }, [password, setCheckPassword]);
+    // Build once: a debouncer created per keystroke never restarts the pending timer.
+    const updateCheckPassword = useMemo(() => debounce(300, setCheckPassword), [setCheckPassword]);
+    const updateCheckConfirmPassword = useMemo(() => debounce(300, setCheckConfirmPassword), [setCheckConfirmPassword]);
 
     useEffect(() => {
-        debounce(300, () => setCheckConfirmPassword(confirmPassword))();
-    }, [confirmPassword, setCheckConfirmPassword]);
+        updateCheckPassword(password);
+    }, [password, updateCheckPassword]);
+
+    useEffect(() => {
+        updateCheckConfirmPassword(confirmPassword);
+    }, [confirmPassword, updateCheckConfirmPassword]);
 
     const ruleResults = useMemo(() => {
         return getRuleResults(rules, policy, checkPassword);
