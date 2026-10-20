@@ -116,37 +116,16 @@ export const PasswordFormFields = ({
 }) => {
     const [passwordHidden, setPasswordHidden] = useState(true);
     const [confirmHidden, setConfirmHidden] = useState(true);
-    const [checkPassword, setCheckPassword] = useState(password);
-    const [checkConfirmPassword, setCheckConfirmPassword] = useState(confirmPassword);
     const [passwordStrength, setPasswordStrength] = useState("");
 
-    // Build once: a debouncer created per keystroke never restarts the pending timer.
-    const updateCheckPassword = useMemo(() => debounce(300, setCheckPassword), [setCheckPassword]);
-    const updateCheckConfirmPassword = useMemo(() => debounce(300, setCheckConfirmPassword), [setCheckConfirmPassword]);
-
-    useEffect(() => {
-        updateCheckPassword(password);
-    }, [password, updateCheckPassword]);
-
-    useEffect(() => {
-        updateCheckConfirmPassword(confirmPassword);
-    }, [confirmPassword, updateCheckConfirmPassword]);
-
     const ruleResults = useMemo(() => {
-        return getRuleResults(rules, policy, checkPassword);
-    }, [policy, checkPassword, rules]);
+        return getRuleResults(rules, policy, password);
+    }, [policy, password, rules]);
 
     const allowEmptyPassword = policy?.["allow-empty"]?.v ?? false;
-    const bothFieldsEmpty = (checkPassword?.length ?? 0) === 0 && (checkConfirmPassword?.length ?? 0) === 0;
+    const bothFieldsEmpty = (password?.length ?? 0) === 0 && (confirmPassword?.length ?? 0) === 0;
+    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmpty;
     const ruleConfirmMatches = bothFieldsEmpty
-        ? (allowEmptyPassword ? true : null)
-        : checkPassword === checkConfirmPassword;
-
-    // Validity uses the live fields: the debounced copies land on separate timers, so the
-    // pair is briefly inconsistent and would disable Next while both inputs are complete.
-    const bothFieldsEmptyLive = (password?.length ?? 0) === 0 && (confirmPassword?.length ?? 0) === 0;
-    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmptyLive;
-    const confirmMatchesLive = bothFieldsEmptyLive
         ? (allowEmptyPassword ? true : null)
         : password === confirmPassword;
 
@@ -176,13 +155,18 @@ export const PasswordFormFields = ({
         return policy && getStrengthLevels(policy["min-quality"].v, policy["is-strict"].v);
     }, [policy]);
 
+    // Only the async password_quality call benefits from debouncing.
+    const updateStrength = useMemo(
+        () => debounce(300, async (pw) => {
+            const s = await getPasswordStrength(pw, strengthLevels);
+            setPasswordStrength(s);
+        }),
+        [strengthLevels]
+    );
+
     useEffect(() => {
-        const updatePasswordStrength = async () => {
-            const _passwordStrength = await getPasswordStrength(checkPassword, strengthLevels);
-            setPasswordStrength(_passwordStrength);
-        };
-        updatePasswordStrength();
-    }, [checkPassword, strengthLevels]);
+        updateStrength(password);
+    }, [password, updateStrength]);
 
     useEffect(() => {
         const isStrict = policy?.["is-strict"]?.v ?? false;
@@ -192,7 +176,7 @@ export const PasswordFormFields = ({
             return;
         }
 
-        if (!confirmMatchesLive) {
+        if (!ruleConfirmMatches) {
             setIsValid(false);
             return;
         }
@@ -208,7 +192,7 @@ export const PasswordFormFields = ({
         password,
         isEmptyPasswordAccepted,
         policy,
-        confirmMatchesLive,
+        ruleConfirmMatches,
         ruleResults,
         passwordStrength,
         setIsValid,
