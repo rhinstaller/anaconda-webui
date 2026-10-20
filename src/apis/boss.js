@@ -18,7 +18,7 @@ import { RuntimeClient } from "./runtime.js";
 
 const OBJECT_PATH = "/org/fedoraproject/Anaconda/Boss";
 const INTERFACE_NAME = "org.fedoraproject.Anaconda.Boss";
-export const INSTALLATION_STATUS = { FAILED: "failed", NOT_STARTED: "not_started", RUNNING: "running", SUCCEEDED: "succeeded" };
+export const INSTALLATION_STATUS = { ABORTED: "aborted", FAILED: "failed", NOT_STARTED: "not_started", RUNNING: "running", SUCCEEDED: "succeeded" };
 
 const callClient = (...args) => {
     return _callClient(BossClient, OBJECT_PATH, INTERFACE_NAME, ...args);
