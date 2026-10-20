@@ -134,10 +134,17 @@ export const PasswordFormFields = ({
 
     const allowEmptyPassword = policy?.["allow-empty"]?.v ?? false;
     const bothFieldsEmpty = (checkPassword?.length ?? 0) === 0 && (checkConfirmPassword?.length ?? 0) === 0;
-    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmpty;
     const ruleConfirmMatches = bothFieldsEmpty
         ? (allowEmptyPassword ? true : null)
         : checkPassword === checkConfirmPassword;
+
+    // Validity uses the live fields: the debounced copies land on separate timers, so the
+    // pair is briefly inconsistent and would disable Next while both inputs are complete.
+    const bothFieldsEmptyLive = (password?.length ?? 0) === 0 && (confirmPassword?.length ?? 0) === 0;
+    const isEmptyPasswordAccepted = allowEmptyPassword && bothFieldsEmptyLive;
+    const confirmMatchesLive = bothFieldsEmptyLive
+        ? (allowEmptyPassword ? true : null)
+        : password === confirmPassword;
 
     const ruleHelperItems = ruleResults.map(rule => {
         let variant = rule.isSatisfied === null ? "indeterminate" : rule.isSatisfied ? "success" : "error";
@@ -181,7 +188,7 @@ export const PasswordFormFields = ({
             return;
         }
 
-        if (!ruleConfirmMatches) {
+        if (!confirmMatchesLive) {
             setIsValid(false);
             return;
         }
@@ -192,12 +199,12 @@ export const PasswordFormFields = ({
         }
 
         // Non-strict: length/strength are shown but not required; only confirmation must match.
-        setIsValid((checkPassword?.length ?? 0) > 0);
+        setIsValid((password?.length ?? 0) > 0);
     }, [
-        checkPassword,
+        password,
         isEmptyPasswordAccepted,
         policy,
-        ruleConfirmMatches,
+        confirmMatchesLive,
         ruleResults,
         passwordStrength,
         setIsValid,
