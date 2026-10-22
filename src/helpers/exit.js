@@ -4,7 +4,8 @@
  */
 import cockpit from "cockpit";
 
-import { exitInstaller, setRebootData } from "../apis/runtime.js";
+import { requestAbort } from "../apis/boss.js";
+import { setRebootData } from "../apis/runtime.js";
 
 import { debug, error } from "./log.js";
 
@@ -24,7 +25,7 @@ const killWebUIProcess = () => {
     const pidFile = cockpit.file("/run/anaconda/webui_script.pid", { superuser: "try" });
     let pid;
 
-    pidFile.read()
+    return pidFile.read()
             .then(content => {
                 pid = content.trim();
                 debug("Killing WebUI process, PID: ", pid);
@@ -36,8 +37,10 @@ const killWebUIProcess = () => {
 
 export const exitGui = () => {
     _isExiting = true;
-
-    exitInstaller()
-            .catch(exc => error("Exit D-Bus call failed:", exc.message))
-            .finally(killWebUIProcess);
+    return killWebUIProcess();
 };
+
+export const abortGui = () =>
+    requestAbort()
+            .then(exitGui)
+            .catch(exc => error("RequestAbort D-Bus call failed:", exc.message));

@@ -115,7 +115,6 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 });
                 taskProxy.addEventListener("Succeeded", () => {
                     debug("Installation task Succeeded signal received");
-                    setStatus("success");
                     setCurrentProgressStep(PROGRESS_STEPS_DONE);
                 });
             };
@@ -184,6 +183,13 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                 } catch (error) {
                     onCritFail(failureCtx)(error);
                 }
+                break;
+
+            case INSTALLATION_STATUS.ABORTED:
+                // terminal state; show neither success nor start a new installation
+                setStatus("danger");
+                setCurrentProgressStep(PROGRESS_STEPS_DONE);
+                setSteps([]);
                 break;
 
             default:
@@ -261,7 +267,9 @@ export const InstallationProgress = ({ automatedInstall, onCritFail }) => {
                       <Content component="p" id={SCREEN_ID + "-step-done-description"}>
                           {currentProgressStep < PROGRESS_STEPS_DONE
                               ? progressSteps[currentProgressStep].description
-                              : cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)}
+                              : status === "success"
+                                  ? cockpit.format(_("To begin using $0, reboot your system."), osRelease.PRETTY_NAME)
+                                  : _("The installation did not complete.")}
                       </Content>
                       {currentProgressStep < PROGRESS_STEPS_DONE && (
                           <>

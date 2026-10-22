@@ -11,7 +11,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patte
 import { useWizardContext, WizardFooterWrapper } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 
-import { exitGui } from "../helpers/exit.js";
+import { abortGui } from "../helpers/exit.js";
 
 import { PageContext, SystemTypeContext } from "../contexts/Common.jsx";
 
@@ -47,7 +47,7 @@ export const AnacondaWizardFooter = ({
                 {extraActions}
                 {quitWaitsConfirmation &&
                     <QuitInstallationConfirmModal
-                      exitGui={exitGui}
+                      abortGui={abortGui}
                       setQuitWaitsConfirmation={setQuitWaitsConfirmation}
                     />}
                 {footerHelperText}
@@ -90,7 +90,7 @@ export const AnacondaWizardFooter = ({
     );
 };
 
-export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation }) => {
+export const QuitInstallationConfirmModal = ({ abortGui, setQuitWaitsConfirmation }) => {
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
 
     return (
@@ -112,7 +112,7 @@ export const QuitInstallationConfirmModal = ({ exitGui, setQuitWaitsConfirmation
                   id="installation-quit-confirm-btn"
                   key="confirm"
                   onClick={() => {
-                      exitGui();
+                      abortGui();
                   }}
                   variant="danger"
                 >
