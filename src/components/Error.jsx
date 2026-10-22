@@ -48,6 +48,23 @@ import { ExternalLink } from "./common/ExternalLink.jsx";
 import "./Error.scss";
 
 const _ = cockpit.gettext;
+
+const BUGZILLA_REDHAT_URL = "https://bugzilla.redhat.com/";
+
+const normalizeTrailingSlash = (url) => url?.replace(/\/?$/, "/");
+
+const providers = [
+    {
+        id: "bugzilla-redhat",
+        match: (osRelease) => normalizeTrailingSlash(osRelease.BUG_REPORT_URL) === BUGZILLA_REDHAT_URL,
+        supportsAutomaticReporting: true,
+    },
+];
+
+const getBugReportProvider = (osRelease) => {
+    return providers.find(p => p.match(osRelease)) || { id: "generic", supportsAutomaticReporting: false };
+};
+
 // When "Restrict access to the report" is checked, the bug is restricted to this group (GTK uses the same default).
 const DEFAULT_RESTRICT_GROUP = "fedora_contrib_private";
 
@@ -185,6 +202,31 @@ const BZManualReportOption = ({ component, exception }) => {
     );
 };
 
+const GenericManualReportLink = () => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
+    const bugReportURL = osRelease.BUG_REPORT_URL;
+
+    if (!bugReportURL) {
+        return (
+            <Content>
+                {_("Bug reporting is not configured for this distribution.")}
+            </Content>
+        );
+    }
+
+    return (
+        <Content>
+            {fmtToFragments(
+                _("Report an issue or provide feedback at $0."),
+                <ExternalLink href={convertToExtlinkIfNeeded(bugReportURL, !isBootIso)}>
+                    {bugReportURL}
+                </ExternalLink>
+            )}
+        </Content>
+    );
+};
+
 /**
  * Component for API key entry form (step 1)
  */
@@ -250,33 +292,37 @@ const BZReportTabs = ({
     bugDescription,
     exception,
     idPrefix,
-    onDescriptionChange
+    onDescriptionChange,
+    showDescription = true
 }) => {
     const environmentInfo = useEnvironmentInfo();
     const frontendStackTrace = exception?.frontendException?.stack;
+    let tabIndex = 0;
     return (
         <Tabs
           defaultActiveKey={0}
           id={idPrefix + "-bug-tabs"}
         >
-            <Tab eventKey={0} title={<TabTitleText>{_("Description")}</TabTitleText>}>
-                <TextArea
-                  id={idPrefix + "-bug-description"}
-                  value={bugDescription}
-                  onChange={(_event, val) => onDescriptionChange(val)}
-                  placeholder={_("Detailed description of the issue")}
-                  resizeOrientation="vertical"
-                  rows={8}
-                />
-            </Tab>
+            {showDescription && (
+                <Tab eventKey={tabIndex++} title={<TabTitleText>{_("Description")}</TabTitleText>}>
+                    <TextArea
+                      id={idPrefix + "-bug-description"}
+                      value={bugDescription}
+                      onChange={(_event, val) => onDescriptionChange(val)}
+                      placeholder={_("Detailed description of the issue")}
+                      resizeOrientation="vertical"
+                      rows={8}
+                    />
+                </Tab>
+            )}
             {frontendStackTrace && (
-                <Tab eventKey={1} title={<TabTitleText>{_("Stacktrace")}</TabTitleText>}>
+                <Tab eventKey={tabIndex++} title={<TabTitleText>{_("Stacktrace")}</TabTitleText>}>
                     <Content component="pre" className="bug-report-code-block bug-report-code-block-scrollable">
                         {frontendStackTrace}
                     </Content>
                 </Tab>
             )}
-            <Tab eventKey={frontendStackTrace ? 2 : 1} title={<TabTitleText>{_("Environment")}</TabTitleText>}>
+            <Tab eventKey={tabIndex} title={<TabTitleText>{_("Environment")}</TabTitleText>}>
                 <Content component="pre" className="bug-report-code-block">
                     {environmentInfo}
                 </Content>
@@ -710,9 +756,44 @@ const BZExceptionReportFlow = ({
     );
 };
 
+const GenericExceptionReport = ({ exception, idPrefix }) => {
+    const osRelease = useContext(OsReleaseContext);
+    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
+    const bugReportURL = osRelease.BUG_REPORT_URL;
+
+    return (
+        <>
+            <ExceptionInfo exception={exception} idPrefix={idPrefix} />
+            <Divider />
+            <BZReportTabs
+              exception={exception}
+              idPrefix={idPrefix}
+              showDescription={false}
+            />
+            <Divider />
+            {bugReportURL
+                ? (
+                    <Content>
+                        {fmtToFragments(
+                            _("Please report this issue at $0."),
+                            <ExternalLink href={convertToExtlinkIfNeeded(bugReportURL, !isBootIso)}>
+                                {bugReportURL}
+                            </ExternalLink>
+                        )}
+                    </Content>
+                )
+                : (
+                    <Content>
+                        {_("Bug reporting is not configured for this distribution.")}
+                    </Content>
+                )}
+        </>
+    );
+};
+
 /**
- * Content component for Bugzilla report modal
- * Handles mode selection (network state, user flow, exception flow)
+ * Content component for bug report modal
+ * Dispatches to the appropriate reporting flow based on the bug report provider
  */
 const BZReportContent = ({
     buttons,
@@ -721,45 +802,56 @@ const BZReportContent = ({
 }) => {
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const isConnected = useContext(NetworkContext).connected;
+    const osRelease = useContext(OsReleaseContext);
     const component = componentFromException(exception);
+    const provider = getBugReportProvider(osRelease);
 
-    const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
-    const networkHelperMessageBootIso = _("Network not available. Configure the network to report the issue.");
-
-    if (!isConnected) {
+    // BZExceptionReportFlow manages its own modal body and footer with step-specific buttons
+    if (isConnected && provider.supportsAutomaticReporting && exception) {
         return (
-            <>
-                <ModalBody>
-                    <HelperText>
-                        <HelperTextItem icon={<DisconnectedIcon />}>
-                            {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
-                        </HelperTextItem>
-                    </HelperText>
-                </ModalBody>
-                <ModalFooter>{buttons}</ModalFooter>
-            </>
+            <BZExceptionReportFlow
+              buttons={buttons}
+              exception={exception}
+              idPrefix={idPrefix}
+            />
         );
     }
 
-    if (!exception) {
-        return (
-            <>
-                <ModalBody>
-                    <Form>
-                        <BZManualReportLink component={component} />
-                    </Form>
-                </ModalBody>
-                <ModalFooter>{buttons}</ModalFooter>
-            </>
+    let content;
+    if (!isConnected) {
+        const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
+        const networkHelperMessageBootIso = _("Network not available. Configure the network to report the issue.");
+        content = (
+            <HelperText>
+                <HelperTextItem icon={<DisconnectedIcon />}>
+                    {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
+                </HelperTextItem>
+            </HelperText>
         );
+    } else if (!provider.supportsAutomaticReporting) {
+        if (!exception) {
+            content = <GenericManualReportLink />;
+        } else {
+            content = (
+                <GenericExceptionReport
+                  exception={exception}
+                  idPrefix={idPrefix}
+                />
+            );
+        }
+    } else {
+        content = <BZManualReportLink component={component} />;
     }
 
     return (
-        <BZExceptionReportFlow
-          buttons={buttons}
-          exception={exception}
-          idPrefix={idPrefix}
-        />
+        <>
+            <ModalBody>
+                <Form>
+                    {content}
+                </Form>
+            </ModalBody>
+            <ModalFooter>{buttons}</ModalFooter>
+        </>
     );
 };
 
