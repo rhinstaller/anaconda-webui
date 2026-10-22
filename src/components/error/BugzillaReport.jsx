@@ -1,15 +1,14 @@
 /*
- * Copyright (C) 2023 Red Hat, Inc.
+ * Copyright (C) 2026 Red Hat, Inc.
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
 import cockpit from "cockpit";
 
 import * as python from "python.js";
-import StackTrace from "stacktrace-js";
 import { fmt_to_fragments as fmtToFragments } from "utils";
 
-import React, { cloneElement, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
@@ -18,12 +17,9 @@ import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/inde
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { InputGroup, InputGroupItem } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
-import { Modal, ModalBody, ModalFooter, ModalHeader, ModalVariant } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
-import { Tab, Tabs, TabTitleText } from "@patternfly/react-core/dist/esm/components/Tabs/index.js";
-import { TextArea } from "@patternfly/react-core/dist/esm/components/TextArea/index.js";
+import { ModalBody, ModalFooter } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { ValidatedOptions } from "@patternfly/react-core/dist/esm/helpers/constants.js";
-import { DisconnectedIcon } from "@patternfly/react-icons/dist/esm/icons/disconnected-icon";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
 import { EyeIcon } from "@patternfly/react-icons/dist/esm/icons/eye-icon";
 import { EyeSlashIcon } from "@patternfly/react-icons/dist/esm/icons/eye-slash-icon";
@@ -33,38 +29,19 @@ import {
     buildBugDescription,
     buildBugSummary,
     createBugzillaEnterBug
-} from "../helpers/bugzilla.js";
-import { exitGui } from "../helpers/exit.js";
-import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
-import { debug, error } from "../helpers/log.js";
+} from "../../helpers/bugzilla.js";
+import { convertToExtlinkIfNeeded } from "../../helpers/extlink.js";
+import { debug, error } from "../../helpers/log.js";
 
-import { AppVersionContext, NetworkContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
+import { NetworkContext, OsReleaseContext, SystemTypeContext } from "../../contexts/Common.jsx";
 
-import createBugzillaBug from "../scripts/create-bugzilla-bug.py";
-import searchBugzillaBugs from "../scripts/search-bugzilla-bugs.py";
-import validateBugzillaApiKeyScript from "../scripts/validate-bugzilla-api-key.py";
-import { ExternalLink } from "./common/ExternalLink.jsx";
-
-import "./Error.scss";
+import createBugzillaBug from "../../scripts/create-bugzilla-bug.py";
+import searchBugzillaBugs from "../../scripts/search-bugzilla-bugs.py";
+import validateBugzillaApiKeyScript from "../../scripts/validate-bugzilla-api-key.py";
+import { ExternalLink } from "../common/ExternalLink.jsx";
+import { BZReportTabs, componentFromException, ExceptionInfo, useEnvironmentInfo } from "./common.jsx";
 
 const _ = cockpit.gettext;
-
-const BUGZILLA_REDHAT_URL = "https://bugzilla.redhat.com/";
-
-const normalizeTrailingSlash = (url) => url?.replace(/\/?$/, "/");
-
-const providers = [
-    {
-        id: "bugzilla-redhat",
-        match: (osRelease) => normalizeTrailingSlash(osRelease.BUG_REPORT_URL) === BUGZILLA_REDHAT_URL,
-        supportsAutomaticReporting: true,
-    },
-];
-
-const getBugReportProvider = (osRelease) => {
-    return providers.find(p => p.match(osRelease)) || { id: "generic", supportsAutomaticReporting: false };
-};
-
 // When "Restrict access to the report" is checked, the bug is restricted to this group (GTK uses the same default).
 const DEFAULT_RESTRICT_GROUP = "fedora_contrib_private";
 
@@ -152,24 +129,11 @@ const useBugzillaPrefiledReportURL = (component, exception) => {
     return convertToExtlinkIfNeeded(href, !isBootIso);
 };
 
-const useEnvironmentInfo = () => {
-    const {
-        PRETTY_NAME: prettyName,
-    } = useContext(OsReleaseContext);
-    const appVersion = useContext(AppVersionContext);
-    return [
-        "---[ System & Environment Information ]---",
-        `OS: ${prettyName}`,
-        `Anaconda version: ${appVersion.backend}`,
-        `Anaconda UI version: ${appVersion.webui}`
-    ].join("\n");
-};
-
 /**
  * Component for displaying manual Bugzilla reporting link
  * Used when there's no exception (user-initiated feedback)
  */
-const BZManualReportLink = ({ component }) => {
+export const BZManualReportLink = ({ component }) => {
     const manualReportLinkURL = useBugzillaPrefiledReportURL(component);
     return (
         <Content>
@@ -196,31 +160,6 @@ const BZManualReportOption = ({ component, exception }) => {
                 _("Prefer to report manually? $0"),
                 <ExternalLink href={manualReportLinkURL}>
                     {_("Open Bugzilla bug entry form")}
-                </ExternalLink>
-            )}
-        </Content>
-    );
-};
-
-const GenericManualReportLink = () => {
-    const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    const bugReportURL = osRelease.BUG_REPORT_URL;
-
-    if (!bugReportURL) {
-        return (
-            <Content>
-                {_("Bug reporting is not configured for this distribution.")}
-            </Content>
-        );
-    }
-
-    return (
-        <Content>
-            {fmtToFragments(
-                _("Report an issue or provide feedback at $0."),
-                <ExternalLink href={convertToExtlinkIfNeeded(bugReportURL, !isBootIso)}>
-                    {bugReportURL}
                 </ExternalLink>
             )}
         </Content>
@@ -282,52 +221,6 @@ const BZAPIKeyEntryForm = ({
                 </HelperText>
             </FormGroup>
         </>
-    );
-};
-
-/**
- * Component for bug report tabs (Description, Stacktrace, Environment)
- */
-const BZReportTabs = ({
-    bugDescription,
-    exception,
-    idPrefix,
-    onDescriptionChange,
-    showDescription = true
-}) => {
-    const environmentInfo = useEnvironmentInfo();
-    const frontendStackTrace = exception?.frontendException?.stack;
-    let tabIndex = 0;
-    return (
-        <Tabs
-          defaultActiveKey={0}
-          id={idPrefix + "-bug-tabs"}
-        >
-            {showDescription && (
-                <Tab eventKey={tabIndex++} title={<TabTitleText>{_("Description")}</TabTitleText>}>
-                    <TextArea
-                      id={idPrefix + "-bug-description"}
-                      value={bugDescription}
-                      onChange={(_event, val) => onDescriptionChange(val)}
-                      placeholder={_("Detailed description of the issue")}
-                      resizeOrientation="vertical"
-                      rows={8}
-                    />
-                </Tab>
-            )}
-            {frontendStackTrace && (
-                <Tab eventKey={tabIndex++} title={<TabTitleText>{_("Stacktrace")}</TabTitleText>}>
-                    <Content component="pre" className="bug-report-code-block bug-report-code-block-scrollable">
-                        {frontendStackTrace}
-                    </Content>
-                </Tab>
-            )}
-            <Tab eventKey={tabIndex} title={<TabTitleText>{_("Environment")}</TabTitleText>}>
-                <Content component="pre" className="bug-report-code-block">
-                    {environmentInfo}
-                </Content>
-            </Tab>
-        </Tabs>
     );
 };
 
@@ -466,18 +359,10 @@ const BZReportDetailsForm = ({
 };
 
 /**
- * Helper function to get component name from exception
- */
-const componentFromException = (exception) => {
-    const hasFrontendException = !!exception?.frontendException;
-    return exception ? (hasFrontendException ? "anaconda-webui" : "anaconda") : "anaconda";
-};
-
-/**
  * Exception report flow component - handles the 3-step flow for exception reporting
  * Step 1: API key entry, Step 2: Duplicate check (skipped if none found), Step 3: Bug details + submit
  */
-const BZExceptionReportFlow = ({
+export const BZExceptionReportFlow = ({
     buttons,
     exception,
     idPrefix
@@ -755,291 +640,3 @@ const BZExceptionReportFlow = ({
         </>
     );
 };
-
-const GenericExceptionReport = ({ exception, idPrefix }) => {
-    const osRelease = useContext(OsReleaseContext);
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    const bugReportURL = osRelease.BUG_REPORT_URL;
-
-    return (
-        <>
-            <ExceptionInfo exception={exception} idPrefix={idPrefix} />
-            <Divider />
-            <BZReportTabs
-              exception={exception}
-              idPrefix={idPrefix}
-              showDescription={false}
-            />
-            <Divider />
-            {bugReportURL
-                ? (
-                    <Content>
-                        {fmtToFragments(
-                            _("Please report this issue at $0."),
-                            <ExternalLink href={convertToExtlinkIfNeeded(bugReportURL, !isBootIso)}>
-                                {bugReportURL}
-                            </ExternalLink>
-                        )}
-                    </Content>
-                )
-                : (
-                    <Content>
-                        {_("Bug reporting is not configured for this distribution.")}
-                    </Content>
-                )}
-        </>
-    );
-};
-
-/**
- * Content component for bug report modal
- * Dispatches to the appropriate reporting flow based on the bug report provider
- */
-const BZReportContent = ({
-    buttons,
-    exception,
-    idPrefix
-}) => {
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    const isConnected = useContext(NetworkContext).connected;
-    const osRelease = useContext(OsReleaseContext);
-    const component = componentFromException(exception);
-    const provider = getBugReportProvider(osRelease);
-
-    // BZExceptionReportFlow manages its own modal body and footer with step-specific buttons
-    if (isConnected && provider.supportsAutomaticReporting && exception) {
-        return (
-            <BZExceptionReportFlow
-              buttons={buttons}
-              exception={exception}
-              idPrefix={idPrefix}
-            />
-        );
-    }
-
-    let content;
-    if (!isConnected) {
-        const networkHelperMessageLive = _("Network not available. Configure the network in the top bar menu to report the issue.");
-        const networkHelperMessageBootIso = _("Network not available. Configure the network to report the issue.");
-        content = (
-            <HelperText>
-                <HelperTextItem icon={<DisconnectedIcon />}>
-                    {isBootIso ? networkHelperMessageBootIso : networkHelperMessageLive}
-                </HelperTextItem>
-            </HelperText>
-        );
-    } else if (!provider.supportsAutomaticReporting) {
-        if (!exception) {
-            content = <GenericManualReportLink />;
-        } else {
-            content = (
-                <GenericExceptionReport
-                  exception={exception}
-                  idPrefix={idPrefix}
-                />
-            );
-        }
-    } else {
-        content = <BZManualReportLink component={component} />;
-    }
-
-    return (
-        <>
-            <ModalBody>
-                <Form>
-                    {content}
-                </Form>
-            </ModalBody>
-            <ModalFooter>{buttons}</ModalFooter>
-        </>
-    );
-};
-
-export const BZReportModal = ({
-    buttons,
-    exception,
-    idPrefix,
-    title,
-    titleIconVariant
-}) => {
-    const context = exception?.backendException?.contextData?.context || exception?.frontendException?.contextData?.context;
-    const description = exception
-        ? (
-            context
-                ? cockpit.format(_("The installer cannot continue due to a critical error: $0"), _(context))
-                : _("The installer cannot continue due to a critical error.")
-        )
-        : undefined;
-
-    const header = (
-        <ModalHeader
-          description={description}
-          title={title}
-          titleIconVariant={titleIconVariant}
-        />
-    );
-
-    return (
-        <Modal
-          id={idPrefix + "-bz-report-modal"}
-          isOpen
-          position="top"
-          variant={ModalVariant.medium}
-        >
-            {header}
-            <BZReportContent
-              buttons={buttons}
-              exception={exception}
-              idPrefix={idPrefix}
-            />
-        </Modal>
-    );
-};
-
-/**
- * Component for displaying exception information
- */
-const ExceptionInfo = ({ exception, idPrefix }) => {
-    const exceptionNamePrefix = exception.backendException?.name ? exception.backendException?.name + ": " : "";
-    const backendMessage = exception.backendException?.message ? exception.backendException.message : "";
-    const frontendMessage = exception.frontendException?.message ? exception.frontendException.message : "";
-
-    return (
-        <FormGroup
-          fieldId={idPrefix + "-bz-report-modal-details"}
-          label={_("Error details")}
-        >
-            <Content id={idPrefix + "-bz-report-modal-details"}>
-                {backendMessage &&
-                <Content>
-                    {exceptionNamePrefix + backendMessage}
-                </Content>}
-                {frontendMessage &&
-                <Content>
-                    {exceptionNamePrefix + frontendMessage}
-                </Content>}
-            </Content>
-        </FormGroup>
-    );
-};
-
-const QuitButton = () => {
-    const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
-    return (
-        <Button variant="secondary" onClick={exitGui} key="reboot">
-            {isBootIso ? _("Reboot") : _("Quit")}
-        </Button>
-    );
-};
-
-const CriticalError = ({ exception }) => {
-    const idPrefix = "critical-error";
-
-    return (
-        <BZReportModal
-          idPrefix={idPrefix}
-          title={_("Installation failed")}
-          titleIconVariant="danger"
-          buttons={[<QuitButton key="quit" />]}
-          exception={exception}
-        />
-
-    );
-};
-
-const CancelButton = ({ onClose }) => {
-    return (
-        <Button variant="link" onClick={() => onClose()} id="user-issue-dialog-cancel-btn" key="cancel">
-            {_("Cancel")}
-        </Button>
-    );
-};
-
-export const UserIssue = ({ setIsReportIssueOpen }) => {
-    return (
-        <BZReportModal
-          idPrefix="user-issue"
-          title={_("Report issue")}
-          titleIconVariant={null}
-          buttons={[<CancelButton key="cancel" onClose={() => setIsReportIssueOpen(false)} />]}
-          exception={null}
-        />
-    );
-};
-
-/** Build exception state from _error and contextData. Copies message/name explicitly (Error props are non-enumerable). */
-const buildExceptionState = async (_error, contextData = {}) => {
-    const message = _error?.message ?? (typeof _error?.toString === "function" ? _error.toString() : String(_error));
-    const name = _error?.name;
-    const hasStack = !!_error?.stack;
-    if (hasStack) {
-        let stack;
-        try {
-            const arrayStackFrame = await StackTrace.fromError(_error);
-            stack = arrayStackFrame.map(frame => frame.toString()).join("\n");
-        } catch (parseError) {
-            error("StackTrace.fromError failed, using raw stack", parseError);
-            stack = _error.stack;
-        }
-        return {
-            frontendException: { contextData, message, name, stack },
-            hasError: true
-        };
-    }
-    return {
-        backendException: { contextData, message, name },
-        hasError: true
-    };
-};
-
-export class ErrorBoundary extends React.Component {
-    constructor (props) {
-        super(props);
-        // Allow providing initial exception to the ErrorBoundary constructor in case of a critical error
-        // that happens before the ErrorBoundary is mounted.
-        this.state = { backendException: props.backendException, hasError: props.backendException !== undefined };
-    }
-
-    // Add window.onerror and window.onunhandledrejection handlers
-    componentDidMount () {
-        const errorHandler = async (_error) => {
-            const stateUpdate = await buildExceptionState(_error, {});
-            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
-            this.setState(stateUpdate);
-            return true;
-        };
-        window.onerror = async (message, source, lineno, colno, _error) => errorHandler(_error);
-        window.onunhandledrejection = (event) => errorHandler(event.reason);
-    }
-
-    // React Error Boundary: Catches React rendering errors synchronously
-    // This prevents errors from propagating and crashing the page before window.onerror fires
-    static getDerivedStateFromError () {
-        return { hasError: true };
-    }
-
-    onCritFailBackend = (arg) => {
-        const { context } = arg || {};
-
-        return async (_error) => {
-            if (this.state.hasError) {
-                return;
-            }
-            const stateUpdate = await buildExceptionState(_error, { context });
-            error("ErrorBoundary caught an error:", stateUpdate.frontendException ?? stateUpdate.backendException);
-            this.setState(stateUpdate);
-        };
-    };
-
-    render () {
-        if (this.state.hasError) {
-            return (
-                <CriticalError
-                  exception={this.state}
-                />
-            );
-        }
-
-        return cloneElement(this.props.children, { onCritFail: this.onCritFailBackend });
-    }
-}

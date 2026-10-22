@@ -19,7 +19,7 @@ import { convertToExtlinkIfNeeded } from "../helpers/extlink.js";
 
 import { AppVersionContext, OsReleaseContext, SystemTypeContext } from "../contexts/Common.jsx";
 
-import { UserIssue } from "./Error.jsx";
+import { UserIssue } from "./error/Error.jsx";
 import { CockpitStorageIntegration } from "./storage/cockpit-storage-integration/CockpitStorageIntegration.jsx";
 
 import "./HeaderKebab.scss";

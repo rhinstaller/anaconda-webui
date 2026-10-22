@@ -23,7 +23,7 @@ import { read_os_release as readOsRelease } from "os-release.js";
 
 import { AnacondaHeader } from "./AnacondaHeader.jsx";
 import { AnacondaWizard } from "./AnacondaWizard.jsx";
-import { ErrorBoundary } from "./Error.jsx";
+import { ErrorBoundary } from "./error/Error.jsx";
 
 const _ = cockpit.gettext;
 const N_ = cockpit.noop;
