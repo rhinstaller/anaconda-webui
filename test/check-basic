@@ -207,6 +207,47 @@ class TestBasic(VirtInstallMachineCase):
             m.execute("journalctl -b -t anaconda-webui")
         )
 
+    def testCustomBugReportFlow(self):
+        """
+        Description:
+            Test that a non-Bugzilla BUG_REPORT_URL triggers the generic report flow
+
+        Setup:
+            - Modify /etc/os-release to set a custom BUG_REPORT_URL
+
+        Expected results:
+            - User-initiated report shows a link to the custom URL instead of Bugzilla
+            - Exception report shows error details and a link to the custom URL
+            - The Bugzilla API key form is not shown
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+
+        custom_url = "https://github.com/test-distro/issues"
+
+        self.restore_file("/etc/os-release")
+        m.execute("sed -i '/^BUG_REPORT_URL=/d' /etc/os-release")
+        m.execute(f'echo \'BUG_REPORT_URL="{custom_url}"\' >> /etc/os-release')
+
+        i.open()
+
+        # User-initiated report: should show link to custom URL
+        b.click("#toggle-kebab")
+        b.click("#about-modal-dropdown-item-report")
+        b.wait_visible("#user-issue-bz-report-modal")
+        b.wait_in_text("#user-issue-bz-report-modal", custom_url)
+        b.wait_not_present("#user-issue-bugzilla-apikey")
+        b.click("#user-issue-dialog-cancel-btn")
+        b.wait_not_present("#user-issue-bz-report-modal")
+
+        # Exception report: should show error details and link, not Bugzilla flow
+        b.eval_js("window.setTimeout(function() { myNonExistingFunction()}, 0);")
+        b.wait_in_text("#critical-error-bz-report-modal-details", "myNonExistingFunction is not defined")
+        b.wait_in_text("#critical-error-bz-report-modal", custom_url)
+        b.wait_not_present("#critical-error-bugzilla-apikey")
+        b.wait_not_present("button:contains('Next')")
+
     def _open_critical_error_report_step1(self):
         b = self.browser
         i = Installer(b, self.machine)
