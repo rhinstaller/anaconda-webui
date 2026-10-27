@@ -1,0 +1,113 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
+from installation_source import CLOSEST_MIRROR, InstallationSource, repo_url_path
+from installer import Installer
+from payload_dnf import PayloadDNF
+from review import Review
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestInstallationSource(VirtInstallMachineCase):
+    provision = {"machine1": {"memory_mb": INSTALLER_VM_MEMORY_MB, "payload_type": "dnf"}}
+
+    def testSourceFormValidation(self):
+        """
+        Description:
+            Defaults and form validation of the installation source step.
+            Next is never pressed on the step itself, so the backend source
+            stays the one the installer booted with.
+
+        Expected results:
+            - Closest mirror is preselected and the URL fields are disabled
+            - An HTTP source with an empty URL keeps Next disabled
+            - Entering a URL enables Next
+            - The spoke offers the three URL types, defaulting to BASEURL
+            - Switching back to closest mirror clears and disables the URL
+            - Review lists the source as 'Closest mirror'
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        src = InstallationSource(b)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_SOURCE)
+
+        # The DNF payload boots with the closest mirror from anaconda.conf;
+        # interactive-defaults.ks only adds the test repo as an additional 'repo'.
+        src.check_protocol(CLOSEST_MIRROR)
+        src.check_url_path("")
+        src.check_url_input_disabled(True)
+
+        src.select_protocol("https")
+        src.check_url_input_disabled(False)
+        src.check_url_path("")
+        i.check_next_disabled(disabled=True)
+
+        src.set_url_path("example.com/repo/")
+        i.check_next_disabled(disabled=False)
+
+        self.assertEqual(src.get_url_types(), ["BASEURL", "MIRRORLIST", "METALINK"])
+        src.check_url_type("BASEURL")
+
+        src.select_protocol(CLOSEST_MIRROR)
+        src.check_url_path("")
+        src.check_url_input_disabled(True)
+
+        i.reach(i.steps.REVIEW)
+        r.check_installation_source("Closest mirror")
+
+    def testApplySource(self):
+        """
+        Description:
+            Apply the HTTP test repo, then a URL which can not be set up.
+            Applying tears the current source down first, so a failure has to
+            be reported instead of moving on with no usable source.
+
+            Switching back to the closest mirror is deliberately not covered:
+            it makes the payload re-download the metadata from a real mirror,
+            which is far slower than the browser timeouts and depends on the
+            network rather than on anything the spoke does.
+
+        Expected results:
+            - The HTTP repo is applied on Next and kept when returning
+            - A URL which can not be set up keeps the user on the step
+            - The step reports that configuring the source failed
+            - The URL that failed is kept in the form, so it can be corrected
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        src = InstallationSource(b)
+        dnf = PayloadDNF(b)
+
+        i.open()
+        i.reach(i.steps.SOFTWARE_SELECTION)
+        dnf.check_selected_environment("server-product-environment")
+
+        i.reach_on_sidebar(i.steps.INSTALLATION_SOURCE)
+        src.set_http_repo(m)
+        i.next()
+
+        i.reach_on_sidebar(i.steps.INSTALLATION_SOURCE)
+        src.check_protocol("http")
+        src.check_url_path(repo_url_path(m))
+        src.check_url_type("BASEURL")
+
+        src.set_url_path("invalid.test/repo/")
+
+        # Setting up a source talks to the network, give it more than the default timeout
+        with b.wait_timeout(120):
+            i.next(should_fail=True)
+
+        src.check_apply_failed()
+        src.check_url_path("invalid.test/repo/")
+
+
+if __name__ == '__main__':
+    test_main()
