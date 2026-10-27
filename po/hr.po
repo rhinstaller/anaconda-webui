@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2023-11-06 12:18+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Croatian <https://translate.fedoraproject.org/projects/"
@@ -127,7 +127,7 @@ msgstr "Instalacija"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 #, fuzzy
 #| msgctxt "GUI|Subscription|Authentication|Account"
 #| msgid "_Account"
@@ -152,13 +152,13 @@ msgstr "Dodaj NTP poslužitelj"
 msgid "Add mount"
 msgstr "Dodaj raspored"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 #, fuzzy
 #| msgid "Additional software for selected environment"
 msgid "Add-ons for your chosen environment"
 msgstr "Dodatni softver za odabrano okruženje"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr ""
 
@@ -168,7 +168,7 @@ msgstr ""
 msgid "Additional languages"
 msgstr "Dostupni jezici"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 #, fuzzy
 #| msgid "Additional software for selected environment"
 msgid "Additional software for the selected environment"
@@ -187,7 +187,7 @@ msgstr ""
 msgid "Anaconda"
 msgstr "Anaconda program za instalaciju"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 #, fuzzy
 msgid "Anaconda Web UI"
 msgstr "Anaconda program za instalaciju"
@@ -211,7 +211,7 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 #, fuzzy
 #| msgid "Automatic partitioning failed."
 msgid "Automatic log file upload"
@@ -230,27 +230,33 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Natrag"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Osnovno okruženje"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 #, fuzzy
 #| msgid "Description goes here."
 msgid "Brief description of the issue"
 msgstr "Opis ide ovdje."
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 #, fuzzy
 msgid "Bug report details"
 msgstr "Pojedinosti greške: "
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr ""
 
@@ -270,8 +276,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 #, fuzzy
 msgid "Cancel"
 msgstr "Odustani"
@@ -310,7 +316,7 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
@@ -342,6 +348,17 @@ msgstr "Zatvori"
 msgid "Close storage editor"
 msgstr "Instalacija"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Najbliži zrcalni poslužitelj"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Najbliži zrcalni poslužitelj"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -351,7 +368,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Završeno"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -384,6 +401,18 @@ msgstr "Podešavanje uređaja pohrane"
 #| msgid "Configuring storage"
 msgid "Configure storage again"
 msgstr "Podešavanje uređaja pohrane"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "Podešavanje instaliranog sustava"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "Podešavanje izvora instalacije..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -462,7 +491,7 @@ msgstr "Standardna particija"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Opis"
 
@@ -477,7 +506,7 @@ msgstr "Opis"
 msgid "Destination is encrypted"
 msgstr "Spremnik je šifriran."
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 #, fuzzy
 #| msgid "Device description"
 msgid "Detailed description of the issue"
@@ -491,6 +520,10 @@ msgstr ""
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Uređaj"
+
+#: src/components/source/InstallationSource.jsx:186
+msgid "Disabled"
+msgstr "Onemogućeno"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 #, fuzzy
@@ -532,13 +565,13 @@ msgstr ""
 msgid "Enter PIN to access the installer"
 msgstr ""
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 #, fuzzy
 #| msgid "Base Environment"
 msgid "Environment"
@@ -549,7 +582,7 @@ msgstr "Osnovno okruženje"
 msgid "Erase data and install"
 msgstr "Obriši diskove i instaliraj"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 #, fuzzy
 msgid "Error details"
 msgstr "Pojedinosti greške: "
@@ -565,7 +598,13 @@ msgstr ""
 msgid "Extended partition"
 msgstr "Standardna particija"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "Neuspjelo postavljanje instalacijskog izvora"
+
+#: src/components/error/BugzillaReport.jsx:573
 #, fuzzy
 #| msgid "Failed to save storage configuration"
 msgid "Failed to report issue"
@@ -618,7 +657,7 @@ msgstr "Puno ime ne može sadržavati dvotočke"
 msgid "Helper text"
 msgstr ""
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr ""
 
@@ -626,7 +665,7 @@ msgstr ""
 msgid "Hide PIN"
 msgstr ""
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 #, fuzzy
 msgid "Hide confirmed password"
 msgstr "_Potvrdi lozinku"
@@ -636,7 +675,7 @@ msgstr "_Potvrdi lozinku"
 msgid "Hide passphrase"
 msgstr "_Potvrdi lozinku"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 #, fuzzy
 msgid "Hide password"
 msgstr "Sakrij lozinku."
@@ -654,7 +693,7 @@ msgstr ""
 "\n"
 "Želite li je ipak koristiti?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -662,11 +701,11 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -684,7 +723,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr ""
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -696,7 +735,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Ako ne shvaćate ili ne prihvaćate rizike, tada zatvorite ovaj program."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -725,7 +764,7 @@ msgid "Installation completed"
 msgstr "Instalacija je završila"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "Instalacija neuspjela"
 
@@ -744,7 +783,12 @@ msgstr "Instalacija neuspjela"
 msgid "Installation of the system failed: $0"
 msgstr "Instalacija neuspjela"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Izvor instalacije"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 #, fuzzy
 msgid "Installation type"
 msgstr "Instalacija"
@@ -776,7 +820,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Nevaljani naziv poslužitelja"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 #, fuzzy
 #| msgid "completed step"
 msgid "Jump to first incomplete step"
@@ -797,7 +841,7 @@ msgid "Keyboard layout during boot"
 msgstr ""
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Jezik"
 
@@ -806,7 +850,7 @@ msgstr "Jezik"
 msgid "Launch storage editor"
 msgstr "Instalacija"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 #, fuzzy
 #| msgid "Learn more about your storage options."
 msgid "Learn more about restricted access in the configuration"
@@ -860,9 +904,17 @@ msgstr "Instaliranje softvera"
 msgid "Medium"
 msgstr ""
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr "meta poveznica"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr ""
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr "popis zrcalnih poslužitelja"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -894,7 +946,7 @@ msgstr ""
 msgid "Must be at least $0 characters"
 msgstr "Lozinka mora sadržavati najmanje 6 znakova."
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr ""
 
@@ -929,13 +981,13 @@ msgstr "Mreža"
 msgid "Network Configuration"
 msgstr "Podešavanje mreže"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
@@ -945,7 +997,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "Prijava čvora neuspjela."
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr ""
 
@@ -1015,11 +1068,11 @@ msgstr ""
 "koristite ovaj softver za bilo kakav kritičan rad ili za proizvodno "
 "okruženje."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 #, fuzzy
 msgid "Operating system"
 msgstr "korak na čekanju"
@@ -1049,7 +1102,7 @@ msgstr "Lozinka"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 #, fuzzy
 msgid "Passphrases must match"
 msgstr "Lozinke se ne podudaraju."
@@ -1058,7 +1111,7 @@ msgstr "Lozinke se ne podudaraju."
 msgid "Pending"
 msgstr "Čekanje"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr ""
 
@@ -1067,6 +1120,10 @@ msgstr ""
 #| msgid "Please enter a valid name."
 msgid "Please enter a PIN"
 msgstr "Upišite valjani naziv."
+
+#: src/components/error/GenericReport.jsx:67
+msgid "Please report this issue at $0."
+msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 #, fuzzy
@@ -1078,7 +1135,7 @@ msgstr "Nema odabranih diskova; odaberite barem jedan disk za instalaciju."
 msgid "Pool"
 msgstr "Skup"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 #, fuzzy
 #| msgid "No mountable devices found"
 msgid "Potential duplicate bugs found"
@@ -1092,7 +1149,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr "Predizdanje"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr ""
 
@@ -1102,8 +1159,16 @@ msgstr ""
 msgid "Proceed with installation"
 msgstr "Neuspjeli nastavak instalacije."
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "_FTP proxy"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Zatvori"
 
@@ -1144,8 +1209,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Naziv računala mora biti dugačak 255 znakova ili manje."
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Ponovno pokreni"
 
@@ -1243,21 +1309,32 @@ msgstr ""
 msgid "Report Issue"
 msgstr ""
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr ""
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 #, fuzzy
 #| msgid "testing status..."
 msgid "Reporting issue..."
 msgstr "testiranje stanja..."
+
+#: src/components/source/InstallationSource.jsx:47
+#, fuzzy
+#| msgid "repository URL"
+msgid "Repository URL"
+msgstr "repozitorij URL-a"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 #, fuzzy
@@ -1297,11 +1374,11 @@ msgstr "Standardna particija"
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr ""
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr ""
 
@@ -1339,6 +1416,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "Korijenska lozinka je postavljena."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1358,13 +1447,13 @@ msgstr ""
 msgid "Search for a language"
 msgstr "Odaberi jezik"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 #, fuzzy
 #| msgid "No additional software to select."
 msgid "Search for additional software"
 msgstr "Nema odabira dodatnog softvera."
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 #, fuzzy
 #| msgid "Choose a language"
 msgid "Search for an environment"
@@ -1437,6 +1526,12 @@ msgstr "NTP poslužitelji:"
 msgid "Server is not reachable"
 msgstr ""
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 #, fuzzy
 #| msgid "Set host name"
@@ -1458,7 +1553,7 @@ msgstr ""
 msgid "Show AM/PM"
 msgstr "_AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 #, fuzzy
 #| msgctxt "GUI|Date and Time"
 #| msgid "_AM/PM"
@@ -1472,7 +1567,7 @@ msgstr "_AM/PM"
 msgid "Show PIN"
 msgstr "_AM/PM"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 #, fuzzy
 msgid "Show confirmed password"
 msgstr "_Potvrdi lozinku"
@@ -1482,7 +1577,7 @@ msgstr "_Potvrdi lozinku"
 msgid "Show passphrase"
 msgstr "_Potvrdi lozinku"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 #, fuzzy
 msgid "Show password"
 msgstr "Prikaži lozinku."
@@ -1503,12 +1598,12 @@ msgstr ""
 "Instalacija softvera: Podešavanje uređaja pohrane je završena. Softver se "
 "trenutno instalira na vaš uređaj."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Odabir softvera"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1523,16 +1618,16 @@ msgstr ""
 msgid "Space"
 msgstr "Nema prostora"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 #, fuzzy
 msgid "Storage"
 msgstr "Mogućnosti uređaja pohrane"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1618,7 +1713,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Odaberite vrstu instalacijskog izvora."
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1639,12 +1734,12 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 #, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr "Ova instalacija se ne može nastaviti i sustav će biti ponovno pokrenut"
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 #, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Ova instalacija se ne može nastaviti i sustav će biti ponovno pokrenut"
@@ -1676,7 +1771,7 @@ msgid ""
 "not intended to be used in a typical installation."
 msgstr ""
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1711,13 +1806,13 @@ msgid "Time"
 msgstr "Vremenska zona: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
 msgstr "Vremenska zona: %s\n"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr ""
 
@@ -1742,6 +1837,20 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Vrsta"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "Pro_xy URL:"
+msgid "URL"
+msgstr "Pro_xy URL:"
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "URL type:"
+msgid "URL type"
+msgstr "Vrsta URL-a:"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1832,7 +1941,7 @@ msgstr "Korisničko ime je rezervirano za sustav: %s"
 msgid "User names must be shorter than 33 characters"
 msgstr "Ime mora sadržavati manje od 33 znaka."
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 #, fuzzy
 #| msgid "Installing."
 msgid "Validating..."
@@ -1856,7 +1965,7 @@ msgstr "Dobrodošli u Fedoru"
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1876,7 +1985,7 @@ msgid ""
 "rest or manually set up partitions."
 msgstr ""
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
@@ -1937,11 +2046,12 @@ msgstr "Standardna particija"
 msgid "format as $0"
 msgstr "Ponovno formatiraj"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 #, fuzzy
 #| msgid "Completed"
 msgid "incomplete"
@@ -1956,7 +2066,7 @@ msgstr "Dodaj raspored"
 msgid "pending step"
 msgstr "korak na čekanju"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr ""
 
@@ -2115,9 +2225,6 @@ msgstr ""
 
 #~ msgid "To prevent loss, make sure to backup your data."
 #~ msgstr "Kako bi spriječili gubitak podataka, sigurnosno ih kopirajte."
-
-#~ msgid "Disabled"
-#~ msgstr "Onemogućeno"
 
 #~ msgid "Enabled"
 #~ msgstr "Omogućeno"
@@ -3033,9 +3140,6 @@ msgstr ""
 #~ msgid "City"
 #~ msgstr "Grad"
 
-#~ msgid "Closest mirror"
-#~ msgstr "Najbliži zrcalni poslužitelj"
-
 #~ msgid "Complete!"
 #~ msgstr "Završeno!"
 
@@ -3078,9 +3182,6 @@ msgstr ""
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "Podešavanje uređaja %s."
-
-#~ msgid "Configuring installed system"
-#~ msgstr "Podešavanje instaliranog sustava"
 
 #~ msgid "Configuring {}"
 #~ msgstr "Podešavam {}"
@@ -3898,9 +3999,6 @@ msgstr ""
 #~ "će se prostor koristiti za instalaciju ili ručno dodijelite točke "
 #~ "montiranja."
 
-#~ msgid "Installation source"
-#~ msgstr "Izvor instalacije"
-
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "Instalacijski izvor treba prvo biti postavljen."
 
@@ -4133,9 +4231,6 @@ msgstr ""
 #~ msgid "Memory"
 #~ msgstr "Memorija"
 
-#~ msgid "Metalink"
-#~ msgstr "meta poveznica"
-
 #~ msgid "Method"
 #~ msgstr "Način"
 
@@ -4147,9 +4242,6 @@ msgstr ""
 
 #~ msgid "Minutes Up"
 #~ msgstr "Minute više"
-
-#~ msgid "Mirrorlist"
-#~ msgstr "popis zrcalnih poslužitelja"
 
 #~ msgid "Missing name of the %addon section."
 #~ msgstr "Nedostaje naziv %addon odjeljka."
@@ -4927,11 +5019,6 @@ msgstr ""
 #~ msgid "Repo URL"
 #~ msgstr "URL repozitorija"
 
-#, fuzzy
-#~| msgid "repository URL"
-#~ msgid "Repository URL"
-#~ msgstr "repozitorij URL-a"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr "Naziv repozitorija je u sukobu s nazivom unutarnjeg repozitorija"
 
@@ -5172,9 +5259,6 @@ msgstr ""
 
 #~ msgid "Set timezone"
 #~ msgstr "Postavi vremensku zonu"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "Podešavanje izvora instalacije..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "Postavljanje kexec"
@@ -6080,10 +6164,6 @@ msgstr ""
 #~| msgid "Name of the repository."
 #~ msgid "URL of the repository"
 #~ msgstr "Naziv repozitorija."
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "URL type:"
-#~ msgstr "Vrsta URL-a:"
 
 #~ msgid "USER SETTINGS"
 #~ msgstr "KORISNIČKE POSTAVKE"
@@ -7023,10 +7103,6 @@ msgstr ""
 #~ msgid "_Exit Installer"
 #~ msgstr "_Zatvori instalacijski program"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "_FTP proxy"
-
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Finish Installation"
 #~ msgstr "_Završi instalaciju"
@@ -7423,13 +7499,6 @@ msgstr ""
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Time & Date"
 #~ msgstr "_Vrijeme i datum"
-
-#, fuzzy
-#~| msgctxt "GUI|Software Source"
-#~| msgid "Pro_xy URL:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "Pro_xy URL:"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
@@ -7983,9 +8052,6 @@ msgstr ""
 #~ msgstr[0] "$0 disk (od $1) odabran"
 #~ msgstr[1] "$0 diska (od $1) odabrana"
 #~ msgstr[2] "$0 diskova (od $1) odabrano"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "Neuspjelo postavljanje instalacijskog izvora"
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "Greška preuzimanja metapodataka paketa"

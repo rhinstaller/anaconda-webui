@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2023-11-06 12:15+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Bulgarian <https://translate.fedoraproject.org/projects/"
@@ -130,7 +130,7 @@ msgstr "Инсталация"
 msgid "About"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 #, fuzzy
 msgid "Account"
 msgstr "Добавяне подредба"
@@ -153,13 +153,13 @@ msgstr "Добавяне на NTP сървър"
 msgid "Add mount"
 msgstr "Добавяне подредба"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 #, fuzzy
 #| msgid "Additional software for selected environment"
 msgid "Add-ons for your chosen environment"
 msgstr "Допълнителен софтуер за избраната среда"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Additional languages"
 msgstr "Налични езици"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 #, fuzzy
 #| msgid "Additional software for selected environment"
 msgid "Additional software for the selected environment"
@@ -188,7 +188,7 @@ msgstr ""
 msgid "Anaconda"
 msgstr "Инсталатор Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 #, fuzzy
 msgid "Anaconda Web UI"
 msgstr "Инсталатор Anaconda"
@@ -212,7 +212,7 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr ""
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 #, fuzzy
 #| msgid "Automatic partitioning failed."
 msgid "Automatic log file upload"
@@ -231,27 +231,33 @@ msgstr ""
 msgid "Available free space: $0. Installation requires: $1."
 msgstr ""
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Назад"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Основна среда"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 #, fuzzy
 #| msgid "Description goes here."
 msgid "Brief description of the issue"
 msgstr "Описанието ще е тук."
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 #, fuzzy
 msgid "Bug report details"
 msgstr "Подробности за грешката: "
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr ""
 
@@ -267,8 +273,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 #, fuzzy
 msgid "Cancel"
 msgstr "_Отказване"
@@ -307,7 +313,7 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 #, fuzzy
 #| msgid "Checking storage configuration..."
 msgid "Checking installation configuration..."
@@ -339,6 +345,17 @@ msgstr "Затвори"
 msgid "Close storage editor"
 msgstr "Инсталация"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Най-близко огледало"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Най-близко огледало"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -349,7 +366,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Готово!"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 #, fuzzy
 #| msgid "Apply configuration in installer"
 msgid "Configuration is incomplete"
@@ -382,6 +399,18 @@ msgstr "Конфигуриране на уст-ва за съхранение (�
 #| msgid "Configuring storage"
 msgid "Configure storage again"
 msgstr "Конфигуриране на уст-ва за съхранение (дискове)"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "Конфигуриране на инсталираната система"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "Задаване източник за инсталирането..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -458,7 +487,7 @@ msgstr "Стандартен дял"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Описание"
 
@@ -473,7 +502,7 @@ msgstr "Описание"
 msgid "Destination is encrypted"
 msgstr "Контейнерът е криптиран."
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 #, fuzzy
 #| msgid "Device description"
 msgid "Detailed description of the issue"
@@ -487,6 +516,11 @@ msgstr ""
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Устройство"
+
+#: src/components/source/InstallationSource.jsx:186
+#, fuzzy
+msgid "Disabled"
+msgstr "Разрешен"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 #, fuzzy
@@ -525,13 +559,13 @@ msgstr ""
 msgid "Enter PIN to access the installer"
 msgstr ""
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 #, fuzzy
 #| msgid "Base Environment"
 msgid "Environment"
@@ -542,7 +576,7 @@ msgstr "Основна среда"
 msgid "Erase data and install"
 msgstr "Изтрий дисковете и инсталирай"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 #, fuzzy
 msgid "Error details"
 msgstr "Подробности за грешката: "
@@ -558,7 +592,13 @@ msgstr ""
 msgid "Extended partition"
 msgstr "Стандартен дял"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "Неуспех при задаване източника за инсталиране"
+
+#: src/components/error/BugzillaReport.jsx:573
 #, fuzzy
 #| msgid "Failed to save storage configuration"
 msgid "Failed to report issue"
@@ -610,7 +650,7 @@ msgstr "Пълното име не може да съдържа двоеточи
 msgid "Helper text"
 msgstr ""
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr ""
 
@@ -618,7 +658,7 @@ msgstr ""
 msgid "Hide PIN"
 msgstr ""
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 #, fuzzy
 msgid "Hide confirmed password"
 msgstr "П_аролата отново"
@@ -628,7 +668,7 @@ msgstr "П_аролата отново"
 msgid "Hide passphrase"
 msgstr "П_аролата отново"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 #, fuzzy
 msgid "Hide password"
 msgstr "С използване на парола"
@@ -646,18 +686,18 @@ msgstr ""
 "\n"
 "Ще го/я ползвате ли въпреки това?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr ""
 
@@ -675,7 +715,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr ""
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -687,7 +727,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr ""
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -715,7 +755,7 @@ msgid "Installation completed"
 msgstr "Инсталирането завърши"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 #, fuzzy
 msgid "Installation failed"
 msgstr "Инсталация"
@@ -735,7 +775,12 @@ msgstr "Инсталация"
 msgid "Installation of the system failed: $0"
 msgstr "Инсталация"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Източник за инсталиране"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 #, fuzzy
 msgid "Installation type"
 msgstr "Инсталация"
@@ -768,7 +813,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Невалидно име на хост"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 #, fuzzy
 msgid "Jump to first incomplete step"
 msgstr "Готово!"
@@ -791,7 +836,7 @@ msgid "Keyboard layout during boot"
 msgstr ""
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 #, fuzzy
 msgid "Language"
 msgstr "Езици"
@@ -801,7 +846,7 @@ msgstr "Езици"
 msgid "Launch storage editor"
 msgstr "Инсталация"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 #, fuzzy
 #| msgid "Learn more about your storage options."
 msgid "Learn more about restricted access in the configuration"
@@ -857,9 +902,19 @@ msgstr "Инсталиране на софтуер"
 msgid "Medium"
 msgstr ""
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr ""
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr ""
+
+#: src/components/source/InstallationSource.jsx:48
+#, fuzzy
+#| msgid "mirrorlist"
+msgid "Mirrorlist"
+msgstr "списък с огледални"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -891,7 +946,7 @@ msgstr ""
 msgid "Must be at least $0 characters"
 msgstr "Паролата трябва да съдържа поне 6 символа."
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr ""
 
@@ -926,13 +981,13 @@ msgstr "Мрежа"
 msgid "Network Configuration"
 msgstr "Конфигуриране на мрежа"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr ""
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 
@@ -942,7 +997,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "Влизането във възела не успя."
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr ""
 
@@ -1007,11 +1063,11 @@ msgid ""
 "production environments."
 msgstr ""
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 #, fuzzy
 msgid "Operating system"
 msgstr "Създаване на потребители"
@@ -1045,7 +1101,7 @@ msgstr "Парола"
 msgid "Passphrase did not match any locked device"
 msgstr ""
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 #, fuzzy
 msgid "Passphrases must match"
 msgstr "Парола"
@@ -1054,7 +1110,7 @@ msgstr "Парола"
 msgid "Pending"
 msgstr ""
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr ""
 
@@ -1063,6 +1119,10 @@ msgstr ""
 #| msgid "Please enter a valid name."
 msgid "Please enter a PIN"
 msgstr "Моля, въведете валидно име"
+
+#: src/components/error/GenericReport.jsx:67
+msgid "Please report this issue at $0."
+msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 #, fuzzy
@@ -1076,7 +1136,7 @@ msgstr ""
 msgid "Pool"
 msgstr ""
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 #, fuzzy
 #| msgid "No mountable devices found"
 msgid "Potential duplicate bugs found"
@@ -1090,7 +1150,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr ""
 
@@ -1100,8 +1160,16 @@ msgstr ""
 msgid "Proceed with installation"
 msgstr "Неуспех при задаване източника за инсталиране"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "_FTP Proxy"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Изход"
 
@@ -1140,8 +1208,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr ""
 
@@ -1240,21 +1309,32 @@ msgstr ""
 msgid "Report Issue"
 msgstr ""
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr ""
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 #, fuzzy
 #| msgid "testing status..."
 msgid "Reporting issue..."
 msgstr "тестване на състоянието..."
+
+#: src/components/source/InstallationSource.jsx:47
+#, fuzzy
+#| msgid "Repo URL"
+msgid "Repository URL"
+msgstr "URL на хранилище"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 #, fuzzy
@@ -1291,11 +1371,11 @@ msgstr "Стандартен дял"
 msgid "Resizing the following partitions from $0: $1"
 msgstr ""
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr ""
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr ""
 
@@ -1334,6 +1414,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "Root паролата беше зададена."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1352,13 +1444,13 @@ msgstr ""
 msgid "Search for a language"
 msgstr "Езици"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 #, fuzzy
 #| msgid "No additional software to select."
 msgid "Search for additional software"
 msgstr "Няма допълнителен софтуер за избор."
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 #, fuzzy
 msgid "Search for an environment"
 msgstr "Езици"
@@ -1430,6 +1522,12 @@ msgstr "NTP сървъри:"
 msgid "Server is not reachable"
 msgstr ""
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 #, fuzzy
 #| msgid "Set host name"
@@ -1451,7 +1549,7 @@ msgstr ""
 msgid "Show AM/PM"
 msgstr "_AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 #, fuzzy
 #| msgctxt "GUI|Date and Time"
 #| msgid "_AM/PM"
@@ -1465,7 +1563,7 @@ msgstr "_AM/PM"
 msgid "Show PIN"
 msgstr "_AM/PM"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 #, fuzzy
 msgid "Show confirmed password"
 msgstr "П_аролата отново"
@@ -1475,7 +1573,7 @@ msgstr "П_аролата отново"
 msgid "Show passphrase"
 msgstr "П_аролата отново"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 #, fuzzy
 msgid "Show password"
 msgstr "Парола на root"
@@ -1497,12 +1595,12 @@ msgstr ""
 "Инсталация на софтуер: Конфигурацията на дисковете е готова. В момента "
 "Софтуерът се инсталира на вашето устройство."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Избор на софтуер"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1517,16 +1615,16 @@ msgstr ""
 msgid "Space"
 msgstr "Няма пространство"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 #, fuzzy
 msgid "Storage"
 msgstr "Опции на мястото за съхранение"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1612,7 +1710,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Избор на тип източник за инсталиране"
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1632,12 +1730,12 @@ msgid ""
 "selected disks is only $1."
 msgstr ""
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 #, fuzzy
 msgid "The installer cannot continue due to a critical error."
 msgstr "Инсталирането не може да продължи. Системата ще бъде рестартирана."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 #, fuzzy
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Инсталирането не може да продължи. Системата ще бъде рестартирана."
@@ -1667,7 +1765,7 @@ msgid ""
 "not intended to be used in a typical installation."
 msgstr ""
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1703,13 +1801,13 @@ msgid "Time"
 msgstr "Часова зона: %s\n"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 #, fuzzy
 #| msgid "Timezone: %s\n"
 msgid "Timezone"
 msgstr "Часова зона: %s\n"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr ""
 
@@ -1736,6 +1834,19 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Тип"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "Pro_xy URL:"
+msgid "URL"
+msgstr "Pro_xy URL:"
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgid "URL is empty"
+msgid "URL type"
+msgstr "URL-ът е празен"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1819,7 +1930,7 @@ msgstr ""
 msgid "User names must be shorter than 33 characters"
 msgstr "Името на хоста трябва да е дълго не повече от 255 символа."
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr ""
 
@@ -1841,7 +1952,7 @@ msgstr "Добре дошли във Fedora"
 msgid "Welcome. Let's install $0 now."
 msgstr ""
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1861,7 +1972,7 @@ msgid ""
 "rest or manually set up partitions."
 msgstr ""
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
@@ -1922,11 +2033,12 @@ msgstr "Стандартен дял"
 msgid "format as $0"
 msgstr ""
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 #, fuzzy
 msgid "incomplete"
 msgstr "Готово!"
@@ -1940,7 +2052,7 @@ msgstr "Добавяне подредба"
 msgid "pending step"
 msgstr ""
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr ""
 
@@ -2087,10 +2199,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Install using the configured storage?"
 #~ msgstr "Инсталиране на софтуер"
-
-#, fuzzy
-#~ msgid "Disabled"
-#~ msgstr "Разрешен"
 
 #~ msgid "Enabled"
 #~ msgstr "Разрешен"
@@ -2993,9 +3101,6 @@ msgstr ""
 #~ msgid "City"
 #~ msgstr "Град"
 
-#~ msgid "Closest mirror"
-#~ msgstr "Най-близко огледало"
-
 #~ msgid "Complete!"
 #~ msgstr "Готово!"
 
@@ -3039,9 +3144,6 @@ msgstr ""
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "Конфигуриране на устройство %s."
-
-#~ msgid "Configuring installed system"
-#~ msgstr "Конфигуриране на инсталираната система"
 
 #~ msgid "Configuring {}"
 #~ msgstr "Конфигуриране {}"
@@ -3648,9 +3750,6 @@ msgstr ""
 #, python-format
 #~ msgid "Installation requires a total of <b>%s</b> for system data."
 #~ msgstr "Инсталирането изисква общо <b>%s</b> за системни данни."
-
-#~ msgid "Installation source"
-#~ msgstr "Източник за инсталиране"
 
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "Първо трябва да бъде зададен източникът за инсталиране."
@@ -4496,11 +4595,6 @@ msgstr ""
 #~ msgid "Repo URL"
 #~ msgstr "URL на хранилище"
 
-#, fuzzy
-#~| msgid "Repo URL"
-#~ msgid "Repository URL"
-#~ msgstr "URL на хранилище"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr "Име на хранилище е в конфликт с вътрешно име на хранилище"
 
@@ -4703,9 +4797,6 @@ msgstr ""
 
 #~ msgid "Set timezone"
 #~ msgstr "Задаване на часова зона"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "Задаване източник за инсталирането..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "Конфигуриране на kexec"
@@ -5368,9 +5459,6 @@ msgstr ""
 
 #~ msgid "URL has no host component"
 #~ msgstr "URL-ът не съдържа част за хост"
-
-#~ msgid "URL is empty"
-#~ msgstr "URL-ът е празен"
 
 #, fuzzy
 #~| msgid "Name of the repository."
@@ -6174,10 +6262,6 @@ msgstr ""
 #~ msgid "_Exit Installer"
 #~ msgstr "_Изход от инсталатора"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "_FTP Proxy"
-
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Finish Installation"
 #~ msgstr "_Край на инсталирането"
@@ -6545,13 +6629,6 @@ msgstr ""
 #~ msgid "_Time & Date"
 #~ msgstr "Час & да_та"
 
-#, fuzzy
-#~| msgctxt "GUI|Software Source"
-#~| msgid "Pro_xy URL:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "Pro_xy URL:"
-
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
 #~ msgstr "_Отключване"
@@ -6676,9 +6753,6 @@ msgstr ""
 
 #~ msgid "malformed URL, cannot parse it."
 #~ msgstr "повреден URL, разборът неуспешен."
-
-#~ msgid "mirrorlist"
-#~ msgstr "списък с огледални"
 
 #~ msgid "not configured"
 #~ msgstr "не е конфигурирано"
@@ -6997,9 +7071,6 @@ msgstr ""
 #~ msgid_plural "$0 (of $1) disks selected"
 #~ msgstr[0] "Няма избрани дискове"
 #~ msgstr[1] "Няма избрани дискове"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "Неуспех при задаване източника за инсталиране"
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "Грешка при сваляне метаданните на пакет"

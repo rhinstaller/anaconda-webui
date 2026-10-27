@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-08-20 19:18+0000\n"
 "Last-Translator: Nathan <nathan95@live.it>\n"
 "Language-Team: Italian <https://translate.fedoraproject.org/projects/"
@@ -156,7 +156,7 @@ msgstr "Annulla installazione"
 msgid "About"
 msgstr "Informazioni"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "Account"
 
@@ -173,11 +173,11 @@ msgstr "Aggiungi un altro server..."
 msgid "Add mount"
 msgstr "Aggiungi punto di mount"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "Componenti aggiuntivi per l’ambiente scelto"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "Componenti aggiuntivi non specifici per il tuo ambiente"
 
@@ -185,7 +185,7 @@ msgstr "Componenti aggiuntivi non specifici per il tuo ambiente"
 msgid "Additional languages"
 msgstr "Lingue aggiuntive"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Software aggiuntivo per l'ambiente selezionato"
 
@@ -203,7 +203,7 @@ msgstr "Tutti i dispositivi che usano questa passphrase verranno sbloccati"
 msgid "Anaconda"
 msgstr "anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Interfaccia utente Web di Anaconda"
 
@@ -227,7 +227,7 @@ msgstr ""
 "Assegnare partizioni ai punti di montaggio. Utile per layout personalizzati "
 "preconfigurati."
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr "Caricamento automatico di file di log"
 
@@ -244,24 +244,30 @@ msgstr "Imposta automaticamente il fuso orario"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Spazio libero disponibile: $0. L'installazione richiede: $1."
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Indietro"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Ambiente base"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "Breve descrizione del problema"
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
 msgstr "Dettagli del report del bug"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr "Chiave API Bugzilla"
 
@@ -281,8 +287,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -315,7 +321,7 @@ msgstr ""
 "Le modifiche apportate qui avranno effetto immediato sul sistema. Non è "
 "possibile annullare l'operazione."
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 msgid "Checking installation configuration..."
 msgstr "Controllo configurazione dell'installazione..."
 
@@ -344,6 +350,17 @@ msgstr "Chiudi"
 msgid "Close storage editor"
 msgstr "Chiudi editor dello storage"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Mirror più vicino"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Mirror più vicino"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -355,7 +372,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Completato"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr "Configurazione incompleta"
 
@@ -378,6 +395,18 @@ msgstr "Configura storage"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "Configurare di nuovo l'archiviazione"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "Configurazione del sistema installato"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "Impostazione sorgente di installazione..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -439,7 +468,7 @@ msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 "L'eliminazione di alcune partizioni potrebbe impedire l'avvio di $0: $1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Descrizione"
 
@@ -451,7 +480,7 @@ msgstr "Destinazione"
 msgid "Destination is encrypted"
 msgstr "La destinazione è crittografata"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr "Descrizione dettagliata del problema"
 
@@ -463,6 +492,10 @@ msgstr "Rilevato layout di archiviazione valido:"
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Dispositivo"
+
+#: src/components/source/InstallationSource.jsx:186
+msgid "Disabled"
+msgstr "Disabilitato"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -496,7 +529,7 @@ msgstr "Inserisci PIN"
 msgid "Enter PIN to access the installer"
 msgstr "Inserisci il PIN per accedere al programma di installazione"
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
@@ -504,7 +537,7 @@ msgstr ""
 "Inserisci la tua chiave API di Bugzilla per creare un report di bug. Potrai "
 "rivedere e modificare i dettagli del bug nel prossimo passo."
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 msgid "Environment"
 msgstr "Environment"
 
@@ -512,7 +545,7 @@ msgstr "Environment"
 msgid "Erase data and install"
 msgstr "Cancella i dati e installa"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "Dettagli dell'errore"
 
@@ -525,7 +558,13 @@ msgstr "Esci sul desktop live"
 msgid "Extended partition"
 msgstr "Partizione estesa"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "Impostazione della sorgente di installazione fallita"
+
+#: src/components/error/BugzillaReport.jsx:573
 msgid "Failed to report issue"
 msgstr "Invio del problema non riuscito"
 
@@ -573,7 +612,7 @@ msgstr "Il nome completo non può contenere il carattere due punti"
 msgid "Helper text"
 msgstr "Testo di aiuto"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr "Nascondi la chiave API"
 
@@ -581,7 +620,7 @@ msgstr "Nascondi la chiave API"
 msgid "Hide PIN"
 msgstr "Nascondi PIN"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "Nascondi la password confermata"
 
@@ -589,7 +628,7 @@ msgstr "Nascondi la password confermata"
 msgid "Hide passphrase"
 msgstr "Nascondi la password"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "Nascondi la password"
 
@@ -601,18 +640,18 @@ msgstr "Nome host"
 msgid "How would you like to install?"
 msgstr "Come vuoi effettuare l'installazione?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] "Capisco che tutti i dati esistenti verranno cancellati"
 msgstr[1] "Capisco che tutti i dati esistenti verranno cancellati"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "Capisco che alcuni dati esistenti verranno cancellati"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "Capisco che alcune partizioni verranno modificate"
 
@@ -635,7 +674,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Se stai configurando le partizioni è richiesto quanto segue:"
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -650,7 +689,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Se non capite o accettate i rischi, uscite da questo programma."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -680,7 +719,7 @@ msgid "Installation completed"
 msgstr "Installazione completata"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "Installazione fallita"
 
@@ -696,7 +735,12 @@ msgstr "L'installazione del sistema non è riuscita"
 msgid "Installation of the system failed: $0"
 msgstr "Installazione del sistema fallita: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Sorgente di installazione"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "Tipo di installazione"
 
@@ -730,7 +774,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Nome host non valido"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Jump to first incomplete step"
 msgstr "Passa a step non completato"
 
@@ -751,7 +795,7 @@ msgid "Keyboard layout during boot"
 msgstr "Layout della tastiera durante l'avvio"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Lingua"
 
@@ -759,7 +803,7 @@ msgstr "Lingua"
 msgid "Launch storage editor"
 msgstr "Avvia l'editor di archiviazione"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr "Ulteriori informazioni sull’accesso limitato nella configurazione"
 
@@ -806,9 +850,17 @@ msgstr "Potrebbe essere necessario più spazio libero"
 msgid "Medium"
 msgstr "Media"
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr "Metalink"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "Minimo richiesto $0"
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr "lista mirror"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -840,7 +892,7 @@ msgstr "Sposta in alto"
 msgid "Must be at least $0 characters"
 msgstr "Deve essere di almeno $0 caratteri"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr "Il mio problema è diverso, continua"
 
@@ -869,7 +921,7 @@ msgstr "Rete"
 msgid "Network Configuration"
 msgstr "Test configurazione"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -877,7 +929,7 @@ msgstr ""
 "Rete non disponibile. Configura la rete dal menu nella barra superiore per "
 "segnalare il problema."
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr "Rete non disponibile. Configura la rete per segnalare il problema."
 
@@ -885,7 +937,8 @@ msgstr "Rete non disponibile. Configura la rete per segnalare il problema."
 msgid "Network plugin failed"
 msgstr "Plugin di rete fallito"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "Avanti"
 
@@ -944,11 +997,11 @@ msgstr ""
 "sviluppo e test. NON utilizzare questo software per qualsiasi lavoro critico "
 "o per ambienti di produzione."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr "Apri modulo di inserimento bug Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "Sistema Operativo"
 
@@ -975,7 +1028,7 @@ msgstr "Password"
 msgid "Passphrase did not match any locked device"
 msgstr "La passphrase non corrisponde a nessun dispositivo bloccato"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "Le password devono corrispondere"
 
@@ -983,13 +1036,19 @@ msgstr "Le password devono corrispondere"
 msgid "Pending"
 msgstr "In attesa"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "Per favore, allega il file di log $0 al problema."
 
 #: src/components/login/LoginPage.jsx:44
 msgid "Please enter a PIN"
 msgstr "Inserisci un PIN"
+
+#: src/components/error/GenericReport.jsx:67
+#, fuzzy
+#| msgid "report the issue manually"
+msgid "Please report this issue at $0."
+msgstr "segnalare manualmente il problema"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "Please select at least one disk to continue"
@@ -999,7 +1058,7 @@ msgstr "Seleziona almeno un disco per continuare"
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 msgid "Potential duplicate bugs found"
 msgstr "Trovati potenziali bug duplicati"
 
@@ -1011,7 +1070,7 @@ msgstr "Powered by Anaconda"
 msgid "Pre-release"
 msgstr "pre-rilascio"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr "Preferisci segnalare manualmente? $0"
 
@@ -1019,8 +1078,16 @@ msgstr "Preferisci segnalare manualmente? $0"
 msgid "Proceed with installation"
 msgstr "Procedere con l'installazione"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "Proxy _FTP"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Abbandona"
 
@@ -1059,8 +1126,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Il nome host reale deve contenere al massimo 64 caratteri"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Riavvio"
 
@@ -1153,7 +1221,17 @@ msgstr "Sostituisci l'installazione corrente, ma mantieni i file nella home."
 msgid "Report Issue"
 msgstr "Segnala il Problema"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+#, fuzzy
+#| msgid ""
+#| "Report an issue or provide feedback by opening the Bugzilla bug entry "
+#| "form $0."
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+"Segnala un problema o fornisci feedback aprendo il modulo di inserimento bug "
+"Bugzilla $0."
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
@@ -1161,13 +1239,18 @@ msgstr ""
 "Segnala un problema o fornisci feedback aprendo il modulo di inserimento bug "
 "Bugzilla $0."
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Segnala il problema"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 msgid "Reporting issue..."
 msgstr "Segnala un problema..."
+
+#: src/components/source/InstallationSource.jsx:47
+msgid "Repository URL"
+msgstr "URL del repository"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1197,11 +1280,11 @@ msgstr "Ridimensiona la partizione"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Ridimensionare le seguenti partizioni da $0: $1"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr "Limita l'accesso al report"
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr "Limita il report al gruppo $0. $1"
 
@@ -1234,6 +1317,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "La password di root è stata impostata."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1248,11 +1343,11 @@ msgstr "Scansiona il codice QR con il tuo telefono o visita:"
 msgid "Search for a language"
 msgstr "Cerca una lingua"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "Cerca software aggiuntivo"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "Cerca un ambiente"
 
@@ -1309,6 +1404,12 @@ msgstr "Server"
 msgid "Server is not reachable"
 msgstr "Il server non è raggiungibile"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "Imposta il nome host personalizzato"
@@ -1325,7 +1426,7 @@ msgstr "Condividi disco con altri sistemi operativi: $0"
 msgid "Show AM/PM"
 msgstr "Mostra AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Show API key"
 msgstr "Mostra chiave API"
 
@@ -1333,7 +1434,7 @@ msgstr "Mostra chiave API"
 msgid "Show PIN"
 msgstr "Mostra PIN"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "Mostra la password di conferma"
 
@@ -1341,7 +1442,7 @@ msgstr "Mostra la password di conferma"
 msgid "Show passphrase"
 msgstr "Vedi la password"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "Mostra la password"
 
@@ -1361,12 +1462,12 @@ msgstr ""
 "Installazione del software: Configurazione dello storage completata. Il "
 "software viene ora installato sul dispositivo."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Selezione software"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1381,15 +1482,15 @@ msgstr "Mancano alcune partizioni richieste: $0"
 msgid "Space"
 msgstr "Spazio"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr "Stacktrace"
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Archiviazione"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1465,7 +1566,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "L'installazione di Anaconda si è interrotta inaspettatamente."
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1487,11 +1588,11 @@ msgstr ""
 "L'installazione richiede $1 di spazio su disco; tuttavia, la capacità dei "
 "dischi selezionati è solo $0."
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr "L'installazione non può continuare a causa di un errore critico."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "L'installazione non può continuare a causa di un errore critico: $0"
 
@@ -1528,7 +1629,7 @@ msgstr ""
 "partizioni. Può configurare LVM e molto altro. È pensato come utilità "
 "avanzata e non è destinato all'uso in un'installazione tipica."
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1561,11 +1662,11 @@ msgid "Time"
 msgstr "Orario"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "Fuso orario"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr "Titolo"
 
@@ -1589,6 +1690,20 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Tipo"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_URL:"
+msgid "URL"
+msgstr "_URL:"
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "URL type:"
+msgid "URL type"
+msgstr "Tipo di URL:"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1664,7 +1779,7 @@ msgstr "Il nome utente non deve essere una parola riservata"
 msgid "User names must be shorter than 33 characters"
 msgstr "I nomi utente devono contenere meno di 33 caratteri"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr "Validazione..."
 
@@ -1684,7 +1799,7 @@ msgstr "Benvenuti in Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Benvenuto. Installiamo $0."
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1710,7 +1825,7 @@ msgstr ""
 "Puoi liberare spazio sufficiente qui e lasciare che il programma di "
 "installazione gestisca il resto o impostare manualmente le partizioni."
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Puoi generare la chiave API per il tuo account Bugzilla $0."
 
@@ -1766,11 +1881,12 @@ msgstr "partizione estesa"
 msgid "format as $0"
 msgstr "formatta come $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr "qui"
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 msgid "incomplete"
 msgstr "incompleto"
 
@@ -1782,7 +1898,7 @@ msgstr "monta"
 msgid "pending step"
 msgstr "step mancanti"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr "segnalare manualmente il problema"
 
@@ -2094,9 +2210,6 @@ msgstr "indietro"
 #~ msgid "Any changes you make will immediately affect your storage."
 #~ msgstr ""
 #~ "Le modifiche fatte con Blivet-gui verranno applicate immediatamente."
-
-#~ msgid "Disabled"
-#~ msgstr "Disabilitato"
 
 #~ msgid "Enabled"
 #~ msgstr "Attivo"
@@ -3033,9 +3146,6 @@ msgstr "indietro"
 #~ msgid "City"
 #~ msgstr "Città"
 
-#~ msgid "Closest mirror"
-#~ msgstr "Mirror più vicino"
-
 #~ msgid "Complete!"
 #~ msgstr "Completata!"
 
@@ -3074,9 +3184,6 @@ msgstr "indietro"
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "Configurazione dispositivo %s."
-
-#~ msgid "Configuring installed system"
-#~ msgstr "Configurazione del sistema installato"
 
 #~ msgid "Configuring {}"
 #~ msgstr "Configurazione di {}"
@@ -3912,9 +4019,6 @@ msgstr "indietro"
 #~ "spazio da utilizzare per l'installazione o assegnare manualmente i punti "
 #~ "di mount."
 
-#~ msgid "Installation source"
-#~ msgstr "Sorgente di installazione"
-
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "È necessario impostare prima la sorgente di installazione."
 
@@ -4137,9 +4241,6 @@ msgstr "indietro"
 #~ msgid "Memory"
 #~ msgstr "Memoria"
 
-#~ msgid "Metalink"
-#~ msgstr "Metalink"
-
 #~ msgid "Method"
 #~ msgstr "Metodo"
 
@@ -4151,9 +4252,6 @@ msgstr "indietro"
 
 #~ msgid "Minutes Up"
 #~ msgstr "Diminuisci minuti"
-
-#~ msgid "Mirrorlist"
-#~ msgstr "lista mirror"
 
 #~ msgid "Missing name of the %addon section."
 #~ msgstr "Nome mancante della sezione %addon."
@@ -4954,9 +5052,6 @@ msgstr "indietro"
 #~ msgid "Repo URL"
 #~ msgstr "URL repository"
 
-#~ msgid "Repository URL"
-#~ msgstr "URL del repository"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr ""
 #~ "Il nome del repository è in conflitto con uno dei repository interni"
@@ -5202,9 +5297,6 @@ msgstr "indietro"
 
 #~ msgid "Set timezone"
 #~ msgstr "Imposta fuso orario"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "Impostazione sorgente di installazione..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "Impostazione di kexec"
@@ -6140,10 +6232,6 @@ msgstr "indietro"
 
 #~ msgid "URL of the repository"
 #~ msgstr "URL del repository"
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "URL type:"
-#~ msgstr "Tipo di URL:"
 
 #~ msgid "USER SETTINGS"
 #~ msgstr "IMPOSTAZIONI UTENTE"
@@ -7100,10 +7188,6 @@ msgstr "indietro"
 #~ msgid "_Exit Installer"
 #~ msgstr "_Esci dal programma di installazione"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "Proxy _FTP"
-
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Finish Installation"
 #~ msgstr "_Termina l'installazione"
@@ -7500,10 +7584,6 @@ msgstr "indietro"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Time & Date"
 #~ msgstr "_Data & Ora"
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "_URL:"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
@@ -8097,9 +8177,6 @@ msgstr "indietro"
 #~ msgid_plural "$0 (of $1) disks selected"
 #~ msgstr[0] "$0 (di $1) disco selezionato"
 #~ msgstr[1] "$0 (di $1) dischi selezionati"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "Impostazione della sorgente di installazione fallita"
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "Errore durante lo scaricamento dei metadati dei pacchetti"

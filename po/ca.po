@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-05-09 05:37+0000\n"
 "Last-Translator: David Medina <dmedinacpnl@gmail.com>\n"
 "Language-Team: Catalan <https://translate.fedoraproject.org/projects/"
@@ -136,7 +136,7 @@ msgstr "$0 instal·lació"
 msgid "About"
 msgstr "Quant a"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "Compte"
 
@@ -153,11 +153,11 @@ msgstr "Afegeix un altre servidor..."
 msgid "Add mount"
 msgstr "Afegeix muntatge"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "Complements per a l'entorn que heu triat"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "Complements no específics del vostre entorn"
 
@@ -165,7 +165,7 @@ msgstr "Complements no específics del vostre entorn"
 msgid "Additional languages"
 msgstr "Llengües addicionals"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Programari addicional per a l'entorn seleccionat"
 
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Interfície d'usuari web d'Anaconda"
 
@@ -206,7 +206,7 @@ msgstr ""
 "Assigna particions als punts de muntatge. Útil per a disposicions "
 "personalitzades preconfigurades."
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr "Pujada automàtica de fitxers de registre"
 
@@ -224,24 +224,30 @@ msgstr "Estableix la zona horària automàticament"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Espai lliure disponible: $0. La instal·lació requereix: $1."
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Enrere"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Entorn base"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "Descripció breu del problema"
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
 msgstr "Detalls de l'informe de l'error"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr "Clau d'API de Bugzilla"
 
@@ -261,8 +267,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -294,7 +300,7 @@ msgid ""
 msgstr ""
 "Els canvis fets aquí afectaran immediatament el sistema. No hi ha 'desfer'."
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 msgid "Checking installation configuration..."
 msgstr "Es comprova la configuració de la instal·lació..."
 
@@ -322,6 +328,17 @@ msgstr "Tanca"
 msgid "Close storage editor"
 msgstr "Tanca l'editor d'emmagatzematge"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Rèplica més propera"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Rèplica més propera"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -333,7 +350,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Completat"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr "La configuració no és completa"
 
@@ -356,6 +373,18 @@ msgstr "Configura l'emmagatzematge"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "Torneu a configurar l'emmagatzematge"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "S'està configurant el sistema instal·lat"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "S'està configurant l'origen de la instal·lació..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -418,7 +447,7 @@ msgstr "Esborrar la partició"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "La supressió de certes particions pot impedir que $0 arrenqui: $1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Descripció"
 
@@ -430,7 +459,7 @@ msgstr "Destinació"
 msgid "Destination is encrypted"
 msgstr "El destí està xifrat"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr "Descripció detallada del problema"
 
@@ -442,6 +471,11 @@ msgstr "S'ha detectat una disposició d'emmagatzematge vàlida:"
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Dispositiu"
+
+#: src/components/source/InstallationSource.jsx:186
+#, fuzzy
+msgid "Disabled"
+msgstr "Habilitat"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -475,7 +509,7 @@ msgstr ""
 msgid "Enter PIN to access the installer"
 msgstr ""
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
@@ -483,7 +517,7 @@ msgstr ""
 "Introdueix la teva clau d'API de Bugzilla per crear un informe d'error. "
 "Podràs revisar i editar els detalls de l'error al pas següent."
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 msgid "Environment"
 msgstr "Entorn"
 
@@ -491,7 +525,7 @@ msgstr "Entorn"
 msgid "Erase data and install"
 msgstr "Esborra les dades i instal·la"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "Detalls de l'error"
 
@@ -504,7 +538,13 @@ msgstr "Surt de l'escriptori live"
 msgid "Extended partition"
 msgstr "Partició estesa"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "Ha fallat la configuració de l'origen de la instal·lació"
+
+#: src/components/error/BugzillaReport.jsx:573
 msgid "Failed to report issue"
 msgstr "No s'ha pogut informar de l'error"
 
@@ -552,7 +592,7 @@ msgstr "El nom complet no pot contenir el caràcter dos punts"
 msgid "Helper text"
 msgstr "Text d'ajuda"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr "Amaga la clau de l'API"
 
@@ -562,7 +602,7 @@ msgstr "Amaga la clau de l'API"
 msgid "Hide PIN"
 msgstr "Amaga la clau de l'API"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "Amaga la contrasenya confirmada"
 
@@ -570,7 +610,7 @@ msgstr "Amaga la contrasenya confirmada"
 msgid "Hide passphrase"
 msgstr "Amaga la paraula de pas"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "Oculta la contrasenya"
 
@@ -582,7 +622,7 @@ msgstr "Nom d'amfitrió"
 msgid "How would you like to install?"
 msgstr "Com t'agradaria instal·lar?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -590,11 +630,11 @@ msgstr[0] "Entenc que totes les dades existents s'esborraran"
 msgstr[1] ""
 "Entenc que totes les dades existents s'esborraran dels discs seleccionats"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "Entenc que s'esborraran algunes dades existents"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "Entenc que algunes particions seran modificades"
 
@@ -614,7 +654,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Si esteu configurant les particions, cal el següent:"
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -629,7 +669,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "Si no enteneu o accepteu els riscos, sortiu d'aquest programa."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -656,7 +696,7 @@ msgid "Installation completed"
 msgstr "S'ha completat la instal·lació"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "La instal·lació ha fallat"
 
@@ -672,7 +712,12 @@ msgstr "La instal·lació del sistema ha fallat"
 msgid "Installation of the system failed: $0"
 msgstr "La instal·lació del sistema ha fallat: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Origen de la instal·lació"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "Tipus d'instal·lació"
 
@@ -706,7 +751,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "El nom d'amfitrió no és vàlid"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Jump to first incomplete step"
 msgstr "Ves al primer pas incomplet"
 
@@ -727,7 +772,7 @@ msgid "Keyboard layout during boot"
 msgstr "Disposició del teclat durant l'arrencada"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Idioma"
 
@@ -735,7 +780,7 @@ msgstr "Idioma"
 msgid "Launch storage editor"
 msgstr "Inicieu l'editor d'emmagatzematge"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr "Conegueu més detalls quant a l'accés restringit en la configuració"
 
@@ -783,9 +828,21 @@ msgstr "Pot necessitar més espai lliure"
 msgid "Medium"
 msgstr "Mitjà"
 
+#: src/components/source/InstallationSource.jsx:49
+#, fuzzy
+#| msgid "metalink"
+msgid "Metalink"
+msgstr "metalink"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "Cal un mínim de $0"
+
+#: src/components/source/InstallationSource.jsx:48
+#, fuzzy
+#| msgid "mirrorlist"
+msgid "Mirrorlist"
+msgstr "mirrorlist"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -817,7 +874,7 @@ msgstr "Moure cap a dalt"
 msgid "Must be at least $0 characters"
 msgstr "Ha de tenir com a mínim $0 caràcters"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr ""
 
@@ -846,7 +903,7 @@ msgstr "Xarxa"
 msgid "Network Configuration"
 msgstr "Configuració de Xarxa"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -854,7 +911,7 @@ msgstr ""
 "La xarxa no està disponible. Configureu la xarxa al menú de la barra "
 "superior per a informar del problema."
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "La xarxa no està disponible. Configureu la xarxa per informar del problema."
@@ -863,7 +920,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "El connector de xarxa ha fallat"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "Següent"
 
@@ -925,11 +983,11 @@ msgstr ""
 "propòsits de desenvolupament i proves. No utilitzeu aquest programari per a "
 "cap treball crític ni per a entorns de producció."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr "Obrir el formulari d'entrada d'errors de Bugzilla"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "Sistema operatiu"
 
@@ -956,7 +1014,7 @@ msgstr "Contrasenya"
 msgid "Passphrase did not match any locked device"
 msgstr "La contrasenya no coincideix amb cap dispositiu bloquejat"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "Les contrasenyes han de coincidir"
 
@@ -964,7 +1022,7 @@ msgstr "Les contrasenyes han de coincidir"
 msgid "Pending"
 msgstr "Pendent"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "Adjunteu el fitxer de registre $0 al problema."
 
@@ -974,6 +1032,12 @@ msgstr "Adjunteu el fitxer de registre $0 al problema."
 msgid "Please enter a PIN"
 msgstr "Introduïu un nom vàlid."
 
+#: src/components/error/GenericReport.jsx:67
+#, fuzzy
+#| msgid "report the issue manually"
+msgid "Please report this issue at $0."
+msgstr "informar manualment del problema"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "Please select at least one disk to continue"
 msgstr "Seleccioneu almenys un disc per continuar"
@@ -982,7 +1046,7 @@ msgstr "Seleccioneu almenys un disc per continuar"
 msgid "Pool"
 msgstr "Agrupament"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 #, fuzzy
 #| msgid "No mountable devices found"
 msgid "Potential duplicate bugs found"
@@ -996,7 +1060,7 @@ msgstr "Impulsat per Anaconda"
 msgid "Pre-release"
 msgstr "Pre-llançament"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr "Prefereixes informar manualment? $0"
 
@@ -1004,8 +1068,16 @@ msgstr "Prefereixes informar manualment? $0"
 msgid "Proceed with installation"
 msgstr "Continueu amb la instal·lació"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "Servidor intermediari _FTP"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Surt"
 
@@ -1042,8 +1114,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "El nom d'amfitrió real ha de tenir 64 caràcters o menys"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Reiniciar"
 
@@ -1137,7 +1210,17 @@ msgstr "Reemplaça la instal·lació actual, però manté els fitxers de /home."
 msgid "Report Issue"
 msgstr "Informa d'un Problema"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+#, fuzzy
+#| msgid ""
+#| "Report an issue or provide feedback by opening the Bugzilla bug entry "
+#| "form $0."
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+"Informar d'un problema o proporcionar comentaris obrint el formulari "
+"d'entrada d'error de Bugzilla $0."
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
@@ -1145,13 +1228,20 @@ msgstr ""
 "Informar d'un problema o proporcionar comentaris obrint el formulari "
 "d'entrada d'error de Bugzilla $0."
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Informa d'un problema"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 msgid "Reporting issue..."
 msgstr "Informant del problema..."
+
+#: src/components/source/InstallationSource.jsx:47
+#, fuzzy
+#| msgid "repository URL"
+msgid "Repository URL"
+msgstr "URL del dipòsit"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1181,11 +1271,11 @@ msgstr "Redimensionar la partició"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "S'estan redimensionant les particions següents des de $0: $1"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr "Restringeix l'accés a aquest informe"
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr "Restringeix l'informe al grup $0. $1"
 
@@ -1220,6 +1310,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "La contrasenya de root ha estat establerta."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1234,11 +1336,11 @@ msgstr "Escaneja el codi QR amb el teu telèfon o visita:"
 msgid "Search for a language"
 msgstr "Cerca un idioma"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "Cerca de programari addicional"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "Cerca un entorn"
 
@@ -1294,6 +1396,12 @@ msgstr "Servidor"
 msgid "Server is not reachable"
 msgstr "El servidor no és accessible"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "Estableix un nom d'amfitrió personalitzat"
@@ -1310,7 +1418,7 @@ msgstr "Comparteix el disc amb altres sistemes operatius: $0"
 msgid "Show AM/PM"
 msgstr "Mostra AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Show API key"
 msgstr "Mostra la clau de l'API"
 
@@ -1320,7 +1428,7 @@ msgstr "Mostra la clau de l'API"
 msgid "Show PIN"
 msgstr "Mostra la clau de l'API"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "Mostra la contrasenya confirmada"
 
@@ -1328,7 +1436,7 @@ msgstr "Mostra la contrasenya confirmada"
 msgid "Show passphrase"
 msgstr "Mostra la paraula de pas"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "Mostra la contrasenya"
 
@@ -1348,12 +1456,12 @@ msgstr ""
 "Instal·lació de programari: s'ha completat la configuració de "
 "l'emmagatzematge. El programari s'instal·la al dispositiu."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Selecció de programari"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1367,15 +1475,15 @@ msgstr "Falten algunes particions necessàries: $0"
 msgid "Space"
 msgstr "Espai"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr "Traça d'errors (Stacktrace)"
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Emmagatzematge"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1453,7 +1561,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "La instal·lació d'Anaconda s'ha aturat inesperadament."
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1473,11 +1581,11 @@ msgstr ""
 "La instal·lació necessita $0 d'espai de disc; tanmateix, la capacitat dels "
 "discs seleccionats és de només $1."
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr "L'instal·lador no pot continuar a causa d'un error crític."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "L'instal·lador no pot continuar a causa d'un error crític: $0"
 
@@ -1513,7 +1621,7 @@ msgstr ""
 "particions. Pot configurar LVM i molt més. Està pensat com una utilitat "
 "avançada i no per ser utilitzat en una instal·lació típica."
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1546,11 +1654,11 @@ msgid "Time"
 msgstr "Hora"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "Zona horària"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr "Títol"
 
@@ -1573,6 +1681,20 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Tipus"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "Pro_xy URL:"
+msgid "URL"
+msgstr "_URL del servidor intermediari:"
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "URL type:"
+msgid "URL type"
+msgstr "Tipus d'URL:"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1652,7 +1774,7 @@ msgstr "El nom d'usuari no ha de ser una paraula reservada"
 msgid "User names must be shorter than 33 characters"
 msgstr "Els noms d'usuari han de tenir menys de 33 caràcters"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr "Validant..."
 
@@ -1672,7 +1794,7 @@ msgstr "Benvingut a Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Benvinguts. Instal·lem $0 ara."
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1697,7 +1819,7 @@ msgstr ""
 "Podeu alliberar prou espai aquí i deixar que l'instal·lador gestioni la "
 "resta o configurar manualment les particions."
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Pots generar la clau d'API per al teu compte de Bugzilla $0."
 
@@ -1752,11 +1874,12 @@ msgstr "Partició estesa"
 msgid "format as $0"
 msgstr "format com a $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr "aquí"
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 msgid "incomplete"
 msgstr "incomplet"
 
@@ -1768,7 +1891,7 @@ msgstr "munta"
 msgid "pending step"
 msgstr "pas pendent"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr "informar manualment del problema"
 
@@ -2032,10 +2155,6 @@ msgstr "desfer"
 #, fuzzy
 #~ msgid "Install using the configured storage?"
 #~ msgstr "S'està instal·lant programari"
-
-#, fuzzy
-#~ msgid "Disabled"
-#~ msgstr "Habilitat"
 
 #~ msgid "Enabled"
 #~ msgstr "Habilitat"
@@ -2937,9 +3056,6 @@ msgstr "desfer"
 #~ msgid "City"
 #~ msgstr "Ciutat"
 
-#~ msgid "Closest mirror"
-#~ msgstr "Rèplica més propera"
-
 #~ msgid "Complete!"
 #~ msgstr "S'ha completat!"
 
@@ -2985,9 +3101,6 @@ msgstr "desfer"
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "S'està configurant el dispositiu %s."
-
-#~ msgid "Configuring installed system"
-#~ msgstr "S'està configurant el sistema instal·lat"
 
 #, fuzzy
 #~| msgid "Configuring %s"
@@ -3778,9 +3891,6 @@ msgstr "desfer"
 #~ "Seleccioneu quin espai voleu utilitzar per a la instal·lació o bé "
 #~ "assigneu manualment els punts de muntatge."
 
-#~ msgid "Installation source"
-#~ msgstr "Origen de la instal·lació"
-
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "Primer s'ha de configurar l'origen de la instal·lació."
 
@@ -4014,11 +4124,6 @@ msgstr "desfer"
 #~ msgstr "Memòria"
 
 #, fuzzy
-#~| msgid "metalink"
-#~ msgid "Metalink"
-#~ msgstr "metalink"
-
-#, fuzzy
 #~| msgctxt "GUI|Network|Proxy"
 #~| msgid "_Method"
 #~ msgid "Method"
@@ -4032,11 +4137,6 @@ msgstr "desfer"
 
 #~ msgid "Minutes Up"
 #~ msgstr "Minuts amunt"
-
-#, fuzzy
-#~| msgid "mirrorlist"
-#~ msgid "Mirrorlist"
-#~ msgstr "mirrorlist"
 
 #~ msgid "Mode"
 #~ msgstr "Mode"
@@ -4811,11 +4911,6 @@ msgstr "desfer"
 #~ msgid "Repo URL"
 #~ msgstr "URL dipòsit"
 
-#, fuzzy
-#~| msgid "repository URL"
-#~ msgid "Repository URL"
-#~ msgstr "URL del dipòsit"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr ""
 #~ "El nom del dipòsit entra en conflicte amb el nom d'un dipòsit intern"
@@ -5047,9 +5142,6 @@ msgstr "desfer"
 
 #~ msgid "Set timezone"
 #~ msgstr "Estableix la zona horària"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "S'està configurant l'origen de la instal·lació..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "S'estan preparant kexec"
@@ -5883,10 +5975,6 @@ msgstr "desfer"
 #~| msgid "Name of the repository."
 #~ msgid "URL of the repository"
 #~ msgstr "Nom del dipòsit."
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "URL type:"
-#~ msgstr "Tipus d'URL:"
 
 #~ msgid "USER SETTINGS"
 #~ msgstr "AJUSTS D'USUARI"
@@ -6838,10 +6926,6 @@ msgstr "desfer"
 #~ msgid "_Exit Installer"
 #~ msgstr "_Surt de l'instal·lador"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "Servidor intermediari _FTP"
-
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Finish Installation"
 #~ msgstr "_Finalitza la instal·lació"
@@ -7242,13 +7326,6 @@ msgstr "desfer"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Time & Date"
 #~ msgstr "Da_ta i hora"
-
-#, fuzzy
-#~| msgctxt "GUI|Software Source"
-#~| msgid "Pro_xy URL:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "_URL del servidor intermediari:"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
@@ -7724,9 +7801,6 @@ msgstr "desfer"
 #~ msgid_plural "$0 (of $1) disks selected"
 #~ msgstr[0] "No s'ha seleccionat cap disc"
 #~ msgstr[1] "No s'ha seleccionat cap disc"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "Ha fallat la configuració de l'origen de la instal·lació"
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "S'ha produït un error en baixar les metadades del paquet"

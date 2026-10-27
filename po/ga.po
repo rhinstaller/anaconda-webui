@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-01-08 03:53+0000\n"
 "Last-Translator: Aindriu Mac Giolla Eoin <aindriu80@gmail.com>\n"
 "Language-Team: Irish <https://translate.fedoraproject.org/projects/anaconda-"
@@ -122,7 +122,7 @@ msgstr "Suiteáil $0"
 msgid "About"
 msgstr "Faoi"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "Cuntas"
 
@@ -139,11 +139,11 @@ msgstr "Cuir freastalaí eile leis..."
 msgid "Add mount"
 msgstr "Cuir mount"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "Breiseáin don timpeallacht roghnaithe agat"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "Breiseáin nach bhfuil sainiúil do do thimpeallacht"
 
@@ -151,7 +151,7 @@ msgstr "Breiseáin nach bhfuil sainiúil do do thimpeallacht"
 msgid "Additional languages"
 msgstr "Teangacha breise"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Bogearraí breise don timpeallacht roghnaithe"
 
@@ -168,7 +168,7 @@ msgstr "Díghlasálfar gach gléas a úsáideann an pasfhrása seo"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Chomhéadain Gréasáin Anaconda"
 
@@ -193,7 +193,7 @@ msgstr ""
 "Sann landairí chun pointí a fheistiú. Úsáideach le haghaidh leagan amach "
 "saincheaptha réamhchumraithe."
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr ""
 
@@ -211,26 +211,32 @@ msgstr "Socraigh crios ama go huathoibríoch"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Spás saor in aisce ar fáil: $0. Teastaíonn: $1 le suiteáil."
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Ar ais"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Buntimpeallacht"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr ""
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 #, fuzzy
 #| msgid "Error details"
 msgid "Bug report details"
 msgstr "Sonraí earráide"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr ""
 
@@ -251,8 +257,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Cealaigh"
 
@@ -285,7 +291,7 @@ msgstr ""
 "Cuirfidh athruithe a dhéanfar anseo isteach ar an gcóras láithreach. Níl aon "
 "‘cealaigh’."
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 #, fuzzy
 #| msgid "Checking storage configuration"
 msgid "Checking installation configuration..."
@@ -316,6 +322,17 @@ msgstr "Dún"
 msgid "Close storage editor"
 msgstr "Dún eagarthóir stórála"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+#, fuzzy
+#| msgid "Close storage editor"
+msgid "Closest mirror"
+msgstr "Dún eagarthóir stórála"
+
+#: src/components/source/InstallationSource.jsx:286
+msgid "Closest public mirror"
+msgstr ""
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -327,7 +344,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Críochnaithe"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr ""
 
@@ -352,6 +369,18 @@ msgstr "Cumraigh stóráil"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "Cumraigh stóras arís"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Installation source"
+msgid "Configuring installation source"
+msgstr "Foinse shuiteála"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Installation source"
+msgid "Configuring installation source..."
+msgstr "Foinse shuiteála"
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -417,7 +446,7 @@ msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr ""
 "Má scriostar deighiltí áirithe b'fhéidir go gcuirfí bac ar $0 a bhrú: $1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Cur síos"
 
@@ -429,7 +458,7 @@ msgstr "Ceann Scríbe"
 msgid "Destination is encrypted"
 msgstr "Tá an ceann scríbe criptithe"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr ""
 
@@ -441,6 +470,11 @@ msgstr "Braitheadh leagan amach bailí stórála:"
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Gléas"
+
+#: src/components/source/InstallationSource.jsx:186
+#, fuzzy
+msgid "Disabled"
+msgstr "Cumasaithe"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -474,13 +508,13 @@ msgstr ""
 msgid "Enter PIN to access the installer"
 msgstr ""
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 #, fuzzy
 #| msgid "Base Environment"
 msgid "Environment"
@@ -490,7 +524,7 @@ msgstr "Buntimpeallacht"
 msgid "Erase data and install"
 msgstr "Scrios sonraí agus suiteáil"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "Sonraí earráide"
 
@@ -503,7 +537,13 @@ msgstr "Scoir go dtí an deasc beo"
 msgid "Extended partition"
 msgstr "Deighilt leathnaithe"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Installation source"
+msgid "Failed to configure installation source"
+msgstr "Foinse shuiteála"
+
+#: src/components/error/BugzillaReport.jsx:573
 #, fuzzy
 #| msgid "Report issue"
 msgid "Failed to report issue"
@@ -554,7 +594,7 @@ msgstr "Ní féidir carachtair idirstad a bheith san ainm iomlán"
 msgid "Helper text"
 msgstr "Téacs cúnta"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr ""
 
@@ -562,7 +602,7 @@ msgstr ""
 msgid "Hide PIN"
 msgstr ""
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "Folaigh pasfhocal deimhnithe"
 
@@ -570,7 +610,7 @@ msgstr "Folaigh pasfhocal deimhnithe"
 msgid "Hide passphrase"
 msgstr "Folaigh pasfhrása"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "Folaigh pasfhocal"
 
@@ -582,7 +622,7 @@ msgstr "Óstainm"
 msgid "How would you like to install?"
 msgstr "Conas ba mhaith leat a shuiteáil?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 #, fuzzy
 #| msgid "I understand that all existing data will be erased"
 msgid "I understand that all existing data will be erased"
@@ -594,11 +634,11 @@ msgstr[2] "Tuigim go scriosfar na sonraí go léir atá ann"
 msgstr[3] "Tuigim go scriosfar na sonraí go léir atá ann"
 msgstr[4] "Tuigim go scriosfar na sonraí go léir atá ann"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "Tuigim go scriosfar roinnt sonraí atá ann cheana féin"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "Tuigim go ndéanfar roinnt deighiltí a mhodhnú"
 
@@ -619,7 +659,7 @@ msgid "If you are configuring partitions the following are required:"
 msgstr ""
 "Má tá deighiltí á chumrú agat, beidh na rudaí seo a leanas ag teastáil:"
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -632,7 +672,7 @@ msgid ""
 msgstr ""
 "Mura dtuigeann tú nó mura nglacann tú leis na rioscaí, scoir as an gclár seo."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -659,7 +699,7 @@ msgid "Installation completed"
 msgstr "Modh suiteála"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "Theip ar an tsuiteáil"
 
@@ -675,7 +715,12 @@ msgstr "Theip ar shuiteáil an chórais"
 msgid "Installation of the system failed: $0"
 msgstr "Theip ar shuiteáil an chórais: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Foinse shuiteála"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "Cineál suiteála"
 
@@ -709,7 +754,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Ainm óstach neamhbhailí"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 #, fuzzy
 #| msgid "completed step"
 msgid "Jump to first incomplete step"
@@ -732,7 +777,7 @@ msgid "Keyboard layout during boot"
 msgstr "Leagan amach an mhéarchláir le linn tosaithe"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Teanga"
 
@@ -740,7 +785,7 @@ msgstr "Teanga"
 msgid "Launch storage editor"
 msgstr "Seoladh eagarthóir stórála"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr ""
 
@@ -785,9 +830,17 @@ msgstr "B’fhéidir go mbeadh níos mó spáis saor in aisce ag teastáil"
 msgid "Medium"
 msgstr "Mheán"
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr ""
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "Íosmhéid $0 ag teastáil"
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr ""
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -819,7 +872,7 @@ msgstr "Bog suas"
 msgid "Must be at least $0 characters"
 msgstr "$0 carachtar ar a laghad a bheith ann"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr ""
 
@@ -852,7 +905,7 @@ msgstr "Ainm Líonra"
 msgid "Network Configuration"
 msgstr "Cumraíocht stórála"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -860,7 +913,7 @@ msgstr ""
 "Níl an líonra ar fáil. Cumraigh an líonra sa roghchlár barra barr chun an "
 "cheist a thuairisciú."
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Níl an líonra ar fáil. Cumraigh an líonra chun an cheist a thuairisciú."
@@ -871,7 +924,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "Theip ar an mbreiseán stórála"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "Ar aghaidh"
 
@@ -933,11 +987,11 @@ msgstr ""
 "agus tástála amháin. NÁ húsáid na bogearraí seo le haghaidh aon obair "
 "ríthábhachtach nó le haghaidh timpeallachtaí táirgthe."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "Córas oibriucháin"
 
@@ -964,7 +1018,7 @@ msgstr "Pasfhocal"
 msgid "Passphrase did not match any locked device"
 msgstr "Níor mheaitseáil an pasfhrása aon ghléas faoi ghlas"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "Ní mór go mbeadh na pasfhocail ag teacht le chéile"
 
@@ -972,12 +1026,16 @@ msgstr "Ní mór go mbeadh na pasfhocail ag teacht le chéile"
 msgid "Pending"
 msgstr "Ar feitheamh"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "Ceangail an logchomhad $0 leis an gceist le do thoil."
 
 #: src/components/login/LoginPage.jsx:44
 msgid "Please enter a PIN"
+msgstr ""
+
+#: src/components/error/GenericReport.jsx:67
+msgid "Please report this issue at $0."
 msgstr ""
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
@@ -988,7 +1046,7 @@ msgstr "Roghnaigh diosca amháin ar a laghad le leanúint ar aghaidh"
 msgid "Pool"
 msgstr "Linn"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 msgid "Potential duplicate bugs found"
 msgstr ""
 
@@ -1000,7 +1058,7 @@ msgstr "Cumhachtaithe ag Anaconda"
 msgid "Pre-release"
 msgstr "Réamh-scaoileadh"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr ""
 
@@ -1008,8 +1066,13 @@ msgstr ""
 msgid "Proceed with installation"
 msgstr "Lean ar aghaidh le suiteáil"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+msgid "Proxy"
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Scoir"
 
@@ -1046,8 +1109,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Caithfidh 64 carachtar nó níos lú a bheith i bhfíor-óstainm"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Atosaigh"
 
@@ -1140,21 +1204,32 @@ msgstr "Ionadaigh an tsuiteáil reatha, ach coinnigh comhaid sa bhaile."
 msgid "Report Issue"
 msgstr "Eisiúint Tuairisce"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Eisiúint tuairisce"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 #, fuzzy
 #| msgid "Report issue"
 msgid "Reporting issue..."
 msgstr "Eisiúint tuairisce"
+
+#: src/components/source/InstallationSource.jsx:47
+#, fuzzy
+#| msgid "Empty"
+msgid "Repository URL"
+msgstr "Folamh"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1186,11 +1261,11 @@ msgstr "Deighilt leathnaithe"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Na deighiltí seo a leanas a athrú ó $0: $1"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr ""
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr ""
 
@@ -1226,6 +1301,18 @@ msgstr "Tá cuntas fréimhe cumasaithe, ach níl aon chuntas úsáideora cumrait
 msgid "Root password has been set."
 msgstr "Ní shocraítear focal faire an fhréamhúsáideora"
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1240,11 +1327,11 @@ msgstr "Scan an cód QR le do ghuthán nó tabhair cuairt ar:"
 msgid "Search for a language"
 msgstr "Cuardaigh teanga"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "Cuardaigh bogearraí breise"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "Cuardaigh timpeallacht"
 
@@ -1300,6 +1387,12 @@ msgstr "Freastalaí"
 msgid "Server is not reachable"
 msgstr "Ní féidir teacht ar an bhfreastalaí"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "Socraigh óstainm saincheaptha"
@@ -1316,7 +1409,7 @@ msgstr "Comhroinn diosca le córais oibriúcháin eile: $0"
 msgid "Show AM/PM"
 msgstr "Taispeáin AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 #, fuzzy
 #| msgid "Show AM/PM"
 msgid "Show API key"
@@ -1328,7 +1421,7 @@ msgstr "Taispeáin AM/PM"
 msgid "Show PIN"
 msgstr "Taispeáin AM/PM"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "Taispeáin pasfhocal deimhnithe"
 
@@ -1336,7 +1429,7 @@ msgstr "Taispeáin pasfhocal deimhnithe"
 msgid "Show passphrase"
 msgstr "Taispeáin pasfhrása"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "Taispeáin pasfhocal"
 
@@ -1356,12 +1449,12 @@ msgstr ""
 "Suiteáil bogearraí: cumraíocht stórála críochnaithe. Tá na bogearraí á "
 "shuiteáil ar do ghléas anois."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Rogha bogearraí"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1374,15 +1467,15 @@ msgstr "Tá roinnt deighiltí riachtanacha in easnamh: $0"
 msgid "Space"
 msgstr "Spás"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Stóráil"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1455,7 +1548,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr ""
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1481,13 +1574,13 @@ msgstr ""
 "Ní theastaíonn $0 de spás diosca don suiteáil; áfach, níl ach $1 de chumas "
 "na ndioscaí roghnaithe."
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr ""
 "Ní féidir leis an suiteálaí leanúint ar aghaidh mar gheall ar earráid "
 "chriticiúil."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr ""
 "Ní féidir leis an suiteálaí leanúint ar aghaidh mar gheall ar earráid "
@@ -1527,7 +1620,7 @@ msgstr ""
 "beartaithe le húsáid mar fhóntas ardleibhéil agus níl sé beartaithe le "
 "húsáid i suiteáil tipiciúil."
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 #, fuzzy
 #| msgid ""
 #| "Logs may contain sensitive information like IP addresses or usernames. "
@@ -1566,11 +1659,11 @@ msgid "Time"
 msgstr "Am"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "Crios ama"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr ""
 
@@ -1593,6 +1686,14 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Cineál"
+
+#: src/components/source/InstallationSource.jsx:263
+msgid "URL"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:293
+msgid "URL type"
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1672,7 +1773,7 @@ msgstr "Ní ceadmhach ainm úsáideora a bheith ina fhocal forchoimeádta"
 msgid "User names must be shorter than 33 characters"
 msgstr "Caithfidh ainmneacha úsáideoirí a bheith níos giorra ná 33 carachtar"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 #, fuzzy
 #| msgid "Initializing..."
 msgid "Validating..."
@@ -1694,7 +1795,7 @@ msgstr "Fáilte go Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Fáilte. Suiteáil $0 anois."
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1716,7 +1817,7 @@ msgstr ""
 "Is féidir leat go leor spáis a shaoradh anseo agus ligean don suiteálaí an "
 "chuid eile a láimhseáil nó landairí a shocrú de láimh."
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr ""
 
@@ -1772,11 +1873,12 @@ msgstr "críochdheighilt leathnaithe"
 msgid "format as $0"
 msgstr "formáid $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr ""
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 #, fuzzy
 #| msgid "Completed"
 msgid "incomplete"
@@ -1790,7 +1892,7 @@ msgstr "sléibhe"
 msgid "pending step"
 msgstr "céim ar feitheamh"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr ""
 
@@ -2091,10 +2193,6 @@ msgstr "cealaigh"
 #~ msgid "To prevent loss, make sure to backup your data."
 #~ msgstr "Chun caillteanas a chosc, déan cinnte cúltaca de do shonraí."
 
-#, fuzzy
-#~ msgid "Disabled"
-#~ msgstr "Cumasaithe"
-
 #~ msgid "Enabled"
 #~ msgstr "Cumasaithe"
 
@@ -2163,12 +2261,6 @@ msgstr "cealaigh"
 
 #~ msgid "Authentication"
 #~ msgstr "Fíordheimhniú"
-
-#, fuzzy
-#~| msgid "Installation source"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "Auto-detected installation _source"
-#~ msgstr "Foinse shuiteála"
 
 #~ msgid "Automatic"
 #~ msgstr "Uathoibríoch"
@@ -2261,11 +2353,6 @@ msgstr "cealaigh"
 
 #, fuzzy
 #~| msgid "Empty"
-#~ msgid "Empty URL"
-#~ msgstr "Folamh"
-
-#, fuzzy
-#~| msgid "Empty"
 #~ msgid "Empty path"
 #~ msgstr "Folamh"
 
@@ -2341,9 +2428,6 @@ msgstr "cealaigh"
 
 #~ msgid "Installation"
 #~ msgstr "Suiteáil"
-
-#~ msgid "Installation source"
-#~ msgstr "Foinse shuiteála"
 
 #, fuzzy
 #~| msgid "Installing software"
