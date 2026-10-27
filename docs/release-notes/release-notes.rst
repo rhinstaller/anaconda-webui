@@ -32,7 +32,7 @@ Web-based remote installation
 Fedora Atomic Desktop editions now support secure remote installation through a web
 browser. By booting the ISO with ``inst.webui.remote`` and
 ``inst.webui.remote.password=<PIN>``, the installer becomes accessible over HTTPS from
-any device on the network. The installer generates self-signed TLS certificates and
+any device on the network. The IP address where the installer can be reached is displayed on console. The installer generates self-signed TLS certificates and
 presents a PIN-based login page for authentication.
 
 See also:
