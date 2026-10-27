@@ -40,6 +40,7 @@ See also:
     - https://issues.redhat.com/browse/INSTALLER-3373
     - https://github.com/rhinstaller/anaconda-webui/pull/1409
     - https://github.com/rhinstaller/anaconda-webui/pull/1413
+    - https://github.com/rhinstaller/anaconda/pull/7314
 
 Network
 -------
