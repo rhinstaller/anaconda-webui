@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-10-05 02:42+0000\n"
 "Last-Translator: Priit Jõerüüt "
 "<jrtkbfdr@users.noreply.translate.fedoraproject.org>\n"
@@ -125,7 +125,7 @@ msgstr "Katkesta paigaldus"
 msgid "About"
 msgstr "Teave"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "Kasutajakonto"
 
@@ -142,11 +142,11 @@ msgstr "Lisa veel üks server..."
 msgid "Add mount"
 msgstr "Lisa haakepunkt"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "Lisad sinu valitud keskonna jaoks"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "Lisad, mis pole sinu valitud keskonna kohased"
 
@@ -154,7 +154,7 @@ msgstr "Lisad, mis pole sinu valitud keskonna kohased"
 msgid "Additional languages"
 msgstr "Täiendavad keeled"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Täiendav tarkvara valitud keskkonna jaoks"
 
@@ -170,7 +170,7 @@ msgstr "Kõikide seda salasõna kasutavata seadmete lukustus avatakse"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Anaconda veebipõhine kasutajaliides"
 
@@ -193,7 +193,7 @@ msgstr ""
 "Seo partitsioonid haakepunktidega. On mõttekas näiteks omaloodud "
 "andmeruumijaotuse eelseadistamisel."
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr "Logifailide automaatne üleslaadimine"
 
@@ -210,24 +210,30 @@ msgstr "Seadista ajavöönd automaatselt"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Vaba andmeruumi saadaval: $0. Paigaldus vajab: $1."
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Tagasi"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Aluskeskkond"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "Vea või probleemi lühikirjeldus"
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
 msgstr "Veateate üksikasjad"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr "Bugzilla API võti"
 
@@ -247,8 +253,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Katkesta"
 
@@ -281,7 +287,7 @@ msgstr ""
 "Siinkohal tehtud muudatused mõjutavad süsteemi koheselt ja pole mitte mingit "
 "võimalust seda tagasi pöörata."
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 msgid "Checking installation configuration..."
 msgstr "Kontrollin paigalduse seadistust..."
 
@@ -311,6 +317,17 @@ msgstr "Sulge"
 msgid "Close storage editor"
 msgstr "Sulge andmeruumi muutja"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Lähim peegel"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Lähim peegel"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -321,7 +338,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Valmis"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr "Seadistus on poolik"
 
@@ -344,6 +361,18 @@ msgstr "Seadista andmeruumi"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "Seadista uuesti andmeruumi"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Continue installation"
+msgid "Configuring installation source"
+msgstr "Jätka paigaldamisega"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Checking installation configuration..."
+msgid "Configuring installation source..."
+msgstr "Kontrollin paigalduse seadistust..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -404,7 +433,7 @@ msgstr "Kustuta partitsioon"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Mõnede partitsioonide kustutamine takistaks $0 käivitumist: $1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Kirjeldus"
 
@@ -416,7 +445,7 @@ msgstr "Sihtkoht"
 msgid "Destination is encrypted"
 msgstr "Sihtobjekt on krüptitud"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr "Vea või probleemi üksikasjalik kirjeldus"
 
@@ -428,6 +457,10 @@ msgstr "Tuvastasin korrektse andmeruumi jaotuse:"
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Seade"
+
+#: src/components/source/InstallationSource.jsx:186
+msgid "Disabled"
+msgstr ""
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -461,7 +494,7 @@ msgstr "Sisesta PIN-kood"
 msgid "Enter PIN to access the installer"
 msgstr "Ligipääsuks paigaldusrakendusele sisesta PIN-kood"
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
@@ -469,7 +502,7 @@ msgstr ""
 "Veateate koostamiseks sisesta oma Bugzilla API võti. Järgmises sammus saad "
 "vaadata üle ja muuta veateate andmeid."
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 msgid "Environment"
 msgstr "Keskkond"
 
@@ -477,7 +510,7 @@ msgstr "Keskkond"
 msgid "Erase data and install"
 msgstr "Kustuta andmed ja paigalda"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "Vea üksikasjad"
 
@@ -490,7 +523,13 @@ msgstr "Sulge paigaldaja ja ava taustal toimiv ajutine töölaud"
 msgid "Extended partition"
 msgstr "Laiendatud partitsioon"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Preparing transaction from installation source"
+msgid "Failed to configure installation source"
+msgstr "Ettevalmistus ülekandeks paigalduse allikast"
+
+#: src/components/error/BugzillaReport.jsx:573
 msgid "Failed to report issue"
 msgstr "Veast või probleemist teatamine ei õnnestunud"
 
@@ -538,7 +577,7 @@ msgstr "Täisnimes ei tohi olla koolonit"
 msgid "Helper text"
 msgstr "Abitekst"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr "Peida APi võti"
 
@@ -546,7 +585,7 @@ msgstr "Peida APi võti"
 msgid "Hide PIN"
 msgstr "Peida PIN-kood"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "Peida kinnitatud salasõna"
 
@@ -554,7 +593,7 @@ msgstr "Peida kinnitatud salasõna"
 msgid "Hide passphrase"
 msgstr "Peida salasõna"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "Peida salasõna"
 
@@ -566,7 +605,7 @@ msgstr "Hostinimi"
 msgid "How would you like to install?"
 msgstr "Kuidas sa sooviksid paigaldada?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -574,11 +613,11 @@ msgstr[0] "Ma saan aru, et kõik olemasolevad andmed kustutatakse"
 msgstr[1] ""
 "Ma saan aru, et kõik olemasolevad andmed kustutatakse valitud ketastelt"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "Ma saan aru, et mõned olemasolevad andmed kustutatakse"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "Ma saan aru, et mõned partitsioonid kuuluvad muutmisele"
 
@@ -599,7 +638,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "Kui sa seadistad partitsioone, siis järgnev on nõutav:"
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -616,7 +655,7 @@ msgstr ""
 "Kui sa ei mõista riske või ei nõustu nendega, siis palun välju sellest "
 "programmist."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -643,7 +682,7 @@ msgid "Installation completed"
 msgstr "Paigaldamine on lõppenud"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "Paigaldamine ei õnnestunud"
 
@@ -659,7 +698,14 @@ msgstr "Süsteemi paigaldamine ei õnnestunud"
 msgid "Installation of the system failed: $0"
 msgstr "Süsteemi paigaldamine ei õnnestunud: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+#, fuzzy
+#| msgid "Installation type"
+msgid "Installation source"
+msgstr "Paigalduse tüüp"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "Paigalduse tüüp"
 
@@ -694,7 +740,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Jump to first incomplete step"
 msgstr "Mine esimese pooliku sammu juurde"
 
@@ -715,7 +761,7 @@ msgid "Keyboard layout during boot"
 msgstr "Klahvistiku paigutus alglaadimise ajal"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Keel"
 
@@ -723,7 +769,7 @@ msgstr "Keel"
 msgid "Launch storage editor"
 msgstr "Käivita andmeruumi haldaja"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr "Uuri lisateavet seadistuste piiratud ligipääsu kohta"
 
@@ -768,9 +814,17 @@ msgstr "Võib vajada suuremat vaba andmeruumi"
 msgid "Medium"
 msgstr "Keskmine"
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr ""
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "Vajalik on vähemalt $0"
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr ""
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -800,7 +854,7 @@ msgstr "Liiguta ülespoole"
 msgid "Must be at least $0 characters"
 msgstr "Salasõna peab olema vähemalt $0 märki pikk"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr "Minu probleem on teistsugune, jätka"
 
@@ -829,7 +883,7 @@ msgstr "Võrk"
 msgid "Network Configuration"
 msgstr "Võrguseadistus"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -837,7 +891,7 @@ msgstr ""
 "Võrguühendust pole. Veast teatamiseks palun seadista või lisa ülemisest "
 "ribamenüüst võrguühendus."
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Võrguühendust pole. Veast teatamiseks palun seadista või lisa võrguühendus."
@@ -846,7 +900,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "Võrgu lisamooduli töö ebaõnnestus"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "Edasi"
 
@@ -905,11 +960,11 @@ msgstr ""
 "testimiseks. Palun ÄRA KASUTA seda tarkvara ei kriitiliseks tööks, ega "
 "reaalseteks implementatsioonideks."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr "Ava Bugzilla veakirjelduse sisestusvorm"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "Operatsioonisüsteem"
 
@@ -936,7 +991,7 @@ msgstr "Salasõna"
 msgid "Passphrase did not match any locked device"
 msgstr "Sellele salasõnale ei vasta mitte ükski lukustatud seade"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "Salasõnad peavad klappima"
 
@@ -944,13 +999,19 @@ msgstr "Salasõnad peavad klappima"
 msgid "Pending"
 msgstr "Ootel"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "Palun lisa veateatele $0 logifail."
 
 #: src/components/login/LoginPage.jsx:44
 msgid "Please enter a PIN"
 msgstr "Palun sisesta PIN-kood"
+
+#: src/components/error/GenericReport.jsx:67
+#, fuzzy
+#| msgid "report the issue manually"
+msgid "Please report this issue at $0."
+msgstr "teata veast käsitsi"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "Please select at least one disk to continue"
@@ -960,7 +1021,7 @@ msgstr "Jätkamiseks palun vali vähemalt üks ketas"
 msgid "Pool"
 msgstr "Kogum"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 msgid "Potential duplicate bugs found"
 msgstr "Leidusid võimalikud topeltveateated"
 
@@ -972,7 +1033,7 @@ msgstr "Taustal töötab Anaconda"
 msgid "Pre-release"
 msgstr "Eelversioon"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr "Kas eelistad edastada selle käsitsi? $0"
 
@@ -980,8 +1041,13 @@ msgstr "Kas eelistad edastada selle käsitsi? $0"
 msgid "Proceed with installation"
 msgstr "Jätka paigaldamisega"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+msgid "Proxy"
+msgstr ""
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Välju"
 
@@ -1018,8 +1084,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Tegelik hostinimi võib olla kuni 64 tähemärki pikk"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Taaskäivita"
 
@@ -1112,19 +1179,32 @@ msgstr "Asenda senine paigaldus, kuid jäta kodukausta failid alles."
 msgid "Report Issue"
 msgstr "Teata veast või probleemist"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+#, fuzzy
+#| msgid ""
+#| "Report an issue or provide feedback by opening the Bugzilla bug entry "
+#| "form $0."
+msgid "Report an issue or provide feedback at $0."
+msgstr "Teata veast või lisa tagasiside avades Bugzilla sisestusvorm $0."
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr "Teata veast või lisa tagasiside avades Bugzilla sisestusvorm $0."
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Teata veast või probleemist"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 msgid "Reporting issue..."
 msgstr "Teatan veast või probleemist…"
+
+#: src/components/source/InstallationSource.jsx:47
+msgid "Repository URL"
+msgstr ""
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1154,11 +1234,11 @@ msgstr "Muuda partitsiooni suutust"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Muudan järgnevate partitsioonide suurust „$0“ → „$1“"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr "Piira ligipääsu teatele"
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr "Piirab ligipääsu teatele „$0“ grupiga. $1"
 
@@ -1192,6 +1272,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "Juurkasutaja (peakasutaja) salasõna on määratud."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1206,11 +1298,11 @@ msgstr "Skaneeri oma telefoniga seda QR-koodi või ava:"
 msgid "Search for a language"
 msgstr "Otsi keelt"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "Otsi täiendavat tarkvara"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "Otsi sobivat keskkonda"
 
@@ -1266,6 +1358,12 @@ msgstr "Server"
 msgid "Server is not reachable"
 msgstr "Server pole leitav"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "Siesta hostinimi"
@@ -1282,7 +1380,7 @@ msgstr "Jaga ketast muude operatsioonisüsteemidega: $0"
 msgid "Show AM/PM"
 msgstr "Näita AM/PM (el/pl)"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Show API key"
 msgstr "Näita API võtit"
 
@@ -1290,7 +1388,7 @@ msgstr "Näita API võtit"
 msgid "Show PIN"
 msgstr "Näita PIN-koodi"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "Näita kinnitatud salasõna"
 
@@ -1298,7 +1396,7 @@ msgstr "Näita kinnitatud salasõna"
 msgid "Show passphrase"
 msgstr "Näita salasõna"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "Näita salasõna"
 
@@ -1318,12 +1416,12 @@ msgstr ""
 "Tarkvara paigaldus: andmeruumi seadistamine on lõppenud. Tarkvara on "
 "parasjagu sinu arvutisse/seadmesse paigaldamisel."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Tarkvara valik"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "Enne jätkamist palun lõpeta mõned paigalduse sammud."
@@ -1336,15 +1434,15 @@ msgstr "Mõned nõutavad partitsioonid on puudu: $0"
 msgid "Space"
 msgstr "Ruum"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr "Pinujälg"
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Andmeruum"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1420,7 +1518,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda paigaldus on ootamatult peatunud."
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1442,11 +1540,11 @@ msgstr ""
 "Paigaldamine eeldab $0 vaba pinna olemasolu, kuid valitud ketta/ketaste "
 "andmeruum on vaid $1."
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr "Kriitilise vea tõttu ei saa paigaldaja tööd jätkata."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Kriitilise vea tõttu ei saa paigaldaja tööd jätkata: $0"
 
@@ -1484,7 +1582,7 @@ msgstr ""
 "kirjeldada loogilisi köiteid ja teha muudki. Ta on mõeldud kasutamiseks "
 "pigem lisavõimalusena, mitte aga standardpaigalduse osana."
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1519,11 +1617,11 @@ msgid "Time"
 msgstr "Kellaaeg"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "Ajavöönd"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr "Pealkiri"
 
@@ -1546,6 +1644,14 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Tüüp"
+
+#: src/components/source/InstallationSource.jsx:263
+msgid "URL"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:293
+msgid "URL type"
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1621,7 +1727,7 @@ msgstr "Kasutajanimi ei tohi olla reserveeritud sõna"
 msgid "User names must be shorter than 33 characters"
 msgstr "Kasutajanimed peavad olema lühemad, kui 33 tähemärki"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr "Kontrollin õigsust..."
 
@@ -1641,7 +1747,7 @@ msgstr "Tere tulemast, see on Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Tere tulemast. Hetkel on meil paigaldamisel $0."
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1664,7 +1770,7 @@ msgstr ""
 "Sa võid kas vabastada piisavalt andmeruumi ja lasta paigaldusrakendusel teha "
 "ülejäänu või seadistada partitsioonid käsitsi."
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Sa võid luua API-võtme oma Bugzilla kasutajakonto jaoks $0."
 
@@ -1720,11 +1826,12 @@ msgstr "laiendatud partitsioon"
 msgid "format as $0"
 msgstr "vorminda kui $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr "siin"
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 msgid "incomplete"
 msgstr "poolik"
 
@@ -1736,7 +1843,7 @@ msgstr "haagi"
 msgid "pending step"
 msgstr "ootel samm"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr "teata veast käsitsi"
 
@@ -2007,9 +2114,6 @@ msgstr "võta tegevus tagasi"
 
 #~ msgid "Checking software dependencies..."
 #~ msgstr "Tarkvaraliste sõltuvuste kontrollimine..."
-
-#~ msgid "Closest mirror"
-#~ msgstr "Lähim peegel"
 
 #~ msgid "Complete!"
 #~ msgstr "Valmis!"
@@ -2319,9 +2423,6 @@ msgstr "võta tegevus tagasi"
 
 #~ msgid "Preparing to install"
 #~ msgstr "Paigaldamiseks valmistumine"
-
-#~ msgid "Preparing transaction from installation source"
-#~ msgstr "Ettevalmistus ülekandeks paigalduse allikast"
 
 #~ msgid "Preserve"
 #~ msgstr "Säilita"

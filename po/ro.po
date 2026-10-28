@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-09-28 08:57+0000\n"
 "Last-Translator: Petru Rebeja <petru@rebeja.eu>\n"
 "Language-Team: Romanian <https://translate.fedoraproject.org/projects/"
@@ -128,7 +128,7 @@ msgstr "Anulare instalare"
 msgid "About"
 msgstr "Despre aplicație"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "Cont"
 
@@ -145,11 +145,11 @@ msgstr "Adaugă alt server..."
 msgid "Add mount"
 msgstr "Adaugă montură"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "Suplimente pentru mediul selectat"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "Suplimente nespecifice mediului dumneavoastră"
 
@@ -157,7 +157,7 @@ msgstr "Suplimente nespecifice mediului dumneavoastră"
 msgid "Additional languages"
 msgstr "Limbi suplimentare"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Software suplimentar pentru mediul selectat"
 
@@ -174,7 +174,7 @@ msgstr "Toate dispozitivele care folosesc această parolă vor fi deblocate"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Interfața Web Anaconda"
 
@@ -197,7 +197,7 @@ msgstr ""
 "Repartizarea partițiilor la punctele de montare. Utilă pentru aranjamente "
 "pre-configurate particularizate."
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr "Upload automat al fișierului jurnal"
 
@@ -214,24 +214,30 @@ msgstr "Setare automată a fusului orar"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Spațiu liber disponibil: $0. Instalarea necesită: $1."
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "Înapoi"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "Mediu de bază"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "Scurtă descriere a problemei"
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
 msgstr "Detaliile raportului de eroare"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr "Cheie API Bugzilla"
 
@@ -252,8 +258,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "Renunță"
 
@@ -286,7 +292,7 @@ msgstr ""
 "Modificările făcute aici vor afecta sistemul imediat. Revenirea la starea "
 "anterioară nu este posibilă."
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 msgid "Checking installation configuration..."
 msgstr "Se verifică configurația de instalare..."
 
@@ -316,6 +322,17 @@ msgstr "Închide"
 msgid "Close storage editor"
 msgstr "Închide editorul spațiului de stocare"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "Cel mai apropiat server „oglindă” (mirror)"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "Cel mai apropiat server „oglindă” (mirror)"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -326,7 +343,7 @@ msgstr ""
 msgid "Completed"
 msgstr "Finalizat"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr "Configurația este incompletă"
 
@@ -349,6 +366,18 @@ msgstr "Configurează spațiul de stocare"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "Configurează din nou spațiul de stocare"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "Se configurează sistemul instalat"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "Se setează sursa de instalare..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -409,7 +438,7 @@ msgstr "Eliminare partiție"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "Ștergerea anumitor partiții poate împiedica $0 să pornească: $1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "Descriere"
 
@@ -421,7 +450,7 @@ msgstr "Destinație"
 msgid "Destination is encrypted"
 msgstr "Destinația este criptată"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr "Descriere detaliată a problemei"
 
@@ -433,6 +462,11 @@ msgstr "Aranjamentul de stocare valid detectat:"
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "Dispozitiv"
+
+#: src/components/source/InstallationSource.jsx:186
+#, fuzzy
+msgid "Disabled"
+msgstr "Activat"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -466,7 +500,7 @@ msgstr "Introduceți codul PIN"
 msgid "Enter PIN to access the installer"
 msgstr "Introduceți codul PIN pentru a accesa aplicația de instalare"
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
@@ -474,7 +508,7 @@ msgstr ""
 "Introduceți cheia dumneavoastră pentru API-ul Bugzilla pentru a raporta o "
 "problemă. Veți putea revizui și edita detaliile problemei în pasul următor."
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 msgid "Environment"
 msgstr "Mediu"
 
@@ -482,7 +516,7 @@ msgstr "Mediu"
 msgid "Erase data and install"
 msgstr "Șterge datele și instalează"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "Detalii eroare"
 
@@ -495,7 +529,13 @@ msgstr "Ieși la sesiunea live"
 msgid "Extended partition"
 msgstr "Partiție extinsă"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "Nu s-a putut stabili sursa de instalare."
+
+#: src/components/error/BugzillaReport.jsx:573
 msgid "Failed to report issue"
 msgstr "Raportarea incidentului a eșuat"
 
@@ -543,7 +583,7 @@ msgstr "Numele complet nu poate conține caractere „două puncte”"
 msgid "Helper text"
 msgstr "Text de asistență"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr "Ascunde cheie API"
 
@@ -551,7 +591,7 @@ msgstr "Ascunde cheie API"
 msgid "Hide PIN"
 msgstr "Ascunde codul PIN"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "Ascunde confirmarea parolei"
 
@@ -559,7 +599,7 @@ msgstr "Ascunde confirmarea parolei"
 msgid "Hide passphrase"
 msgstr "Ascunde parola"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "Ascunde parola"
 
@@ -571,7 +611,7 @@ msgstr "Nume sistem"
 msgid "How would you like to install?"
 msgstr "Cum doriți să efectuați instalarea?"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
@@ -581,11 +621,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Înțeleg că toate datele existente vor fi șterse de pe diskurile selectate"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "Înțeleg că o parte din datele existente vor fi șterse"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "Înțeleg că unele partiții vor fi modificate"
 
@@ -607,7 +647,7 @@ msgstr ""
 msgid "If you are configuring partitions the following are required:"
 msgstr "La configurarea partițiilor sunt necesare următoarele:"
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -624,7 +664,7 @@ msgstr ""
 "Dacă nu înțelegeți sau nu acceptați riscurile, vă rugăm să ieșiți din "
 "această aplicație."
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -652,7 +692,7 @@ msgid "Installation completed"
 msgstr "Instalare finalizată"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "Instalarea a eșuat"
 
@@ -668,7 +708,12 @@ msgstr "Instalarea sistemului a eșuat"
 msgid "Installation of the system failed: $0"
 msgstr "Instalarea sistemului a eșuat: $0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "Sursa instalării"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "Tipul de instalare"
 
@@ -702,7 +747,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "Numele sistemului este invalid"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Jump to first incomplete step"
 msgstr "Treci la prima etapă incompletă"
 
@@ -723,7 +768,7 @@ msgid "Keyboard layout during boot"
 msgstr "Aranjament tastatură în timpul pornirii"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Limbă"
 
@@ -731,7 +776,7 @@ msgstr "Limbă"
 msgid "Launch storage editor"
 msgstr "Pornește editorul spațiului de stocare"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr "Aflați mai multe despre accesul restricționat la configurare"
 
@@ -778,9 +823,17 @@ msgstr "Poate necesita mai mult spațiu liber"
 msgid "Medium"
 msgstr "Mediu"
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr ""
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "Este necesar minim $0"
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr ""
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -812,7 +865,7 @@ msgstr "Mută în sus"
 msgid "Must be at least $0 characters"
 msgstr "Trebuie să fie cel puțin $0 simboluri"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr "Incidentul meu este diferit, continuă"
 
@@ -841,7 +894,7 @@ msgstr "Rețea"
 msgid "Network Configuration"
 msgstr "Configurare rețea"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
@@ -849,7 +902,7 @@ msgstr ""
 "Rețeaua nu este disponibilă. Configurați rețeaua în meniul din bara de sus "
 "pentru a semnala incidentul."
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr ""
 "Rețeaua nu este disponibilă. Configurați rețeaua pentru a semnala incidentul."
@@ -858,7 +911,8 @@ msgstr ""
 msgid "Network plugin failed"
 msgstr "Plugin-ul pentru rețea a eșuat"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "Următorul"
 
@@ -917,11 +971,11 @@ msgstr ""
 "destinat folosirii doar pentru dezvoltare și testare. NU utilizați acest "
 "software pentru activități critice sau în medii de producție."
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr "Deschide formularul Bugzilla pentru introducerea problemei"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "Sistem de operare"
 
@@ -948,7 +1002,7 @@ msgstr "Frază secretă"
 msgid "Passphrase did not match any locked device"
 msgstr "Parola nu corespunde niciunui dispozitiv blocat"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "Parolele trebuie să fie aceleași"
 
@@ -956,13 +1010,19 @@ msgstr "Parolele trebuie să fie aceleași"
 msgid "Pending"
 msgstr "În așteptare"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "Vă rugăm atașați fișierul jurnal $0 la incident."
 
 #: src/components/login/LoginPage.jsx:44
 msgid "Please enter a PIN"
 msgstr "Vă rugăm introduceți un cod PIN valid."
+
+#: src/components/error/GenericReport.jsx:67
+#, fuzzy
+#| msgid "report the issue manually"
+msgid "Please report this issue at $0."
+msgstr "raportați incidentul manual"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "Please select at least one disk to continue"
@@ -972,7 +1032,7 @@ msgstr "Vă rugăm să selectați cel puțin un disk pentru a continua"
 msgid "Pool"
 msgstr "Pool"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 msgid "Potential duplicate bugs found"
 msgstr "Au fost identificate bug-uri potențial duplicate"
 
@@ -984,7 +1044,7 @@ msgstr "Împuternicit de Anaconda"
 msgid "Pre-release"
 msgstr "Pre-lansare"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr "Preferați să raportați manual? $0"
 
@@ -992,8 +1052,16 @@ msgstr "Preferați să raportați manual? $0"
 msgid "Proceed with installation"
 msgstr "Continuați cu instalarea"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "Proxy _FTP"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Ieșire"
 
@@ -1031,8 +1099,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "Numele sistemului nu trebuie să depășească 64 de semne"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Repornire"
 
@@ -1126,20 +1195,36 @@ msgstr ""
 msgid "Report Issue"
 msgstr "Raportați incident"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+#, fuzzy
+#| msgid ""
+#| "Report an issue or provide feedback by opening the Bugzilla bug entry "
+#| "form $0."
+msgid "Report an issue or provide feedback at $0."
+msgstr ""
+"Raportați un incident sau oferiți feedback deschizând formularul Bugzilla $0."
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr ""
 "Raportați un incident sau oferiți feedback deschizând formularul Bugzilla $0."
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Raportați incident"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 msgid "Reporting issue..."
 msgstr "Raportare incident..."
+
+#: src/components/source/InstallationSource.jsx:47
+#, fuzzy
+#| msgid "Repo URL"
+msgid "Repository URL"
+msgstr "URL depozit (repo)"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1169,11 +1254,11 @@ msgstr "Redimensionare partiție"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "Redimensionarea următoarelor partiții de la $0:$1"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr "Restricționează accesul la raport"
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr "Restricționează accesul la raport la grupul $0. $1"
 
@@ -1206,6 +1291,18 @@ msgstr ""
 msgid "Root password has been set."
 msgstr "Parola root a fost setată."
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1220,11 +1317,11 @@ msgstr "Scanați codul QR cu telefonul sau accesați:"
 msgid "Search for a language"
 msgstr "Căutați o limbă"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "Căutați software suplimentar"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "Căutați un mediu"
 
@@ -1280,6 +1377,12 @@ msgstr "Server"
 msgid "Server is not reachable"
 msgstr "Serverul nu este accesibil"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "Setați numele serverului"
@@ -1296,7 +1399,7 @@ msgstr "Partajați disk-ul cu alte sisteme de operare: $0"
 msgid "Show AM/PM"
 msgstr "Afișează AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Show API key"
 msgstr "Afișează cheia API"
 
@@ -1304,7 +1407,7 @@ msgstr "Afișează cheia API"
 msgid "Show PIN"
 msgstr "Afișează codul PIN"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "Afișează confirmarea parolei"
 
@@ -1312,7 +1415,7 @@ msgstr "Afișează confirmarea parolei"
 msgid "Show passphrase"
 msgstr "Arată parola"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "Arată parola"
 
@@ -1332,12 +1435,12 @@ msgstr ""
 "Instalare software: Configurarea stocării este completă. Acest software este "
 "în curs de instalare pe dispozitivul dumneavoastră."
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Selecție software"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr ""
@@ -1352,15 +1455,15 @@ msgstr "Lipsesc câteva partiții obligatorii: $0"
 msgid "Space"
 msgstr "Spațiu"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr "Desfășurător de stivă"
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Stocare"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1435,7 +1538,7 @@ msgstr ""
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Instalarea Anaconda s-a oprit pe neașteptate."
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1458,11 +1561,11 @@ msgstr ""
 "Instalarea necesită $0 spațiu-disk însă capacitatea diskurilor selectate "
 "este de doar $1."
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr "Instalarea nu poate continua din cauza unei erori critice."
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "Instalarea nu poate continua din cauza unei erori critice: $0"
 
@@ -1499,7 +1602,7 @@ msgstr ""
 "destinat utilizării ca utilitar avansat și nu este destinat utilizării într-"
 "o instalare tipică."
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1534,11 +1637,11 @@ msgid "Time"
 msgstr "Timp"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "Fus orar"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr "Titlu"
 
@@ -1562,6 +1665,19 @@ msgstr ""
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Tip"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "Pro_xy URL:"
+msgid "URL"
+msgstr "URL-ul pro_xy-ului:"
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgid "URL is empty"
+msgid "URL type"
+msgstr "URL-ul este gol"
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1637,7 +1753,7 @@ msgstr "Numele utilizatorului nu trebuie să fie un cuvânt rezervat"
 msgid "User names must be shorter than 33 characters"
 msgstr "Numele utilizatorului trebuie să fie mai scurt de 33 de simboluri"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr "În curs de validare..."
 
@@ -1657,7 +1773,7 @@ msgstr "Bun venit în Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "Bine ați venit. Haideți să instalăm $0 acum."
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1681,7 +1797,7 @@ msgstr ""
 "Puteți elibera suficient spațiu aici și să lăsați aplicația de instalare să "
 "gestioneze restul, sau să configurați manual partițiile."
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "Puteți genera cheia API pentru contul dumneavoastră Bugzilla $0."
 
@@ -1737,11 +1853,12 @@ msgstr "partiție extinsă"
 msgid "format as $0"
 msgstr "formatează ca $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr "aici"
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 msgid "incomplete"
 msgstr "incompletă"
 
@@ -1753,7 +1870,7 @@ msgstr "montează"
 msgid "pending step"
 msgstr "etapă în așteptare"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr "raportați incidentul manual"
 
@@ -1941,10 +2058,6 @@ msgstr "anulează"
 #, fuzzy
 #~ msgid "Install using the configured storage?"
 #~ msgstr "Se instalează software"
-
-#, fuzzy
-#~ msgid "Disabled"
-#~ msgstr "Activat"
 
 #~ msgid "Enabled"
 #~ msgstr "Activat"
@@ -2767,9 +2880,6 @@ msgstr "anulează"
 #~ msgid "City"
 #~ msgstr "Oraș"
 
-#~ msgid "Closest mirror"
-#~ msgstr "Cel mai apropiat server „oglindă” (mirror)"
-
 #~ msgid "Complete!"
 #~ msgstr "Gata!"
 
@@ -2811,9 +2921,6 @@ msgstr "anulează"
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "Se configurează dispozitivul %s."
-
-#~ msgid "Configuring installed system"
-#~ msgstr "Se configurează sistemul instalat"
 
 #, fuzzy
 #~| msgid "Configuring addons"
@@ -3460,9 +3567,6 @@ msgstr "anulează"
 #~ msgstr ""
 #~ "Cerințele de partiționare ale hard disk-ului. Alegeți spațiul pe care să "
 #~ "îl utilizați pentru instalare sau configurați manual punctele de montare."
-
-#~ msgid "Installation source"
-#~ msgstr "Sursa instalării"
 
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "Mai întâi trebuie setată sursa de instalare."
@@ -4326,11 +4430,6 @@ msgstr "anulează"
 #~ msgid "Repo URL"
 #~ msgstr "URL depozit (repo)"
 
-#, fuzzy
-#~| msgid "Repo URL"
-#~ msgid "Repository URL"
-#~ msgstr "URL depozit (repo)"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr "Numele depozitului intră în conflict cu un nume intern de depozit"
 
@@ -4542,9 +4641,6 @@ msgstr "anulează"
 
 #~ msgid "Set timezone"
 #~ msgstr "Setează fusul orar"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "Se setează sursa de instalare..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "Se configurează kexec"
@@ -5249,9 +5345,6 @@ msgstr "anulează"
 
 #~ msgid "URL has no host component"
 #~ msgstr "URL nu are componentă „host”"
-
-#~ msgid "URL is empty"
-#~ msgstr "URL-ul este gol"
 
 #, fuzzy
 #~| msgid "Name of the repository."
@@ -6145,10 +6238,6 @@ msgstr "anulează"
 #~ msgid "_Exit Installer"
 #~ msgstr "R_enunță la instalare"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "Proxy _FTP"
-
 #~ msgctxt "GUI|DAD Format Dialog"
 #~ msgid "_Format with dasdfmt"
 #~ msgstr "_Formatează cu dasdfmt"
@@ -6523,13 +6612,6 @@ msgstr "anulează"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Time & Date"
 #~ msgstr "_Oră și dată"
-
-#, fuzzy
-#~| msgctxt "GUI|Software Source"
-#~| msgid "Pro_xy URL:"
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "URL-ul pro_xy-ului:"
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
@@ -6965,9 +7047,6 @@ msgstr "anulează"
 #~ msgstr[0] "Nu au fost selectate discuri"
 #~ msgstr[1] "Nu au fost selectate discuri"
 #~ msgstr[2] "Nu au fost selectate discuri"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "Nu s-a putut stabili sursa de instalare."
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "Eroare la descărcarea metadatelor pentru pachete."

@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 07:55+0000\n"
+"POT-Creation-Date: 2026-10-27 08:22+0000\n"
 "PO-Revision-Date: 2026-10-06 09:25+0000\n"
 "Last-Translator: Kung Kun <kun17.kung317@silomails.com>\n"
 "Language-Team: Chinese (Simplified) <https://translate.fedoraproject.org/"
@@ -145,7 +145,7 @@ msgstr "中止安装"
 msgid "About"
 msgstr "关于"
 
-#: src/components/review/ReviewConfiguration.jsx:254
+#: src/components/review/ReviewConfiguration.jsx:265
 msgid "Account"
 msgstr "账户"
 
@@ -162,11 +162,11 @@ msgstr "添加其它服务器..."
 msgid "Add mount"
 msgstr "添加挂载"
 
-#: src/components/software/SoftwareSelection.jsx:122
+#: src/components/software/SoftwareSelection.jsx:113
 msgid "Add-ons for your chosen environment"
 msgstr "适用于您选定环境的附加组件"
 
-#: src/components/software/SoftwareSelection.jsx:131
+#: src/components/software/SoftwareSelection.jsx:122
 msgid "Add-ons not specific to your environment"
 msgstr "不特定于您环境的附加组件"
 
@@ -174,7 +174,7 @@ msgstr "不特定于您环境的附加组件"
 msgid "Additional languages"
 msgstr "其他语言"
 
-#: src/components/software/SoftwareSelection.jsx:156
+#: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "用于已选环境的附加软件"
 
@@ -190,7 +190,7 @@ msgstr "所有使用此密码的设备都将被解锁"
 msgid "Anaconda"
 msgstr "Anaconda"
 
-#: src/login.html:8 src/index.html:20
+#: src/index.html:20 src/login.html:8
 msgid "Anaconda Web UI"
 msgstr "Anaconda Web 界面"
 
@@ -211,7 +211,7 @@ msgid ""
 "Assign partitions to mount points. Useful for pre-configured custom layouts."
 msgstr "将分区分配给挂载点。对于预配置的自定义布局很有用。"
 
-#: src/components/Error.jsx:396
+#: src/components/error/BugzillaReport.jsx:335
 msgid "Automatic log file upload"
 msgstr "自动上传日志文件"
 
@@ -228,24 +228,30 @@ msgstr "自动设置时区"
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "可用空间: $0。安装需要: $1。"
 
-#: src/components/Error.jsx:668 src/components/Error.jsx:693
 #: src/components/AnacondaWizardFooter.jsx:62
+#: src/components/error/BugzillaReport.jsx:599
+#: src/components/error/BugzillaReport.jsx:624
 msgid "Back"
 msgstr "返回"
 
-#: src/components/software/SoftwareSelection.jsx:63
+#: src/components/software/SoftwareSelection.jsx:54
 msgid "Base environment"
 msgstr "基本环境"
 
-#: src/components/Error.jsx:367
+#: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "问题简述"
 
-#: src/components/Error.jsx:356
+#: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
 msgstr "缺陷报告详情"
 
-#: src/components/Error.jsx:206
+#: src/components/error/GenericReport.jsx:31
+#: src/components/error/GenericReport.jsx:76
+msgid "Bug reporting is not configured for this distribution."
+msgstr ""
+
+#: src/components/error/BugzillaReport.jsx:187
 msgid "Bugzilla API key"
 msgstr "Bugzilla API 密钥"
 
@@ -263,8 +269,8 @@ msgstr ""
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
-#: src/components/Error.jsx:861 src/components/localization/Keyboard.jsx:282
-#: src/components/review/Hostname.jsx:127
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
 msgid "Cancel"
 msgstr "取消"
 
@@ -295,7 +301,7 @@ msgid ""
 "Changes made here will immediately affect the system. There is no 'undo'."
 msgstr "此处所做的更改将立即影响系统。无法“撤消”。"
 
-#: src/components/review/ReviewConfiguration.jsx:191
+#: src/components/review/ReviewConfiguration.jsx:196
 msgid "Checking installation configuration..."
 msgstr "正在检查安装配置..."
 
@@ -323,6 +329,17 @@ msgstr "关闭"
 msgid "Close storage editor"
 msgstr "关闭存储编辑器"
 
+#: src/components/source/SourceReviewDescription.jsx:34
+#: src/components/source/InstallationSource.jsx:41
+msgid "Closest mirror"
+msgstr "最近的镜像"
+
+#: src/components/source/InstallationSource.jsx:286
+#, fuzzy
+#| msgid "Closest mirror"
+msgid "Closest public mirror"
+msgstr "最近的镜像"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:336
 msgid ""
 "Cockpit storage did not provide the passphrase to unlock encrypted device."
@@ -332,7 +349,7 @@ msgstr "Cockpit 存储没有提供解锁加密设备的密码。"
 msgid "Completed"
 msgstr "已完成"
 
-#: src/components/review/ReviewConfiguration.jsx:212
+#: src/components/review/ReviewConfiguration.jsx:217
 msgid "Configuration is incomplete"
 msgstr "配置未完成"
 
@@ -355,6 +372,18 @@ msgstr "配置存储"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:688
 msgid "Configure storage again"
 msgstr "再次配置存储"
+
+#: src/components/source/InstallationSource.jsx:140
+#, fuzzy
+#| msgid "Configuring installed system"
+msgid "Configuring installation source"
+msgstr "正在配置已安装系统"
+
+#: src/components/source/InstallationSource.jsx:141
+#, fuzzy
+#| msgid "Setting up installation source..."
+msgid "Configuring installation source..."
+msgstr "正在设置安装源..."
 
 #: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
@@ -415,7 +444,7 @@ msgstr "删除分区"
 msgid "Deletion of certain partitions may prevent $0 from booting: $1"
 msgstr "删除某些分区可能会导致$0无法启动：$1"
 
-#: src/components/Error.jsx:262
+#: src/components/error/common.jsx:85
 msgid "Description"
 msgstr "描述"
 
@@ -427,7 +456,7 @@ msgstr "目标位置"
 msgid "Destination is encrypted"
 msgstr "目标位置已加密"
 
-#: src/components/Error.jsx:267
+#: src/components/error/common.jsx:90
 msgid "Detailed description of the issue"
 msgstr "问题详述"
 
@@ -439,6 +468,10 @@ msgstr "检测到有效的存储布局："
 #: src/components/storage/StorageReview.jsx:246
 msgid "Device"
 msgstr "设备"
+
+#: src/components/source/InstallationSource.jsx:186
+msgid "Disabled"
+msgstr "禁用"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:388
 msgid "Duplicate device."
@@ -472,14 +505,14 @@ msgstr "输入PIN密钥"
 msgid "Enter PIN to access the installer"
 msgstr "输入PIN密钥以进入安装器"
 
-#: src/components/Error.jsx:203
+#: src/components/error/BugzillaReport.jsx:184
 msgid ""
 "Enter your Bugzilla API key to create a bug report. You will be able to "
 "review and edit the bug details in the next step."
 msgstr ""
 "输入您的 Bugzilla API 密钥以创建缺陷报告。 您可以在下一步查看与编辑缺陷详情。"
 
-#: src/components/Error.jsx:279
+#: src/components/error/common.jsx:103
 msgid "Environment"
 msgstr "环境"
 
@@ -487,7 +520,7 @@ msgstr "环境"
 msgid "Erase data and install"
 msgstr "删除数据内容并安装"
 
-#: src/components/Error.jsx:818
+#: src/components/error/common.jsx:50
 msgid "Error details"
 msgstr "错误详情"
 
@@ -500,7 +533,13 @@ msgstr "退出到 live 桌面"
 msgid "Extended partition"
 msgstr "扩展分区"
 
-#: src/components/Error.jsx:642
+#: src/components/source/InstallationSource.jsx:222
+#, fuzzy
+#| msgid "Failed to set up installation source"
+msgid "Failed to configure installation source"
+msgstr "设置安装源失败"
+
+#: src/components/error/BugzillaReport.jsx:573
 msgid "Failed to report issue"
 msgstr "报告问题失败"
 
@@ -546,7 +585,7 @@ msgstr "全名不能含有冒号"
 msgid "Helper text"
 msgstr "帮助文本"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Hide API key"
 msgstr "隐藏 API 密钥"
 
@@ -554,7 +593,7 @@ msgstr "隐藏 API 密钥"
 msgid "Hide PIN"
 msgstr "隐藏 PIN 密钥"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Hide confirmed password"
 msgstr "隐藏确认的密码"
 
@@ -562,7 +601,7 @@ msgstr "隐藏确认的密码"
 msgid "Hide passphrase"
 msgstr "隐藏口令"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Hide password"
 msgstr "隐藏密码"
 
@@ -574,17 +613,17 @@ msgstr "主机名"
 msgid "How would you like to install?"
 msgstr "您想如何安装？"
 
-#: src/components/review/ReviewConfiguration.jsx:309
+#: src/components/review/ReviewConfiguration.jsx:320
 msgid "I understand that all existing data will be erased"
 msgid_plural ""
 "I understand that all existing data will be erased from the selected disks"
 msgstr[0] "我明白所选磁盘上的所有现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:314
+#: src/components/review/ReviewConfiguration.jsx:325
 msgid "I understand that some existing data will be erased"
 msgstr "我明白部分现有数据将被删除"
 
-#: src/components/review/ReviewConfiguration.jsx:315
+#: src/components/review/ReviewConfiguration.jsx:326
 msgid "I understand that some partitions will be modified"
 msgstr "我明白有些分区会被修改"
 
@@ -602,7 +641,7 @@ msgstr "如若以上选项都不适用，请在继续之前使用存储编辑器
 msgid "If you are configuring partitions the following are required:"
 msgstr "如果要配置分区，则需要以下内容："
 
-#: src/components/Error.jsx:411
+#: src/components/error/BugzillaReport.jsx:350
 msgid ""
 "If you do not consent to automatic log file upload, you can $0 instead. "
 "Manual reporting allows you to review and selectively attach log files "
@@ -616,7 +655,7 @@ msgid ""
 "If you do not understand or accept the risks, then please exit this program."
 msgstr "如果您不了解或不接受此风险，请点击 \"退出\" 按钮退出程序。"
 
-#: src/components/Error.jsx:328
+#: src/components/error/BugzillaReport.jsx:267
 msgid ""
 "If your issue matches one of the bugs above, you can open it and add your "
 "information there instead of creating a duplicate report."
@@ -643,7 +682,7 @@ msgid "Installation completed"
 msgstr "安装完成"
 
 #: src/components/installation/InstallationProgress.jsx:219
-#: src/components/Error.jsx:849
+#: src/components/error/Error.jsx:151
 msgid "Installation failed"
 msgstr "安装失败"
 
@@ -659,7 +698,12 @@ msgstr "系统安装失败"
 msgid "Installation of the system failed: $0"
 msgstr "系统安装失败：$0"
 
-#: src/components/review/ReviewConfiguration.jsx:269
+#: src/components/source/index.js:24 src/components/source/index.js:25
+#: src/components/review/ReviewConfiguration.jsx:252
+msgid "Installation source"
+msgstr "安装源"
+
+#: src/components/review/ReviewConfiguration.jsx:280
 msgid "Installation type"
 msgstr "安装类型"
 
@@ -691,7 +735,7 @@ msgstr ""
 msgid "Invalid hostname"
 msgstr "无效主机名"
 
-#: src/components/review/ReviewConfiguration.jsx:208
+#: src/components/review/ReviewConfiguration.jsx:213
 msgid "Jump to first incomplete step"
 msgstr "跳转至第一个未完成的步骤"
 
@@ -710,7 +754,7 @@ msgid "Keyboard layout during boot"
 msgstr "启动期间的键盘布局"
 
 #: src/components/localization/InstallationLanguage.jsx:240
-#: src/components/review/ReviewConfiguration.jsx:234
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "语言"
 
@@ -718,7 +762,7 @@ msgstr "语言"
 msgid "Launch storage editor"
 msgstr "启动存储编辑器"
 
-#: src/components/Error.jsx:387
+#: src/components/error/BugzillaReport.jsx:326
 msgid "Learn more about restricted access in the configuration"
 msgstr "在配置中详细了解受限访问"
 
@@ -763,9 +807,17 @@ msgstr "可能需要更多空闲空间"
 msgid "Medium"
 msgstr "中等"
 
+#: src/components/source/InstallationSource.jsx:49
+msgid "Metalink"
+msgstr "元链接"
+
 #: src/components/storage/installation-method/InstallationDestination.jsx:310
 msgid "Minimum of $0 required"
 msgstr "最低要求为 $0"
+
+#: src/components/source/InstallationSource.jsx:48
+msgid "Mirrorlist"
+msgstr "镜像列表"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:137
 msgid "Mismatch between parent device and child device reformat selection."
@@ -795,7 +847,7 @@ msgstr "向上移动"
 msgid "Must be at least $0 characters"
 msgstr "必须至少包含$0字符"
 
-#: src/components/Error.jsx:676
+#: src/components/error/BugzillaReport.jsx:607
 msgid "My issue is different, continue"
 msgstr "我的问题是不同的，继续"
 
@@ -824,13 +876,13 @@ msgstr "网络"
 msgid "Network Configuration"
 msgstr "网络配置"
 
-#: src/components/Error.jsx:726
+#: src/components/error/Error.jsx:59
 msgid ""
 "Network not available. Configure the network in the top bar menu to report "
 "the issue."
 msgstr "网络不可用。在顶部栏菜单中配置网络以报告问题。"
 
-#: src/components/Error.jsx:727
+#: src/components/error/Error.jsx:60
 msgid "Network not available. Configure the network to report the issue."
 msgstr "网络不可用。请配置网络以报告该问题。"
 
@@ -838,7 +890,8 @@ msgstr "网络不可用。请配置网络以报告该问题。"
 msgid "Network plugin failed"
 msgstr "网络插件失败"
 
-#: src/components/Error.jsx:658 src/components/AnacondaWizardFooter.jsx:71
+#: src/components/AnacondaWizardFooter.jsx:71
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Next"
 msgstr "下一个"
 
@@ -894,11 +947,11 @@ msgstr ""
 "注意：该预发行软件仅用于开发和测试。绝不要在任何关键工作及生产环境中使用此软"
 "件。"
 
-#: src/components/Error.jsx:181
+#: src/components/error/BugzillaReport.jsx:162
 msgid "Open Bugzilla bug entry form"
 msgstr "打开 Bugzilla 缺陷报告表单"
 
-#: src/components/review/ReviewConfiguration.jsx:223
+#: src/components/review/ReviewConfiguration.jsx:228
 msgid "Operating system"
 msgstr "操作系统"
 
@@ -925,7 +978,7 @@ msgstr "密码"
 msgid "Passphrase did not match any locked device"
 msgstr "密码与任何锁定的设备都不匹配"
 
-#: src/components/Password.jsx:278
+#: src/components/Password.jsx:273
 msgid "Passphrases must match"
 msgstr "密码必须匹配"
 
@@ -933,13 +986,19 @@ msgstr "密码必须匹配"
 msgid "Pending"
 msgstr "待办的"
 
-#: src/components/Error.jsx:94
+#: src/components/error/BugzillaReport.jsx:88
 msgid "Please attach the log file $0 to the issue."
 msgstr "请将日志文件 $0 附加到问题中。"
 
 #: src/components/login/LoginPage.jsx:44
 msgid "Please enter a PIN"
 msgstr "请输入PIN密钥"
+
+#: src/components/error/GenericReport.jsx:67
+#, fuzzy
+#| msgid "report the issue manually"
+msgid "Please report this issue at $0."
+msgstr "手动报告问题"
 
 #: src/components/storage/installation-method/InstallationDestination.jsx:322
 msgid "Please select at least one disk to continue"
@@ -949,7 +1008,7 @@ msgstr "请至少选择一个磁盘以继续"
 msgid "Pool"
 msgstr "池"
 
-#: src/components/Error.jsx:296
+#: src/components/error/BugzillaReport.jsx:235
 msgid "Potential duplicate bugs found"
 msgstr "可能发现重复的漏洞"
 
@@ -961,7 +1020,7 @@ msgstr "由 Anaconda 强力驱动"
 msgid "Pre-release"
 msgstr "预发布"
 
-#: src/components/Error.jsx:179
+#: src/components/error/BugzillaReport.jsx:160
 msgid "Prefer to report manually? $0"
 msgstr "倾向于手动报告吗？ $0"
 
@@ -969,8 +1028,16 @@ msgstr "倾向于手动报告吗？ $0"
 msgid "Proceed with installation"
 msgstr "继续安装"
 
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/source/InstallationSource.jsx:182
+#, fuzzy
+#| msgctxt "GUI|Network|Proxy"
+#| msgid "_FTP Proxy"
+msgid "Proxy"
+msgstr "_FTP 代理"
+
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "退出"
 
@@ -1005,8 +1072,9 @@ msgid "Real hostname must be 64 characters or less"
 msgstr "实际主机名必须不超过 64 个字符"
 
 #: src/components/installation/InstallationProgress.jsx:248
-#: src/components/Error.jsx:838 src/components/AnacondaWizardFooter.jsx:84
+#: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
+#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "重启"
 
@@ -1093,19 +1161,32 @@ msgstr "替换当前安装，但将文件保留在主目录中。"
 msgid "Report Issue"
 msgstr "报告问题"
 
-#: src/components/Error.jsx:160
+#: src/components/error/GenericReport.jsx:39
+#, fuzzy
+#| msgid ""
+#| "Report an issue or provide feedback by opening the Bugzilla bug entry "
+#| "form $0."
+msgid "Report an issue or provide feedback at $0."
+msgstr "打开 Bugzilla 缺陷报告表单 $0 来报告问题或提供反馈。"
+
+#: src/components/error/BugzillaReport.jsx:141
 msgid ""
 "Report an issue or provide feedback by opening the Bugzilla bug entry form "
 "$0."
 msgstr "打开 Bugzilla 缺陷报告表单 $0 来报告问题或提供反馈。"
 
-#: src/components/Error.jsx:703 src/components/Error.jsx:870
+#: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "报告问题"
 
-#: src/components/Error.jsx:703
+#: src/components/error/BugzillaReport.jsx:634
 msgid "Reporting issue..."
 msgstr "报告问题中..."
+
+#: src/components/source/InstallationSource.jsx:47
+msgid "Repository URL"
+msgstr "软件库 URL"
 
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:229
 msgid "Required"
@@ -1135,11 +1216,11 @@ msgstr "调整分区大小"
 msgid "Resizing the following partitions from $0: $1"
 msgstr "从 $0 调整以下分区的大小：$1"
 
-#: src/components/Error.jsx:381
+#: src/components/error/BugzillaReport.jsx:320
 msgid "Restrict access to the report"
 msgstr "限制访问报告"
 
-#: src/components/Error.jsx:383
+#: src/components/error/BugzillaReport.jsx:322
 msgid "Restricts the report to the $0 group. $1"
 msgstr "将报告限制在 $0 组内。$1"
 
@@ -1171,6 +1252,18 @@ msgstr "Root账户已启用，但尚未配置任何用户帐户"
 msgid "Root password has been set."
 msgstr "Root 密码已设置。"
 
+#: src/components/source/InstallationSource.jsx:188
+msgid "SSL CA certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:189
+msgid "SSL client certificate"
+msgstr ""
+
+#: src/components/source/InstallationSource.jsx:185
+msgid "SSL verification"
+msgstr ""
+
 #: src/components/datetime/CustomNTPModal.jsx:245
 #: src/components/localization/Keyboard.jsx:279
 #: src/components/review/Hostname.jsx:125
@@ -1185,11 +1278,11 @@ msgstr "使用手机扫描二维码或访问："
 msgid "Search for a language"
 msgstr "搜索语言"
 
-#: src/components/software/SoftwareSelection.jsx:159
+#: src/components/software/SoftwareSelection.jsx:150
 msgid "Search for additional software"
 msgstr "搜索其他软件"
 
-#: src/components/software/SoftwareSelection.jsx:66
+#: src/components/software/SoftwareSelection.jsx:57
 msgid "Search for an environment"
 msgstr "搜索环境"
 
@@ -1243,6 +1336,12 @@ msgstr "服务器"
 msgid "Server is not reachable"
 msgstr "服务器不可达"
 
+#: src/components/source/SourceReviewDescription.jsx:48
+msgid ""
+"Set by the kickstart file. Remove source selection from kickstart to be able "
+"to configure interactively."
+msgstr ""
+
 #: src/components/review/Hostname.jsx:87
 msgid "Set custom hostname"
 msgstr "设置自定义主机名"
@@ -1259,7 +1358,7 @@ msgstr "与其它操作系统共享磁盘： $0"
 msgid "Show AM/PM"
 msgstr "显示 AM/PM"
 
-#: src/components/Error.jsx:223
+#: src/components/error/BugzillaReport.jsx:204
 msgid "Show API key"
 msgstr "显示 API 密钥"
 
@@ -1267,7 +1366,7 @@ msgstr "显示 API 密钥"
 msgid "Show PIN"
 msgstr "显示 PIN 密钥"
 
-#: src/components/Password.jsx:265
+#: src/components/Password.jsx:260
 msgid "Show confirmed password"
 msgstr "显示确认密码"
 
@@ -1275,7 +1374,7 @@ msgstr "显示确认密码"
 msgid "Show passphrase"
 msgstr "显示密码"
 
-#: src/components/Password.jsx:229
+#: src/components/Password.jsx:224
 msgid "Show password"
 msgstr "显示密码"
 
@@ -1293,12 +1392,12 @@ msgid ""
 "being installed onto your device."
 msgstr "软件安装：存储配置完成。该软件现在正在安装到您的设备上。"
 
-#: src/components/software/index.js:19 src/components/software/index.js:20
-#: src/components/review/ReviewConfiguration.jsx:247
+#: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "软件选择"
 
-#: src/components/review/ReviewConfiguration.jsx:215
+#: src/components/review/ReviewConfiguration.jsx:220
 msgid ""
 "Some installation steps still need to be completed before you can continue."
 msgstr "在继续之前，您还需要完成一些安装步骤。"
@@ -1311,15 +1410,15 @@ msgstr "缺少一些必需的分区：$0"
 msgid "Space"
 msgstr "空间"
 
-#: src/components/Error.jsx:273
+#: src/components/error/common.jsx:97
 msgid "Stacktrace"
 msgstr "栈回溯"
 
-#: src/components/review/ReviewConfiguration.jsx:276
+#: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "存储"
 
-#: src/components/steps.js:35
+#: src/components/steps.js:37
 #: src/components/installation/InstallationProgress.jsx:228
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
@@ -1391,7 +1490,7 @@ msgstr "系统配置： 软件安装完成。现在正在配置系统。"
 msgid "The Anaconda installation has stopped unexpectedly."
 msgstr "Anaconda安装意外停止。"
 
-#: src/components/Error.jsx:301
+#: src/components/error/BugzillaReport.jsx:240
 msgid ""
 "The following open bugs may be related to your issue. Please review them "
 "before creating a new report."
@@ -1410,11 +1509,11 @@ msgid ""
 "selected disks is only $1."
 msgstr "安装需要$0的磁盘空间；但是所选磁盘的容量只有$1。"
 
-#: src/components/Error.jsx:778
+#: src/components/error/Error.jsx:107
 msgid "The installer cannot continue due to a critical error."
 msgstr "安装程序由于严重错误而无法继续。"
 
-#: src/components/Error.jsx:777
+#: src/components/error/Error.jsx:106
 msgid "The installer cannot continue due to a critical error: $0"
 msgstr "安装程序由于严重错误而无法继续：$0"
 
@@ -1446,7 +1545,7 @@ msgstr ""
 "存储编辑器允许您调整分区大小、删除分区和创建分区。它可以设置 LVM 等。它旨在用"
 "作高级实用程序，不适用于典型安装。"
 
-#: src/components/Error.jsx:407
+#: src/components/error/BugzillaReport.jsx:346
 msgid ""
 "These log files may contain sensitive information such as IP addresses, "
 "usernames, or other system details."
@@ -1477,11 +1576,11 @@ msgid "Time"
 msgstr "时间"
 
 #: src/components/datetime/Timezone.jsx:130
-#: src/components/review/ReviewConfiguration.jsx:241
+#: src/components/review/ReviewConfiguration.jsx:246
 msgid "Timezone"
 msgstr "时区"
 
-#: src/components/Error.jsx:359
+#: src/components/error/BugzillaReport.jsx:298
 msgid "Title"
 msgstr "标题"
 
@@ -1502,6 +1601,20 @@ msgstr "要使用此选项，请调整大小或删除现有分区以释放至少
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "类型"
+
+#: src/components/source/InstallationSource.jsx:263
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "_URL:"
+msgid "URL"
+msgstr "URL (_U)："
+
+#: src/components/source/InstallationSource.jsx:293
+#, fuzzy
+#| msgctxt "GUI|Software Source"
+#| msgid "URL type:"
+msgid "URL type"
+msgstr "URL 类型："
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:87
 msgid "Unable to schedule deletion of $0"
@@ -1573,7 +1686,7 @@ msgstr "用户名不能是保留字"
 msgid "User names must be shorter than 33 characters"
 msgstr "用户名必须少于 33 个字符"
 
-#: src/components/Error.jsx:658
+#: src/components/error/BugzillaReport.jsx:589
 msgid "Validating..."
 msgstr "验证中..."
 
@@ -1593,7 +1706,7 @@ msgstr "欢迎使用 Fedora Linux"
 msgid "Welcome. Let's install $0 now."
 msgstr "欢迎。现在就来安装 $0 吧。"
 
-#: src/components/Error.jsx:402
+#: src/components/error/BugzillaReport.jsx:341
 msgid ""
 "When you submit this bug report, the following log files will be uploaded "
 "automatically: $0"
@@ -1613,7 +1726,7 @@ msgid ""
 "rest or manually set up partitions."
 msgstr "您可以在此处释放足够的空间并让安装程序处理其余部分，或者手动设置分区。"
 
-#: src/components/Error.jsx:232
+#: src/components/error/BugzillaReport.jsx:213
 msgid "You can generate the API key for your Bugzilla account $0."
 msgstr "您可以为您的 Bugzilla 账户 $0 生成 API 密钥。"
 
@@ -1665,11 +1778,12 @@ msgstr "扩展分区"
 msgid "format as $0"
 msgstr "格式化为 $0"
 
-#: src/components/Error.jsx:162 src/components/Error.jsx:235
+#: src/components/error/BugzillaReport.jsx:143
+#: src/components/error/BugzillaReport.jsx:216
 msgid "here"
 msgstr "这里"
 
-#: src/components/review/ReviewConfiguration.jsx:57
+#: src/components/review/ReviewConfiguration.jsx:61
 msgid "incomplete"
 msgstr "未完成"
 
@@ -1681,7 +1795,7 @@ msgstr "挂载"
 msgid "pending step"
 msgstr "待执行操作"
 
-#: src/components/Error.jsx:413
+#: src/components/error/BugzillaReport.jsx:352
 msgid "report the issue manually"
 msgstr "手动报告问题"
 
@@ -1932,9 +2046,6 @@ msgstr "撤消"
 #~| msgid "Changes made in Blivet-gui will directly affect your storage."
 #~ msgid "Any changes you make will immediately affect your storage."
 #~ msgstr "Blivet-gui 中所做的更改将直接影响您的存储。"
-
-#~ msgid "Disabled"
-#~ msgstr "禁用"
 
 #~ msgid "Enabled"
 #~ msgstr "已启用"
@@ -2810,9 +2921,6 @@ msgstr "撤消"
 #~ msgid "City"
 #~ msgstr "城市"
 
-#~ msgid "Closest mirror"
-#~ msgstr "最近的镜像"
-
 #~ msgid "Complete!"
 #~ msgstr "完成！"
 
@@ -2850,9 +2958,6 @@ msgstr "撤消"
 #, python-format
 #~ msgid "Configuring device %s."
 #~ msgstr "配置设备 %s。"
-
-#~ msgid "Configuring installed system"
-#~ msgstr "正在配置已安装系统"
 
 #~ msgid "Configuring {}"
 #~ msgstr "正在配置 {}"
@@ -3635,9 +3740,6 @@ msgstr "撤消"
 #~ "安装过程需要对您的硬盘进行分区。请选择要用于安装目标的磁盘空间，或者手动分"
 #~ "配挂载点。"
 
-#~ msgid "Installation source"
-#~ msgstr "安装源"
-
 #~ msgid "Installation source needs to be set up first."
 #~ msgstr "需要首先设置安装源。"
 
@@ -3853,9 +3955,6 @@ msgstr "撤消"
 #~ msgid "Memory"
 #~ msgstr "内存"
 
-#~ msgid "Metalink"
-#~ msgstr "元链接"
-
 #~ msgid "Method"
 #~ msgstr "方法"
 
@@ -3867,9 +3966,6 @@ msgstr "撤消"
 
 #~ msgid "Minutes Up"
 #~ msgstr "上调分钟"
-
-#~ msgid "Mirrorlist"
-#~ msgstr "镜像列表"
 
 #~ msgid "Missing name of the %addon section."
 #~ msgstr "缺少 %addon 小节的名称。"
@@ -4616,9 +4712,6 @@ msgstr "撤消"
 #~ msgid "Repo URL"
 #~ msgstr "软件源 URL"
 
-#~ msgid "Repository URL"
-#~ msgstr "软件库 URL"
-
 #~ msgid "Repository name conflicts with internal repository name"
 #~ msgstr "软件仓库名称与内置软件仓库名称冲突"
 
@@ -4855,9 +4948,6 @@ msgstr "撤消"
 
 #~ msgid "Set timezone"
 #~ msgstr "设置时区"
-
-#~ msgid "Setting up installation source..."
-#~ msgstr "正在设置安装源..."
 
 #~ msgid "Setting up kexec"
 #~ msgstr "正在设置 kexec"
@@ -5690,10 +5780,6 @@ msgstr "撤消"
 
 #~ msgid "URL of the repository"
 #~ msgstr "软件 URL 名称"
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "URL type:"
-#~ msgstr "URL 类型："
 
 #~ msgid "USER SETTINGS"
 #~ msgstr "用户设置"
@@ -6578,10 +6664,6 @@ msgstr "撤消"
 #~ msgid "_Exit Installer"
 #~ msgstr "退出安装程序(_E)"
 
-#~ msgctxt "GUI|Network|Proxy"
-#~ msgid "_FTP Proxy"
-#~ msgstr "_FTP 代理"
-
 #~ msgctxt "GUI|Progress"
 #~ msgid "_Finish Installation"
 #~ msgstr "完成安装(_F)"
@@ -6977,10 +7059,6 @@ msgstr "撤消"
 #~ msgctxt "GUI|Spoke"
 #~ msgid "_Time & Date"
 #~ msgstr "时间和日期(_T)"
-
-#~ msgctxt "GUI|Software Source"
-#~ msgid "_URL:"
-#~ msgstr "URL (_U)："
 
 #~ msgctxt "GUI|Custom Partitioning|Encrypted"
 #~ msgid "_Unlock"
@@ -7561,9 +7639,6 @@ msgstr "撤消"
 #~ msgid "$0 (of $1) disk selected"
 #~ msgid_plural "$0 (of $1) disks selected"
 #~ msgstr[0] "选择了 $0(共 $1个) 个磁盘"
-
-#~ msgid "Failed to set up installation source"
-#~ msgstr "设置安装源失败"
 
 #~ msgid "Error downloading package metadata"
 #~ msgstr "下载软件包元数据时出错"
