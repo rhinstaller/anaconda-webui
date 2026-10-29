@@ -227,10 +227,10 @@ class Installer():
         if is_expected is not None:
             value = str(is_expected)
         else:
-            value = self.machine.execute("grep IsFinal= /.buildstamp").split("=", 1)[1]
+            value = self.machine.execute("grep isfinal /.buildstamp").split("=", 1)[1]
 
         # Check betanag
-        if value.lower() == "false":
+        if value.lower().strip() == "false":
             self.browser.wait_visible("#betanag-icon")
         else:
             self.browser.wait_not_present("#betang-icon")
