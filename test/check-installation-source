@@ -1,0 +1,165 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import INSTALLER_VM_MEMORY_MB, VirtInstallMachineCase
+from installation_source import CLOSEST_MIRROR, InstallationSource, repo_url_path
+from installer import Installer
+from payload_dnf import PayloadDNF
+from review import Review
+from steps import INSTALLATION_SOURCE
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestInstallationSource(VirtInstallMachineCase):
+    provision = {"machine1": {"payload_type": "dnf"}}
+
+    def testDefaultClosestMirror(self):
+        """
+        Description:
+            A DNF payload boots with the closest mirror source, which is the
+            default from anaconda.conf. interactive-defaults.ks only adds the
+            test repo as an additional 'repo', it does not set the source.
+
+        Expected results:
+            - The installation source step is reachable in the wizard
+            - Closest mirror is preselected and the URL fields are disabled
+            - Review lists the source as 'Closest mirror'
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        src = InstallationSource(b)
+        r = Review(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_SOURCE)
+        src.wait_visible()
+        src.check_protocol(CLOSEST_MIRROR)
+        src.check_url_path("")
+        src.check_url_input_disabled(True)
+
+        i.reach(i.steps.REVIEW)
+        r.check_installation_source("Closest mirror")
+
+    def testSourceFormBehavior(self):
+        """
+        Description:
+            Form behaviour of the installation source step. Nothing is applied,
+            Next is never pressed, so the backend source is left untouched.
+
+        Expected results:
+            - An HTTP source with an empty URL keeps Next disabled
+            - Entering a URL enables Next
+            - All three URL types can be selected
+            - Switching back to closest mirror clears and disables the URL
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        src = InstallationSource(b)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_SOURCE)
+
+        src.select_protocol("https")
+        src.check_url_input_disabled(False)
+        src.check_url_path("")
+        i.check_next_disabled(disabled=True)
+
+        src.set_url_path("example.com/repo/")
+        i.check_next_disabled(disabled=False)
+
+        for url_type in ["MIRRORLIST", "METALINK", "BASEURL"]:
+            src.select_url_type(url_type)
+            src.check_url_type(url_type)
+
+        src.select_protocol(CLOSEST_MIRROR)
+        src.check_url_path("")
+        src.check_url_input_disabled(True)
+        i.check_next_disabled(disabled=False)
+
+    def testApplyRepoAndSwitchBack(self):
+        """
+        Description:
+            Apply the HTTP test repo, then switch back to the closest mirror.
+            The test repo carries no comps environments, so this also covers the
+            software selection being reloaded when the source changes.
+
+        Expected results:
+            - The HTTP repo is applied on Next and is kept when returning to the step
+            - Switching back to the closest mirror makes environments available again
+            - Review lists the source that was applied last
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        src = InstallationSource(b)
+        dnf = PayloadDNF(b)
+        r = Review(b, m)
+
+        self.addCleanup(src.restore_default_source, i)
+
+        i.open()
+        i.reach(i.steps.SOFTWARE_SELECTION)
+        dnf.check_selected_environment("server-product-environment")
+
+        i.reach_on_sidebar(i.steps.INSTALLATION_SOURCE)
+        src.set_http_repo(m)
+        i.next()
+
+        i.reach_on_sidebar(i.steps.INSTALLATION_SOURCE)
+        src.check_protocol("http")
+        src.check_url_path(repo_url_path(m))
+        src.check_url_type("BASEURL")
+
+        src.select_protocol(CLOSEST_MIRROR)
+        i.next()
+
+        dnf.select_environment("server-product-environment")
+        dnf.check_selected_environment("server-product-environment")
+
+        i.reach(i.steps.REVIEW)
+        r.check_installation_source("Closest mirror")
+
+
+class TestKickstartInstallationSource(VirtInstallMachineCase):
+    provision = {
+        "machine1": {
+            "kickstart_file_name": "TestKickstartInstallationSource-testFtpSource.ks",
+            "payload_type": "dnf",
+            "memory_mb": INSTALLER_VM_MEMORY_MB,
+            "pause_at_summary": True,
+        },
+    }
+
+    def testFtpSourceReadOnlyOnReview(self):
+        """
+        Description:
+            Boot with a kickstart 'url' the installation source step can not
+            express. The URL carries credentials, which must not be shown.
+
+        Expected results:
+            - The installation source step is not shown in the wizard
+            - Review shows the FTP URL with the password masked
+            - Review explains that the source comes from the kickstart file
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, hidden_steps=[INSTALLATION_SOURCE], scenario="use-configured-storage-kickstart")
+        r = Review(b, m)
+
+        b.open("/cockpit/@localhost/anaconda-webui/index.html")
+        b.wait_visible("#installation-next-btn:not([aria-disabled=true])")
+
+        b.wait_not_present(f"#{INSTALLATION_SOURCE}")
+
+        i.reach(i.steps.REVIEW)
+        r.check_installation_source("ftp://tester:****@ftp.example.com")
+        r.check_installation_source_kickstart_hint()
+
+
+if __name__ == '__main__':
+    test_main()
