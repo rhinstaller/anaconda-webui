@@ -281,7 +281,8 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         dev = "vda"
         r.check_disk(dev, f"16.1 GB {dev} (Virtio Block Device)")
         r.check_disk_row(dev, parent=f"{dev}1", action="delete")
-        r.check_disk_row(dev, "/boot", f"{dev}2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev, "/boot", f"{dev}2", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "ext4", is_encrypted=False)
+        b.wait_not_present(f'#storage-review-table-{dev} tr[data-device="{dev}2"][data-action="delete"]')
         r.check_disk_row(dev, "/", f"{dev}3", "13.4 GB", True, "btrfs subvolume", is_encrypted=True)
         r.check_disk_row(dev, "/home", f"{dev}3", "13.4 GB", False, "btrfs subvolume", is_encrypted=True, action="mount")
 
@@ -391,11 +392,11 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
 
         # check selected disks are shown
         r.check_disk(dev_mbr, f"21.5 GB {dev_mbr} (Virtio Block Device)")
-        r.check_disk_row(dev_mbr, parent=f"{dev_mbr}1", action="delete")
+        b.wait_not_present(f'#storage-review-table-{dev_mbr} tr[data-device="{dev_mbr}1"][data-action="delete"]')
         r.check_disk_row(dev_mbr, "/home", f"{dev_mbr}2", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "1.07 GB", True, "ext4", is_encrypted=False)
 
     def _testWindowsSingleDisk_partition_disk(self):
         storage = Storage(self.browser, self.machine)
@@ -455,13 +456,13 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
 
         # check selected disks are shown
         r.check_disk(dev_win_fed, f"37.6 GB {dev_win_fed} (Virtio Block Device)")
-        r.check_disk_row(dev_win_fed, parent=f"{dev_win_fed}4", action="delete")
+        b.wait_not_present(f'#storage-review-table-{dev_win_fed} tr[data-device="{dev_win_fed}4"][data-action="delete"]')
         r.check_disk_row(dev_win_fed, "/boot/efi", f"{dev_win_fed}1", "105 MB", False, "vfat", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_win_fed, "/home", f"{dev_win_fed}5", "14.0 GB", False, "btrfs subvolume", is_encrypted=False,
                          action="mount")
         r.check_disk_row(dev_win_fed, "/", f"{dev_win_fed}5", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
-        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", BOOT_PARTITION_DEFAULT_SIZE_GB, True, "xfs", is_encrypted=False)
+        r.check_disk_row(dev_win_fed, "/boot", f"{dev_win_fed}4", "1.07 GB", True, "ext4", is_encrypted=False)
 
 
 if __name__ == '__main__':
