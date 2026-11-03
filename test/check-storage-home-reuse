@@ -132,6 +132,25 @@ class TestStorageHomeReuse(VirtInstallMachineCase, _TestStorageHomeReuseHelpers)
                          action="mount")
 
     @disk_images([("fedora-rawhide", 15)])
+    def testPlainSchemeWithBtrfs(self):
+        """A plain reuse request without reformatted mounts must not crash the page."""
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        pretend_default_scheme(self, "PLAIN")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # The Btrfs home is incompatible with PLAIN, but checking availability
+        # must still work when the request has no reformatted-mount-points key.
+        s.wait_scenario_visible("home-reuse", False)
+        s.wait_scenario_visible("use-free-space", True)
+        b.wait_not_present("#critical-error-bz-report-modal")
+
+    @disk_images([("fedora-rawhide", 15)])
     def testHidden(self):
         """
         Description:

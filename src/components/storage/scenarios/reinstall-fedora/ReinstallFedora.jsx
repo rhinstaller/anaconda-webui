@@ -49,7 +49,7 @@ export const useAvailabilityHomeReuse = () => {
                     .filter(mp => !isBootloader(mp[1]))
                     .map((mp) => mp[0]);
 
-            const managedMountPoints = reuseRequest["reformatted-mount-points"].v
+            const managedMountPoints = (reuseRequest["reformatted-mount-points"]?.v || [])
                     .concat(reuseRequest["reused-mount-points"].v, reuseRequest["removed-mount-points"].v);
 
             const unknownMountPoints = existingMountPoints.filter(i => !managedMountPoints.includes(i));
