@@ -14,6 +14,7 @@ srpm_build_deps:
 
 actions:
   post-upstream-clone:
+    - git config --global --add safe.directory /src
     - make node-cache dist
 
   fix-spec-file:
