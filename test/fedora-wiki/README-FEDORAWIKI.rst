@@ -55,7 +55,7 @@ This is an overview of how the integration workflow operates:
 
 #. **Test Execution**
 
-   * The `GitHub Action <../.github/workflows/test-compose.yml>`_ triggers the test suite to run daily
+   * The `GitHub Action <../../.github/workflows/test-compose.yml>`_ triggers the test suite to run daily
      on the latest Fedora Compose (or a specified compose).
 
 #. **Test Report Generation**
@@ -64,11 +64,11 @@ This is an overview of how the integration workflow operates:
 
 #. **Mapping to Fedora QA**
 
-   * The upstream tests are mapped to Fedora’s QA test scenarios using the `wiki-testmap.json <test/fedora-wiki/wiki-testmap.json>`_ file.
+   * The upstream tests are mapped to Fedora’s QA test scenarios using the `wiki-testmap.json <wiki-testmap.json>`_ file.
 
 #. **Publishing to Fedora Wiki**
 
-   * The `wiki-report.py <test/fedora-wiki/wiki-report.py>`_ script publishes the mapped results to the
+   * The `wiki-report.py <wiki-report.py>`_ script publishes the mapped results to the
      `Fedora QA Wiki <https://fedoraproject.org/wiki/Test_Results:Current_Installation_Test>`_ page.
 
 Example of `report.json`
