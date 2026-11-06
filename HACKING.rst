@@ -33,7 +33,7 @@ To prepare Anaconda Web UI sources, you need to run this command::
     make dist
 
 The easiest way to test changes you make is to set up a test VM.
-You can find intructions for preparing a test VM at ``test/README.rst``.
+You can find instructions for preparing a test VM at ``test/README.rst``.
 
 Running eslint
 --------------
