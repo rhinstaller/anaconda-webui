@@ -126,7 +126,13 @@ Manual testing
 --------------
 
 You can conduct manual interactive testing against a test image by starting the
-image like so::
+image inside a temporary VM.
+
+Before running the command bellow, make sure to follow the instructions in the
+"Preparation and general invocation" section above, or else your checkout anaconda-webui checkout
+might be missing important artifacts or those artifacts might be outdated.
+
+Run the following command from toolbox (as it has all its dependencies already installed)::
 
     test/webui_testvm.py fedora-rawhide-boot
 
@@ -134,6 +140,15 @@ Once the machine is booted and the cockpit socket has been activated, a
 message will be printed describing how to access the virtual machine, via
 ssh and web.  See the "Helpful tips" section below.
 
+If the  `webui_testvm.py` script fails to execute or you want just to investigate the state of the VM
+you can use a VM manager, like Virt Manager and the temporary VM should be visible on the QEMU user session.
+
+NOTE: On clean installation only the root QEMU session might be enabled in your VM manager & user session might have
+to be added manually. Otherwise user mode VMs, like the ones used by the `webui_testvm.py` script, could be running
+but not visibly listed.
+
+Adding the user session seems to be necessary when using Virt Manager while Cockpit Machines seems to have it already
+added on clean installation.
 
 Guidelines for writing tests
 ----------------------------
