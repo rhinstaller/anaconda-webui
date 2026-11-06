@@ -126,7 +126,12 @@ Manual testing
 --------------
 
 You can conduct manual interactive testing against a test image by starting the
-image like so::
+image inside a temporary VM. Before running the command bellow, make sure to:
+
+* create the updates image via  `make create-updates.img`
+* you have up the latest installation images downloaded via the  `bots` tooling
+
+then run the following command from toolbox (as it has all its dependencies already installed)::
 
     test/webui_testvm.py fedora-rawhide-boot
 
@@ -134,6 +139,11 @@ Once the machine is booted and the cockpit socket has been activated, a
 message will be printed describing how to access the virtual machine, via
 ssh and web.  See the "Helpful tips" section below.
 
+If the  `webui_testvm.py` script fails to execute or you want just to investigate the state of the VM
+you can do the for example via Virt Manager - the temporary VM should be visible on the QEMU user session.
+
+NOTE: On clean installation only the root QEMU session might be enabled & user session might have
+to be added manually to make user mode VMs, like the one used by the `webui_testvm.py` script, visible.
 
 Guidelines for writing tests
 ----------------------------
