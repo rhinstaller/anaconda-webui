@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
 
-import { getInstallationStatus, getPendingErrorMessage, getPendingErrorType } from "../apis/boss.js";
+import { getInstallationStatus, getModules, getPendingErrorMessage, getPendingErrorType } from "../apis/boss.js";
 
 export const getInstallationStatusAction = () => {
     return async (dispatch) => {
@@ -20,6 +20,17 @@ export const getPendingErrorAction = () => {
         return dispatch({
             payload: { message, type },
             type: "GET_PENDING_ERROR",
+        });
+    };
+};
+
+export const getModulesAction = () => {
+    return async (dispatch) => {
+        const modules = await getModules();
+        console.info({ modules });
+        return dispatch({
+            payload: { modules },
+            type: "GET_MODULES",
         });
     };
 };
