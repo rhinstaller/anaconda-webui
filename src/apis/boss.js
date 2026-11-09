@@ -5,7 +5,7 @@
 
 import cockpit from "cockpit";
 
-import { getInstallationStatusAction, getPendingErrorAction } from "../actions/boss-actions.js";
+import { getInstallationStatusAction, getModulesAction, getPendingErrorAction } from "../actions/boss-actions.js";
 
 import { debug, error } from "../helpers/log.js";
 import { _callClient, _getProperty } from "./helpers.js";
@@ -57,6 +57,7 @@ export class BossClient {
         const clients = installationStarted ? [RuntimeClient, NetworkClient, LocalizationClient] : moduleClients;
         return Promise.all([
             this.dispatch(getInstallationStatusAction()),
+            this.dispatch(getModulesAction()),
             this.dispatch(getPendingErrorAction()),
             ...clients.map(Client => new Client(this.address, this.dispatch).init(args))
         ]).then(() => {
@@ -146,4 +147,11 @@ export const getPendingErrorMessage = () => {
  */
 export const getPendingErrorType = () => {
     return _getProperty(BossClient, OBJECT_PATH, INTERFACE_NAME, "PendingErrorType");
+};
+
+/**
+ * @returns {Promise}           Resolves a list of active module service names
+ */
+export const getModules = () => {
+    return callClient("GetModules", []);
 };
