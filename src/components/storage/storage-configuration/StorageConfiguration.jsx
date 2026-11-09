@@ -4,6 +4,7 @@
  */
 
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Form } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 
 import { applyStorage } from "../../../apis/storage_partitioning.js";
@@ -13,6 +14,7 @@ import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 import { createStorageValidationNotification } from "../Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
+import { PartitioningScheme } from "./PartitioningScheme.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
 
@@ -37,10 +39,13 @@ export const StorageConfiguration = ({ dispatch, onCritFail }) => {
     }, [setIsFormValid, luks.encrypted]);
 
     return (
-        <DiskEncryption
-          dispatch={dispatch}
-          onCritFail={onCritFail}
-        />
+        <Form onSubmit={e => { e.preventDefault(); return false }}>
+            <PartitioningScheme />
+            <DiskEncryption
+              dispatch={dispatch}
+              onCritFail={onCritFail}
+            />
+        </Form>
     );
 };
 

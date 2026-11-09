@@ -47,8 +47,8 @@ export const unlockDevice = ({ device, passphrase }) => {
  *
  * @returns {Promise}           Resolves an object with the device data
  */
-export const getDeviceData = ({ disk }) => {
-    return new DeviceTree().callViewer("GetDeviceData", [disk]);
+export const getDeviceData = ({ deviceTree, disk }) => {
+    return new DeviceTree(deviceTree).callViewer("GetDeviceData", [disk]);
 };
 
 /**
@@ -72,8 +72,8 @@ export const getDiskFreeSpace = ({ diskNames }) => {
  *
  * @returns {Promise}           Resolves the device format data
  */
-export const getFormatData = ({ diskName }) => {
-    return new DeviceTree().callViewer("GetFormatData", [diskName]);
+export const getFormatData = ({ deviceTree, diskName }) => {
+    return new DeviceTree(deviceTree).callViewer("GetFormatData", [diskName]);
 };
 
 /**
@@ -122,8 +122,8 @@ export const getDiskTotalSpace = ({ diskNames }) => {
 /**
  * @returns {Promise}           Resolves all devices in a device tree
  */
-export const getDevices = () => {
-    return new DeviceTree().callViewer("GetDevices", []);
+export const getDevices = ({ deviceTree } = {}) => {
+    return new DeviceTree(deviceTree).callViewer("GetDevices", []);
 };
 
 /**
@@ -144,8 +144,8 @@ export const getActions = () => {
 /**
  * @returns {Promise}           Resolves all mount points in a device tree
  */
-export const getMountPoints = () => {
-    return new DeviceTree().callViewer("GetMountPoints", []);
+export const getMountPoints = ({ deviceTree } = {}) => {
+    return new DeviceTree(deviceTree).callViewer("GetMountPoints", []);
 };
 
 export const findExistingSystems = async ({ onFail, onSuccess }) => {
