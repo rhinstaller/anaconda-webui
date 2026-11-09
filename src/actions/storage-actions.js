@@ -23,8 +23,12 @@ import {
 import {
     gatherRequests,
     getAutomaticPartitioningRequest,
+    getDefaultFileSystemType,
+    getDefaultPartitioningScheme,
     getDeviceTree,
     getPartitioningMethod,
+    getSupportedFileSystemTypes,
+    getSupportedPartitioningSchemes,
 } from "../apis/storage_partitioning.js";
 
 export const getDevicesAction = () => {
@@ -115,6 +119,22 @@ export const getDevicesAction = () => {
         dispatch({
             payload: { isFetching: false },
             type: "SET_IS_FETCHING",
+        });
+    };
+};
+
+export const getPartitioningOptionsAction = () => {
+    return async (dispatch) => {
+        const [defaultFileSystem, defaultScheme, supportedFileSystems, supportedSchemes] = await Promise.all([
+            getDefaultFileSystemType(),
+            getDefaultPartitioningScheme(),
+            getSupportedFileSystemTypes(),
+            getSupportedPartitioningSchemes(),
+        ]);
+
+        dispatch({
+            payload: { defaultFileSystem, defaultScheme, supportedFileSystems, supportedSchemes },
+            type: "GET_PARTITIONING_OPTIONS",
         });
     };
 };

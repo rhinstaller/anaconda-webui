@@ -8,6 +8,7 @@ import {
     getDevicesAction,
     getDiskSelectionAction,
     getPartitioningDataAction,
+    getPartitioningOptionsAction,
     setAppliedPartitioningAction,
     setStorageScenarioAction,
 } from "../actions/storage-actions.js";
@@ -107,6 +108,7 @@ export class StorageClient {
             await callClient("ResetPartitioning", []);
         }
 
+        await this.dispatch(getPartitioningOptionsAction());
         await this.dispatch(getDevicesAction());
         await this.dispatch(getDiskSelectionAction());
     }
