@@ -99,7 +99,7 @@ $(SPEC): packaging/$(SPEC).in $(DIST_TEST)
 $(DIST_TEST): $(COCKPIT_REPO_STAMP) $(shell find src/ -type f) package.json build.js
 	$(MAKE) VERSION.txt && \
 	$(MAKE) package-lock.json && \
-	NODE_ENV=production ./build.js
+	./build.js
 
 watch: VERSION.txt
 	rm -f dist/*
