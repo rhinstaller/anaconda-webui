@@ -33,11 +33,11 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
     const isBootIso = useContext(SystemTypeContext).systemType === "BOOT_ISO";
     const { source: payloadSource, type: payloadType } = useContext(PayloadContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
-    const { installationStatus } = useContext(BossContext);
+    const { installationStatus, modules } = useContext(BossContext);
 
     const autoProceedBlockedRef = useRef(false);
 
-    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, payloadSource, payloadType, storageScenarioId });
+    const stepsOrder = getSteps(automatedInstall, userInterfaceConfig, { isBootIso, modules, payloadSource, payloadType, storageScenarioId });
     const firstStepId = stepsOrder.find(s => s.isFirstScreen)?.id;
     const finalStepId = stepsOrder[stepsOrder.length - 1]?.id;
 

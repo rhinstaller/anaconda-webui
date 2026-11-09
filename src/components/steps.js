@@ -16,6 +16,7 @@ import { Page as PageInstallationSource } from "./source/index.js";
 import { Page as PageInstallationMethod } from "./storage/installation-method/index.js";
 import { Page as PageMountPointMapping } from "./storage/mount-point-mapping/index.js";
 import { Page as PageStorageConfiguration } from "./storage/storage-configuration/index.js";
+import { Page as PageSubscription } from "./subscription/index.js";
 import { Page as PageAccounts } from "./users/index.js";
 
 const _ = cockpit.gettext;
@@ -26,6 +27,7 @@ export const getSteps = (automatedInstall, userInterfaceConfig, args) => {
     const stepsOrder = [
         new PageInstallationLanguage(args),
         new PageNetworkConfiguration(args),
+        new PageSubscription(args),
         new PageDateAndTime(args),
         new PageInstallationSource(args),
         new PageSoftwareSelection(args),

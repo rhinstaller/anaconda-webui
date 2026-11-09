@@ -15,7 +15,9 @@ TEST_HELPERS_DIR = os.path.realpath(f'{__file__}/../helpers')
 sys.path.append(TEST_HELPERS_DIR)
 
 # FIXME: python3-bugzilla should be removed from missing_packages once it's included in boot.iso
-missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
+# DO NOT MERGE: subscription-manager is added here temporarily for testing the subscription spoke.
+# It should not be included in Fedora test images — needs a proper ELN/RHEL image path.
+missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla subscription-manager python3-subscription-manager-rhsm python3-decorator"
 
 from compose_path import get_compose_url
 from machine.machine_core import machine_virtual

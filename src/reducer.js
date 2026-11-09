@@ -47,6 +47,7 @@ export const localizationInitialState = {
 /* Initial state for the boss store substate */
 export const bossInitialState = {
     installationStatus: null,
+    modules: [],
     pendingError: { message: "", type: "" },
 };
 
@@ -228,6 +229,8 @@ export const localizationReducer = (state = localizationInitialState, action) =>
 export const bossReducer = (state = bossInitialState, action) => {
     if (action.type === "GET_INSTALLATION_STATUS") {
         return { ...state, installationStatus: action.payload.status };
+    } else if (action.type === "GET_MODULES") {
+        return { ...state, modules: action.payload.modules };
     } else if (action.type === "GET_PENDING_ERROR") {
         return { ...state, pendingError: { message: action.payload.message, type: action.payload.type } };
     } else {
