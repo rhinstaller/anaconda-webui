@@ -22,10 +22,10 @@ import {
 import {
     createPartitioning,
     getDeviceTree,
-    partitioningSetEncrypt,
+    getPartitioningRequest,
     partitioningSetHomeReuse,
-    partitioningSetPassphrase,
     resetPartitioning,
+    setPartitioningRequest,
 } from "../apis/storage_partitioning.js";
 
 import {
@@ -225,10 +225,23 @@ export const getNewPartitioning = async ({
 
     if (currentPartitioning?.method === method &&
         method === "AUTOMATIC" &&
-        storageScenarioId !== "home-reuse" &&
-        currentPartitioning.requests[0].encrypted) {
-        await partitioningSetEncrypt({ encrypt: true, partitioning: part });
-        await partitioningSetPassphrase({ partitioning: part, passphrase: currentPartitioning.requests[0].passphrase });
+        storageScenarioId !== "home-reuse") {
+        const request = await getPartitioningRequest({ partitioning: currentPartitioning.path });
+
+        if (currentPartitioning.storageScenarioId === storageScenarioId) {
+            // Stay with the layout the user configured under this scenario.
+            await setPartitioningRequest({ partitioning: part, request });
+        } else {
+            // A different scenario starts from the default layout, but the
+            // encryption choice is independent and should survive the switch.
+            await setPartitioningRequest({
+                partitioning: part,
+                request: {
+                    encrypted: request.encrypted,
+                    passphrase: request.passphrase,
+                }
+            });
+        }
     }
 
     return part;

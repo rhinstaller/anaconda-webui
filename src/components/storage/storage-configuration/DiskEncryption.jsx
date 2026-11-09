@@ -10,7 +10,7 @@ import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Content, ContentVariants } from "@patternfly/react-core/dist/esm/components/Content/index.js";
 import { EmptyState, EmptyStateFooter } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
-import { Form, FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
+import { FormGroup, FormSection } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
@@ -101,17 +101,15 @@ export const DiskEncryption = ({ dispatch }) => {
     );
 
     return (
-        <Form onSubmit={e => { e.preventDefault(); return false }}>
-            <FormSection
-              title={<Title headingLevel="h3">{_("Encryption")}</Title>}
-            >
-                <Content>
-                    <Content component={ContentVariants.p}>
-                        {_("Secure your data using disk-based encryption. Only applies to new partitions")}
-                    </Content>
+        <FormSection
+          title={<Title headingLevel="h3">{_("Encryption")}</Title>}
+        >
+            <Content>
+                <Content component={ContentVariants.p}>
+                    {_("Secure your data using disk-based encryption. Only applies to new partitions")}
                 </Content>
-                {encryptedDevicesCheckbox(luks.encrypted ? encryptionContent : null)}
-            </FormSection>
-        </Form>
+            </Content>
+            {encryptedDevicesCheckbox(luks.encrypted ? encryptionContent : null)}
+        </FormSection>
     );
 };
