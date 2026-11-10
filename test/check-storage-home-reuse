@@ -398,6 +398,53 @@ class TestStorageHomeReuseDestructive(VirtInstallMachineCase, _TestStorageHomeRe
         r.check_disk_row(dev_mbr, "/", f"{dev_mbr}2", "14.0 GB", True, "btrfs subvolume", is_encrypted=False)
         r.check_disk_row(dev_mbr, "/boot", f"{dev_mbr}1", "1.07 GB", True, "ext4", is_encrypted=False)
 
+    def _testValidationFailure_partition_disk(self):
+        storage = Storage(self.browser, self.machine)
+        move_standard_fedora_disk_to_MBR_disk(storage, self.machine, "vda", "vdb")
+        self._remove_unknown_mountpoints("vdb")
+
+    @disk_images([("", 20), ("fedora-rawhide", 15)])
+    @run_boot("efi")
+    def testValidationFailure(self):
+        """
+        Description:
+            Test that after the home reuse validation failure (efi on biosboot)
+            it is possible to continue with another scenario
+
+        Expected results:
+            - The home reuse installation method fails but it is possible to use "Use entire disk" scenario
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        dev_mbr = "vda"
+        dev_gpt = "vdb"
+
+        # This is required for home-reuse availability check
+        pretend_default_scheme(self, "BTRFS")
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        # Scenario is not disabled
+        s.select_disks([(dev_mbr, True), (dev_gpt, False)])
+        s.wait_scenario_visible("home-reuse", True)
+        s.wait_scenario_available("home-reuse", True)
+
+        s.set_scenario("home-reuse")
+
+        # The backend rejects reinstall for biosboot partition
+        i.next(should_fail=True)
+        b.wait_in_text(
+            f"#{i.steps.INSTALLATION_METHOD}-step-notification",
+            "EFI System Partition must be mounted on one of"
+        )
+
+        s.set_scenario("erase-all")
+        i.reach(i.steps.REVIEW)
+
     def _testWindowsSingleDisk_partition_disk(self):
         storage = Storage(self.browser, self.machine)
         move_standard_fedora_disk_to_win_disk(storage, self.machine, "vda", "vdb")
