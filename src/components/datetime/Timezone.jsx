@@ -40,7 +40,7 @@ export const TimezoneSection = ({ locale, setSectionValid, setTimezoneLabel }) =
     const allValidTimezones = timezoneData?.allValidTimezones;
 
     useEffect(() => {
-        const keys = Object.keys(allValidTimezones || {});
+        const keys = Object.keys(allValidTimezones || {}).filter(k => k !== "");
         setRegions(keys);
         setCitiesByRegion(allValidTimezones || {});
         if (keys.length > 0 && !timezone) {
@@ -50,11 +50,20 @@ export const TimezoneSection = ({ locale, setSectionValid, setTimezoneLabel }) =
     }, [timezone, allValidTimezones]);
 
     useEffect(() => {
-        if (timezone && typeof timezone === "string" && timezone.includes("/")) {
-            const [reg, ...cty] = timezone.split("/");
-            setRegion(reg);
-            setCity(cty.join("/"));
+        if (!timezone) {
+            return;
         }
+        let tz = timezone;
+        if (!tz.includes("/")) {
+            try {
+                tz = new Intl.DateTimeFormat([], { timeZone: tz }).resolvedOptions().timeZone;
+            } catch {
+                return;
+            }
+        }
+        const [reg, ...cty] = tz.split("/");
+        setRegion(reg);
+        setCity(cty.join("/"));
     }, [timezone]);
 
     useEffect(() => {
