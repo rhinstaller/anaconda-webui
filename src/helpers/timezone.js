@@ -50,7 +50,8 @@ export const isValidTimezone = (timezoneId, allValidTimezones) => {
         return false;
     }
     if (!timezoneId.includes("/")) {
-        return false;
+        const legacyZones = allValidTimezones?.[""];
+        return Array.isArray(legacyZones) && legacyZones.includes(timezoneId);
     }
     const [region, ...cityParts] = timezoneId.split("/");
     const city = cityParts.join("/");
