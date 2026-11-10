@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+
+# derived from test/image-prepare in cockpit-project/cockpit
+
+import argparse
+import glob
+import os
+import shutil
+import subprocess
+import sys
+
+TEST_HELPERS_DIR = os.path.realpath(f'{__file__}/../helpers')
+sys.path.append(TEST_HELPERS_DIR)
+
+# FIXME: python3-bugzilla should be removed from missing_packages once it's included in boot.iso
+missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
+
+from compose_path import get_compose_url
+
+
+def releasever_from_image(image):
+    return image.replace("-boot", "").rsplit("-", 1)[1]
+
+
+def run(cmd):
+    subprocess.check_call(["bash", "-c", cmd])
+
+
+def download_from_copr(copr_repo, packages):
+    repo_id = f"copr_{copr_repo.replace('/', '_').replace('@', 'group_')}"
+    baseurl = f"https://download.copr.fedorainfracloud.org/results/{copr_repo}/fedora-{releasever}-$basearch/"
+    repo_file = os.path.join(repodir, f"{repo_id}.repo")
+    with open(repo_file, "w") as f:
+        f.write(f"[{repo_id}]\nbaseurl={baseurl}\ngpgcheck=0\n")
+    run(f"dnf download --destdir {destdir} --releasever {releasever} "
+        f"--setopt=reposdir={repodir} --repo {repo_id} {packages}")
+
+
+def fetch_rpms(image, compose, verbose, quick):
+    global destdir, releasever, repodir
+
+    scenario = os.environ.get("TEST_SCENARIO")
+
+    destdir = os.path.abspath("tmp/rpms")
+    if os.path.exists(destdir):
+        shutil.rmtree(destdir)
+    os.makedirs(destdir)
+
+    releasever = releasever_from_image(image)
+
+    repodir = os.path.join(destdir, "repos")
+    os.makedirs(repodir, exist_ok=True)
+
+    # If compose is specified enable the custom compose repository and disable the existing ones
+    if compose:
+        compose_base_url = get_compose_url(compose)
+        repo_url = f"{compose_base_url}/compose/Everything/x86_64/os/"
+        run("sed -i 's/enabled=1/enabled=0/' /usr/share/dnf5/repos.d/*.repo")
+        run(f"dnf -y config-manager addrepo --set=baseurl={repo_url}")
+
+    # Pull cockpit dependencies from the image default compose
+    # unless we are testing a PR on cockpit-project/cockpit, then pull it from the PR COPR repo
+    if scenario and "cockpit-pr-" in scenario:
+        cockpit_pr = scenario.split("-")[-1]
+        # cockpit-storaged is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr(f"packit/cockpit-project-cockpit-{cockpit_pr}",
+                           "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager")
+    else:
+        download_from_copr("@cockpit/main-builds",
+                           "cockpit-bridge cockpit-ws cockpit-storaged cockpit-networkmanager")
+
+    if scenario and scenario.startswith("anaconda-webui-pr-"):
+        # If we are testing a anaconda-webui PR scenario from a different repository
+        # then pull it from the anaconda-webui PR COPR repo
+        anaconda_webui_pr = scenario.split("-")[-1]
+        # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui")
+    elif compose:
+        # If we are testing a custom compose download the anaconda-webui from the compose
+        run(f"dnf download --destdir {destdir} --releasever {releasever} anaconda-webui")
+    else:
+        # Build anaconda-webui from SRPM
+        files_to_clean = glob.glob("anaconda-webui-*.rpm") + glob.glob("anaconda-webui-*.tar.xz") + ["anaconda-webui.spec"]
+        subprocess.run(["rm", *files_to_clean])
+        subprocess.run(["make", "srpm"])
+        srpm = glob.glob("anaconda-webui*.src.rpm")[0]
+
+        rpmbuild_opts = ""
+        if verbose:
+            rpmbuild_opts += " --verbose"
+        if quick:
+            rpmbuild_opts += " --nocheck"
+
+        run(f"sudo dnf builddep -y --releasever {releasever} --nogpgcheck {srpm}")
+        run(
+            f"rpmbuild --rebuild {srpm}"
+            f" --define '_rpmdir {destdir}'"
+            f" --define '_build_name_fmt %{{NAME}}-%{{VERSION}}-%{{RELEASE}}.%{{ARCH}}.rpm'"
+            f"{rpmbuild_opts}"
+        )
+        run(f"rm -f {destdir}/*.src.rpm")
+
+    if compose:
+        # If we are testing a custom compose do *not* download the blivet packages, they are in the ISO already
+        pass
+    elif scenario and "blivet-pr" in scenario:
+        # If we are testing a PR on storaged-project/blivet, then pull it from the PR COPR repo
+        blivet_pr = scenario.split("-")[-1]
+        # python3-blivet is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr(f"packit/storaged-project-blivet-{blivet_pr}", "python3-blivet")
+    else:
+        # Pull python3-blivet from the COPR repo packit builds from main branch
+        # python3-blivet is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr("@storage/blivet-daily", "python3-blivet")
+
+    if compose:
+        # If we are testing a custom compose do *not* download the anaconda packages, they are in the ISO already
+        pass
+    elif scenario and "anaconda-pr" in scenario:
+        # If we are testing a PR on rhinstaller/anaconda, then pull it from the PR COPR repo
+        anaconda_pr = scenario.split("-")[-1]
+        # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr(f"packit/rhinstaller-anaconda-{anaconda_pr}", "anaconda-core anaconda-tui")
+    else:
+        # Pull anaconda-core from the COPR repo packit builds from master branch
+        # anaconda-core is also available in the default rawhide compose, make sure we don't pull it from there
+        download_from_copr("@rhinstaller/Anaconda", "anaconda-core anaconda-tui")
+
+    # Download missing dependencies rpms
+    # FIXME boot.iso on rawhide does not currently contain the new anaconda-webui dependencies
+    # This will change once we include this changes upstream and start building boot.iso with the new dependencies
+    # Then we can enable this only for the various scenarios above
+    run(f"dnf download --destdir {destdir} --releasever {releasever} {missing_packages}")
+
+    shutil.rmtree(repodir)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--quick', '-q', action='store_true')
+    parser.add_argument('--verbose', '-v', action='store_true')
+    parser.add_argument('--image', default='fedora-rawhide')
+    parser.add_argument('--compose', default='')
+    args = parser.parse_args()
+
+    fetch_rpms(args.image, args.compose, args.verbose, args.quick)
+
+
+main()
