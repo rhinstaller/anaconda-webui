@@ -224,7 +224,14 @@ images: bots
 	bots/image-download "$(TEST_OS)"
 
 $(UPDATES_IMG): prepare-test-deps
-	test/prepare-updates-img
+	@if [ -e /run/.containerenv ] || [ -e /.dockerenv ]; then \
+		test/prepare-updates-img; \
+	else \
+		if ! podman container exists anaconda-webui; then \
+			toolbox create --image ghcr.io/cockpit-project/tasks -c anaconda-webui; \
+		fi; \
+		toolbox run --container anaconda-webui test/prepare-updates-img; \
+	fi
 
 create-updates.img: bots
 	-rm *updates.img
