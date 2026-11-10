@@ -3,7 +3,6 @@
 # derived from test/image-prepare in cockpit-project/cockpit
 
 import argparse
-import glob
 import os
 import shutil
 import subprocess
@@ -36,7 +35,7 @@ def download_from_copr(copr_repo, packages):
         f"--setopt=reposdir={repodir} --repo {repo_id} {packages}")
 
 
-def fetch_rpms(image, compose, verbose, quick):
+def fetch_rpms(image, compose):
     global destdir, releasever, repodir
 
     scenario = os.environ.get("TEST_SCENARIO")
@@ -78,27 +77,6 @@ def fetch_rpms(image, compose, verbose, quick):
     elif compose:
         # If we are testing a custom compose download the anaconda-webui from the compose
         run(f"dnf download --destdir {destdir} --releasever {releasever} anaconda-webui")
-    else:
-        # Build anaconda-webui from SRPM
-        files_to_clean = glob.glob("anaconda-webui-*.rpm") + glob.glob("anaconda-webui-*.tar.xz") + ["anaconda-webui.spec"]
-        subprocess.run(["rm", *files_to_clean])
-        subprocess.run(["make", "srpm"])
-        srpm = glob.glob("anaconda-webui*.src.rpm")[0]
-
-        rpmbuild_opts = ""
-        if verbose:
-            rpmbuild_opts += " --verbose"
-        if quick:
-            rpmbuild_opts += " --nocheck"
-
-        run(f"sudo dnf builddep -y --releasever {releasever} --nogpgcheck {srpm}")
-        run(
-            f"rpmbuild --rebuild {srpm}"
-            f" --define '_rpmdir {destdir}'"
-            f" --define '_build_name_fmt %{{NAME}}-%{{VERSION}}-%{{RELEASE}}.%{{ARCH}}.rpm'"
-            f"{rpmbuild_opts}"
-        )
-        run(f"rm -f {destdir}/*.src.rpm")
 
     if compose:
         # If we are testing a custom compose do *not* download the blivet packages, they are in the ISO already
@@ -137,13 +115,11 @@ def fetch_rpms(image, compose, verbose, quick):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--quick', '-q', action='store_true')
-    parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--image', default='fedora-rawhide')
     parser.add_argument('--compose', default='')
     args = parser.parse_args()
 
-    fetch_rpms(args.image, args.compose, args.verbose, args.quick)
+    fetch_rpms(args.image, args.compose)
 
 
 main()

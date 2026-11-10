@@ -8,7 +8,7 @@ BUILD_RPMS_IMAGE="${TEST_OS/\-boot/}"
 COMPOSE_ID="${TEST_COMPOSE:-}"
 
 # Prepare tmp/rpms folder with anaconda-webui missing dependencies
-test/fetch-rpms-deps -v --image=$BUILD_RPMS_IMAGE --compose=$COMPOSE_ID
+test/fetch-rpms-deps --image=$BUILD_RPMS_IMAGE --compose=$COMPOSE_ID
 
 # Copy the extra RPMs to the /tmp/rpms directory
 for i in ${TEST_RPMS//,/ }; do
@@ -16,11 +16,14 @@ for i in ${TEST_RPMS//,/ }; do
     cp $i tmp/rpms
 done
 
-# makeupdates must be run from the top level of the anaconda source tree
-# shellcheck disable=SC2086,SC2046
-MYPARAMS=()
-for p in tmp/rpms/*.rpm; do
-  MYPARAMS+=("--add" "$p")
-done
-scripts/makeupdates "${MYPARAMS[@]}"
-cp updates.img updates-${BUILD_RPMS_IMAGE}.img
+rm -rf updates updates.img
+
+make install DESTDIR="$(pwd)/updates"
+
+cd updates && for rpm in ../tmp/rpms/*.rpm; do rpm2cpio "$rpm" | cpio -idmu 2>/dev/null; done
+
+find . | cpio -c -o 2>/dev/null | gzip -9 > ../updates.img
+cd ..
+rm -rf updates
+
+cp updates.img "updates-${BUILD_RPMS_IMAGE}.img"
