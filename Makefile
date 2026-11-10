@@ -48,6 +48,18 @@ TEST_LIVE_OS=fedora-rawhide-live-boot
 export GITHUB_BASE
 export TEST_OS
 
+# Run a command in the anaconda-webui toolbox, or directly if already in a container
+define toolbox_run
+	@if [ -e /run/.containerenv ] || [ -e /.dockerenv ]; then \
+		$(1); \
+	else \
+		if ! podman container exists anaconda-webui; then \
+			toolbox create --image ghcr.io/cockpit-project/tasks -c anaconda-webui; \
+		fi; \
+		toolbox run --container anaconda-webui $(1); \
+	fi
+endef
+
 #
 # i18n
 #
@@ -205,10 +217,9 @@ bots: test/common
 live-vm: bots $(UPDATES_IMG)
 	./test/webui_testvm.py $(TEST_LIVE_OS)
 
-prepare-test-deps: bots test/common test/reference payload images
+prepare-test-deps: bots test/common test/reference tmp/$(PAYLOAD) images
 
-.PHONY: payload
-payload: bots
+tmp/$(PAYLOAD): bots
 	bots/image-download $(PAYLOAD)
 	@echo "Unpacking $(PAYLOAD) to tmp for local serving"
 	@rm -rf tmp/$(PAYLOAD) && mkdir -p tmp/$(PAYLOAD)
@@ -223,19 +234,20 @@ images: bots
 	fi
 	bots/image-download "$(TEST_OS)"
 
-$(UPDATES_IMG): prepare-test-deps
-	@if [ -e /run/.containerenv ] || [ -e /.dockerenv ]; then \
-		test/prepare-updates-img; \
-	else \
-		if ! podman container exists anaconda-webui; then \
-			toolbox create --image ghcr.io/cockpit-project/tasks -c anaconda-webui; \
-		fi; \
-		toolbox run --container anaconda-webui test/prepare-updates-img; \
-	fi
+tmp/rpms:
+	$(call toolbox_run, test/fetch-rpms-deps --image=$(VARIANT) --compose=$(TEST_COMPOSE))
 
-create-updates.img: bots
-	-rm *updates.img
-	make $(UPDATES_IMG)
+# Reuses cached tmp/rpms, payload, and images; fetches them if missing.
+# Warns if cached artifacts are older than 7 days.
+$(UPDATES_IMG): $(DIST_TEST) tmp/rpms prepare-test-deps
+	@if [ -d tmp/rpms ] && [ -n "$$(find tmp/rpms -maxdepth 0 -mtime +7)" ]; then \
+		echo "WARNING: tmp/rpms is older than 7 days, consider running 'make clean-test-artifacts'"; \
+	fi
+	$(call toolbox_run, test/prepare-updates-img)
+
+.PHONY: clean-test-artifacts
+clean-test-artifacts:
+	rm -rf tmp/rpms tmp/*-anaconda-payload *updates.img
 
 test/reference: test/common
 	test/common/pixel-tests pull
