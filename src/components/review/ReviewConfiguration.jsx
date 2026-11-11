@@ -50,6 +50,7 @@ import { AccountsReviewDescription } from "../users/index.js";
 import { usePageComplete as useUsersPageComplete } from "../users/usePageComplete.jsx";
 import { ReviewDescriptionListItem } from "./Common.jsx";
 import { HostnameRow } from "./Hostname.jsx";
+import { SubscriptionReviewDescription } from "../subscription/index.js";
 
 import "./ReviewConfiguration.scss";
 
@@ -90,6 +91,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
     const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
     const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
     const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
+    const subscriptionPageHidden = hiddenScreens.includes("anaconda-screen-subscription");
     const { source, type: payloadType } = useContext(PayloadContext) ?? {};
     const sourcePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-installation-source");
@@ -186,6 +188,11 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
         ? <AccountsReviewDescription />
         : <IncompleteStepIndicator />;
 
+    // TODO: once there is a CDN source in Source screen,
+    //       Subscription should be marked as incomplete
+    //       if CDN is selected as installation source
+    const subscriptionDescription =  <SubscriptionReviewDescription />;
+
     return (
         <Flex spaceItems={{ default: "spaceItemsMd" }} direction={{ default: "column" }}>
             {reviewValidationPending
@@ -246,6 +253,15 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
                                   term={_("Timezone")}
                                   description={timezoneDescription}
                                 />}
+                                {!subscriptionPageHidden &&
+                                <ReviewDescriptionList>
+                                    <ReviewDescriptionListItem
+                                      // TODO: check we set SCREEN_ID correctly
+                                      id={`${SCREEN_ID}-target-system-subscription`}
+                                      term={_("Subscription")}
+                                      description={subscriptionDescription}
+                                    />
+                                </ReviewDescriptionList>}
                                 {!sourcePageHidden &&
                                 <ReviewDescriptionListItem
                                   id={`${SCREEN_ID}-target-system-source`}
