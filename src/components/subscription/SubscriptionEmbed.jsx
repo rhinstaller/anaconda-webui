@@ -12,6 +12,22 @@ import { PageContext } from "../../contexts/Common.jsx";
 
 let clientInitialized = false;
 
+const _ = cockpit.gettext;
+const SCREEN_ID = "anaconda-screen-subscription";
+
+/** Review step summary for Subscription status */
+export const SubscriptionReviewDescription = () => {
+    if (clientInitialized) {
+        const is_registered = (subscriptionsClient.subscriptionStatus.status !== 'unknown');
+        if (is_registered) {
+            return _("Registered");
+        } else {
+            return _("Not registered");
+        }
+    }
+    return null;
+};
+
 export const SubscriptionEmbed = () => {
     const { setIsFormValid } = useContext(PageContext);
 

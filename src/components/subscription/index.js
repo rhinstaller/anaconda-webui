@@ -5,7 +5,9 @@
 
 import cockpit from "cockpit";
 
-import { SubscriptionEmbed } from "./SubscriptionEmbed.jsx";
+import { SubscriptionEmbed, SubscriptionReviewDescription } from "./SubscriptionEmbed.jsx";
+
+export { SubscriptionReviewDescription };
 
 const _ = cockpit.gettext;
 
