@@ -19,6 +19,7 @@ def cmd_cli():
     parser.add_argument("--host", help="Hostname to rsync", default='test-updates')
     parser.add_argument("--bios", help="Start the VM with BIOS firmware (UEFI is the default)", action='store_true')
     parser.add_argument("--kickstart", help="Kickstart file name from test/kickstarts/", dest="kickstart_file_name")
+    parser.add_argument("--add-boot-options", help="Additional boot options.", dest="additional_boot_options")
     parser.add_argument("--pause-at-summary", help="Pause automated kickstart install at the review screen",
                         action='store_true', dest="pause_at_summary")
     parser.add_argument("--remote-pin", help="PIN for accessing the webui. Blank value defaults to inst.webui.remote.noauth",
@@ -40,6 +41,7 @@ def cmd_cli():
     extra_disks = [args.add_disk] if args.add_disk is not None else []
     machine = VirtInstallMachine(image=args.image, memory_mb=INSTALLER_VM_MEMORY_MB,
                                  kickstart_file_name=args.kickstart_file_name,
+                                 additional_boot_options=args.additional_boot_options,
                                  pause_at_summary=args.pause_at_summary, remote_pin=args.remote_pin,
                                  payload_type=args.payload_type, extra_disks=extra_disks)
     try:
