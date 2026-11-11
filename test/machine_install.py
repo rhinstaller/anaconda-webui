@@ -44,6 +44,7 @@ class VirtInstallMachine(VirtMachine):
     def __init__(self, image, **kwargs):
         # From test ``provision`` / ``new_machine``; must not reach Machine.__init__.
         self.kickstart_file_name = kwargs.pop("kickstart_file_name", None)
+        self.additional_boot_options = kwargs.pop("additional_boot_options", "")
         self.pause_at_summary = kwargs.pop("pause_at_summary", False)
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         self.remote_pin = kwargs.pop("remote_pin", "")
@@ -223,7 +224,7 @@ class VirtInstallMachine(VirtMachine):
                 f"{serial_opt}"
                 f"--graphics vnc,listen={self.ssh_address} "
                 "--extra-args "
-                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {auth_method} {selinux}{inst_ks_arg} "
+                f"'{virt_kargs}{inst_graphical}inst.sshd inst.webui inst.webui.remote {auth_method} {selinux}{inst_ks_arg} {self.additional_boot_options} "
                 f"inst.updates=http://10.0.2.2:{self.http_install_port}/"
                 f"{self.label}-updates.img' "
                 "--network none "
