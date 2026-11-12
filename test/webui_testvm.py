@@ -14,7 +14,8 @@ from machine_install import VirtInstallMachine
 
 def cmd_cli():
     parser = argparse.ArgumentParser(description="Run a VM image until SIGTERM or SIGINT")
-    parser.add_argument("image", help="Image name")
+    parser.add_argument("image", nargs="?", default=os.environ.get("TEST_OS", "fedora-rawhide-boot"),
+                        help="Image name or path to an ISO file")
     parser.add_argument("--rsync", help="Rsync development files over on startup", action='store_true')
     parser.add_argument("--host", help="Hostname to rsync", default='test-updates')
     parser.add_argument("--bios", help="Start the VM with BIOS firmware (UEFI is the default)", action='store_true')
