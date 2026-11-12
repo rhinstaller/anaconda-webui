@@ -48,6 +48,7 @@ class VirtInstallMachine(VirtMachine):
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         self.remote_pin = kwargs.pop("remote_pin", "")
         self.extra_disks = kwargs.pop("extra_disks", [])
+        self.iso = os.path.abspath(image) if os.path.isfile(image) else None
         # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
@@ -158,9 +159,12 @@ class VirtInstallMachine(VirtMachine):
                 if self.pause_at_summary:
                     inst_ks_arg += " inst.pauseatsummary"
 
-        # If custom compose if specified for fetching the image then use that
+        # If a file path is given use it directly as the ISO,
+        # else if a custom compose is specified use that,
         # else get the image from the bots directory
-        if compose := os.environ.get("TEST_COMPOSE"):
+        if self.iso:
+            iso_path = self.iso
+        elif compose := os.environ.get("TEST_COMPOSE"):
             iso_path = f"{os.getcwd()}/test/images/{compose}.iso"
         else:
             iso_path = f"{os.getcwd()}/bots/images/{self.image}"
@@ -184,7 +188,7 @@ class VirtInstallMachine(VirtMachine):
             volume_id = self.get_volume_id(iso_path)
             extra_args = f"root=live:CDLABEL={volume_id} rd.live.image quiet rhgb"
         else:
-            location = f"{iso_path}"
+            location = iso_path
 
         # FIXME: Disable SELinux on DNF installation as it needs relabelling other wise ssh logins are prevented
         selinux = "inst.noselinux " if self.payload_type == "dnf" else ""
