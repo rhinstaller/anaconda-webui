@@ -18,7 +18,7 @@ See `<../HACKING.rst#setting-up-development-container>`_.
 
 Prepare an updates.img containing the anaconda-webui RPM and its dependencies::
 
-    make create-updates.img
+    make updates.img
 
 You can optionally add extra RPMs to the updates.img by setting the ``TEST_RPMS`` variable,
 with a comma-seperated list of RPMs to add. For example::
@@ -80,7 +80,7 @@ Updating the testing environment
 After the code is changed the testing environment needs to be updated.
 The most robust way of doing this is::
 
-    make create-updates.img
+    make updates.img
 
 Interactive browser
 -------------------
