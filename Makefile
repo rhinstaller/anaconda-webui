@@ -47,6 +47,8 @@ TEST_LIVE_OS=fedora-rawhide-live-boot
 
 export GITHUB_BASE
 export TEST_OS
+export TEST_SCENARIO
+export TEST_COMPOSE
 
 # Run a command in the anaconda-webui toolbox, or directly if already in a container
 define toolbox_run
@@ -56,7 +58,7 @@ define toolbox_run
 		if ! podman container exists anaconda-webui; then \
 			toolbox create --image ghcr.io/cockpit-project/tasks -c anaconda-webui; \
 		fi; \
-		toolbox run --container anaconda-webui $(1); \
+		toolbox run --container anaconda-webui env $$(env | grep '^TEST_') $(1); \
 	fi
 endef
 
