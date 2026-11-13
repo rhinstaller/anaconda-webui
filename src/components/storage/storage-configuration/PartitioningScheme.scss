@@ -1,0 +1,35 @@
+/*
+ * Copyright (C) 2026 Red Hat, Inc.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+
+// Separate the section from the encryption section below it. Note that
+// FormSection puts its className on the title as well, hence the id.
+#partitioning-scheme-section {
+  margin-block-end: var(--pf-t--global--spacer--xl);
+}
+
+// Remove underline from change configuration link
+#partitioning-scheme-change {
+  text-decoration: none;
+}
+
+#partitioning-scheme-preview {
+  .partitioning-scheme__mount-point {
+    font-family: var(--pf-t--global--font--family--mono);
+  }
+}
+
+// Limit width of form controls
+#partitioning-scheme-modal {
+  .pf-v6-c-menu-toggle,
+  .pf-v6-c-form-control {
+    width: min(30ch, 100%);
+  }
+
+  // Reset link on the left
+  #partitioning-scheme-reset {
+    padding-inline-start: 0;
+    text-decoration: none;
+  }
+}

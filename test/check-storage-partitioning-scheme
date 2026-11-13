@@ -1,0 +1,145 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from anacondalib import VirtInstallMachineCase
+from installer import Installer
+from review import Review
+from storage import Storage
+from testlib import nondestructive, test_main  # pylint: disable=import-error
+
+
+@nondestructive
+class TestStoragePartitioningScheme(VirtInstallMachineCase):
+
+    def testConfigureScheme(self):
+        """
+        Description:
+            Configure the scheme of the automatic partitioning through the modal
+
+        Expected results:
+            - The storage configuration screen names the configured scheme
+            - The modal previews the layout of the partitioning the request creates
+            - A scheme that formats its volumes itself offers no file system choice
+            - Changing the scheme or the file system recomputes the preview
+            - A mount point the layout no longer creates keeps its checkbox
+            - Saving keeps the configuration, also after leaving the screen
+            - Resetting restores the defaults
+        """
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
+
+        # The default scheme depends on the product profile (Fedora Server
+        # picks LVM, Fedora Workstation Btrfs), so remember it for the reset.
+        default_summary = s.get_summary_text()
+
+        # Put the request on Btrfs explicitly and reopen the modal, so the mount
+        # point checkboxes are derived from a layout that has a /home subvolume.
+        s.open_modal()
+        s.set_scheme("BTRFS")
+        s.save_modal()
+        s.check_summary("Btrfs")
+
+        s.open_modal()
+        s.check_scheme_selected("Btrfs")
+        s.check_file_system_present(False)
+
+        # The preview shows the layout of the partitioning the request creates,
+        # which on Btrfs is a subvolume per mount point.
+        s.check_preview_row(mount_point="/", file_system="btrfs")
+        s.check_preview_row(mount_point="/boot")
+        s.check_preview_row(mount_point="/home", file_system="btrfs")
+        s.check_mount_point_checkbox("/home", checked=True)
+
+        # Dropping a mount point takes it out of the layout, but the box stays
+        # so that it can be asked for again.
+        s.set_mount_point_checkbox("/home", False)
+        s.check_preview_row(mount_point="/home", present=False)
+        s.check_mount_point_checkbox("/home", checked=False)
+
+        s.set_mount_point_checkbox("/home", True)
+        s.check_preview_row(mount_point="/home", file_system="btrfs")
+
+        # LVM lays the volumes out itself and formats them with whatever the
+        # request asks for, so now there is a file system to pick.
+        s.set_scheme("LVM")
+        s.check_file_system_present(True)
+        s.set_file_system("ext4")
+        s.check_file_system_selected("ext4")
+        s.check_preview_row(mount_point="/", file_system="ext4")
+
+        # The disk is far too small for the 50 GiB that a separate /home wants,
+        # so autopartitioning puts everything on root. The checkbox is still
+        # offered, because it is the request that decides, not this layout.
+        s.check_preview_row(mount_point="/home", present=False)
+        s.check_mount_point_checkbox("/home", checked=True)
+
+        s.set_file_system("xfs")
+        s.check_preview_row(mount_point="/", file_system="xfs")
+
+        s.save_modal()
+        s.check_summary("LVM")
+
+        # The request is the configuration, so it survives leaving the screen.
+        # Nothing was applied, so re-entering does not reset the partitioning.
+        i.back(previous_page=i.steps.INSTALLATION_METHOD)
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
+        s.check_summary("LVM")
+
+        s.open_modal()
+        s.check_scheme_selected("LVM")
+        s.check_file_system_selected("xfs")
+
+        s.reset_to_defaults()
+        s.wait_summary_text(default_summary)
+        s.check_preview_row(mount_point="/")
+
+        # Cancelling leaves the saved configuration alone.
+        s.close_modal()
+        s.check_summary("LVM")
+
+    def testSchemeReachesReview(self):
+        """
+        Description:
+            A scheme picked in the modal is the one the installation would use
+
+        Expected results:
+            - The review screen reports the devices of the configured scheme
+        """
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.set_scenario("erase-all")
+        i.next(next_page=i.steps.STORAGE_CONFIGURATION)
+
+        s.open_modal()
+        s.set_scheme("LVM")
+        s.set_file_system("ext4")
+        s.save_modal()
+        s.check_summary("LVM")
+
+        i.reach(i.steps.REVIEW)
+
+        # Applying the request puts root on a logical volume formatted with the
+        # file system selected in the modal.
+        r.check_disk_row("vda", "/", "vda3, LVM", reformat=True, fs_type="ext4")
+        r.check_disk_row("vda", "/boot", "vda2", reformat=True, fs_type="ext4")
+
+
+if __name__ == '__main__':
+    test_main()

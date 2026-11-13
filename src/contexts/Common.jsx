@@ -49,17 +49,19 @@ const ModuleContextWrapper = ({ children, state }) => {
         <BossContext.Provider value={state.boss}>
             <LanguageContext.Provider value={state.localization}>
                 <RuntimeContext.Provider value={state.runtime}>
-                    <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
-                        <UsersContext.Provider value={state.users}>
-                            <NetworkContext.Provider value={state.network}>
-                                <PayloadContext.Provider value={state.payload}>
-                                    <TimezoneContext.Provider value={state.timezone}>
-                                        {children}
-                                    </TimezoneContext.Provider>
-                                </PayloadContext.Provider>
-                            </NetworkContext.Provider>
-                        </UsersContext.Provider>
-                    </StorageContext.Provider>
+                    <StorageDefaultsContext.Provider value={state.storage.partitioningOptions}>
+                        <StorageContext.Provider value={{ ...state.storage, isFetching: state.misc.isFetching }}>
+                            <UsersContext.Provider value={state.users}>
+                                <NetworkContext.Provider value={state.network}>
+                                    <PayloadContext.Provider value={state.payload}>
+                                        <TimezoneContext.Provider value={state.timezone}>
+                                            {children}
+                                        </TimezoneContext.Provider>
+                                    </PayloadContext.Provider>
+                                </NetworkContext.Provider>
+                            </UsersContext.Provider>
+                        </StorageContext.Provider>
+                    </StorageDefaultsContext.Provider>
                 </RuntimeContext.Provider>
             </LanguageContext.Provider>
         </BossContext.Provider>
@@ -80,20 +82,17 @@ const SystemInfoContextWrapper = ({ appVersion, children, conf, osRelease }) => 
     }, []);
 
     const systemType = conf?.["Installation System"].type;
-    const defaultScheme = conf?.Storage.default_scheme;
 
     return (
         <OsReleaseContext.Provider value={osRelease}>
             <SystemTypeContext.Provider value={{ desktopVariant, systemType }}>
-                <StorageDefaultsContext.Provider value={{ defaultScheme }}>
-                    <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
-                        <UserInterfaceContext.Provider value={conf["User Interface"]}>
-                            <AppVersionContext.Provider value={appVersion}>
-                                {children}
-                            </AppVersionContext.Provider>
-                        </UserInterfaceContext.Provider>
-                    </TargetSystemRootContext.Provider>
-                </StorageDefaultsContext.Provider>
+                <TargetSystemRootContext.Provider value={conf["Installation Target"].system_root}>
+                    <UserInterfaceContext.Provider value={conf["User Interface"]}>
+                        <AppVersionContext.Provider value={appVersion}>
+                            {children}
+                        </AppVersionContext.Provider>
+                    </UserInterfaceContext.Provider>
+                </TargetSystemRootContext.Provider>
             </SystemTypeContext.Provider>
         </OsReleaseContext.Provider>
     );

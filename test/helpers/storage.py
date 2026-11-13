@@ -743,10 +743,124 @@ class StorageMountPointMapping(StorageDBus, StorageDestination):
             self.browser.wait_not_present(f"#{CUSTOM_MOUNT_POINT}-table-row-{row}-{column} .pf-v6-c-helper-text__item.pf-m-error")
 
 
-class Storage(StorageEncryption, StorageMountPointMapping, StorageScenario, StorageReclaimDialog, StorageUtils):
+class StoragePartitioningScheme():
+    """The partitioning scheme section and its configuration modal."""
+
+    _PREFIX = "partitioning-scheme"
+    _MODAL = f"#{_PREFIX}-modal"
+
+    def __init__(self, browser):
+        self.browser = browser
+
+    @log_step(snapshot_before=True)
+    def check_summary(self, scheme):
+        self.browser.wait_text(
+            f"#{self._PREFIX}-summary",
+            f"Storage is automatically configured using {scheme}."
+        )
+
+    def get_summary_text(self):
+        return self.browser.text(f"#{self._PREFIX}-summary")
+
+    def wait_summary_text(self, text):
+        self.browser.wait_text(f"#{self._PREFIX}-summary", text)
+
+    @log_step(snapshot_before=True)
+    def open_modal(self):
+        self.browser.click(f"#{self._PREFIX}-change")
+        self.browser.wait_visible(self._MODAL)
+        self.wait_preview_done()
+
+    def close_modal(self):
+        self.browser.click(f"#{self._PREFIX}-cancel")
+        self.browser.wait_not_present(self._MODAL)
+
+    @log_step(snapshot_before=True)
+    def save_modal(self):
+        self.browser.click(f"#{self._PREFIX}-save")
+        self.browser.wait_not_present(self._MODAL)
+
+    def wait_preview_done(self):
+        """Wait for a debounced preview to be computed and rendered.
+
+        The task partitions a copy of the storage model, which takes longer
+        than the default timeout on a busy machine.
+        """
+        with self.browser.wait_timeout(60):
+            self.browser.wait_not_present(f"#{self._PREFIX}-preview-spinner")
+
+    def _select(self, field, value):
+        option = f"#{self._PREFIX}-{field}-{value}"
+        self.browser.click(f"#{self._PREFIX}-{field}-toggle")
+        self.browser.click(option)
+        self.browser.wait_not_present(option)
+
+    @log_step(snapshot_before=True)
+    def set_scheme(self, scheme):
+        self._select("scheme", scheme)
+        self.wait_preview_done()
+
+    def check_scheme_selected(self, title):
+        self.browser.wait_in_text(f"#{self._PREFIX}-scheme-toggle", title)
+
+    @log_step(snapshot_before=True)
+    def set_file_system(self, file_system):
+        self._select("file-system", file_system)
+        self.wait_preview_done()
+
+    def check_file_system_selected(self, file_system):
+        self.browser.wait_in_text(f"#{self._PREFIX}-file-system-toggle", file_system)
+
+    def check_file_system_present(self, present=True):
+        """A scheme that formats its volumes itself offers no file system choice."""
+        if present:
+            self.browser.wait_visible(f"#{self._PREFIX}-file-system-toggle")
+        else:
+            self.browser.wait_not_present(f"#{self._PREFIX}-file-system-toggle")
+
+    def _mount_point_selector(self, mount_point):
+        return f"#{self._PREFIX}-create-{mount_point.replace('/', '-')}"
+
+    def check_mount_point_checkbox(self, mount_point, checked=True, present=True):
+        selector = self._mount_point_selector(mount_point)
+        if not present:
+            self.browser.wait_not_present(selector)
+            return
+        if checked:
+            self.browser.wait_visible(f"{selector}:checked")
+        else:
+            self.browser.wait_visible(f"{selector}:not(:checked)")
+
+    @log_step(snapshot_before=True)
+    def set_mount_point_checkbox(self, mount_point, checked):
+        self.browser.set_checked(self._mount_point_selector(mount_point), checked)
+        self.wait_preview_done()
+
+    def check_preview_row(self, mount_point=None, device=None, file_system=None, present=True):
+        row = f"#{self._PREFIX}-preview tr"
+        if mount_point is not None:
+            row += f"[data-mount='{mount_point}']"
+        if device is not None:
+            row += f"[data-device='{device}']"
+        if file_system is not None:
+            row += f"[data-format='{file_system}']"
+
+        if present:
+            self.browser.wait_visible(row)
+        else:
+            self.browser.wait_not_present(row)
+
+    @log_step(snapshot_before=True)
+    def reset_to_defaults(self):
+        self.browser.click(f"#{self._PREFIX}-reset")
+        self.wait_preview_done()
+
+
+class Storage(StorageEncryption, StorageMountPointMapping, StoragePartitioningScheme, StorageScenario, StorageReclaimDialog, StorageUtils):
     def __init__(self, browser, machine):
         StorageEncryption.__init__(self, browser, machine)
         StorageMountPointMapping.__init__(self, browser, machine)
+        StoragePartitioningScheme.__init__(self, browser)
         StorageScenario.__init__(self, browser, machine)
         StorageReclaimDialog.__init__(self, browser)
         StorageUtils.__init__(self, browser, machine)

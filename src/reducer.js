@@ -27,6 +27,12 @@ export const storageInitialState = {
     },
     mountPoints: {},
     partitioning: {},
+    partitioningOptions: {
+        defaultFileSystem: "",
+        defaultScheme: "",
+        supportedFileSystems: [],
+        supportedSchemes: [],
+    },
     storageScenarioId: null,
 };
 
@@ -164,6 +170,8 @@ export const storageReducer = (state = storageInitialState, action) => {
                 }
             }
         };
+    } else if (action.type === "GET_PARTITIONING_OPTIONS") {
+        return { ...state, partitioningOptions: action.payload };
     } else if (action.type === "GET_DISK_SELECTION") {
         return { ...state, diskSelection: action.payload.diskSelection };
     } else if (action.type === "GET_PARTITIONING_DATA") {

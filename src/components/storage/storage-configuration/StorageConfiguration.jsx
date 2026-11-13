@@ -13,6 +13,7 @@ import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
 import { AnacondaWizardFooter } from "../../AnacondaWizardFooter.jsx";
 import { createStorageValidationNotification } from "../Common.jsx";
 import { DiskEncryption } from "./DiskEncryption.jsx";
+import { PartitioningScheme } from "./PartitioningScheme.jsx";
 
 const SCREEN_ID = "anaconda-screen-storage-configuration";
 
@@ -37,10 +38,13 @@ export const StorageConfiguration = ({ dispatch, onCritFail }) => {
     }, [setIsFormValid, luks.encrypted]);
 
     return (
-        <DiskEncryption
-          dispatch={dispatch}
-          onCritFail={onCritFail}
-        />
+        <>
+            <PartitioningScheme />
+            <DiskEncryption
+              dispatch={dispatch}
+              onCritFail={onCritFail}
+            />
+        </>
     );
 };
 
