@@ -1,0 +1,106 @@
+#!/usr/bin/python3
+#
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+import anacondalib
+from installer import Installer
+from progress import Progress
+from review import Review
+from storage import EFI_PARTITION_DEFAULT_SIZE_MB, Storage
+from storage_iscsi import StorageISCSIHelpers, iscsi_provision
+from storagelib import StorageCase  # pylint: disable=import-error
+from testlib import test_main  # pylint: disable=import-error
+
+
+class TestStorageISCSI_E2E(anacondalib.VirtInstallMachineCase, StorageCase):
+    provision = iscsi_provision()
+
+    def testDataPartitionCockpit(self):
+        """
+        Description:
+            Test that an attached iSCSI disk can be partitioned in Cockpit Storage
+            and used as the /data mount point of the installed system.
+
+        Expected results:
+            - The iSCSI disk can be partitioned and mounted as /data
+            - The review screen shows the expected storage layout
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m, scenario="use-configured-storage")
+        s = Storage(b, m)
+        r = Review(b, m)
+        p = Progress(b)
+
+        #iscsi = StorageISCSIHelpers(None, m, target_ip="10.43.136.55")
+        iscsi = StorageISCSIHelpers(self.machines['iscsi-server'], m)
+
+        auth_password = iscsi.auth_password
+        discovery_password  = iscsi.discovery_password
+        initiator_iqn = iscsi.initiator_iqn
+        target_iqn = iscsi.target_iqn
+        user_name = iscsi.user_name
+
+        iscsi.setup_iscsi_server(size="400M")
+
+        local_disk = "vda"
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+        s.check_disk_selected(local_disk)
+
+        iscsi.attach_disk(self, s,
+                          initiator_iqn,
+                          target_iqn,
+                          user_name,
+                          discovery_password,
+                          auth_password,
+                          )
+
+        iscsi_dev = iscsi.get_device_node()
+        s.rescan_disks(expected_disks=[iscsi_dev])
+        s.select_disks([(local_disk, True), (iscsi_dev, True)])
+
+        s.enter_cockpit_storage()
+        iscsi.cockpit_create_localdisk_partitions(self, local_disk)
+        iscsi.create_data_partition(self, iscsi_dev, "/data")
+
+        s.exit_cockpit_storage()
+
+        s.set_scenario("use-configured-storage")
+
+        i.reach(i.steps.REVIEW)
+
+        # verify review screen
+        r.check_disk("vda", "16.1 GB vda (Virtio Block Device)")
+        r.check_disk_row("vda", "/boot/efi", "vda1", EFI_PARTITION_DEFAULT_SIZE_MB, False)
+        r.check_disk_row("vda", "/boot", "vda2", "1.07 GB", False)
+        r.check_disk_row("vda", "/", "vda3", "14.5 GB", False)
+        # The size of the iSCSI disk depends on the size of the backstore
+        r.check_disk_row(iscsi_dev, "/data", f"{iscsi_dev}1", reformat=False)
+
+        # Do not use self.install(), it reboots right away. The iSCSI
+        # configuration has to be copied to the installed system before that.
+        i.begin_installation(needs_confirmation=False, button_text="Install")
+        p.wait_done()
+
+        # The installed system needs the iSCSI tooling to connect to the target
+        m.execute("chroot /mnt/sysroot rpm -q iscsi-initiator-utils")
+
+        # FIXME: workaround until the installer configures iSCSI attached in
+        # Cockpit storage for the installed system itself (INSTALLER-3754)
+        iscsi.write_initiator_config()
+
+        self.handleReboot()
+
+        # Check that '/data' of the installed system is mounted from the iSCSI disk
+        iscsi_dev = iscsi.get_device_node()
+        self.assertEqual(
+            m.execute("findmnt --noheadings --output SOURCE,FSTYPE /data").split(),
+            [f"/dev/{iscsi_dev}1", "xfs"]
+        )
+
+
+if __name__ == '__main__':
+    test_main()

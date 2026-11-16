@@ -49,6 +49,8 @@ class VirtInstallMachine(VirtMachine):
         self.payload_type = kwargs.pop("payload_type", "liveimg".lower())
         self.remote_pin = kwargs.pop("remote_pin", "")
         self.extra_disks = kwargs.pop("extra_disks", [])
+        # Attach a second NIC to the inter-VM network of multi-machine tests
+        self.mcast_network = kwargs.pop("mcast_network", False)
         # Always enforce the minimum RAM the installer requires. Covers every entry point the same way:
         # test/run (CI), local test/check-*, and GlobalMachine.reset() which omits memory_mb.
         kwargs["memory_mb"] = max(kwargs.get("memory_mb") or 0, INSTALLER_VM_MEMORY_MB)
@@ -211,6 +213,17 @@ class VirtInstallMachine(VirtMachine):
                     disk_parts.append(f"--disk path={path},size={size_gb},bus=virtio ")
                 disk_args = "".join(disk_parts)
 
+            # The mcast port and the MAC are allocated per test run by bots'
+            # VirtNetwork, so parallel test runs get separate segments and
+            # never collide.
+            mcast_netdev_args = ""
+            if self.mcast_network:
+                mcast_netdev_args = (
+                    "-netdev socket,"
+                    f"mcast=230.0.0.1:{self.networking['mcast']},id=mcast0,localaddr=127.0.0.1 "
+                    f"-device virtio-net-pci,netdev=mcast0,mac={self.networking['mac']},addr=0x0f "
+                )
+
             self._execute(
                 "virt-install "
                 "--wait "
@@ -233,7 +246,8 @@ class VirtInstallMachine(VirtMachine):
                 "'-netdev user,id=hostnet0,"
                 f"hostfwd=tcp:{self.ssh_address}:{self.ssh_port}-:22,"
                 f"hostfwd=tcp:{self.web_address}:{self.web_port}-:443 "
-                "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16' "
+                "-device virtio-net-pci,netdev=hostnet0,id=net0,addr=0x16 "
+                f"{mcast_netdev_args}' "
                 f"--extra-args '{extra_args}' "
                 f"{extra_boot_args_option}"
                 f"{disk_args}"
