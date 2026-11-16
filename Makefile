@@ -47,6 +47,7 @@ TEST_LIVE_OS=fedora-rawhide-live-boot
 
 export GITHUB_BASE
 export TEST_OS
+export TEST_CUSTOM_ISO
 export TEST_SCENARIO
 export TEST_COMPOSE
 
