@@ -212,8 +212,15 @@ codecheck: test/common $(NODE_MODULES_TEST)
 # Workaround cockpit's expectation for test/images directory. This is not really needed in our case
 # as we consume ready ISOs
 # https://github.com/cockpit-project/cockpit/blob/main/test/common/testlib.py#L1118
+.PHONY: bots
 bots: test/common
 	test/common/make-bots
+	@fetch_head=$$(git -C bots rev-parse --path-format=absolute --git-path FETCH_HEAD); \
+	if [ ! -f "$$fetch_head" ] || [ -n "$$(find "$$fetch_head" -mtime +14)" ]; then \
+		if [ -t 1 ]; then printf '\033[1;31m'; fi; \
+		echo "WARNING: bots may be outdated, consider running 'git -C bots pull --ff-only'"; \
+		if [ -t 1 ]; then printf '\033[0m'; fi; \
+	fi
 	cd test && ln -sf ../bots/images images
 
 live-vm: bots $(UPDATES_IMG)
