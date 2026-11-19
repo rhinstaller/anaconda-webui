@@ -47,6 +47,7 @@ TEST_LIVE_OS=fedora-rawhide-live-boot
 
 export GITHUB_BASE
 export TEST_OS
+export TEST_CUSTOM_ISO
 export TEST_SCENARIO
 export TEST_COMPOSE
 
@@ -171,6 +172,7 @@ $(TARFILE): $(DIST_TEST) $(SPEC)
 		dist/
 
 $(NODE_CACHE): $(NODE_MODULES_TEST)
+	rm -rf node_modules/subscription-manager-cockpit/node_modules
 	tools/node-modules runtime-tar $(NODE_CACHE)
 
 node-cache: $(NODE_CACHE)
