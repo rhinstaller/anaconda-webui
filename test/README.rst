@@ -136,6 +136,10 @@ Run the following command from toolbox (as it has all its dependencies already i
 
     test/webui_testvm.py fedora-rawhide-boot
 
+You can also pass a path to a custom ISO file directly::
+
+    test/webui_testvm.py /path/to/Fedora-eln-boot.iso
+
 Once the machine is booted and the cockpit socket has been activated, a
 message will be printed describing how to access the virtual machine, via
 ssh and web.  See the "Helpful tips" section below.
@@ -265,6 +269,10 @@ You can set these environment variables to configure the test suite::
                      "bios"
                      "efi"
                   "efi" is the default.
+
+    TEST_CUSTOM_ISO  Set to skip downloading anaconda-core and python3-blivet from
+                     COPR when building updates.img.
+                     Example: TEST_CUSTOM_ISO=1 make updates.img
 
 Debugging tests
 ---------------
