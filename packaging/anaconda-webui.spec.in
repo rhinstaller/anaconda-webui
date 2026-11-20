@@ -18,6 +18,7 @@ BuildArch:      noarch
 BuildRequires:  libappstream-glib
 BuildRequires:  make
 BuildRequires:  gettext
+BuildRequires:  python3
 # Needed for the unitdir macro
 BuildRequires: systemd-rpm-macros
 
@@ -32,8 +33,6 @@ BuildRequires:  nodejs-esbuild
 %global anacondacorever 42.5
 %endif
 
-%global webui_slitherer_spin_identities fedora-release-identity-budgie or fedora-release-identity-cinnamon or fedora-release-identity-kde-desktop or fedora-release-identity-kde-mobile or fedora-release-identity-lxde or fedora-release-identity-lxqt or fedora-release-identity-matecompiz or fedora-release-identity-soas or fedora-release-identity-sway or fedora-release-identity-xfce or fedora-release-identity-i3
-
 %global cockpitver 275
 
 %define _unitdir /usr/lib/systemd/system
@@ -44,11 +43,11 @@ Requires: cockpit-bridge >= %{cockpitver}
 Requires: cockpit-ws >= %{cockpitver}
 Requires: anaconda-core  >= %{anacondacorever}
 Requires: python3-bugzilla
-# Firefox dependency needs to be specified there as cockpit web-view does not have a hard dependency on Firefox as
-# it can often fall back to a diferent browser. This does not work in the limited installer
-# environment, so we need to make sure Firefox is available. Exclude on RHEL, only Flatpak version will be there.
+Requires: anaconda-webui-opener
+Requires: %{name}-browser-ext = %{version}-%{release}
+# Downstreams using Flatpak browsers on RHEL supply their own provider.
 %if ! 0%{?rhel}
-Requires: (slitherer if (%{webui_slitherer_spin_identities}) else firefox)
+Suggests: anaconda-webui-opener-firefox
 %endif
 %if 0%{?fedora}
 Requires: system-logos
@@ -59,6 +58,25 @@ BuildRequires: desktop-file-utils
 
 %description
 Anaconda installer Web interface
+
+%package opener-firefox
+Summary: Firefox launcher for the Anaconda installer Web interface
+Requires: firefox
+Provides: anaconda-webui-opener
+Conflicts: anaconda-webui-opener
+
+%description opener-firefox
+Launch the Anaconda installer Web interface in a separate Firefox instance
+with an installer-specific profile.
+
+%package browser-ext
+Summary: External link handler for the Anaconda installer Web interface
+Requires: xdg-utils
+
+%description browser-ext
+Open external links from the installer in the desktop's preferred browser.
+Includes a separate Firefox profile for external links, independently of the
+browser used by the installer opener.
 
 %prep
 %setup -q -n %{name}
@@ -81,9 +99,7 @@ desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_d
 desktop-file-install --dir=%{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/anaconda-gnome-control-center.desktop
 
 %check
-exit 0
-# We have some integration tests, but those require running a VM, so that would
-# be an overkill for RPM check script.
+python3 -m unittest discover -s test/unit -p test_webui_opener.py
 
 %files
 %dir %{_datadir}/cockpit/anaconda-webui
@@ -114,27 +130,28 @@ exit 0
 %dir %{_datadir}/anaconda/cockpit/conf.d
 %{_datadir}/anaconda/cockpit/conf.d/50-remote-auth.conf
 %{_libexecdir}/anaconda/cockpit-pin-auth
-%dir %{_datadir}/anaconda/firefox-theme
-%dir %{_datadir}/anaconda/firefox-theme/default
-%dir %{_datadir}/anaconda/firefox-theme/default/chrome
-%{_datadir}/anaconda/firefox-theme/default/user.js
-%{_datadir}/anaconda/firefox-theme/default/chrome/userChrome.css
-%dir %{_datadir}/anaconda/firefox-theme/live
-%dir %{_datadir}/anaconda/firefox-theme/live/chrome
-%{_datadir}/anaconda/firefox-theme/live/user.js
-%{_datadir}/anaconda/firefox-theme/live/chrome/userChrome.css
-%dir %{_datadir}/anaconda/firefox-theme/extlink
-%{_datadir}/anaconda/firefox-theme/extlink/user.js
 %{_libexecdir}/anaconda/webui-desktop
-%{_libexecdir}/anaconda/browser-ext
 %{_libexecdir}/anaconda/gnome-control-center-ext
-%{_datadir}/applications/extlinks.desktop
 %{_datadir}/applications/anaconda-gnome-control-center.desktop
 %{_unitdir}/webui-cockpit-ws.service
 %{_unitdir}/cockpit-pin-auth.socket
 %{_unitdir}/cockpit-pin-auth@.service
 %{_unitdir}/webui-tls-proxy.service
 %{_libexecdir}/anaconda/webui-tls-proxy
+
+%files opener-firefox
+%license LICENSE
+%{_bindir}/anaconda-webui-opener
+%dir %{_datadir}/anaconda/firefox-theme
+%{_datadir}/anaconda/firefox-theme/default
+%{_datadir}/anaconda/firefox-theme/live
+
+%files browser-ext
+%license LICENSE
+%{_libexecdir}/anaconda/browser-ext
+%{_datadir}/applications/extlinks.desktop
+%dir %{_datadir}/anaconda/firefox-theme
+%{_datadir}/anaconda/firefox-theme/extlink
 
 
 # The changelog is automatically generated and merged

@@ -134,6 +134,7 @@ install: $(DIST_TEST) po/LINGUAS
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
+	install -D -m 0755 src/scripts/anaconda-webui-opener-firefox $(DESTDIR)/usr/bin/anaconda-webui-opener
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp extlinks.desktop $(DESTDIR)/usr/share/applications/
 	cp anaconda-gnome-control-center.desktop $(DESTDIR)/usr/share/applications/
