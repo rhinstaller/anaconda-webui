@@ -134,6 +134,7 @@ install: $(DIST_TEST) po/LINGUAS
 	cp -r dist/* $(DESTDIR)/usr/share/cockpit/$(PACKAGE_NAME)
 	mkdir -p $(DESTDIR)/usr/share/anaconda
 	cp -r firefox-theme $(DESTDIR)/usr/share/anaconda/
+	install -D -m 0755 src/scripts/anaconda-webui-opener-firefox $(DESTDIR)/usr/bin/anaconda-webui-opener
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp extlinks.desktop $(DESTDIR)/usr/share/applications/
 	cp anaconda-gnome-control-center.desktop $(DESTDIR)/usr/share/applications/
@@ -205,6 +206,10 @@ $(COCKPIT_REPO_STAMP): Makefile
 .PHONY: codecheck
 codecheck: test/common $(NODE_MODULES_TEST)
 	test/common/static-code
+
+.PHONY: check
+check:
+	python3 -m unittest discover -s test/unit -p test_webui_opener.py
 
 # checkout Cockpit's bots for standard test VM images and API to launch them
 # must be from main, as only that has current and existing images; but testvm.py API is stable
