@@ -73,7 +73,8 @@ def fetch_rpms(image, compose):
         # then pull it from the anaconda-webui PR COPR repo
         anaconda_webui_pr = scenario.split("-")[-1]
         # anaconda-webui is also available in the default rawhide compose, make sure we don't pull it from there
-        download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}", "anaconda-webui")
+        download_from_copr(f"packit/rhinstaller-anaconda-webui-{anaconda_webui_pr}",
+                           "anaconda-webui anaconda-webui-browser-ext anaconda-webui-opener-firefox")
     elif compose:
         # If we are testing a custom compose download the anaconda-webui from the compose
         run(f"dnf download --destdir {destdir} --releasever {releasever} anaconda-webui")
