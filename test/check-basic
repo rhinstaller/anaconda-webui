@@ -3,7 +3,7 @@
 # Copyright (C) 2021 Red Hat, Inc.
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-from anacondalib import VirtInstallMachineCase, pixel_tests_ignore
+from anacondalib import VirtInstallMachineCase, fedora_remix, pixel_tests_ignore
 from bugzilla_mock import (
     install_mock_bugzilla,
     set_mock_bugzilla_bugs,
@@ -350,6 +350,28 @@ class TestBasic(VirtInstallMachineCase):
         b.click(f"{dialog} button:contains('Back')")
         b.wait_visible("#critical-error-bugzilla-apikey")
         b.wait_not_present("#critical-error-bug-summary")
+
+
+class TestBranding(VirtInstallMachineCase):
+
+    @fedora_remix
+    def testDefaultBranding(self):
+        """
+        Description:
+            Test that the default cockpit branding is used when os-release
+            ID is not fedora, simulating a Fedora remix with generic-logos.
+
+        Expected results:
+            - The installer loads with the default branding (no distro-specific logo)
+            - The header shows the generic OS name from os-release
+        """
+        b = self.browser
+        m = self.machine
+        i = Installer(b, m)
+
+        i.open()
+
+        self.assert_pixels("default-branding", "#app")
 
 
 if __name__ == '__main__':
