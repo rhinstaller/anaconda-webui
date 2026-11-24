@@ -10,6 +10,7 @@ import {
     getPartitioningDataAction,
     getPartitioningOptionsAction,
     setAppliedPartitioningAction,
+    setReclaimActionsAction,
     setStorageScenarioAction,
 } from "../actions/storage-actions.js";
 
@@ -63,6 +64,10 @@ export class StorageClient {
                 switch (signal) {
                 case "PropertiesChanged":
                     if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.DiskSelection") {
+                        // The reclaim actions reference device names from the
+                        // scan they were taken from, so they cannot be replayed
+                        // against another selection.
+                        this.dispatch(setReclaimActionsAction({ reclaimActions: [] }));
                         this.dispatch(getDiskSelectionAction());
                     } else if (args[0] === "org.fedoraproject.Anaconda.Modules.Storage.Partitioning.Manual" && Object.hasOwn(args[1], "Requests")) {
                         this.dispatch(getPartitioningDataAction({ partitioning: path, requests: args[1].Requests.v }));

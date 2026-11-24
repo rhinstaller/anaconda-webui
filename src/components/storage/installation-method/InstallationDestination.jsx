@@ -24,7 +24,7 @@ import { setBootloaderDrive } from "../../../apis/storage_bootloader.js";
 import { setSelectedDisks } from "../../../apis/storage_disks_selection.js";
 import { resetPartitioning } from "../../../apis/storage_partitioning.js";
 
-import { getDiskSelectionAction } from "../../../actions/storage-actions.js";
+import { getDiskSelectionAction, setReclaimActionsAction } from "../../../actions/storage-actions.js";
 
 import { debug as loggerDebug } from "../../../helpers/log.js";
 import { getDeviceChildren, selectDefaultDisks } from "../../../helpers/storage.js";
@@ -178,6 +178,10 @@ const LocalDisksSelect = ({
 
 const rescanDisks = (setIsRescanningDisks, dispatch, errorHandler) => {
     setIsRescanningDisks(true);
+    // The reclaim actions reference device names from the scan they were
+    // taken from, so they cannot be replayed after a rescan.
+    dispatch(setReclaimActionsAction({ reclaimActions: [] }));
+
     scanDevicesWithTask()
             .then(task => {
                 return runStorageTask({
