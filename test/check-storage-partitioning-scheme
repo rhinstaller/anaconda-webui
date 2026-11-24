@@ -6,7 +6,7 @@
 from anacondalib import VirtInstallMachineCase
 from installer import Installer
 from review import Review
-from storage import Storage
+from storage import BOOT_PARTITION_DEFAULT_SIZE, EFI_PARTITION_DEFAULT_SIZE, Storage
 from testlib import nondestructive, test_main  # pylint: disable=import-error
 
 
@@ -120,6 +120,64 @@ class TestStoragePartitioningScheme(VirtInstallMachineCase):
 
         # Applying the request puts root on a logical volume formatted with the
         # file system selected in the modal.
+        r.check_disk_row("vda", "/", "vda3, LVM", reformat=True, fs_type="ext4")
+        r.check_disk_row("vda", "/boot", "vda2", reformat=True, fs_type="ext4")
+
+    def _testSchemeAfterReclaimSpace_partition_disk(self):
+        b = self.browser
+        m = self.machine
+        s = Storage(b, m)
+
+        # Leave no usable free space, so the preview can only work if it
+        # starts from the storage reclaimed in the reclaim space dialog.
+        s.partition_disk("/dev/vda", [
+            (EFI_PARTITION_DEFAULT_SIZE, "efi"),
+            (BOOT_PARTITION_DEFAULT_SIZE, "ext4"),
+            ("", "ext4"),
+        ])
+
+    def testSchemeAfterReclaimSpace(self):
+        """
+        Description:
+            Configure the scheme of the automatic partitioning after reclaiming space
+
+        Expected results:
+            - The reclaim space dialog is required, because the disk is full
+            - The modal previews a layout on the reclaimed storage
+            - The scheme picked in the modal is the one the installation uses
+        """
+        b = self.browser
+        m = self.machine
+
+        i = Installer(b, m)
+        r = Review(b, m)
+        s = Storage(b, m)
+
+        i.open()
+        i.reach(i.steps.INSTALLATION_METHOD)
+
+        s.set_scenario("use-free-space")
+        s.reclaim_check_checkbox(True, True)
+        i.next(next_page=i.steps.INSTALLATION_METHOD)
+
+        # Free the whole disk, so both the preview and the applied layout have
+        # to be created on the reclaimed storage.
+        s.reclaim_remove_device("vda")
+        s.reclaim_modal_submit()
+        i.wait_current_page(i.steps.STORAGE_CONFIGURATION)
+
+        s.open_modal()
+        s.check_preview_row(mount_point="/")
+
+        s.set_scheme("LVM")
+        s.set_file_system("ext4")
+        s.check_preview_row(mount_point="/", file_system="ext4")
+        s.save_modal()
+        s.check_summary("LVM")
+
+        i.reach(i.steps.REVIEW)
+
+        # The applied request keeps both the reclaimed space and the scheme.
         r.check_disk_row("vda", "/", "vda3, LVM", reformat=True, fs_type="ext4")
         r.check_disk_row("vda", "/boot", "vda2", reformat=True, fs_type="ext4")
 

@@ -27,6 +27,10 @@ import {
 import {
     getSelectedDisks,
 } from "./storage_disks_selection.js";
+import {
+    removeDevice,
+    shrinkDevice,
+} from "./storage_partitioning_automatic_resizable.js";
 
 const INTERFACE_NAME_STORAGE = "org.fedoraproject.Anaconda.Modules.Storage";
 const INTERFACE_NAME_PARTITIONING = "org.fedoraproject.Anaconda.Modules.Storage.Partitioning";
@@ -412,6 +416,32 @@ export const getPartitioningLayout = async ({ partitioning }) => {
 };
 
 /**
+ * Replay the actions of the reclaim space dialog on a partitioning.
+ *
+ * The reclaim actions exist only in the device tree of the partitioning
+ * that reclaimed the space. A fresh or rebuilt partitioning starts from
+ * the scanned storage, so the actions have to be applied again.
+ *
+ * @param {string} partitioning     DBus path to a partitioning
+ * @param {Array}  reclaimActions   Reclaim actions to replay
+ */
+export const replayReclaimActions = async ({ partitioning, reclaimActions }) => {
+    if (!reclaimActions?.length) {
+        return;
+    }
+
+    const deviceTree = await getDeviceTree({ partitioning });
+
+    for (const action of reclaimActions) {
+        if (action.type === "remove") {
+            await removeDevice({ device: action.device, deviceTree });
+        } else if (action.type === "shrink") {
+            await shrinkDevice({ device: action.device, deviceTree, newSize: action.newSize });
+        }
+    }
+};
+
+/**
  * Create and set up an automatic partitioning request.
  *
  * The request becomes the current partitioning. With configure=true, run the
@@ -420,12 +450,14 @@ export const getPartitioningLayout = async ({ partitioning }) => {
  *
  * @param {Object} request      An automatic partitioning request
  * @param {boolean} configure   Whether to configure the partitioning immediately
+ * @param {Array}  reclaimActions Reclaim actions to replay on the fresh device tree
  *
  * @returns {Promise}           Resolves the partitioning path and optional layout
  */
-export const createPartitioningFromRequest = async ({ configure = false, request }) => {
+export const createPartitioningFromRequest = async ({ configure = false, reclaimActions = [], request }) => {
     const partitioning = await createPartitioning({ method: "AUTOMATIC" });
     await setPartitioningRequest({ partitioning, request });
+    await replayReclaimActions({ partitioning, reclaimActions });
 
     if (!configure) {
         return { partitioning };

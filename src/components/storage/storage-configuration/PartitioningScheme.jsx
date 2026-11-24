@@ -23,6 +23,7 @@ import {
     getAutopartConfiguration,
     getAutopartDBusRequest,
     getPartitioningRequest,
+    setPartitioningRequest,
 } from "../../../apis/storage_partitioning.js";
 
 import { StorageContext } from "../../../contexts/Common.jsx";
@@ -99,7 +100,7 @@ const getOptionalMountPoints = ({ constraints, devices, excluded }) => {
             .sort();
 };
 
-const useLayoutPreview = ({ request }) => {
+const useLayoutPreview = ({ reclaimActions, request }) => {
     const [preview, setPreview] = useState({ isLoading: true });
     const latestRequest = useRef(0);
     const queue = useRef(Promise.resolve());
@@ -120,7 +121,7 @@ const useLayoutPreview = ({ request }) => {
                 }
 
                 try {
-                    const { layout } = await createPartitioningFromRequest({ configure: true, request });
+                    const { layout } = await createPartitioningFromRequest({ configure: true, reclaimActions, request });
                     if (requestId === latestRequest.current) {
                         setPreview({ devices: layout, isLoading: false });
                     }
@@ -133,7 +134,7 @@ const useLayoutPreview = ({ request }) => {
         }, PREVIEW_DEBOUNCE_MS);
 
         return () => clearTimeout(timer);
-    }, [request]);
+    }, [reclaimActions, request]);
 
     return preview;
 };
@@ -231,7 +232,7 @@ const LayoutPreview = ({ devices, error }) => {
     );
 };
 
-const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave }) => {
+const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave, reclaimActions }) => {
     const { partitioningOptions } = useContext(StorageContext);
     const { supportedFileSystems } = partitioningOptions;
     const schemes = partitioningOptions.supportedSchemes.map(describeScheme);
@@ -245,7 +246,7 @@ const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave }) => 
         () => getAutopartDBusRequest({ ...config, baseRequest: initialRequest, hasFileSystemType }),
         [config, hasFileSystemType, initialRequest]
     );
-    const { devices, error, isLoading } = useLayoutPreview({ request });
+    const { devices, error, isLoading } = useLayoutPreview({ reclaimActions, request });
 
     // Compute the checkbox list once from the first preview, then keep it static
     const [optionalMountPoints, setOptionalMountPoints] = useState(null);
@@ -381,7 +382,7 @@ const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave }) => 
 };
 
 export const PartitioningScheme = () => {
-    const { partitioning, partitioningOptions } = useContext(StorageContext);
+    const { partitioning, partitioningOptions, reclaimActions } = useContext(StorageContext);
     const [modalState, setModalState] = useState();
     // The request is the configuration. Keeping a copy here would go stale as
     // soon as the screen is left and remounted.
@@ -397,14 +398,11 @@ export const PartitioningScheme = () => {
         // The store keeps requests without DBus variants, but the modal has to
         // build and restore the request in the form the backend accepts.
         const request = await getPartitioningRequest({ partitioning: partitioning.path });
-        setModalState({ config, request });
+        setModalState({ config, partitioningPath: partitioning.path, request });
     };
 
-    // Saving keeps the previewed configuration as a fresh partitioning so that
-    // applyStorage configures it exactly once; cancelling recreates the request
-    // from before the modal opened.
     const closeWithRequest = async request => {
-        await createPartitioningFromRequest({ request });
+        await setPartitioningRequest({ partitioning: modalState.partitioningPath, request });
         setModalState();
     };
 
@@ -431,6 +429,7 @@ export const PartitioningScheme = () => {
               initialRequest={modalState.request}
               onCancel={() => closeWithRequest(modalState.request)}
               onSave={closeWithRequest}
+              reclaimActions={reclaimActions}
             />}
         </FormSection>
     );

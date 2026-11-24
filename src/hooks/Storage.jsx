@@ -24,6 +24,7 @@ import {
     getDeviceTree,
     getPartitioningRequest,
     partitioningSetHomeReuse,
+    replayReclaimActions,
     resetPartitioning,
     setPartitioningRequest,
 } from "../apis/storage_partitioning.js";
@@ -249,8 +250,9 @@ export const getNewPartitioning = async ({
 
 export const usePartitioningReset = () => {
     const { setIsFormDisabled } = useContext(PageContext) ?? {};
-    const { appliedPartitioning, partitioning } = useContext(StorageContext);
+    const { appliedPartitioning, partitioning, reclaimActions } = useContext(StorageContext);
     const pageHasMounted = useRef(false);
+    const isReplayingReclaim = useRef(false);
     // Always reset the partitioning when entering the installation destination page
     // If the last partitioning applied was from the cockpit storage integration
     // or from a kickstart we should not reset it
@@ -262,11 +264,20 @@ export const usePartitioningReset = () => {
     useEffect(() => {
         pageHasMounted.current = true;
         if (needsReset) {
-            resetPartitioning();
-        } else {
+            // The reset drops the playground that holds the reclaimed space,
+            // so replay the reclaim actions on the rebuilt one.
+            isReplayingReclaim.current = true;
+            resetPartitioning()
+                    .then(() => replayReclaimActions({ partitioning: partitioning.path, reclaimActions }))
+                    .catch(() => {})
+                    .finally(() => {
+                        isReplayingReclaim.current = false;
+                        setIsFormDisabled(false);
+                    });
+        } else if (!isReplayingReclaim.current) {
             setIsFormDisabled(false);
         }
-    }, [needsReset, setIsFormDisabled]);
+    }, [needsReset, setIsFormDisabled, partitioning.path, reclaimActions]);
 
     return !needsReset;
 };
