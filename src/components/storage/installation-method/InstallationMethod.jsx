@@ -13,6 +13,8 @@ import {
     applyStorage,
 } from "../../../apis/storage_partitioning.js";
 
+import { setReclaimActionsAction } from "../../../actions/storage-actions.js";
+
 import {
     DialogsContext,
     PageContext,
@@ -106,6 +108,10 @@ const CustomFooter = ({ dispatch, isReclaimSpaceCheckboxChecked }) => {
     }, [isNextClicked, goToNextStep, newPartitioning, partitioning.path]);
 
     const onNext = async () => {
+        // This step defines the space reclaimed for the new plan, so drop what
+        // an earlier visit remembered. The reclaim modal records it again.
+        dispatch(setReclaimActionsAction({ reclaimActions: [] }));
+
         if (SCENARIOS_WITHOUT_PARTITIONING_CREATION.includes(storageScenarioId)) {
             setNewPartitioning(partitioning.path);
             setIsNextClicked(true);
