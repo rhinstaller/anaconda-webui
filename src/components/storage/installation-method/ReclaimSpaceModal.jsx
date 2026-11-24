@@ -30,6 +30,8 @@ import { UndoIcon } from "@patternfly/react-icons/dist/esm/icons/undo-icon";
 
 import { isDeviceShrinkable, removeDevice, shrinkDevice } from "../../../apis/storage_partitioning_automatic_resizable.js";
 
+import { setReclaimActionsAction } from "../../../actions/storage-actions.js";
+
 import { deviceHasEncryptionKey, getDeviceAncestors, getDeviceTypeInfo, isDeviceEncrypted, unitMultiplier } from "../../../helpers/storage.js";
 
 import { PageContext, StorageContext } from "../../../contexts/Common.jsx";
@@ -44,7 +46,7 @@ import "./ReclaimSpaceModal.scss";
 const _ = cockpit.gettext;
 const idPrefix = "reclaim-space-modal";
 
-export const ReclaimSpaceModal = ({ onClose, onNext }) => {
+export const ReclaimSpaceModal = ({ dispatch, onClose, onNext }) => {
     const { isFormDisabled } = useContext(PageContext) ?? {};
     const { diskSelection, partitioning } = useContext(StorageContext);
     const devices = useOriginalDevices();
@@ -93,6 +95,22 @@ export const ReclaimSpaceModal = ({ onClose, onNext }) => {
                 }
             }
         }
+
+        // Keep the reclaimed space in the store, so other partitionings can
+        // replay it on their own device tree.
+        const reclaimActions = Object.entries(unappliedActions).flatMap(([device, actions]) => {
+            if (isDeviceParentRemoved(device, devices, unappliedActions)) {
+                return [];
+            }
+
+            return actions.map(action => ({
+                device,
+                type: action.type,
+                ...(action.type === "shrink" && { newSize: action.value }),
+            }));
+        });
+        dispatch(setReclaimActionsAction({ reclaimActions }));
+
         setOnNextClicked(true);
     };
 

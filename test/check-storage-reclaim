@@ -104,6 +104,7 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
             - The delete operation can be undone.
             - The installation can proceed after deleting
             - The installation can proceed after allocating enough space by deleting partitions.
+            - Re-entering the storage configuration keeps the reclaimed space
         """
 
         b = self.browser
@@ -166,6 +167,13 @@ class TestStorageReclaimSpace(VirtInstallMachineCase):
         s.reclaim_modal_submit()
         i.reach(i.steps.REVIEW)
 
+        r.check_disk_row("vda", parent="vda2", action="delete")
+
+        # Re-entering storage configuration must keep the reclaimed space
+        i.reach_on_sidebar(i.steps.STORAGE_CONFIGURATION)
+        i.check_next_disabled(False)
+        i.next()
+        i.reach(i.steps.REVIEW)
         r.check_disk_row("vda", parent="vda2", action="delete")
 
     def _testReclaimSpaceShrinkBtrfsSubvolumes_partition_disk(self):

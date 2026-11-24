@@ -194,6 +194,13 @@ export const setAppliedPartitioningAction = ({ appliedPartitioning }) => {
     };
 };
 
+export const setReclaimActionsAction = ({ reclaimActions }) => {
+    return {
+        payload: { reclaimActions },
+        type: "SET_RECLAIM_ACTIONS",
+    };
+};
+
 export const setStorageScenarioAction = (scenario) => {
     window.sessionStorage.setItem("storage-scenario-id", scenario);
 

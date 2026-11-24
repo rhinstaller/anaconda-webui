@@ -33,6 +33,7 @@ export const storageInitialState = {
         supportedFileSystems: [],
         supportedSchemes: [],
     },
+    reclaimActions: [],
     storageScenarioId: null,
 };
 
@@ -188,6 +189,8 @@ export const storageReducer = (state = storageInitialState, action) => {
         return { ...state, appliedPartitioning: action.payload.appliedPartitioning };
     } else if (action.type === "SET_STORAGE_SCENARIO") {
         return { ...state, storageScenarioId: action.payload.scenario };
+    } else if (action.type === "SET_RECLAIM_ACTIONS") {
+        return { ...state, reclaimActions: action.payload.reclaimActions };
     } else if (action.type === "SET_LUKS_ENCRYPTION_DATA") {
         const newLuksState = {
             ...state.luks,

@@ -54,8 +54,8 @@ export const InstallationMethod = ({
 
     // Display custom footer
     const getFooter = useMemo(() => (
-        <CustomFooter isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked} />
-    ), [isReclaimSpaceCheckboxChecked]);
+        <CustomFooter dispatch={dispatch} isReclaimSpaceCheckboxChecked={isReclaimSpaceCheckboxChecked} />
+    ), [dispatch, isReclaimSpaceCheckboxChecked]);
     useWizardFooter(getFooter);
 
     return (
@@ -85,7 +85,7 @@ export const InstallationMethod = ({
     );
 };
 
-const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
+const CustomFooter = ({ dispatch, isReclaimSpaceCheckboxChecked }) => {
     const { setIsFormDisabled, setStepNotification } = useContext(PageContext) ?? {};
     const [isReclaimSpaceModalOpen, setIsReclaimSpaceModalOpen] = useState(false);
     const [isNextClicked, setIsNextClicked] = useState(false);
@@ -159,6 +159,7 @@ const CustomFooter = ({ isReclaimSpaceCheckboxChecked }) => {
 
     const reclaimSpaceModal = (
         <ReclaimSpaceModal
+          dispatch={dispatch}
           onNext={goToNextStep}
           onClose={() => setIsReclaimSpaceModalOpen(false)}
         />
