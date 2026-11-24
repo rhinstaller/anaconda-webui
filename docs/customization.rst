@@ -66,30 +66,34 @@ Example use case
 
 In Fedora Workstation, the account creation page is hidden because user account setup is handled by GNOME Initial Setup during first boot. The date and time page is also hidden as it's configured automatically. See `anaconda/data/profile.d/fedora-workstation.conf <https://github.com/rhinstaller/anaconda/blob/main/data/profile.d/fedora-workstation.conf>`_ for a complete example.
 
-Default web browser
-^^^^^^^^^^^^^^^^^^^
+Installer web engine
+^^^^^^^^^^^^^^^^^^^^
 
-The default browser is set using the ``webui_web_engine`` option in the ``[User Interface]`` section of configuration files.
+The installation image selects the browser through an RPM provider.
+``anaconda-webui`` requires ``anaconda-webui-opener`` and suggests
+``anaconda-webui-opener-firefox`` on Fedora. To use a different opener, such as
+``anaconda-webui-opener-slitherer``, add it to the comps package group used to
+build the image.
 
-Example configuration:
+A custom opener package must require its browser, provide and conflict with
+``anaconda-webui-opener``, and install an executable at
+``/usr/bin/anaconda-webui-opener``:
 
-.. code-block:: ini
+.. code-block:: spec
 
-   [User Interface]
-   # The default browser for the Web UI.
-   webui_web_engine = firefox
+   Requires: my-installer-browser
+   Provides: anaconda-webui-opener
+   Conflicts: anaconda-webui-opener
 
-The value can be either an executable name available in ``$PATH`` (e.g., ``firefox``) or an absolute path to the executable (e.g., ``/usr/bin/firefox``).
+The opener receives the installer URL as a single argument. It runs as the
+installer user with a temporary ``HOME`` and the user's ``XDG_RUNTIME_DIR``.
+``ANACONDA_WEBUI_MODE`` is ``default`` for boot images or ``live`` for Live
+images; treat an unset mode as ``default``. The opener must launch an isolated
+browser instance, stay in the foreground until its window closes, and return
+a nonzero status on startup failure. Remote installations do not invoke it.
 
-**Important**: When changing the default browser, ensure that the specified browser is available in the installation environment. This typically means adding the browser package to your custom Live image or boot ISO.
-
-Example use case
-''''''''''''''''
-
-The default browser for Fedora is `Slitherer <https://gitlab.com/VelocityLimitless/Projects/slitherer>`_. Fedora Workstation overrides this to use Firefox, while Fedora KDE uses Slitherer (inherited from the base Fedora profile). See the respective profile files:
-
-- `anaconda/data/profile.d/fedora-workstation.conf <https://github.com/rhinstaller/anaconda/blob/main/data/profile.d/fedora-workstation.conf>`_
-- `anaconda/data/profile.d/fedora.conf <https://github.com/rhinstaller/anaconda/blob/main/data/profile.d/fedora.conf>`_
+The ``anaconda-webui-browser-ext`` package handles external links on Live
+images separately from the installer opener.
 
 .. _cockpit-web-service-configuration:
 

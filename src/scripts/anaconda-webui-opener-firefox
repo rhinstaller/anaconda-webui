@@ -1,0 +1,26 @@
+#!/bin/bash
+# Copyright (C) 2026 Red Hat, Inc.
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+set -eu
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 URL" >&2
+    exit 1
+fi
+
+case "${ANACONDA_WEBUI_MODE:-default}" in
+    default|live) MODE="${ANACONDA_WEBUI_MODE:-default}" ;;
+    *) echo "Unsupported installer mode: $ANACONDA_WEBUI_MODE" >&2; exit 1 ;;
+esac
+
+FIREFOX_PROFILE_PATH="${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR must be set}/anaconda/firefox-profile"
+rm -rf "$FIREFOX_PROFILE_PATH"
+mkdir -p "$FIREFOX_PROFILE_PATH"
+cp -a "/usr/share/anaconda/firefox-theme/$MODE/." "$FIREFOX_PROFILE_PATH"
+
+export MOZ_APP_TITLE=""
+export MOZ_APP_REMOTINGNAME="liveinst"
+export MOZ_GTK_TITLEBAR_DECORATION=client
+
+exec firefox --new-instance --profile "$FIREFOX_PROFILE_PATH" "$1"
