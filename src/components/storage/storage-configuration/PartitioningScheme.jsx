@@ -381,7 +381,7 @@ const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave }) => 
 };
 
 export const PartitioningScheme = () => {
-    const { partitioning, partitioningOptions, storageScenarioId } = useContext(StorageContext);
+    const { partitioning, partitioningOptions } = useContext(StorageContext);
     const [modalState, setModalState] = useState();
     // The request is the configuration. Keeping a copy here would go stale as
     // soon as the screen is left and remounted.
@@ -415,9 +415,6 @@ export const PartitioningScheme = () => {
                     <div id={idPrefix + "-summary"}>
                         {cockpit.format(_("Storage will be automatically configured using $0."), scheme.title)}
                     </div>
-                    {/* Reclaiming space is not carried into later partitionings
-                        yet, so only offer the modal when the whole disk is used. */}
-                    {storageScenarioId === "erase-all" &&
                     <Button
                       variant="link"
                       isInline
@@ -425,7 +422,7 @@ export const PartitioningScheme = () => {
                       onClick={openModal}
                     >
                         {_("Change")}
-                    </Button>}
+                    </Button>
                 </Flex>
             </FormGroup>
             {modalState &&
