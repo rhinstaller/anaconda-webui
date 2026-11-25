@@ -45,26 +45,53 @@ export const getSteps = (automatedInstall, userInterfaceConfig, args) => {
     ];
 
     /* Screens can be hidden in two ways:
-     * 1. Dynamically: Controlled by the 'Page.isHidden' method in individual components,
-     *    e.g., see 'MountPointMapping.jsx'.
+     * 1. Dynamically: Controlled by the 'Page.isHidden' property in individual components,
+     *    e.g., when the required D-Bus module is not available (see 'subscription/index.js').
      * 2. Statically: Configured via the 'hidden_webui_pages' key in the 'anaconda.conf'
      *    For example, the 'Account Creation' screen is hidden in the 'Workstation' ISO
      *    because this step is handled by the 'Gnome Initial Setup' tool during the first boot.
+     *
+     * Both are folded into 'Page.isHidden', which is the single source of truth
+     * for whether a screen is part of the wizard (see 'isStepHidden').
      */
-    return stepsOrder
-            .filter(s => {
-                const isHidden = hiddenScreens.includes(s.id);
+    stepsOrder.forEach(s => {
+        if (hiddenScreens.includes(s.id)) {
+            debug(
+                `Screen '${s.id}' will not be displayed because it is hidden by the Anaconda configuration file.`
+            );
+            s.isHidden = true;
+        }
+    });
 
-                if (isHidden) {
-                    debug(
-                        `Screen '${s.id}' will not be displayed because it is hidden by the Anaconda configuration file.`
-                    );
-                }
+    const firstScreenId = automatedInstall
+        ? "anaconda-screen-review"
+        : stepsOrder.find(s => !s.isHidden)?.id;
 
-                return !isHidden;
-            })
-            .map((s, i) => {
-                s.isFirstScreen = automatedInstall ? s.id === "anaconda-screen-review" : i === 0;
-                return s;
-            });
+    return stepsOrder.map(s => {
+        s.isFirstScreen = s.id === firstScreenId;
+        return s;
+    });
+};
+
+/**
+ * Whether the step with the given id is hidden from the wizard.
+ * Steps not present in the list are considered hidden.
+ *
+ * @param {Array} steps - Steps as returned by 'getSteps'
+ * @param {string} id - Step id
+ * @returns {boolean}
+ */
+export const isStepHidden = (steps, id) => {
+    for (const s of steps) {
+        if (s.id === id) {
+            return !!s.isHidden;
+        }
+        if (s.steps) {
+            const sub = s.steps.find(sub => sub.id === id);
+            if (sub) {
+                return !!(s.isHidden || sub.isHidden);
+            }
+        }
+    }
+    return true;
 };

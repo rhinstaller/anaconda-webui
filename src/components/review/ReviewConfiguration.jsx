@@ -13,7 +13,6 @@ import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js
 import { useWizardContext, useWizardFooter } from "@patternfly/react-core/dist/esm/components/Wizard/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 
-import { isSourceEditable } from "../../helpers/source.js";
 import { getDeviceChildren } from "../../helpers/storage.js";
 
 import {
@@ -81,30 +80,31 @@ const ReviewDescriptionList = ({ children }) => {
     );
 };
 
-export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, goToProgressPage, pauseAtSummary }) => {
+export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, goToProgressPage, isStepHidden, pauseAtSummary }) => {
     const osRelease = useContext(OsReleaseContext);
     const userInterfaceConfig = useContext(UserInterfaceContext);
     const hiddenScreens = userInterfaceConfig.hidden_webui_pages || [];
     const { goToStepById } = useWizardContext();
     const { appliedPartitioning } = useContext(StorageContext);
-    const languagePageHidden = hiddenScreens.includes("anaconda-screen-language");
+    const languagePageHidden = isStepHidden("anaconda-screen-language");
     const localizationComplete = useLocalizationPageComplete({ automatedInstall, isHidden: languagePageHidden });
-    const datetimePageHidden = hiddenScreens.includes("anaconda-screen-date-time");
+    const datetimePageHidden = isStepHidden("anaconda-screen-date-time");
     const datetimeComplete = useDatetimePageComplete({ automatedInstall, isHidden: datetimePageHidden });
-    const subscriptionPageHidden = hiddenScreens.includes("anaconda-screen-subscription");
-    const { source, type: payloadType } = useContext(PayloadContext) ?? {};
+    const subscriptionPageHidden = isStepHidden("anaconda-screen-subscription");
+    const { type: payloadType } = useContext(PayloadContext) ?? {};
+    const sourceSpokeHidden = isStepHidden("anaconda-screen-installation-source");
+    // The installation source is shown in the review also when it is not editable
+    // (e.g. set from kickstart) and therefore the spoke itself is hidden.
     const sourcePageHidden =
         payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-installation-source");
-    const sourceSpokeHidden = sourcePageHidden || !isSourceEditable(source);
     const sourceComplete = useSourcePageComplete({ isHidden: sourceSpokeHidden });
-    const softwarePageHidden =
-        payloadType !== "DNF" || hiddenScreens.includes("anaconda-screen-software-selection");
+    const softwarePageHidden = isStepHidden("anaconda-screen-software-selection");
     const softwareSelectionComplete = useSoftwarePageComplete({ automatedInstall, isHidden: softwarePageHidden });
     const {
         complete: storageComplete,
         validationPending: storageValidationPending,
     } = useStorageInstallationPageComplete();
-    const accountsPageHidden = hiddenScreens.includes("anaconda-screen-accounts");
+    const accountsPageHidden = isStepHidden("anaconda-screen-accounts");
     const usersComplete = useUsersPageComplete({ isHidden: accountsPageHidden });
 
     const pages = [
@@ -247,7 +247,7 @@ export const ReviewConfiguration = ({ autoProceedBlockedRef, automatedInstall, g
                                       description={languageDescription}
                                     />
                                 </ReviewDescriptionList>
-                                {!hiddenScreens.includes("anaconda-screen-date-time") &&
+                                {!datetimePageHidden &&
                                 <ReviewDescriptionListItem
                                   id={`${SCREEN_ID}-target-system-timezone`}
                                   term={_("Timezone")}
