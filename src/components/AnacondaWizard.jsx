@@ -16,7 +16,7 @@ import { useGnomeKeyboardMonitor } from "../hooks/Localization.jsx";
 
 import { AnacondaPage } from "./AnacondaPage.jsx";
 import { AnacondaWizardFooter } from "./AnacondaWizardFooter.jsx";
-import { getSteps } from "./steps.js";
+import { getSteps, isStepHidden } from "./steps.js";
 
 export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFetching, onCritFail, pauseAtSummary, setCurrentStepId, setShowStorage, showStorage }) => {
     /**
@@ -50,6 +50,7 @@ export const AnacondaWizard = ({ automatedInstall, currentStepId, dispatch, isFe
         automatedInstall,
         dispatch,
         goToProgressPage,
+        isStepHidden: id => isStepHidden(stepsOrder, id),
         onCritFail,
         pauseAtSummary,
         setShowStorage,
