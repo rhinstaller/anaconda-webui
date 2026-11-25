@@ -210,7 +210,7 @@ async function getOrderedSteps (mockingSystem) {
     const getSteps = await mockingSystem.importMockedSteps();
 
     // Call getSteps with mock arguments
-    const steps = getSteps({}, {}, {});
+    const steps = getSteps({}, {}, { modules: [] });
 
     return steps
             .flat()
@@ -264,7 +264,7 @@ async function extractPageInfo (filePath, mockingSystem) {
     // Check if this file has a Page class, and if so extract page info
     if (module.Page) {
         // Create instance to get properties (pass dummy args for constructors that expect them)
-        const pageInstance = new module.Page(false, "erase-all");
+        const pageInstance = new module.Page({ modules: [] });
 
         const result = {
             description: pageInstance._description || null,
