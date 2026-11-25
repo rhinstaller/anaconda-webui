@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: anaconda 32.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 10:25+0000\n"
+"POT-Creation-Date: 2026-11-24 12:56+0000\n"
 "PO-Revision-Date: 2026-10-25 07:49+0000\n"
 "Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
 "Language-Team: Russian <https://translate.fedoraproject.org/projects/"
@@ -70,9 +70,9 @@ msgstr ""
 msgid "$0 $1"
 msgstr "$0 $1"
 
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
 #: src/components/storage/installation-method/InstallationDestination.jsx:163
 #: src/components/storage/installation-method/InstallationDestination.jsx:269
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:349
 msgid "$0 ($1)"
 msgstr "$0 ($1)"
 
@@ -166,8 +166,8 @@ msgstr "О программе"
 msgid "Account"
 msgstr "Учётная запись"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 #: src/components/storage/StorageReview.jsx:248
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:142
 msgid "Actions"
 msgstr "Действия"
 
@@ -194,6 +194,12 @@ msgstr "Дополнительные языки"
 #: src/components/software/SoftwareSelection.jsx:147
 msgid "Additional software for the selected environment"
 msgstr "Дополнительное ПО для выбранного вами окружения"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:52
+#, fuzzy
+#| msgid "LVM Thin Provisioning"
+msgid "Advanced LVM with thin provisioning"
+msgstr "Динамический LVM"
 
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:55
 msgid "All changes made in the storage editor take effect immediately."
@@ -239,8 +245,8 @@ msgstr "Автоматическая загрузка файла журнала"
 msgid "Automatically set date and time, using time servers"
 msgstr "Автоматическая установка даты и времени с исп. серверов времени"
 
-#: src/components/datetime/Timezone.jsx:140
-#: src/components/datetime/Timezone.jsx:141
+#: src/components/datetime/Timezone.jsx:149
+#: src/components/datetime/Timezone.jsx:150
 msgid "Automatically set timezone"
 msgstr "Автоматическая установка часового пояса"
 
@@ -248,9 +254,9 @@ msgstr "Автоматическая установка часового поя�
 msgid "Available free space: $0. Installation requires: $1."
 msgstr "Доступное пространство: $0. Требуется для установки: $1."
 
-#: src/components/AnacondaWizardFooter.jsx:62
 #: src/components/error/BugzillaReport.jsx:599
 #: src/components/error/BugzillaReport.jsx:624
+#: src/components/AnacondaWizardFooter.jsx:62
 msgid "Back"
 msgstr "Назад"
 
@@ -261,6 +267,10 @@ msgstr "Базовое окружение"
 #: src/components/error/BugzillaReport.jsx:306
 msgid "Brief description of the issue"
 msgstr "Краткое описание проблемы"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:45
+msgid "Btrfs"
+msgstr "Вtrfs"
 
 #: src/components/error/BugzillaReport.jsx:295
 msgid "Bug report details"
@@ -287,16 +297,29 @@ msgstr ""
 "намереваетесь использовать его только для тестирования и разработки и готовы "
 "сообщать обо всех ошибках и проблемах, чтобы улучшить эту работу."
 
-#: src/components/review/Hostname.jsx:127
-#: src/components/localization/Keyboard.jsx:282
-#: src/components/error/Error.jsx:163
-#: src/components/datetime/CustomNTPModal.jsx:252
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:376
+#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
 #: src/components/storage/installation-method/InstallationDestination.jsx:375
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:211
-#: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:72
+#: src/components/localization/Keyboard.jsx:282
+#: src/components/error/Error.jsx:163 src/components/review/Hostname.jsx:127
+#: src/components/datetime/CustomNTPModal.jsx:252
 msgid "Cancel"
 msgstr "Отмена"
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:353
+#, fuzzy
+#| msgid "Detected valid storage layout:"
+msgid "Cannot apply this storage layout"
+msgstr "Обнаруженая действительная схема хранения:"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:188
+#, fuzzy
+#| msgid "Not enough free space on the selected disks."
+msgid "Cannot create this layout on the selected disks"
+msgstr "Недостаточно свободного места на выбранных дисках."
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:427
 #: src/components/review/Hostname.jsx:125
 msgid "Change"
 msgstr "Изменить"
@@ -345,9 +368,9 @@ msgid "Click 'Next' again to proceed despite these warnings."
 msgstr ""
 "Нажмите «Далее» ещё раз, чтобы проигнорировать предупреждения и продолжить."
 
-#: src/components/network/CockpitNetworkConfiguration.jsx:64
 #: src/components/storage/installation-method/InstallationDestination.jsx:380
 #: src/components/storage/installation-method/EncryptedDevices.jsx:181
+#: src/components/network/CockpitNetworkConfiguration.jsx:64
 msgid "Close"
 msgstr "Закрыть"
 
@@ -355,8 +378,8 @@ msgstr "Закрыть"
 msgid "Close storage editor"
 msgstr "Закрыть редактор хранилища"
 
-#: src/components/source/SourceReviewDescription.jsx:34
 #: src/components/source/InstallationSource.jsx:41
+#: src/components/source/SourceReviewDescription.jsx:34
 msgid "Closest mirror"
 msgstr "Ближайшее зеркало"
 
@@ -407,8 +430,8 @@ msgstr "Настройка источника установки"
 msgid "Configuring installation source..."
 msgstr "Настройка источника установки..."
 
-#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 #: src/components/storage/storage-configuration/DiskEncryption.jsx:96
+#: src/components/users/Accounts.jsx:208 src/components/users/Accounts.jsx:411
 msgid "Confirm passphrase"
 msgstr "Подтвердите парольную фразу"
 
@@ -416,8 +439,8 @@ msgstr "Подтвердите парольную фразу"
 msgid "Continue"
 msgstr "Продолжить"
 
-#: src/components/AnacondaWizardFooter.jsx:126
 #: src/components/installation/InstallationNonCriticalErrorDialog.jsx:43
+#: src/components/AnacondaWizardFooter.jsx:126
 msgid "Continue installation"
 msgstr "Продолжить установку"
 
@@ -436,6 +459,18 @@ msgstr "Исправьте эти проблемы, прежде чем прод
 #: src/components/users/index.js:20
 msgid "Create Account"
 msgstr "Создание уч. записи"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:82
+#, fuzzy
+#| msgid "Your %s must be on a separate partition or LV."
+msgid "Create a separate $0 partition"
+msgstr "%s должен быть на отдельном разделе или логическом томе."
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:81
+#, fuzzy
+#| msgid "Delete partition"
+msgid "Create a swap partition"
+msgstr "Удалить раздел"
 
 #: src/components/users/Accounts.jsx:318
 msgid "Create account"
@@ -486,8 +521,8 @@ msgstr "Подробное описание проблемы"
 msgid "Detected valid storage layout:"
 msgstr "Обнаруженая действительная схема хранения:"
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 #: src/components/storage/StorageReview.jsx:246
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:620
 msgid "Device"
 msgstr "Устройство"
 
@@ -515,7 +550,7 @@ msgstr "Зашифровать данные"
 msgid "Encrypted"
 msgstr "Зашифровано"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:106
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:105
 msgid "Encryption"
 msgstr "Шифрование"
 
@@ -571,6 +606,13 @@ msgstr "Не удалось сохранить схему разбиения р�
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:80
 msgid "Fedora linux requires at least $0 of disk space."
 msgstr "Fedora linux требует не менее $0 дискового пространства."
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:314
+#, fuzzy
+#| msgctxt "GUI|Custom Partitioning|Configure"
+#| msgid "File S_ystem:"
+msgid "File system"
+msgstr "_Файловая система:"
 
 #: src/components/installation/InstallationProgress.jsx:247
 msgid "Finalization"
@@ -706,9 +748,9 @@ msgstr "В ходе выполнения"
 msgid "Initializing..."
 msgstr "Инициализация..."
 
+#: src/components/storage/scenarios/use-free-space/index.js:27
 #: src/components/storage/scenarios/use-configured-storage/index.js:25
 #: src/components/storage/scenarios/use-configured-storage/index.js:39
-#: src/components/storage/scenarios/use-free-space/index.js:27
 msgid "Install"
 msgstr "Установить"
 
@@ -716,8 +758,8 @@ msgstr "Установить"
 msgid "Installation completed"
 msgstr "Установка завершена"
 
-#: src/components/installation/InstallationProgress.jsx:223
 #: src/components/error/Error.jsx:151
+#: src/components/installation/InstallationProgress.jsx:223
 msgid "Installation failed"
 msgstr "Сбой установки"
 
@@ -792,8 +834,18 @@ msgstr "Клавиатура"
 msgid "Keyboard layout during boot"
 msgstr "Раскладка клавиатуры при запуске"
 
-#: src/components/review/ReviewConfiguration.jsx:239
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:49
+msgid "LVM"
+msgstr "LVM"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:53
+#, fuzzy
+#| msgid "LVM Thin Provisioning"
+msgid "LVM thin provisioning"
+msgstr "Динамический LVM"
+
 #: src/components/localization/InstallationLanguage.jsx:240
+#: src/components/review/ReviewConfiguration.jsx:239
 msgid "Language"
 msgstr "Язык"
 
@@ -864,8 +916,15 @@ msgstr ""
 "Несоответствие между выбором форматирования родительского и дочернего "
 "устройств."
 
-#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:60
+#, fuzzy
+#| msgid "Modified storage"
+msgid "Modern storage pooling"
+msgstr "Измененное устройств хранения"
+
 #: src/components/storage/StorageReview.jsx:250
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:211
+#: src/components/storage/mount-point-mapping/MountPointMapping.jsx:619
 msgid "Mount point"
 msgstr "Точка монтирования"
 
@@ -933,13 +992,13 @@ msgstr "Сеть недоступна. Настройте сеть, чтобы �
 msgid "Network plugin failed"
 msgstr "Сбой плагина сети"
 
-#: src/components/AnacondaWizardFooter.jsx:71
 #: src/components/error/BugzillaReport.jsx:589
+#: src/components/AnacondaWizardFooter.jsx:71
 msgid "Next"
 msgstr "Далее"
 
-#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:624
+#: src/components/storage/installation-method/ReclaimSpaceModal.jsx:144
 msgid "No devices"
 msgstr "Нет устройств"
 
@@ -1010,14 +1069,20 @@ msgstr "Параметры"
 msgid "Other keyboards"
 msgstr "Другие клавиатуры"
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:306
+#, fuzzy
+#| msgid "Partitioning Options"
+msgid "Partitioning scheme"
+msgstr "Параметры разбиения"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegrationSidebar.jsx:88
 msgid "Partitions (advanced)"
 msgstr "Разделы (расширенный)"
 
-#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
 #: src/components/storage/installation-method/EncryptedDevices.jsx:150
 #: src/components/storage/installation-method/EncryptedDevices.jsx:157
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:93
+#: src/components/users/Accounts.jsx:205 src/components/users/Accounts.jsx:407
 msgid "Passphrase"
 msgstr "Парольная фраза"
 
@@ -1069,6 +1134,13 @@ msgstr "Предварительный выпуск"
 msgid "Prefer to report manually? $0"
 msgstr "Предпочитаете ручные отчёты? $0"
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:344
+#, fuzzy
+#| msgctxt "GUI|Keyboard Layout"
+#| msgid "_Preview layout"
+msgid "Preview"
+msgstr "По_смотреть раскладку"
+
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:694
 msgid "Proceed with installation"
 msgstr "Приступить к установке"
@@ -1077,9 +1149,9 @@ msgstr "Приступить к установке"
 msgid "Proxy"
 msgstr "Прокси"
 
+#: src/components/error/Error.jsx:140
 #: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
-#: src/components/error/Error.jsx:140
 msgid "Quit"
 msgstr "Выход"
 
@@ -1115,10 +1187,10 @@ msgstr ""
 msgid "Real hostname must be 64 characters or less"
 msgstr "Настоящее имя узла должно состоять из 64 символов или меньше"
 
+#: src/components/error/Error.jsx:140
+#: src/components/installation/InstallationProgress.jsx:252
 #: src/components/AnacondaWizardFooter.jsx:84
 #: src/components/AnacondaWizardFooter.jsx:119
-#: src/components/installation/InstallationProgress.jsx:252
-#: src/components/error/Error.jsx:140
 msgid "Reboot"
 msgstr "Перезагрузить"
 
@@ -1166,10 +1238,10 @@ msgstr "Переформатирование"
 msgid "Reinstall Fedora"
 msgstr "Переустановить Fedora"
 
-#: src/components/localization/Keyboard.jsx:157
-#: src/components/localization/Keyboard.jsx:161
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:435
 #: src/components/storage/mount-point-mapping/MountPointMapping.jsx:622
+#: src/components/localization/Keyboard.jsx:157
+#: src/components/localization/Keyboard.jsx:161
 msgid "Remove"
 msgstr "Удалить"
 
@@ -1223,8 +1295,8 @@ msgstr ""
 "Сообщите о проблеме или оставьте отзыв, открыв форму для регистрации ошибок "
 "Bugzilla $0."
 
-#: src/components/error/Error.jsx:172
 #: src/components/error/BugzillaReport.jsx:634
+#: src/components/error/Error.jsx:172
 msgid "Report issue"
 msgstr "Сообщить о проблеме"
 
@@ -1251,6 +1323,10 @@ msgstr "Повторно сканировать устройства"
 #: src/components/storage/installation-method/InstallationDestination.jsx:97
 msgid "Rescanning of the disks failed."
 msgstr "Повторное сканирование дисков не удалось."
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:338
+msgid "Reset to defaults"
+msgstr ""
 
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:539
 msgid "Resize"
@@ -1312,8 +1388,9 @@ msgstr "Сертификат клиента SSL"
 msgid "SSL verification"
 msgstr "Проверка SSL"
 
-#: src/components/review/Hostname.jsx:125
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:368
 #: src/components/localization/Keyboard.jsx:279
+#: src/components/review/Hostname.jsx:125
 #: src/components/datetime/CustomNTPModal.jsx:245
 msgid "Save"
 msgstr "Сохранить"
@@ -1338,7 +1415,7 @@ msgstr "Поиск окружения"
 msgid "Search keyboard layout"
 msgstr "Искать раскладку клавиатуры"
 
-#: src/components/storage/storage-configuration/DiskEncryption.jsx:110
+#: src/components/storage/storage-configuration/DiskEncryption.jsx:109
 msgid ""
 "Secure your data using disk-based encryption. Only applies to new partitions"
 msgstr ""
@@ -1354,7 +1431,7 @@ msgstr "Выбрать"
 msgid "Select a device"
 msgstr "Выбрать устройство"
 
-#: src/components/datetime/Timezone.jsx:176
+#: src/components/datetime/Timezone.jsx:185
 msgid "Select city"
 msgstr "Выбрать город"
 
@@ -1362,7 +1439,7 @@ msgstr "Выбрать город"
 msgid "Select destination"
 msgstr "Выберете назначение"
 
-#: src/components/datetime/Timezone.jsx:157
+#: src/components/datetime/Timezone.jsx:166
 msgid "Select region"
 msgstr "Выбрать регион"
 
@@ -1430,9 +1507,20 @@ msgstr "Показать парольную фразу"
 msgid "Show password"
 msgstr "Показать пароль"
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:56
+#, fuzzy
+#| msgid "Change partition layout"
+msgid "Simple and traditional layout"
+msgstr "Изменить схему разделов"
+
 #: src/components/storage/StorageReview.jsx:247
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:212
 msgid "Size"
 msgstr "Размер"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:44
+msgid "Snapshots and compression, with volumes sharing one pool"
+msgstr ""
 
 #: src/components/installation/InstallationProgress.jsx:237
 msgid "Software installation"
@@ -1446,8 +1534,8 @@ msgstr ""
 "Установка программного обеспечения: настройка хранилища данных завершена. "
 "Теперь программное обеспечение устанавливается на ваше устройство."
 
-#: src/components/review/ReviewConfiguration.jsx:258
 #: src/components/software/index.js:22 src/components/software/index.js:23
+#: src/components/review/ReviewConfiguration.jsx:258
 msgid "Software selection"
 msgstr "Выбор программ"
 
@@ -1468,14 +1556,20 @@ msgstr "Пространство"
 msgid "Stacktrace"
 msgstr "Трассировка стека"
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:57
+#, fuzzy
+#| msgid "Standard Partition"
+msgid "Standard partitions"
+msgstr "Стандартный раздел"
+
 #: src/components/review/ReviewConfiguration.jsx:287
 msgid "Storage"
 msgstr "Хранилище"
 
-#: src/components/steps.js:37
-#: src/components/installation/InstallationProgress.jsx:232
 #: src/components/storage/storage-configuration/index.js:21
 #: src/components/storage/storage-configuration/index.js:22
+#: src/components/steps.js:37
+#: src/components/installation/InstallationProgress.jsx:232
 msgid "Storage configuration"
 msgstr "Конфигурация устройств хранения"
 
@@ -1491,6 +1585,13 @@ msgstr "Редактор хранилища"
 msgid "Storage is based on the configuration from 'Modify storage'."
 msgstr "Хранилище основано на конфигурации из раздела \"Изменить хранилище\"."
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:412
+#, fuzzy
+#| msgctxt "GUI|Storage|Error Dialog"
+#| msgid "_Modify Storage Layout"
+msgid "Storage layout"
+msgstr "_Изменить схему устройств хранения"
+
 #: src/components/storage/scenarios/use-configured-storage/index.js:40
 msgid ""
 "Storage layout is defined by the kickstart file. The planned partitioning "
@@ -1499,6 +1600,12 @@ msgstr ""
 "Схема разбиения диска определяется файлом Kickstart. Запланированную схему "
 "разбиения диска можно просмотреть на этапе обзора итогов."
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:209
+#, fuzzy
+#| msgid "Storage plugin failed"
+msgid "Storage layout preview"
+msgstr "Сбой плагина хранилища"
+
 #: src/components/storage/cockpit-storage-integration/CockpitStorageIntegration.jsx:94
 msgid "Storage plugin failed"
 msgstr "Сбой плагина хранилища"
@@ -1506,6 +1613,14 @@ msgstr "Сбой плагина хранилища"
 #: src/components/storage/cockpit-storage-integration/CheckStorageDialog.jsx:624
 msgid "Storage requirements not met"
 msgstr "Не соблюдены требования к хранилищу"
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:416
+msgid "Storage will be automatically configured using $0."
+msgstr ""
+
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:61
+msgid "Stratis"
+msgstr ""
 
 #: src/components/Password.jsx:67
 msgid "Strong"
@@ -1647,7 +1762,7 @@ msgid "Time"
 msgstr "Время"
 
 #: src/components/review/ReviewConfiguration.jsx:246
-#: src/components/datetime/Timezone.jsx:130
+#: src/components/datetime/Timezone.jsx:139
 msgid "Timezone"
 msgstr "Часовой пояс"
 
@@ -1659,7 +1774,7 @@ msgstr "Заголовок"
 msgid "To begin using $0, reboot your system."
 msgstr "Чтобы начать использовать $0, перезагрузите систему."
 
-#: src/components/storage/installation-method/InstallationMethod.jsx:198
+#: src/components/storage/installation-method/InstallationMethod.jsx:194
 msgid "To continue, select the devices to install to."
 msgstr "Чтобы продолжить, выберите устройства для установки."
 
@@ -1671,6 +1786,7 @@ msgstr ""
 "Чтобы воспользоваться этой опцией, измените размер или удалите существующие "
 "разделы, чтобы освободить хотя бы $0."
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:213
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:140
 msgid "Type"
 msgstr "Тип"
@@ -1761,6 +1877,13 @@ msgstr "Имена пользователей должны быть короче
 msgid "Validating..."
 msgstr "Проверка..."
 
+#: src/components/storage/storage-configuration/PartitioningScheme.jsx:48
+#, fuzzy
+#| msgid ""
+#| "You need to configure the network to use a network installation source."
+msgid "Volumes that can be resized after installation"
+msgstr "Для сетевой установки необходимо настроить подключение к сети."
+
 #: src/components/Password.jsx:45
 msgid "Weak"
 msgstr "Простой"
@@ -1832,9 +1955,9 @@ msgstr "завершённый шаг"
 msgid "current step"
 msgstr "текущий шаг"
 
+#: src/components/storage/StorageReview.jsx:168
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:383
 #: src/components/storage/installation-method/ReclaimSpaceModal.jsx:397
-#: src/components/storage/StorageReview.jsx:168
 msgid "delete"
 msgstr "удалить"
 
@@ -2198,12 +2321,6 @@ msgstr "отменить"
 #~ msgid "Account setting failed."
 #~ msgstr "Сбой настройки учетной записи."
 
-#, fuzzy
-#~| msgid ""
-#~| "You need to configure the network to use a network installation source."
-#~ msgid "Current configuration can be used for installation."
-#~ msgstr "Для сетевой установки необходимо настроить подключение к сети."
-
 #~ msgid "The root partition is always re-formatted by the installer."
 #~ msgstr "Корневой раздел всегда переформатируется программой установки."
 
@@ -2215,9 +2332,6 @@ msgstr "отменить"
 
 #~ msgid "Ignore"
 #~ msgstr "Игнорировать"
-
-#~ msgid "Modified storage"
-#~ msgstr "Измененное устройств хранения"
 
 #~ msgid "Modifying the storage failed."
 #~ msgstr "Изменение хранилища не удалось."
@@ -2952,9 +3066,6 @@ msgstr "отменить"
 #~ msgid "Bridge %(interface_name)s (%(list_of_ports)s) connected"
 #~ msgstr "Мостовой интерфейс %(interface_name)s (%(list_of_ports)s) подключен"
 
-#~ msgid "Btrfs"
-#~ msgstr "Вtrfs"
-
 #~ msgid "Btrfs file system is not supported."
 #~ msgstr "Файловая система btrfs не поддерживается."
 
@@ -3621,10 +3732,6 @@ msgstr "отменить"
 #~ msgid "Fair"
 #~ msgstr "Нормальный"
 
-#~ msgctxt "GUI|Custom Partitioning|Configure"
-#~ msgid "File S_ystem:"
-#~ msgstr "_Файловая система:"
-
 #~ msgid "File system type \"{}\" given in autopart command is invalid."
 #~ msgstr "Тип «{}», приведенный в команде autopart, неправильный."
 
@@ -4108,12 +4215,6 @@ msgstr "отменить"
 #~ msgid "LUN:"
 #~ msgstr "LUN:"
 
-#~ msgid "LVM"
-#~ msgstr "LVM"
-
-#~ msgid "LVM Thin Provisioning"
-#~ msgstr "Динамический LVM"
-
 #~ msgid "Label:"
 #~ msgstr "Метка:"
 
@@ -4545,9 +4646,6 @@ msgstr "отменить"
 #~ msgstr "Раздел «{}», указанный в строке команды part, не существует."
 
 #~ msgid "Partition Scheme Options"
-#~ msgstr "Параметры разбиения"
-
-#~ msgid "Partitioning Options"
 #~ msgstr "Параметры разбиения"
 
 #~ msgid ""
@@ -5387,9 +5485,6 @@ msgstr "отменить"
 
 #~ msgid "Speed"
 #~ msgstr "Скорость"
-
-#~ msgid "Standard Partition"
-#~ msgstr "Стандартный раздел"
 
 #~ msgid "Start VNC"
 #~ msgstr "Запустить VNC"
@@ -6741,10 +6836,6 @@ msgstr "отменить"
 #~ msgid "Your %(mount)s partition size is lower than required %(size)s."
 #~ msgstr "Размер раздела %(mount)s меньше рекомендованного %(size)s."
 
-#, python-format
-#~ msgid "Your %s must be on a separate partition or LV."
-#~ msgstr "%s должен быть на отдельном разделе или логическом томе."
-
 #~ msgid ""
 #~ "Your BIOS-based system needs a special partition to boot from a GPT disk "
 #~ "label. To continue, please create a 1MiB 'biosboot' type partition on the "
@@ -7148,10 +7239,6 @@ msgstr "отменить"
 #~ msgid "_Modify Software Source"
 #~ msgstr "_Изменить источник"
 
-#~ msgctxt "GUI|Storage|Error Dialog"
-#~ msgid "_Modify Storage Layout"
-#~ msgstr "_Изменить схему устройств хранения"
-
 #~ msgctxt "GUI|Custom Partitioning|Configure"
 #~ msgid "_Modify..."
 #~ msgstr "_Изменить..."
@@ -7303,10 +7390,6 @@ msgstr "отменить"
 #~ msgctxt "GUI|Custom Partitioning|Reset Dialog"
 #~ msgid "_Preserve current selections"
 #~ msgstr "О_ставить текущий выбор"
-
-#~ msgctxt "GUI|Keyboard Layout"
-#~ msgid "_Preview layout"
-#~ msgstr "По_смотреть раскладку"
 
 #~ msgctxt "GUI|Software Source|Proxy Dialog"
 #~ msgid "_Proxy Host:"
