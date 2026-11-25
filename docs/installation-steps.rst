@@ -6,14 +6,15 @@ This document describes the step-by-step process for installing the system using
 
 1. **Welcome**
 2. **Network**
-3. **Date and time**
-4. **Installation source**
-5. **Software selection**
-6. **Installation method**
-7. **Storage configuration**
-8. **Create Account**
-9. **Review and install**
-10. **Installation progress**
+3. **Subscription**
+4. **Date and time**
+5. **Installation source**
+6. **Software selection**
+7. **Installation method**
+8. **Storage configuration**
+9. **Create Account**
+10. **Review and install**
+11. **Installation progress**
 
 Detailed Step Descriptions
 =============================
@@ -28,22 +29,27 @@ Select the language & keyboard to use during installation and for the target sys
 
 Configure network connections for the system.
 
-3. Date and time
+3. Subscription
+---------------
+
+Register the system with Red Hat Subscription Manager.
+
+4. Date and time
 ----------------
 
 Configure your system's timezone, date, and time settings. You can also set up network time synchronization.
 
-4. Installation source
+5. Installation source
 ----------------------
 
 Configure the installation source for package downloads.
 
-5. Software selection
+6. Software selection
 ---------------------
 
 Select packages to install by choosing a base environment.
 
-6. Installation method
+7. Installation method
 ----------------------
 
 Choose the target device(s) for the installation and the partitioning scenario.
@@ -85,22 +91,22 @@ Reinstalls Fedora while preserving your existing home directory and user data. U
 
 Installs using only unallocated free space, preserving existing partitions and data. Use when you want to dual-boot with existing operating systems. This option only appears when existing partitions are detected on the selected disks.
 
-7. Storage configuration
+8. Storage configuration
 ------------------------
 
 Automatic partitioning configuration, disk encryption, and storage options.
 
-8. Create Account
+9. Create Account
 -----------------
 
 Set up user accounts and administrator passwords for your system.
 
-9. Review and install
----------------------
+10. Review and install
+----------------------
 
 Review your installation settings and start the installation process.
 
-10. Installation progress
+11. Installation progress
 -------------------------
 
 Monitor the installation progress and completion.
