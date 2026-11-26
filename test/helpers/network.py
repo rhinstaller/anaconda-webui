@@ -3,9 +3,8 @@
 
 import os
 import sys
-from types import SimpleNamespace
 
-from netlib import NetworkCase
+from netlib import AnacondaNetworkCase
 from testlib import wait
 
 HELPERS_DIR = os.path.dirname(__file__)
@@ -54,6 +53,10 @@ class Network():
     def __init__(self, browser, machine):
         self.browser = browser
         self.machine = machine
+
+        self.cockpit_helper = AnacondaNetworkCase()
+        self.cockpit_helper.browser = browser
+        self.cockpit_helper.machine = machine
 
     def get_the_iface(self):
         """Get the iface name and assert it is the only one."""
@@ -141,17 +144,10 @@ class Network():
         self.browser.switch_to_top()
 
     def select_iface(self, iface):
-        b = self.browser
-        b.click(f"#networking-interfaces button[data-interface='{iface}']")
-        b.wait_visible("#network-interface")
+        self.cockpit_helper.select_iface(iface)
 
     def set_autoreconnect(self, autoreconnect):
-        b = self.browser
-        b.set_checked('#autoreconnect', autoreconnect)
-        if autoreconnect:
-            b.wait_visible('#autoreconnect:checked')
-        else:
-            b.wait_visible('#autoreconnect:not(:checked)')
+        self.cockpit_helper.set_autoreconnect(autoreconnect)
 
     def preinstall_connection_test(self, installer, iface, configured=False):
         n = self
@@ -215,33 +211,6 @@ class Network():
 
         i.reach(i.steps.REVIEW)
 
-    def configure_iface_setting(self, setting_title):
-        shim = SimpleNamespace(browser=self.browser)
-        NetworkCase.configure_iface_setting(shim, setting_title)
-
-    def wait_for_iface_setting(self, setting_title, setting_value):
-        shim = SimpleNamespace(browser=self.browser)
-        NetworkCase.wait_for_iface_setting(shim, setting_title, setting_value)
-
-    def set_mtu_on_iface_wizard(self, iface, mtu):
-        self._switch_to_frame()
-        self.select_iface(iface)
-        self.set_mtu(mtu)
-        self.wait_for_iface_setting("MTU", mtu)
-        self.browser.switch_to_top()
-
-    def set_mtu(self, mtu):
-        b = self.browser
-        self.configure_iface_setting("MTU")
-        b.wait_visible("#network-mtu-settings-dialog")
-        # wait until dialog initialized
-        b.wait_visible("#network-mtu-settings-dialog button[aria-label=Close]")
-        b.wait_visible("#network-mtu-settings-custom")
-        b.set_checked('#network-mtu-settings-custom', val=True)
-        b.set_input_text('#network-mtu-settings-input', mtu)
-        b.click("#network-mtu-settings-save")
-        b.wait_not_present("#network-mtu-settings-dialog")
-
     def wait_onoff(self, sel: str, *, val: bool) -> None:
         self.browser.wait_visible(sel + " input[type=checkbox]" + (":checked" if val else ":not(:checked)"))
 
@@ -256,7 +225,7 @@ class Network():
 
     def add_dns_server(self, ip):
         b = self.browser
-        self.configure_iface_setting('IPv4')
+        self.cockpit_helper.edit_ip_settings("ipv4")
         b.wait_visible("#network-ip-settings-dialog")
         self.wait_onoff("[data-field=dns]", val=True)
         self.toggle_onoff("[data-field=dns]")
@@ -287,7 +256,7 @@ class Network():
 
     def disable_ipv4(self):
         b = self.browser
-        self.configure_iface_setting('IPv4')
+        self.cockpit_helper.edit_ip_settings("ipv4")
         b.wait_visible("#network-ip-settings-dialog")
         b.select_from_dropdown("#network-ip-settings-select-method", "disabled")
         b.click("#network-ip-settings-save")
