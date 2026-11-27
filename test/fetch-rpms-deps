@@ -14,6 +14,9 @@ sys.path.append(TEST_HELPERS_DIR)
 # FIXME: python3-bugzilla should be removed from missing_packages once it's included in boot.iso
 missing_packages = "fedora-logos udisks2 libudisks2 udisks2-lvm2 udisks2-btrfs udisks2-iscsi python3-bugzilla"
 
+# RPMs that conflict with the defaults, downloaded separately and installed at test runtime by decorators (e.g. @fedora_remix)
+extra_test_rpms = "generic-logos generic-release generic-release-common"
+
 from compose_path import get_compose_url
 
 
@@ -110,6 +113,13 @@ def fetch_rpms(image, compose):
     # This will change once we include this changes upstream and start building boot.iso with the new dependencies
     # Then we can enable this only for the various scenarios above
     run(f"dnf download --destdir {destdir} --releasever {releasever} {missing_packages}")
+
+    # Download RPMs that conflict with the defaults and are installed at test runtime by decorators (e.g. @fedora_remix)
+    extra_rpms_dir = os.path.abspath("tmp/extra-rpms")
+    if os.path.exists(extra_rpms_dir):
+        shutil.rmtree(extra_rpms_dir)
+    os.makedirs(extra_rpms_dir)
+    run(f"dnf download --destdir {extra_rpms_dir} --releasever {releasever} {extra_test_rpms}")
 
     shutil.rmtree(repodir)
 

@@ -113,6 +113,17 @@ class VirtInstallMachineCase(MachineCase):
         b = self.browser
         s = Storage(b, m)
 
+        rpm_swap = getattr(method, "rpm_swap", None)
+        if rpm_swap:
+            for old_pattern in rpm_swap:
+                m.execute(f"rpm -e --nodeps $(rpm -qa '{old_pattern}')")
+            new_globs = " ".join(f"/usr/share/test-rpms/{p}*.rpm" for p in rpm_swap.values())
+            m.execute(f"rpm -ivh --nosignature {new_globs}")
+            # generic-release sets ID_LIKE=fedora; cockpit falls back to ID_LIKE
+            # for branding lookup, so remove it to reach the default branding
+            m.execute("sed -i '/^ID_LIKE=/d' /etc/os-release")
+            m.execute("systemctl restart webui-cockpit-ws.service")
+
         self.addAllDisks()
         s.udevadm_settle()
 
@@ -390,3 +401,15 @@ def run_on_vm_setups(*vm_setups):
         func.run_on_vm_setups = list(vm_setups)
         return func
     return decorator
+
+
+def fedora_remix(func):
+    """
+    Decorator to simulate a Fedora remix (non-Fedora branding) for a test.
+
+    Replaces fedora-logos with generic-logos and fedora-release with
+    generic-release on the VM, then restarts cockpit-ws so that cockpit
+    falls back to default branding instead of Fedora branding.
+    """
+    func.rpm_swap = {"fedora-logos": "generic-logos", "fedora-release*": "generic-release"}
+    return func

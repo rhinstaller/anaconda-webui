@@ -258,7 +258,7 @@ $(UPDATES_IMG): $(DIST_TEST) tmp/rpms prepare-test-deps
 
 .PHONY: clean-test-artifacts
 clean-test-artifacts:
-	rm -rf tmp/rpms tmp/*-anaconda-payload *updates.img
+	rm -rf tmp/rpms tmp/extra-rpms tmp/*-anaconda-payload *updates.img
 
 test/reference: test/common
 	test/common/pixel-tests pull

@@ -18,6 +18,12 @@ make install DESTDIR="$(pwd)/updates"
 
 cd updates && for rpm in ../tmp/rpms/*.rpm; do rpm2cpio "$rpm" | cpio -idmu 2>/dev/null; done
 
+# Include raw RPMs for runtime installation by test decorators (e.g. @fedora_remix)
+if [ -d ../tmp/extra-rpms ]; then
+    mkdir -p usr/share/test-rpms
+    cp ../tmp/extra-rpms/*.rpm usr/share/test-rpms/
+fi
+
 find . | cpio -c -o 2>/dev/null | gzip -9 > ../updates.img
 cd ..
 rm -rf updates
