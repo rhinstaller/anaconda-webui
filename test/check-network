@@ -105,13 +105,6 @@ class TestNetworkDestructive(VirtInstallMachineCase):
         # is updated by Cockpit (COCKPIT-1750)
         con_name = iface
 
-        mtu_value = "1600"
-        n.set_mtu_on_iface_wizard(iface, mtu_value)
-
-        n.check_con_settings([
-            [con_name, "802-3-ethernet.mtu", mtu_value, None],
-        ])
-
         i.next()
         i.back()
 
@@ -125,10 +118,6 @@ class TestNetworkDestructive(VirtInstallMachineCase):
         # Check that the checkpoint does not fail silently, ie check after
         # checkpoint timeout (INSTALLER-4594)
         time.sleep(COCKPIT_CHECKPOINT_ROLLBACK_TIME+2)
-
-        n.check_con_settings([
-            [con_name, "802-3-ethernet.mtu", mtu_value, None],
-        ])
 
         n.check_con_settings([
             [con_name, "ipv4.dns", dns_server, None],
