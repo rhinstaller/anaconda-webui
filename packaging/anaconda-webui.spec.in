@@ -43,11 +43,10 @@ Requires: cockpit-networkmanager
 Requires: cockpit-bridge >= %{cockpitver}
 Requires: cockpit-ws >= %{cockpitver}
 Requires: anaconda-core  >= %{anacondacorever}
-# Firefox dependency needs to be specified there as cockpit web-view does not have a hard dependency on Firefox as
-# it can often fall back to a diferent browser. This does not work in the limited installer
-# environment, so we need to make sure Firefox is available. Exclude on RHEL, only Flatpak version will be there.
-%if ! 0%{?rhel}
+# TODO: https://fedoraproject.org/wiki/Changes/Anaconda_WebUI_Opener
+# Browser requirement to be moved to image definitions
 Requires: (slitherer if (%{webui_slitherer_spin_identities}) else firefox)
+%if ! 0%{?rhel}
 Requires: python3-bugzilla
 %endif
 Requires: system-logos
