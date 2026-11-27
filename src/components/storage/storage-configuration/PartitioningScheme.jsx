@@ -86,57 +86,58 @@ const getMountPointLabel = mountPoint => (
 // A device without a mount point is swap, which is excluded under that name.
 const getExcludeKey = device => device.mountPoint || device.format;
 
-/* A request can only drop mount points the default layout already creates, so
- * the layout itself decides what there is to offer. Mount points the platform
- * needs to boot are not negotiable, and a mount point the user already dropped
- * is missing from the layout but still has to keep its checkbox.
- */
-const getOptionalMountPoints = ({ constraints, devices, excluded }) => {
+// One empty list for every render. Passing a fresh [] would look like a change
+// to React and the previews would recompute on every render.
+const NO_MOUNT_POINTS = [];
+
+// Only a layout that excludes nothing shows what the scheme creates. The
+// user's own layout misses whatever they unchecked.
+const getOptionalMountPoints = ({ constraints, devices }) => {
     const required = (constraints ?? []).map(constraint => constraint["mount-point"].v);
     const inLayout = (devices ?? []).map(getExcludeKey);
 
-    return [...new Set([...inLayout, ...excluded])]
+    return [...new Set(inLayout)]
             .filter(mountPoint => !required.includes(mountPoint))
             .sort();
 };
 
-const useLayoutPreview = ({ reclaimActions, request }) => {
-    const [preview, setPreview] = useState({ isLoading: true });
+// Run requests in order, so the user's layout is the last one configured.
+const useLayoutPreviews = ({ reclaimActions, requests }) => {
+    const [previews, setPreviews] = useState([]);
     const latestRequest = useRef(0);
     const queue = useRef(Promise.resolve());
 
     useEffect(() => {
         const requestId = ++latestRequest.current;
-        // Show the spinner instead of the previous layout while recomputing,
-        // but drop a stale error so a fixed configuration stops showing the
-        // old complaint.
-        setPreview({ isLoading: true });
+        // Reset to the spinner, which also drops a stale error.
+        setPreviews(requests.map(({ id }) => ({ id, isLoading: true })));
 
         const timer = setTimeout(() => {
-            // Configure one partitioning at a time so that the newest request is
-            // also the last one announced by the backend as the current layout.
             queue.current = queue.current.catch(() => {}).then(async () => {
                 if (requestId !== latestRequest.current) {
                     return;
                 }
 
-                try {
-                    const { layout } = await createPartitioningFromRequest({ configure: true, reclaimActions, request });
-                    if (requestId === latestRequest.current) {
-                        setPreview({ devices: layout, isLoading: false });
+                const results = [];
+                for (const { id, request } of requests) {
+                    try {
+                        const { layout } = await createPartitioningFromRequest({ configure: true, reclaimActions, request });
+                        results.push({ devices: layout, id, isLoading: false });
+                    } catch (error) {
+                        results.push({ error, id, isLoading: false });
                     }
-                } catch (error) {
-                    if (requestId === latestRequest.current) {
-                        setPreview({ error, isLoading: false });
-                    }
+                }
+
+                if (requestId === latestRequest.current) {
+                    setPreviews(results);
                 }
             });
         }, PREVIEW_DEBOUNCE_MS);
 
         return () => clearTimeout(timer);
-    }, [reclaimActions, request]);
+    }, [reclaimActions, requests]);
 
-    return preview;
+    return requests.map(({ id }) => previews.find(preview => preview.id === id) ?? { id, isLoading: true });
 };
 
 const SelectField = ({ id, label, onChange, options, value }) => {
@@ -240,24 +241,85 @@ const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave, recla
     const [config, setConfig] = useState(initialConfig);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState();
+
+    // Mount points each scheme creates, cached so switching does not reuse the
+    // list of the previous scheme.
+    const [mountPointsByScheme, setMountPointsByScheme] = useState({});
+    const mountPointsKnown = Object.hasOwn(mountPointsByScheme, config.scheme);
+    const optionalMountPoints = mountPointsByScheme[config.scheme] ?? NO_MOUNT_POINTS;
+
+    // Excluding a mount point this scheme does not create changes nothing.
+    const effectiveExcluded = useMemo(
+        () => config.excluded.filter(mountPoint => optionalMountPoints.includes(mountPoint)),
+        [optionalMountPoints, config.excluded]
+    );
+
     const scheme = schemes.find(s => s.id === config.scheme);
     const hasFileSystemType = scheme?.hasFileSystemType ?? false;
+    // Keep the exclusions this scheme ignores, a switch back may create them.
     const request = useMemo(
         () => getAutopartDBusRequest({ ...config, baseRequest: initialRequest, hasFileSystemType }),
         [config, hasFileSystemType, initialRequest]
     );
-    const { devices, error, isLoading } = useLayoutPreview({ reclaimActions, request });
+    const baselineRequest = useMemo(
+        () => getAutopartDBusRequest({
+            baseRequest: initialRequest,
+            excluded: NO_MOUNT_POINTS,
+            fileSystem: config.fileSystem,
+            hasFileSystemType,
+            scheme: config.scheme,
+        }),
+        [config.fileSystem, config.scheme, hasFileSystemType, initialRequest]
+    );
+    const previewRequest = useMemo(
+        () => (effectiveExcluded.length === config.excluded.length
+            ? request
+            : getAutopartDBusRequest({
+                ...config,
+                baseRequest: initialRequest,
+                excluded: effectiveExcluded,
+                hasFileSystemType,
+            })),
+        [config, effectiveExcluded, hasFileSystemType, initialRequest, request]
+    );
 
-    // Compute the checkbox list once from the first preview, then keep it static
-    const [optionalMountPoints, setOptionalMountPoints] = useState(null);
+    const layoutId = "layout:" + config.scheme;
+    const baselineId = "baseline:" + config.scheme;
+    const requests = useMemo(
+        () => (effectiveExcluded.length
+            ? [{ id: baselineId, request: baselineRequest }, { id: layoutId, request: previewRequest }]
+            : [{ id: layoutId, request: previewRequest }]),
+        [baselineId, baselineRequest, effectiveExcluded.length, layoutId, previewRequest]
+    );
+    const previews = useLayoutPreviews({ reclaimActions, requests });
+    const layoutPreview = previews[previews.length - 1];
+    const baselinePreview = effectiveExcluded.length ? previews[0] : layoutPreview;
+    const { devices, error, isLoading: isPreviewLoading } = layoutPreview;
+
+    // An ignored exclusion only leaves the preview once the mount points are known.
+    const isLoading = isPreviewLoading || (config.excluded.length > 0 && !mountPointsKnown);
 
     useEffect(() => {
-        if (devices && optionalMountPoints === null) {
-            setOptionalMountPoints(
-                getOptionalMountPoints({ constraints, devices, excluded: initialConfig.excluded })
-            );
+        const expectedId = effectiveExcluded.length ? baselineId : layoutId;
+
+        // Previews from the previous request are still here, skip them.
+        if (baselinePreview.id !== expectedId) {
+            return;
         }
-    }, [devices, optionalMountPoints, constraints, initialConfig.excluded]);
+
+        if (baselinePreview.error) {
+            // No layout to read mount points from, treat the scheme as computed.
+            setMountPointsByScheme(previous => ({ ...previous, [config.scheme]: NO_MOUNT_POINTS }));
+            return;
+        }
+
+        if (!baselinePreview.devices) {
+            return;
+        }
+
+        const mountPoints = getOptionalMountPoints({ constraints, devices: baselinePreview.devices });
+        setMountPointsByScheme(previous => ({ ...previous, [config.scheme]: mountPoints }));
+    }, [baselineId, baselinePreview, config.scheme, constraints, effectiveExcluded.length, layoutId]);
 
     const toggleMountPoint = (mountPoint, isCreated) => setConfig({
         ...config,
@@ -317,7 +379,7 @@ const ConfigureModal = ({ initialConfig, initialRequest, onCancel, onSave, recla
                               onChange={fileSystem => setConfig({ ...config, fileSystem })}
                               options={supportedFileSystems.map(id => ({ id, title: id }))}
                             />}
-                            {optionalMountPoints && optionalMountPoints.length > 0 &&
+                            {optionalMountPoints.length > 0 &&
                             <FormGroup>
                                 {optionalMountPoints.map(mountPoint => (
                                     <Checkbox
